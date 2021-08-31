@@ -16,7 +16,7 @@ if($_SESSION['profils_ajout']==1)
                 <form role="form" action="profilsDupliquer.php" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Profil à dupliquer: </label>
+                            <label>Profil à dupliquer: <small style="color:grey;">Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="idProfil">
                                 <?php
                                 $query = $db->prepare('SELECT * FROM PROFILS ORDER BY libelleProfil;');

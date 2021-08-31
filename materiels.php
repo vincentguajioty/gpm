@@ -101,6 +101,9 @@ if ($_SESSION['materiel_lecture']==0)
                                 	<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>
                                 </td>
                                 <td>
+                                    <?php if ($_SESSION['reserve_ReserveVersLot']==1) {?>
+                                    	<a href="transfertResLotsFromLots.php?idElement=<?=$data['idElement']?>&idMaterielCatalogue=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-exchange"></i></a>
+                                    <?php }?>
                                     <?php if ($_SESSION['materiel_modification']==1) {?>
                                         <a href="materielsForm.php?id=<?=$data['idElement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                     <?php }?>

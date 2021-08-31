@@ -53,8 +53,8 @@ if ($_SESSION['reserve_cmdVersReserve']==0)
 		                        <div class="<?= $_SESSION['transfertStade']==1 ? 'active' : ''?> tab-pane" id="1">
 	                                <form role="form" action="transfertCmdResGo2.php" method="POST">
 	                                    <div class="form-group">
-	                                        <label>Commande: </label>
-	                                        <select <?= $_SESSION['transfertStade']!=1 ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idCommande">
+	                                        <label>Commande: <small style="color:grey;">Requis</small></label>
+	                                        <select <?= $_SESSION['transfertStade']!=1 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertCmd']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idCommande">
 	                                            <?php
 	                                            $query = $db->query('SELECT * FROM COMMANDES c LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE idEtat=5;');
 	                                            while ($data = $query->fetch())
@@ -78,8 +78,8 @@ if ($_SESSION['reserve_cmdVersReserve']==0)
 								<div class="<?= $_SESSION['transfertStade']==2 ? 'active' : ''?> tab-pane" id="2">
 		                            <form role="form" action="transfertCmdResGo3.php" method="POST">
 	                                    <div class="form-group">
-	                                        <label>Item de la commande: </label>
-	                                        <select <?= $_SESSION['transfertStade']!=2 ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idMaterielCatalogue">
+	                                        <label>Item de la commande: <small style="color:grey;">Requis</small></label>
+	                                        <select <?= $_SESSION['transfertStade']!=2 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertIdMaterielCatalogue']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idMaterielCatalogue">
 	                                            <?php
 	                                            $query = $db->prepare('SELECT * FROM COMMANDES_MATERIEL m LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE idCommande = :idCommande;');
 	                                            $query->execute(array(
@@ -100,7 +100,7 @@ if ($_SESSION['reserve_cmdVersReserve']==0)
 				                                <div class="input-group-addon">
 				                                    <i class="fa fa-calendar"></i>
 				                                </div>
-				                                <input <?php if (isset($_SESSION['transfertPeremption'])){ echo 'value="'.$_SESSION['transfertPeremption'].'"'; } ?> <?= $_SESSION['transfertStade']!=2 ? 'disabled' : '' ?> class="input-datepicker form-control" name="peremption">
+				                                <input <?php if (isset($_SESSION['transfertPeremption'])){ echo 'value="'.$_SESSION['transfertPeremption'].'"'; } ?> <?= $_SESSION['transfertStade']!=2 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertPeremption']) ? 'disabled' : '' ?> class="input-datepicker form-control" name="peremption">
 				                            </div>
 				                        </div>
 	                                
@@ -115,8 +115,8 @@ if ($_SESSION['reserve_cmdVersReserve']==0)
 								<div class="<?= $_SESSION['transfertStade']==3 ? 'active' : ''?> tab-pane" id="3">
 		                            <form role="form" action="transfertCmdResGo4.php" method="POST">
 	                                    <div class="form-group">
-	                                        <label>Conteneur de destination: </label>
-	                                        <select <?= $_SESSION['transfertStade']!=3 ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idReserveElement">
+	                                        <label>Conteneur de destination: <small style="color:grey;">Requis</small></label>
+	                                        <select <?= $_SESSION['transfertStade']!=3 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertIdReserveElement']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idReserveElement">
 	                                            <?php
 	                                            $query = $db->prepare('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur = c.idConteneur LEFT OUTER JOIN LIEUX l ON c.idLieu = l.idLieu LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue WHERE m.idMaterielCatalogue = :idMaterielCatalogue;');
 	                                            $query->execute(array(
@@ -132,8 +132,8 @@ if ($_SESSION['reserve_cmdVersReserve']==0)
 	                                        </select>
 	                                    </div>
 	                                    <div class="form-group">
-				                            <label>Quantité à transférer (1 - <?= $_SESSION['transfertQttMax'] ?>):</label>
-				                            <input <?php if (isset($_SESSION['transfertqttTrans'])){ echo 'value="'.$_SESSION['transfertqttTrans'].'"'; }else{ echo 'value="'.$_SESSION['transfertQttMax'].'"'; } ?> <?= $_SESSION['transfertStade']!=3 ? 'disabled' : '' ?> type="number" class="form-control" name="qttTrans" min="1" max="<?= $_SESSION['transfertQttMax'] ?>" required>
+				                            <label>Quantité à transférer (1 - <?= $_SESSION['transfertQttMax'] ?>): <small style="color:grey;">Requis</small></label>
+				                            <input <?php if (isset($_SESSION['transfertqttTrans'])){ echo 'value="'.$_SESSION['transfertqttTrans'].'"'; }else{ echo 'value="'.$_SESSION['transfertQttMax'].'"'; } ?> <?= $_SESSION['transfertStade']!=3 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertqttTrans']) ? 'disabled' : '' ?> type="number" class="form-control" name="qttTrans" min="1" max="<?= $_SESSION['transfertQttMax'] ?>" required>
 				                        </div>
 	                                    
 

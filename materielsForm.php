@@ -30,7 +30,7 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                 <form role="form" action="<?= isset($_GET['id']) ? 'materielsUpdate.php?id='.$_GET['id'] : 'materielsAdd.php' ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Référence du catalogue:</label>
+                            <label>Référence du catalogue: <small style="color:grey;">Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="libelleMateriel">
                                 <?php
                                 $query2 = $db->query('SELECT * FROM MATERIEL_CATALOGUE ORDER BY libelleMateriel;');
@@ -44,7 +44,7 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Lot: </label>
+                            <label>Lot: (filtre)</label>
                             <select class="form-control select2" style="width: 100%;" name="materielLot">
                                 <option></option>
                                 <?php
@@ -59,7 +59,7 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Sac: </label>
+                            <label>Sac: (filtre)</label>
                             <select class="form-control select2" style="width: 100%;" name="materielSac">
                                 <option></option>
                                 <?php
@@ -74,7 +74,7 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Emplacement: </label>
+                            <label>Emplacement d'appartenance: </label>
                             <select class="form-control select2" style="width: 100%;" name="libelleEmplacement">
                                 <option></option>
                                 <?php
@@ -105,14 +105,12 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                         </div>
 
                         <div class="form-group">
-                            <label>Quantité:</label>
-                            <input type="text" class="form-control"  value="<?= isset($data['quantite']) ? $data['quantite'] : '' ?>"
-                                   name="quantite">
+                            <label>Quantité: <small style="color:grey;">Requis</small></label>
+                            <input type="text" class="form-control"  value="<?= isset($data['quantite']) ? $data['quantite'] : '' ?>" name="quantite" required>
                         </div>
                         <div class="form-group">
-                            <label>Quantité d'Alerte:</label>
-                            <input type="text" class="form-control"  value="<?= isset($data['quantiteAlerte']) ? $data['quantiteAlerte'] : '' ?>"
-                                   name="quantiteAlerte">
+                            <label>Quantité d'Alerte: <small style="color:grey;">Requis</small></label>
+                            <input type="text" class="form-control"  value="<?= isset($data['quantiteAlerte']) ? $data['quantiteAlerte'] : '' ?>" name="quantiteAlerte" required>
                         </div>
 
                         <div class="checkbox">

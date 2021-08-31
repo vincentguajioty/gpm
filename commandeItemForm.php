@@ -11,7 +11,7 @@ if($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSI
     <?php
     	if (isset($_GET['idElement']))
 		{
-		    $query = $db->prepare('SELECT * FROM COMMANDES_MATERIEL WHERE idCommande=:idCommande AND idMaterielCatalogue = :idMaterielCatalogue;');
+		    $query = $db->prepare('SELECT * FROM COMMANDES_MATERIEL m LEFT OUTER JOIN COMMANDES c ON m.idCommande = c.idCommande WHERE m.idCommande=:idCommande AND idMaterielCatalogue = :idMaterielCatalogue;');
 		    $query->execute(array('idCommande' => $_GET['idCommande'], 'idMaterielCatalogue' => $_GET['idElement']));
 		    $data = $query->fetch();
 		    $query->closeCursor();
@@ -28,7 +28,7 @@ if($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSI
                 <form role="form" action="<?= (isset($_GET['idElement'])) ? 'commandeItemUpdate.php?idCommande='.$_GET['idCommande'].'&idElement='.$_GET['idElement'] : 'commandeItemAdd.php?idCommande='.$_GET['idCommande'] ?>" method="POST">
                     <div class="modal-body">
                     <div class="form-group">
-                        <label>Matériel:<small style="color:grey;"> Requis</small></label>
+                        <label>Matériel: <small style="color:grey;">Requis</small></label>
                         <select <?= (isset($_GET['idElement'])) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idMaterielCatalogue">
                             <option value="-1">Frais de port</option>
                             <?php
@@ -44,7 +44,7 @@ if($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSI
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Quantité:<small style="color:grey;"> Requis</small></label>
+                        <label>Quantité: <small style="color:grey;">Requis</small></label>
                         <input type="number" class="form-control" name="quantiteCommande" value="<?= isset($data['quantiteCommande']) ? $data['quantiteCommande'] : '' ?>" required>
                     </div>
                     <div class="row">
@@ -62,7 +62,7 @@ if($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSI
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label>Prix TTC:<small style="color:grey;"> Requis</small></label>
+                                <label>Prix TTC: <small style="color:grey;">Requis</small></label>
                                 <input type="number" step="0.01" class="form-control" name="prixProduitTTC" required value="<?= isset($data['prixProduitTTC']) ? $data['prixProduitTTC'] : '' ?>">
                             </div>
                         </div>
@@ -84,7 +84,7 @@ if($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSI
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
-                        <button type="submit" class="btn btn-primary pull-right"><?= isset($_GET['idElement']) ? 'Modifier' : 'Ajouter' ?></button>
+                        <?php if($data['idEtat']<2){?><button type="submit" class="btn btn-primary pull-right"><?= isset($_GET['idElement']) ? 'Modifier' : 'Ajouter' ?></button><?php } ?>
                     </div>
                 </form>
             </div>

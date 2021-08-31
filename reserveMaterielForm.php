@@ -30,7 +30,7 @@ if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
                 <form role="form" action="<?= isset($_GET['id']) ? 'reserveMaterielUpdate.php?id='.$_GET['id'] : 'reserveMaterielAdd.php' ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Référence du catalogue:</label>
+                            <label>Référence du catalogue: <small style="color:grey;">Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="idMaterielCatalogue">
                                 <?php
                                 $query2 = $db->query('SELECT * FROM MATERIEL_CATALOGUE ORDER BY libelleMateriel;');
@@ -44,7 +44,7 @@ if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Conteneur: </label>
+                            <label>Conteneur: <small style="color:grey;">Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="idConteneur">
                                 <?php
                                 $query2 = $db->query('SELECT * FROM RESERVES_CONTENEUR ORDER BY libelleConteneur;');
@@ -74,14 +74,12 @@ if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
                         </div>
 
                         <div class="form-group">
-                            <label>Quantité:</label>
-                            <input type="text" class="form-control"  value="<?= isset($data['quantiteReserve']) ? $data['quantiteReserve'] : '' ?>"
-                                   name="quantiteReserve">
+                            <label>Quantité: <small style="color:grey;">Requis</small></label>
+                            <input type="text" class="form-control"  value="<?= isset($data['quantiteReserve']) ? $data['quantiteReserve'] : '' ?>" name="quantiteReserve" required>
                         </div>
                         <div class="form-group">
-                            <label>Quantité d'Alerte:</label>
-                            <input type="text" class="form-control"  value="<?= isset($data['quantiteAlerteReserve']) ? $data['quantiteAlerteReserve'] : '' ?>"
-                                   name="quantiteAlerteReserve">
+                            <label>Quantité d'Alerte: <small style="color:grey;">Requis</small></label>
+                            <input type="text" class="form-control"  value="<?= isset($data['quantiteAlerteReserve']) ? $data['quantiteAlerteReserve'] : '' ?>" name="quantiteAlerteReserve" required>
                         </div>
 
                         <div class="checkbox">

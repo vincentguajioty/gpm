@@ -67,6 +67,8 @@ require_once('logCheck.php');
                             <dd>Un lot, c'est un ensemble de sacs. Un sac c'est un ensemble d'emplacements. Et un emplacement contient un ensemble de matériels. Donc pour créer un lot, il faut commencer par déclarer le lot dans l'onglet <i>Lots</i>, puis créer les sacs qui composent ce lot en les affectant au lot créé (opération à faire dans l'onglet <i>Sacs</i>), puis créer les emplacements dans les sacs (onglet <i>Emplacements</i>). Une fois que cette structure est crée, vous n'avez plus qu'à ajouter du matériel dans les emplacements via l'onglet <i>Matériel</i>. Afin d'avoir une vue globale du matériel et de sa disposition dans un lot, allez dans l'onglet <i>Lots</i> et cliquez sur le dossier bleu afin d'ouvrir la fiche détaillée du lot sur laquelle apparaitra la structure du lot (sacs, emplacements, matériels).</dd>
                             <br/>
                             <dd>Le module de gestion des commandes permet de suivi des commandes de consommables. GPM ne passe pas tout seul les commandes auprès des fournisseurs. La vocation de ce module est de centraliser les informations quant aux commandes passées et d'instaurer un processus de commande efficace. Le processus est détaillé plus bas sur cette page.</dd>
+                            <br/>
+                            <dd>Le module de reserve permet de faire l'intermédiaire entre les commandes et les lots opérationnels. La réserve est répartie en conteneurs. Ces conteneurs contiennent les différents matériels. Le module de transfert de matériel permet d'intégrer dans la réserve le matériel en provenance des commandes, puis d'intégrer dans les lots opérationnels les matériels en provenance de la réserve.</dd>
                         </dl>
                     </div>
                     <!-- /.box-body -->
@@ -159,38 +161,6 @@ require_once('logCheck.php');
 
 
             <!-- ============================================================= -->
-
-            <div class="col-md-12">
-                <div class="box box-solid">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Légende des icônes</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <dl class="dl-horizontal">
-                            <dt><a class="btn btn-xs btn-success"><i class="fa fa-print"></i></a></dt>
-                            <dd>Lancer l'impression de la fiche détaillée d'un élément</dd>
-
-                            <dt><a class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a></dt>
-                            <dd>Ouvrir la fiche détaillée d'un élément</dd>
-
-                            <dt><a class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a></dt>
-                            <dd>Mdifier un élément</dd>
-
-                            <dt><a class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a></dt>
-                            <dd>Supprimer un élément</dd>
-
-                            <dt><a class="btn btn-xs btn-info"><i class="fa fa-lock"></i></a></dt>
-                            <dd>Réinitialiser un mot de passe</dd>
-                        </dl>
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
-            </div>
-
-
-            <!-- ============================================================= -->
             <div class="col-md-12">
                 <div class="box box-solid">
                     <div class="box-header with-border">
@@ -210,7 +180,9 @@ require_once('logCheck.php');
                             <dd>GPM est équipé d'un système d'enregistrement des actions menées sur la plateforme. Toute action de tout utilisateur est reportée dans une base. L'accès à ces logs peut être autorisé/interdit via les profils. La suppression d'une entrée dans les logs n'est pas possible depuis l'interface web de GPM, personne ne peut se voir attribuer ce droit.</dd>
                             <br/>
                             <dd>GPM est équipé d'un système de surveillance des adresses IP. Ceci permet d'interdire la connexion à des adresses IP donc le comportement semble frauduleux. Une adresse IP se verra bloquée automatiquement après 3 tentatives de connexion infructueuse. Aucun déblocage automatique n'est possible, seule une personne ayant le profil adéquat peut débloquer une adresse IP bloquée. Dès qu'une adresse IP est bloquée, toutes les connexions déjà établies en provenance de la même adresse IP sont révoquées.</dd>
+                            <br/>
                             <dd>CONSEIL: N'utilisez pas de comptes génériques (un seul compte pour plusieurs personnes), mais bien des comptes nominatifs. Ceci permet de suivre beaucoup plus précisemment les actions menées par chacun, surtout en cas de conflit.</dd>
+                            <dd>CONSEIL: Lors de la mise en place de nouveaux profils, testez les avant d'y rattacher des utilisateurs réels! Ceci évite les mauvaises surprises quant aux profils incohérents (par exemple droit en modification mais pas en lecture sur les lots => l'utilisateur ne pouvant pas consulter les lots, il ne pourra pas les modifier non-plus).</dd>
                         </dl>
                     </div>
                     <!-- /.box-body -->
@@ -363,6 +335,32 @@ require_once('logCheck.php');
                                 <br/>
                                 Pour savoir si un mail a bien été envoyé ou s'il y a eu une erreur lors de l'envoi du mail, se reporter à l'onglet AUTRES > Logs de la base
                             </dd>
+                        </dl>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+
+            <!-- ============================================================= -->
+
+            <div class="col-md-12">
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Module de transfert</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <dl>
+                            <dd>Le module de transfert de matériel permet d'intégrer dans la réserve le matériel reçu d'une commande, et permets ensuite d'intégrer dans les lots opérationnels les matériels présents dans la réserve.</dd>
+                            <br/>
+                            <dd>Au même titre que tout autre module, l'accès à ce module de transfert de matériel est géré au niveau des profils, dans la rubrique RESERVE (un droit disponible par type de transfert).</dd>
+                            <br/>
+                            <dd>Lors du transfert de matériel en provenance d'une commande vers un module de réserve, un premier écran vous permet de selectionner la commande à traiter. Sur cet écran ne figurent que les commandes qui sont au stade LIVRAISON OK, ce qui exclus les commandes closes, les commandes en SAV et toutes les commandes qui n'ont pas encore atteint le stade de livraison. Une fois la commande selectionnée, le deuxième écran vous permet de selectionner le matériel à transférer parmis les éléments commandés. Le troisième écran vous permet de selectionner le conteneur de destination. Seuls les conteneurs ayant déjà une entrée pour le-dit matériel apparaissent, il s'agit bien d'un ré-approvisionnement de réserve, et non d'une création d'élément dans la réserve. Un écran de résumé vous permet de visualisation le transfert avant de le valider.</dd>
+                            <br/>
+                            <dd>Lors du transfert de matériel en provenance de la réserve et à destination des lots, un premier écran vous permet de selectionner le matériel à réapprovisionner (liste des éléments du catalogue). Un deuxième écran vous permet de choisir le conteneur de réserve. Seuls les conteneurs qui contiennent une quantité non-nulles de ce matériel apparaissent. Un troisième écran vous permet de selectionner le lot>sac>emplacement cible. Seuls les lots>sacs>emplacements> qui contiennent le-dit matériel apparaissent, il s'agit bien d'un ré-approvisionnement de lot, et non d'une création d'élément dans un lot. Un quatrième écran vous permet de visualiser le transfert avant de le valider.</dd>
+                            <br/>
+                            <dd>Comportement des dates (quelque soit la méthode de transfert): si le matériel source n'a pas de date de péremption, aucune modification n'est faite côté cible. Donc si la cible avait une date de péremption, elle la garde, sinon aucune date n'est mise en place. Si la matériel source a une date de péremption, une analyse est faite par rapport à la cible: si la cible n'a pas de date de péremption ou a une date ultérieure au matériel source, c'est la date du matériel source qui est mise en place sur la cible. Si la source a une date ultérieure que la cible, la cible n'est pas changée. En résumé, on garde toujours le pire des cas: la date de péremption la plus proche.</dd>
                         </dl>
                     </div>
                     <!-- /.box-body -->

@@ -29,7 +29,7 @@ if($_SESSION['catalogue_lecture']==1 OR $_SESSION['catalogue_ajout']==1 OR $_SES
                 <form role="form" action="<?= isset($_GET['id']) ? 'catalogueUpdate.php?id='.$_GET['id'] :  'catalogueAdd.php' ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Libellé:<small style="color:grey;"> Requis</small></label>
+                            <label>Libellé: <small style="color:grey;">Requis</small></label>
                             <input type="text" class="form-control" placeholder="Libellé de l'item à ajouter" value="<?= isset($data['libelleMateriel']) ? $data['libelleMateriel'] : '' ?>" name="libelleMateriel" required>
                         </div>
                         <div class="form-group">
@@ -68,13 +68,11 @@ if($_SESSION['catalogue_lecture']==1 OR $_SESSION['catalogue_ajout']==1 OR $_SES
                         </div>
                         <div class="form-group">
                             <label>Conditionnement:</label>
-                            <input type="text" class="form-control" placeholder="3 compresses par sachet ..." value="<?= isset($data['conditionnementMultiple']) ? $data['conditionnementMultiple'] : '' ?>"
-                                   name="conditionnementMultiple">
+                            <input type="text" class="form-control" placeholder="3 compresses par sachet ..." value="<?= isset($data['conditionnementMultiple']) ? $data['conditionnementMultiple'] : '' ?>" name="conditionnementMultiple">
                         </div>
                         <div class="form-group">
                             <label>Commentaires</label>
-                            <textarea class="form-control" rows="3" placeholder="Spécifiez d'autres détails"
-                                      name="commentairesMateriel"><?= isset($data['commentairesMateriel']) ? $data['commentairesMateriel'] : '' ?></textarea>
+                            <textarea class="form-control" rows="3" placeholder="Spécifiez d'autres détails" name="commentairesMateriel"><?= isset($data['commentairesMateriel']) ? $data['commentairesMateriel'] : '' ?></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

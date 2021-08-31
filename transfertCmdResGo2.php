@@ -14,7 +14,7 @@ else
 {
     
 	
-	$_SESSION['transfertCmd'] = $_POST['idCommande'];
+	!isset($_SESSION['transfertCmd']) ? $_SESSION['transfertCmd'] = $_POST['idCommande'] : '';
 	$_SESSION['transfertStade'] = 2;
 	
     echo "<script>window.location = document.referrer;</script>";

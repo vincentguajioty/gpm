@@ -43,9 +43,8 @@ require_once('logCheck.php');
                         <form role="form" action="referentielsAdd.php" method="POST">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>Libellé du référentiel:</label>
-                                <input type="text" class="form-control" placeholder="Exemple: Lot A"
-                                       name="libelleTypeLot" required>
+                                <label>Libellé du référentiel: <small style="color:grey;">Requis</small></label>
+                                <input type="text" class="form-control" placeholder="Exemple: Lot A" name="libelleTypeLot" required>
                             </div>
                             <div class="box-footer">
                                 <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>

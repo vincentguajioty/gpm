@@ -30,7 +30,7 @@ if($_SESSION['categories_lecture']==1 OR $_SESSION['categories_ajout']==1 OR $_S
                 <form role="form" action="<?= isset($_GET['id']) ? 'categoriesUpdate.php?id='.$_GET['id'] : 'categoriesAdd.php'?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Libellé</label>
+                            <label>Libellé: <small style="color:grey;"> Requis</small></label>
                             <input type="text" class="form-control" value="<?= isset($data['libelleCategorie']) ? $data['libelleCategorie'] : ''?>" name="libelleCategorie" required>
                         </div>
                     </div>

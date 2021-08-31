@@ -29,7 +29,7 @@ if($_SESSION['cout_lecture']==1 OR $_SESSION['cout_ajout']==1 OR $_SESSION['cout
                 <form role="form" action="<?= isset($_GET['id']) ? 'centreCoutsUpdate.php?id='.$_GET['id'] : 'centreCoutsAdd.php' ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Libellé:</label>
+                            <label>Libellé: <small style="color:grey;"> Requis</small></label>
                             <input type="text" class="form-control" name="libelleCentreDecout" required value="<?= isset($data['libelleCentreDecout']) ? $data['libelleCentreDecout'] : '' ?>">
                         </div>
                         <div class="form-group">

@@ -44,7 +44,7 @@ if ($_SESSION['commande_ajout']==0)
                     <form role="form" action="commandesAdd.php" method="POST">
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Demandeur: <small style="color:grey;"> Requis</small></label>
+                            <label>Demandeur: <small style="color:grey;">Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="idDemandeur">
                                 <?php
                                 $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1;');
@@ -73,7 +73,7 @@ if ($_SESSION['commande_ajout']==0)
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Validation de la demande de commande par:<small style="color:grey;"> Requis</small></label>
+                            <label>Validation de la demande de commande par: <small style="color:grey;">Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="idValideur" required>
                                 <?php
                                 $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1 AND commande_valider = 1;');
@@ -87,7 +87,7 @@ if ($_SESSION['commande_ajout']==0)
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Affectation (commande traitée par):<small style="color:grey;"> Requis</small></label>
+                            <label>Affectation (commande traitée par): <small style="color:grey;">Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="idAffectee" required>
                                 <?php
                                 $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1 AND commande_etreEnCharge = 1;');
@@ -116,7 +116,7 @@ if ($_SESSION['commande_ajout']==0)
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Lieu de livraison: </label>
+                            <label>Lieu de livraison:</label>
                             <select class="form-control select2" style="width: 100%;" name="idLieuLivraison">
                                 <option></option>
                                 <?php
@@ -131,7 +131,7 @@ if ($_SESSION['commande_ajout']==0)
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Fournisseur:<small style="color:grey;"> Requis</small></label>
+                            <label>Fournisseur: <small style="color:grey;">Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="idFournisseur" required>
                                 <?php
                                 $query = $db->query('SELECT * FROM FOURNISSEURS;');

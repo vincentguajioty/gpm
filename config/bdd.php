@@ -8,7 +8,7 @@ function createDB()
     $DBNAME = 'GPM'; //nom de la base de données, ex: $DB = 'GPM';
     $CHARSET = 'utf8'; //type d'interclassement, utf8 étant recommandé, ex: $CHARSET = 'utf8';
     $USER = 'xxx'; //nom d'utilisateur d'accès à la base de données, ex: $USER = 'utilisateur';
-    $PASSWORD = 'xxx'; //mot de passe d'accès à la base de données, ex: $PASSWORD = 'motDePasse';
+    $PASSWORD = 'xxxx'; //mot de passe d'accès à la base de données, ex: $PASSWORD = 'motDePasse';
     //-------------------- FIN BASE DE DONNEES ---------------------
 
     try {

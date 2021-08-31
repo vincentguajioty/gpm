@@ -29,34 +29,28 @@ if($_SESSION['annuaire_lecture']==1 OR $_SESSION['annuaire_ajout']==1 OR $_SESSI
                 <form role="form" action="<?= isset($_GET['id']) ? 'annuaireUpdate.php?id='.$_GET['id'] : 'annuaireAdd.php'?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Identifiant de connexion:</label>
-                            <input type="text" class="form-control" value="<?= isset($data['identifiant']) ? $data['identifiant'] : ''?>"
-                                   name="identifiant" required>
+                            <label>Identifiant de connexion: <small style="color:grey;"> Requis</small></label>
+                            <input type="text" class="form-control" value="<?= isset($data['identifiant']) ? $data['identifiant'] : ''?>" name="identifiant" required>
                         </div>
                         <div class="form-group">
                             <label>Nom:</label>
-                            <input type="text" class="form-control" value="<?= isset($data['nomPersonne']) ? $data['nomPersonne'] : ''?>"
-                                   name="nomPersonne">
+                            <input type="text" class="form-control" value="<?= isset($data['nomPersonne']) ? $data['nomPersonne'] : ''?>" name="nomPersonne">
                         </div>
                         <div class="form-group">
                             <label>Prénom:</label>
-                            <input type="text" class="form-control" value="<?= isset($data['prenomPersonne']) ? $data['prenomPersonne'] : ''?>"
-                                   name="prenomPersonne">
+                            <input type="text" class="form-control" value="<?= isset($data['prenomPersonne']) ? $data['prenomPersonne'] : ''?>" name="prenomPersonne">
                         </div>
                         <div class="form-group">
                             <label>Adresse mail:</label>
-                            <input type="text" class="form-control" value="<?= isset($data['mailPersonne']) ? $data['mailPersonne'] : ''?>"
-                                   name="mailPersonne">
+                            <input type="text" class="form-control" value="<?= isset($data['mailPersonne']) ? $data['mailPersonne'] : ''?>" name="mailPersonne">
                         </div>
                         <div class="form-group">
                             <label>Téléphone</label>
-                            <input type="text" class="form-control" value="<?= isset($data['telPersonne']) ? $data['telPersonne'] : ''?>"
-                                   name="telPersonne">
+                            <input type="text" class="form-control" value="<?= isset($data['telPersonne']) ? $data['telPersonne'] : ''?>" name="telPersonne">
                         </div>
                         <div class="form-group">
                             <label>Fonction:</label>
-                            <input type="text" class="form-control" value="<?= isset($data['fonction']) ? $data['fonction'] : ''?>"
-                                   name="fonction">
+                            <input type="text" class="form-control" value="<?= isset($data['fonction']) ? $data['fonction'] : ''?>" name="fonction">
                         </div>
                         <div class="form-group">
                             <label>Profil d'habilitation: </label>

@@ -16,15 +16,13 @@ if($_SESSION['messages_ajout']==1)
                 <form role="form" action="messagesAdd.php" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                                    <label>Titre:</label>
-                                    <input type="text" class="form-control" placeholder="Titre du message"
-                                           name="titreMessage" required>
+                                    <label>Titre: <small style="color:grey;">Requis</small></label>
+                                    <input type="text" class="form-control" placeholder="Titre du message" name="titreMessage" required>
                                 </div>
                                 <!-- textarea -->
                                 <div class="form-group">
                                     <label>Message:</label>
-                                    <textarea class="form-control" rows="3" placeholder="Corps du message"
-                                              name="corpsMessage"></textarea>
+                                    <textarea class="form-control" rows="3" placeholder="Corps du message" name="corpsMessage"></textarea>
                                 </div>
                     </div>
                     <div class="modal-footer">

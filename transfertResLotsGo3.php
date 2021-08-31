@@ -6,7 +6,7 @@ require_once('logCheck.php');
 require_once 'config/bdd.php';
 require_once 'config/config.php';
 
-if ($_SESSION['reserve_cmdVersReserve']==0)
+if ($_SESSION['reserve_ReserveVersLot']==0)
 {
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 }

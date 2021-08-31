@@ -21,6 +21,10 @@ else
     
     if ($_POST['button'] == 'ok')
     {
+        $query = $db->prepare('UPDATE COMMANDES_MATERIEL SET quantiteAtransferer = quantiteCommande WHERE idCommande = :idCommande;');
+        $query->execute(array(
+            'idCommande' => $_GET['id']
+        ));
         $query = $db->prepare('UPDATE COMMANDES SET idEtat = 5, remarquesLivraison = :remarquesLivraison, dateLivraisoneffective = :dateLivraisoneffective WHERE idCommande = :idCommande;');
         $query->execute(array(
             'idCommande' => $_GET['id'],

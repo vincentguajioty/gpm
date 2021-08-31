@@ -17,6 +17,10 @@ else
     $query = $db->query('SELECT * FROM CONFIG;');
     $config = $query -> fetch();
 
+    $query = $db->prepare('UPDATE COMMANDES_MATERIEL SET quantiteAtransferer = quantiteCommande WHERE idCommande = :idCommande;');
+    $query->execute(array(
+        'idCommande' => $_GET['id']
+    ));
     $query = $db->prepare('UPDATE COMMANDES SET idEtat = 5 WHERE idCommande = :idCommande;');
     $query->execute(array(
         'idCommande' => $_GET['id']

@@ -43,6 +43,11 @@ else
         'idReserveElement' => $_SESSION['transfertIdReserveElement'],
         'quantiteReserve' =>$_SESSION['transfertqttTrans']
     ));
+    $query = $db->prepare('UPDATE COMMANDES_MATERIEL SET quantiteAtransferer = quantiteAtransferer - :quantiteReserve WHERE idCommande = :idCommande;');
+    $query->execute(array(
+        'idCommande' => $_SESSION['transfertCmd'],
+        'quantiteReserve' =>$_SESSION['transfertqttTrans']
+    ));
     
     
     //GESTION DES DATES

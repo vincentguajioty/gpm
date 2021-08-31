@@ -14,10 +14,11 @@ else
 {
     
 	
-	$_SESSION['transfertIdMaterielCatalogue'] = $_POST['idMaterielCatalogue'];
+	$_SESSION['transfertIdMaterielCatalogue'] = $_GET['idMaterielCatalogue'];
+	$_SESSION['transfertIdMaterielLot'] = $_GET['idElement'];
 	$_SESSION['transfertStade'] = 2;
 	
-    echo "<script>window.location = document.referrer;</script>";
+    echo "<script type='text/javascript'>document.location.replace('transfertResLots.php');</script>";
 
 
 }

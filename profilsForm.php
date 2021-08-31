@@ -43,7 +43,7 @@ require_once('logCheck.php');
                         <form role="form" action="profilsAdd.php" method="POST">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>Libellé:<small style="color:grey;"> Requis</small></label>
+                                <label>Libellé: <small style="color:grey;">Requis</small></label>
                                 <input type="text" class="form-control" placeholder="Libellé du profil à ajouter" name="libelleProfil" required>
                             </div>
                             <div class="form-group">
@@ -289,7 +289,7 @@ require_once('logCheck.php');
                             ?>
 
                             <div class="form-group">
-                                <label>Libellé:<small style="color:grey;"> Requis</small></label>
+                                <label>Libellé: <small style="color:grey;">Requis</small></label>
                                 <input type="text" class="form-control" value="<?=$data['libelleProfil']?>" name="libelleProfil" required>
                             </div>
                             <div class="form-group">

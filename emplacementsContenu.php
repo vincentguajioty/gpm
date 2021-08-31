@@ -178,6 +178,9 @@ if ($_SESSION['sac2_lecture']==0)
                                             ?>
                                         </td>
                                         <td>
+                                            <?php if ($_SESSION['reserve_ReserveVersLot']==1) {?>
+                                            	<a href="transfertResLotsFromLots.php?idElement=<?=$data9['idElement']?>&idMaterielCatalogue=<?=$data9['idMaterielCatalogue']?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-exchange"></i></a>
+                                            <?php }?>
                                             <?php if ($_SESSION['materiel_modification']==1) {?>
                                                 <a href="materielsForm.php?id=<?=$data9['idElement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                             <?php }?>

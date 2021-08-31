@@ -28,9 +28,8 @@ if($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots
                 <form role="form" action="<?= isset($_GET['id']) ? 'lotsUpdate.php?id='.$_GET['id'] : 'lotsAdd.php' ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Libellé:</label>
-                            <input type="text" class="form-control" value="<?= isset($data['libelleLot']) ? $data['libelleLot']: '' ?>"
-                                   name="libelleLot" required>
+                            <label>Libellé: <small style="color:grey;">Requis</small></label>
+                            <input type="text" class="form-control" value="<?= isset($data['libelleLot']) ? $data['libelleLot']: '' ?>" name="libelleLot" required>
                         </div>
                         <div class="form-group">
                             <label>Référentiel à respecter: </label>
@@ -48,9 +47,8 @@ if($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Etat: </label>
+                            <label>Etat: <small style="color:grey;">Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="libelleEtat">
-                                <option></option>
                                 <?php
                                 $query2 = $db->query('SELECT * FROM ETATS ORDER BY libelleEtat;');
                                 while ($data2 = $query2->fetch())
@@ -94,19 +92,18 @@ if($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots
                         </div>
 
                         <div class="form-group">
-                            <label>Date du dernier inventaire:</label>
+                            <label>Date du dernier inventaire: <small style="color:grey;">Requis</small></label>
                             <div class="input-group">
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input class="input-datepicker form-control" name="dateDernierInventaire" value="<?= isset($data['dateDernierInventaire']) ? $data['dateDernierInventaire'] : '' ?>">
+                                <input class="input-datepicker form-control" name="dateDernierInventaire" value="<?= isset($data['dateDernierInventaire']) ? $data['dateDernierInventaire'] : '' ?>" required>
                             </div>
                             <!-- /.input group -->
                         </div>
                         <div class="form-group">
-                            <label>Fréquence inventaire (jours):</label>
-                            <input type="number" class="form-control" value="<?= isset($data['frequenceInventaire']) ? $data['frequenceInventaire'] : '' ?>"
-                                   name="frequenceInventaire">
+                            <label>Fréquence inventaire (jours): <small style="color:grey;">Requis</small></label>
+                            <input type="number" class="form-control" value="<?= isset($data['frequenceInventaire']) ? $data['frequenceInventaire'] : '' ?>" name="frequenceInventaire" required>
                         </div>
 
                         <!-- textarea -->

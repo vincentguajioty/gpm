@@ -239,11 +239,19 @@ if ($_SESSION['commande_lecture']==0)
 								                		<?php if ($data2['idMaterielCatalogue'] != Null){ ?><a href="commandeItemForm.php?idCommande=<?= $_GET['id'] ?>&idElement=<?= $data2['idMaterielCatalogue'] ?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a><?php }else{ ?><a href="#" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a><?php } ?>
 								                		<a href="commandeItemDelete.php?idCommande=<?=$data2['idCommande']?>&idMaterielCatalogue=<? if($data2['idMaterielCatalogue'] == Null){echo '-1';}else{echo $data2['idMaterielCatalogue'];}?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-minus"></i></a>
 								                	<?php }?>
-								                	
 								                	<?php if(($data['idEtat']>1) AND ($_SESSION['commande_lecture']==1)){ ?>
 								                		<a href="commandeItemForm.php?idCommande=<?= $_GET['id'] ?>&idElement=<?= $data2['idMaterielCatalogue'] ?>" class="btn btn-xs btn-info modal-form"><i class="fa fa-folder-open"></i></a>
 								                	<?php }?>
-								                	
+								                	<?php if(($data['idEtat']==5) AND ($_SESSION['reserve_cmdVersReserve']==1)){ ?>
+                                                        <?php
+                                                            if(($data2['idMaterielCatalogue'] != Null) AND ($data2['quantiteAtransferer'] > 0))
+                                                            { ?>
+                                                                <a href="transfertCmdResFromCmd.php?idCommande=<?= $_GET['id'] ?>&idMaterielCatalogue=<?= $data2['idMaterielCatalogue'] ?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-exchange"> <?= $data2['quantiteAtransferer'] ?></i></a>
+                                                            <?php }else{ ?>
+                                                                <a href="#" class="btn btn-xs btn-default modal-form"><i class="fa fa-exchange"></i></a>
+                                                            <?php } ?>
+
+								                	<?php }?>
 								                  </td>
 								                </tr>
                                             <?php

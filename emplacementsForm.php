@@ -29,12 +29,11 @@ if($_SESSION['sac2_lecture']==1 OR $_SESSION['sac2_ajout']==1 OR $_SESSION['sac2
                 <form role="form" action="<?= isset($_GET['id']) ? 'emplacementsUpdate.php?id='.$_GET['id'] : 'emplacementsAdd.php' ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Libellé:</label>
-                            <input type="text" class="form-control" value="<?= isset($data['libelleEmplacement']) ? $data['libelleEmplacement'] : ''?>"
-                                   name="libelleEmplacement" required>
+                            <label>Libellé: <small style="color:grey;"> Requis</small></label>
+                            <input type="text" class="form-control" value="<?= isset($data['libelleEmplacement']) ? $data['libelleEmplacement'] : ''?>" name="libelleEmplacement" required>
                         </div>
                         <div class="form-group">
-                            <label>Lot d'appartenance: </label>
+                            <label>Lot: (filtre)</label>
                             <select class="form-control select2" style="width: 100%;" name="emplacementLot">
                                 <option></option>
                                 <?php

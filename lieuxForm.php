@@ -29,7 +29,7 @@ if($_SESSION['lieux_lecture']==1 OR $_SESSION['lieux_ajout']==1 OR $_SESSION['li
                 <form role="form" action="<?= isset($_GET['id']) ? 'lieuxUpdate.php?id='.$_GET['id'] : 'lieuxAdd.php' ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Libellé du lieu de stockage:</label>
+                            <label>Libellé du lieu de stockage: <small style="color:grey;">Requis</small></label>
                             <input type="text" class="form-control" value="<?= isset($data['libelleLieu']) ? $data['libelleLieu'] : '' ?>" name="libelleLieu" required>
                         </div>
                         <!-- textarea -->

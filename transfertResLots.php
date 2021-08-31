@@ -53,8 +53,8 @@ if ($_SESSION['reserve_ReserveVersLot']==0)
 		                        <div class="<?= $_SESSION['transfertStade']==1 ? 'active' : ''?> tab-pane" id="1">
 	                                <form role="form" action="transfertResLotsGo2.php" method="POST">
 	                                    <div class="form-group">
-	                                        <label>Catalogue: </label>
-	                                        <select <?= $_SESSION['transfertStade']!=1 ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idMaterielCatalogue">
+	                                        <label>Catalogue: <small style="color:grey;">Requis</small></label>
+	                                        <select <?= $_SESSION['transfertStade']!=1 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertIdMaterielCatalogue']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idMaterielCatalogue">
 	                                            <?php
 	                                            $query = $db->query('SELECT * FROM MATERIEL_CATALOGUE ORDER BY libelleMateriel;');
 	                                            while ($data = $query->fetch())
@@ -78,8 +78,8 @@ if ($_SESSION['reserve_ReserveVersLot']==0)
 								<div class="<?= $_SESSION['transfertStade']==2 ? 'active' : ''?> tab-pane" id="2">
 		                            <form role="form" action="transfertResLotsGo3.php" method="POST">
 										<div class="form-group">
-	                                        <label>Conteneur source: </label>
-	                                        <select <?= $_SESSION['transfertStade']!=2 ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idReserveElement">
+	                                        <label>Conteneur source: <small style="color:grey;">Requis</small></label>
+	                                        <select <?= $_SESSION['transfertStade']!=2 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertIdReserveElement']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idReserveElement">
 	                                            <?php
 	                                            $query = $db->prepare('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur = c.idConteneur LEFT OUTER JOIN LIEUX l on c.idLieu = l.idLieu LEFT OUTER JOIN MATERIEL_CATALOGUE h ON m.idMaterielCatalogue = h.idMaterielCatalogue WHERE m.idMaterielCatalogue = :idMaterielCatalogue and quantiteReserve > 0;');
 	                                            $query->execute(array(
@@ -105,8 +105,8 @@ if ($_SESSION['reserve_ReserveVersLot']==0)
 								<div class="<?= $_SESSION['transfertStade']==3 ? 'active' : ''?> tab-pane" id="3">
 		                            <form role="form" action="transfertResLotsGo4.php" method="POST">
 	                                    <div class="form-group">
-	                                        <label>Lot de destination: </label>
-	                                        <select <?= $_SESSION['transfertStade']!=3 ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idElement">
+	                                        <label>Lot de destination: <small style="color:grey;">Requis</small></label>
+	                                        <select <?= $_SESSION['transfertStade']!=3 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertIdMaterielLot']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idElement">
 	                                            <?php
 	                                            $query = $db->prepare('SELECT * FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_EMPLACEMENT k ON e.idEmplacement = k.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON k.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot WHERE idMaterielCatalogue = :idMaterielCatalogue ;');
 	                                            $query->execute(array(
@@ -122,8 +122,8 @@ if ($_SESSION['reserve_ReserveVersLot']==0)
 	                                        </select>
 	                                    </div>
 	                                    <div class="form-group">
-				                            <label>Quantité à transférer (1 - <?= $_SESSION['transfertQttMax'] ?>):</label>
-				                            <input <?php if (isset($_SESSION['transfertqttTrans'])){ echo 'value="'.$_SESSION['transfertqttTrans'].'"'; }else{ echo 'value="1"'; } ?> <?= $_SESSION['transfertStade']!=3 ? 'disabled' : '' ?> type="number" class="form-control" name="qttTrans" min="1" max="<?= $_SESSION['transfertQttMax'] ?>" required>
+				                            <label>Quantité à transférer (1 - <?= $_SESSION['transfertQttMax'] ?>): <small style="color:grey;">Requis</small></label>
+				                            <input <?php if (isset($_SESSION['transfertqttTrans'])){ echo 'value="'.$_SESSION['transfertqttTrans'].'"'; }else{ echo 'value="1"'; } ?> <?= $_SESSION['transfertStade']!=3 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertqttTrans']) ? 'disabled' : '' ?> type="number" class="form-control" name="qttTrans" min="1" max="<?= $_SESSION['transfertQttMax'] ?>" required>
 				                        </div>
 		                                <div class="box-footer">
 		                                    <a href="transfertReset.php" class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir abandonner la transfert ?');">Abandon du transfert</a>

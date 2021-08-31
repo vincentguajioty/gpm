@@ -29,9 +29,8 @@ if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
                 <form role="form" action="<?= isset($_GET['id']) ? 'reserveConteneurUpdate.php?id='.$_GET['id'] : 'reserveConteneurAdd.php' ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Libellé:</label>
-                            <input type="text" class="form-control" value="<?= isset($data['libelleConteneur']) ? $data['libelleConteneur'] : ''?>"
-                                   name="libelleConteneur" required>
+                            <label>Libellé: <small style="color:grey;">Requis</small></label>
+                            <input type="text" class="form-control" value="<?= isset($data['libelleConteneur']) ? $data['libelleConteneur'] : ''?>" name="libelleConteneur" required>
                         </div>
                         <div class="form-group">
                             <label>Lieu de stockage:</label>

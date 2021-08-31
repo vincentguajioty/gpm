@@ -30,7 +30,7 @@ if($_SESSION['fournisseurs_lecture']==1 OR $_SESSION['fournisseurs_ajout']==1 OR
                 <form role="form" action="<?= isset($_GET['id']) ? 'fournisseursUpdate.php?id='.$_GET['id'] : 'fournisseursAdd.php' ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Nom:<small style="color:grey;"> Requis</small></label>
+                            <label>Nom: <small style="color:grey;">Requis</small></label>
                             <input type="text" class="form-control" placeholder="Entrez le nom du fournisseur" value="<?= isset($data['nomFournisseur']) ? $data['nomFournisseur'] : '' ?>" name="nomFournisseur" required>
                         </div>
                         <!-- textarea -->
