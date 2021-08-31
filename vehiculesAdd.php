@@ -15,6 +15,7 @@ else
     $_POST['dateAchat'] = ($_POST['dateAchat'] == Null) ? Null : $_POST['dateAchat'];
     $_POST['dateNextRevision'] = ($_POST['dateNextRevision'] == Null) ? Null : $_POST['dateNextRevision'];
     $_POST['dateNextCT'] = ($_POST['dateNextCT'] == Null) ? Null : $_POST['dateNextCT'];
+    $_POST['assuranceExpiration'] = ($_POST['assuranceExpiration'] == Null) ? Null : $_POST['assuranceExpiration'];
     
     $_POST['idLieu'] = ($_POST['idLieu'] == Null) ? Null : $_POST['idLieu'];
     $_POST['idVehiculesType'] = ($_POST['idVehiculesType'] == Null) ? Null : $_POST['idVehiculesType'];

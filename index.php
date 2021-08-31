@@ -32,12 +32,10 @@ require_once('logCheck.php');
         <div class="row">
 
             <?php
-            $nbLotsNOK = 0;
-            $query = $db->query('SELECT * FROM LOTS_LOTS WHERE idTypeLot IS NOT NULL AND idEtat = 1;');
-            while ($data = $query->fetch())
-            {
-                $nbLotsNOK = $nbLotsNOK + checkLotsConf($data['idLot']);
-            }
+            
+            $query = $db->query('SELECT COUNT(*) as nb FROM LOTS_LOTS WHERE alerteConfRef = 1 AND idEtat = 1;');
+            $data = $query->fetch();
+            $nbLotsNOK = $data['nb'];
             ?>
 			
 			<?php
@@ -385,7 +383,7 @@ require_once('logCheck.php');
 	                                    }
 	                                    else
 	                                    {
-	                                        if (checkLotsConf($data['idLot'])==0)
+	                                        if ($data['alerteConfRef']==0)
 	                                        {
 	                                            ?><span class="badge bg-green"><?php echo $data['libelleTypeLot']; ?></span><?php
 	                                        }
@@ -701,13 +699,10 @@ require_once('logCheck.php');
             <div class="modal-body">
                 <ul>
                     <?php
-                    $query = $db->query('SELECT * FROM LOTS_LOTS WHERE idTypeLot IS NOT NULL AND idEtat = 1;');
+                    $query = $db->query('SELECT * FROM LOTS_LOTS WHERE alerteConfRef = 1 AND idEtat = 1;');
                     while ($data = $query->fetch())
                     {
-                        if(checkLotsConf($data['idLot'])==1)
-                        {
-                            echo '<li>' . $data['libelleLot'] . '</li>';
-                        }
+                        echo '<li>' . $data['libelleLot'] . '</li>';
                     }
                     ?>
                 </ul>

@@ -52,7 +52,7 @@ else
             $_SESSION['returnType'] = '2';
     }
 
-
+	checkOneConf($_GET['id']);
     echo "<script>window.location = document.referrer;</script>";
 }
 ?>

@@ -45,6 +45,8 @@ else
             $_SESSION['returnMessage'] = "Erreur inconnue lors de la suppression du référentiel.";
             $_SESSION['returnType'] = '2';
     }
+    
+    checkAllConf();
 
     echo "<script>javascript:history.go(-1);</script>";
 }

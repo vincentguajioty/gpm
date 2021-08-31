@@ -48,6 +48,8 @@ else
             $_SESSION['returnMessage'] = "Erreur inconnue lors de l'ajout de l'item.";
             $_SESSION['returnType'] = '2';
     }
+    
+    checkAllConf();
 
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 }

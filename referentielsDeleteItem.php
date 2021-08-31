@@ -43,7 +43,8 @@ else
             $_SESSION['returnType'] = '2';
     }
 
-
+	checkAllConf();
+	
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 ?>

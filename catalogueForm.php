@@ -26,7 +26,7 @@ if($_SESSION['catalogue_lecture']==1 OR $_SESSION['catalogue_ajout']==1 OR $_SES
                 <div class="modal-header">
                     <h4 class="modal-title"><?= isset($_GET['id']) ? 'Modification' : 'Création' ?> d'un élément dans le catalogue</h4>
                 </div>
-                <form role="form" action="<?= isset($_GET['id']) ? 'catalogueUpdate.php?id='.$_GET['id'] :  'catalogueAdd.php' ?>" method="POST">
+                <form role="form" class="spinnerAttenteSubmit" action="<?= isset($_GET['id']) ? 'catalogueUpdate.php?id='.$_GET['id'] :  'catalogueAdd.php' ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Libellé: <small style="color:grey;">Requis</small></label>

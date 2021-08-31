@@ -61,7 +61,7 @@ else
             $_SESSION['returnType'] = '2';
     }
 
-
+	checkAllConf();
     echo "<script>javascript:history.go(-1);</script>";
 }
 ?>

@@ -86,6 +86,7 @@ else
 		writeInLogs("Transfert de matériel de l'élément de réserve " . $_SESSION['transfertIdMaterielCatalogue'] . " vers l'élément de lots ".$_SESSION['transfertIdMaterielLot']." sans modification de date.", '3');
 	}
 	
+	checkAllConf();
 	
 	//SORTIE
 	$_SESSION['returnMessage'] = 'Transfert effectué.';

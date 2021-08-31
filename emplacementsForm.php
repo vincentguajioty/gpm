@@ -26,7 +26,7 @@ if($_SESSION['sac2_lecture']==1 OR $_SESSION['sac2_ajout']==1 OR $_SESSION['sac2
                 <div class="modal-header">
                     <h4 class="modal-title"><?= isset($_GET['id']) ? 'Modification' : 'Création' ?> d'un emplacement</h4>
                 </div>
-                <form role="form" action="<?= isset($_GET['id']) ? 'emplacementsUpdate.php?id='.$_GET['id'] : 'emplacementsAdd.php' ?>" method="POST">
+                <form role="form" class="spinnerAttenteSubmit" action="<?= isset($_GET['id']) ? 'emplacementsUpdate.php?id='.$_GET['id'] : 'emplacementsAdd.php' ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Libellé: <small style="color:grey;"> Requis</small></label>

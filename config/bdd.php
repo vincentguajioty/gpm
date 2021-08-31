@@ -114,5 +114,77 @@ function checkLotsConf($idLot)
     }
 }
 
+function checkAllConf()
+{
+	global $db;
+	$query = $db->query('SELECT * FROM LOTS_LOTS;');
+	
+	while ($data = $query->fetch())
+	{
+		if ($data['idTypeLot'] > 0)
+		{
+			if (checkLotsConf($data['idLot']) == 1)
+			{
+				$query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = True WHERE idLot = :idLot;');
+				$query2->execute(array(
+	            	'idLot' => $data['idLot']
+	        	));
+			}
+			else
+			{
+				$query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = False WHERE idLot = :idLot;');
+				$query2->execute(array(
+	            	'idLot' => $data['idLot']
+	        	));
+			}
+		}
+		else
+		{
+			$query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = Null WHERE idLot = :idLot;');
+			$query2->execute(array(
+            	'idLot' => $data['idLot']
+        	));
+		}
+	}
+}
+
+
+function checkOneConf($idLot)
+{
+	global $db;
+	$query = $db->prepare('SELECT * FROM LOTS_LOTS WHERE idLot = :idLot;');
+	$query->execute(array(
+    	'idLot' => $idLot
+	));
+	
+	$data = $query->fetch();
+	
+	if ($data['idTypeLot'] > 0)
+	{
+		if (checkLotsConf($data['idLot']) == 1)
+		{
+			$query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = True WHERE idLot = :idLot;');
+			$query2->execute(array(
+            	'idLot' => $data['idLot']
+        	));
+		}
+		else
+		{
+			$query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = False WHERE idLot = :idLot;');
+			$query2->execute(array(
+            	'idLot' => $data['idLot']
+        	));
+		}
+	}
+	else
+	{
+		$query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = Null WHERE idLot = :idLot;');
+		$query2->execute(array(
+        	'idLot' => $data['idLot']
+    	));
+	}
+}
+
+
 
 ?>

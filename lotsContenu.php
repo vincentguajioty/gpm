@@ -110,7 +110,7 @@ if ($_SESSION['lots_lecture']==0)
                                         }
                                         else
                                         {
-                                            if (checkLotsConf($_GET['id']))
+                                            if ($data['alerteConfRef'] == 1)
                                             {
                                                 echo '<span class="pull-right badge bg-red">Lot non-conforme</span>';
                                             }
@@ -119,7 +119,7 @@ if ($_SESSION['lots_lecture']==0)
                                                 echo '<span class="pull-right badge bg-green">Lot conforme</span>';
                                             }
                                         }
-                                        ?></span></a></li>
+                                        ?></a></li>
                                 <li><a>Elements périmés<?php
                                         if ($data5['nb']>0)
                                         {
@@ -129,7 +129,7 @@ if ($_SESSION['lots_lecture']==0)
                                         {
                                             echo '<span class="pull-right badge bg-green">' . $data5['nb'] .'</span>';
                                         }
-                                        ?></span></a></li>
+                                        ?></a></li>
                                 <li><a>Matériel manquant<?php
                                         if ($data6['nb']>0)
                                         {
@@ -139,7 +139,7 @@ if ($_SESSION['lots_lecture']==0)
                                         {
                                             echo '<span class="pull-right badge bg-green">' . $data6['nb'] .'</span>';
                                         }
-                                        ?></span></a></li>
+                                        ?></a></li>
                                 <li><a>Prochain inventaire<?php
                                     if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) <= date('Y-m-d'))
                                     {
@@ -317,7 +317,7 @@ if ($_SESSION['lots_lecture']==0)
                         <div class="col-md-12">
                             <div class="box box-success collapsed-box box-solid">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Détails de l'analyse de conformité au référentiel</h3>
+                                    <h3 class="box-title">Détails de l'analyse de conformité au référentiel <a href="lotsCheckConfOneManu.php?id=<?= $_GET['id'] ?>" class="btn btn-xs"><i class="fa fa-refresh"></i></a></h3>
                                     <div class="box-tools pull-right">
                                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
                                                     class="fa fa-plus"></i>

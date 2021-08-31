@@ -52,15 +52,23 @@ $data6 = $query6->fetch();
                     <ul class="nav nav-stacked">
                         <li><a>Référentiel <span class="pull-right"><?php echo $data['libelleTypeLot']; ?></span></a></li>
                         <li><a>Conformité au référentiel<?php
-                                if (checkLotsConf($_GET['id']))
-                                {
-                                    echo '<span class="pull-right">Lot non-conforme</span>';
-                                }
-                                else
-                                {
-                                    echo '<span class="pull-right">Lot conforme</span>';
-                                }
-                                ?></span></a></li>
+	                            if ($data['libelleTypeLot'] == Null)
+	                            {
+	                                echo '<span class="pull-right">NA</span>';
+	                            }
+	                            else
+	                            {
+	                                if ($data['alerteConfRef'] == 1)
+	                                {
+	                                    echo '<span class="pull-right">Lot non-conforme</span>';
+	                                }
+	                                else
+	                                {
+	                                    echo '<span class="pull-right">Lot conforme</span>';
+	                                }
+	                            }
+	                            ?></a>
+                        </li>
                         <li><a>Nombre de sacs <span class="pull-right"><?php echo $data2['nb']; ?></span></a></li>
                         <li><a>Nombre d'emplacements <span class="pull-right"><?php echo $data3['nb']; ?></span></a></li>
                         <li><a>Quantite de matériel <span class="pull-right"><?php echo $data4['nb']; ?></span></a></li>

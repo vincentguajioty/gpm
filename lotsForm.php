@@ -25,7 +25,7 @@ if($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots
                 <div class="modal-header">
                     <h4 class="modal-title"><?= isset($_GET['id']) ? 'Modification' : 'Création' ?> d'un lot</h4>
                 </div>
-                <form role="form" action="<?= isset($_GET['id']) ? 'lotsUpdate.php?id='.$_GET['id'] : 'lotsAdd.php' ?>" method="POST">
+                <form role="form" class="spinnerAttenteSubmit" action="<?= isset($_GET['id']) ? 'lotsUpdate.php?id='.$_GET['id'] : 'lotsAdd.php' ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Libellé: <small style="color:grey;">Requis</small></label>

@@ -13,7 +13,7 @@ if($_SESSION['typesLots_modification']==1)
                 <div class="modal-header">
                     <h4 class="modal-title">Ajout d'un matériel au référentiel</h4>
                 </div>
-                <form role="form" action="referentielsAddItem.php?idLot=<?=$_GET['id']?>" method="POST">
+                <form role="form" class="spinnerAttenteSubmit" action="referentielsAddItem.php?idLot=<?=$_GET['id']?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Matériel: <small style="color:grey;">Requis</small></label>

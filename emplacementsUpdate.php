@@ -39,6 +39,7 @@ else
             $_SESSION['returnMessage'] = "Erreur inconnue lors la modification de l'emplacement.";
             $_SESSION['returnType'] = '2';
     }
-
+	
+	checkAllConf();
     echo "<script>window.location = document.referrer;</script>";}
 ?>

@@ -42,6 +42,8 @@ else
             $_SESSION['returnMessage'] = "Erreur inconnue lors de l'ajout du sac.";
             $_SESSION['returnType'] = '2';
     }
+    
+    checkAllConf();
 
     echo "<script>window.location = document.referrer;</script>";
 }

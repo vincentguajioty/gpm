@@ -130,6 +130,7 @@ else
             $_SESSION['returnType'] = '2';
     }
 
+	checkOneConf($_GET['id']);
 
     echo "<script>javascript:history.go(-2);</script>";
 }

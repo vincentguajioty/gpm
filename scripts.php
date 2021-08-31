@@ -135,9 +135,9 @@
 </script>
 <script>
     $('body').on('submit', '.spinnerAttenteSubmit', function() {
-        $("body").prepend('<div class="modal-backdrop in" ><i class="fa fa-refresh fa-spin" style="margin: auto; z-index: 1100; position: fixed; left: calc(50% - 25px); top: calc(50% - 25px); font-size: 50px; "></i></div>');
+        $("body").prepend('<div class="modal-backdrop in" ><i class="fa fa-refresh fa-spin" style="margin: auto; z-index: 4000000; position: fixed; left: calc(50% - 25px); top: calc(50% - 25px); font-size: 50px; "></i></div>');
     });
     $('body').on('click', '.spinnerAttenteClick', function() {
-        $("body").prepend('<div class="modal-backdrop in" ><i class="fa fa-refresh fa-spin" style="margin: auto; z-index: 1100; position: fixed; left: calc(50% - 25px); top: calc(50% - 25px); font-size: 50px; "></i></div>');
+        $("body").prepend('<div class="modal-backdrop in" ><i class="fa fa-refresh fa-spin" style="margin: auto; z-index: 4000000; position: fixed; left: calc(50% - 25px); top: calc(50% - 25px); font-size: 50px; "></i></div>');
     });
 </script>

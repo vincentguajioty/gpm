@@ -40,7 +40,7 @@ else
             $_SESSION['returnType'] = '2';
     }
 
-
+	checkAllConf();
     echo "<script>window.location = document.referrer;</script>";
 }
 ?>

@@ -4,12 +4,11 @@ require_once 'bdd.php';
 require_once 'config.php';
 require_once 'mailFunction.php';
 
-$nbLotsNOK = 0;
-$query = $db->query('SELECT * FROM LOTS_LOTS WHERE idTypeLot IS NOT NULL AND idEtat = 1;');
-while ($data = $query->fetch())
-{
-    $nbLotsNOK = $nbLotsNOK + checkLotsConf($data['idLot']);
-}
+checkAllConf();
+
+$query = $db->query('SELECT COUNT(*) as nb FROM LOTS_LOTS WHERE alerteConfRef = 1 AND idEtat = 1;');
+$data = $query->fetch();
+$nbLotsNOK = $data['nb'];
 $query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (quantite < quantiteAlerte OR quantite = quantiteAlerte) AND idEtat = 1;');
 $data = $query->fetch();
 $nbManquant = $data['nb'];
@@ -71,13 +70,10 @@ if ($nbDest > 0)
     $message_html = $message_html."</ul><br/><br/>";
 
     $message_html = $message_html . "Alertes de conformité des lots:<br/><ul>";
-    $query = $db->query('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot WHERE l.idTypeLot IS NOT NULL AND idEtat = 1;');
+    $query = $db->query('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot WHERE alerteConfRef = 1 AND idEtat = 1;');
     while($data = $query->fetch())
     {
-        if(checkLotsConf($data['idLot']) == 1)
-        {
-            $message_html = $message_html . "<li>".$data['libelleLot'] . "</li>";
-        }
+        $message_html = $message_html . "<li>".$data['libelleLot'] . "</li>";
     }
     $message_html = $message_html."</ul><br/><br/>";
     

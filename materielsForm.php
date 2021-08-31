@@ -27,7 +27,7 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                 <div class="modal-header">
                     <h4 class="modal-title"><?= isset($_GET['id']) ? 'Modification' : 'Création' ?> d'un Materiel</h4>
                 </div>
-                <form role="form" action="<?= isset($_GET['id']) ? 'materielsUpdate.php?id='.$_GET['id'] : 'materielsAdd.php' ?>" method="POST">
+                <form role="form" class="spinnerAttenteSubmit" action="<?= isset($_GET['id']) ? 'materielsUpdate.php?id='.$_GET['id'] : 'materielsAdd.php' ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Référence du catalogue: <small style="color:grey;">Requis</small></label>
