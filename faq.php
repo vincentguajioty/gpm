@@ -5,6 +5,7 @@
 session_start();
 $_SESSION['page'] = 502;
 require_once('logCheck.php');
+require_once 'config/version.php';
 ?>
 <body class="hold-transition skin-blue sidebar-mini fixed">
 <div class="wrapper">
@@ -28,7 +29,7 @@ require_once('logCheck.php');
         <!-- Main content -->
         <section class="content">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="box box-success">
                         <div class="box-header with-border">
                             <i class="fa fa-clock-o"></i>
@@ -42,6 +43,36 @@ require_once('logCheck.php');
                                     <ul class="timeline">
                                         <li class="time-label">
                                               <span class="bg-purple">
+                                                Version 1.6
+                                              </span>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-green"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">1 octobre 2017</span>
+                                                <h3 class="timeline-header">Livraison en production de la version 1.6</h3>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-green"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">27 Septembre 2017</span>
+                                                <h3 class="timeline-header">Livraison en recette de la version 1.6</h3>
+                                                <div class="timeline-body">
+                                                    Nouveautés par rapport à la version précédente:
+                                                    <ul>
+                                                        <li>Blocage des adresses IP après 3 echecs de connexion</li>
+                                                    </ul>
+                                                    Corrections apportées:
+                                                    <ul>
+                                                        <li>Affichage du numéro de version de l'application sur la page d'identification</li>
+                                                        <li>Mise à jour de la documentation</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="time-label">
+                                              <span class="bg-purple">
                                                 Version 1.5
                                               </span>
                                         </li>
@@ -50,8 +81,6 @@ require_once('logCheck.php');
                                             <div class="timeline-item">
                                                 <span class="time">31 Aout 2017</span>
                                                 <h3 class="timeline-header">Livraison en production de la version 1.5</h3>
-                                                <div class="timeline-body">
-                                                </div>
                                             </div>
                                         </li>
                                         <li>
@@ -65,6 +94,7 @@ require_once('logCheck.php');
                                                         <li>Bandeau suppérieur restauré pour les versions mobiles</li>
                                                         <li>MAJ de la documentation</li>
                                                         <li>Icone dans les favoris et dans l'onglet du site</li>
+														<li>Boucle de nettoyage journalier des logs de plus de 90 jours</li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -234,7 +264,7 @@ require_once('logCheck.php');
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="box box-warning">
                         <div class="box-header with-border">
                             <i class="fa fa-wrench"></i>
@@ -244,6 +274,7 @@ require_once('logCheck.php');
                         <!-- /.box-header -->
                         <div class="box-body">
                             <ul>
+                                <li>Possiblité de réinitialiser un mot de passe oublié par mail</li>
                                 <li>Sur la page matériel, au-dessus du tableau récap, mettre un calendrier en vue mensuelle avec un point rouge sur toutes les dates de péremption des éléments</li>
                                 <li>Nouvelle fonctionnalité: gestion de la reserve de matériel. Pour le moment c'est faisable en assimilant la réserve à un lot. Idée: avoir un système spécifique à la réserve</li>
                                 <li>Nouvelle fonctionnalité: demandes d'achat de consommables. Possibilité de créer la demande, affecter la gestion de l'achat à un user, marquer la demande comme étant commandée, réceptionnée, ...</li>
@@ -252,7 +283,7 @@ require_once('logCheck.php');
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="box box-info">
 
                         <div class="box-header with-border">
@@ -263,7 +294,7 @@ require_once('logCheck.php');
 
                         <!-- /.box-header -->
                         <div class="box-body">
-                            Soluton Apollon: <strong>Copyright &copy; Vincent Guajioty.</strong> All rights reserved. - Version 1.5
+                            Soluton Apollon: <strong>Copyright &copy; Vincent Guajioty.</strong> All rights reserved. - Version <?php echo $VERSION; ?>
                             <br/>
                             Thème HTML: <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved. - Version 2.3.8
                         </div>

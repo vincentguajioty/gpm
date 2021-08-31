@@ -103,6 +103,15 @@ require_once('logCheck.php');
                                     <td></td>
                                 </tr>
                                 <tr>
+                                    <td>Verouillage IP</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><input type="checkbox" value="1" name="verrouIP"></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
                                     <td>Annuaire</td>
                                     <td><input type="checkbox" value="1" name="annuaire_lecture"></td>
                                     <td><input type="checkbox" value="1" name="annuaire_ajout"></td>
@@ -321,6 +330,15 @@ require_once('logCheck.php');
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Verouillage IP</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><input <?php if($data['verrouIP'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="verrouIP"></td>
                                     <td></td>
                                     <td></td>
                                 </tr>

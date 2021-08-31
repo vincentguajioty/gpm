@@ -174,94 +174,96 @@ require_once('logCheck.php');
             </div>
         </div>
 
-        <?php include('confirmationBox.php'); ?>
-        <div class="col-md-6">
-            <div class="box box-success">
-                <div class="box-header with-border">
-                    <i class="fa fa-ambulance"></i>
-
-                    <h3 class="box-title">Lots dont j'ai la charge</h3>
-                </div>
-
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th style="width: 10px">#</th>
-                            <th>Libelle</th>
-                            <th>Etat</th>
-                            <th>Dernier Inventaire</th>
-                        </tr>
-                        <?php
-                        $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN ETATS s on l.idEtat = s.idEtat LEFT OUTER JOIN LIEUX e ON l.idLieu = e.idLieu LEFT OUTER JOIN PERSONNE_REFERENTE p on l.idPersonne = p.idPersonne WHERE l.idPersonne = :idPersonne;');
-                        $query->execute(array('idPersonne' => $_SESSION['idPersonne']));
-                        while ($data = $query->fetch())
-                        {
-                            ?>
-                            <tr>
-                                <td><?php echo $data['idLot']; ?></td>
-                                <td><?php echo $data['libelleLot']; ?></td>
-                                <td><?php echo $data['libelleEtat']; ?></td>
-                                <td><?php
-                                    if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) < date('Y-m-d'))
-                                    {
-                                        ?><span class="badge bg-red"><?php echo $data['dateDernierInventaire']; ?></span><?php
-                                    }
-                                    else if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) == date('Y-m-d'))
-                                    {
-                                        ?><span class="badge bg-orange"><?php echo $data['dateDernierInventaire']; ?></span><?php
-                                    }
-                                    else
-                                    {
-                                        ?><span class="badge bg-green"><?php echo $data['dateDernierInventaire']; ?></span><?php
-                                    }
-                                    ?>
-                                </td>
-                            </tr>
-                            <?php
-                        }
-                        $query->closeCursor(); ?>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="box box-warning">
-
-                <div class="box-header with-border">
-                    <i class="fa fa-bullhorn"></i>
-
-                    <h3 class="box-title">Messages généraux</h3>
-                </div>
-
-                <!-- /.box-header -->
-                <div class="box-body">
-
-                    <?php
-                    $query = $db->query('SELECT COUNT(*) as nb FROM MESSAGES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne;');
-                    $data = $query->fetch();
-
-                    if ($data['nb'] == 0)
-                    {
-                        echo '<center>Aucun message à afficher.</center>';
-                    }
-                    else
-                    {
-                        $query = $db->query('SELECT * FROM MESSAGES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne;');
-                        while ($data = $query->fetch())
-                        {
-                            echo '<div class="callout callout-info">';
-                            echo '<h4>' . $data['titreMessage'] . '<small> '. $data['prenomPersonne'] . '</small></h4>';
-                            echo '<p>' . $data['corpsMessage'] . '</p>';
-                            echo '</div>';
-                        }
-                    }
-                    ?>
-
-                </div>
-            </div>
-            <!-- /.box-body -->
+		<div class="row">
+	        <?php include('confirmationBox.php'); ?>
+	        <div class="col-md-6">
+	            <div class="box box-success">
+	                <div class="box-header with-border">
+	                    <i class="fa fa-ambulance"></i>
+	
+	                    <h3 class="box-title">Lots dont j'ai la charge</h3>
+	                </div>
+	
+	                <!-- /.box-header -->
+	                <div class="box-body">
+	                    <table class="table table-bordered">
+	                        <tr>
+	                            <th style="width: 10px">#</th>
+	                            <th>Libelle</th>
+	                            <th>Etat</th>
+	                            <th>Dernier Inventaire</th>
+	                        </tr>
+	                        <?php
+	                        $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN ETATS s on l.idEtat = s.idEtat LEFT OUTER JOIN LIEUX e ON l.idLieu = e.idLieu LEFT OUTER JOIN PERSONNE_REFERENTE p on l.idPersonne = p.idPersonne WHERE l.idPersonne = :idPersonne;');
+	                        $query->execute(array('idPersonne' => $_SESSION['idPersonne']));
+	                        while ($data = $query->fetch())
+	                        {
+	                            ?>
+	                            <tr>
+	                                <td><?php echo $data['idLot']; ?></td>
+	                                <td><?php echo $data['libelleLot']; ?></td>
+	                                <td><?php echo $data['libelleEtat']; ?></td>
+	                                <td><?php
+	                                    if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) < date('Y-m-d'))
+	                                    {
+	                                        ?><span class="badge bg-red"><?php echo $data['dateDernierInventaire']; ?></span><?php
+	                                    }
+	                                    else if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) == date('Y-m-d'))
+	                                    {
+	                                        ?><span class="badge bg-orange"><?php echo $data['dateDernierInventaire']; ?></span><?php
+	                                    }
+	                                    else
+	                                    {
+	                                        ?><span class="badge bg-green"><?php echo $data['dateDernierInventaire']; ?></span><?php
+	                                    }
+	                                    ?>
+	                                </td>
+	                            </tr>
+	                            <?php
+	                        }
+	                        $query->closeCursor(); ?>
+	                    </table>
+	                </div>
+	            </div>
+	        </div>
+	
+	        <div class="col-md-6">
+	            <div class="box box-warning">
+	
+	                <div class="box-header with-border">
+	                    <i class="fa fa-bullhorn"></i>
+	
+	                    <h3 class="box-title">Messages généraux</h3>
+	                </div>
+	
+	                <!-- /.box-header -->
+	                <div class="box-body">
+	
+	                    <?php
+	                    $query = $db->query('SELECT COUNT(*) as nb FROM MESSAGES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne;');
+	                    $data = $query->fetch();
+	
+	                    if ($data['nb'] == 0)
+	                    {
+	                        echo '<center>Aucun message à afficher.</center>';
+	                    }
+	                    else
+	                    {
+	                        $query = $db->query('SELECT * FROM MESSAGES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne;');
+	                        while ($data = $query->fetch())
+	                        {
+	                            echo '<div class="callout callout-info">';
+	                            echo '<h4>' . $data['titreMessage'] . '<small> '. $data['prenomPersonne'] . '</small></h4>';
+	                            echo '<p>' . $data['corpsMessage'] . '</p>';
+	                            echo '</div>';
+	                        }
+	                    }
+	                    ?>
+	
+	                </div>
+	            </div>
+	            <!-- /.box-body -->
+	        </div>
         </div>
     </section>
     <!-- /.content -->

@@ -1,6 +1,6 @@
 <?php
 session_start();
-$db = new PDO('mysql:host=x.x.x.x;dbname=APOLLON;charset=utf8', 'USER', 'PASSWORD');
+$db = new PDO('mysql:host=x.x.x.x;dbname=APOLLON-DEV;charset=utf8', 'USER', 'PASSWORD');
 
 function writeInLogs($contentEVT, $levelEVT)
 {

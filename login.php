@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); ?>
+<?php
+	include('header.php');
+	require_once 'config/version.php';
+?>
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
@@ -31,6 +34,7 @@
     </div>
     <!-- /.login-box-body -->
 </div>
+<center>Version <?php echo $VERSION; ?></center>
 <!-- /.login-box -->
 
 <!-- jQuery 2.2.3 -->

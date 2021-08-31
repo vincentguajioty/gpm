@@ -131,6 +131,7 @@ require_once('logCheck.php');
                                 <dd>REMARQUE: Toute suppression laisse une trace dans les logs.</dd>
                                 <dd>REMARQUE: Il est impossible de supprimer une entrée dans les logs.</dd>
                                 <dd>REMARQUE: Les logs passés ne seront pas impactés par les suppressions.</dd>
+								<dd>REMARQUE: Les logs de plus de 90 jours sont automatiquement supprimés par une tache journalière.</dd>
                             </div>
                         </dl>
                     </div>
@@ -208,6 +209,8 @@ require_once('logCheck.php');
                             <br/>
                             <dd>Aucun mot de passe n'est stocké en clair dans la base de données, tout est chiffré. Il est donc inutile d'essayer de forcer les accès ou d'accéder aux mots de passe.</dd>
                             <dd>Apollon est équipé d'un système d'enregistrement des actions menées sur la plateforme. Toute action de tout utilisateur est reporté dans une base. L'accès à ces logs peut être autorisé/interdit via les profils. La suppression d'une entrée dans les logs n'est pas possible depuis l'interface web d'Apollon, personne ne peut se voir attribué ce droit.</dd>
+                            <br/>
+                            <dd>Apollon est équipé d'un système de surveillance des adresses IP. Ceci permet d'interdire la connexion à des adresses IP donc le comportement semble frauduleux. Une adresse IP se verra bloquée automatiquement après 3 tentatives de connexion infructueuse. Aucun déblocage automatique n'est possible, seul une personne ayant le profil adéquat peut débloquer une adresse IP bloquée. Dès qu'une adresse IP est bloquée, toute les connexion déjà établies en provenance de la même adresse IP sont révoquées.</dd>
                         </dl>
                     </div>
                     <!-- /.box-body -->

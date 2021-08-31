@@ -212,6 +212,15 @@ require_once('logCheck.php');
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
+                    <?php if ($_SESSION['verrouIP']==1){ ?>
+                        <li <?php
+                        if ($_SESSION['page'] == 504)
+                        {
+                            echo 'class="active"';
+                        }
+                        ?>
+                        ><a href="verrouIP.php"><i class="fa fa-lock"></i> <span>Verrouillage IP</span></a></li>
+                    <?php } ?>
                     <?php if ($_SESSION['logs_lecture']==1){ ?>
                         <li <?php
                         if ($_SESSION['page'] == 501)
