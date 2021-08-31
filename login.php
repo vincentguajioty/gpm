@@ -8,9 +8,27 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <b><?php echo $APPNAME;?></b><br/><small>Gestion du parc matériel</small>
+        <b><?php echo $APPNAME;?></b><br/><small>Gestion du Parc Matériel</small>
     </div>
     <!-- /.login-logo -->
+    <?php
+        if (($VERSION != $VERSIONCHECK) AND (file_exists('distmaj/INSTALL.php')))
+        {
+            echo "<script type='text/javascript'>document.location.replace('distmaj/INSTALL.php');</script>";
+        }else if ($VERSION != $VERSIONCHECK)
+    	{ ?>
+    		<div class="alert alert-danger">
+                <center>
+                    <h4>ATTENTION</h4>
+                    La version de la base de données ne semble pas correspondre à la version du site web installé.
+                    <br/><br/>
+                    Vous ne devrez pas continuer et contacter votre administrateur système (<?php echo $MAILSERVER;?>).
+                </center>
+            </div>
+    <?php }
+    ?>
+    
+    
     <?php
         if (checkIP($_SERVER['REMOTE_ADDR'])==0)
         { ?>

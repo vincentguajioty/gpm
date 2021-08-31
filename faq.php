@@ -43,6 +43,31 @@ require_once 'config/config.php';
                                     <ul class="timeline">
                                         <li class="time-label">
                                               <span class="bg-purple">
+                                                Version 2.3
+                                              </span>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-green"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">3 octobre 2017</span>
+                                                <h3 class="timeline-header">Livraison en production de la version 2.3</h3>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-orange"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">3 octobre 2017</span>
+                                                <h3 class="timeline-header">Livraison en recette de la version 2.3</h3>
+                                                <div class="timeline-body">
+                                                    Nouveautés par rapport à la version précédente:
+                                                    <ul>
+                                                        <li>Simplicité lors du déploiement des mises à jour</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="time-label">
+                                              <span class="bg-purple">
                                                 Version 2.2
                                               </span>
                                         </li>
