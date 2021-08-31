@@ -14,7 +14,7 @@ else
 {
 	
 	//GESION DES ERREURS
-	if (!isset($_SESSION['transfertStade']) OR !isset($_SESSION['transfertIdMaterielLot']) OR !isset($_SESSION['transfertIdMaterielCatalogue']) OR !isset($_SESSION['transfertQttMax']) OR !isset($_SESSION['transfertIdReserveElement']) OR !isset($_SESSION['transfertqttTrans']))
+	if (!isset($_SESSION['transfertStade']) OR !isset($_SESSION['transfertIdMaterielLot']) OR !isset($_SESSION['transfertIdMaterielCatalogue']) OR !isset($_SESSION['transfertIdReserveElement']) OR !isset($_SESSION['transfertqttTrans']))
 	{
 		echo "<script type='text/javascript'>document.location.replace('transfertReset.php');</script>";
 		writeInLogs("Erreur lors du transfert de matériel de la commande " . $_SESSION['transfertCmd'] . " vers l'élément de réserve ".$_SESSION['transfertIdMaterielCatalogue'], '5');

@@ -34,7 +34,7 @@ if($_SESSION['sac_lecture']==1 OR $_SESSION['sac_ajout']==1 OR $_SESSION['sac_mo
                         <div class="form-group">
                             <label>Lot d'appartenance:</label>
                             <select class="form-control select2" style="width: 100%;" name="libelleLot">
-                                <option></option>
+                                <option value="">--- Aucun rattachement ---</option>
                                 <?php
                                 $query2 = $db->query('SELECT * FROM LOTS_LOTS ORDER BY libelleLot;');
                                 while ($data2 = $query2->fetch())
@@ -59,7 +59,7 @@ if($_SESSION['sac_lecture']==1 OR $_SESSION['sac_ajout']==1 OR $_SESSION['sac_mo
                         <div class="form-group">
                             <label>Fournisseur: </label>
                             <select class="form-control select2" style="width: 100%;" name="nomFournisseur">
-                                <option></option>
+                                <option value="">--- Pas de Fournisseur ---</option>
                                 <?php
                                 $query2 = $db->query('SELECT * FROM FOURNISSEURS ORDER BY nomFournisseur;');
                                 while ($data2 = $query2->fetch())

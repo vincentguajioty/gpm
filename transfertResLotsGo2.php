@@ -12,9 +12,9 @@ if ($_SESSION['reserve_ReserveVersLot']==0)
 }
 else
 {
-    
-	
-	$_SESSION['transfertIdMaterielCatalogue'] = $_POST['idMaterielCatalogue'];
+
+
+    !isset($_SESSION['transfertIdMaterielCatalogue']) ?  $_SESSION['transfertIdMaterielCatalogue'] = $_POST['idMaterielCatalogue'] : '' ;
 	$_SESSION['transfertStade'] = 2;
 	
     echo "<script>window.location = document.referrer;</script>";

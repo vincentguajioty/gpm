@@ -277,6 +277,59 @@ require_once 'config/bdd.php';
 	        <?php
 			}
 			?>
+
+            <?php
+            if ($_SESSION['vhf_canal_lecture']==1 OR $_SESSION['vhf_canal_ajout']==1 OR $_SESSION['vhf_canal_modification']==1 OR $_SESSION['vhf_canal_suppression']==1 OR $_SESSION['vhf_plan_lecture']==1 OR $_SESSION['vhf_plan_ajout']==1 OR $_SESSION['vhf_plan_modification']==1 OR $_SESSION['vhf_plan_suppression']==1 OR $_SESSION['vhf_equipement_lecture']==1 OR $_SESSION['vhf_equipement_ajout']==1 OR $_SESSION['vhf_equipement_modification']==1 OR $_SESSION['vhf_equipement_suppression']==1)
+            {
+                ?>
+                <li <?php
+                if (((int)($_SESSION['page']/100))==9)
+                {
+                    echo 'class="active treeview"';
+                }
+                else
+                {
+                    echo 'class="treeview"';
+                }
+                ?>
+                >
+                    <a href="#">
+                        <i class="fa fa-wifi"></i> <span>TRANSMISSIONS</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <?php if ($_SESSION['vhf_canal_lecture']==1){ ?>
+                            <li <?php
+                            if ($_SESSION['page'] == 901)
+                            {
+                                echo 'class="active"';
+                            }
+                            ?>
+                            ><a href="vhfCanaux.php"><i class="fa fa-tty"></i> <span>Canaux</span></a></li>
+                        <?php } ?>
+                        <?php if ($_SESSION['vhf_plan_lecture']==1){ ?>
+                            <li <?php
+                            if ($_SESSION['page'] == 902)
+                            {
+                                echo 'class="active"';
+                            }
+                            ?>
+                            ><a href="vhfPlans.php"><i class="fa fa-sort-numeric-asc"></i> <span>Plans de fréquences</span></a></li>
+                        <?php } ?>
+                        <?php if ($_SESSION['vhf_equipement_lecture']==1){ ?>
+                            <li <?php
+                            if ($_SESSION['page'] == 903)
+                            {
+                                echo 'class="active"';
+                            }
+                            ?>
+                            ><a href="vhfEquipements.php"><i class="fa fa-mobile"></i> <span>Equipements radio</span></a></li>
+                        <?php } ?>
+                    </ul>
+                </li>
+                <?php
+            }
+            ?>
 	        
 	        
 	        

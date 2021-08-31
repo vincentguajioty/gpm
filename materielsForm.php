@@ -76,7 +76,7 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                         <div class="form-group">
                             <label>Emplacement d'appartenance: </label>
                             <select class="form-control select2" style="width: 100%;" name="libelleEmplacement">
-                                <option></option>
+                                <option value="">--- Aucun rattachement ---</option>
                                 <?php
                                 $query2 = $db->query('SELECT * FROM MATERIEL_EMPLACEMENT e LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot ORDER BY libelleEmplacement;');
                                 while ($data2 = $query2->fetch())
@@ -91,7 +91,7 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                         <div class="form-group">
                             <label>Fournisseur:</label>
                             <select class="form-control select2" style="width: 100%;" name="nomFournisseur">
-                                <option></option>
+                                <option value="">--- Pas de Fournisseur ---</option>
                                 <?php
                                 $query2 = $db->query('SELECT * FROM FOURNISSEURS ORDER BY nomFournisseur;');
                                 while ($data2 = $query2->fetch())

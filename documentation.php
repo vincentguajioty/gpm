@@ -367,6 +367,31 @@ require_once('logCheck.php');
                 </div>
                 <!-- /.box -->
             </div>
+            
+            
+            <!-- ============================================================= -->
+
+            <div class="col-md-12">
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Equipements de transmission</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <dl>
+                            <dd>Ce module permet la gestion d'un parc de matériel radio ainsi que la gestion de la programmation des équipements.</dd>
+                            <br/>
+                            <dd>Au contraire de tous les autres modules, celui-ci ne s'articule pas avec le CATALOGUE. Ce module de transmission est complètement indépendant.</dd>
+                            <br/>
+                            <dd>Une première fonctionnalité permet d'enregisrer des canaux (un canal étant défini par plusieurs fréquences, CTCSS ...). Une fois les canaux saisis, il est possible de créer un plan de fréquence, donc d'associer les canaux programmés à un numéro de canal. Pour terminer, on associe à chaque équipement radio le plan de fréquence souhaité.</dd>
+                            <br/>
+                            <dd>Il est possible d'enregistrer des pièces jointes aux canaux, aux plans et aux équipements radio. Ceci permet entre autres de stocker les documentations sur les canaux et les exports de plans de fréquences à des fins de sauvegarde.</dd>
+                        </dl>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
 
 
             <div class="row"></div>

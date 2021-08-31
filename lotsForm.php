@@ -34,7 +34,7 @@ if($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots
                         <div class="form-group">
                             <label>Référentiel à respecter: </label>
                             <select class="form-control select2" style="width: 100%;" name="libelleTypeLot">
-                                <option></option>
+                                <option value="">--- Pas d'analyse de Référentiel ---</option>
                                 <?php
                                 $query2 = $db->query('SELECT * FROM LOTS_TYPES ORDER BY libelleTypeLot;');
                                 while ($data2 = $query2->fetch())
@@ -63,7 +63,7 @@ if($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots
                         <div class="form-group">
                             <label>Lieu de stockage:</label>
                             <select class="form-control select2" style="width: 100%;" name="libelleLieu">
-                                <option></option>
+                                <option value="">--- Pas de Lieux ---</option>
                                 <?php
                                 $query2 = $db->query('SELECT * FROM LIEUX ORDER BY libelleLieu;');
                                 while ($data2 = $query2->fetch())
@@ -78,7 +78,7 @@ if($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots
                         <div class="form-group">
                             <label>Personne référente</label>
                             <select class="form-control select2" style="width: 100%;" name="identifiant">
-                                <option></option>
+                                <option value="">--- Pas de Référent ---</option>
                                 <?php
                                 $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE ORDER BY identifiant;');
                                 while ($data2 = $query2->fetch())

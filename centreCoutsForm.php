@@ -35,7 +35,7 @@ if($_SESSION['cout_lecture']==1 OR $_SESSION['cout_ajout']==1 OR $_SESSION['cout
                         <div class="form-group">
                             <label>Personne référente</label>
                             <select class="form-control select2" style="width: 100%;" name="idResponsable">
-                                <option></option>
+                                <option value="">--- Aucun Référent ---</option>
                                 <?php
                                 $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE cout_etreEnCharge=1 ORDER BY identifiant;');
                                 while ($data2 = $query2->fetch())

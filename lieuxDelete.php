@@ -27,6 +27,12 @@ else
         'idLieuLivraison' => $_GET['id']
     ));
 
+    $query = $db->prepare('UPDATE RESERVES_CONTENEUR SET idLieu = Null WHERE idLieu = :idLieu;');
+    $query->execute(array(
+        'idLieu' => $_GET['id']
+    ));
+
+
     $query = $db->prepare('DELETE FROM LIEUX WHERE idLieu = :idLieu;');
     $query->execute(array(
         'idLieu' => $_GET['id']

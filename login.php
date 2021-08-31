@@ -22,7 +22,7 @@ require_once 'verrouIPcheck.php';
                 <h4>ATTENTION</h4>
                 La version de la base de données ne semble pas correspondre à la version du site web installé.
                 <br/><br/>
-                Vous ne devrez pas continuer et contacter votre administrateur système (<?php echo $MAILSERVER;?>).
+                Vous ne devriez pas continuer et contacter votre administrateur système (<?php echo $MAILSERVER;?>).
             </center>
         </div>
     <?php }

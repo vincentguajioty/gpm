@@ -159,6 +159,18 @@ if ($data['idIP'] == "")
 	    $_SESSION['reserve_suppression'] = $data['reserve_suppression'];
 	    $_SESSION['reserve_cmdVersReserve'] = $data['reserve_cmdVersReserve'];
 	    $_SESSION['reserve_ReserveVersLot'] = $data['reserve_ReserveVersLot'];
+        $_SESSION['vhf_canal_lecture'] = $data['vhf_canal_lecture'];
+        $_SESSION['vhf_canal_ajout'] = $data['vhf_canal_ajout'];
+        $_SESSION['vhf_canal_modification'] = $data['vhf_canal_modification'];
+        $_SESSION['vhf_canal_suppression'] = $data['vhf_canal_suppression'];
+        $_SESSION['vhf_plan_lecture'] = $data['vhf_plan_lecture'];
+        $_SESSION['vhf_plan_ajout'] = $data['vhf_plan_ajout'];
+        $_SESSION['vhf_plan_modification'] = $data['vhf_plan_modification'];
+        $_SESSION['vhf_plan_suppression'] = $data['vhf_plan_suppression'];
+        $_SESSION['vhf_equipement_lecture'] = $data['vhf_equipement_lecture'];
+        $_SESSION['vhf_equipement_ajout'] = $data['vhf_equipement_ajout'];
+        $_SESSION['vhf_equipement_modification'] = $data['vhf_equipement_modification'];
+        $_SESSION['vhf_equipement_suppression'] = $data['vhf_equipement_suppression'];
 	    
 	    $_SESSION['LAST_ACTIVITY'] = time();
 	    $_SESSION['derniereConnexion'] = $data['derniereConnexion'];

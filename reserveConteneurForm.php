@@ -35,7 +35,7 @@ if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
                         <div class="form-group">
                             <label>Lieu de stockage:</label>
                             <select class="form-control select2" style="width: 100%;" name="idLieu">
-                                <option></option>
+                                <option value="">--- Pas de Lieux ---</option>
                                 <?php
                                 $query2 = $db->query('SELECT * FROM LIEUX ORDER BY libelleLieu;');
                                 while ($data2 = $query2->fetch())

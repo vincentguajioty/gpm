@@ -54,7 +54,7 @@ if ($_SESSION['reserve_cmdVersReserve']==0)
 	                                <form role="form" action="transfertCmdResGo2.php" method="POST">
 	                                    <div class="form-group">
 	                                        <label>Commande: <small style="color:grey;">Requis</small></label>
-	                                        <select <?= $_SESSION['transfertStade']!=1 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertCmd']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idCommande">
+	                                        <select <?= $_SESSION['transfertStade']!=1 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertCmd']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idCommande" required>
 	                                            <?php
 	                                            $query = $db->query('SELECT * FROM COMMANDES c LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE idEtat=5;');
 	                                            while ($data = $query->fetch())
@@ -79,7 +79,7 @@ if ($_SESSION['reserve_cmdVersReserve']==0)
 		                            <form role="form" action="transfertCmdResGo3.php" method="POST">
 	                                    <div class="form-group">
 	                                        <label>Item de la commande: <small style="color:grey;">Requis</small></label>
-	                                        <select <?= $_SESSION['transfertStade']!=2 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertIdMaterielCatalogue']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idMaterielCatalogue">
+	                                        <select <?= $_SESSION['transfertStade']!=2 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertIdMaterielCatalogue']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idMaterielCatalogue" required>
 	                                            <?php
 	                                            $query = $db->prepare('SELECT * FROM COMMANDES_MATERIEL m LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE idCommande = :idCommande;');
 	                                            $query->execute(array(
@@ -116,7 +116,7 @@ if ($_SESSION['reserve_cmdVersReserve']==0)
 		                            <form role="form" action="transfertCmdResGo4.php" method="POST">
 	                                    <div class="form-group">
 	                                        <label>Conteneur de destination: <small style="color:grey;">Requis</small></label>
-	                                        <select <?= $_SESSION['transfertStade']!=3 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertIdReserveElement']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idReserveElement">
+	                                        <select <?= $_SESSION['transfertStade']!=3 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertIdReserveElement']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idReserveElement" required>
 	                                            <?php
 	                                            $query = $db->prepare('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur = c.idConteneur LEFT OUTER JOIN LIEUX l ON c.idLieu = l.idLieu LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue WHERE m.idMaterielCatalogue = :idMaterielCatalogue;');
 	                                            $query->execute(array(

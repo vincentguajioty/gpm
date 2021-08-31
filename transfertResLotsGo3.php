@@ -12,13 +12,13 @@ if ($_SESSION['reserve_ReserveVersLot']==0)
 }
 else
 {
-    
-	
-	$_SESSION['transfertIdReserveElement'] = $_POST['idReserveElement'];
+
+
+    !isset($_SESSION['transfertIdReserveElement']) ? $_SESSION['transfertIdReserveElement'] = $_POST['idReserveElement'] : '';
 	
 	$query = $db->prepare('SELECT * FROM RESERVES_MATERIEL WHERE idReserveElement = :idReserveElement');
 	$query->execute(array(
-		'idReserveElement' =>  $_POST['idReserveElement']
+		'idReserveElement' =>  $_SESSION['transfertIdReserveElement']
 	));
 	$data = $query->fetch();
 	

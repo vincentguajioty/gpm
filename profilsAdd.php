@@ -77,8 +77,20 @@ else
     $reserve_suppression = ($_POST['reserve_suppression'] ==1) ? 1 : 0;
     $reserve_cmdVersReserve = ($_POST['reserve_cmdVersReserve'] ==1) ? 1 : 0;
     $reserve_ReserveVersLot = ($_POST['reserve_ReserveVersLot'] ==1) ? 1 : 0;
+    $vhf_canal_lecture = ($_POST['vhf_canal_lecture'] ==1) ? 1 : 0;
+    $vhf_canal_ajout = ($_POST['vhf_canal_ajout'] ==1) ? 1 : 0;
+    $vhf_canal_modification = ($_POST['vhf_canal_modification'] ==1) ? 1 : 0;
+    $vhf_canal_suppression = ($_POST['vhf_canal_suppression'] ==1) ? 1 : 0;
+    $vhf_plan_lecture = ($_POST['vhf_plan_lecture'] ==1) ? 1 : 0;
+    $vhf_plan_ajout = ($_POST['vhf_plan_ajout'] ==1) ? 1 : 0;
+    $vhf_plan_modification = ($_POST['vhf_plan_modification'] ==1) ? 1 : 0;
+    $vhf_plan_suppression = ($_POST['vhf_plan_suppression'] ==1) ? 1 : 0;
+    $vhf_equipement_lecture = ($_POST['vhf_equipement_lecture'] ==1) ? 1 : 0;
+    $vhf_equipement_ajout = ($_POST['vhf_equipement_ajout'] ==1) ? 1 : 0;
+    $vhf_equipement_modification = ($_POST['vhf_equipement_modification'] ==1) ? 1 : 0;
+    $vhf_equipement_suppression = ($_POST['vhf_equipement_suppression'] ==1) ? 1 : 0;
 
-    $query = $db->prepare('INSERT INTO PROFILS(libelleProfil, descriptifProfil, connexion_connexion, logs_lecture, annuaire_lecture, annuaire_ajout, annuaire_modification, annuaire_mdp, annuaire_suppression, profils_lecture, profils_ajout, profils_modification, profils_suppression, categories_lecture, categories_ajout, categories_modification, categories_suppression, fournisseurs_lecture, fournisseurs_ajout, fournisseurs_modification, fournisseurs_suppression, typesLots_lecture, typesLots_ajout, typesLots_modification, typesLots_suppression, lieux_lecture, lieux_ajout, lieux_modification, lieux_suppression, lots_lecture, lots_ajout, lots_modification, lots_suppression, sac_lecture, sac_ajout, sac_modification, sac_suppression, sac2_lecture, sac2_ajout, sac2_modification, sac2_suppression, catalogue_lecture, catalogue_ajout, catalogue_modification, catalogue_suppression, materiel_lecture, materiel_ajout, materiel_modification, materiel_suppression, messages_ajout, messages_suppression, notifications, verrouIP, commande_lecture, commande_ajout, commande_valider, commande_etreEnCharge, commande_abandonner, cout_lecture, cout_ajout, cout_etreEnCharge, cout_supprimer, appli_conf, reserve_lecture, reserve_ajout, reserve_modification, reserve_suppression, reserve_cmdVersReserve, reserve_ReserveVersLot) VALUES (:libelleProfil, :descriptifProfil, :connexion_connexion, :logs_lecture, :annuaire_lecture, :annuaire_ajout, :annuaire_modification, :annuaire_mdp, :annuaire_suppression, :profils_lecture, :profils_ajout, :profils_modification, :profils_suppression, :categories_lecture, :categories_ajout, :categories_modification, :categories_suppression, :fournisseurs_lecture, :fournisseurs_ajout, :fournisseurs_modification, :fournisseurs_suppression, :typesLots_lecture, :typesLots_ajout, :typesLots_modification, :typesLots_suppression, :lieux_lecture, :lieux_ajout, :lieux_modification, :lieux_suppression, :lots_lecture, :lots_ajout, :lots_modification, :lots_suppression, :sac_lecture, :sac_ajout, :sac_modification, :sac_suppression, :sac2_lecture, :sac2_ajout, :sac2_modification, :sac2_suppression, :catalogue_lecture, :catalogue_ajout, :catalogue_modification, :catalogue_suppression, :materiel_lecture, :materiel_ajout, :materiel_modification, :materiel_suppression, :messages_ajout, :messages_suppression, :notifications, :verrouIP, :commande_lecture, :commande_ajout, :commande_valider, :commande_etreEnCharge, :commande_abandonner, :cout_lecture, :cout_ajout, :cout_etreEnCharge, :cout_supprimer, :appli_conf, :reserve_lecture, :reserve_ajout, :reserve_modification, :reserve_suppression, :reserve_cmdVersReserve, :reserve_ReserveVersLot);');
+    $query = $db->prepare('INSERT INTO PROFILS(libelleProfil, descriptifProfil, connexion_connexion, logs_lecture, annuaire_lecture, annuaire_ajout, annuaire_modification, annuaire_mdp, annuaire_suppression, profils_lecture, profils_ajout, profils_modification, profils_suppression, categories_lecture, categories_ajout, categories_modification, categories_suppression, fournisseurs_lecture, fournisseurs_ajout, fournisseurs_modification, fournisseurs_suppression, typesLots_lecture, typesLots_ajout, typesLots_modification, typesLots_suppression, lieux_lecture, lieux_ajout, lieux_modification, lieux_suppression, lots_lecture, lots_ajout, lots_modification, lots_suppression, sac_lecture, sac_ajout, sac_modification, sac_suppression, sac2_lecture, sac2_ajout, sac2_modification, sac2_suppression, catalogue_lecture, catalogue_ajout, catalogue_modification, catalogue_suppression, materiel_lecture, materiel_ajout, materiel_modification, materiel_suppression, messages_ajout, messages_suppression, notifications, verrouIP, commande_lecture, commande_ajout, commande_valider, commande_etreEnCharge, commande_abandonner, cout_lecture, cout_ajout, cout_etreEnCharge, cout_supprimer, appli_conf, reserve_lecture, reserve_ajout, reserve_modification, reserve_suppression, reserve_cmdVersReserve, reserve_ReserveVersLot, vhf_canal_lecture, vhf_canal_ajout, vhf_canal_modification, vhf_canal_suppression, vhf_plan_lecture, vhf_plan_ajout, vhf_plan_modification, vhf_plan_suppression, vhf_equipement_lecture, vhf_equipement_ajout, vhf_equipement_modification, vhf_equipement_suppression) VALUES (:libelleProfil, :descriptifProfil, :connexion_connexion, :logs_lecture, :annuaire_lecture, :annuaire_ajout, :annuaire_modification, :annuaire_mdp, :annuaire_suppression, :profils_lecture, :profils_ajout, :profils_modification, :profils_suppression, :categories_lecture, :categories_ajout, :categories_modification, :categories_suppression, :fournisseurs_lecture, :fournisseurs_ajout, :fournisseurs_modification, :fournisseurs_suppression, :typesLots_lecture, :typesLots_ajout, :typesLots_modification, :typesLots_suppression, :lieux_lecture, :lieux_ajout, :lieux_modification, :lieux_suppression, :lots_lecture, :lots_ajout, :lots_modification, :lots_suppression, :sac_lecture, :sac_ajout, :sac_modification, :sac_suppression, :sac2_lecture, :sac2_ajout, :sac2_modification, :sac2_suppression, :catalogue_lecture, :catalogue_ajout, :catalogue_modification, :catalogue_suppression, :materiel_lecture, :materiel_ajout, :materiel_modification, :materiel_suppression, :messages_ajout, :messages_suppression, :notifications, :verrouIP, :commande_lecture, :commande_ajout, :commande_valider, :commande_etreEnCharge, :commande_abandonner, :cout_lecture, :cout_ajout, :cout_etreEnCharge, :cout_supprimer, :appli_conf, :reserve_lecture, :reserve_ajout, :reserve_modification, :reserve_suppression, :reserve_cmdVersReserve, :reserve_ReserveVersLot, :vhf_canal_lecture, :vhf_canal_ajout, :vhf_canal_modification, :vhf_canal_suppression, :vhf_plan_lecture, :vhf_plan_ajout, :vhf_plan_modification, :vhf_plan_suppression, :vhf_equipement_lecture, :vhf_equipement_ajout, :vhf_equipement_modification, :vhf_equipement_suppression);');
     $query->execute(array(
         'libelleProfil'  =>  $_POST['libelleProfil'],
         'descriptifProfil'  =>  $_POST['descriptifProfil'],
@@ -148,7 +160,19 @@ else
 	    'reserve_modification' => $reserve_modification,
 	    'reserve_suppression' => $reserve_suppression,
 	    'reserve_cmdVersReserve' => $reserve_cmdVersReserve,
-	    'reserve_ReserveVersLot' => $reserve_ReserveVersLot
+	    'reserve_ReserveVersLot' => $reserve_ReserveVersLot,
+        'vhf_canal_lecture' => $vhf_canal_lecture,
+        'vhf_canal_ajout' => $vhf_canal_ajout,
+        'vhf_canal_modification' => $vhf_canal_modification,
+        'vhf_canal_suppression' => $vhf_canal_suppression,
+        'vhf_plan_lecture' => $vhf_plan_lecture,
+        'vhf_plan_ajout' => $vhf_plan_ajout,
+        'vhf_plan_modification' => $vhf_plan_modification,
+        'vhf_plan_suppression' => $vhf_plan_suppression,
+        'vhf_equipement_lecture' => $vhf_equipement_lecture,
+        'vhf_equipement_ajout' => $vhf_equipement_ajout,
+        'vhf_equipement_modification' => $vhf_equipement_modification,
+        'vhf_equipement_suppression' => $vhf_equipement_suppression
 ));
 
     switch($query->errorCode())

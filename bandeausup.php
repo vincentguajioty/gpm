@@ -183,6 +183,34 @@ require_once 'config/config.php';
                         <td><?php if($_SESSION['materiel_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
                     </tr>
                     <tr>
+                        <th>TRANSMISSIONS</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Canaux</td>
+                        <td><?php if($_SESSION['vhf_canal_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['vhf_canal_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['vhf_canal_modification'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['vhf_canal_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                    </tr>
+                    <tr>
+                        <td>Plans de fréquences</td>
+                        <td><?php if($_SESSION['vhf_plan_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['vhf_plan_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['vhf_plan_modification'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['vhf_plan_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                    </tr>
+                    <tr>
+                        <td>Equipements de transmission</td>
+                        <td><?php if($_SESSION['vhf_equipement_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['vhf_equipement_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['vhf_equipement_modification'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['vhf_equipement_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                    </tr>
+                    <tr>
                         <th>ANNUAIRE</th>
                         <th></th>
                         <th></th>

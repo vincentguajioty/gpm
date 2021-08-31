@@ -35,7 +35,7 @@ if($_SESSION['catalogue_lecture']==1 OR $_SESSION['catalogue_ajout']==1 OR $_SES
                         <div class="form-group">
                             <label>Catégorie: </label>
                             <select class="form-control select2" style="width: 100%;" name="libelleCategorie">
-                                <option></option>
+                                <option value="">--- Aucune Catégorie ---</option>
                                 <?php
                                 $query = $db->query('SELECT * FROM MATERIEL_CATEGORIES ORDER BY libelleCategorie;');
                                 while ($data2 = $query->fetch())

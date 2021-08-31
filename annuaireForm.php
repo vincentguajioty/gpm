@@ -55,7 +55,7 @@ if($_SESSION['annuaire_lecture']==1 OR $_SESSION['annuaire_ajout']==1 OR $_SESSI
                         <div class="form-group">
                             <label>Profil d'habilitation: </label>
                             <select class="form-control select2" style="width: 100%;" name="libelleProfil">
-                                <option></option>
+                                <option value="">--- Aucun Profil ---</option>
                                 <?php
                                 $query2 = $db->query('SELECT * FROM PROFILS;');
                                 while ($data2 = $query2->fetch())

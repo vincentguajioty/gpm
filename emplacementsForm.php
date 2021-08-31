@@ -50,7 +50,7 @@ if($_SESSION['sac2_lecture']==1 OR $_SESSION['sac2_ajout']==1 OR $_SESSION['sac2
                         <div class="form-group">
                             <label>Sac d'appartenance: </label>
                             <select class="form-control select2" style="width: 100%;" name="libelleSac">
-                                <option></option>
+                                <option value="">--- Aucun rattachement ---</option>
                                 <?php
                                 $query2 = $db->query('SELECT * FROM MATERIEL_SAC ORDER BY libelleSac;');
                                 while ($data2 = $query2->fetch())

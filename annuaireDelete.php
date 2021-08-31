@@ -53,10 +53,14 @@ else
         'idPersonne' => $_GET['id']
     ));
 
-    $query = $db->prepare('DELETE FROM CHAT WHERE idPersonneEnvoi = :idPersonneEnvoi OR idPersonneDestinataire = :idPersonneDestinataire;');
+    $query = $db->prepare('UPDATE INVENTAIRES SET idPersonne = Null WHERE idPersonne = :idPersonne ;');
     $query->execute(array(
-        'idPersonneEnvoi' => $_GET['id'],
-        'idPersonneDestinataire' => $_GET['id']
+        'idPersonne' => $_GET['id']
+    ));
+
+    $query = $db->prepare('UPDATE VHF_EQUIPEMENTS SET idResponsable = Null WHERE idResponsable = :idResponsable ;');
+    $query->execute(array(
+        'idResponsable' => $_GET['id']
     ));
 
     $query = $db->prepare('DELETE FROM PERSONNE_REFERENTE WHERE idPersonne = :idPersonne;');

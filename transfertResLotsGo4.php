@@ -15,7 +15,7 @@ else
     
 	
 	$_SESSION['transfertqttTrans'] = $_POST['qttTrans'];
-	$_SESSION['transfertIdMaterielLot'] = $_POST['idElement'];
+	!isset($_SESSION['transfertIdMaterielLot']) ? $_SESSION['transfertIdMaterielLot'] = $_POST['idElement'] : '';
 	$_SESSION['transfertStade'] = 4;
 	
     echo "<script>window.location = document.referrer;</script>";

@@ -60,7 +60,7 @@ if ($_SESSION['commande_ajout']==0)
                         <div class="form-group">
                             <label>Observateur: </label>
                             <select class="form-control select2" style="width: 100%;" name="idObservateur">
-                                <option></option>
+                                <option value="">--- Pas d'Observateur ---</option>
                                 <?php
                                 $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1;');
                                 while ($data = $query->fetch())
