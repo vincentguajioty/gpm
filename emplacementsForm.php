@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/version.php'); ?>
+<?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 103;
@@ -48,7 +48,7 @@ require_once('logCheck.php');
                             </div>
                             <div class="form-group">
                                 <label>Lot d'appartenance: </label>
-                                <select class="form-control" name="libelleLot">
+                                <select class="form-control select2" style="width: 100%;" name="libelleLot">
                                     <option></option>
                                     <?php
                                     $query = $db->query('SELECT * FROM LOTS_LOTS ORDER BY libelleLot;');
@@ -63,7 +63,7 @@ require_once('logCheck.php');
                             </div>
                             <div class="form-group">
                                 <label>Sac d'appartenance: </label>
-                                <select class="form-control" name="libelleSac">
+                                <select class="form-control select2" style="width: 100%;" name="libelleSac">
                                     <option></option>
                                     <?php
                                     $query = $db->query('SELECT * FROM MATERIEL_SAC s LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot ORDER BY libelleSac;');
@@ -111,7 +111,7 @@ require_once('logCheck.php');
                             </div>
                             <div class="form-group">
                                 <label>Lot d'appartenance: </label>
-                                <select class="form-control" name="libelleLot">
+                                <select class="form-control select2" style="width: 100%;" name="libelleLot">
                                     <option></option>
                                     <?php
                                     $query2 = $db->query('SELECT * FROM LOTS_LOTS ORDER BY libelleLot;');
@@ -126,7 +126,7 @@ require_once('logCheck.php');
                             </div>
                             <div class="form-group">
                                 <label>Sac d'appartenance: </label>
-                                <select class="form-control" name="libelleSac">
+                                <select class="form-control select2" style="width: 100%;" name="libelleSac">
                                     <option></option>
                                     <?php
                                     $query2 = $db->query('SELECT * FROM MATERIEL_SAC ORDER BY libelleSac;');

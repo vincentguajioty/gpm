@@ -4,6 +4,8 @@ require_once('logCheck.php');
 ?>
 <?php
 require_once 'config/bdd.php';
+require_once 'config/config.php';
+require_once 'config/mailFunction.php';
 
 if ($_SESSION['annuaire_ajout']==0)
 {
@@ -42,6 +44,24 @@ else
             writeInLogs("Erreur inconnue lors de l'ajout de l'utilisateur " . $_POST['identifiant'], '5');
             $_SESSION['returnMessage'] = 'Erreur inconnue lors de l\'ajout de l\'utilisateur.';
             $_SESSION['returnType'] = '2';
+    }
+
+    if ($_POST['notificationMailCreation']==1)
+    {
+        $sujet = "[" . $APPNAME . "] Bienvenue sur " . $APPNAME;
+        $message = "Bonjour " . $_POST['prenomPersonne'] . ", <br/><br/> Votre session a été crée. Voici vos identifiants:<br/>Nom d'utilisateur: " . $_POST['identifiant'] . "<br/>Mot de passe: ". $_POST['identifiant'];
+        $message = $message . "<br/><br/>Vous serez invité à changer votre mot de passe à votre première connexion.<br/>Voici le lien d'accès à l'outil: " . $URLSITE;
+        $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+
+        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+        if(sendmail($_POST['mailPersonne'], $sujet, 2, $message))
+        {
+            writeInLogs("Mail d'accueil envoyé à " . $_POST['identifiant'], '2');
+        }
+        else
+        {
+            writeInLogs("Erreur lors de l'envoi du mail d'accueil à " . $_POST['identifiant'], '5');
+        }
     }
 
     echo "<script>javascript:history.go(-2);</script>";

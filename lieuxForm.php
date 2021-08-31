@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/version.php'); ?>
+<?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 304;

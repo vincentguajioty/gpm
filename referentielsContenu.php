@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/version.php'); ?>
+<?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 201;
@@ -46,7 +46,7 @@ if ($_SESSION['typesLots_lecture']==0)
                                 <!-- select -->
                                 <div class="form-group">
                                     <label>Matériel: </label>
-                                    <select class="form-control" name="libelleMateriel">
+                                    <select class="form-control select2" style="width: 100%;" name="libelleMateriel">
                                         <?php
                                         $query = $db->prepare('SELECT c.idMaterielCatalogue, c.libelleMateriel FROM MATERIEL_CATALOGUE c LEFT OUTER JOIN (SELECT idMaterielCatalogue FROM REFERENTIELS WHERE idTypeLot= :idTypeLot) r ON c.idMaterielCatalogue = r.idMaterielCatalogue WHERE r.idMaterielCatalogue IS NULL ORDER BY libelleMateriel;');
                                         $query->execute(array('idTypeLot' => $_GET['id']));

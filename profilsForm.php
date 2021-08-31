@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/version.php'); ?>
+<?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 402;
@@ -11,7 +11,7 @@ require_once('logCheck.php');
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
-    <?php require_once 'config/version.php'; ?>
+    <?php require_once 'config/config.php'; ?>
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -476,9 +476,9 @@ require_once('logCheck.php');
                         <?php if ($_SESSION['annuaire_modification']==1) {?>
                             <form role="form" action="annuaireProfilOn.php?idProfil=<?=$_GET['id']?>" method="POST">
                                 <div class="form-group">
-                                    <select class="form-control" name="identifiant">
+                                    <select class="form-control select2" style="width: 100%;" name="identifiant">
                                         <?php
-                                        $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE WHERE idProfil != :idProfil;');
+                                        $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE WHERE idProfil = Null OR idProfil != :idProfil;');
                                         $query->execute(array(
                                             'idProfil' => $_GET['id']
                                         ));

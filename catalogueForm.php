@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/version.php'); ?>
+<?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 301;
@@ -48,7 +48,7 @@ require_once('logCheck.php');
                             </div>
                             <div class="form-group">
                                 <label>Catégorie: </label>
-                                <select class="form-control" name="libelleCategorie">
+                                <select class="form-control select2" style="width: 100%;" name="libelleCategorie">
                                     <option></option>
                                     <?php
                                     $query = $db->query('SELECT * FROM MATERIEL_CATEGORIES ORDER BY libelleCategorie;');
@@ -127,7 +127,7 @@ require_once('logCheck.php');
                             </div>
                             <div class="form-group">
                                 <label>Catégorie: </label>
-                                <select class="form-control" name="libelleCategorie">
+                                <select class="form-control select2" style="width: 100%;" name="libelleCategorie">
                                     <option></option>
                                     <?php
                                     $query2 = $db->query('SELECT * FROM MATERIEL_CATEGORIES ORDER BY libelleCategorie;');

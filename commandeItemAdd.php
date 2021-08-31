@@ -12,24 +12,43 @@ if ($_SESSION['commande_ajout']==0 AND $_SESSION['commande_etreEnCharge']==0)
 }
 else
 {
-    $query2 = $db->prepare('SELECT * FROM MATERIEL_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue');
-	$query2->execute(array(
-        'idMaterielCatalogue' => $_POST['idMaterielCatalogue']
-	));
-	$data2 = $query2->fetch();
-	
-	$query = $db->prepare('INSERT INTO COMMANDES_MATERIEL(idCommande, idMaterielCatalogue, 	quantiteCommande, referenceProduitFournisseur, remiseProduit, prixProduitHT, taxeProduit, prixProduitTTC, remarqueArticle) VALUES(:idCommande, :idMaterielCatalogue, 	:quantiteCommande, :referenceProduitFournisseur, :remiseProduit, :prixProduitHT, :taxeProduit, :prixProduitTTC, :remarqueArticle);');
-    $query->execute(array(
-        'idCommande' => $_GET['idCommande'],
-        'idMaterielCatalogue' => $_POST['idMaterielCatalogue'],
-        'quantiteCommande' => $_POST['quantiteCommande'],
-        'referenceProduitFournisseur' => $_POST['referenceProduitFournisseur'],
-        'remiseProduit' => $_POST['remiseProduit'],
-        'prixProduitHT' => $_POST['prixProduitHT'],
-        'taxeProduit' => $_POST['taxeProduit'],
-        'prixProduitTTC' => $_POST['prixProduitTTC'],
-		'remarqueArticle' => $_POST['remarqueArticle']
-    ));
+    if ($_POST['idMaterielCatalogue'] == -1)
+    {
+        $query = $db->prepare('INSERT INTO COMMANDES_MATERIEL(idCommande, idMaterielCatalogue, 	quantiteCommande, referenceProduitFournisseur, remiseProduit, prixProduitHT, taxeProduit, prixProduitTTC, remarqueArticle) VALUES(:idCommande, :idMaterielCatalogue, 	:quantiteCommande, :referenceProduitFournisseur, :remiseProduit, :prixProduitHT, :taxeProduit, :prixProduitTTC, :remarqueArticle);');
+        $query->execute(array(
+            'idCommande' => $_GET['idCommande'],
+            'idMaterielCatalogue' => Null,
+            'quantiteCommande' => $_POST['quantiteCommande'],
+            'referenceProduitFournisseur' => 'Frais de port',
+            'remiseProduit' => $_POST['remiseProduit'],
+            'prixProduitHT' => $_POST['prixProduitHT'],
+            'taxeProduit' => $_POST['taxeProduit'],
+            'prixProduitTTC' => $_POST['prixProduitTTC'],
+            'remarqueArticle' => $_POST['remarqueArticle']
+        ));
+    }
+    else
+    {
+        $query2 = $db->prepare('SELECT * FROM MATERIEL_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue');
+        $query2->execute(array(
+            'idMaterielCatalogue' => $_POST['idMaterielCatalogue']
+        ));
+        $data2 = $query2->fetch();
+
+        $query = $db->prepare('INSERT INTO COMMANDES_MATERIEL(idCommande, idMaterielCatalogue, 	quantiteCommande, referenceProduitFournisseur, remiseProduit, prixProduitHT, taxeProduit, prixProduitTTC, remarqueArticle) VALUES(:idCommande, :idMaterielCatalogue, 	:quantiteCommande, :referenceProduitFournisseur, :remiseProduit, :prixProduitHT, :taxeProduit, :prixProduitTTC, :remarqueArticle);');
+        $query->execute(array(
+            'idCommande' => $_GET['idCommande'],
+            'idMaterielCatalogue' => $_POST['idMaterielCatalogue'],
+            'quantiteCommande' => $_POST['quantiteCommande'],
+            'referenceProduitFournisseur' => $_POST['referenceProduitFournisseur'],
+            'remiseProduit' => $_POST['remiseProduit'],
+            'prixProduitHT' => $_POST['prixProduitHT'],
+            'taxeProduit' => $_POST['taxeProduit'],
+            'prixProduitTTC' => $_POST['prixProduitTTC'],
+            'remarqueArticle' => $_POST['remarqueArticle']
+        ));
+    }
+
     switch($query->errorCode())
     {
         case '00000':
@@ -43,6 +62,8 @@ else
             $_SESSION['returnType'] = '2';
 
     }
+
+
 
     echo "<script>javascript:history.go(-1);</script>";
 

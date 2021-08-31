@@ -1,7 +1,8 @@
 <?php
 
 require_once 'bdd.php';
-require_once 'version.php';
+require_once 'config.php';
+require_once 'mailFunction.php';
 
 //======================================================== RECOPIE DE LA FONCTION ========================================================
 function checkLotsConf($idLot)
@@ -99,17 +100,17 @@ if ($nbDest > 0)
 
     if ($nbAlertes == 0)
     {
-        $sujet = $APPNAME . " - Bilan journalier - Aucune alerte";
+        $sujet = "[" . $APPNAME . "] Bilan journalier - Aucune alerte";
     }
     else
     {
         if ($nbAlertes == 1)
         {
-            $sujet = $APPNAME . " - Bilan journalier - 1 alerte en cours sur votre parc materiel";
+            $sujet = "[" . $APPNAME . "] Bilan journalier - 1 alerte en cours sur votre parc materiel";
         }
         else
         {
-            $sujet = $APPNAME . " - Bilan journalier - " . $nbAlertes  . " alertes en cours sur votre parc materiel";
+            $sujet = "[" . $APPNAME . "] Bilan journalier - " . $nbAlertes  . " alertes en cours sur votre parc materiel";
         }
     }
 
@@ -160,26 +161,16 @@ if ($nbDest > 0)
     }
 
     $message_html = $message_html . file_get_contents('notificationsC4.html', FILE_USE_INCLUDE_PATH);
-    //==========
 
-    //=====Création de la boundary
-    $boundary = "-----=".md5(rand());
-    //==========
-
-    //=====Création du header de l'e-mail.
-    $header = "From: \"" . $APPNAME . "\"<" . $MAILSERVER . ">".$passage_ligne;
-    $header.= "Reply-to: ".$MAILSERVER.$passage_ligne;
-    $header.= "MIME-Version: 1.0".$passage_ligne;
     if ($nbAlertes > 0)
     {
-        $header .= "X-Priority: 1".$passage_ligne;
+        $prio = 3;
     }
     else
     {
-        $header .= "X-Priority: 5".$passage_ligne;
+        $prio = 2;
     }
 
-    $header.= "Content-Type: text/html; charset=UTF-8;".$passage_ligne." boundary=\"$boundary\"".$passage_ligne;
     //==========
 
     //=====Création du message.
@@ -207,24 +198,24 @@ if ($nbDest > 0)
 
     while($data = $query->fetch())
     {
-        if(mail($data['mailPersonne'],$sujet,$message,$header))
+        if(sendmail($data['mailPersonne'], $sujet, $prio, $message))
         {
-            $query2 = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurApollonEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurApollonEvt, :idLogLevel, :detailEvt);');
+            $query2 = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
             $query2->execute(array(
                 'dateEvt' => date('Y-m-d H:i:s'),
                 'adresseIP' => 'Serveur Principal',
-                'utilisateurApollonEvt' => 'APOLLON',
+                'utilisateurEvt' => $APPNAME,
                 'idLogLevel' => '2',
                 'detailEvt' => 'Notification journalière envoyée avec succès à ' . $data['mailPersonne']
             ));
         }
         else
         {
-            $query2 = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurApollonEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurApollonEvt, :idLogLevel, :detailEvt);');
+            $query2 = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
             $query2->execute(array(
                 'dateEvt' => date('Y-m-d H:i:s'),
                 'adresseIP' => 'Serveur Principal',
-                'utilisateurApollonEvt' => 'APOLLON',
+                'utilisateurEvt' => $APPNAME,
                 'idLogLevel' => '5',
                 'detailEvt' => 'Echec dans la l\'envoi de la notification journalière à ' . $data['mailPersonne']
             ));

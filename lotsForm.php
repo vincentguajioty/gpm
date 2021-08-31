@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/version.php'); ?>
+<?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 101;
@@ -48,7 +48,7 @@ require_once('logCheck.php');
                             </div>
                             <div class="form-group">
                                 <label>Référentiel à respecter: </label>
-                                <select class="form-control" name="libelleTypeLot">
+                                <select class="form-control select2" style="width: 100%;" name="libelleTypeLot">
                                     <option></option>
                                     <?php
                                     $query = $db->query('SELECT * FROM LOTS_TYPES ORDER BY libelleTypeLot;');
@@ -63,7 +63,7 @@ require_once('logCheck.php');
                             </div>
                             <div class="form-group">
                                 <label>Etat: </label>
-                                <select class="form-control" name="libelleEtat">
+                                <select class="form-control select2" style="width: 100%;" name="libelleEtat">
                                     <option></option>
                                     <?php
                                     $query = $db->query('SELECT * FROM ETATS ORDER BY libelleEtat;');
@@ -78,7 +78,7 @@ require_once('logCheck.php');
                             </div>
                             <div class="form-group">
                                 <label>Lieu de stockage:</label>
-                                <select class="form-control" name="libelleLieu">
+                                <select class="form-control select2" style="width: 100%;" name="libelleLieu">
                                     <option></option>
                                     <?php
                                     $query = $db->query('SELECT * FROM LIEUX ORDER BY libelleLieu;');
@@ -93,7 +93,7 @@ require_once('logCheck.php');
                             </div>
                             <div class="form-group">
                                 <label>Personne référente</label>
-                                <select class="form-control" name="identifiant">
+                                <select class="form-control select2" style="width: 100%;" name="identifiant">
                                     <option></option>
                                     <?php
                                     $query = $db->query('SELECT * FROM PERSONNE_REFERENTE ORDER BY identifiant;');
@@ -166,7 +166,7 @@ require_once('logCheck.php');
                                 </div>
                                 <div class="form-group">
                                     <label>Référentiel à respecter: </label>
-                                    <select class="form-control" name="libelleTypeLot">
+                                    <select class="form-control select2" style="width: 100%;" name="libelleTypeLot">
                                         <option></option>
                                         <?php
                                         $query2 = $db->query('SELECT * FROM LOTS_TYPES ORDER BY libelleTypeLot;');
@@ -181,7 +181,7 @@ require_once('logCheck.php');
                                 </div>
                                 <div class="form-group">
                                     <label>Etat: </label>
-                                    <select class="form-control" name="libelleEtat">
+                                    <select class="form-control select2" style="width: 100%;" name="libelleEtat">
                                         <option></option>
                                         <?php
                                         $query2 = $db->query('SELECT * FROM ETATS ORDER BY libelleEtat;');
@@ -196,7 +196,7 @@ require_once('logCheck.php');
                                 </div>
                                 <div class="form-group">
                                     <label>Lieu de stockage:</label>
-                                    <select class="form-control" name="libelleLieu">
+                                    <select class="form-control select2" style="width: 100%;" name="libelleLieu">
                                         <option></option>
                                         <?php
                                         $query2 = $db->query('SELECT * FROM LIEUX ORDER BY libelleLieu;');
@@ -211,7 +211,7 @@ require_once('logCheck.php');
                                 </div>
                                 <div class="form-group">
                                     <label>Personne référente</label>
-                                    <select class="form-control" name="identifiant">
+                                    <select class="form-control select2" style="width: 100%;" name="identifiant">
                                         <option></option>
                                         <?php
                                         $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE ORDER BY identifiant;');

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/version.php'); ?>
+<?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 606;
@@ -46,7 +46,7 @@ require_once('logCheck.php');
 								</div>
 								<div class="form-group">
 									<label>Personne référente</label>
-									<select class="form-control" name="idResponsable">
+									<select class="form-control select2" style="width: 100%;" name="idResponsable">
 										<option></option>
 										<?php
 										$query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE cout_etreEnCharge=1 ORDER BY identifiant;');
@@ -93,7 +93,7 @@ require_once('logCheck.php');
 								</div>
 								<div class="form-group">
 									<label>Personne référente</label>
-									<select class="form-control" name="idResponsable">
+									<select class="form-control select2" style="width: 100%;" name="idResponsable">
 										<option></option>
 										<?php
 										$query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE cout_etreEnCharge=1 ORDER BY identifiant;');

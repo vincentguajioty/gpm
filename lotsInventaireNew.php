@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/version.php'); ?>
+<?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 101;
@@ -47,7 +47,7 @@ if ($_SESSION['lots_modification']==0)
                     <div class="box-body">
                         <div class="form-group">
                             <label>Personne ayant fait l'inventaire:</label>
-                            <select class="form-control" name="identifiant" required>
+                            <select class="form-control select2" style="width: 100%;" name="identifiant" required>
                                 <?php
                                 $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE ORDER BY identifiant;');
                                 while ($data2 = $query2->fetch())

@@ -22,6 +22,10 @@ else
             'idInventaire' => $data['idInventaire']
         ));
     }
+    $query2 = $db->prepare('DELETE FROM INVENTAIRES WHERE idLot = :idLot;');
+    $query2->execute(array(
+        'idLot' => $_GET['id']
+    ));
 
     $query = $db->prepare('SELECT * FROM LOTS_LOTS WHERE idLot = :idLot;');
     $query->execute(array(

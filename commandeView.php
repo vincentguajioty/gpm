@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/version.php'); ?>
+<?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 601;
@@ -58,7 +58,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                    <div class="col-md-6">
 	                                        <div class="form-group">
 	                                            <label>Fournisseur: </label>
-	                                            <select <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> class="form-control" name="idFournisseur">
+	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idFournisseur">
 	                                                <?php
 	                                                $query2 = $db->query('SELECT * FROM FOURNISSEURS;');
 	                                                while ($data2 = $query2->fetch())
@@ -72,7 +72,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                        </div>
 	                                        <div class="form-group">
 	                                            <label>Demandeur: </label>
-	                                            <select <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> class="form-control" name="idDemandeur">
+	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idDemandeur">
 	                                                <?php
 	                                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1;');
 	                                                while ($data2 = $query2->fetch())
@@ -86,7 +86,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                        </div>
 	                                        <div class="form-group">
 	                                            <label>Observateur: </label>
-	                                            <select <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> class="form-control" name="idObservateur">
+	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idObservateur">
 	                                                <option></option>
 	                                                <?php
 	                                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1;');
@@ -101,7 +101,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                        </div>
 	                                        <div class="form-group">
 	                                            <label>Centre de cout: </label>
-	                                            <select <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> class="form-control" name="idCentreDeCout">
+	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idCentreDeCout">
 	                                                <option></option>
 	                                                <?php
 	                                                $query2 = $db->query('SELECT * FROM CENTRE_COUTS;');
@@ -142,7 +142,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                        </div>
 	                                        <div class="form-group">
 	                                            <label>Affectation: </label>
-	                                            <select <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> class="form-control" name="idAffectee">
+	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idAffectee">
 	                                                <option></option>
 	                                                <?php
 	                                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1 AND commande_etreEnCharge = 1;');
@@ -157,7 +157,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                        </div>
 	                                        <div class="form-group">
 	                                            <label>Validation de la demande de commande par: </label>
-	                                            <select <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> class="form-control" name="idValideur">
+	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idValideur">
 	                                                <option></option>
 	                                                <?php
 	                                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1 AND commande_valider = 1;');
@@ -172,7 +172,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                        </div>
 	                                        <div class="form-group">
 	                                            <label>Lieu de livraison: </label>
-	                                            <select <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> class="form-control" name="idLieuLivraison">
+	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idLieuLivraison">
 	                                                <option></option>
 	                                                <?php
 	                                                $query2 = $db->query('SELECT * FROM LIEUX;');
@@ -235,7 +235,7 @@ if ($_SESSION['commande_lecture']==0)
 								                  <td>
 								                	<?php if(($data['idEtat']==1) AND (($_SESSION['commande_ajout']==1) OR ($_SESSION['commande_etreEnCharge']==1))){ ?>
 								                		<a data-toggle="modal" data-target="#modalUpdateItem" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
-								                		<a href="commandeItemDelete.php?idCommande=<?=$data2['idCommande']?>&idMaterielCatalogue=<?=$data2['idMaterielCatalogue']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-minus"></i></a>
+								                		<a href="commandeItemDelete.php?idCommande=<?=$data2['idCommande']?>&idMaterielCatalogue=<? if($data2['idMaterielCatalogue'] == Null){echo '-1';}else{echo $data2['idMaterielCatalogue'];}?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-minus"></i></a>
 								                	<?php }?>
 								                	
 								                	<?php if(($data['idEtat']>1) AND ($_SESSION['commande_lecture']==1)){ ?>
@@ -522,8 +522,9 @@ if ($_SESSION['commande_lecture']==0)
 	      <div class="modal-body">
 	        <div class="form-group">
 				<label>Matériel: </label>
-				<select class="form-control" name="idMaterielCatalogue">
-					<?php
+				<select class="form-control select2" style="width: 100%;" name="idMaterielCatalogue">
+                    <option value="-1">Frais de port</option>
+                    <?php
 					$query2 = $db->prepare('SELECT * FROM MATERIEL_CATALOGUE ORDER BY libelleMateriel;');
 					$query2->execute(array('idTypeLot' => $_GET['id']));
 					while ($data2 = $query2->fetch())

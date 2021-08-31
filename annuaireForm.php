@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/version.php'); ?>
+<?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 401;
@@ -73,7 +73,7 @@ require_once('logCheck.php');
                             </div>
                             <div class="form-group">
                                 <label>Profil d'habilitation: </label>
-                                <select class="form-control" name="libelleProfil">
+                                <select class="form-control select2" style="width: 100%;" name="libelleProfil">
                                     <option></option>
                                     <?php
                                     $query = $db->query('SELECT * FROM PROFILS;');
@@ -85,6 +85,13 @@ require_once('logCheck.php');
                                     }
                                     $query->closeCursor(); ?>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="1" name="notificationMailCreation" checked> Envoyer un email à l'utilisateur avec son identifiant et son mot de passe
+                                    </label>
+                                </div>
                             </div>
                             <div class="box-footer">
                                 <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
@@ -148,7 +155,7 @@ require_once('logCheck.php');
                             </div>
                             <div class="form-group">
                                 <label>Profil d'habilitation: </label>
-                                <select class="form-control" name="libelleProfil">
+                                <select class="form-control select2" style="width: 100%;" name="libelleProfil">
                                     <option></option>
                                     <?php
                                     $query2 = $db->query('SELECT * FROM PROFILS;');

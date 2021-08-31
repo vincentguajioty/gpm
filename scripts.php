@@ -31,6 +31,8 @@
 <script src="plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
+<!-- Select2 -->
+<script src="plugins/select2/select2.full.min.js"></script>
 
 <!-- DatePicker PERSO -->
 <script>
@@ -64,5 +66,12 @@
         $("#tri1").DataTable({"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"}, "order": [[ 0, 'asc']]});
         $("#tri2").DataTable({"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"}, "order": [[ 1, 'asc']]});
         $("#tri2R").DataTable({"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"}, "order": [[ 1, 'desc']]});
+    });
+</script>
+
+<script>
+    $(function () {
+        //Initialize Select2 Elements
+        $(".select2").select2();
     });
 </script>

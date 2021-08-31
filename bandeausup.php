@@ -2,13 +2,11 @@
 session_start();
 require_once('logCheck.php');
 require_once 'config/bdd.php';
-require_once 'config/version.php';
+require_once 'config/config.php';
 ?>
 <header class="main-header">
     <!-- Logo -->
     <a href="index.php" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>A</b></span>
         <!-- logo for regular state and mobile devices -->
         <span class="logo-lg"><b><?php echo $APPNAME; ?></b> <small><?php echo $VERSION; ?></small></span>
     </a>

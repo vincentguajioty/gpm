@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'config/bdd.php';
+require_once 'config/config.php';
 
 $query = $db->prepare('SELECT * FROM VERROUILLAGE_IP WHERE adresseIPverr= :adresseIPverr;');
 $query->execute(array(
@@ -19,24 +20,27 @@ if ($data['idIP'] == "")
 	if ($data['idPersonne'] == "" OR  !(password_verify($_POST['motDePasse'], $data['motDePasse'])))
 	{
 	    //pas bon
-	    $query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurApollonEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurApollonEvt, :idLogLevel, :detailEvt);');
+	    $query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
 	    $query->execute(array(
 	        'dateEvt' => date('Y-m-d H:i:s'),
 	        'adresseIP' => $_SERVER['REMOTE_ADDR'],
-	        'utilisateurApollonEvt' => $_POST['identifiant'],
+	        'utilisateurEvt' => $_POST['identifiant'],
 	        'idLogLevel' => '5',
-	        'detailEvt' => 'Echec d\'identification sur Apollon.'
+	        'detailEvt' => 'Echec d\'identification sur ' . $APPNAME
 	    ));
+
+        $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE dateEchec < :dateEchec;');
+        $query->execute(array(
+            'dateEchec' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - 1 days'))
+        ));
 	    
-	    $query = $db->prepare('SELECT COUNT(*) as nb FROM LOGS WHERE adresseIP= :adresseIP AND detailEvt = :detailEvt AND dateEvt > :dateEvt;');
+	    $query = $db->prepare('SELECT COUNT(*) as nb FROM VERROUILLAGE_IP_TEMP WHERE adresseIP= :adresseIP;');
 		$query->execute(array(
-		    'adresseIP' => $_SERVER['REMOTE_ADDR'],
-		    'detailEvt' => "Echec d'identification sur Apollon.",
-		    'dateEvt' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - 1 days'))
+		    'adresseIP' => $_SERVER['REMOTE_ADDR']
 		));
 		$data = $query->fetch();
 		
-		if ($data['nb'] > 2)
+		if ($data['nb'] > 1)
 		{
 			$query = $db->prepare('INSERT INTO VERROUILLAGE_IP(adresseIPverr, dateVerr)VALUES(:adresseIPverr, :dateVerr);');
 		    $query->execute(array(
@@ -44,20 +48,42 @@ if ($data['idIP'] == "")
 		        'adresseIPverr' => $_SERVER['REMOTE_ADDR']
 		    ));
 			
-			$query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurApollonEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurApollonEvt, :idLogLevel, :detailEvt);');
+			$query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
 		    $query->execute(array(
 		        'dateEvt' => date('Y-m-d H:i:s'),
 		        'adresseIP' => $_SERVER['REMOTE_ADDR'],
-		        'utilisateurApollonEvt' => $_POST['identifiant'],
+		        'utilisateurEvt' => $_POST['identifiant'],
 		        'idLogLevel' => '5',
 		        'detailEvt' => 'Verouillage de l\'adresse IP.'
 		    ));
+
+            $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE adresseIP= :adresseIP;');
+            $query->execute(array(
+                'adresseIP' => $_SERVER['REMOTE_ADDR']
+            ));
 		}
+		else
+        {
+            $query = $db->prepare('INSERT INTO VERROUILLAGE_IP_TEMP(adresseIP, dateEchec)VALUES(:adresseIP, :dateEchec);');
+            $query->execute(array(
+                'dateEchec' => date('Y-m-d H:i:s'),
+                'adresseIP' => $_SERVER['REMOTE_ADDR']
+            ));
+        }
 	    
 	    echo "<script type='text/javascript'>document.location.replace('login.php');</script>";
 	}
 	else
 	{
+        $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE adresseIP= :adresseIP;');
+        $query->execute(array(
+            'adresseIP' => $_SERVER['REMOTE_ADDR']
+        ));
+        $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE dateEchec < :dateEchec;');
+        $query->execute(array(
+            'dateEchec' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - 1 days'))
+        ));
+
 	    $_SESSION['idPersonne'] = $data['idPersonne'];
 	    $_SESSION['idProfil'] = $data['idProfil'];
 	    $_SESSION['libelleProfil'] = $data['libelleProfil'];
@@ -153,11 +179,11 @@ if ($data['idIP'] == "")
 else
 {
 	 //pas bon
-	    $query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurApollonEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurApollonEvt, :idLogLevel, :detailEvt);');
+	    $query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
 	    $query->execute(array(
 	        'dateEvt' => date('Y-m-d H:i:s'),
 	        'adresseIP' => $_SERVER['REMOTE_ADDR'],
-	        'utilisateurApollonEvt' => $_POST['identifiant'],
+	        'utilisateurEvt' => $_POST['identifiant'],
 	        'idLogLevel' => '5',
 	        'detailEvt' => 'Connexion refusée par le filtrage IP.'
 	    ));

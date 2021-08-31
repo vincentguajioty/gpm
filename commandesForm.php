@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/version.php'); ?>
+<?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 601;
@@ -45,7 +45,7 @@ if ($_SESSION['commande_ajout']==0)
                         <!-- text input -->
                         <div class="form-group">
                             <label>Demandeur: </label>
-                            <select class="form-control" name="idDemandeur">
+                            <select class="form-control select2" style="width: 100%;" name="idDemandeur">
                                 <?php
                                 $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1;');
                                 while ($data = $query->fetch())
@@ -59,7 +59,7 @@ if ($_SESSION['commande_ajout']==0)
                         </div>
                         <div class="form-group">
                             <label>Observateur: </label>
-                            <select class="form-control" name="idObservateur">
+                            <select class="form-control select2" style="width: 100%;" name="idObservateur">
                                 <option></option>
                                 <?php
                                 $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1;');
@@ -74,7 +74,7 @@ if ($_SESSION['commande_ajout']==0)
                         </div>
                         <div class="form-group">
                             <label>Validation de la demande de commande par: </label>
-                            <select class="form-control" name="idValideur">
+                            <select class="form-control select2" style="width: 100%;" name="idValideur">
                                 <option></option>
                                 <?php
                                 $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1 AND commande_valider = 1;');
@@ -89,7 +89,7 @@ if ($_SESSION['commande_ajout']==0)
                         </div>
                         <div class="form-group">
                             <label>Affectation (commande traitée par): </label>
-                            <select class="form-control" name="idAffectee">
+                            <select class="form-control select2" style="width: 100%;" name="idAffectee">
                                 <option></option>
                                 <?php
                                 $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1 AND commande_etreEnCharge = 1;');
@@ -104,7 +104,7 @@ if ($_SESSION['commande_ajout']==0)
                         </div>
                         <div class="form-group">
                             <label>Centre de cout: </label>
-                            <select class="form-control" name="idCentreDeCout">
+                            <select class="form-control select2" style="width: 100%;" name="idCentreDeCout">
                                 <option></option>
                                 <?php
                                 $query = $db->query('SELECT * FROM CENTRE_COUTS;');
@@ -119,7 +119,7 @@ if ($_SESSION['commande_ajout']==0)
                         </div>
                         <div class="form-group">
                             <label>Lieu de livraison: </label>
-                            <select class="form-control" name="idLieuLivraison">
+                            <select class="form-control select2" style="width: 100%;" name="idLieuLivraison">
                                 <option></option>
                                 <?php
                                 $query = $db->query('SELECT * FROM LIEUX;');
@@ -134,7 +134,7 @@ if ($_SESSION['commande_ajout']==0)
                         </div>
                         <div class="form-group">
                             <label>Fournisseur: </label>
-                            <select class="form-control" name="idFournisseur">
+                            <select class="form-control select2" style="width: 100%;" name="idFournisseur">
                                 <?php
                                 $query = $db->query('SELECT * FROM FOURNISSEURS;');
                                 while ($data = $query->fetch())

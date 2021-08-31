@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/version.php'); ?>
+<?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 502;
 require_once('logCheck.php');
-require_once 'config/version.php';
+require_once 'config/config.php';
 ?>
 <body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
 <div class="wrapper">
@@ -34,13 +34,53 @@ require_once 'config/version.php';
                         <div class="box-header with-border">
                             <i class="fa fa-clock-o"></i>
 
-                            <h3 class="box-title">Evolution d'Apollon</h3>
+                            <h3 class="box-title">Evolution de GPM</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-12">
                                     <ul class="timeline">
+                                        <li class="time-label">
+                                              <span class="bg-purple">
+                                                Version 2.1
+                                              </span>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-green"></i>
+                                            <div class="timeline-item">
+                                                <h3 class="timeline-header">Le produit est renommé et s'appelle désormais GPM - Gestionnaire de Parc Materiel</h3>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-green"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">1 octobre 2017</span>
+                                                <h3 class="timeline-header">Livraison en production de la version 2.1</h3>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-orange"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">1 octobre 2017</span>
+                                                <h3 class="timeline-header">Livraison en recette de la version 2.1</h3>
+                                                <div class="timeline-body">
+                                                    Nouveautés par rapport à la version précédente:
+                                                    <ul>
+                                                        <li>Lors d'un verrouillage d'IP, message explicite sur l'écran de connexion pour expliquer la situation.</li>
+                                                        <li>Fonctionnalité d'envoi de mail aux nouveaux utilisateurs avec leurs identifiants.</li>
+                                                        <li>Fonctionnalité d'envoi de mail aux intéressés lors de l'évolution d'une commande.</li>
+                                                    </ul>
+                                                    Corrections apportées:
+                                                    <ul>
+                                                        <li>Modification du processus de verrouillage des adresses IP forçant la connexion afin de réduire les blocage intempestifs.</li>
+                                                        <li>Dans tous les formulaires, les listes déroulantes intègrent le propre moteur de recherche afin de trouver des mots clefs plus facilement lorsque les listes sont longues.</li>
+                                                        <li>Création d'un vrai fichier de configuration config/config.php</li>
+                                                        <li>Possibilité d'ajouter les frais de ports dans une commande</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
                                         <li class="time-label">
                                               <span class="bg-purple">
                                                 Version 2.0
@@ -260,7 +300,7 @@ require_once 'config/version.php';
                                                         <li>Gestion des status des lots</li>
                                                         <li>Gestion des catégories de matériel</li>
                                                         <li>Gestion des lieux de stockage</li>
-                                                        <li>Gestion des utilisateurs d'Apollon</li>
+                                                        <li>Gestion des utilisateurs de GPM</li>
                                                         <li>Gestion des mots de passe avec mise en place d'un hash</li>
                                                         <li>Gestion des profils des utilisateurs</li>
                                                         <li>Gestion des messages généraux affichables sur la page d'accueil</li>
@@ -332,11 +372,11 @@ require_once 'config/version.php';
 
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <strong>Solution Apollon:</strong> Copyright &copy; 2017 Vincent Guajioty. All rights reserved. - Version <?php echo $VERSION; ?>
+                            Copyright &copy; 2017 Vincent Guajioty. All rights reserved.
                             <br/><br/>
-                            <strong>Thème HTML:</strong> Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>. All rights reserved. - Version 2.3.8
+                            Version <?php echo $VERSION; ?>
                             <br/><br/>
-                            <strong>Adresse mail de l'administrateur de cette instance d'Apollon:</strong> <?php echo $MAILSERVER; ?>
+                            Adresse mail de l'administrateur de cette instance de GPM: <?php echo $MAILSERVER; ?>
                             <br/><br/>
                             <a href="contact.php">Formulaire de contact du developpeur<a/>
                         </div>

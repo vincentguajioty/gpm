@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/version.php'); ?>
+<?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 501;
@@ -104,7 +104,7 @@ if ($_SESSION['logs_lecture']==0)
                         {?>
                             <tr>
                                 <td><?php echo $data['dateEvt']; ?></td>
-                                <td><?php echo $data['utilisateurApollonEvt']; ?></td>
+                                <td><?php echo $data['utilisateurEvt']; ?></td>
                                 <td><?php echo $data['adresseIP']; ?></td>
                                 <td><?php echo $data['libelleLevel']; ?></td>
                                 <td><?php echo $data['detailEvt']; ?></td>

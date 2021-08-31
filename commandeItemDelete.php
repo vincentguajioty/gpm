@@ -12,11 +12,22 @@ if (($_SESSION['commande_ajout']==0)AND($_SESSION['commande_etreEnCharge']==0))
 }
 else
 {
-    $query = $db->prepare('DELETE FROM COMMANDES_MATERIEL WHERE idMaterielCatalogue = :idMaterielCatalogue AND idCommande = :idCommande;');
-    $query->execute(array(
-        'idMaterielCatalogue' => $_GET['idMaterielCatalogue'],
-		'idCommande' => $_GET['idCommande']
-    ));
+
+    if ($_GET['idMaterielCatalogue']==-1)
+    {
+        $query = $db->prepare('DELETE FROM COMMANDES_MATERIEL WHERE idMaterielCatalogue Is Null AND idCommande = :idCommande;');
+        $query->execute(array(
+            'idCommande' => $_GET['idCommande']
+        ));
+    }
+    else
+    {
+        $query = $db->prepare('DELETE FROM COMMANDES_MATERIEL WHERE idMaterielCatalogue = :idMaterielCatalogue AND idCommande = :idCommande;');
+        $query->execute(array(
+            'idMaterielCatalogue' => $_GET['idMaterielCatalogue'],
+            'idCommande' => $_GET['idCommande']
+        ));
+    }
 
     switch($query->errorCode())
     {

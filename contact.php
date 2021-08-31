@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/version.php'); ?>
+<?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 502;
@@ -11,6 +11,7 @@ require_once('logCheck.php');
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
+    <?php require_once 'config/config.php'; ?>
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -31,6 +32,93 @@ require_once('logCheck.php');
         <section class="content">
             <?php include('confirmationBox.php'); ?>
 
+            <div class="box box-info">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form role="form" action="contactSend.php" method="POST">
+                        <!-- text input -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Nom:</label>
+                                    <input type="text" class="form-control" value="<?php echo $_SESSION['nomPersonne'];?>" name="nom">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Prénom:</label>
+                                    <input type="text" class="form-control" value="<?php echo $_SESSION['prenomPersonne'];?>" name="prenom">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Adresse mail:</label>
+                                    <input type="text" class="form-control" value="<?php echo $_SESSION['mailPersonne'];?>" name="mail">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Téléphone</label>
+                                    <input type="text" class="form-control" value="<?php echo $_SESSION['telPersonne'];?>" name="tel">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Société/Association:</label>
+                                    <input type="text" class="form-control" name="entite">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Fonction:</label>
+                                    <input type="text" class="form-control" value="<?php echo $_SESSION['fonctionPersonne'];?>" name="fonction">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Je veux: </label>
+                                    <select class="form-control" name="motif">
+                                        <option>Faire une suggestion</option>
+                                        <option>Signaler un dysfonctionnement dans un module</option>
+                                        <option>Signaler une faille de sécurité</option>
+                                        <option>Autre</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Sur: </label>
+                                    <select class="form-control" name="module">
+                                        <option>Module de gestion des lots/sacs/emplacements</option>
+                                        <option>Module de gestion du matériel</option>
+                                        <option>Module gérant le catalogue du matériel</option>
+                                        <option>Module gérant les référentiels</option>
+                                        <option>Module de commandes</option>
+                                        <option>Module de gestion de l'annuaire</option>
+                                        <option>Module de gestion des profils</option>
+                                        <option>Paramètres (catégories de matériels, états des lots, lieux, fournisseurs ...)</option>
+                                        <option>Autre</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Ma version de GMP:</label>
+                                    <input type="text" class="form-control" value="<?php echo $VERSION;?>" name="version">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Message:</label>
+                            <textarea class="form-control" rows="8" name="contenu"></textarea>
+                        </div>
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-info pull-right">Envoyer</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-body -->
+            </div>
             
 
         </section>

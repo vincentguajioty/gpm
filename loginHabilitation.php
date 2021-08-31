@@ -3,7 +3,7 @@
 <?php
 session_start();
 require_once('logCheck.php');
-require_once 'config/version.php';
+require_once 'config/config.php';
 ?>
 <?php include('header.php'); ?>
 <body class="hold-transition skin-blue sidebar-mini">

@@ -6,12 +6,12 @@ $_SESSION['page'] = 000;
 require_once('logCheck.php');
 
 ?>
-<?php include('header.php'); require_once('config/version.php'); ?>
+<?php include('header.php'); require_once('config/config.php'); ?>
 <body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
-    <?php require_once('config/version.php'); ?>
+    <?php require_once('config/config.php'); ?>
 
 
     <!-- Content Wrapper. Contains page content -->
