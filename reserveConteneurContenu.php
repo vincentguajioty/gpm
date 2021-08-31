@@ -15,7 +15,6 @@ if ($_SESSION['reserve_lecture']==0)
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
-    <?php require_once 'checkLotsConf.php'; ?>
 
     <?php
     $query = $db->prepare('SELECT * FROM RESERVES_CONTENEUR c LEFT OUTER JOIN LIEUX l ON c.idLieu = l.idLieu WHERE idConteneur = :idConteneur;');
@@ -44,6 +43,7 @@ if ($_SESSION['reserve_lecture']==0)
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
+        <div class="row">
         <section class="content-header">
             <h1>
                 Gestion du conteneur de réserve: <?php echo $data['libelleConteneur']; ?>
@@ -56,7 +56,8 @@ if ($_SESSION['reserve_lecture']==0)
         </section>
 
         <!-- Main content -->
-        <section class="content">
+        
+    	<section class="content">
             <?php include('confirmationBox.php'); ?>
 
             <div class="col-md-6">
@@ -112,93 +113,95 @@ if ($_SESSION['reserve_lecture']==0)
                 <!-- /.widget-user -->
             </div>
 
-                <div class="col-md-12">
-                    <div class="box box-warning box-solid">
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $data['libelleConteneur']; ?></h3> <?php if ($_SESSION['reserve_modification']==1) {?><a href="reserveConteneurForm.php?id=<?=$data['idConteneur']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                            <!-- /.box-tools -->
+            <div class="col-md-12">
+                <div class="box box-warning box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><?php echo $data['libelleConteneur']; ?></h3> <?php if ($_SESSION['reserve_modification']==1) {?><a href="reserveConteneurForm.php?id=<?=$data['idConteneur']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
                         </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>Libelle</th>
-                                    <th>Quantité</th>
-                                    <th>Péremption</th>
-                                    <th>Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-                                $query9 = $db->prepare('SELECT * FROM RESERVES_MATERIEL e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue WHERE idConteneur = :idConteneur;');
-                                $query9->execute(array(
-                                    'idConteneur' => $data['idConteneur']
-                                ));
-                                while ($data9 = $query9->fetch())
-                                { ?>
-                                    <tr>
-                                        <td><?php echo $data9['idReserveElement']; ?></td>
-                                        <td><?php echo $data9['libelleMateriel']; ?></td>
-                                        <td><?php
-                                            if ($data9['quantiteReserve'] < $data9['quantiteAlerteReserve'])
-                                            {
-                                                ?><span class="badge bg-red"><?php echo $data9['quantiteReserve']; ?></span><?php
-                                            }
-                                            else if ($data9['quantiteReserve'] == $data9['quantiteAlerteReserve'])
-                                            {
-                                                ?><span class="badge bg-orange"><?php echo $data9['quantiteReserve']; ?></span><?php
-                                            }
-                                            else
-                                            {
-                                                ?><span class="badge bg-green"><?php echo $data9['quantiteReserve']; ?></span><?php
-                                            }
-                                            ?>
-                                        </td>
-                                        <td><?php
-                                            if ($data9['peremptionReserve'] <= date('Y-m-d'))
-                                            {
-                                                ?><span class="badge bg-red"><?php echo $data9['peremptionReserve']; ?></span><?php
-                                            }
-                                            else if ($data9['peremptionNotificationReserve'] <= date('Y-m-d'))
-                                            {
-                                                ?><span class="badge bg-orange"><?php echo $data9['peremptionReserve']; ?></span><?php
-                                            }
-                                            else
-                                            {
-                                                ?><span class="badge bg-green"><?php echo $data9['peremptionReserve']; ?></span><?php
-                                            }
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <?php if ($_SESSION['reserve_modification']==1) {?>
-                                                <a href="reserveMaterielForm.php?id=<?=$data9['idReserveElement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
-                                            <?php }?>
-                                            <?php if ($_SESSION['reserve_suppression']==1) {?>
-                                                <a href="reserveMaterielDelete.php?id=<?=$data9['idReserveElement']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
-                                            <?php }?>
-                                        </td>
-                                    </tr>
-                                    <?php
-                                }
-                                ?>
-                                </tbody>
-
-
-                            </table>
-
-                        </div>
-                        <!-- /.box-body -->
+                        <!-- /.box-tools -->
                     </div>
-                    <!-- /.box -->
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Libelle</th>
+                                <th>Quantité</th>
+                                <th>Péremption</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            $query9 = $db->prepare('SELECT * FROM RESERVES_MATERIEL e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue WHERE idConteneur = :idConteneur;');
+                            $query9->execute(array(
+                                'idConteneur' => $data['idConteneur']
+                            ));
+                            while ($data9 = $query9->fetch())
+                            { ?>
+                                <tr>
+                                    <td><?php echo $data9['idReserveElement']; ?></td>
+                                    <td><?php echo $data9['libelleMateriel']; ?></td>
+                                    <td><?php
+                                        if ($data9['quantiteReserve'] < $data9['quantiteAlerteReserve'])
+                                        {
+                                            ?><span class="badge bg-red"><?php echo $data9['quantiteReserve']; ?></span><?php
+                                        }
+                                        else if ($data9['quantiteReserve'] == $data9['quantiteAlerteReserve'])
+                                        {
+                                            ?><span class="badge bg-orange"><?php echo $data9['quantiteReserve']; ?></span><?php
+                                        }
+                                        else
+                                        {
+                                            ?><span class="badge bg-green"><?php echo $data9['quantiteReserve']; ?></span><?php
+                                        }
+                                        ?>
+                                    </td>
+                                    <td><?php
+                                        if ($data9['peremptionReserve'] <= date('Y-m-d'))
+                                        {
+                                            ?><span class="badge bg-red"><?php echo $data9['peremptionReserve']; ?></span><?php
+                                        }
+                                        else if ($data9['peremptionNotificationReserve'] <= date('Y-m-d'))
+                                        {
+                                            ?><span class="badge bg-orange"><?php echo $data9['peremptionReserve']; ?></span><?php
+                                        }
+                                        else
+                                        {
+                                            ?><span class="badge bg-green"><?php echo $data9['peremptionReserve']; ?></span><?php
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php if ($_SESSION['reserve_modification']==1) {?>
+                                            <a href="reserveMaterielForm.php?id=<?=$data9['idReserveElement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
+                                        <?php }?>
+                                        <?php if ($_SESSION['reserve_suppression']==1) {?>
+                                            <a href="reserveMaterielDelete.php?id=<?=$data9['idReserveElement']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
+                                        <?php }?>
+                                    </td>
+                                </tr>
+                                <?php
+                            }
+                            ?>
+                            </tbody>
+
+
+                        </table>
+
+                    </div>
+                    <!-- /.box-body -->
                 </div>
-        </section>
+                <!-- /.box -->
+            </div>
+    	</section>
+    	</div>
         <!-- /.content -->
+        
     </div>
     <!-- /.content-wrapper -->
     <?php include('footer.php'); ?>

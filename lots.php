@@ -15,7 +15,6 @@ if ($_SESSION['lots_lecture']==0)
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
-    <?php require_once 'checkLotsConf.php'; ?>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">

@@ -109,7 +109,7 @@ require_once 'config/config.php';
                     </br>
                 </div>
                 <div class="form-group">
-                    <label>Notifications:</label>
+                    <label>Notifications (lots et réserve):</label>
                     </br>
                     <div class="notifications">
                         <input disabled type="radio" name="notifications" id="optionsRadios1" value="0" <?php

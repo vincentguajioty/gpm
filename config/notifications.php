@@ -4,78 +4,6 @@ require_once 'bdd.php';
 require_once 'config.php';
 require_once 'mailFunction.php';
 
-//======================================================== RECOPIE DE LA FONCTION ========================================================
-function checkLotsConf($idLot)
-{
-    global $db;
-    $errorsConf = 0;
-    $query = $db->prepare('SELECT idTypeLot FROM LOTS_LOTS WHERE idLot = :idLot;');
-    $query->execute(array(
-        'idLot' => $idLot
-    ));
-    $data = $query->fetch();
-
-    $query = $db->prepare('SELECT * FROM REFERENTIELS r LEFT OUTER JOIN LOTS_TYPES t on r.idTypeLot=t.idTypeLot LEFT OUTER JOIN MATERIEL_CATALOGUE m on r.idMaterielCatalogue = m.idMaterielCatalogue WHERE r.idTypeLot = :idTypeLot;');
-    $query->execute(array(
-        'idTypeLot' => $data['idTypeLot']
-    ));
-
-    while ($data = $query->fetch())
-    {
-        $query2 = $db->prepare('SELECT MIN(peremption) as peremption FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_EMPLACEMENT p ON e.idEmplacement = p.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON p.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot WHERE idMaterielCatalogue = :idMaterielCatalogue AND s.idLot = :idLot;');
-        $query2->execute(array(
-            'idMaterielCatalogue' => $data['idMaterielCatalogue'],
-            'idLot' => $idLot
-        ));
-        $data2 = $query2->fetch();
-
-        if (($data['obligatoire'] == 1) AND ($data['sterilite'] == 1) AND ($data2['peremption'] < date('Y-m-d')))
-        {
-            $errorsConf = $errorsConf +1;
-        }
-
-        if (($data['obligatoire'] == 1) AND ($data['sterilite'] == 1) AND ($data2['peremption'] == 0))
-        {
-            $errorsConf = $errorsConf +1;
-        }
-
-        if (($data['obligatoire'] == 1) AND ($data['sterilite'] == 1) AND ($data2['peremption'] == '0000-00-00'))
-        {
-            $errorsConf = $errorsConf +1;
-        }
-
-        if (($data['obligatoire'] == 1) AND ($data['sterilite'] == 1) AND ($data2['peremption'] == Null))
-        {
-            $errorsConf = $errorsConf +1;
-        }
-
-        $query3 = $db->prepare('SELECT SUM(quantite) as nb FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_EMPLACEMENT p ON e.idEmplacement = p.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON p.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot WHERE idMaterielCatalogue = :idMaterielCatalogue AND s.idLot = :idLot;');
-        $query3->execute(array(
-            'idMaterielCatalogue' => $data['idMaterielCatalogue'],
-            'idLot' => $idLot
-        ));
-        $data3 = $query3->fetch();
-
-        if (($data['obligatoire'] == 1) AND ($data3['nb']<$data['quantiteReferentiel']))
-        {
-            $errorsConf = $errorsConf +1;
-        }
-
-
-    }
-
-    if ($errorsConf>0)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
-
-//======================================================== FIN DE LA RECOPIE ========================================================
-
 $nbLotsNOK = 0;
 $query = $db->query('SELECT * FROM LOTS_LOTS WHERE idTypeLot IS NOT NULL AND idEtat = 1;');
 while ($data = $query->fetch())
@@ -88,6 +16,12 @@ $nbManquant = $data['nb'];
 $query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (peremptionNotification < CURRENT_DATE OR peremptionNotification = CURRENT_DATE) AND idEtat = 1;');
 $data = $query->fetch();
 $nbPerime = $data['nb'];
+$query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE quantiteReserve < quantiteAlerteReserve OR quantiteReserve = quantiteAlerteReserve;');
+$data = $query->fetch();
+$nbManquantReserve = $data['nb'];
+$query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE peremptionReserve < CURRENT_DATE OR peremptionReserve = CURRENT_DATE;');
+$data = $query->fetch();
+$nbPerimeReserve = $data['nb'];
 $query = $db->query('SELECT COUNT(*) as nb FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE notifications=1 OR notifications=2;');
 $data = $query->fetch();
 $nbDest = $data['nb'];
@@ -95,7 +29,7 @@ $nbDest = $data['nb'];
 if ($nbDest > 0)
 {
 
-    $nbAlertes = $nbManquant + $nbPerime + $nbLotsNOK;
+    $nbAlertes = $nbManquant + $nbPerime + $nbLotsNOK + $nbManquantReserve + $nbPerimeReserve;
 
     if ($nbAlertes == 0)
     {
@@ -114,7 +48,7 @@ if ($nbDest > 0)
     }
 
     //=====Déclaration des messages au format texte et au format HTML.
-    $message_html = "Bonjour, <br/><br/>Ceci est une notification journalière d'alerte sur " . $APPNAME . "<br/><br/>Alertes de péremption des consommables:<br/><ul>";
+    $message_html = "Bonjour, <br/><br/>Ceci est une notification journalière d'alerte sur " . $APPNAME . "<br/><br/>Alertes de péremption des consommables dans les lots:<br/><ul>";
     $query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne WHERE (peremptionNotification < CURRENT_DATE OR peremptionNotification = CURRENT_DATE) AND idEtat = 1;');
     while($data = $query->fetch())
     {
@@ -122,7 +56,7 @@ if ($nbDest > 0)
     }
     $message_html = $message_html."</ul><br/><br/>";
 
-    $message_html = $message_html . "Alertes de quantité:<br/><ul>";
+    $message_html = $message_html . "Alertes de quantité des lots:<br/><ul>";
     $query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (quantite < quantiteAlerte OR quantite = quantiteAlerte) AND idEtat = 1;');
     while($data = $query->fetch())
     {
@@ -140,7 +74,23 @@ if ($nbDest > 0)
         }
     }
     $message_html = $message_html."</ul><br/><br/>";
-
+    
+    $message_html = $message_html . "Alertes de péremption de la réserve:<br/><ul>";
+    $query = $db->query('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur=c.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue WHERE peremptionReserve < CURRENT_DATE OR peremptionReserve = CURRENT_DATE;');
+    while($data = $query->fetch())
+    {
+        $message_html = $message_html . "<li>".$data['libelleConteneur'] . " > " . $data['libelleMateriel']."</li>";
+    }
+    $message_html = $message_html."</ul><br/><br/>";
+    
+    $message_html = $message_html . "Alertes de quantité de la réserve:<br/><ul>";
+    $query = $db->query('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur=c.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue WHERE quantiteReserve < quantiteAlerteReserve OR quantiteReserve = quantiteAlerteReserve;');
+    while($data = $query->fetch())
+    {
+        $message_html = $message_html . "<li>".$data['libelleConteneur'] . " > " . $data['libelleMateriel']."</li>";
+    }
+    $message_html = $message_html."</ul><br/><br/>";
+    
     $message_html = $message_html . "Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
 
 

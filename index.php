@@ -11,7 +11,6 @@ require_once('logCheck.php');
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
-    <?php require_once 'checkLotsConf.php'; ?>
 
 
   <!-- Content Wrapper. Contains page content -->
@@ -41,7 +40,7 @@ require_once('logCheck.php');
             }
             ?>
 
-            <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="col-md-4 col-sm-6 col-xs-12">
                 <!-- small box -->
                 <?php
                 $query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (peremption < CURRENT_DATE OR peremption = CURRENT_DATE) AND idEtat = 1;');
@@ -53,7 +52,7 @@ require_once('logCheck.php');
                         <a data-toggle="modal" data-target="#modalAccueilAlertePeremption"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Matériel périmé:</span>
+                            <span class="info-box-text">Matériels périmés (Lots):</span>
                             <span class="info-box-number"><?php echo $data['nb']; ?></span>
                             <span class="info-box-more">Cliquer sur l'icone</span>
                         </div>
@@ -66,7 +65,7 @@ require_once('logCheck.php');
                         <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Matériel périmé:</span>
+                            <span class="info-box-text">Matériels périmés (Lots):</span>
                             <span class="info-box-number"><?php echo $data['nb']; ?></span>
                         </div>
                         <!-- /.info-box-content -->
@@ -75,7 +74,7 @@ require_once('logCheck.php');
                 $query->closeCursor(); ?>
             </div>
             <!-- ./col -->
-            <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="col-md-4 col-sm-6 col-xs-12">
                 <!-- small box -->
                 <?php
                 $query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (quantite < quantiteAlerte OR quantite = quantiteAlerte) AND idEtat = 1;');
@@ -88,7 +87,7 @@ require_once('logCheck.php');
                         <a data-toggle="modal" data-target="#modalAccueilAlerteQuantité"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Matériel manquant:</span>
+                            <span class="info-box-text">Matériels manquants (Lots):</span>
                             <span class="info-box-number"><?php echo $data['nb']; ?></span>
                             <span class="info-box-more">Cliquer sur l'icone</span>
                         </div>
@@ -101,7 +100,7 @@ require_once('logCheck.php');
                         <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Matériel manquant:</span>
+                            <span class="info-box-text">Matériels manquants (Lots):</span>
                             <span class="info-box-number"><?php echo $data['nb']; ?></span>
                         </div>
                         <!-- /.info-box-content -->
@@ -110,7 +109,7 @@ require_once('logCheck.php');
                 $query->closeCursor(); ?>
             </div>
 
-            <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="col-md-4 col-sm-6 col-xs-12">
                 <!-- small box -->
                 <?php
                 $query = $db->query('SELECT COUNT(*) as nb FROM LOTS_LOTS WHERE idEtat = 1 AND (frequenceInventaire IS NOT NULL) AND ((DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) < CURRENT_DATE) OR (DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) = CURRENT_DATE));');
@@ -123,7 +122,7 @@ require_once('logCheck.php');
                         <a data-toggle="modal" data-target="#modalAccueilAlerteInventaire"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Lot en attente d'inventaire:</span>
+                            <span class="info-box-text">Lots en attente d'inventaire:</span>
                             <span class="info-box-number"><?php echo $data['nb']; ?></span>
                             <span class="info-box-more">Cliquer sur l'icone</span>
                         </div>
@@ -136,7 +135,7 @@ require_once('logCheck.php');
                         <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Lot en attente d'inventaire:</span>
+                            <span class="info-box-text">Lots en attente d'inventaire:</span>
                             <span class="info-box-number"><?php echo $data['nb']; ?></span>
                         </div>
                         <!-- /.info-box-content -->
@@ -146,7 +145,7 @@ require_once('logCheck.php');
             </div>
             <!-- ./col -->
 
-            <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="col-md-4 col-sm-6 col-xs-12">
                 <?php
                 if ($nbLotsNOK>0)
                 { ?>
@@ -155,7 +154,7 @@ require_once('logCheck.php');
                         <a data-toggle="modal" data-target="#modalAccueilAlerteConformite"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Lot non-conforme:</span>
+                            <span class="info-box-text">Lots non-conformes:</span>
                             <span class="info-box-number"><?php echo $nbLotsNOK; ?></span>
                             <span class="info-box-more">Cliquer sur l'icone</span>
                         </div>
@@ -168,7 +167,7 @@ require_once('logCheck.php');
                         <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Lot non-conforme:</span>
+                            <span class="info-box-text">Lots non-conformes:</span>
                             <span class="info-box-number"><?php echo $nbLotsNOK; ?></span>
                         </div>
                         <!-- /.info-box-content -->
@@ -176,6 +175,76 @@ require_once('logCheck.php');
                 <?php } ?>
 
             </div>
+            
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <!-- small box -->
+                <?php
+                $query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE peremptionReserve < CURRENT_DATE OR peremptionReserve = CURRENT_DATE;');
+                $data = $query->fetch();
+
+                if ($data['nb']>0)
+                { ?>
+                    <div class="info-box">
+                        <a data-toggle="modal" data-target="#modalAccueilAlertePeremptionReserve"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Matériels périmés (Réserve):</span>
+                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+                            <span class="info-box-more">Cliquer sur l'icone</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                <?php }
+                else
+                { ?>
+                    <div class="info-box">
+                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Matériels périmés (Réserve):</span>
+                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                <?php }
+                $query->closeCursor(); ?>
+            </div>
+            <!-- ./col -->
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <!-- small box -->
+                <?php
+                $query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE quantiteReserve < quantiteAlerteReserve OR quantiteReserve = quantiteAlerteReserve;');
+                $data = $query->fetch();
+
+                if ($data['nb']>0)
+                { ?>
+
+                    <div class="info-box">
+                        <a data-toggle="modal" data-target="#modalAccueilAlerteQuantitéReserve"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Matériels manquants (Réserve):</span>
+                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+                            <span class="info-box-more">Cliquer sur l'icone</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                <?php }
+                else
+                { ?>
+                    <div class="info-box">
+                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Matériels manquants (Réserve):</span>
+                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                <?php }
+                $query->closeCursor(); ?>
+            </div>
+            
         </div>
 
 		<div class="row">	
@@ -432,6 +501,58 @@ require_once('logCheck.php');
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
                 <?php if ($_SESSION['lots_lecture']==1){ ?><a href="lots.php"><button type="button" class="btn btn-default pull-right">Accéder aux lots</button></a><? } ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-danger" id="modalAccueilAlertePeremptionReserve">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alertes de péremption</h4>
+            </div>
+            <div class="modal-body">
+                <?php
+                $query = $db->query('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR e ON m.idConteneur=e.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE peremptionReserve < CURRENT_DATE OR peremptionReserve = CURRENT_DATE;');
+                ?>
+                <ul>
+                    <?php
+                    while($data=$query->fetch())
+                    {
+                        echo '<li>' . $data['libelleMateriel'] . '</li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+                <?php if ($_SESSION['reserve_lecture']==1){ ?><a href="reserveMateriel.php"><button type="button" class="btn btn-default pull-right">Accéder à la réserve</button></a><? } ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-danger" id="modalAccueilAlerteQuantitéReserve">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alertes de quantité</h4>
+            </div>
+            <div class="modal-body">
+                <?php
+                $query = $db->query('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR e ON m.idConteneur=e.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE quantiteReserve < quantiteAlerteReserve OR quantiteReserve = quantiteAlerteReserve;');
+                ?>
+                <ul>
+                    <?php
+                    while($data=$query->fetch())
+                    {
+                        echo '<li>' . $data['libelleMateriel'] . '</li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+                <?php if ($_SESSION['reserve_lecture']==1){ ?><a href="reserveMateriel.php"><button type="button" class="btn btn-default pull-right">Accéder à la réserve</button></a><? } ?>
             </div>
         </div>
     </div>

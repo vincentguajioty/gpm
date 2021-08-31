@@ -3,7 +3,6 @@ session_start();
 $_SESSION['page'] = 101;
 require_once('logCheck.php');
 require_once 'config/bdd.php';
-require_once 'checkLotsConf.php';
 include('header.php');
 include('scripts.php');
 
