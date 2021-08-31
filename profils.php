@@ -63,6 +63,12 @@ if ($_SESSION['profils_lecture']==0)
                                     <?php if ($_SESSION['profils_modification']==1) {?>
                                         <a href="profilsForm.php?id=<?=$data['idProfil']?>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
+                                    <?php if ($_SESSION['annuaire_modification']==1) {?>
+                                        <a href="profilsSetDashboard.php?id=<?=$data['idProfil']?>" class="btn btn-xs btn-success" onclick="return confirm('Etes-vous sûr de vouloir réactiver les indicateurs sur la page d\'accueil de tous les utilisateurs liés à ce profil ?');" title="Forcer les indicateurs sur la page d'accueil"><i class="fa fa-dashboard"></i></a>
+                                    <?php }?>
+                                    <?php if ($_SESSION['annuaire_modification']==1) {?>
+                                        <a href="profilsSetMail.php?id=<?=$data['idProfil']?>" class="btn btn-xs btn-success" onclick="return confirm('Etes-vous sûr de vouloir réactiver les notifications pour tous les utilisateurs liés à ce profil ?');" title="Forcer l'activation des notifications"><i class="fa fa-envelope"></i></a>
+                                    <?php }?>
                                     <?php if ($_SESSION['profils_suppression']==1) {?>
                                         <a href="modalDeleteConfirm.php?case=profilsDelete&id=<?=$data['idProfil']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
                                     <?php }?>

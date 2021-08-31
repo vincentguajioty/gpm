@@ -55,6 +55,9 @@ else {
             $_SESSION['returnType'] = '2';
     }
 
+    majIndicateursPersonne($_GET['id']);
+    majNotificationsPersonne($_GET['id']);
+
     echo "<script>window.location = document.referrer;</script>";
 }
 ?>

@@ -69,13 +69,13 @@ if ($_SESSION['sac2_lecture']==0)
                                 <td><?php echo $data2['nb']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['sac2_lecture']==1) {?>
-                                        <a href="emplacementsContenu.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
+                                        <a href="emplacementsContenu.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['sac2_modification']==1) {?>
-                                        <a href="emplacementsForm.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
+                                        <a href="emplacementsForm.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['sac2_suppression']==1) {?>
-                                        <a href="modalDeleteConfirm.php?case=emplacementsDelete&id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=emplacementsDelete&id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

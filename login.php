@@ -28,6 +28,18 @@ require_once 'verrouIPcheck.php';
     <?php }
     ?>
 
+    <?php
+    if ($MAINTENANCE)
+    {?>
+        <div class="alert alert-info">
+            <center>
+                <h4>Mode maintenance</h4>
+                Le site est actuellement en cours de maintenance. Seuls les administrateurs sont autorisés à se connecter.
+            </center>
+        </div>
+    <?php }
+    ?>
+
 
     <?php
     if (checkIP($_SERVER['REMOTE_ADDR'])==0)

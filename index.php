@@ -29,16 +29,17 @@ require_once('logCheck.php');
 
     <!-- Main content -->
     <section class="content">
+    	<?php
+    		if ($MAINTENANCE)
+    		{
+    			echo '<div class="alert alert-warning alert-dismissible">';
+		        echo '<i class="icon fa fa-wrench"></i> Mode maintenance activé.';
+		        echo '</div>';
+    		}
+    	?>
         <?php include('confirmationBox.php'); ?>
         <div class="row">
 
-            <?php
-            
-            $query = $db->query('SELECT COUNT(*) as nb FROM LOTS_LOTS WHERE alerteConfRef = 1 AND idEtat = 1;');
-            $data = $query->fetch();
-            $nbLotsNOK = $data['nb'];
-            ?>
-			
 			<?php
 				if($_SESSION['conf_indicateur1Accueil']==1)
 				{ ?>
@@ -161,7 +162,10 @@ require_once('logCheck.php');
 				{ ?>
 	            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
 	                <?php
-	                if ($nbLotsNOK>0)
+		            $query = $db->query('SELECT COUNT(*) as nb FROM LOTS_LOTS WHERE alerteConfRef = 1 AND idEtat = 1;');
+		            $data = $query->fetch();
+            
+	                if ($data['nb']>0)
 	                { ?>
 	
 	                    <div class="info-box">
@@ -169,7 +173,7 @@ require_once('logCheck.php');
 	
 	                        <div class="info-box-content">
 	                            <span class="info-box-text">Référentiels:</span>
-	                            <span class="info-box-number"><?php echo $nbLotsNOK; ?></span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
 	                            <span class="info-box-more">Cliquer sur l'icone</span>
 	                        </div>
 	                        <!-- /.info-box-content -->
@@ -182,7 +186,7 @@ require_once('logCheck.php');
 	
 	                        <div class="info-box-content">
 	                            <span class="info-box-text">Référentiels:</span>
-	                            <span class="info-box-number"><?php echo $nbLotsNOK; ?></span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
 	                        </div>
 	                        <!-- /.info-box-content -->
 	                    </div>
@@ -349,80 +353,85 @@ require_once('logCheck.php');
         </div>
 
 		<div class="row">	
-	        <div class="col-md-12">
-	            <div class="box box-success">
-	                <div class="box-header with-border">
-	                    <i class="fa fa-ambulance"></i>
-	
-	                    <h3 class="box-title">Lots dont j'ai la charge</h3>
-	                </div>
-	
-	                <!-- /.box-header -->
-	                <div class="box-body">
-	                    <table class="table table-bordered">
-	                        <tr>
-	                            <th>Libelle</th>
-	                            <th>Etat</th>
-	                            <th>Référentiel</th>
-	                            <th>Prochain inventaire</th>
-	                            <th></th>
-	                        </tr>
-	                        <?php
-	                        $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN ETATS s on l.idEtat = s.idEtat LEFT OUTER JOIN LIEUX e ON l.idLieu = e.idLieu LEFT OUTER JOIN PERSONNE_REFERENTE p on l.idPersonne = p.idPersonne WHERE l.idPersonne = :idPersonne;');
-	                        $query->execute(array('idPersonne' => $_SESSION['idPersonne']));
-	                        while ($data = $query->fetch())
-	                        {
-	                            ?>
-	                            <tr>
-	                                <td><?php echo $data['libelleLot']; ?></td>
-	                                <td><?php echo $data['libelleEtat']; ?></td>
-	                                <td>
-		                                <?php
-	                                    if ($data['libelleTypeLot'] == Null)
-	                                    {
-	                                        ?><span class="badge bg-orange">NA</span><?php
-	                                    }
-	                                    else
-	                                    {
-	                                        if ($data['alerteConfRef']==0)
-	                                        {
-	                                            ?><span class="badge bg-green"><?php echo $data['libelleTypeLot']; ?></span><?php
-	                                        }
-	                                        else
-	                                        {
-	                                            ?><span class="badge bg-red"><?php echo $data['libelleTypeLot']; ?></span><?php
-	                                        }
-	                                    }
-	                                    ?>
-	                                </td>
-	                                <td><?php
-	                                    if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) < date('Y-m-d'))
-	                                    {
-	                                        ?><span class="badge bg-red"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
-	                                    }
-	                                    else if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) == date('Y-m-d'))
-	                                    {
-	                                        ?><span class="badge bg-orange"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
-	                                    }
-	                                    else
-	                                    {
-	                                        ?><span class="badge bg-green"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
-	                                    }
-	                                    ?>
-	                                </td>
-	                                <td>
-		                                <?php if ($_SESSION['lots_lecture']==1) {?>
-	                                        <a href="lotsContenu.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
-	                                    <?php }?>
-	                                </td>
-	                            </tr>
-	                            <?php
-	                        }
-	                        $query->closeCursor(); ?>
-	                    </table>
-	                </div>
-	            </div>
-	        </div>
+			<?php
+				if ($_SESSION['lots_lecture'] OR $_SESSION['lots_ajout'] OR $_SESSION['lots_modification'] OR $_SESSION['lots_suppression'] OR $_SESSION['sac_lecture'] OR $_SESSION['sac_ajout'] OR $_SESSION['sac_modification'] OR $_SESSION['sac_suppression'] OR $_SESSION['sac2_lecture'] OR $_SESSION['sac2_ajout'] OR $_SESSION['sac2_modification'] OR $_SESSION['sac2_suppression'] OR $_SESSION['materiel_lecture'] OR $_SESSION['materiel_ajout'] OR $_SESSION['materiel_modification'] OR $_SESSION['materiel_suppression'])
+				{
+			?>
+		        <div class="col-md-12">
+		            <div class="box box-success">
+		                <div class="box-header with-border">
+		                    <i class="fa fa-ambulance"></i>
+		
+		                    <h3 class="box-title">Lots dont j'ai la charge</h3>
+		                </div>
+		
+		                <!-- /.box-header -->
+		                <div class="box-body">
+		                    <table class="table table-bordered">
+		                        <tr>
+		                            <th>Libelle</th>
+		                            <th>Etat</th>
+		                            <th>Référentiel</th>
+		                            <th>Prochain inventaire</th>
+		                            <th></th>
+		                        </tr>
+		                        <?php
+		                        $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN ETATS s on l.idEtat = s.idEtat LEFT OUTER JOIN LIEUX e ON l.idLieu = e.idLieu LEFT OUTER JOIN PERSONNE_REFERENTE p on l.idPersonne = p.idPersonne WHERE l.idPersonne = :idPersonne;');
+		                        $query->execute(array('idPersonne' => $_SESSION['idPersonne']));
+		                        while ($data = $query->fetch())
+		                        {
+		                            ?>
+		                            <tr>
+		                                <td><?php echo $data['libelleLot']; ?></td>
+		                                <td><?php echo $data['libelleEtat']; ?></td>
+		                                <td>
+			                                <?php
+		                                    if ($data['libelleTypeLot'] == Null)
+		                                    {
+		                                        ?><span class="badge bg-orange">NA</span><?php
+		                                    }
+		                                    else
+		                                    {
+		                                        if ($data['alerteConfRef']==0)
+		                                        {
+		                                            ?><span class="badge bg-green"><?php echo $data['libelleTypeLot']; ?></span><?php
+		                                        }
+		                                        else
+		                                        {
+		                                            ?><span class="badge bg-red"><?php echo $data['libelleTypeLot']; ?></span><?php
+		                                        }
+		                                    }
+		                                    ?>
+		                                </td>
+		                                <td><?php
+		                                    if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) < date('Y-m-d'))
+		                                    {
+		                                        ?><span class="badge bg-red"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+		                                    }
+		                                    else if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) == date('Y-m-d'))
+		                                    {
+		                                        ?><span class="badge bg-orange"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+		                                    }
+		                                    else
+		                                    {
+		                                        ?><span class="badge bg-green"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+		                                    }
+		                                    ?>
+		                                </td>
+		                                <td>
+			                                <?php if ($_SESSION['lots_lecture']==1) {?>
+		                                        <a href="lotsContenu.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
+		                                    <?php }?>
+		                                </td>
+		                            </tr>
+		                            <?php
+		                        }
+		                        $query->closeCursor(); ?>
+		                    </table>
+		                </div>
+		            </div>
+		        </div>
+		    <?php } ?>
 	        <div class="col-md-4">
 	            <div class="box box-success">
 	
@@ -430,7 +439,7 @@ require_once('logCheck.php');
 	                    <i class="fa fa-bullhorn"></i>
 	                    <h3 class="box-title">Messages généraux</h3>
 	                    <div class="box-tools pull-right">
-	                    	<?php if ($_SESSION['messages_ajout']==1) {?><a href="messagesForm.php" class="btn btn-sm modal-form"><i class="fa fa-plus"></i></a><?php } ?>
+	                    	<?php if ($_SESSION['messages_ajout']==1) {?><a href="messagesForm.php" class="btn btn-sm modal-form" title="Ajouter un message"><i class="fa fa-plus"></i></a><?php } ?>
 	                    </div>
 	                </div>
 	
@@ -467,92 +476,129 @@ require_once('logCheck.php');
 	            		<?php
 	            			$events = [];
 
-	            			$query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE peremptionNotification IS NOT NULL AND idEtat = 1;');
-	                        while ($data = $query->fetch())
+                    		$lots = $_SESSION['lots_lecture'] OR $_SESSION['sac_lecture'] OR $_SESSION['sac2_lecture'] OR $_SESSION['materiel_lecture'];
+                    		$reserves = $_SESSION['reserve_lecture'];
+                    		$vehicules = $_SESSION['vehicules_lecture'];
+                    		$commandes = $_SESSION['commande_lecture'];
+
+                    		if($lots)
+                    		{
+		            			$query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE peremptionNotification IS NOT NULL AND idEtat = 1;');
+		                        while ($data = $query->fetch())
+		                        {
+		                        	$events[] = [
+	                                    'date'     => $data['peremption'],
+	                                    'title'    => 'Peremption',
+	                                    'subTitle' => $data['libelleLot'] . ' > ' . $data['libelleSac'] . ' > ' . $data['libelleEmplacement'] . ' > ' . $data['libelleMateriel'],
+	                                    'color'    => '#dd4b39',
+	                                    'url'      => 'indexModalCalendrier.php?case=premptionLot&id='.$data['idElement'],
+	                                ];
+		                        }
+                    		}
+
+                    		if ($reserves)
+                    		{
+		                        $query = $db->query('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur=c.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue WHERE peremptionReserve IS NOT NULL;');
+		                        while ($data = $query->fetch())
+		                        {
+		                        	$events[] = [
+	                                    'date'     => $data['peremptionReserve'],
+	                                    'title'    => 'Peremption',
+	                                    'subTitle' => $data['libelleConteneur'] . ' > ' . $data['libelleMateriel'],
+	                                    'color'    => '#dd4b39',
+	                                    'url'      => 'indexModalCalendrier.php?case=premptionReserve&id='.$data['idReserveElement'],
+	                                ];
+		                        }
+		                    }
+
+	                        if ($lots)
 	                        {
-	                        	$events[] = [
-                                    'date'     => $data['peremption'],
-                                    'title'    => 'Peremption',
-                                    'subTitle' => $data['libelleLot'] . ' > ' . $data['libelleSac'] . ' > ' . $data['libelleEmplacement'] . ' > ' . $data['libelleMateriel'],
-                                    'color'    => '#dd4b39',
-                                ];
+	                        	$query = $db->query('SELECT * FROM LOTS_LOTS WHERE idEtat = 1;');
+    	                        while ($data = $query->fetch())
+    	                        {
+    	                        	$events[] = [
+                                        'date'     => date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +'.$data['frequenceInventaire'].' day')),
+                                        'title'    => 'Inventaire',
+                                        'subTitle' => $data['libelleLot'],
+                                        'color'    => '#00c0ef',
+                                        'url'      => 'indexModalCalendrier.php?case=inventaireLot&id='.$data['idLot'],
+                                    ];
+    	                        }
+        	            	}
+
+        	            	if ($commandes)
+        	            	{
+        	            		$query = $db->query('SELECT * FROM COMMANDES WHERE idEtat = 4 AND dateLivraisonPrevue IS NOT NULL;');
+		                        while ($data = $query->fetch())
+		                        {
+		                        	$events[] = [
+	                                    'date'     => date_format(date_create($data['dateLivraisonPrevue']), 'Y-m-d'),
+	                                    'title'    => 'Livraison commande',
+	                                    'subTitle' => $data['idCommande'],
+	                                    'color'    => '#00a65a',
+	                                    'url'      => 'indexModalCalendrier.php?case=commandes&id='.$data['idCommande'],
+	                                ];
+		                        }
+		                    }
+
+	                        if ($vehicules)
+	                        {
+		                        $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND dateNextRevision IS NOT NULL;');
+		                        while ($data = $query->fetch())
+		                        {
+		                        	$events[] = [
+	                                    'date'     => date_format(date_create($data['dateNextRevision']), 'Y-m-d'),
+	                                    'title'    => 'Révision',
+	                                    'subTitle' => $data['libelleVehicule'],
+	                                    'color'    => '#f39c12',
+	                                    'url'      => 'indexModalCalendrier.php?case=vehiculesRev&id='.$data['idVehicule'],
+	                                ];
+		                        }
 	                        }
 
-	                        $query = $db->query('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur=c.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue WHERE peremptionReserve IS NOT NULL;');
-	                        while ($data = $query->fetch())
+	                        if ($vehicules)
 	                        {
-	                        	$events[] = [
-                                    'date'     => $data['peremptionReserve'],
-                                    'title'    => 'Peremption',
-                                    'subTitle' => $data['libelleConteneur'] . ' > ' . $data['libelleMateriel'],
-                                    'color'    => '#dd4b39',
-                                ];
+		                        $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND dateNextCT IS NOT NULL;');
+		                        while ($data = $query->fetch())
+		                        {
+		                        	$events[] = [
+	                                    'date'     => date_format(date_create($data['dateNextCT']), 'Y-m-d'),
+	                                    'title'    => 'CT',
+	                                    'subTitle' => $data['libelleVehicule'],
+	                                    'color'    => '#f39c12',
+	                                    'url'      => 'indexModalCalendrier.php?case=vehiculesCT&id='.$data['idVehicule'],
+	                                ];
+		                        }
 	                        }
 
-	                        $query = $db->query('SELECT * FROM LOTS_LOTS WHERE idEtat = 1;');
-	                        while ($data = $query->fetch())
+	                        if ($vehicules)
 	                        {
-	                        	$events[] = [
-                                    'date'     => date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +'.$data['frequenceInventaire'].' day')),
-                                    'title'    => 'Inventaire',
-                                    'subTitle' => $data['libelleLot'],
-                                    'color'    => '#00c0ef',
-                                ];
+		                        $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND assuranceExpiration IS NOT NULL;');
+		                        while ($data = $query->fetch())
+		                        {
+		                        	$events[] = [
+	                                    'date'     => date_format(date_create($data['assuranceExpiration']), 'Y-m-d'),
+	                                    'title'    => 'Assurance',
+	                                    'subTitle' => $data['libelleVehicule'],
+	                                    'color'    => '#f39c12',
+	                                    'url'      => 'indexModalCalendrier.php?case=vehiculesAssu&id='.$data['idVehicule'],
+	                                ];
+		                        }
 	                        }
 
-	                        $query = $db->query('SELECT * FROM COMMANDES WHERE idEtat = 4 AND dateLivraisonPrevue IS NOT NULL;');
-	                        while ($data = $query->fetch())
+	                        if ($reserves)
 	                        {
-	                        	$events[] = [
-                                    'date'     => date_format(date_create($data['dateLivraisonPrevue']), 'Y-m-d'),
-                                    'title'    => 'Livraison commande',
-                                    'subTitle' => $data['idCommande'],
-                                    'color'    => '#00a65a',
-                                ];
-	                        }
-
-	                        $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND dateNextRevision IS NOT NULL;');
-	                        while ($data = $query->fetch())
-	                        {
-	                        	$events[] = [
-                                    'date'     => date_format(date_create($data['dateNextRevision']), 'Y-m-d'),
-                                    'title'    => 'Révision',
-                                    'subTitle' => $data['libelleVehicule'],
-                                    'color'    => '#f39c12',
-                                ];
-	                        }
-
-	                        $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND dateNextCT IS NOT NULL;');
-	                        while ($data = $query->fetch())
-	                        {
-	                        	$events[] = [
-                                    'date'     => date_format(date_create($data['dateNextCT']), 'Y-m-d'),
-                                    'title'    => 'CT',
-                                    'subTitle' => $data['libelleVehicule'],
-                                    'color'    => '#f39c12',
-                                ];
-	                        }
-
-	                        $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND assuranceExpiration IS NOT NULL;');
-	                        while ($data = $query->fetch())
-	                        {
-	                        	$events[] = [
-                                    'date'     => date_format(date_create($data['assuranceExpiration']), 'Y-m-d'),
-                                    'title'    => 'Assurance',
-                                    'subTitle' => $data['libelleVehicule'],
-                                    'color'    => '#f39c12',
-                                ];
-	                        }
-
-	                        $query = $db->query('SELECT * FROM RESERVES_CONTENEUR;');
-	                        while ($data = $query->fetch())
-	                        {
-	                        	$events[] = [
-                                    'date'     => date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +'.$data['frequenceInventaire'].' day')),
-                                    'title'    => 'Inventaire',
-                                    'subTitle' => $data['libelleConteneur'],
-                                    'color'    => '#3c8dbc',
-                                ];
+		                        $query = $db->query('SELECT * FROM RESERVES_CONTENEUR;');
+		                        while ($data = $query->fetch())
+		                        {
+		                        	$events[] = [
+	                                    'date'     => date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +'.$data['frequenceInventaire'].' day')),
+	                                    'title'    => 'Inventaire',
+	                                    'subTitle' => $data['libelleConteneur'],
+	                                    'color'    => '#3c8dbc',
+	                                    'url'      => 'indexModalCalendrier.php?case=inventaireReserve&id='.$data['idConteneur'],
+	                                ];
+		                        }
 	                        }
             			?>
                         <div id="calendar"></div>
@@ -582,7 +628,6 @@ require_once('logCheck.php');
 
 <script>
     $(function () {
-        console.log("test");
         var events = <?= json_encode($events) ?>;
 
         var calendarEvents = [];
@@ -594,7 +639,8 @@ require_once('logCheck.php');
                 start: new Date(dateParts[0], parseInt(dateParts[1]) - 1, dateParts[2]),
                 backgroundColor: this.color,
                 borderColor: this.color,
-                allDay: true
+                allDay: true,
+                url: this.url,
             })
         });
 
@@ -605,7 +651,13 @@ require_once('logCheck.php');
                 right: 'month,agendaWeek,agendaDay'
             },
             lang: 'fr',
-            //Random default events
+
+            eventRender: function(event, element) {
+			    if ($(element).is('a')) {
+				    $(element).addClass('modal-form');
+				}
+			},
+
             events: calendarEvents
         });
     });

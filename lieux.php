@@ -74,10 +74,10 @@ if ($_SESSION['lieux_lecture']==0)
                                 <td><?php echo $data['detailsLieu']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['lieux_modification']==1) {?>
-                                        <a href="lieuxForm.php?id=<?=$data['idLieu']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
+                                        <a href="lieuxForm.php?id=<?=$data['idLieu']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['lieux_suppression']==1) {?>
-                                        <a href="modalDeleteConfirm.php?case=lieuxDelete&id=<?=$data['idLieu']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=lieuxDelete&id=<?=$data['idLieu']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

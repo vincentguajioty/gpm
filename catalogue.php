@@ -63,10 +63,10 @@ require_once('logCheck.php');
                                 <td><?php echo $data['commentairesMateriel']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['catalogue_modification']==1) {?>
-                                        <a href="catalogueForm.php?id=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
+                                        <a href="catalogueForm.php?id=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['catalogue_suppression']==1) {?>
-                                        <a href="modalDeleteConfirm.php?case=catalogueDelete&id=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=catalogueDelete&id=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

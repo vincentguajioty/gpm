@@ -48,7 +48,7 @@
             locale: 'fr'
         });
 
-        $('.modal-form').click(function (e) {
+        $('body').on('click', '.modal-form', function (e) {
             e.preventDefault();
 
             $.ajax({
@@ -80,24 +80,9 @@
                     });
                 }
             });
+            return false;
         });
     });
-</script>
-
-<script language="JavaScript">
-        function montrer_cacher(laCase,leCalk,leCalk2)
-        {
-            if (laCase.checked) //la case est cochée -> on montre le calque
-            {
-                document.getElementById(leCalk).style.visibility="visible";
-                document.getElementById(leCalk2).style.visibility="visible";
-            }
-            else //la case n'est pas cochée -> on cache le calque
-            {
-                document.getElementById(leCalk).style.visibility="hidden";
-                document.getElementById(leCalk2).style.visibility="hidden";
-            }
-        }
 </script>
 
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
@@ -124,13 +109,6 @@
 //        listenSelect('select[name="materielLot"]', 'select[name="materielSac"]');
 //        listenSelect('select[name="materielSac"]', 'select[name="libelleEmplacement"]');
         $('select[name="materielSac"], select[name="libelleEmplacement"]').children('option').prop('disabled', true);
-    });
-</script>
-<script>
-    $(function () {
-        $(".checkAll").change(function () {
-            $("input:checkbox."+ $(this).attr('id')).prop('checked', $(this).prop("checked"));
-        });
     });
 </script>
 <script>

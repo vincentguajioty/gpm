@@ -24,6 +24,16 @@ else
                                                 mailPersonne,
                                                 telPersonne,
                                                 fonction,
+                                                notif_lots_manquants,
+												notif_lots_peremptions,
+												notif_lots_inventaires,
+												notif_lots_conformites,
+												notif_reserves_manquants,
+												notif_reserves_peremptions,
+												notif_reserves_inventaires,
+												notif_vehicules_assurances,
+												notif_vehicules_revisions,
+												notif_vehicules_ct,
                                                 conf_indicateur1Accueil,
                                                 conf_indicateur2Accueil,
                                                 conf_indicateur3Accueil,
@@ -31,7 +41,8 @@ else
                                                 conf_indicateur5Accueil,
                                                 conf_indicateur6Accueil ,
                                                 conf_indicateur7Accueil ,
-                                                conf_indicateur8Accueil) VALUES(:idProfil,
+                                                conf_indicateur8Accueil,
+                                                conf_accueilRefresh) VALUES(:idProfil,
                                                 :identifiant,
                                                 :motDePasse,
                                                 :nomPersonne,
@@ -39,7 +50,9 @@ else
                                                 :mailPersonne,
                                                 :telPersonne,
                                                 :fonction,
-                                                1, 1, 1, 1, 1, 1, 1, 1);'
+                                                1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                                1, 1, 1, 1, 1, 1, 1, 1,
+                                                120);'
                         );
     $query->execute(array(
         'idProfil'       => $_POST['libelleProfil'],
@@ -88,6 +101,11 @@ else
             writeInLogs("Erreur lors de l'envoi du mail d'accueil à " . $_POST['identifiant'], '5');
         }
     }
+
+    $query = $db->query('SELECT MAX(idPersonne) as idPersonne FROM PERSONNE_REFERENTE;');
+    $data = $query->fetch();
+    majIndicateursPersonne($data['idPersonne']);
+    majNotificationsPersonne($data['idPersonne']);
 
     echo "<script>window.location = document.referrer;</script>";
 

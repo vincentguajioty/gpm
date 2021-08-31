@@ -72,6 +72,11 @@ require_once('logCheck.php');
                             </div>
                             <div class="checkbox">
                                 <label>
+                                    <input type="checkbox" value="1" name="maintenance" <?php if (isset($_GET['id']) AND ($data['maintenance']==1)) {echo 'checked';} ?>> Se connecter même en mode maintenance
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
                                     <input type="checkbox" value="1" name="annuaire_mdp" <?php if (isset($_GET['id']) AND ($data['annuaire_mdp']==1)) {echo 'checked';} ?>> Réinitialiser les mots de passe des autres utilisateurs
                                 </label>
                             </div>
@@ -86,37 +91,6 @@ require_once('logCheck.php');
                                 </label>
                             </div>
                             </br>
-                        </div>
-                        <div class="form-group">
-                            <label>Notifications (lots et réserve):</label>
-                            </br>
-                            <div class="notifications">
-                                <input type="radio" name="notifications" id="optionsRadios1" value="0" <?php
-                                if (isset($_GET['id']) AND $data['notifications']==0)
-                                {
-                                    echo "checked";
-                                }
-                                ?>>
-                                Notifications mail désactivées
-                            </div>
-                            <div class="notifications">
-                                <input type="radio" name="notifications" id="optionsRadios2" value="1" <?php
-                                if (isset($_GET['id']) AND $data['notifications']==1)
-                                {
-                                    echo "checked";
-                                }
-                                ?>>
-                                Notifications mail uniquement sur alerte
-                            </div>
-                            <div class="notifications">
-                                <input type="radio" name="notifications" id="optionsRadios3" value="2" <?php
-                                if (isset($_GET['id']) AND $data['notifications']==2)
-                                {
-                                    echo "checked";
-                                }
-                                ?>>
-                                Notifications mail journalières
-                            </div>
                         </div>
                         <table class="table table-bordered">
                             <tr>
@@ -352,7 +326,7 @@ require_once('logCheck.php');
                                 <div class="form-group">
                                     <select class="form-control select2" style="width: 100%;" name="identifiant">
                                         <?php
-                                        $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE WHERE idProfil = Null OR idProfil != :idProfil;');
+                                        $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE WHERE idProfil IS Null OR idProfil != :idProfil;');
                                         $query->execute(array(
                                             'idProfil' => $_GET['id']
                                         ));

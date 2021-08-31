@@ -93,8 +93,20 @@ switch($data['version'])
         break;
 		
     case '5.6':
+        $query = $db->query(file_get_contents ("update5.7.sql"));
+        $query = $db->query('SELECT idPersonne FROM PERSONNE_REFERENTE;');
+        while($data = $query->fetch())
+        {
+            majIndicateursPersonne($data['idPersonne']);
+            majNotificationsPersonne($data['idPersonne']);
+        }
+        echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
+        break;
+
+    case '5.7':
         echo "<script type='text/javascript'>document.location.replace('INSTALLFINISH.php');</script>";
         break;
+
 
     default:
         echo "<script type='text/javascript'>document.location.replace('INSTALLERROR.php');</script>";

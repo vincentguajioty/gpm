@@ -15,6 +15,12 @@ if ($_SESSION['connexion_connexion'] == 0)
     exit;
 }
 
+if ($MAINTENANCE == 1 AND $_SESSION['maintenance'] == 0)
+{
+    echo "<script type='text/javascript'>document.location.replace('logout.php');</script>";
+    exit;
+}
+
 if ((strpos($_SERVER['HTTP_REFERER'], "lotsInventaireNew.php") == false) AND (strpos($_SERVER['HTTP_REFERER'], "reserveInventaireNew.php") == false) AND (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > $LOGOUTTEMP * 60)))
 {
     echo "<script type='text/javascript'>document.location.replace('logout.php');</script>";

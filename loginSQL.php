@@ -84,6 +84,20 @@ if ($data['idIP'] == "")
             'dateEchec' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - 1 days'))
         ));
 
+        if($MAINTENANCE==1 AND $data['maintenance']==0)
+        {
+        	$query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
+		    $query->execute(array(
+		        'dateEvt' => date('Y-m-d H:i:s'),
+		        'adresseIP' => $_SERVER['REMOTE_ADDR'],
+		        'utilisateurEvt' => $_POST['identifiant'],
+		        'idLogLevel' => '5',
+		        'detailEvt' => 'Connexion refusée par le mode maintenance.'
+		    ));
+		    echo "<script type='text/javascript'>document.location.replace('logout.php');</script>";
+        	exit;
+        }
+
 	    $_SESSION['idPersonne'] = $data['idPersonne'];
 	    $_SESSION['idProfil'] = $data['idProfil'];
 	    $_SESSION['libelleProfil'] = $data['libelleProfil'];
@@ -179,6 +193,7 @@ if ($data['idIP'] == "")
         $_SESSION['vehicules_types_ajout'] = $data['vehicules_types_ajout'];
         $_SESSION['vehicules_types_modification'] = $data['vehicules_types_modification'];
         $_SESSION['vehicules_types_suppression'] = $data['vehicules_types_suppression'];
+        $_SESSION['maintenance'] = $data['maintenance'];
         
         $_SESSION['conf_accueilRefresh'] = $data['conf_accueilRefresh'];
         $_SESSION['conf_indicateur1Accueil'] = $data['conf_indicateur1Accueil'];

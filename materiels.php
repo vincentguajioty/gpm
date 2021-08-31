@@ -101,13 +101,13 @@ if ($_SESSION['materiel_lecture']==0)
                                 </td>
                                 <td>
                                     <?php if ($_SESSION['reserve_ReserveVersLot']==1) {?>
-                                    	<a href="transfertResLotsFromLots.php?idElement=<?=$data['idElement']?>&idMaterielCatalogue=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-exchange"></i></a>
+                                    	<a href="transfertResLotsFromLots.php?idElement=<?=$data['idElement']?>&idMaterielCatalogue=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-success modal-form" title="Approvisionner depuis la réserve"><i class="fa fa-exchange"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['materiel_modification']==1) {?>
-                                        <a href="materielsForm.php?id=<?=$data['idElement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
+                                        <a href="materielsForm.php?id=<?=$data['idElement']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['materiel_suppression']==1) {?>
-                                        <a href="modalDeleteConfirm.php?case=materielsDelete&id=<?=$data['idElement']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=materielsDelete&id=<?=$data['idElement']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

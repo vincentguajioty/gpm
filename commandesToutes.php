@@ -96,7 +96,7 @@ if ($_SESSION['commande_lecture']==0)
                                 <td><?php echo $data['demandeur']; ?></td>
                                 <td><?php echo $data['affectee']; ?></td>
                                 <td>
-                                    <a href="commandeView.php?id=<?=$data['idCommande']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
+                                    <a href="commandeView.php?id=<?=$data['idCommande']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                 </td>
                             </tr>
                             <?php

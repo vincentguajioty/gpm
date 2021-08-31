@@ -5,7 +5,7 @@ function createDB()
 {
     //---------------------- BASE DE DONNEES ----------------------
     $SERVEURDB = 'x.x.x.x'; //adresse IP du serveur entre simple cote, ex: $SERVEUR = '192.169.1.5';
-    $DBNAME = 'xxx'; //nom de la base de données, ex: $DB = 'GPM';
+    $DBNAME = 'GPM'; //nom de la base de données, ex: $DB = 'GPM';
     $CHARSET = 'utf8'; //type d'interclassement, utf8 étant recommandé, ex: $CHARSET = 'utf8';
     $USER = 'xxx'; //nom d'utilisateur d'accès à la base de données, ex: $USER = 'utilisateur';
     $PASSWORD = 'xxx'; //mot de passe d'accès à la base de données, ex: $PASSWORD = 'motDePasse';
@@ -185,6 +185,109 @@ function checkOneConf($idLot)
 	}
 }
 
+function majIndicateursPersonne($idPersonne)
+{
+    global $db;
 
+    $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE pe LEFT OUTER JOIN PROFILS po ON pe.idProfil = po.idProfil WHERE idPersonne = :idPersonne;');
+    $query -> execute(array('idPersonne' => $idPersonne));
+    $data = $query->fetch();
+
+    $conf_indicateur1Accueil = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['conf_indicateur1Accueil']);
+
+    $conf_indicateur2Accueil = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['conf_indicateur2Accueil']);
+
+    $conf_indicateur3Accueil = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['conf_indicateur3Accueil']);
+
+    $conf_indicateur4Accueil = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['conf_indicateur4Accueil']);
+
+    $conf_indicateur5Accueil = ($data['reserve_lecture']) && ($data['conf_indicateur5Accueil']);
+
+    $conf_indicateur6Accueil = ($data['reserve_lecture']) && ($data['conf_indicateur6Accueil']);
+
+    $conf_indicateur7Accueil = ($data['vehicules_lecture']) && ($data['conf_indicateur7Accueil']);
+
+    $conf_indicateur8Accueil = ($data['vehicules_lecture']) && ($data['conf_indicateur8Accueil']);
+
+    $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET conf_indicateur1Accueil = :conf_indicateur1Accueil, conf_indicateur2Accueil = :conf_indicateur2Accueil, conf_indicateur3Accueil = :conf_indicateur3Accueil, conf_indicateur4Accueil = :conf_indicateur4Accueil, conf_indicateur5Accueil = :conf_indicateur5Accueil, conf_indicateur6Accueil = :conf_indicateur6Accueil, conf_indicateur7Accueil = :conf_indicateur7Accueil, conf_indicateur8Accueil = :conf_indicateur8Accueil WHERE idPersonne = :idPersonne ;');
+    $query->execute(array(
+        'idPersonne' => $idPersonne,
+        'conf_indicateur1Accueil' => $conf_indicateur1Accueil,
+        'conf_indicateur2Accueil' => $conf_indicateur2Accueil,
+        'conf_indicateur3Accueil' => $conf_indicateur3Accueil,
+        'conf_indicateur4Accueil' => $conf_indicateur4Accueil,
+        'conf_indicateur5Accueil' => $conf_indicateur5Accueil,
+        'conf_indicateur6Accueil' => $conf_indicateur6Accueil,
+        'conf_indicateur7Accueil' => $conf_indicateur7Accueil,
+        'conf_indicateur8Accueil' => $conf_indicateur8Accueil
+    ));
+
+    writeInLogs("Revue des indicateurs d'accueil pour la personne " . $idPersonne, '3');
+}
+
+function majIndicateursProfil($idProfil)
+{
+    global $db;
+    $query = $db->prepare('SELECT idPersonne FROM PERSONNE_REFERENTE WHERE idProfil = :idProfil;');
+    $query -> execute(array('idProfil' => $idProfil));
+
+    writeInLogs("Revue des indicateurs d'accueil pour le profil " . $idProfil, '3');
+
+    while ($data = $query->fetch())
+    {
+        majIndicateursPersonne($data['idPersonne']);
+    }
+}
+
+function majNotificationsPersonne($idPersonne)
+{
+	global $db;
+
+    $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE pe LEFT OUTER JOIN PROFILS po ON pe.idProfil = po.idProfil WHERE idPersonne = :idPersonne;');
+    $query -> execute(array('idPersonne' => $idPersonne));
+    $data = $query->fetch();
+    
+    $notif_lots_manquants = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_manquants']);
+	$notif_lots_peremptions = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_peremptions']);
+	$notif_lots_inventaires = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_inventaires']);
+	$notif_lots_conformites = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_conformites']);
+	$notif_reserves_manquants = ($data['reserve_lecture']) && ($data['notif_reserves_manquants']);
+	$notif_reserves_peremptions = ($data['reserve_lecture']) && ($data['notif_reserves_peremptions']);
+	$notif_reserves_inventaires = ($data['reserve_lecture']) && ($data['notif_reserves_inventaires']);
+	$notif_vehicules_assurances = ($data['vehicules_lecture']) && ($data['notif_vehicules_assurances']);
+	$notif_vehicules_revisions = ($data['vehicules_lecture']) && ($data['notif_vehicules_revisions']);
+	$notif_vehicules_ct = ($data['vehicules_lecture']) && ($data['notif_vehicules_ct']);
+	
+	$query = $db->prepare('UPDATE PERSONNE_REFERENTE SET notif_lots_manquants = :notif_lots_manquants, notif_lots_peremptions = :notif_lots_peremptions, notif_lots_inventaires = :notif_lots_inventaires, notif_lots_conformites = :notif_lots_conformites, notif_reserves_manquants = :notif_reserves_manquants, notif_reserves_peremptions = :notif_reserves_peremptions, notif_reserves_inventaires = :notif_reserves_inventaires, notif_vehicules_assurances = :notif_vehicules_assurances, notif_vehicules_revisions = :notif_vehicules_revisions, notif_vehicules_ct = :notif_vehicules_ct WHERE idPersonne = :idPersonne ;');
+    $query->execute(array(
+        'idPersonne' => $idPersonne,
+        'notif_lots_manquants' => $notif_lots_manquants,
+		'notif_lots_peremptions' => $notif_lots_peremptions,
+		'notif_lots_inventaires' => $notif_lots_inventaires,
+		'notif_lots_conformites' => $notif_lots_conformites,
+		'notif_reserves_manquants' => $notif_reserves_manquants,
+		'notif_reserves_peremptions' => $notif_reserves_peremptions,
+		'notif_reserves_inventaires' => $notif_reserves_inventaires,
+		'notif_vehicules_assurances' => $notif_vehicules_assurances,
+		'notif_vehicules_revisions' => $notif_vehicules_revisions,
+		'notif_vehicules_ct' => $notif_vehicules_ct
+    ));
+    
+    writeInLogs("Revue des notifications pour la personne " . $idPersonne, '3');
+}
+
+function majNotificationsProfil($idProfil)
+{
+    global $db;
+    $query = $db->prepare('SELECT idPersonne FROM PERSONNE_REFERENTE WHERE idProfil = :idProfil;');
+    $query -> execute(array('idProfil' => $idProfil));
+
+    writeInLogs("Revue des notifications pour le profil " . $idProfil, '3');
+
+    while ($data = $query->fetch())
+    {
+        majNotificationsPersonne($data['idPersonne']);
+    }
+}
 
 ?>

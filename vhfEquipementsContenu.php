@@ -126,7 +126,7 @@ if ($_SESSION['vhf_equipement_lecture']==0)
                                             <td><?php echo $data2['chName']; ?></td>
                                             <td>
                                                 <?php if ($_SESSION['vhf_canal_lecture']==1) {?>
-                                                    <a href="vhfCanauxContenu.php?id=<?=$data2['idVhfCanal']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
+                                                    <a href="vhfCanauxContenu.php?id=<?=$data2['idVhfCanal']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                                 <?php }?>
                                             </td>
                                         </tr>
@@ -160,15 +160,15 @@ if ($_SESSION['vhf_equipement_lecture']==0)
                                             <td>
                                                 <?php if($_SESSION['vhf_equipement_lecture']==1){
                                                     if ($data2['formatDocVHF'] == 'pdf' OR $data2['formatDocVHF'] == 'jpg' OR $data2['formatDocVHF'] == 'jpeg' OR $data2['formatDocVHF'] == 'png'){?>
-                                                        <a href="vhfEquipementsDocView.php?idDoc=<?=$data2['idDocVHF']?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                                                        <a href="vhfEquipementsDocView.php?idDoc=<?=$data2['idDocVHF']?>" class="btn btn-xs btn-info" title="Visualiser"><i class="fa fa-eye"></i></a>
                                                     <?php } else { ?>
                                                         <a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                                     <?php }}?>
                                                 <?php if($_SESSION['vhf_equipement_lecture']==1){ ?>
-                                                    <a href="vhfEquipementsDocDL.php?idDoc=<?=$data2['idDocVHF']?>" class="btn btn-xs btn-success"><i class="fa fa-download"></i></a>
+                                                    <a href="vhfEquipementsDocDL.php?idDoc=<?=$data2['idDocVHF']?>" class="btn btn-xs btn-success" title="Télécharger"><i class="fa fa-download"></i></a>
                                                 <?php }?>
                                                 <?php if($_SESSION['vhf_equipement_suppression']==1){ ?>
-                                                    <a href="vhfEquipementsDocDelete.php?idDoc=<?=$data2['idDocVHF']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-minus"></i></a>
+                                                    <a href="vhfEquipementsDocDelete.php?idDoc=<?=$data2['idDocVHF']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');" title="Supprimer"><i class="fa fa-minus"></i></a>
                                                 <?php }?>
                                             </td>
                                         </tr>
@@ -182,7 +182,7 @@ if ($_SESSION['vhf_equipement_lecture']==0)
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td><a href="vhfEquipementsDocForm.php?idVhfEquipement=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-plus"></i></a></td>
+                                        <td><a href="vhfEquipementsDocForm.php?idVhfEquipement=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a></td>
                                     <tr>
                                         <?php }?>
                                 </table>

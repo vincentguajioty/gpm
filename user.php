@@ -126,33 +126,75 @@ require_once('logCheck.php');
 		                            <input type="number" min="10" class="form-control" value="<?= $_SESSION['conf_accueilRefresh'] ?>" name="conf_accueilRefresh" required>
 		                        </div>
 		                        <div class="form-group">
+		                        	<?php
+		                        		$lots = $_SESSION['lots_lecture'] OR $_SESSION['sac_lecture'] OR $_SESSION['sac2_lecture'] OR $_SESSION['materiel_lecture'];
+		                        		$reserves = $_SESSION['reserve_lecture'];
+		                        		$vehicules = $_SESSION['vehicules_lecture'];
+		                        	?>
 		                            <label>Présence des indicateurs sur la page d'accueil:</label><br/>
 			                        <div class="checkbox">
-	                                	<label><input <?php if($_SESSION['conf_indicateur1Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur1Accueil"> Matériels périmés (lots)</label>
+	                                	<label><input <?php if($_SESSION['conf_indicateur1Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur1Accueil" <?php if ($lots == 0){echo 'disabled';} ?>> Matériels périmés (lots)</label>
 	                                </div>
 	                                <div class="checkbox">
-	                                	<label><input <?php if($_SESSION['conf_indicateur2Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur2Accueil"> Matériels manquants (lots)</label>
+	                                	<label><input <?php if($_SESSION['conf_indicateur2Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur2Accueil" <?php if ($lots == 0){echo 'disabled';} ?>> Matériels manquants (lots)</label>
 	                                </div>
 	                                <div class="checkbox">
-	                                	<label><input <?php if($_SESSION['conf_indicateur3Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur3Accueil"> Lots en attente d'inventaire</label>
+	                                	<label><input <?php if($_SESSION['conf_indicateur3Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur3Accueil" <?php if ($lots == 0){echo 'disabled';} ?>> Lots en attente d'inventaire</label>
 	                                </div>
 	                                <div class="checkbox">
-	                                	<label><input <?php if($_SESSION['conf_indicateur4Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur4Accueil"> Lots non conformes</label>
+	                                	<label><input <?php if($_SESSION['conf_indicateur4Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur4Accueil" <?php if ($lots == 0){echo 'disabled';} ?>> Lots non conformes</label>
 	                                </div>
 	                                <div class="checkbox">
-	                                	<label><input <?php if($_SESSION['conf_indicateur5Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur5Accueil"> Matériels périmés (réserve)</label>
+	                                	<label><input <?php if($_SESSION['conf_indicateur5Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur5Accueil" <?php if ($reserves == 0){echo 'disabled';} ?>> Matériels périmés (réserve)</label>
 	                                </div>
 	                                <div class="checkbox">
-	                                	<label><input <?php if($_SESSION['conf_indicateur6Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur6Accueil"> Matériels manquants (réserve)</label>
+	                                	<label><input <?php if($_SESSION['conf_indicateur6Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur6Accueil" <?php if ($reserves == 0){echo 'disabled';} ?>> Matériels manquants (réserve)</label>
 	                                </div>
 	                                <div class="checkbox">
-	                                	<label><input <?php if($_SESSION['conf_indicateur7Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur7Accueil"> Assurances véhicules</label>
+	                                	<label><input <?php if($_SESSION['conf_indicateur7Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur7Accueil" <?php if ($vehicules == 0){echo 'disabled';} ?>> Assurances véhicules</label>
 	                                </div>
 	                                <div class="checkbox">
-	                                	<label><input <?php if($_SESSION['conf_indicateur8Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur8Accueil"> Contrôles techniques et révisions véhicules</label>
+	                                	<label><input <?php if($_SESSION['conf_indicateur8Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur8Accueil" <?php if ($vehicules == 0){echo 'disabled';} ?>> Contrôles techniques et révisions véhicules</label>
 	                                </div>
 		                        </div>
-		                        
+		                        <div class="form-group">
+		                        	<?php
+		                        		$query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE pe LEFT OUTER JOIN PROFILS po ON pe.idProfil = po.idProfil WHERE idPersonne = :idPersonne');
+		                        		$query->execute(array('idPersonne' => $_SESSION['idPersonne']));
+		                        		$data = $query->fetch();
+		                        	?>
+		                            <label>Abonnements aux notifications journalières par mail:</label><br/>
+			                        <div class="checkbox">
+	                                	<label><input <?php if($data['notif_lots_manquants'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_lots_manquants" <?php if ($lots == 0){echo 'disabled';} ?>> Matériels manquants (lots)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_lots_peremptions'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_lots_peremptions" <?php if ($lots == 0){echo 'disabled';} ?>> Matériels périmés (lots)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_lots_inventaires'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_lots_inventaires" <?php if ($lots == 0){echo 'disabled';} ?>> Inventaires (lots)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_lots_conformites'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_lots_conformites" <?php if ($lots == 0){echo 'disabled';} ?>> Lots non conformes</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_reserves_manquants'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_reserves_manquants" <?php if ($reserves == 0){echo 'disabled';} ?>> Matériels manquants (réserve)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_reserves_peremptions'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_reserves_peremptions" <?php if ($reserves == 0){echo 'disabled';} ?>> Matériels périmés (réserve)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_reserves_inventaires'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_reserves_inventaires" <?php if ($reserves == 0){echo 'disabled';} ?>> Inventaires (réserve)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_vehicules_assurances'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_assurances" <?php if ($vehicules == 0){echo 'disabled';} ?>> Assurances véhicules</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_vehicules_revisions'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_revisions" <?php if ($vehicules == 0){echo 'disabled';} ?>> Révisions véhicules</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_vehicules_ct'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_ct" <?php if ($vehicules == 0){echo 'disabled';} ?>> Contrôles techniques véhicules</label>
+	                                </div>
+		                        </div>
 		                        <div class="box-footer">
 		                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
 		                        </div>

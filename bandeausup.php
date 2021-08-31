@@ -21,12 +21,12 @@ require_once 'config/config.php';
             <ul class="nav navbar-nav">               
 
                 <li class="dropdown user user-menu">
-                    <a href="baseDocumentaire.php"><i class="fa fa-database"></i></a>
+                    <a href="baseDocumentaire.php" title="Base documentaire"><i class="fa fa-database"></i></a>
                 </li>
                 
                 <?php if ($_SESSION['messages_ajout']==1 OR $_SESSION['messages_suppression']==1){ ?>
                     <li class="dropdown user user-menu">
-                        <a href="messages.php"><i class="fa fa-bullhorn"></i></a>
+                        <a href="messages.php" title="Messages généraux"><i class="fa fa-bullhorn"></i></a>
                     </li>
                 <?php } ?>
 
@@ -53,7 +53,7 @@ require_once 'config/config.php';
                     </ul>
                 </li>
                 <li class="dropdown user user-menu">
-                    <a href="logout.php"><i class="fa fa-sign-out"></i></a>
+                    <a href="logout.php" title="Se déconnecter"><i class="fa fa-sign-out"></i></a>
                 </li>
             </ul>
         </div>
@@ -102,6 +102,11 @@ require_once 'config/config.php';
                     </div>
                     <div class="checkbox">
                         <label>
+                            <input disabled type="checkbox" value="1" name="maintenance" <?php if ($_SESSION['maintenance']==1) {echo 'checked';} ?>> Se connecter même en mode maitenance
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
                             <input disabled type="checkbox" value="1" name="verrouIP" <?php if($_SESSION['verrouIP'] == 1) { echo 'checked'; } ?>> Gérer les adresses IP bloquées
                         </label>
                     </div>
@@ -111,37 +116,6 @@ require_once 'config/config.php';
                         </label>
                     </div>
                     </br>
-                </div>
-                <div class="form-group">
-                    <label>Notifications (lots et réserve):</label>
-                    </br>
-                    <div class="notifications">
-                        <input disabled type="radio" name="notifications" id="optionsRadios1" value="0" <?php
-                        if ($_SESSION['notifications']==0)
-                        {
-                            echo "checked";
-                        }
-                        ?>>
-                        Notifications mail désactivées
-                    </div>
-                    <div class="notifications">
-                        <input disabled type="radio" name="notifications" id="optionsRadios2" value="1" <?php
-                        if ($_SESSION['notifications']==1)
-                        {
-                            echo "checked";
-                        }
-                        ?>>
-                        Notifications mail uniquement sur alerte
-                    </div>
-                    <div class="notifications">
-                        <input disabled type="radio" name="notifications" id="optionsRadios3" value="2" <?php
-                        if ($_SESSION['notifications']==2)
-                        {
-                            echo "checked";
-                        }
-                        ?>>
-                        Notifications mail journalières
-                    </div>
                 </div>
                 <table class="table table-bordered">
                     <tr>

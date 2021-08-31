@@ -71,13 +71,13 @@ if ($_SESSION['vhf_canal_lecture']==0)
                                 <td><?php echo $data['txCtcss']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['vhf_canal_lecture']==1) {?>
-                                        <a href="vhfCanauxContenu.php?id=<?=$data['idVhfCanal']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
+                                        <a href="vhfCanauxContenu.php?id=<?=$data['idVhfCanal']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['vhf_canal_modification']==1) {?>
-                                        <a href="vhfCanauxForm.php?id=<?=$data['idVhfCanal']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
+                                        <a href="vhfCanauxForm.php?id=<?=$data['idVhfCanal']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['vhf_canal_suppression']==1) {?>
-                                        <a href="modalDeleteConfirm.php?case=vhfCanauxDelete&id=<?=$data['idVhfCanal']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=vhfCanauxDelete&id=<?=$data['idVhfCanal']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

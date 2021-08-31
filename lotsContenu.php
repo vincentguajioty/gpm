@@ -151,7 +151,7 @@ if ($_SESSION['lots_lecture']==0)
                                     }
                                         ?></a></li>
                                 <li><a>Notifications<?php
-                                    if ($data[4]==1) /*Attention, indice passé en fonction de la requete -> si la requete change vérifier que l'indice soit toujours en même position.*/
+                                    if ($data[3]==1) /*Attention, indice passé en fonction de la requete -> si la requete change vérifier que l'indice soit toujours en même position.*/
                                     {
                                         echo '<span class="pull-right badge bg-green"><i class="fa fa-bell-o"></i></span>';
                                     }
@@ -169,10 +169,10 @@ if ($_SESSION['lots_lecture']==0)
                 <div class="col-md-12">
                     <div class="box box-success collapsed-box box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Contenu de: <?php echo $data['libelleLot']; ?></h3> <?php if ($_SESSION['lots_modification']==1) {?><a href="lotsForm.php?id=<?=$_GET['id']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?><?php if ($_SESSION['lots_lecture']==1) {?><a href="lotsInventaire.php?id=<?=$data['idLot']?>" target="_blank" class="btn btn-xs"><i class="fa fa-print"></i></a><?php }?>
+                            <h3 class="box-title">Contenu de: <?php echo $data['libelleLot']; ?></h3> <?php if ($_SESSION['lots_modification']==1) {?><a href="lotsForm.php?id=<?=$_GET['id']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?><?php if ($_SESSION['lots_lecture']==1) {?><a href="lotsInventaire.php?id=<?=$data['idLot']?>" target="_blank" class="btn btn-xs" title="Imprimer le dernier inventaire"><i class="fa fa-print"></i></a><?php }?>
                             <div class="box-tools pull-right">
                             	<?php if ($_SESSION['sac_ajout']==1) {?><a href="sacsForm.php?idParent=<?= $_GET['id'] ?>" class="btn btn-sm btn-success modal-form">Ajouter un sac</a><?php } ?>
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-plus"></i>
                                 </button>
                             </div>
                             <!-- /.box-tools -->
@@ -189,10 +189,10 @@ if ($_SESSION['lots_lecture']==0)
                                 <div class="col-md-12">
                                     <div class="box box-info box-solid">
                                         <div class="box-header with-border">
-                                            <h3 class="box-title"><?php echo $data7['libelleSac']; ?></h3> <?php if ($_SESSION['sac_modification']==1) {?><a href="sacsForm.php?id=<?=$data7['idSac']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
+                                            <h3 class="box-title"><?php echo $data7['libelleSac']; ?></h3> <?php if ($_SESSION['sac_modification']==1) {?><a href="sacsForm.php?id=<?=$data7['idSac']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
                                             <div class="box-tools pull-right">
                                             	<?php if ($_SESSION['sac2_ajout']==1) {?><a href="emplacementsForm.php?idParent=<?= $data7['idSac'] ?>" class="btn btn-sm btn-info modal-form">Ajouter un emplacement</a><?php } ?>
-                                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-minus"></i>
                                                 </button>
                                             </div>
                                             <!-- /.box-tools -->
@@ -209,10 +209,10 @@ if ($_SESSION['lots_lecture']==0)
                                                 <div class="col-md-12">
                                                     <div class="box box-warning box-solid">
                                                         <div class="box-header with-border">
-                                                            <h3 class="box-title"><?php echo $data8['libelleEmplacement']; ?></h3> <?php if ($_SESSION['sac2_modification']==1) {?><a href="emplacementsForm.php?id=<?=$data8['idEmplacement']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
+                                                            <h3 class="box-title"><?php echo $data8['libelleEmplacement']; ?></h3> <?php if ($_SESSION['sac2_modification']==1) {?><a href="emplacementsForm.php?id=<?=$data8['idEmplacement']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
                                                             <div class="box-tools pull-right">
                                                             	<?php if ($_SESSION['materiel_ajout']==1) {?><a href="materielsForm.php?idParent=<?= $data8['idEmplacement'] ?>" class="btn btn-sm btn-warning modal-form">Ajouter un materiel</a><?php } ?>
-                                                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                                <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-minus"></i>
                                                                 </button>
                                                             </div>
                                                             <!-- /.box-tools -->
@@ -272,13 +272,13 @@ if ($_SESSION['lots_lecture']==0)
                                                                         </td>
                                                                         <td>
                                                                             <?php if ($_SESSION['reserve_ReserveVersLot']==1) {?>
-                                                                            	<a href="transfertResLotsFromLots.php?idElement=<?=$data9['idElement']?>&idMaterielCatalogue=<?=$data9['idMaterielCatalogue']?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-exchange"></i></a>
+                                                                            	<a href="transfertResLotsFromLots.php?idElement=<?=$data9['idElement']?>&idMaterielCatalogue=<?=$data9['idMaterielCatalogue']?>" class="btn btn-xs btn-success modal-form" title="Approvisionner depuis la réserve"><i class="fa fa-exchange"></i></a>
                                                                             <?php }?>
                                                                             <?php if ($_SESSION['materiel_modification']==1) {?>
-                                                                            	<a href="materielsForm.php?id=<?=$data9['idElement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
+                                                                            	<a href="materielsForm.php?id=<?=$data9['idElement']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                                                             <?php }?>
                                                                             <?php if ($_SESSION['materiel_suppression']==1) {?>
-                                                                                <a href="modalDeleteConfirm.php?case=materielsDelete&id=<?=$data9['idElement']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
+                                                                                <a href="modalDeleteConfirm.php?case=materielsDelete&id=<?=$data9['idElement']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                                                             <?php }?>
                                                                         </td>
                                                                     </tr>
@@ -317,9 +317,9 @@ if ($_SESSION['lots_lecture']==0)
                         <div class="col-md-12">
                             <div class="box box-success collapsed-box box-solid">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Détails de l'analyse de conformité au référentiel <a href="lotsCheckConfOneManu.php?id=<?= $_GET['id'] ?>" class="btn btn-xs"><i class="fa fa-refresh"></i></a></h3>
+                                    <h3 class="box-title">Détails de l'analyse de conformité au référentiel <a href="lotsCheckConfOneManu.php?id=<?= $_GET['id'] ?>" class="btn btn-xs" title="Analyser à nouveau ce lot"><i class="fa fa-refresh"></i></a></h3>
                                     <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i
                                                     class="fa fa-plus"></i>
                                         </button>
                                     </div>
@@ -424,7 +424,7 @@ if ($_SESSION['lots_lecture']==0)
                         <div class="box-header with-border">
                             <h3 class="box-title">Inventaires</h3>
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-plus"></i>
                                 </button>
                             </div>
                         </div>
@@ -458,9 +458,9 @@ if ($_SESSION['lots_lecture']==0)
                                             <td><?php echo $data2['dateInventaire']; ?></td>
                                             <td><?php echo $data2['identifiant']; ?></td>
                                             <td>
-                                                <a href="lotsInventaireShow.php?id=<?=$data2['idInventaire']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
+                                                <a href="lotsInventaireShow.php?id=<?=$data2['idInventaire']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                                 <?php if ($_SESSION['lots_modification']==1) {?>
-                                                    <a href="modalDeleteConfirm.php?case=lotsInventaireDelete&id=<?=$data2['idInventaire']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
+                                                    <a href="modalDeleteConfirm.php?case=lotsInventaireDelete&id=<?=$data2['idInventaire']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                                 <?php }?>
                                             </td>
                                         </tr>

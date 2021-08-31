@@ -59,13 +59,13 @@ if ($_SESSION['typesLots_lecture']==0)
                                 <td><?php echo $data['libelleTypeLot']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['typesLots_lecture']==1) {?>
-                                        <a href="referentielsContenu.php?id=<?=$data['idTypeLot']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
+                                        <a href="referentielsContenu.php?id=<?=$data['idTypeLot']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['typesLots_modification']==1) {?>
-                                        <a href="referentielsForm.php?id=<?=$data['idTypeLot']?>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
+                                        <a href="referentielsForm.php?id=<?=$data['idTypeLot']?>" class="btn btn-xs btn-warning" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['typesLots_suppression']==1) {?>
-                                        <a href="modalDeleteConfirm.php?case=referentielsDelete&id=<?=$data['idTypeLot']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=referentielsDelete&id=<?=$data['idTypeLot']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

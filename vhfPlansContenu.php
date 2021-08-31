@@ -96,10 +96,10 @@ if ($_SESSION['vhf_plan_lecture']==0)
                                             <td><?php echo $data['libelleTechno']; ?></td>
                                             <td>
                                                 <?php if ($_SESSION['vhf_canal_lecture']==1) {?>
-                                                    <a href="vhfCanauxContenu.php?id=<?=$data['idVhfCanal']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
+                                                    <a href="vhfCanauxContenu.php?id=<?=$data['idVhfCanal']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                                 <?php }?>
                                                 <?php if ($_SESSION['vhf_plan_modification']==1) {?>
-                                                    <a href="modalDeleteConfirm.php?case=vhfPlansCanauxDelete&idVhfPlan=<?=$data['idVhfPlan']?>&idVhfCanal=<?=$data['idVhfCanal']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-minus"></i></a>
+                                                    <a href="modalDeleteConfirm.php?case=vhfPlansCanauxDelete&idVhfPlan=<?=$data['idVhfPlan']?>&idVhfCanal=<?=$data['idVhfCanal']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-minus"></i></a>
                                                 <?php }?>
                                             </td>
                                         </tr>
@@ -111,7 +111,7 @@ if ($_SESSION['vhf_plan_lecture']==0)
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td><a href="vhfPlansCanauxForm.php?idVhfPlan=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-plus"></i></a></td>
+                                        <td><a href="vhfPlansCanauxForm.php?idVhfPlan=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a></td>
                                     <tr>
                                         <?php }?>
                                 </table>
@@ -141,15 +141,15 @@ if ($_SESSION['vhf_plan_lecture']==0)
                                             <td>
                                                 <?php if($_SESSION['vhf_plan_lecture']==1){
                                                     if ($data2['formatDocPlanVHF'] == 'pdf' OR $data2['formatDocPlanVHF'] == 'jpg' OR $data2['formatDocPlanVHF'] == 'jpeg' OR $data2['formatDocPlanVHF'] == 'png'){?>
-                                                        <a href="vhfPlansDocView.php?idDoc=<?=$data2['idDocPlanVHF']?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                                                        <a href="vhfPlansDocView.php?idDoc=<?=$data2['idDocPlanVHF']?>" class="btn btn-xs btn-info" title="Visualiser"><i class="fa fa-eye"></i></a>
                                                     <?php } else { ?>
                                                         <a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                                     <?php }}?>
                                                 <?php if($_SESSION['vhf_plan_lecture']==1){ ?>
-                                                    <a href="vhfPlansDocDL.php?idDoc=<?=$data2['idDocPlanVHF']?>" class="btn btn-xs btn-success"><i class="fa fa-download"></i></a>
+                                                    <a href="vhfPlansDocDL.php?idDoc=<?=$data2['idDocPlanVHF']?>" class="btn btn-xs btn-success" title="Télécharger"><i class="fa fa-download"></i></a>
                                                 <?php }?>
                                                 <?php if($_SESSION['vhf_plan_suppression']==1){ ?>
-                                                    <a href="vhfPlansDocDelete.php?idDoc=<?=$data2['idDocPlanVHF']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-minus"></i></a>
+                                                    <a href="vhfPlansDocDelete.php?idDoc=<?=$data2['idDocPlanVHF']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');" title="Supprimer"><i class="fa fa-minus"></i></a>
                                                 <?php }?>
                                             </td>
                                         </tr>
@@ -163,7 +163,7 @@ if ($_SESSION['vhf_plan_lecture']==0)
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td><a href="vhfPlansDocForm.php?idVhfPlan=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-plus"></i></a></td>
+                                        <td><a href="vhfPlansDocForm.php?idVhfPlan=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a></td>
                                     <tr>
                                         <?php }?>
                                 </table>

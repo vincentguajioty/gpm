@@ -127,9 +127,9 @@ if ($_SESSION['sac_lecture']==0)
                 <div class="col-md-12">
                     <div class="box box-info box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $data['libelleSac']; ?></h3> <?php if ($_SESSION['sac_modification']==1) {?><a href="sacsForm.php?id=<?=$data['idSac']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
+                            <h3 class="box-title"><?php echo $data['libelleSac']; ?></h3> <?php if ($_SESSION['sac_modification']==1) {?><a href="sacsForm.php?id=<?=$data['idSac']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-minus"></i>
                                 </button>
                             </div>
                             <!-- /.box-tools -->
@@ -146,9 +146,9 @@ if ($_SESSION['sac_lecture']==0)
                                 <div class="col-md-12">
                                     <div class="box box-warning box-solid">
                                         <div class="box-header with-border">
-                                            <h3 class="box-title"><?php echo $data8['libelleEmplacement']; ?></h3> <?php if ($_SESSION['sac2_modification']==1) {?><a href="emplacementsForm.php?id=<?=$data8['idEmplacement']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
+                                            <h3 class="box-title"><?php echo $data8['libelleEmplacement']; ?></h3> <?php if ($_SESSION['sac2_modification']==1) {?><a href="emplacementsForm.php?id=<?=$data8['idEmplacement']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
                                             <div class="box-tools pull-right">
-                                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-minus"></i>
                                                 </button>
                                             </div>
                                             <!-- /.box-tools -->
@@ -208,13 +208,13 @@ if ($_SESSION['sac_lecture']==0)
                                                         </td>
                                                         <td>
                                                             <?php if ($_SESSION['reserve_ReserveVersLot']==1) {?>
-                                                            	<a href="transfertResLotsFromLots.php?idElement=<?=$data9['idElement']?>&idMaterielCatalogue=<?=$data9['idMaterielCatalogue']?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-exchange"></i></a>
+                                                            	<a href="transfertResLotsFromLots.php?idElement=<?=$data9['idElement']?>&idMaterielCatalogue=<?=$data9['idMaterielCatalogue']?>" class="btn btn-xs btn-success modal-form" title="Approvisionner depuis la réserve"><i class="fa fa-exchange"></i></a>
                                                             <?php }?>
                                                             <?php if ($_SESSION['materiel_modification']==1) {?>
-                                                                <a href="materielsForm.php?id=<?=$data9['idElement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
+                                                                <a href="materielsForm.php?id=<?=$data9['idElement']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                                             <?php }?>
                                                             <?php if ($_SESSION['materiel_suppression']==1) {?>
-                                                                <a href="modalDeleteConfirm.php?case=materielsDelete&id=<?=$data9['idElement']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
+                                                                <a href="modalDeleteConfirm.php?case=materielsDelete&id=<?=$data9['idElement']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                                             <?php }?>
                                                         </td>
                                                     </tr>

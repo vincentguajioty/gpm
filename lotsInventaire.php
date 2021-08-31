@@ -1,6 +1,4 @@
 <?php
-session_start();
-$_SESSION['page'] = 101;
 require_once('logCheck.php');
 require_once 'config/bdd.php';
 include('header.php');

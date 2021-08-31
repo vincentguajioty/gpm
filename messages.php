@@ -63,7 +63,7 @@ if ($_SESSION['messages_ajout']==0 AND $_SESSION['messages_suppression']==0)
                                 <td><?php echo $data['corpsMessage']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['messages_suppression']==1) {?>
-                                        <a href="modalDeleteConfirm.php?case=messagesDelete&id=<?=$data['idMessage']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=messagesDelete&id=<?=$data['idMessage']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

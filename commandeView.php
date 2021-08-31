@@ -286,17 +286,17 @@ if ($_SESSION['commande_lecture']==0)
 								                  <td><?php echo $data2['prixProduitTTC']*$data2['quantiteCommande']; $totalCMD = $totalCMD + ($data2['prixProduitTTC']*$data2['quantiteCommande']);?> €</td>
 								                  <td>
 								                	<?php if(($data['idEtat']==1) AND (($_SESSION['commande_ajout']==1) OR ($_SESSION['commande_etreEnCharge']==1))){ ?>
-								                		<?php if ($data2['idMaterielCatalogue'] != Null){ ?><a href="commandeItemForm.php?idCommande=<?= $_GET['id'] ?>&idElement=<?= $data2['idMaterielCatalogue'] ?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a><?php }else{ ?><a href="#" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a><?php } ?>
-								                		<a href="commandeItemDelete.php?idCommande=<?=$data2['idCommande']?>&idMaterielCatalogue=<? if($data2['idMaterielCatalogue'] == Null){echo '-1';}else{echo $data2['idMaterielCatalogue'];}?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-minus"></i></a>
+								                		<?php if ($data2['idMaterielCatalogue'] != Null){ ?><a href="commandeItemForm.php?idCommande=<?= $_GET['id'] ?>&idElement=<?= $data2['idMaterielCatalogue'] ?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }else{ ?><a href="#" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a><?php } ?>
+								                		<a href="commandeItemDelete.php?idCommande=<?=$data2['idCommande']?>&idMaterielCatalogue=<? if($data2['idMaterielCatalogue'] == Null){echo '-1';}else{echo $data2['idMaterielCatalogue'];}?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');" title="Supprimer"><i class="fa fa-minus"></i></a>
 								                	<?php }?>
 								                	<?php if(($data['idEtat']>1) AND ($_SESSION['commande_lecture']==1)){ ?>
-								                		<a href="commandeItemForm.php?idCommande=<?= $_GET['id'] ?>&idElement=<?= $data2['idMaterielCatalogue'] ?>" class="btn btn-xs btn-info modal-form"><i class="fa fa-folder-open"></i></a>
+								                		<a href="commandeItemForm.php?idCommande=<?= $_GET['id'] ?>&idElement=<?= $data2['idMaterielCatalogue'] ?>" class="btn btn-xs btn-info modal-form" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
 								                	<?php }?>
 								                	<?php if(($data['idEtat']==5) AND ($_SESSION['reserve_cmdVersReserve']==1)){ ?>
                                                         <?php
                                                             if(($data2['idMaterielCatalogue'] != Null) AND ($data2['quantiteAtransferer'] > 0))
                                                             { ?>
-                                                                <a href="transfertCmdResFromCmd.php?idCommande=<?= $_GET['id'] ?>&idMaterielCatalogue=<?= $data2['idMaterielCatalogue'] ?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-exchange"> <?= $data2['quantiteAtransferer'] ?></i></a>
+                                                                <a href="transfertCmdResFromCmd.php?idCommande=<?= $_GET['id'] ?>&idMaterielCatalogue=<?= $data2['idMaterielCatalogue'] ?>" class="btn btn-xs btn-success modal-form" title="Transférer vers la réserve"><i class="fa fa-exchange"> <?= $data2['quantiteAtransferer'] ?></i></a>
                                                             <?php }else{ ?>
                                                                 <a href="#" class="btn btn-xs btn-default modal-form"><i class="fa fa-exchange"></i></a>
                                                             <?php } ?>
@@ -322,7 +322,7 @@ if ($_SESSION['commande_lecture']==0)
 										        	<td></td>
 										        	<td></td>
 										        	<td></td>
-										        	<td><a href="commandeItemForm.php?idCommande=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-plus"></i></a></td>
+										        	<td><a href="commandeItemForm.php?idCommande=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a></td>
 										        <tr>
 										  <?php }?>
 					              </table>
@@ -354,15 +354,15 @@ if ($_SESSION['commande_lecture']==0)
                                                 <td>
                                                     <?php if($_SESSION['commande_lecture']==1){
                                                     		if ($data2['formatDocCommande'] == 'pdf' OR $data2['formatDocCommande'] == 'jpg' OR $data2['formatDocCommande'] == 'jpeg' OR $data2['formatDocCommande'] == 'png'){?>
-                                                        		<a href="commandeDocView.php?idDoc=<?=$data2['idDocCommande']?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                                                        		<a href="commandeDocView.php?idDoc=<?=$data2['idDocCommande']?>" class="btn btn-xs btn-info" title="Visualiser"><i class="fa fa-eye"></i></a>
                                                     <?php } else { ?>
                                                     			<a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                                     <?php }}?>
                                                     <?php if($_SESSION['commande_lecture']==1){ ?>
-                                                        <a href="commandeDocDL.php?idDoc=<?=$data2['idDocCommande']?>" class="btn btn-xs btn-success"><i class="fa fa-download"></i></a>
+                                                        <a href="commandeDocDL.php?idDoc=<?=$data2['idDocCommande']?>" class="btn btn-xs btn-success" title="Télécharger"><i class="fa fa-download"></i></a>
                                                     <?php }?>
                                                     <?php if(($data['idEtat']==1) AND (($_SESSION['commande_ajout']==1) OR ($_SESSION['commande_etreEnCharge']==1))){ ?>
-                                                        <a href="commandeDocDelete.php?idDoc=<?=$data2['idDocCommande']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-minus"></i></a>
+                                                        <a href="commandeDocDelete.php?idDoc=<?=$data2['idDocCommande']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');" title="Supprimer"><i class="fa fa-minus"></i></a>
                                                     <?php }?>
                                                 </td>
                                             </tr>
@@ -376,7 +376,7 @@ if ($_SESSION['commande_lecture']==0)
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td><a href="commandeDocForm.php?idCommande=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-plus"></i></a></td>
+                                                <td><a href="commandeDocForm.php?idCommande=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a></td>
                                             <tr>
                                         <?php }?>
                                     </table>
@@ -423,8 +423,8 @@ if ($_SESSION['commande_lecture']==0)
 	                                    </div>
 	                                </div>
 	                                <div class="form-group">
-	                                    <label>Remarques (obligatoires si refus):</label>
-	                                    <textarea <?php if(($data['idEtat']>2) OR ($_SESSION['commande_valider']==0) OR ($data['idValideur'] != $_SESSION['idPersonne'])){echo 'disabled';}?> class="form-control" rows="3" name="remarquesValidation"><?php echo $data['remarquesValidation']; ?></textarea>
+	                                    <label>Remarques:</label>
+	                                    <textarea <?php if(($data['idEtat']>2) OR ($_SESSION['commande_valider']==0) OR ($data['idValideur'] != $_SESSION['idPersonne'])){echo 'disabled';}?> class="form-control" rows="3" name="remarquesValidation" required><?php echo $data['remarquesValidation']; ?></textarea>
 	                                </div>
 	                                <div class="box-footer">
 	                                    <?php if (($data['idEtat']==2) AND ($_SESSION['commande_valider']==1) AND ($data['idValideur']== $_SESSION['idPersonne'])){ ?><button name="button" value="nok" type="submit" class="btn btn-danger pull-left">Refuser la commande</button> <?php } ?>

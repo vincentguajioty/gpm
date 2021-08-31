@@ -31,6 +31,9 @@ else {
             $_SESSION['returnType'] = '2';
     }
 
+    majIndicateursPersonne($_GET['idProfil']);
+    majNotificationsPersonne($_GET['idProfil']);
+    
     echo "<script>javascript:history.go(-1);</script>";
 }
 ?>

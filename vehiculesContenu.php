@@ -151,10 +151,10 @@ if ($_SESSION['vehicules_lecture']==0)
                                             <td><?php echo $data2['identifiant'];?></td>
                                             <td>
                                                 <?php if($_SESSION['vehicules_lecture']==1){ ?>
-                                                    <a href="vehiculesMaintenanceForm.php?idVehicule=<?=$_GET['id']?>&id=<?=$data2['idMaintenance']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
+                                                    <a href="vehiculesMaintenanceForm.php?idVehicule=<?=$_GET['id']?>&id=<?=$data2['idMaintenance']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                                 <?php }?>
                                                 <?php if ($_SESSION['vehicules_suppression']==1) {?>
-			                                        <a href="modalDeleteConfirm.php?case=vehiculesMaintenanceDelete&id=<?=$data2['idMaintenance']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
+			                                        <a href="modalDeleteConfirm.php?case=vehiculesMaintenanceDelete&id=<?=$data2['idMaintenance']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
 			                                    <?php }?>
                                             </td>
                                         </tr>
@@ -167,7 +167,7 @@ if ($_SESSION['vehicules_lecture']==0)
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td><a href="vehiculesMaintenanceForm.php?idVehicule=<?=$_GET['id']?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-plus"></i></a></td>
+                                        <td><a href="vehiculesMaintenanceForm.php?idVehicule=<?=$_GET['id']?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a></td>
                                     <tr>
                                         <?php }?>
                                 </table>
@@ -191,7 +191,7 @@ if ($_SESSION['vehicules_lecture']==0)
                                             <td><?php echo $data2['libelleEtat'];?></td>
                                             <td>
                                                 <?php if($_SESSION['lots_lecture']==1){ ?>
-                                                    <a href="lotsContenu.php?id=<?=$data2['idLot']?>" class="btn btn-xs btn-info" ><i class="fa fa-folder-open"></i></a>
+                                                    <a href="lotsContenu.php?id=<?=$data2['idLot']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                                 <?php }?>
                                             </td>
                                         </tr>
@@ -225,15 +225,15 @@ if ($_SESSION['vehicules_lecture']==0)
                                             <td>
                                                 <?php if($_SESSION['vehicules_lecture']==1){
                                                     if ($data2['formatDocVehicule'] == 'pdf' OR $data2['formatDocVehicule'] == 'jpg' OR $data2['formatDocVehicule'] == 'jpeg' OR $data2['formatDocVehicule'] == 'png'){?>
-                                                        <a href="vehiculesDocView.php?idDoc=<?=$data2['idDocVehicules']?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                                                        <a href="vehiculesDocView.php?idDoc=<?=$data2['idDocVehicules']?>" class="btn btn-xs btn-info" title="Visionner"><i class="fa fa-eye"></i></a>
                                                     <?php } else { ?>
                                                         <a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                                     <?php }}?>
                                                 <?php if($_SESSION['vehicules_lecture']==1){ ?>
-                                                    <a href="vehiculesDocDL.php?idDoc=<?=$data2['idDocVehicules']?>" class="btn btn-xs btn-success"><i class="fa fa-download"></i></a>
+                                                    <a href="vehiculesDocDL.php?idDoc=<?=$data2['idDocVehicules']?>" class="btn btn-xs btn-success" title="Télécharger"><i class="fa fa-download"></i></a>
                                                 <?php }?>
                                                 <?php if($_SESSION['vehicules_suppression']==1){ ?>
-                                                    <a href="vehiculesDocDelete.php?idDoc=<?=$data2['idDocVehicules']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-minus"></i></a>
+                                                    <a href="vehiculesDocDelete.php?idDoc=<?=$data2['idDocVehicules']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');" title="Supprimer"><i class="fa fa-minus"></i></a>
                                                 <?php }?>
                                             </td>
                                         </tr>
@@ -247,7 +247,7 @@ if ($_SESSION['vehicules_lecture']==0)
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td><a href="vehiculesDocForm.php?idVehicule=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-plus"></i></a></td>
+                                        <td><a href="vehiculesDocForm.php?idVehicule=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a></td>
                                     <tr>
                                         <?php }?>
                                 </table>

@@ -69,13 +69,13 @@ if ($_SESSION['vhf_equipement_lecture']==0)
                                 <td><?php echo $data['libellePlan']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['vhf_equipement_lecture']==1) {?>
-                                        <a href="vhfEquipementsContenu.php?id=<?=$data['idVhfEquipement']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
+                                        <a href="vhfEquipementsContenu.php?id=<?=$data['idVhfEquipement']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['vhf_equipement_modification']==1) {?>
-                                        <a href="vhfEquipementsForm.php?id=<?=$data['idVhfEquipement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
+                                        <a href="vhfEquipementsForm.php?id=<?=$data['idVhfEquipement']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['vhf_equipement_suppression']==1) {?>
-                                        <a href="modalDeleteConfirm.php?case=vhfEquipementsDelete&id=<?=$data['idVhfEquipement']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=vhfEquipementsDelete&id=<?=$data['idVhfEquipement']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

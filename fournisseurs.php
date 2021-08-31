@@ -59,10 +59,10 @@ if ($_SESSION['fournisseurs_lecture']==0)
                                 <td><?php echo $data['nomFournisseur']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['lieux_modification']==1) {?>
-                                        <a href="fournisseursForm.php?id=<?=$data['idFournisseur']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
+                                        <a href="fournisseursForm.php?id=<?=$data['idFournisseur']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['lieux_suppression']==1) {?>
-                                        <a href="modalDeleteConfirm.php?case=fournisseursDelete&id=<?=$data['idFournisseur']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=fournisseursDelete&id=<?=$data['idFournisseur']?>" class="btn btn-xs btn-danger modal-form" title="Suppimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

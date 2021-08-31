@@ -61,10 +61,10 @@ if ($_SESSION['cout_lecture']==0)
                                 <td><?php echo $data['identifiant']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['cout_ajout']==1) {?>
-                                        <a href="centreCoutsForm.php?id=<?=$data['idCentreDeCout']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
+                                        <a href="centreCoutsForm.php?id=<?=$data['idCentreDeCout']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['cout_supprimer']==1) {?>
-                                        <a href="modalDeleteConfirm.php?case=centreCoutsDelete&id=<?=$data['idCentreDeCout']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=centreCoutsDelete&id=<?=$data['idCentreDeCout']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

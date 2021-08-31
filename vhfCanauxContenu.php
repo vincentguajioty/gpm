@@ -142,15 +142,15 @@ if ($_SESSION['vhf_canal_lecture']==0)
                                         <td>
                                             <?php if($_SESSION['vhf_canal_lecture']==1){
                                                 if ($data2['formatDocCanalVHF'] == 'pdf' OR $data2['formatDocCanalVHF'] == 'jpg' OR $data2['formatDocCanalVHF'] == 'jpeg' OR $data2['formatDocCanalVHF'] == 'png'){?>
-                                                    <a href="vhfCanauxDocView.php?idDoc=<?=$data2['idDocCanalVHF']?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                                                    <a href="vhfCanauxDocView.php?idDoc=<?=$data2['idDocCanalVHF']?>" class="btn btn-xs btn-info" title="Visualiser"><i class="fa fa-eye"></i></a>
                                                 <?php } else { ?>
                                                     <a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                                 <?php }}?>
                                             <?php if($_SESSION['vhf_canal_lecture']==1){ ?>
-                                                <a href="vhfCanauxDocDL.php?idDoc=<?=$data2['idDocCanalVHF']?>" class="btn btn-xs btn-success"><i class="fa fa-download"></i></a>
+                                                <a href="vhfCanauxDocDL.php?idDoc=<?=$data2['idDocCanalVHF']?>" class="btn btn-xs btn-success" title="Télécharger"><i class="fa fa-download"></i></a>
                                             <?php }?>
                                             <?php if($_SESSION['vhf_canal_suppression']==1){ ?>
-                                                <a href="vhfCanauxDocDelete.php?idDoc=<?=$data2['idDocCanalVHF']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-minus"></i></a>
+                                                <a href="vhfCanauxDocDelete.php?idDoc=<?=$data2['idDocCanalVHF']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');" title="Supprimer"><i class="fa fa-minus"></i></a>
                                             <?php }?>
                                         </td>
                                     </tr>
@@ -164,7 +164,7 @@ if ($_SESSION['vhf_canal_lecture']==0)
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td><a href="vhfCanauxDocForm.php?idVhfCanal=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-plus"></i></a></td>
+                                    <td><a href="vhfCanauxDocForm.php?idVhfCanal=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a></td>
                                 <tr>
                                     <?php }?>
                             </table>

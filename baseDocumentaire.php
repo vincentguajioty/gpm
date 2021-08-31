@@ -58,11 +58,11 @@ require_once('logCheck.php');
 			                                <td>
                                                 <?php
                                         		if ($data['formatDocCommande'] == 'pdf' OR $data['formatDocCommande'] == 'jpg' OR $data['formatDocCommande'] == 'jpeg' OR $data['formatDocCommande'] == 'png'){?>
-                                            		<a href="commandeDocView.php?idDoc=<?=$data['idDocCommande']?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                                            		<a href="commandeDocView.php?idDoc=<?=$data['idDocCommande']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-eye"></i></a>
                                                 <?php } else { ?>
                                         			<a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                                 <?php }?>
-                                                <a href="commandeDocDL.php?idDoc=<?=$data['idDocCommande']?>" class="btn btn-xs btn-success"><i class="fa fa-download"></i></a>
+                                                <a href="commandeDocDL.php?idDoc=<?=$data['idDocCommande']?>" class="btn btn-xs btn-success" title="Télécharger"><i class="fa fa-download"></i></a>
                                             </td>
 			                            </tr>
 			                        <?php
@@ -84,11 +84,11 @@ require_once('logCheck.php');
 			                                <td>
 			                                    <?php
                                         		if ($data['formatDocVehicule'] == 'pdf' OR $data['formatDocVehicule'] == 'jpg' OR $data['formatDocVehicule'] == 'jpeg' OR $data['formatDocVehicule'] == 'png'){?>
-                                            		<a href="vehiculesDocView.php?idDoc=<?=$data['idDocVehicules']?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                                            		<a href="vehiculesDocView.php?idDoc=<?=$data['idDocVehicules']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-eye"></i></a>
                                                 <?php } else { ?>
                                         			<a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                                 <?php }?>
-                                                <a href="vehiculesDocDL.php?idDoc=<?=$data['idDocVehicules']?>" class="btn btn-xs btn-success"><i class="fa fa-download"></i></a>
+                                                <a href="vehiculesDocDL.php?idDoc=<?=$data['idDocVehicules']?>" class="btn btn-xs btn-success" title="Télécharger"><i class="fa fa-download"></i></a>
 			                                </td>
 			                            </tr>
 			                        <?php
@@ -110,11 +110,11 @@ require_once('logCheck.php');
 			                                <td>
 			                                    <?php
                                         		if ($data['formatDocCanalVHF'] == 'pdf' OR $data['formatDocCanalVHF'] == 'jpg' OR $data['formatDocCanalVHF'] == 'jpeg' OR $data['formatDocCanalVHF'] == 'png'){?>
-                                            		<a href="vhfCanauxDocView.php?idDoc=<?=$data['idDocCanalVHF']?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                                            		<a href="vhfCanauxDocView.php?idDoc=<?=$data['idDocCanalVHF']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-eye"></i></a>
                                                 <?php } else { ?>
                                         			<a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                                 <?php }?>
-                                                <a href="vhfCanauxDocDL.php?idDoc=<?=$data['idDocCanalVHF']?>" class="btn btn-xs btn-success"><i class="fa fa-download"></i></a>
+                                                <a href="vhfCanauxDocDL.php?idDoc=<?=$data['idDocCanalVHF']?>" class="btn btn-xs btn-success" title="Télécharger"><i class="fa fa-download"></i></a>
 			                                </td>
 			                            </tr>
 			                        <?php
@@ -136,11 +136,11 @@ require_once('logCheck.php');
 			                                <td>
 			                                    <?php
                                         		if ($data['formatDocPlanVHF'] == 'pdf' OR $data['formatDocPlanVHF'] == 'jpg' OR $data['formatDocPlanVHF'] == 'jpeg' OR $data['formatDocPlanVHF'] == 'png'){?>
-                                            		<a href="vhfPlansDocView.php?idDoc=<?=$data['idDocPlanVHF']?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                                            		<a href="vhfPlansDocView.php?idDoc=<?=$data['idDocPlanVHF']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-eye"></i></a>
                                                 <?php } else { ?>
                                         			<a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                                 <?php }?>
-                                                <a href="vhfPlansDocDL.php?idDoc=<?=$data['idDocPlanVHF']?>" class="btn btn-xs btn-success"><i class="fa fa-download"></i></a>
+                                                <a href="vhfPlansDocDL.php?idDoc=<?=$data['idDocPlanVHF']?>" class="btn btn-xs btn-success" title="Télécharger"><i class="fa fa-download"></i></a>
 			                                </td>
 			                            </tr>
 			                        <?php
@@ -162,11 +162,11 @@ require_once('logCheck.php');
 			                                <td>
 			                                    <?php
                                         		if ($data['formatDocVHF'] == 'pdf' OR $data['formatDocVHF'] == 'jpg' OR $data['formatDocVHF'] == 'jpeg' OR $data['formatDocVHF'] == 'png'){?>
-                                            		<a href="vhfEquipementsDocView.php?idDoc=<?=$data['idDocVHF']?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                                            		<a href="vhfEquipementsDocView.php?idDoc=<?=$data['idDocVHF']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-eye"></i></a>
                                                 <?php } else { ?>
                                         			<a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                                 <?php }?>
-                                                <a href="vhfEquipementsDocDL.php?idDoc=<?=$data['idDocVHF']?>" class="btn btn-xs btn-success"><i class="fa fa-download"></i></a>
+                                                <a href="vhfEquipementsDocDL.php?idDoc=<?=$data['idDocVHF']?>" class="btn btn-xs btn-success" title="Télécharger"><i class="fa fa-download"></i></a>
 			                                </td>
 			                            </tr>
 			                        <?php

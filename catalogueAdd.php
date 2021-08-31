@@ -1,8 +1,6 @@
 <?php
 session_start();
 require_once('logCheck.php');
-?>
-<?php
 require_once 'config/bdd.php';
 
 if ($_SESSION['catalogue_ajout']==0)
