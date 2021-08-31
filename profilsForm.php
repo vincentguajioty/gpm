@@ -190,6 +190,20 @@ require_once('logCheck.php');
                                 <td><input <?php if(isset($_GET['id']) AND $data['vhf_equipement_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vhf_equipement_suppression"></td>
                             </tr>
                             <tr>
+                                <th>VEHICULES</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td>Véhicules</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehicules_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehicules_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_ajout"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehicules_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_modification"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehicules_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_suppression"></td>
+                            </tr>
+                            <tr>
                                 <th>ANNUAIRE</th>
                                 <th></th>
                                 <th></th>
@@ -251,6 +265,13 @@ require_once('logCheck.php');
                                 <td><input <?php if(isset($_GET['id']) AND $data['catalogue_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="catalogue_ajout"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['catalogue_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="catalogue_modification"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['catalogue_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="catalogue_suppression"></td>
+                            </tr>
+                            <tr>
+                                <td>Types de véhicules</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehicules_types_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_types_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehicules_types_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_types_ajout"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehicules_types_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_types_modification"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehicules_types_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_types_suppression"></td>
                             </tr>
                             <tr>
                                 <td>Messages généraux</td>

@@ -145,6 +145,12 @@ require_once('logCheck.php');
 	                                <div class="checkbox">
 	                                	<label><input <?php if($_SESSION['conf_indicateur6Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur6Accueil"> Matériels manquants (réserve)</label>
 	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($_SESSION['conf_indicateur7Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur7Accueil"> Assurances véhicules</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($_SESSION['conf_indicateur8Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur8Accueil"> Contrôles techniques et révisions véhicules</label>
+	                                </div>
 		                        </div>
 		                        
 		                        <div class="box-footer">

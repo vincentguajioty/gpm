@@ -62,6 +62,16 @@ else
     $query->execute(array(
         'idResponsable' => $_GET['id']
     ));
+    
+    $query = $db->prepare('UPDATE VEHICULES SET idResponsable = Null WHERE idResponsable = :idResponsable ;');
+    $query->execute(array(
+        'idResponsable' => $_GET['id']
+    ));
+    
+    $query = $db->prepare('UPDATE VEHICULES_MAINTENANCE SET idExecutant = Null WHERE idExecutant = :idExecutant ;');
+    $query->execute(array(
+        'idExecutant' => $_GET['id']
+    ));
 
     $query = $db->prepare('DELETE FROM PERSONNE_REFERENTE WHERE idPersonne = :idPersonne;');
     $query->execute(array(

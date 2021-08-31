@@ -16,8 +16,9 @@ else
 	$_POST['libelleEtat'] = ($_POST['libelleEtat'] == Null) ? Null : $_POST['libelleEtat'];
 	$_POST['libelleLieu'] = ($_POST['libelleLieu'] == Null) ? Null : $_POST['libelleLieu'];
 	$_POST['identifiant'] = ($_POST['identifiant'] == Null) ? Null : $_POST['identifiant'];
+	$_POST['idVehicule'] = ($_POST['idVehicule'] == Null) ? Null : $_POST['idVehicule'];
 
-    $query = $db->prepare('UPDATE LOTS_LOTS SET libelleLot = :libelleLot, idTypeLot = :idTypeLot, idEtat = :idEtat, idLieu = :idLieu, idPersonne = :idPersonne, dateDernierInventaire = :dateDernierInventaire, frequenceInventaire = :frequenceInventaire, commentairesLots = :commentairesLots WHERE idLot = :idLot;');
+    $query = $db->prepare('UPDATE LOTS_LOTS SET libelleLot = :libelleLot, idTypeLot = :idTypeLot, idEtat = :idEtat, idLieu = :idLieu, idPersonne = :idPersonne, dateDernierInventaire = :dateDernierInventaire, frequenceInventaire = :frequenceInventaire, commentairesLots = :commentairesLots, idVehicule = :idVehicule WHERE idLot = :idLot;');
     $query->execute(array(
         'idLot' => $_GET['id'],
         'libelleLot' => $_POST['libelleLot'],
@@ -27,7 +28,8 @@ else
         'idPersonne' => $_POST['identifiant'],
         'dateDernierInventaire' => $_POST['dateDernierInventaire'],
         'frequenceInventaire' => $_POST['frequenceInventaire'],
-        'commentairesLots' => $_POST['commentairesLots']
+        'commentairesLots' => $_POST['commentairesLots'],
+        'idVehicule' => $_POST['idVehicule']
     ));
 
     switch($query->errorCode())

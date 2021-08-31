@@ -330,6 +330,40 @@ require_once 'config/bdd.php';
                 <?php
             }
             ?>
+            <?php
+            if ($_SESSION['vehicules_lecture']==1 OR $_SESSION['vehicules_ajout']==1 OR $_SESSION['vehicules_modification']==1 OR $_SESSION['vehicules_suppression']==1)
+            {
+                ?>
+                <li <?php
+                if (((int)($_SESSION['page']/100))==10)
+                {
+                    echo 'class="active treeview"';
+                }
+                else
+                {
+                    echo 'class="treeview"';
+                }
+                ?>
+                >
+                    <a href="#">
+                        <i class="fa fa-ambulance"></i> <span>VEHICULES</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <?php if ($_SESSION['vehicules_lecture']==1){ ?>
+                            <li <?php
+                            if ($_SESSION['page'] == 1001)
+                            {
+                                echo 'class="active"';
+                            }
+                            ?>
+                            ><a href="vehicules.php"><i class="fa fa-ambulance"></i> <span>Véhicules</span></a></li>
+                        <?php } ?>
+                    </ul>
+                </li>
+                <?php
+            }
+            ?>
 	        
 	        
 	        
@@ -427,6 +461,15 @@ require_once 'config/bdd.php';
 	                        }
 	                        ?>
 	                        ><a href="fournisseurs.php"><i class="fa fa-shopping-cart"></i> <span>Fournisseurs</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['vehicules_types_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 306)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="vehiculesTypes.php"><i class="fa fa-ambulance"></i> <span>Types de véhicules</span></a></li>
 	                    <?php } ?>
 	                </ul>
 	            </li>

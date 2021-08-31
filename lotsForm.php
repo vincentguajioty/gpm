@@ -76,6 +76,21 @@ if($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots
                             </select>
                         </div>
                         <div class="form-group">
+                            <label>Affecté à un véhicule:</label>
+                            <select class="form-control select2" style="width: 100%;" name="idVehicule">
+                                <option value="">--- Pas affecté ---</option>
+                                <?php
+                                $query2 = $db->query('SELECT * FROM VEHICULES ORDER BY libelleVehicule;');
+                                while ($data2 = $query2->fetch())
+                                {
+                                    ?>
+                                    <option value ="<?php echo $data2['idVehicule']; ?>" <?php if (isset($data['idVehicule']) AND ($data2['idVehicule'] == $data['idVehicule'])) { echo 'selected'; } ?> ><?php echo $data2['libelleVehicule']; ?></option>
+                                    <?php
+                                }
+                                $query2->closeCursor(); ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label>Personne référente</label>
                             <select class="form-control select2" style="width: 100%;" name="identifiant">
                                 <option value="">--- Pas de Référent ---</option>

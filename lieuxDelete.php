@@ -31,6 +31,11 @@ else
     $query->execute(array(
         'idLieu' => $_GET['id']
     ));
+    
+    $query = $db->prepare('UPDATE VEHICULES SET idLieu = Null WHERE idLieu = :idLieu;');
+    $query->execute(array(
+        'idLieu' => $_GET['id']
+    ));
 
 
     $query = $db->prepare('DELETE FROM LIEUX WHERE idLieu = :idLieu;');

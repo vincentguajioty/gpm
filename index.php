@@ -43,7 +43,7 @@ require_once('logCheck.php');
 			<?php
 				if($_SESSION['conf_indicateur1Accueil']==1)
 				{ ?>
-	            <div class="col-md-4 col-sm-6 col-xs-12">
+	            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
 	                <!-- small box -->
 	                <?php
 	                $query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (peremption < CURRENT_DATE OR peremption = CURRENT_DATE) AND idEtat = 1;');
@@ -52,10 +52,10 @@ require_once('logCheck.php');
 	                if ($data['nb']>0)
 	                { ?>
 	                    <div class="info-box">
-	                        <a data-toggle="modal" data-target="#modalAccueilAlertePeremption"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled faa-flash animated"></i></span></a>
+	                        <a data-toggle="modal" data-target="#modalAccueilAlertePeremption"><span class="info-box-icon bg-red"><i class="fa fa-stethoscope faa-flash animated"></i></span></a>
 	
 	                        <div class="info-box-content">
-	                            <span class="info-box-text">Matériels périmés (Lots):</span>
+	                            <span class="info-box-text">Péremptions:</span>
 	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
 	                            <span class="info-box-more">Cliquer sur l'icone</span>
 	                        </div>
@@ -65,10 +65,10 @@ require_once('logCheck.php');
 	                else
 	                { ?>
 	                    <div class="info-box">
-	                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
+	                        <span class="info-box-icon bg-green"><i class="fa fa-stethoscope"></i></span>
 	
 	                        <div class="info-box-content">
-	                            <span class="info-box-text">Matériels périmés (Lots):</span>
+	                            <span class="info-box-text">Péremptions:</span>
 	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
 	                        </div>
 	                        <!-- /.info-box-content -->
@@ -81,7 +81,7 @@ require_once('logCheck.php');
 	        <?php
 	        	if($_SESSION['conf_indicateur2Accueil']==1)
 				{ ?>
-	            <div class="col-md-4 col-sm-6 col-xs-12">
+	            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
 	                <!-- small box -->
 	                <?php
 	                $query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (quantite < quantiteAlerte OR quantite = quantiteAlerte) AND idEtat = 1;');
@@ -91,10 +91,10 @@ require_once('logCheck.php');
 	                { ?>
 	
 	                    <div class="info-box">
-	                        <a data-toggle="modal" data-target="#modalAccueilAlerteQuantité"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled faa-flash animated"></i></span></a>
+	                        <a data-toggle="modal" data-target="#modalAccueilAlerteQuantité"><span class="info-box-icon bg-red"><i class="fa fa-stethoscope faa-flash animated"></i></span></a>
 	
 	                        <div class="info-box-content">
-	                            <span class="info-box-text">Matériels manquants (Lots):</span>
+	                            <span class="info-box-text">Quantités:</span>
 	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
 	                            <span class="info-box-more">Cliquer sur l'icone</span>
 	                        </div>
@@ -104,10 +104,10 @@ require_once('logCheck.php');
 	                else
 	                { ?>
 	                    <div class="info-box">
-	                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
+	                        <span class="info-box-icon bg-green"><i class="fa fa-stethoscope"></i></span>
 	
 	                        <div class="info-box-content">
-	                            <span class="info-box-text">Matériels manquants (Lots):</span>
+	                            <span class="info-box-text">Quantités:</span>
 	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
 	                        </div>
 	                        <!-- /.info-box-content -->
@@ -120,7 +120,7 @@ require_once('logCheck.php');
 			<?php
 				if($_SESSION['conf_indicateur3Accueil']==1)
 				{ ?>
-	            <div class="col-md-4 col-sm-6 col-xs-12">
+	            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
 	                <!-- small box -->
 	                <?php
 	                $query = $db->query('SELECT COUNT(*) as nb FROM LOTS_LOTS WHERE idEtat = 1 AND (frequenceInventaire IS NOT NULL) AND ((DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) < CURRENT_DATE) OR (DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) = CURRENT_DATE));');
@@ -130,10 +130,10 @@ require_once('logCheck.php');
 	                { ?>
 	
 	                    <div class="info-box">
-	                        <a data-toggle="modal" data-target="#modalAccueilAlerteInventaire"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled faa-flash animated"></i></span></a>
+	                        <a data-toggle="modal" data-target="#modalAccueilAlerteInventaire"><span class="info-box-icon bg-red"><i class="fa fa-code-fork faa-flash animated"></i></span></a>
 	
 	                        <div class="info-box-content">
-	                            <span class="info-box-text">Lots en attente d'inventaire:</span>
+	                            <span class="info-box-text">Inventaires:</span>
 	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
 	                            <span class="info-box-more">Cliquer sur l'icone</span>
 	                        </div>
@@ -143,10 +143,10 @@ require_once('logCheck.php');
 	                else
 	                { ?>
 	                    <div class="info-box">
-	                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
+	                        <span class="info-box-icon bg-green"><i class="fa fa-code-fork"></i></span>
 	
 	                        <div class="info-box-content">
-	                            <span class="info-box-text">Lots en attente d'inventaire:</span>
+	                            <span class="info-box-text">Inventaires:</span>
 	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
 	                        </div>
 	                        <!-- /.info-box-content -->
@@ -160,16 +160,16 @@ require_once('logCheck.php');
 			<?php
 				if($_SESSION['conf_indicateur4Accueil']==1)
 				{ ?>
-	            <div class="col-md-4 col-sm-6 col-xs-12">
+	            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
 	                <?php
 	                if ($nbLotsNOK>0)
 	                { ?>
 	
 	                    <div class="info-box">
-	                        <a data-toggle="modal" data-target="#modalAccueilAlerteConformite"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled faa-flash animated"></i></span></a>
+	                        <a data-toggle="modal" data-target="#modalAccueilAlerteConformite"><span class="info-box-icon bg-red"><i class="fa fa-bank faa-flash animated"></i></span></a>
 	
 	                        <div class="info-box-content">
-	                            <span class="info-box-text">Lots non-conformes:</span>
+	                            <span class="info-box-text">Référentiels:</span>
 	                            <span class="info-box-number"><?php echo $nbLotsNOK; ?></span>
 	                            <span class="info-box-more">Cliquer sur l'icone</span>
 	                        </div>
@@ -179,10 +179,10 @@ require_once('logCheck.php');
 	                else
 	                { ?>
 	                    <div class="info-box">
-	                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
+	                        <span class="info-box-icon bg-green"><i class="fa fa-bank"></i></span>
 	
 	                        <div class="info-box-content">
-	                            <span class="info-box-text">Lots non-conformes:</span>
+	                            <span class="info-box-text">Référentiels:</span>
 	                            <span class="info-box-number"><?php echo $nbLotsNOK; ?></span>
 	                        </div>
 	                        <!-- /.info-box-content -->
@@ -194,7 +194,7 @@ require_once('logCheck.php');
             <?php
 				if($_SESSION['conf_indicateur5Accueil']==1)
 				{ ?>
-	            <div class="col-md-4 col-sm-6 col-xs-12">
+	            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
 	                <!-- small box -->
 	                <?php
 	                $query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE peremptionReserve < CURRENT_DATE OR peremptionReserve = CURRENT_DATE;');
@@ -203,10 +203,10 @@ require_once('logCheck.php');
 	                if ($data['nb']>0)
 	                { ?>
 	                    <div class="info-box">
-	                        <a data-toggle="modal" data-target="#modalAccueilAlertePeremptionReserve"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled faa-flash animated"></i></span></a>
+	                        <a data-toggle="modal" data-target="#modalAccueilAlertePeremptionReserve"><span class="info-box-icon bg-red"><i class="fa fa-archive faa-flash animated"></i></span></a>
 	
 	                        <div class="info-box-content">
-	                            <span class="info-box-text">Matériels périmés (Réserve):</span>
+	                            <span class="info-box-text">Péremption:</span>
 	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
 	                            <span class="info-box-more">Cliquer sur l'icone</span>
 	                        </div>
@@ -216,10 +216,10 @@ require_once('logCheck.php');
 	                else
 	                { ?>
 	                    <div class="info-box">
-	                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
+	                        <span class="info-box-icon bg-green"><i class="fa fa-archive"></i></span>
 	
 	                        <div class="info-box-content">
-	                            <span class="info-box-text">Matériels périmés (Réserve):</span>
+	                            <span class="info-box-text">Péremption:</span>
 	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
 	                        </div>
 	                        <!-- /.info-box-content -->
@@ -233,7 +233,7 @@ require_once('logCheck.php');
             <?php
 				if($_SESSION['conf_indicateur6Accueil']==1)
 				{ ?>
-	            <div class="col-md-4 col-sm-6 col-xs-12">
+	            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
 	                <!-- small box -->
 	                <?php
 	                $query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE quantiteReserve < quantiteAlerteReserve OR quantiteReserve = quantiteAlerteReserve;');
@@ -243,10 +243,10 @@ require_once('logCheck.php');
 	                { ?>
 	
 	                    <div class="info-box">
-	                        <a data-toggle="modal" data-target="#modalAccueilAlerteQuantitéReserve"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled faa-flash animated"></i></span></a>
+	                        <a data-toggle="modal" data-target="#modalAccueilAlerteQuantitéReserve"><span class="info-box-icon bg-red"><i class="fa fa-archive faa-flash animated"></i></span></a>
 	
 	                        <div class="info-box-content">
-	                            <span class="info-box-text">Matériels manquants (Réserve):</span>
+	                            <span class="info-box-text">Quantités:</span>
 	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
 	                            <span class="info-box-more">Cliquer sur l'icone</span>
 	                        </div>
@@ -256,10 +256,88 @@ require_once('logCheck.php');
 	                else
 	                { ?>
 	                    <div class="info-box">
-	                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
+	                        <span class="info-box-icon bg-green"><i class="fa fa-archive"></i></span>
 	
 	                        <div class="info-box-content">
-	                            <span class="info-box-text">Matériels manquants (Réserve):</span>
+	                            <span class="info-box-text">Quantités:</span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php }
+	                $query->closeCursor(); ?>
+	            </div>
+            <?php } ?>
+            
+            <?php
+				if($_SESSION['conf_indicateur7Accueil']==1)
+				{ ?>
+	            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+	                <!-- small box -->
+	                <?php
+	                $query = $db->query('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND (assuranceExpiration IS NOT NULL) AND ((assuranceExpiration < CURRENT_DATE) OR (assuranceExpiration = CURRENT_DATE));');
+	                $data = $query->fetch();
+	
+	                if ($data['nb']>0)
+	                { ?>
+	
+	                    <div class="info-box">
+	                        <a data-toggle="modal" data-target="#modalAccueilAlerteAssurance"><span class="info-box-icon bg-red"><i class="fa fa-ambulance faa-flash animated"></i></span></a>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Assurances:</span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+	                            <span class="info-box-more">Cliquer sur l'icone</span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php }
+	                else
+	                { ?>
+	                    <div class="info-box">
+	                        <span class="info-box-icon bg-green"><i class="fa fa-ambulance"></i></span>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Assurances:</span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php }
+	                $query->closeCursor(); ?>
+	            </div>
+            <?php } ?>
+            
+            <?php
+				if($_SESSION['conf_indicateur8Accueil']==1)
+				{ ?>
+	            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+	                <!-- small box -->
+	                <?php
+	                $query = $db->query('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND ((dateNextRevision IS NOT NULL) AND ((dateNextRevision < CURRENT_DATE) OR (dateNextRevision = CURRENT_DATE))OR((dateNextCT IS NOT NULL) AND ((dateNextCT < CURRENT_DATE) OR (dateNextCT = CURRENT_DATE))));');
+	                $data = $query->fetch();
+	
+	                if ($data['nb']>0)
+	                { ?>
+	
+	                    <div class="info-box">
+	                        <a data-toggle="modal" data-target="#modalAccueilAlerteCT"><span class="info-box-icon bg-red"><i class="fa fa-ambulance faa-flash animated"></i></span></a>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Révisions / CT:</span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+	                            <span class="info-box-more">Cliquer sur l'icone</span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php }
+	                else
+	                { ?>
+	                    <div class="info-box">
+	                        <span class="info-box-icon bg-green"><i class="fa fa-ambulance"></i></span>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Révisions / CT:</span>
 	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
 	                        </div>
 	                        <!-- /.info-box-content -->
@@ -461,6 +539,54 @@ require_once('logCheck.php');
 	                            <?php
 	                        }
 	                        $query->closeCursor(); ?>
+	                        
+	                        <?php
+	                        $query = $db->prepare('SELECT * FROM VEHICULES WHERE idEtat = 1 AND (dateNextRevision = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY)  OR dateNextRevision < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY));');
+	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+	                        while ($data = $query->fetch())
+	                        {
+	                            ?>
+	                            <tr>
+	                                <?php $nblibne = $nblibne + 1; ?>
+	                                <td><?php echo date_format(date_create($data['dateNextRevision']), 'Y-m-d'); ?></td>
+	                                <td>Révision véhicule</td>
+	                                <td>Commande <?php echo $data['libelleVehicule']; ?></td>
+	                            </tr>
+	                            <?php
+	                        }
+	                        $query->closeCursor(); ?>
+	                        
+	                        <?php
+	                        $query = $db->prepare('SELECT * FROM VEHICULES WHERE idEtat = 1 AND (dateNextCT = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY)  OR dateNextCT < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY));');
+	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+	                        while ($data = $query->fetch())
+	                        {
+	                            ?>
+	                            <tr>
+	                                <?php $nblibne = $nblibne + 1; ?>
+	                                <td><?php echo date_format(date_create($data['dateNextCT']), 'Y-m-d'); ?></td>
+	                                <td>CT véhicule</td>
+	                                <td>Commande <?php echo $data['libelleVehicule']; ?></td>
+	                            </tr>
+	                            <?php
+	                        }
+	                        $query->closeCursor(); ?>
+	                        
+	                        <?php
+	                        $query = $db->prepare('SELECT * FROM VEHICULES WHERE idEtat = 1 AND (assuranceExpiration = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY)  OR assuranceExpiration < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY));');
+	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+	                        while ($data = $query->fetch())
+	                        {
+	                            ?>
+	                            <tr>
+	                                <?php $nblibne = $nblibne + 1; ?>
+	                                <td><?php echo date_format(date_create($data['assuranceExpiration']), 'Y-m-d'); ?></td>
+	                                <td>Assurnace véhicule</td>
+	                                <td>Commande <?php echo $data['libelleVehicule']; ?></td>
+	                            </tr>
+	                            <?php
+	                        }
+	                        $query->closeCursor(); ?>
 	                    </table>
 	                    <?php 
 	                    	if ($nblibne == 0)
@@ -492,7 +618,7 @@ require_once('logCheck.php');
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Alertes de péremption</h4>
+                <h4 class="modal-title">Alertes de péremption (lots)</h4>
             </div>
             <div class="modal-body">
                 <?php
@@ -518,7 +644,7 @@ require_once('logCheck.php');
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Alertes de quantité</h4>
+                <h4 class="modal-title">Alertes de quantité (lots)</h4>
             </div>
             <div class="modal-body">
                 <?php
@@ -544,7 +670,7 @@ require_once('logCheck.php');
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Alertes d'inventaires</h4>
+                <h4 class="modal-title">Alertes d'inventaires (lots)</h4>
             </div>
             <div class="modal-body">
                 <?php
@@ -570,7 +696,7 @@ require_once('logCheck.php');
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Alertes de conformité</h4>
+                <h4 class="modal-title">Alertes de conformité (lots)</h4>
             </div>
             <div class="modal-body">
                 <ul>
@@ -597,7 +723,7 @@ require_once('logCheck.php');
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Alertes de péremption</h4>
+                <h4 class="modal-title">Alertes de péremption (réserve)</h4>
             </div>
             <div class="modal-body">
                 <?php
@@ -623,7 +749,7 @@ require_once('logCheck.php');
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Alertes de quantité</h4>
+                <h4 class="modal-title">Alertes de quantité (réserve)</h4>
             </div>
             <div class="modal-body">
                 <?php
@@ -641,6 +767,58 @@ require_once('logCheck.php');
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
                 <?php if ($_SESSION['reserve_lecture']==1){ ?><a href="reserveMateriel.php"><button type="button" class="btn btn-default pull-right">Accéder à la réserve</button></a><? } ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-danger" id="modalAccueilAlerteAssurance">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alertes de fin d'assurance</h4>
+            </div>
+            <div class="modal-body">
+                <?php
+                $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND (assuranceExpiration IS NOT NULL) AND ((assuranceExpiration < CURRENT_DATE) OR (assuranceExpiration = CURRENT_DATE));');
+                ?>
+                <ul>
+                    <?php
+                    while($data=$query->fetch())
+                    {
+                        echo '<li>' . $data['libelleVehicule'] . '</li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+                <?php if ($_SESSION['reserve_lecture']==1){ ?><a href="vehicules.php"><button type="button" class="btn btn-default pull-right">Accéder aux véhicules</button></a><? } ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-danger" id="modalAccueilAlerteCT">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alertes de révisions / Contrôle technique</h4>
+            </div>
+            <div class="modal-body">
+                <?php
+                $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND ((dateNextRevision IS NOT NULL) AND ((dateNextRevision < CURRENT_DATE) OR (dateNextRevision = CURRENT_DATE))OR((dateNextCT IS NOT NULL) AND ((dateNextCT < CURRENT_DATE) OR (dateNextCT = CURRENT_DATE))));');
+                ?>
+                <ul>
+                    <?php
+                    while($data=$query->fetch())
+                    {
+                        echo '<li>' . $data['libelleVehicule'] . '</li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+                <?php if ($_SESSION['reserve_lecture']==1){ ?><a href="vehicules.php"><button type="button" class="btn btn-default pull-right">Accéder aux véhicules</button></a><? } ?>
             </div>
         </div>
     </div>

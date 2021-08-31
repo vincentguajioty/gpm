@@ -25,11 +25,17 @@ $nbPerimeReserve = $data['nb'];
 $query = $db->query('SELECT COUNT(*) as nb FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE notifications=1 OR notifications=2;');
 $data = $query->fetch();
 $nbDest = $data['nb'];
+$query = $db->query('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND (assuranceExpiration IS NOT NULL) AND ((assuranceExpiration < CURRENT_DATE) OR (assuranceExpiration = CURRENT_DATE));');
+$data = $query->fetch();
+$nbAssurance = $data['nb'];
+$query = $db->query('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND ((dateNextRevision IS NOT NULL) AND ((dateNextRevision < CURRENT_DATE) OR (dateNextRevision = CURRENT_DATE))OR((dateNextCT IS NOT NULL) AND ((dateNextCT < CURRENT_DATE) OR (dateNextCT = CURRENT_DATE))));');
+$data = $query->fetch();
+$nbRevisions = $data['nb'];
 
 if ($nbDest > 0)
 {
 
-    $nbAlertes = $nbManquant + $nbPerime + $nbLotsNOK + $nbManquantReserve + $nbPerimeReserve;
+    $nbAlertes = $nbManquant + $nbPerime + $nbLotsNOK + $nbManquantReserve + $nbPerimeReserve + $nbAssurance + $nbRevisions;
 
     if ($nbAlertes == 0)
     {
@@ -88,6 +94,22 @@ if ($nbDest > 0)
     while($data = $query->fetch())
     {
         $message_html = $message_html . "<li>".$data['libelleConteneur'] . " > " . $data['libelleMateriel']."</li>";
+    }
+    $message_html = $message_html."</ul><br/><br/>";
+    
+    $message_html = $message_html . "Véhicules dont l'assurance est arrivée à échéance:<br/><ul>";
+    $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND (assuranceExpiration IS NOT NULL) AND ((assuranceExpiration < CURRENT_DATE) OR (assuranceExpiration = CURRENT_DATE));');
+    while($data = $query->fetch())
+    {
+        $message_html = $message_html . "<li>".$data['libelleVehicule'] . "</li>";
+    }
+    $message_html = $message_html."</ul><br/><br/>";
+    
+    $message_html = $message_html . "Véhicules à faire passer à la révision ou au contrôle technique:<br/><ul>";
+    $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND ((dateNextRevision IS NOT NULL) AND ((dateNextRevision < CURRENT_DATE) OR (dateNextRevision = CURRENT_DATE))OR((dateNextCT IS NOT NULL) AND ((dateNextCT < CURRENT_DATE) OR (dateNextCT = CURRENT_DATE))));');
+    while($data = $query->fetch())
+    {
+        $message_html = $message_html . "<li>".$data['libelleVehicule'] . "</li>";
     }
     $message_html = $message_html."</ul><br/><br/>";
     

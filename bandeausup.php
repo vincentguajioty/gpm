@@ -211,6 +211,20 @@ require_once 'config/config.php';
                         <td><?php if($_SESSION['vhf_equipement_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
                     </tr>
                     <tr>
+                        <th>VEHICULES</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Véhicules</td>
+                        <td><?php if($_SESSION['vehicules_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['vehicules_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['vehicules_modification'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['vehicules_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                    </tr>
+                    <tr>
                         <th>ANNUAIRE</th>
                         <th></th>
                         <th></th>
@@ -272,6 +286,13 @@ require_once 'config/config.php';
                         <td><?php if($_SESSION['catalogue_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
                         <td><?php if($_SESSION['catalogue_modification'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
                         <td><?php if($_SESSION['catalogue_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                    </tr>
+                    <tr>
+                        <td>Types de véhicules</td>
+                        <td><?php if($_SESSION['vehicules_types_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['vehicules_types_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['vehicules_types_modification'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['vehicules_types_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
                     </tr>
                     <tr>
                         <td>Messages généraux</td>

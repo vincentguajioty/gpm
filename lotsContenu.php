@@ -17,7 +17,7 @@ if ($_SESSION['lots_lecture']==0)
     <?php require_once 'config/bdd.php'; ?>
 
     <?php
-    $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne WHERE idLot = :idLot;');
+    $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LIEUX w ON l.idLieu = w.idLieu LEFT OUTER JOIN VEHICULES v ON l.idVehicule = v.idVehicule LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne WHERE idLot = :idLot;');
     $query->execute(array(
         'idLot' => $_GET['id']
     ));
@@ -84,6 +84,8 @@ if ($_SESSION['lots_lecture']==0)
                                 <li><a>Nombre d'emplacements <span class="pull-right"><?php echo $data3['nb']; ?></span></a></li>
                                 <li><a>Quantite de matériel <span class="pull-right"><?php echo $data4['nb']; ?></span></a></li>
                                 <li><a>Personne responsable <span class="pull-right"><?php echo $data['identifiant']; ?></span></a></li>
+                                <li><a>Lieu <span class="pull-right"><?php echo $data['libelleLieu']; ?></span></a></li>
+                                <li><a>Véhicule <span class="pull-right"><?php echo $data['libelleVehicule']; ?></span></a></li>
                                 <li><a>Dernier inventaire <span class="pull-right"><?php echo $data['dateDernierInventaire']; ?></span></a></li>
                                 <li><a>Fréquence d'inventaire <span class="pull-right"><?php echo $data['frequenceInventaire']; ?></span></a></li>
                             </ul>

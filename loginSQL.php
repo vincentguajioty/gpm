@@ -171,6 +171,14 @@ if ($data['idIP'] == "")
         $_SESSION['vhf_equipement_ajout'] = $data['vhf_equipement_ajout'];
         $_SESSION['vhf_equipement_modification'] = $data['vhf_equipement_modification'];
         $_SESSION['vhf_equipement_suppression'] = $data['vhf_equipement_suppression'];
+        $_SESSION['vehicules_lecture'] = $data['vehicules_lecture'];
+        $_SESSION['vehicules_ajout'] = $data['vehicules_ajout'];
+        $_SESSION['vehicules_modification'] = $data['vehicules_modification'];
+        $_SESSION['vehicules_suppression'] = $data['vehicules_suppression'];
+        $_SESSION['vehicules_types_lecture'] = $data['vehicules_types_lecture'];
+        $_SESSION['vehicules_types_ajout'] = $data['vehicules_types_ajout'];
+        $_SESSION['vehicules_types_modification'] = $data['vehicules_types_modification'];
+        $_SESSION['vehicules_types_suppression'] = $data['vehicules_types_suppression'];
         
         $_SESSION['conf_joursCalendAccueil'] = $data['conf_joursCalendAccueil'];
         $_SESSION['conf_indicateur1Accueil'] = $data['conf_indicateur1Accueil'];
@@ -179,6 +187,8 @@ if ($data['idIP'] == "")
         $_SESSION['conf_indicateur4Accueil'] = $data['conf_indicateur4Accueil'];
         $_SESSION['conf_indicateur5Accueil'] = $data['conf_indicateur5Accueil'];
         $_SESSION['conf_indicateur6Accueil'] = $data['conf_indicateur6Accueil'];
+        $_SESSION['conf_indicateur7Accueil'] = $data['conf_indicateur7Accueil'];
+        $_SESSION['conf_indicateur8Accueil'] = $data['conf_indicateur8Accueil'];
 	    
 	    $_SESSION['LAST_ACTIVITY'] = time();
 	    $_SESSION['derniereConnexion'] = $data['derniereConnexion'];
