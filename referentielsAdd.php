@@ -1,0 +1,42 @@
+<?php
+session_start();
+require_once('logCheck.php');
+?>
+<?php
+require_once 'config/bdd.php';
+
+if ($_SESSION['typesLots_ajout']==0)
+{
+    echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
+}
+else
+{
+    $query = $db->prepare('INSERT INTO LOTS_TYPES(libelleTypeLot) VALUES(:libelleTypeLot);');
+    $query->execute(array(
+        'libelleTypeLot' => $_POST['libelleTypeLot']
+    ));
+
+    switch($query->errorCode())
+    {
+        case '00000':
+            writeInLogs("Ajout du référentiel " . $_POST['libelleTypeLot'], '2');
+            $_SESSION['returnMessage'] = 'Référentiel ajouté avec succès.';
+            $_SESSION['returnType'] = '1';
+            break;
+
+        case '23000':
+            writeInLogs("Doublon détecté lors de l'ajout du référentiel " . $_POST['libelleTypeLot'], '5');
+            $_SESSION['returnMessage'] = "Un référentiel existe déjà avec le même libellé. Merci de changer le libellé";
+            $_SESSION['returnType'] = '2';
+            break;
+
+        default:
+            writeInLogs("Erreur inconnue lors de l'ajout du référentiel " . $_POST['libelleTypeLot'], '5');
+            $_SESSION['returnMessage'] = "Erreur inconnue lors de l'ajout du référentiel.";
+            $_SESSION['returnType'] = '2';
+    }
+
+
+    echo "<script>javascript:history.go(-2);</script>";
+}
+?>
