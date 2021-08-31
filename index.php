@@ -423,7 +423,7 @@ require_once('logCheck.php');
 	                </div>
 	            </div>
 	        </div>
-	        <div class="col-md-6">
+	        <div class="col-md-4">
 	            <div class="box box-success">
 	
 	                <div class="box-header with-border">
@@ -461,154 +461,101 @@ require_once('logCheck.php');
 	            </div>
 	            <!-- /.box-body -->
 	        </div>
-	        <div class="col-md-6">
+	        <div class="col-md-8">
 	            <div class="box box-success">
-	            	<div class="box-header with-border">
-	            		<i class="fa fa-calendar"></i>
-	                    <h3 class="box-title">Evènements sous <?php echo $_SESSION['conf_joursCalendAccueil']; ?> jours</h3>
-	            	</div>
 	            	<div class="box-body">
-	            		<table class="table table-bordered">
-	                        <tr>
-	                            <th>Echéance</th>
-	                            <th>Type</th>
-	                            <th>Element</th>
-	                        </tr>
-	                        <?php
-	                        $nblibne = 0;
-	                        $query = $db->prepare('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (peremptionNotification < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY) OR peremptionNotification = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY)) AND idEtat = 1;');
-	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+	            		<?php
+	            			$events = [];
+
+	            			$query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE peremptionNotification IS NOT NULL AND idEtat = 1;');
 	                        while ($data = $query->fetch())
 	                        {
-	                            ?>
-	                            <tr>
-	                                <?php $nblibne = $nblibne + 1; ?>
-	                                <td><?php echo $data['peremption']; ?></td>
-	                                <td>Peremption de matériel (lots)</td>
-	                                <td><?php echo $data['libelleLot']; ?> > <?php echo $data['libelleSac']; ?> > <?php echo $data['libelleEmplacement']; ?> > <?php echo $data['libelleMateriel']; ?></td>
-	                            </tr>
-	                            <?php
+	                        	$events[] = [
+                                    'date'     => $data['peremption'],
+                                    'title'    => 'Peremption',
+                                    'subTitle' => $data['libelleLot'] . ' > ' . $data['libelleSac'] . ' > ' . $data['libelleEmplacement'] . ' > ' . $data['libelleMateriel'],
+                                    'color'    => '#dd4b39',
+                                ];
 	                        }
-	                        $query->closeCursor(); ?>
-	                        
-	                        <?php
-	                        $query = $db->prepare('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur=c.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue WHERE peremptionReserve < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY) OR peremptionReserve = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY);');
-	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+
+	                        $query = $db->query('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur=c.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue WHERE peremptionReserve IS NOT NULL;');
 	                        while ($data = $query->fetch())
 	                        {
-	                            ?>
-	                            <tr>
-	                                <?php $nblibne = $nblibne + 1; ?>
-	                                <td><?php echo $data['peremptionReserve']; ?></td>
-	                                <td>Peremption de matériel (réserve)</td>
-	                                <td><?php echo $data['libelleConteneur']; ?> > <?php echo $data['libelleMateriel']; ?></td>
-	                            </tr>
-	                            <?php
+	                        	$events[] = [
+                                    'date'     => $data['peremptionReserve'],
+                                    'title'    => 'Peremption',
+                                    'subTitle' => $data['libelleConteneur'] . ' > ' . $data['libelleMateriel'],
+                                    'color'    => '#dd4b39',
+                                ];
 	                        }
-	                        $query->closeCursor(); ?>
-	                        
-	                        <?php
-	                        $query = $db->prepare('SELECT * FROM LOTS_LOTS WHERE (dateDernierInventaire + INTERVAL frequenceInventaire DAY) = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY) OR (dateDernierInventaire + INTERVAL frequenceInventaire DAY) < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY);');
-	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+
+	                        $query = $db->query('SELECT * FROM LOTS_LOTS WHERE idEtat = 1;');
 	                        while ($data = $query->fetch())
 	                        {
-	                            ?>
-	                            <tr>
-	                                <?php $nblibne = $nblibne + 1; ?>
-	                                <td><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +'.$data['frequenceInventaire'].' day')); ?></td>
-	                                <td>Inventaire (lots)</td>
-	                                <td><?php echo $data['libelleLot']; ?></td>
-	                            </tr>
-	                            <?php
+	                        	$events[] = [
+                                    'date'     => date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +'.$data['frequenceInventaire'].' day')),
+                                    'title'    => 'Inventaire',
+                                    'subTitle' => $data['libelleLot'],
+                                    'color'    => '#00c0ef',
+                                ];
 	                        }
-	                        $query->closeCursor(); ?>
-	                        
-	                        <?php
-	                        $query = $db->prepare('SELECT * FROM COMMANDES WHERE idEtat = 4 AND (dateLivraisonPrevue = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY)  OR dateLivraisonPrevue < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY));');
-	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+
+	                        $query = $db->query('SELECT * FROM COMMANDES WHERE idEtat = 4 AND dateLivraisonPrevue IS NOT NULL;');
 	                        while ($data = $query->fetch())
 	                        {
-	                            ?>
-	                            <tr>
-	                                <?php $nblibne = $nblibne + 1; ?>
-	                                <td><?php echo date_format(date_create($data['dateLivraisonPrevue']), 'Y-m-d'); ?></td>
-	                                <td>Livraison prévue</td>
-	                                <td>Commande <?php echo $data['idCommande']; ?></td>
-	                            </tr>
-	                            <?php
+	                        	$events[] = [
+                                    'date'     => date_format(date_create($data['dateLivraisonPrevue']), 'Y-m-d'),
+                                    'title'    => 'Livraison commande',
+                                    'subTitle' => $data['idCommande'],
+                                    'color'    => '#00a65a',
+                                ];
 	                        }
-	                        $query->closeCursor(); ?>
-	                        
-	                        <?php
-	                        $query = $db->prepare('SELECT * FROM VEHICULES WHERE idEtat = 1 AND (dateNextRevision = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY)  OR dateNextRevision < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY));');
-	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+
+	                        $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND dateNextRevision IS NOT NULL;');
 	                        while ($data = $query->fetch())
 	                        {
-	                            ?>
-	                            <tr>
-	                                <?php $nblibne = $nblibne + 1; ?>
-	                                <td><?php echo date_format(date_create($data['dateNextRevision']), 'Y-m-d'); ?></td>
-	                                <td>Révision véhicule</td>
-	                                <td>Commande <?php echo $data['libelleVehicule']; ?></td>
-	                            </tr>
-	                            <?php
+	                        	$events[] = [
+                                    'date'     => date_format(date_create($data['dateNextRevision']), 'Y-m-d'),
+                                    'title'    => 'Révision',
+                                    'subTitle' => $data['libelleVehicule'],
+                                    'color'    => '#f39c12',
+                                ];
 	                        }
-	                        $query->closeCursor(); ?>
-	                        
-	                        <?php
-	                        $query = $db->prepare('SELECT * FROM VEHICULES WHERE idEtat = 1 AND (dateNextCT = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY)  OR dateNextCT < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY));');
-	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+
+	                        $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND dateNextCT IS NOT NULL;');
 	                        while ($data = $query->fetch())
 	                        {
-	                            ?>
-	                            <tr>
-	                                <?php $nblibne = $nblibne + 1; ?>
-	                                <td><?php echo date_format(date_create($data['dateNextCT']), 'Y-m-d'); ?></td>
-	                                <td>CT véhicule</td>
-	                                <td>Commande <?php echo $data['libelleVehicule']; ?></td>
-	                            </tr>
-	                            <?php
+	                        	$events[] = [
+                                    'date'     => date_format(date_create($data['dateNextCT']), 'Y-m-d'),
+                                    'title'    => 'CT',
+                                    'subTitle' => $data['libelleVehicule'],
+                                    'color'    => '#f39c12',
+                                ];
 	                        }
-	                        $query->closeCursor(); ?>
-	                        
-	                        <?php
-	                        $query = $db->prepare('SELECT * FROM VEHICULES WHERE idEtat = 1 AND (assuranceExpiration = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY)  OR assuranceExpiration < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY));');
-	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+
+	                        $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND assuranceExpiration IS NOT NULL;');
 	                        while ($data = $query->fetch())
 	                        {
-	                            ?>
-	                            <tr>
-	                                <?php $nblibne = $nblibne + 1; ?>
-	                                <td><?php echo date_format(date_create($data['assuranceExpiration']), 'Y-m-d'); ?></td>
-	                                <td>Assurnace véhicule</td>
-	                                <td>Commande <?php echo $data['libelleVehicule']; ?></td>
-	                            </tr>
-	                            <?php
+	                        	$events[] = [
+                                    'date'     => date_format(date_create($data['assuranceExpiration']), 'Y-m-d'),
+                                    'title'    => 'Assurance',
+                                    'subTitle' => $data['libelleVehicule'],
+                                    'color'    => '#f39c12',
+                                ];
 	                        }
-	                        $query->closeCursor(); ?>
-	                        
-	                        <?php
-	                        $query = $db->prepare('SELECT * FROM RESERVES_CONTENEUR WHERE (dateDernierInventaire + INTERVAL frequenceInventaire DAY) = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY) OR (dateDernierInventaire + INTERVAL frequenceInventaire DAY) < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY);');
-	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+
+	                        $query = $db->query('SELECT * FROM RESERVES_CONTENEUR;');
 	                        while ($data = $query->fetch())
 	                        {
-	                            ?>
-	                            <tr>
-	                                <?php $nblibne = $nblibne + 1; ?>
-	                                <td><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +'.$data['frequenceInventaire'].' day')); ?></td>
-	                                <td>Inventaire (réserve)</td>
-	                                <td><?php echo $data['libelleConteneur']; ?></td>
-	                            </tr>
-	                            <?php
+	                        	$events[] = [
+                                    'date'     => date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +'.$data['frequenceInventaire'].' day')),
+                                    'title'    => 'Inventaire',
+                                    'subTitle' => $data['libelleConteneur'],
+                                    'color'    => '#3c8dbc',
+                                ];
 	                        }
-	                        $query->closeCursor(); ?>
-	                    </table>
-	                    <?php 
-	                    	if ($nblibne == 0)
-		                    { ?>
-		                        <center>Aucune action sous <?php echo $_SESSION['conf_joursCalendAccueil']; ?> jours.</center>
-		                    <?php }
-	                    ?>
+            			?>
+                        <div id="calendar"></div>
 	            	</div>
 	            </div>
 	        </div>
@@ -627,6 +574,42 @@ require_once('logCheck.php');
 <!-- ./wrapper -->
 
 <?php include('scripts.php'); ?>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="plugins/fullcalendar/fr.js"></script>
+
+<script>
+    $(function () {
+        console.log("test");
+        var events = <?= json_encode($events) ?>;
+
+        var calendarEvents = [];
+        $.each(events, function () {
+            var dateParts = this.date.split('-');
+
+            calendarEvents.push({
+                title: this.title + ' : ' + this.subTitle,
+                start: new Date(dateParts[0], parseInt(dateParts[1]) - 1, dateParts[2]),
+                backgroundColor: this.color,
+                borderColor: this.color,
+                allDay: true
+            })
+        });
+
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            lang: 'fr',
+            //Random default events
+            events: calendarEvents
+        });
+    });
+</script>
 </body>
 
 <div class="modal fade modal-danger" id="modalAccueilAlertePeremption">

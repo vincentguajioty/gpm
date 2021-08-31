@@ -7,7 +7,7 @@ require_once 'config/bdd.php';
 
 if ($_POST['new1'] != $_POST['new2'])
 {
-    $_SESSION['returnMessage'] = 'La vérification du nouveau mot de passe a échoué (les saisie ne sont pas identiques).';
+    $_SESSION['returnMessage'] = 'La vérification du nouveau mot de passe a échoué (les saisies ne sont pas identiques).';
     $_SESSION['returnType'] = '2';
     echo "<script type='text/javascript'>document.location.replace('loginChangePWDstart.php');</script>";
 }

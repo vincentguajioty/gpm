@@ -136,7 +136,7 @@ switch ($_GET['case']) {
             </div>
             
             <div class="modal-body">
-                Cette suppression aura des impacts sur les éléments suivants:
+                Cette suppression aura les impacts suivants:
                 <ul>
                 	<?php echo $contenu; ?>
                 </ul>

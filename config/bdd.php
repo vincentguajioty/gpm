@@ -4,8 +4,8 @@ session_start();
 function createDB()
 {
     //---------------------- BASE DE DONNEES ----------------------
-    $SERVEURDB = 'x.x.x.x:xxxx'; //adresse IP du serveur entre simple cote, ex: $SERVEUR = '192.169.1.5';
-    $DBNAME = 'GPM'; //nom de la base de données, ex: $DB = 'GPM';
+    $SERVEURDB = 'x.x.x.x'; //adresse IP du serveur entre simple cote, ex: $SERVEUR = '192.169.1.5';
+    $DBNAME = 'xxx'; //nom de la base de données, ex: $DB = 'GPM';
     $CHARSET = 'utf8'; //type d'interclassement, utf8 étant recommandé, ex: $CHARSET = 'utf8';
     $USER = 'xxx'; //nom d'utilisateur d'accès à la base de données, ex: $USER = 'utilisateur';
     $PASSWORD = 'xxx'; //mot de passe d'accès à la base de données, ex: $PASSWORD = 'motDePasse';

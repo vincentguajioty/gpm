@@ -122,10 +122,6 @@ require_once('logCheck.php');
 		                <div class="box-body">
 		                	<form role="form" action="userConfig.php" method="POST">
 		                        <div class="form-group">
-		                            <label>Durée d'anticipation du calendrier sur la page d'acceuil (jours) :</label>
-		                            <input type="number" min="1" max="60" class="form-control" value="<?= $_SESSION['conf_joursCalendAccueil'] ?>" name="conf_joursCalendAccueil" required>
-		                        </div>
-		                        <div class="form-group">
 		                            <label>Rafraichissement automatique de la page d'accueil (secondes) :</label>
 		                            <input type="number" min="10" class="form-control" value="<?= $_SESSION['conf_accueilRefresh'] ?>" name="conf_accueilRefresh" required>
 		                        </div>

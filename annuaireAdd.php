@@ -24,7 +24,6 @@ else
                                                 mailPersonne,
                                                 telPersonne,
                                                 fonction,
-                                                conf_joursCalendAccueil,
                                                 conf_indicateur1Accueil,
                                                 conf_indicateur2Accueil,
                                                 conf_indicateur3Accueil,
@@ -40,7 +39,7 @@ else
                                                 :mailPersonne,
                                                 :telPersonne,
                                                 :fonction,
-                                                15, 1, 1, 1, 1, 1, 1, 1, 1);'
+                                                1, 1, 1, 1, 1, 1, 1, 1);'
                         );
     $query->execute(array(
         'idProfil'       => $_POST['libelleProfil'],

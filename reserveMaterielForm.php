@@ -82,19 +82,6 @@ if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
                             <input type="text" class="form-control"  value="<?= isset($data['quantiteAlerteReserve']) ? $data['quantiteAlerteReserve'] : '' ?>" name="quantiteAlerteReserve" required>
                         </div>
 
-                        <div class="checkbox">
-                            <label>
-                                <input
-                                    <?php
-                                    if (isset($data['peremptionReserve']) AND ($data['peremptionReserve'] != Null))
-                                    {
-                                        echo 'checked';
-                                    }
-                                    ?>
-                                        type="checkbox" value="1" name="boolPeremption" onClick="montrer_cacher(this,'perem')"> Le matériel a une date de péremption
-                            </label>
-                        </div>
-
                         <div class="form-group">
                             <label>Date de péremption:</label>
                             <div class="input-group">

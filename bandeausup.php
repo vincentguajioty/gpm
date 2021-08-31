@@ -37,7 +37,7 @@ require_once 'config/config.php';
                         <li class="user-header">
                             <p>
                                 <?php echo $_SESSION['nomPersonne'];?> <?php echo $_SESSION['prenomPersonne'];?>
-                                <br/><?php echo $_SESSION['libelleProfil'];?> <a data-toggle="modal" data-target="#modalProfilView"><i class="fa fa-info-circle"></i></a>
+                                <br/><a data-toggle="modal" data-target="#modalProfilView" class="btn btn-xs btn-info"><?php echo $_SESSION['libelleProfil'];?></a>
                                 <small>Dernière connexion: <?php echo $_SESSION['derniereConnexion'];?></small>
                             </p>
                         </li>
