@@ -127,7 +127,7 @@ if ($_SESSION['vehicules_lecture']==0)
                                         <a href="vehiculesForm.php?id=<?=$data['idVehicule']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['vehicules_suppression']==1) {?>
-                                        <a href="vehiculesDelete.php?id=<?=$data['idVehicule']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=vehiculesDelete&id=<?=$data['idVehicule']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

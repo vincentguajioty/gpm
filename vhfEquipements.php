@@ -75,7 +75,7 @@ if ($_SESSION['vhf_equipement_lecture']==0)
                                         <a href="vhfEquipementsForm.php?id=<?=$data['idVhfEquipement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['vhf_equipement_suppression']==1) {?>
-                                        <a href="vhfEquipementsDelete.php?id=<?=$data['idVhfEquipement']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=vhfEquipementsDelete&id=<?=$data['idVhfEquipement']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

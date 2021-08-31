@@ -82,7 +82,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                         <a href="annuaireRAZ.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-info" onclick="return confirm('Etes-vous sûr de vouloir réinitialiser ce mot de passe (le nouveau mot de passe prendra la valeur de l\'identifiant)?');"><i class="fa fa-lock"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['annuaire_suppression']==1) {?>
-                                        <a href="annuaireDelete.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=annuaireDelete&id=<?=$data['idPersonne']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

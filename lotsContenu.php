@@ -278,7 +278,7 @@ if ($_SESSION['lots_lecture']==0)
                                                                             	<a href="materielsForm.php?id=<?=$data9['idElement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                                                             <?php }?>
                                                                             <?php if ($_SESSION['materiel_suppression']==1) {?>
-                                                                                <a href="materielsDelete.php?id=<?=$data9['idElement']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
+                                                                                <a href="modalDeleteConfirm.php?case=materielsDelete&id=<?=$data9['idElement']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
                                                                             <?php }?>
                                                                         </td>
                                                                     </tr>
@@ -460,7 +460,7 @@ if ($_SESSION['lots_lecture']==0)
                                             <td>
                                                 <a href="lotsInventaireShow.php?id=<?=$data2['idInventaire']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
                                                 <?php if ($_SESSION['lots_modification']==1) {?>
-                                                    <a href="lotsInventaireDelete.php?id=<?php echo $data2['idInventaire']; ?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
+                                                    <a href="modalDeleteConfirm.php?case=lotsInventaireDelete&id=<?=$data2['idInventaire']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
                                                 <?php }?>
                                             </td>
                                         </tr>

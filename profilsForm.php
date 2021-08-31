@@ -396,7 +396,7 @@ require_once('logCheck.php');
                                             <a href="annuaireForm.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
                                         <?php }?>
                                         <?php if ($_SESSION['annuaire_modification']==1) {?>
-                                            <a href="annuaireProfilOff.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir délier cet utilisteur de ce profil?');">Délier</a>
+                                            <a href="modalDeleteConfirm.php?case=annuaireProfilOff&id=<?=$data['idPersonne']?>" class="btn btn-xs btn-danger modal-form">Délier</a>
                                         <?php }?>
                                     </td>
                                 </tr>

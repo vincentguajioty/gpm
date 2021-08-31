@@ -75,7 +75,7 @@ if ($_SESSION['sac2_lecture']==0)
                                         <a href="emplacementsForm.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['sac2_suppression']==1) {?>
-                                        <a href="emplacementsDelete.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=emplacementsDelete&id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

@@ -97,7 +97,7 @@ if ($_SESSION['reserve_lecture']==0)
                                         <a href="reserveMaterielForm.php?id=<?=$data['idReserveElement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['reserve_suppression']==1) {?>
-                                        <a href="reserveMaterielDelete.php?id=<?=$data['idReserveElement']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=reserveMaterielDelete&id=<?=$data['idReserveElement']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

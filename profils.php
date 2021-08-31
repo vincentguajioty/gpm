@@ -64,7 +64,7 @@ if ($_SESSION['profils_lecture']==0)
                                         <a href="profilsForm.php?id=<?=$data['idProfil']?>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['profils_suppression']==1) {?>
-                                        <a href="profilsDelete.php?id=<?=$data['idProfil']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
+                                        <a href="modalDeleteConfirm.php?case=profilsDelete&id=<?=$data['idProfil']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

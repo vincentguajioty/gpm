@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <?php include('header.php'); require_once('config/config.php'); ?>
@@ -100,7 +99,7 @@ if ($_SESSION['vhf_plan_lecture']==0)
                                                     <a href="vhfCanauxContenu.php?id=<?=$data['idVhfCanal']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
                                                 <?php }?>
                                                 <?php if ($_SESSION['vhf_plan_modification']==1) {?>
-                                                    <a href="vhfPlansCanauxDelete.php?idVhfPlan=<?=$data['idVhfPlan']?>&numeroCanal=<?=$data['numeroCanal']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-minus"></i></a>
+                                                    <a href="modalDeleteConfirm.php?case=vhfPlansCanauxDelete&idVhfPlan=<?=$data['idVhfPlan']?>&idVhfCanal=<?=$data['idVhfCanal']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-minus"></i></a>
                                                 <?php }?>
                                             </td>
                                         </tr>

@@ -253,7 +253,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                </div>
 	                                <div class="box-footer">
 	                                    <?php if (($data['idEtat']<7) AND ($_SESSION['commande_abandonner']==1)){ ?><a href="commandesGo8.php?id=<?=$_GET['id']?>" class="btn btn-danger spinnerAttenteClick" onclick="return confirm('Etes-vous sûr de vouloir abandonner la commande (action irreversible) ?');">Abandon de la commande</a> <?php } ?>
-	                                    <?php if ($_SESSION['commande_abandonner']==1){ ?><a href="commandesDelete.php?id=<?=$_GET['id']?>" class="btn btn-danger spinnerAttenteClick" onclick="return confirm('Etes-vous sûr de vouloir supprimer la commande (action irreversible) ?');">Supression de la commande</a> <?php } ?>
+	                                    <?php if ($_SESSION['commande_abandonner']==1){ ?><a href="modalDeleteConfirm.php?case=commandesDelete&id=<?=$_GET['id']?>" class="btn btn-danger modal-form">Supression de la commande</a><?php } ?>
 	                                    <?php if (($data['idEtat']==1) AND (($_SESSION['commande_ajout']==1) OR ($_SESSION['commande_etreEnCharge']==1))) { ?><button type="submit" class="btn btn-warning pull-right">Modifier</button> <?php } ?>
 	                                </div>
 	                            </form>

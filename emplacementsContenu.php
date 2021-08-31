@@ -57,61 +57,61 @@ if ($_SESSION['sac2_lecture']==0)
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
-
-            <div class="col-md-6">
-                <!-- Widget: user widget style 1 -->
-                <div class="box box-widget widget-user-2">
-                    <!-- Add the bg color to the header using any of the bg-* classes -->
-                    <div class="widget-user-header bg-blue">
-                        <!-- /.widget-user-image -->
-                        <h3 class="widget-user-username">Informations générales</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Widget: user widget style 1 -->
+                    <div class="box box-widget widget-user-2">
+                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                        <div class="widget-user-header bg-blue">
+                            <!-- /.widget-user-image -->
+                            <h3 class="widget-user-username">Informations générales</h3>
+                        </div>
+                        <div class="box-footer no-padding">
+                            <ul class="nav nav-stacked">
+                                <li><a href="lotsContenu.php?id=<?php echo $data['idLot'];?>">Lots de rattachement <span class="pull-right"><?php echo $data['libelleLot']; ?></span></a></li>
+                                <li><a>Personne responsable <span class="pull-right"><?php echo $data['identifiant']; ?></span></a></li>
+                                <li><a href="sacsContenu.php?id=<?php echo $data['idSac'];?>">Sac de rattachement <span class="pull-right"><?php echo $data['libelleSac']; ?></span></a></li>
+                                <li><a>Quantite de matériel <span class="pull-right"><?php echo $data4['nb']; ?></span></a></li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="box-footer no-padding">
-                        <ul class="nav nav-stacked">
-                            <li><a href="lotsContenu.php?id=<?php echo $data['idLot'];?>">Lots de rattachement <span class="pull-right"><?php echo $data['libelleLot']; ?></span></a></li>
-                            <li><a>Personne responsable <span class="pull-right"><?php echo $data['identifiant']; ?></span></a></li>
-                            <li><a href="sacsContenu.php?id=<?php echo $data['idSac'];?>">Sac de rattachement <span class="pull-right"><?php echo $data['libelleSac']; ?></span></a></li>
-                            <li><a>Quantite de matériel <span class="pull-right"><?php echo $data4['nb']; ?></span></a></li>
-                        </ul>
-                    </div>
+                    <!-- /.widget-user -->
                 </div>
-                <!-- /.widget-user -->
-            </div>
-            <div class="col-md-6">
-                <!-- Widget: user widget style 1 -->
-                <div class="box box-widget widget-user-2">
-                    <!-- Add the bg color to the header using any of the bg-* classes -->
-                    <div class="widget-user-header bg-blue">
-                        <!-- /.widget-user-image -->
-                        <h3 class="widget-user-username">Verifications</h3>
+                <div class="col-md-6">
+                    <!-- Widget: user widget style 1 -->
+                    <div class="box box-widget widget-user-2">
+                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                        <div class="widget-user-header bg-blue">
+                            <!-- /.widget-user-image -->
+                            <h3 class="widget-user-username">Verifications</h3>
+                        </div>
+                        <div class="box-footer no-padding">
+                            <ul class="nav nav-stacked">
+                                <li><a>Elements périmés<?php
+                                        if ($data5['nb']>0)
+                                        {
+                                            echo '<span class="pull-right badge bg-red">' . $data5['nb'] .'</span>';
+                                        }
+                                        else
+                                        {
+                                            echo '<span class="pull-right badge bg-green">' . $data5['nb'] .'</span>';
+                                        }
+                                        ?></span></a></li>
+                                <li><a>Matériel manquant<?php
+                                        if ($data6['nb']>0)
+                                        {
+                                            echo '<span class="pull-right badge bg-red">' . $data6['nb'] .'</span>';
+                                        }
+                                        else
+                                        {
+                                            echo '<span class="pull-right badge bg-green">' . $data6['nb'] .'</span>';
+                                        }
+                                        ?></span></a></li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="box-footer no-padding">
-                        <ul class="nav nav-stacked">
-                            <li><a>Elements périmés<?php
-                                    if ($data5['nb']>0)
-                                    {
-                                        echo '<span class="pull-right badge bg-red">' . $data5['nb'] .'</span>';
-                                    }
-                                    else
-                                    {
-                                        echo '<span class="pull-right badge bg-green">' . $data5['nb'] .'</span>';
-                                    }
-                                    ?></span></a></li>
-                            <li><a>Matériel manquant<?php
-                                    if ($data6['nb']>0)
-                                    {
-                                        echo '<span class="pull-right badge bg-red">' . $data6['nb'] .'</span>';
-                                    }
-                                    else
-                                    {
-                                        echo '<span class="pull-right badge bg-green">' . $data6['nb'] .'</span>';
-                                    }
-                                    ?></span></a></li>
-                        </ul>
-                    </div>
+                    <!-- /.widget-user -->
                 </div>
-                <!-- /.widget-user -->
-            </div>
 
                 <div class="col-md-12">
                     <div class="box box-warning box-solid">
@@ -184,7 +184,7 @@ if ($_SESSION['sac2_lecture']==0)
                                                 <a href="materielsForm.php?id=<?=$data9['idElement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                             <?php }?>
                                             <?php if ($_SESSION['materiel_suppression']==1) {?>
-                                                <a href="materielsDelete.php?id=<?=$data9['idElement']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
+                                                <a href="modalDeleteConfirm.php?case=materielsDelete&id=<?=$data9['idElement']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
                                             <?php }?>
                                         </td>
                                     </tr>
@@ -201,6 +201,7 @@ if ($_SESSION['sac2_lecture']==0)
                     </div>
                     <!-- /.box -->
                 </div>
+            </div>
         </section>
         <!-- /.content -->
     </div>

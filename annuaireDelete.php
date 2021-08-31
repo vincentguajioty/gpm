@@ -57,6 +57,11 @@ else
     $query->execute(array(
         'idPersonne' => $_GET['id']
     ));
+    
+    $query = $db->prepare('UPDATE RESERVES_INVENTAIRES SET idPersonne = Null WHERE idPersonne = :idPersonne ;');
+    $query->execute(array(
+        'idPersonne' => $_GET['id']
+    ));
 
     $query = $db->prepare('UPDATE VHF_EQUIPEMENTS SET idResponsable = Null WHERE idResponsable = :idResponsable ;');
     $query->execute(array(

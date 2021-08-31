@@ -89,7 +89,7 @@ if ($_SESSION['typesLots_lecture']==0)
                                     <td><?php echo $data['commentairesReferentiel']; ?></td>
                                     <td>
                                         <?php if ($_SESSION['typesLots_modification']==1) {?>
-                                            <a href="referentielsDeleteItem.php?idLot=<?=$_GET['id']?>&idMateriel=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
+                                            <a href="modalDeleteConfirm.php?case=referentielsDeleteItem&idLot=<?=$_GET['id']?>&idMateriel=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
                                         <?php }?>
                                     </td>
                                 </tr>
