@@ -52,7 +52,7 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>
-                                    <option value="<?php echo $data2['idEmplacement']; ?>" <?php if (isset($data['idEmplacement']) AND ($data2['idEmplacement'] == $data['idEmplacement'])) { echo 'selected'; } ?>><?php echo $data2['libelleLot']; ?> > <?php echo $data2['libelleSac']; ?> > <?php echo $data2['libelleEmplacement']; ?></option>
+                                    <option value="<?php echo $data2['idEmplacement']; ?>" <?php if (isset($data['idEmplacement']) AND ($data2['idEmplacement'] == $data['idEmplacement'])) { echo 'selected'; } ?> <?php if (isset($_GET['idParent']) AND ($data2['idEmplacement'] == $_GET['idParent'])) { echo 'selected'; } ?> ><?php echo $data2['libelleLot']; ?> > <?php echo $data2['libelleSac']; ?> > <?php echo $data2['libelleEmplacement']; ?></option>
                                     <?php
                                 }
                                 $query2->closeCursor(); ?>

@@ -171,7 +171,7 @@ if ($_SESSION['lots_lecture']==0)
                         <div class="box-header with-border">
                             <h3 class="box-title">Contenu de: <?php echo $data['libelleLot']; ?></h3> <?php if ($_SESSION['lots_modification']==1) {?><a href="lotsForm.php?id=<?=$_GET['id']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?><?php if ($_SESSION['lots_lecture']==1) {?><a href="lotsInventaire.php?id=<?=$data['idLot']?>" target="_blank" class="btn btn-xs"><i class="fa fa-print"></i></a><?php }?>
                             <div class="box-tools pull-right">
-                            	<?php if ($_SESSION['sac_ajout']==1) {?><a href="sacsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un sac</a><?php } ?>
+                            	<?php if ($_SESSION['sac_ajout']==1) {?><a href="sacsForm.php?idParent=<?= $_GET['id'] ?>" class="btn btn-sm btn-success modal-form">Ajouter un sac</a><?php } ?>
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
                                 </button>
                             </div>
@@ -191,7 +191,7 @@ if ($_SESSION['lots_lecture']==0)
                                         <div class="box-header with-border">
                                             <h3 class="box-title"><?php echo $data7['libelleSac']; ?></h3> <?php if ($_SESSION['sac_modification']==1) {?><a href="sacsForm.php?id=<?=$data7['idSac']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
                                             <div class="box-tools pull-right">
-                                            	<?php if ($_SESSION['sac2_ajout']==1) {?><a href="emplacementsForm.php" class="btn btn-sm btn-info modal-form">Ajouter un emplacement</a><?php } ?>
+                                            	<?php if ($_SESSION['sac2_ajout']==1) {?><a href="emplacementsForm.php?idParent=<?= $data7['idSac'] ?>" class="btn btn-sm btn-info modal-form">Ajouter un emplacement</a><?php } ?>
                                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                                 </button>
                                             </div>
@@ -211,7 +211,7 @@ if ($_SESSION['lots_lecture']==0)
                                                         <div class="box-header with-border">
                                                             <h3 class="box-title"><?php echo $data8['libelleEmplacement']; ?></h3> <?php if ($_SESSION['sac2_modification']==1) {?><a href="emplacementsForm.php?id=<?=$data8['idEmplacement']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
                                                             <div class="box-tools pull-right">
-                                                            	<?php if ($_SESSION['materiel_ajout']==1) {?><a href="materielsForm.php" class="btn btn-sm btn-warning modal-form">Ajouter un materiel</a><?php } ?>
+                                                            	<?php if ($_SESSION['materiel_ajout']==1) {?><a href="materielsForm.php?idParent=<?= $data8['idEmplacement'] ?>" class="btn btn-sm btn-warning modal-form">Ajouter un materiel</a><?php } ?>
                                                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                                                 </button>
                                                             </div>

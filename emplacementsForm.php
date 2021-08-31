@@ -41,7 +41,7 @@ if($_SESSION['sac2_lecture']==1 OR $_SESSION['sac2_ajout']==1 OR $_SESSION['sac2
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>
-                                    <option value="<?php echo $data2['idSac']; ?>" <?php if (isset($data['idSac']) AND ($data2['idSac'] == $data['idSac'])) { echo 'selected'; } ?> ><?php echo $data2['libelleLot']; ?> > <?php echo $data2['libelleSac']; ?></option>
+                                    <option value="<?php echo $data2['idSac']; ?>" <?php if (isset($data['idSac']) AND ($data2['idSac'] == $data['idSac'])) { echo 'selected'; } ?> <?php if (isset($_GET['idParent']) AND ($data2['idSac'] == $_GET['idParent'])) { echo 'selected'; } ?> ><?php echo $data2['libelleLot']; ?> > <?php echo $data2['libelleSac']; ?></option>
                                     <?php
                                 }
                                 $query2->closeCursor(); ?>

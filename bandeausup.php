@@ -20,6 +20,10 @@ require_once 'config/config.php';
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">               
 
+                <li class="dropdown user user-menu">
+                    <a href="baseDocumentaire.php"><i class="fa fa-database"></i></a>
+                </li>
+                
                 <?php if ($_SESSION['messages_ajout']==1 OR $_SESSION['messages_suppression']==1){ ?>
                     <li class="dropdown user user-menu">
                         <a href="messages.php"><i class="fa fa-bullhorn"></i></a>

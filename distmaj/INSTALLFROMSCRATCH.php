@@ -3,7 +3,7 @@
 <header>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Mise à jour</title>
+    <title>Installation</title>
     <link rel="icon" type="image/png" href="../img/favicon.png" />
     <!-- Select2 -->
     <link rel="stylesheet" href="../plugins/select2/select2.min.css">
@@ -27,7 +27,7 @@
         <div class="alert alert-warning">
             <center>
                 <h4>INSTALLATION</h4>
-                Votre base de données a été analysée et elle semble vite. GPM va donc s'installer dessus.
+                Votre base de données a été analysée et elle semble vide. GPM va donc s'installer dessus.
                 <br/><br/>
                 <form role="form" action="INSTALLFROMSCRATCH2.php" method="POST">
 

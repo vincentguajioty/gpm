@@ -97,8 +97,11 @@ require_once('logCheck.php');
                                         <option>Module de commandes</option>
                                         <option>Module gérant la réserve</option>
                                         <option>Module gérant les transferts de matériel les autres modules</option>
+                                        <option>Module de gestion des véhicules</option>
+                                        <option>Module de gestion du parc transmissions</option>
                                         <option>Module de gestion de l'annuaire</option>
                                         <option>Module de gestion des profils</option>
+                                        <option>Module de base documentaire</option>
                                         <option>Paramètres fonctionnels (catégories, états , lieux, fournisseurs ...)</option>
                                         <option>Paramètres techniques de l'application</option>
                                         <option>Autre</option>

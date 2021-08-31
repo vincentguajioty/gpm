@@ -40,7 +40,7 @@ if($_SESSION['sac_lecture']==1 OR $_SESSION['sac_ajout']==1 OR $_SESSION['sac_mo
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>
-                                    <option value="<?php echo $data2['idLot']; ?>" <?php if (isset($data['idLot']) AND ($data2['idLot'] == $data['idLot'])) { echo 'selected'; } ?> ><?php echo $data2['libelleLot']; ?></option>
+                                    <option value="<?php echo $data2['idLot']; ?>" <?php if (isset($data['idLot']) AND ($data2['idLot'] == $data['idLot'])) { echo 'selected'; } ?> <?php if (isset($_GET['idParent']) AND ($data2['idLot'] == $_GET['idParent'])) { echo 'selected'; } ?> ><?php echo $data2['libelleLot']; ?></option>
                                     <?php
                                 }
                                 $query2->closeCursor(); ?>
