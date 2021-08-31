@@ -57,23 +57,24 @@ if ($_SESSION['annuaire_lecture']==0)
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query('SELECT * FROM PERSONNE_REFERENTE person LEFT OUTER JOIN PROFILS profil ON person.idProfil = profil.idProfil ORDER BY identifiant;');
+                        $query = $db->query('SELECT * FROM PERSONNE_REFERENTE ORDER BY identifiant;');
                         while ($data = $query->fetch())
                         {?>
                             <tr>
                                 <td><?php echo $data['idPersonne']; ?></td>
-                                <td><?php
-                                	if($data['connexion_connexion']==1 AND (date('Y-m-d') > date('Y-m-d', strtotime($data['derniereConnexion'] . ' + 60 days'))))
-                                	{ ?>
-                                		<span class="badge bg-red"><?php echo $data['identifiant']; ?></span>
-                                	<?php }else{
-                                		echo $data['identifiant'];
-                                	} ?>
-                            	</td>
+                                <td><?php echo $data['identifiant']; ?></td>
                                 <td><?php echo $data['nomPersonne']; ?></td>
                                 <td><?php echo $data['prenomPersonne']; ?></td>
                                 <td><?php echo $data['fonction']; ?></td>
-                                <td><?php echo $data['libelleProfil']; ?></td>
+                                <td><?php
+                                	$query2 = $db->prepare('SELECT * FROM PROFILS_PERSONNES person LEFT OUTER JOIN PROFILS profil ON person.idProfil = profil.idProfil WHERE idPersonne = :idPersonne;');
+                                	$query2->execute(array('idPersonne'=>$data['idPersonne']));
+                                	while($data2 = $query2->fetch())
+                                	{
+                                		echo $data2['libelleProfil'].'<br/>';
+                                	}
+                                	?>
+                                </td>
                                 <td>
                                     <?php if ($_SESSION['annuaire_modification']==1) {?>
                                         <a href="annuaireForm.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>

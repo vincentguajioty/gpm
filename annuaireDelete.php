@@ -77,6 +77,26 @@ else
     $query->execute(array(
         'idExecutant' => $_GET['id']
     ));
+    
+    $query = $db->prepare('DELETE FROM TODOLIST WHERE idExecutant = :idPersonne AND realisee = 1');
+    $query->execute([
+        ':idPersonne' => $_GET['id']
+    ]);
+    
+    $query = $db->prepare('UPDATE TODOLIST SET idExecutant = Null WHERE idExecutant = :idPersonne AND realisee = 0');
+    $query->execute([
+        ':idPersonne' => $_GET['id']
+    ]);
+    
+    $query = $db->prepare('UPDATE TODOLIST SET idCreateur = Null WHERE idCreateur = :idPersonne');
+    $query->execute([
+        ':idPersonne' => $_GET['id']
+    ]);
+
+    $query = $db->prepare('DELETE FROM PROFILS_PERSONNES WHERE idPersonne = :idPersonne');
+    $query->execute([
+        ':idPersonne' => $_GET['id']
+    ]);
 
     $query = $db->prepare('DELETE FROM PERSONNE_REFERENTE WHERE idPersonne = :idPersonne;');
     $query->execute(array(

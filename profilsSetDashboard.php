@@ -10,7 +10,13 @@ if ($_SESSION['annuaire_modification']==0)
 else {
 
 
-    $query = $db->prepare('UPDATE PERSONNE_REFERENTE
+    $query = $db->prepare('SELECT idPersonne FROM PROFILS_PERSONNES WHERE idProfil = :idProfil');
+    $query->execute(array(
+        'idProfil'     => $_GET['id']
+    ));
+    while($data = $query->fetch())
+    {
+        $query2 = $db->prepare('UPDATE PERSONNE_REFERENTE
                                         SET
                                             conf_indicateur1Accueil = 1,
                                             conf_indicateur2Accueil = 1,
@@ -21,10 +27,13 @@ else {
                                             conf_indicateur7Accueil = 1,
                                             conf_indicateur8Accueil = 1
                                         WHERE
-                                            idProfil     = :idProfil ;');
-    $query->execute(array(
-        'idProfil'     => $_GET['id']
-    ));
+                                            idPersonne     = :idPersonne ;');
+        $query2->execute(array(
+            'idPersonne'     => $data['idPersonne']
+        ));
+    }
+    
+    
 
     switch($query->errorCode())
     {

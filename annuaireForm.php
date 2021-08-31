@@ -13,7 +13,7 @@ if($_SESSION['annuaire_lecture']==1 OR $_SESSION['annuaire_ajout']==1 OR $_SESSI
     <?php
     if (isset($_GET['id']))
 	{
-	    $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE u LEFT OUTER JOIN PROFILS p ON u.idProfil = p.idProfil WHERE idPersonne=:idPersonne;');
+	    $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE WHERE idPersonne=:idPersonne;');
 	    $query->execute(array('idPersonne' => $_GET['id']));
 	    $data = $query->fetch();
 	    $query->closeCursor();
@@ -54,17 +54,29 @@ if($_SESSION['annuaire_lecture']==1 OR $_SESSION['annuaire_ajout']==1 OR $_SESSI
                         </div>
                         <div class="form-group">
                             <label>Profil d'habilitation: </label>
-                            <select class="form-control select2" style="width: 100%;" name="libelleProfil">
-                                <option value="">--- Aucun Profil ---</option>
+                            <select class="form-control select2" style="width: 100%;" name="libelleProfil[]" multiple>
                                 <?php
-                                $query2 = $db->query('SELECT * FROM PROFILS;');
+					            if (isset($_GET['id']))
+					            {
+					                $query2 = $db->prepare('SELECT ao.*, aop.idPersonne FROM PROFILS ao LEFT JOIN PROFILS_PERSONNES aop ON (ao.idProfil = aop.idProfil AND aop.idPersonne = :idPersonne) ORDER BY libelleProfil;');
+					                $query2->execute(array('idPersonne' => $_GET['id']));
+					            }
+					            else
+					            {
+					                $query2 = $db->query('SELECT * FROM PROFILS ORDER BY libelleProfil;');
+					            }
+
                                 while ($data2 = $query2->fetch())
                                 {
-                                    ?>
-                                    <option value="<?php echo $data2['idProfil']; ?>" <?php if (isset($data['idProfil']) AND ($data2['idProfil'] == $data['idProfil'])) { echo 'selected'; } ?> ><?php echo $data2['libelleProfil']; ?></option>
-                                    <?php
+                                    
+                                    echo '<option value=' . $data2['idProfil'];
+
+					                if (isset($data2['idPersonne']) AND $data2['idPersonne'])
+					                {
+					                    echo " selected ";
+					                }
+					                echo '>' . $data2['libelleProfil'] . '</option>';
                                 }
-                                $query->closeCursor();
                                 $query2->closeCursor();?>
                             </select>
                         </div>

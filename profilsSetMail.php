@@ -10,7 +10,13 @@ if ($_SESSION['annuaire_modification']==0)
 else {
 
 
-    $query = $db->prepare('UPDATE PERSONNE_REFERENTE
+    $query = $db->prepare('SELECT idPersonne FROM PROFILS_PERSONNES WHERE idProfil = :idProfil');
+    $query->execute(array(
+        'idProfil'     => $_GET['id']
+    ));
+    while($data = $query->fetch())
+    {
+        $query2 = $db->prepare('UPDATE PERSONNE_REFERENTE
                                         SET
                                             notif_lots_manquants = 1,
                                             notif_lots_peremptions = 1,
@@ -23,10 +29,12 @@ else {
                                             notif_vehicules_revisions = 1,
                                             notif_vehicules_ct = 1
                                         WHERE
-                                            idProfil     = :idProfil ;');
-    $query->execute(array(
-        'idProfil'     => $_GET['id']
-    ));
+                                            idPersonne     = :idPersonne ;');
+        $query2->execute(array(
+            'idPersonne'     => $data['idPersonne']
+        ));
+    }
+
 
     switch($query->errorCode())
     {

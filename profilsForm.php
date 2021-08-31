@@ -247,13 +247,6 @@ require_once('logCheck.php');
                                 <td><input <?php if(isset($_GET['id']) AND $data['vehicules_types_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_types_modification"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['vehicules_types_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_types_suppression"></td>
                             </tr>
-                            <tr>
-                                <td>Messages généraux</td>
-                                <td></td>
-                                <td><input <?php if(isset($_GET['id']) AND $data['messages_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="messages_ajout"></td>
-                                <td></td>
-                                <td><input <?php if(isset($_GET['id']) AND $data['messages_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="messages_suppression"></td>
-                            </tr>
                         </table>
                         <table class="table table-bordered">
                             <tr>
@@ -301,6 +294,40 @@ require_once('logCheck.php');
                                 <td><input <?php if(isset($_GET['id']) AND $data['reserve_ReserveVersLot'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="reserve_ReserveVersLot"></td>
                             </tr>
                         </table>
+                        <table class="table table-bordered">
+		                    <tr>
+		                        <th>GESTION EQUIPE</th>
+		                        <th>Lecture</th>
+		                        <th>Ajout</th>
+		                        <th>Modification</th>
+		                        <th>Modification de sa propre liste</th>
+		                        <th>Supprimer</th>
+		                    </tr>
+		                    <tr>
+		                        <td>Messages généraux</td>
+		                        <td></td>
+		                        <td><input <?php if(isset($_GET['id']) AND $data['messages_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="messages_ajout"></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td><input <?php if(isset($_GET['id']) AND $data['messages_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="messages_suppression"></td>
+		                    </tr>
+		                    <tr>
+		                        <td>Messages mails</td>
+		                        <td></td>
+		                        <td><input <?php if(isset($_GET['id']) AND $data['contactMailGroupe'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="contactMailGroupe"></td>
+		                        <td></td>
+		                        <td></td>
+		                        <td></td>
+		                    </tr>
+		                    <tr>
+		                        <td>ToDoList</td>
+		                        <td><input <?php if(isset($_GET['id']) AND $data['todolist_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="todolist_lecture"></td>
+		                        <td></td>
+		                        <td><input <?php if(isset($_GET['id']) AND $data['todolist_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="todolist_modification"></td>
+		                        <td><input <?php if(isset($_GET['id']) AND $data['todolist_perso'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="todolist_perso"></td>
+		                        <td></td>
+		                    </tr>
+		                </table>
                         <div class="box-footer">
                             <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
                             <button type="submit" class="btn btn-info pull-right"><?= isset($_GET['id']) ? 'Modifier' : 'Ajouter'?></button>
@@ -310,82 +337,6 @@ require_once('logCheck.php');
                 <!-- /.box-body -->
 
             </div>
-
-            <?php
-                if(isset($_GET['id']))
-                { ?>
-                <div class="box box-success">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Utilisateurs rattachés au profil</h3>
-                    </div>
-                    <!-- /.box-header -->
-
-                    <div class="box-body">
-                        <?php if ($_SESSION['annuaire_modification']==1) {?>
-                            <form role="form" action="annuaireProfilOn.php?idProfil=<?=$_GET['id']?>" method="POST">
-                                <div class="form-group">
-                                    <select class="form-control select2" style="width: 100%;" name="identifiant">
-                                        <?php
-                                        $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE WHERE idProfil IS Null OR idProfil != :idProfil;');
-                                        $query->execute(array(
-                                            'idProfil' => $_GET['id']
-                                        ));
-                                        while ($data = $query->fetch())
-                                        {
-                                            ?>
-                                            <option value="<?php echo $data['idPersonne']; ?>"><?php echo $data['identifiant']; ?></option>
-                                            <?php
-                                        }
-                                        $query->closeCursor(); ?>
-                                    </select>
-                                    <button type="submit" class="btn btn-info pull-right">Ajouter</button>
-                                </div>
-                            </form>
-                        <?php }?>
-                        <table id="tri2" class="table table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Identifiant</th>
-                                <th>Nom</th>
-                                <th>Prénom</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE p.idProfil = :idProfil;');
-                            $query->execute(array(
-                                'idProfil' => $_GET['id']
-                            ));
-                            while ($data = $query->fetch())
-                            {?>
-                                <tr>
-                                    <td><?php echo $data['idPersonne']; ?></td>
-                                    <td><?php echo $data['identifiant']; ?></td>
-                                    <td><?php echo $data['nomPersonne']; ?></td>
-                                    <td><?php echo $data['prenomPersonne']; ?></td>
-                                    <td>
-                                        <?php if ($_SESSION['annuaire_modification']==1) {?>
-                                            <a href="annuaireForm.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
-                                        <?php }?>
-                                        <?php if ($_SESSION['annuaire_modification']==1) {?>
-                                            <a href="modalDeleteConfirm.php?case=annuaireProfilOff&id=<?=$data['idPersonne']?>" class="btn btn-xs btn-danger modal-form">Délier</a>
-                                        <?php }?>
-                                    </td>
-                                </tr>
-                                <?php
-                            }
-                            $query->closeCursor(); ?>
-                            </tbody>
-
-
-                        </table>
-                    </div>
-                    <!-- /.box-body -->
-
-                </div>
-            <?php } ?>
 
         </section>
         <!-- /.content -->

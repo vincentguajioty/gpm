@@ -16,7 +16,6 @@ else
     $_POST['libelleProfil'] = ($_POST['libelleProfil'] == Null) ? Null : $_POST['libelleProfil'];
 
     $query = $db->prepare('INSERT INTO PERSONNE_REFERENTE(
-                                                idProfil,
                                                 identifiant,
                                                 motDePasse,
                                                 nomPersonne,
@@ -42,8 +41,7 @@ else
                                                 conf_indicateur6Accueil ,
                                                 conf_indicateur7Accueil ,
                                                 conf_indicateur8Accueil,
-                                                conf_accueilRefresh) VALUES(:idProfil,
-                                                :identifiant,
+                                                conf_accueilRefresh) VALUES(:identifiant,
                                                 :motDePasse,
                                                 :nomPersonne,
                                                 :prenomPersonne,
@@ -55,7 +53,6 @@ else
                                                 120);'
                         );
     $query->execute(array(
-        'idProfil'       => $_POST['libelleProfil'],
         'identifiant'    => $_POST['identifiant'],
         'motDePasse'     => password_hash($_POST['identifiant'], PASSWORD_DEFAULT),
         'nomPersonne'    => $_POST['nomPersonne'],
@@ -64,12 +61,27 @@ else
         'telPersonne'    => $_POST['telPersonne'],
         'fonction'       => $_POST['fonction']
     ));
+
     switch($query->errorCode())
     {
         case '00000':
             writeInLogs("Ajout de l'utilisateur " . $_POST['identifiant'], '2');
             $_SESSION['returnMessage'] = 'Utilisateur ajouté avec succès.';
             $_SESSION['returnType'] = '1';
+
+            $query = $db->query('SELECT MAX(idPersonne) as idPersonne FROM PERSONNE_REFERENTE;');
+            $data = $query->fetch();
+
+            if (!empty($_POST['libelleProfil'])) {
+                $insertSQL = 'INSERT INTO PROFILS_PERSONNES (idProfil, idPersonne) VALUES';
+                foreach ($_POST['libelleProfil'] as $idProfil) {
+                    $insertSQL .= ' ('. (int)$idProfil.', '. (int)$data['idPersonne'] .'),';
+                }
+
+                $insertSQL = substr($insertSQL, 0, -1);
+
+                $db->query($insertSQL);
+            }
         break;
 
         case '23000':

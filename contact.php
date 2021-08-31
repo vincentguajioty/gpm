@@ -115,9 +115,13 @@ require_once('logCheck.php');
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <!--<div class="form-group">
                             <label>Message:</label>
                             <textarea class="form-control" rows="8" name="contenu"></textarea>
+                        </div>-->
+                        <div class="form-group">
+                            <label>Message:</label>
+                        	<textarea name="contenu" class="textareaHTML" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
                         </div>
                         <div class="box-footer">
                             <button type="submit" class="btn btn-info pull-right">Envoyer</button>

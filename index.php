@@ -432,7 +432,9 @@ require_once('logCheck.php');
 		            </div>
 		        </div>
 		    <?php } ?>
-	        <div class="col-md-4">
+		    
+		    
+	        <div class="col-md-6">
 	            <div class="box box-success">
 	
 	                <div class="box-header with-border">
@@ -470,7 +472,44 @@ require_once('logCheck.php');
 	            </div>
 	            <!-- /.box-body -->
 	        </div>
-	        <div class="col-md-8">
+	        
+	        <div class="col-md-6">
+			    <div class="box box-success">
+					<div class="box-header">
+						<i class="ion ion-clipboard"></i>
+						<h3 class="box-title">To Do List</h3>
+						<div class="box-tools pull-right">
+	                    	<?php if ($_SESSION['todolist_perso']==1) {?><a href="todolistForm.php?idCreateur=<?= $_SESSION['idPersonne'] ?>&idExecutant=<?= $_SESSION['idPersonne'] ?>" class="btn btn-sm modal-form" title="Ajouter un tache"><i class="fa fa-plus"></i></a><?php } ?>
+	                    </div>
+				    </div>
+				    <!-- /.box-header -->
+					<div class="box-body">
+						<ul class="todo-list">
+							<?php
+								$query = $db->prepare('SELECT * FROM TODOLIST WHERE idExecutant = :idExecutant AND realisee = 0');
+								$query->execute(array('idExecutant'=>$_SESSION['idPersonne']));
+								while ($data = $query->fetch())
+								{ ?>
+									<li>
+										<!-- todo text -->
+										<span class="text"><?= $data['titre'] ?></span>
+										<!-- Emphasis label -->
+										<small class="label label-info"><?= $data['priorite'] ?></small><small class="label label-success"><?= $data['dateExecution'] ?></small>
+										<!-- General tools such as edit or delete-->
+										<div class="tools">
+											<a href="todolistForm.php?id=<?= $data['idTache'] ?>" class="modal-form"><i class="fa fa-edit"></i></a>
+										</div>
+									</li>
+								<?php }
+							?>
+						</ul>
+					</div>
+				    <!-- /.box-body -->
+				</div>
+			</div>
+			
+			
+	        <div class="col-md-12">
 	            <div class="box box-success">
 	            	<div class="box-body">
 	            		<?php
@@ -600,6 +639,20 @@ require_once('logCheck.php');
 	                                ];
 		                        }
 	                        }
+
+                         	$query = $db->prepare('SELECT * FROM TODOLIST WHERE idExecutant = :idExecutant AND realisee=0;');
+                         	$query->execute(array('idExecutant'=>$_SESSION['idPersonne']));
+	                        while ($data = $query->fetch())
+	                        {
+	                        	$events[] = [
+                                    'date'     => date_format(date_create($data['dateExecution']), 'Y-m-d'),
+                                    'title'    => 'ToDoList',
+                                    'subTitle' => $data['titre'],
+                                    'color'    => '#3c8dbc',
+                                    'url'      => 'todolistForm.php?id='.$data['idTache'],
+                                ];
+	                        }
+	                        
             			?>
                         <div id="calendar"></div>
 	            	</div>

@@ -18,7 +18,7 @@ require_once 'config/bdd.php';
             ><a href="index.php"><i class="fa fa-home"></i> <span>Accueil</span></a></li>
 <li class="header">MODULES</li>
 			<?php
-			if ($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots_modification']==1 OR $_SESSION['lots_suppression']==1 OR $_SESSION['sac_lecture']==1 OR $_SESSION['sac_ajout']==1 OR $_SESSION['sac_modification']==1 OR $_SESSION['sac_suppression']==1 OR $_SESSION['sac2_lecture']==1 OR $_SESSION['sac2_ajout']==1 OR $_SESSION['sac2_modification']==1 OR $_SESSION['sac2_suppression']==1 OR $_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSION['materiel_modification']==1 OR $_SESSION['materiel_suppression']==1)
+			if ($_SESSION['lots_lecture']==1 OR $_SESSION['sac_lecture']==1 OR $_SESSION['sac2_lecture']==1 OR $_SESSION['materiel_lecture']==1)
 			{
 			?>
 	            <li <?php
@@ -80,7 +80,7 @@ require_once 'config/bdd.php';
 			?>
 			
 			<?php
-			if ($_SESSION['reserve_lecture']==1 OR $_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1 OR $_SESSION['reserve_suppression']==1)
+			if ($_SESSION['reserve_lecture']==1)
 			{
 			?>
 	            <li <?php
@@ -124,7 +124,7 @@ require_once 'config/bdd.php';
 			?>
             
             <?php
-			if ($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSION['commande_valider']==1 OR $_SESSION['commande_etreEnCharge']==1 OR $_SESSION['commande_abandonner']==1 OR $_SESSION['cout_lecture']==1 OR $_SESSION['cout_ajout']==1 OR $_SESSION['cout_etreEnCharge']==1 OR $_SESSION['cout_supprimer']==1)
+			if ($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSION['commande_valider']==1 OR $_SESSION['commande_etreEnCharge']==1 OR $_SESSION['commande_abandonner']==1 OR $_SESSION['cout_lecture']==1)
 			{
 			?>
 	            <li <?php
@@ -279,7 +279,7 @@ require_once 'config/bdd.php';
 			?>
 
             <?php
-            if ($_SESSION['vhf_canal_lecture']==1 OR $_SESSION['vhf_canal_ajout']==1 OR $_SESSION['vhf_canal_modification']==1 OR $_SESSION['vhf_canal_suppression']==1 OR $_SESSION['vhf_plan_lecture']==1 OR $_SESSION['vhf_plan_ajout']==1 OR $_SESSION['vhf_plan_modification']==1 OR $_SESSION['vhf_plan_suppression']==1 OR $_SESSION['vhf_equipement_lecture']==1 OR $_SESSION['vhf_equipement_ajout']==1 OR $_SESSION['vhf_equipement_modification']==1 OR $_SESSION['vhf_equipement_suppression']==1)
+            if ($_SESSION['vhf_canal_lecture']==1 OR $_SESSION['vhf_plan_lecture']==1 OR $_SESSION['vhf_equipement_lecture']==1)
             {
                 ?>
                 <li <?php
@@ -331,7 +331,7 @@ require_once 'config/bdd.php';
             }
             ?>
             <?php
-            if ($_SESSION['vehicules_lecture']==1 OR $_SESSION['vehicules_ajout']==1 OR $_SESSION['vehicules_modification']==1 OR $_SESSION['vehicules_suppression']==1)
+            if ($_SESSION['vehicules_lecture']==1)
             {
                 ?>
                 <li <?php
@@ -364,6 +364,78 @@ require_once 'config/bdd.php';
                 <?php
             }
             ?>
+            
+            <?php
+			if ($_SESSION['annuaire_lecture']==1 OR $_SESSION['profils_lecture']==1 OR $_SESSION['messages_ajout']==1 OR $_SESSION['messages_suppression']==1 OR $_SESSION['todolist_lecture']==1 OR $_SESSION['contactMailGroupe']==1)
+			{
+			?>
+	            <li <?php
+	            if (((int)($_SESSION['page']/100))==4)
+	            {
+	                echo 'class="active treeview"';
+	            }
+	            else
+	            {
+	                echo 'class="treeview"';
+	            }
+	            ?>
+	            >
+	                <a href="#">
+	                    <i class="fa fa-users"></i> <span>GESTION EQUIPE</span>
+	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+	                </a>
+	                <ul class="treeview-menu">
+	                    <?php if ($_SESSION['annuaire_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 401)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="annuaire.php"><i class="fa fa-user"></i> <span>Utilisateurs</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['profils_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 402)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="profils.php"><i class="fa fa-users"></i> <span>Profils</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['messages_ajout']==1 OR $_SESSION['messages_suppression']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 403)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="messages.php"><i class="fa fa-bullhorn"></i> <span>Messages généraux</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['contactMailGroupe']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 404)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="messagesMails.php"><i class="fa fa-envelope"></i> <span>Messages mails</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['todolist_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 405)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="todolist.php"><i class="fa fa-check-square-o"></i> <span>ToDoList</span></a></li>
+	                    <?php } ?>
+	                </ul>
+	            </li>
+	       <?php
+			}
+	       ?>
+            
 	        
 	        
 	        
@@ -371,7 +443,7 @@ require_once 'config/bdd.php';
 
 
             <?php
-			if ($_SESSION['typesLots_lecture']==1 OR $_SESSION['typesLots_ajout']==1 OR $_SESSION['typesLots_modification']==1 OR $_SESSION['typesLots_suppression']==1)
+			if ($_SESSION['typesLots_lecture']==1)
 			{
 			?>
 	            <li <?php
@@ -407,7 +479,7 @@ require_once 'config/bdd.php';
 			
 			
             <?php
-			if ($_SESSION['catalogue_lecture']==1 OR $_SESSION['catalogue_ajout']==1 OR $_SESSION['catalogue_modification']==1 OR $_SESSION['catalogue_suppression']==1 OR $_SESSION['categories_lecture']==1 OR $_SESSION['categories_ajout']==1 OR $_SESSION['categories_modification']==1 OR $_SESSION['categories_suppression']==1 OR $_SESSION['lieux_lecture']==1 OR $_SESSION['lieux_ajout']==1 OR $_SESSION['lieux_modification']==1 OR $_SESSION['lieux_suppression']==1 OR $_SESSION['fournisseurs_lecture']==1 OR $_SESSION['fournisseurs_ajout']==1 OR $_SESSION['fournisseurs_modification']==1 OR $_SESSION['fournisseurs_suppression']==1 OR $_SESSION['vehicules_types_lecture']==1 OR $_SESSION['vehicules_types_ajout']==1 OR $_SESSION['vehicules_types_modification']==1 OR $_SESSION['vehicules_types_suppression']==1)
+			if ($_SESSION['catalogue_lecture']==1 OR $_SESSION['categories_lecture']==1 OR $_SESSION['lieux_lecture']==1 OR $_SESSION['fournisseurs_lecture']==1 OR $_SESSION['vehicules_types_lecture']==1)
 			{
 			?>
 	            <li <?php
@@ -476,50 +548,6 @@ require_once 'config/bdd.php';
 	        <?php
 			}
 			?>
-            
-            <?php
-			if ($_SESSION['annuaire_lecture']==1 OR $_SESSION['annuaire_ajout']==1 OR $_SESSION['annuaire_modification']==1 OR $_SESSION['annuaire_suppression']==1 OR $_SESSION['annuaire_mdp']==1 OR $_SESSION['profils_lecture']==1 OR $_SESSION['profils_ajout']==1 OR $_SESSION['profils_modification']==1 OR $_SESSION['profils_suppression']==1)
-			{
-			?>
-	            <li <?php
-	            if (((int)($_SESSION['page']/100))==4)
-	            {
-	                echo 'class="active treeview"';
-	            }
-	            else
-	            {
-	                echo 'class="treeview"';
-	            }
-	            ?>
-	            >
-	                <a href="#">
-	                    <i class="fa fa-users"></i> <span>ANNUAIRE</span>
-	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
-	                </a>
-	                <ul class="treeview-menu">
-	                    <?php if ($_SESSION['annuaire_lecture']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 401)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="annuaire.php"><i class="fa fa-user"></i> <span>Utilisateurs</span></a></li>
-	                    <?php } ?>
-	                    <?php if ($_SESSION['profils_lecture']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 402)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="profils.php"><i class="fa fa-users"></i> <span>Profils</span></a></li>
-	                    <?php } ?>
-	                </ul>
-	            </li>
-	       <?php
-			}
-	       ?>
 	       
             
             

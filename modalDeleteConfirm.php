@@ -8,7 +8,7 @@ require_once 'config/bdd.php';
 switch ($_GET['case']) {
     case 'annuaireDelete':
         $lien = "annuaireDelete.php?id=".$_GET['id'];
-		$contenu = "<li>Les lots gérés par cette personne ne seront plus affectés.</li><li>Les centres de couts gérés par cette personne ne seront plus affectés.</li><li>Les commandes auquelles la personne était ratachée ne seront plus rattachées à personne (attention aux demandes de validation en attente).</li><li>Les messages publics postés par la personne n'auront plus d'auteur.</li><li>les inventaires réalisés par la personne n'auront plus d'auteur.</li><li>Les équipements radio gérés par cette personne ne seront plus affectés.</li><li>Les véhicules gérés par cette personne ne seront plus affectés.</li>";
+		$contenu = "<li>Les lots gérés par cette personne ne seront plus affectés.</li><li>Les centres de couts gérés par cette personne ne seront plus affectés.</li><li>Les commandes auquelles la personne était ratachée ne seront plus rattachées à personne (attention aux demandes de validation en attente).</li><li>Les messages publics postés par la personne n'auront plus d'auteur.</li><li>les inventaires réalisés par la personne n'auront plus d'auteur.</li><li>Les équipements radio gérés par cette personne ne seront plus affectés.</li><li>Les véhicules gérés par cette personne ne seront plus affectés.</li><li>Les taches réalisées de la TODOLIST de cet utilisateur seront supprimées.</li><li>Les taches que cet utilisateur n'a pas encore réalisée seront gardées mais non-affectées.</li><li>Les taches que cet utilisateur a donné à d'autres utilisateurs seront maintenues.</li>";
         break;
     case 'catalogueDelete':
         $lien = "catalogueDelete.php?id=".$_GET['id'];
@@ -120,6 +120,10 @@ switch ($_GET['case']) {
         break;
     case 'lotsInventaireDelete':
         $lien = "lotsInventaireDelete.php?id=".$_GET['id'];
+        $contenu = "<li>Aucun impact collatéral</li>";
+        break;
+    case 'tdlDelete':
+        $lien = "todolistDelete.php?id=".$_GET['id'];
         $contenu = "<li>Aucun impact collatéral</li>";
         break;
 

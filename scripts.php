@@ -119,3 +119,7 @@
         $("body").prepend('<div class="modal-backdrop in" ><i class="fa fa-refresh fa-spin" style="margin: auto; z-index: 4000000; position: fixed; left: calc(50% - 25px); top: calc(50% - 25px); font-size: 50px; "></i></div>');
     });
 </script>
+
+<script>
+	$('.textareaHTML').wysihtml5();
+</script>

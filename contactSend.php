@@ -21,7 +21,7 @@ $message = $RETOURLIGNE.$message.$RETOURLIGNE;
 $sujet = "[" . $APPNAME . "] - Votre demande a bien été enregistrée";
 sendmail($_POST['mail'], $sujet, 2, $message);
 
-$sujet = "[GMP] - Formulaire de contact - " . $_POST['motif'] . " - " . $_POST['module'];
+$sujet = "[GPM] - Formulaire de contact - " . $_POST['motif'] . " - " . $_POST['module'];
 if(sendmail('contact@guajioty.fr', $sujet, 2, $message))
 {
     $_SESSION['returnMessage'] = 'Demande envoyée avec succès.';

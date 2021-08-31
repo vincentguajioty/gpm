@@ -3,7 +3,7 @@
 <?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
-$_SESSION['page'] = 000;
+$_SESSION['page'] = 403;
 require_once('logCheck.php');
 ?>
 <?php

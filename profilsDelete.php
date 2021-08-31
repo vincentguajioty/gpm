@@ -17,14 +17,16 @@ else
     ));
     $data = $query->fetch();
 
-    $query2 = $db->prepare('SELECT * FROM PERSONNE_REFERENTE WHERE idProfil = :idProfil ;');
+    
+
+    $query2 = $db->prepare('SELECT * FROM PROFILS_PERSONNES WHERE idProfil = :idProfil ;');
     $query2->execute(array(
         'idProfil' => $_GET['id']
     ));
-    $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET idProfil = Null WHERE idProfil = :idProfil ;');
-    $query->execute(array(
-        'idProfil' => $_GET['id']
-    ));
+    $query = $db->prepare('DELETE FROM PROFILS_PERSONNES WHERE idProfil = :idProfil');
+    $query->execute([
+        ':idProfil' => $_GET['id']
+    ]);
     while ($data2 = $query2->fetch())
     {
         majIndicateursPersonne($data2['idPersonne']);
