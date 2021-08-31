@@ -57,7 +57,7 @@ if ($_SESSION['commande_lecture']==0)
 	                    <div class="tab-content">
 	
 	                        <div class="active tab-pane" id="general">
-	                            <form role="form" action="commandesUpdate.php?id=<?php echo $_GET['id'];?>" method="POST">
+	                            <form role="form" class="spinnerAttenteSubmit" action="commandesUpdate.php?id=<?php echo $_GET['id'];?>" method="POST">
 	                                <div class="row">
 	                                    <div class="col-md-6">
 	                                        <div class="form-group">
@@ -203,7 +203,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                    <textarea <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> class="form-control" rows="3" name="remarquesGenerales"><?php echo $data['remarquesGenerales']; ?></textarea>
 	                                </div>
 	                                <div class="box-footer">
-	                                    <?php if (($data['idEtat']<7) AND ($_SESSION['commande_abandonner']==1)){ ?><a href="commandesGo8.php?id=<?=$_GET['id']?>" class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir abandonner la commande (action irreversible) ?');">Abandon de la commande</a> <?php } ?>
+	                                    <?php if (($data['idEtat']<7) AND ($_SESSION['commande_abandonner']==1)){ ?><a href="commandesGo8.php?id=<?=$_GET['id']?>" class="btn btn-danger spinnerAttenteClick" onclick="return confirm('Etes-vous sûr de vouloir abandonner la commande (action irreversible) ?');">Abandon de la commande</a> <?php } ?>
 	                                    <?php if (($data['idEtat']==1) AND (($_SESSION['commande_ajout']==1) OR ($_SESSION['commande_etreEnCharge']==1))) { ?><button type="submit" class="btn btn-warning pull-right">Modifier</button> <?php } ?>
 	                                </div>
 	                            </form>
@@ -335,7 +335,7 @@ if ($_SESSION['commande_lecture']==0)
 	
 	
 	                        <div class="tab-pane" id="validation">
-	                            <form role="form" action="commandesGo13.php?id=<?=$_GET['id']?>" method="POST">
+	                            <form role="form" class="spinnerAttenteSubmit" action="commandesGo13.php?id=<?=$_GET['id']?>" method="POST">
 	                                <div class="row">
 	                                    <div class="col-md-4">
 	                                        <div class="form-group" id="dateDemandeValidation">
@@ -391,7 +391,7 @@ if ($_SESSION['commande_lecture']==0)
 	                        
 	                        
 	                        <div class="tab-pane" id="fournisseur">
-	                            <form role="form" action="commandesUpdateFour.php?id=<?=$_GET['id']?>" method="POST">
+	                            <form role="form" class="spinnerAttenteSubmit" action="commandesUpdateFour.php?id=<?=$_GET['id']?>" method="POST">
 	                                <div class="row">
 	                                    <div class="col-md-6">
 	                                        <div class="form-group">
@@ -443,7 +443,7 @@ if ($_SESSION['commande_lecture']==0)
 	                        
 	                        
 	                        <div class="tab-pane" id="livraison">
-	                            <form role="form" action="commandesGo56.php?id=<?=$_GET['id']?>" method="POST">
+	                            <form role="form" class="spinnerAttenteSubmit" action="commandesGo56.php?id=<?=$_GET['id']?>" method="POST">
 	                                <div class="row">
 	                                    <div class="col-md-4">
 	                                        <div class="form-group" id="dateLivraisonPrevue">
@@ -519,10 +519,10 @@ if ($_SESSION['commande_lecture']==0)
 	                <div class="box box-warning">
 	                    <div class="box-body">
 	                        <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
-	                        <?php if (($data['idEtat']==1) AND ($data['idValideur'] != '') AND(($_SESSION['commande_ajout']==1)OR($_SESSION['commande_etreEnCharge']==1))) { ?><a href="commandesGo2.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right">Soumettre à validation</a> <?php } ?>
-	                        <?php if (($data['idEtat']==3) AND ($_SESSION['idPersonne'] == $data['idAffectee'])) { ?><a href="commandesGo4.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right">Commande passée > En attente de livraison</a> <?php } ?>
-	                        <?php if (($data['idEtat']==5) AND ($_SESSION['idPersonne'] == $data['idAffectee'])) { ?><a href="commandesGo7.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right">Cloturer la commande</a> <?php } ?>
-	                        <?php if (($data['idEtat']==6) AND ($_SESSION['idPersonne'] == $data['idAffectee'])) { ?><a href="commandesGo5.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right">SAV terminé > Commande OK</a> <?php } ?>
+	                        <?php if (($data['idEtat']==1) AND ($data['idValideur'] != '') AND(($_SESSION['commande_ajout']==1)OR($_SESSION['commande_etreEnCharge']==1))) { ?><a href="commandesGo2.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">Soumettre à validation</a> <?php } ?>
+	                        <?php if (($data['idEtat']==3) AND ($_SESSION['idPersonne'] == $data['idAffectee'])) { ?><a href="commandesGo4.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">Commande passée > En attente de livraison</a> <?php } ?>
+	                        <?php if (($data['idEtat']==5) AND ($_SESSION['idPersonne'] == $data['idAffectee'])) { ?><a href="commandesGo7.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">Cloturer la commande</a> <?php } ?>
+	                        <?php if (($data['idEtat']==6) AND ($_SESSION['idPersonne'] == $data['idAffectee'])) { ?><a href="commandesGo5.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">SAV terminé > Commande OK</a> <?php } ?>
 	                    </div>
 	                </div>
 	            </div>

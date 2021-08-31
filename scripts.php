@@ -31,25 +31,12 @@
 <!-- FastClick -->
 <script src="plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
-<script src="dist/js/app.min.js"></script>
+<script src="dist/js/app.js"></script>
 <!-- Select2 -->
 <script src="plugins/select2/select2.full.min.js"></script>
 <!--Datetime picker-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/locale/fr.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-
-<!--Select2 dépendants-->
-<script>
-    function listenSelect(listenedSelector, listenerSelector) {
-        $(listenedSelector).change(function () {
-            $(listenerSelector).val(null).trigger('change');
-
-            $(listenerSelector).children().prop('disabled', true);
-            $(listenerSelector).children('[value=""], [data-id="'+$(listenedSelector).val()+'"]').prop('disabled', false);
-            $(listenerSelector).select2('destroy').select2();
-        });
-    }
-</script>
 
 <!-- DatePicker PERSO -->
 <script>
@@ -146,4 +133,11 @@
         });
     });
 </script>
-
+<script>
+    $('body').on('submit', '.spinnerAttenteSubmit', function() {
+        $("body").prepend('<div class="modal-backdrop in" ><i class="fa fa-refresh fa-spin" style="margin: auto; z-index: 1100; position: fixed; left: calc(50% - 25px); top: calc(50% - 25px); font-size: 50px; "></i></div>');
+    });
+    $('body').on('click', '.spinnerAttenteClick', function() {
+        $("body").prepend('<div class="modal-backdrop in" ><i class="fa fa-refresh fa-spin" style="margin: auto; z-index: 1100; position: fixed; left: calc(50% - 25px); top: calc(50% - 25px); font-size: 50px; "></i></div>');
+    });
+</script>

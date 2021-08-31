@@ -44,45 +44,15 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Lot: (filtre)</label>
-                            <select class="form-control select2" style="width: 100%;" name="materielLot">
-                                <option></option>
-                                <?php
-                                $query2 = $db->query('SELECT * FROM LOTS_LOTS ORDER BY libelleLot;');
-                                while ($data2 = $query2->fetch())
-                                {
-                                    ?>
-                                    <option value="<?php echo $data2['idLot']; ?>"<?php if (isset($data['idLot']) AND ($data2['idLot'] == $data['idLot'])) { echo 'selected'; } ?> ><?php echo $data2['libelleLot']; ?></option>
-                                    <?php
-                                }
-                                $query2->closeCursor(); ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Sac: (filtre)</label>
-                            <select class="form-control select2" style="width: 100%;" name="materielSac">
-                                <option></option>
-                                <?php
-                                $query2 = $db->query('SELECT * FROM MATERIEL_SAC s LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot ORDER BY libelleSac;');
-                                while ($data2 = $query2->fetch())
-                                {
-                                    ?>
-                                    <option value="<?php echo $data2['idSac']; ?>" data-id="<?php echo $data2['idLot']; ?>" <?php if (isset($data['idSac']) AND ($data2['idSac'] == $data['idSac'])) { echo 'selected'; } ?> data-id="<?php echo $data['libelleLot']; ?>"><?php echo $data2['libelleSac']; ?></option>
-                                    <?php
-                                }
-                                $query2->closeCursor(); ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
                             <label>Emplacement d'appartenance: </label>
                             <select class="form-control select2" style="width: 100%;" name="libelleEmplacement">
                                 <option value="">--- Aucun rattachement ---</option>
                                 <?php
-                                $query2 = $db->query('SELECT * FROM MATERIEL_EMPLACEMENT e LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot ORDER BY libelleEmplacement;');
+                                $query2 = $db->query('SELECT * FROM MATERIEL_EMPLACEMENT e LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot ORDER BY libelleLot, libelleSac, libelleEmplacement;');
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>
-                                    <option value="<?php echo $data2['idEmplacement']; ?>" data-id="<?php echo $data2['idSac']; ?>" <?php if (isset($data['idEmplacement']) AND ($data2['idEmplacement'] == $data['idEmplacement'])) { echo 'selected'; } ?> data-id="<?php echo $data['libelleSac']; ?>"><?php echo $data2['libelleEmplacement']; ?></option>
+                                    <option value="<?php echo $data2['idEmplacement']; ?>" <?php if (isset($data['idEmplacement']) AND ($data2['idEmplacement'] == $data['idEmplacement'])) { echo 'selected'; } ?>><?php echo $data2['libelleLot']; ?> > <?php echo $data2['libelleSac']; ?> > <?php echo $data2['libelleEmplacement']; ?></option>
                                     <?php
                                 }
                                 $query2->closeCursor(); ?>

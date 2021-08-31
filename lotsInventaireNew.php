@@ -41,7 +41,7 @@ if ($_SESSION['lots_modification']==0)
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
-            <form role="form" action="lotsInventaireNewAdd.php?id=<?=$_GET['id']?>" method="POST">
+            <form role="form" class="spinnerAttenteSubmit" action="lotsInventaireNewAdd.php?id=<?=$_GET['id']?>" method="POST">
                 <div class="box">
                     <div class="box-body">
                         <div class="form-group">

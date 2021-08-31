@@ -39,272 +39,240 @@ require_once('logCheck.php');
                 $nbLotsNOK = $nbLotsNOK + checkLotsConf($data['idLot']);
             }
             ?>
+			
+			<?php
+				if($_SESSION['conf_indicateur1Accueil']==1)
+				{ ?>
+	            <div class="col-md-4 col-sm-6 col-xs-12">
+	                <!-- small box -->
+	                <?php
+	                $query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (peremption < CURRENT_DATE OR peremption = CURRENT_DATE) AND idEtat = 1;');
+	                $data = $query->fetch();
+	
+	                if ($data['nb']>0)
+	                { ?>
+	                    <div class="info-box">
+	                        <a data-toggle="modal" data-target="#modalAccueilAlertePeremption"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Matériels périmés (Lots):</span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+	                            <span class="info-box-more">Cliquer sur l'icone</span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php }
+	                else
+	                { ?>
+	                    <div class="info-box">
+	                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Matériels périmés (Lots):</span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php }
+	                $query->closeCursor(); ?>
+	            </div>
+	        <?php } ?>
+	        
+	        <?php
+	        	if($_SESSION['conf_indicateur2Accueil']==1)
+				{ ?>
+	            <div class="col-md-4 col-sm-6 col-xs-12">
+	                <!-- small box -->
+	                <?php
+	                $query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (quantite < quantiteAlerte OR quantite = quantiteAlerte) AND idEtat = 1;');
+	                $data = $query->fetch();
+	
+	                if ($data['nb']>0)
+	                { ?>
+	
+	                    <div class="info-box">
+	                        <a data-toggle="modal" data-target="#modalAccueilAlerteQuantité"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Matériels manquants (Lots):</span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+	                            <span class="info-box-more">Cliquer sur l'icone</span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php }
+	                else
+	                { ?>
+	                    <div class="info-box">
+	                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Matériels manquants (Lots):</span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php }
+	                $query->closeCursor(); ?>
+	            </div>
+            <?php } ?>
 
-            <div class="col-md-4 col-sm-6 col-xs-12">
-                <!-- small box -->
-                <?php
-                $query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (peremption < CURRENT_DATE OR peremption = CURRENT_DATE) AND idEtat = 1;');
-                $data = $query->fetch();
-
-                if ($data['nb']>0)
-                { ?>
-                    <div class="info-box">
-                        <a data-toggle="modal" data-target="#modalAccueilAlertePeremption"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Matériels périmés (Lots):</span>
-                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
-                            <span class="info-box-more">Cliquer sur l'icone</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                <?php }
-                else
-                { ?>
-                    <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Matériels périmés (Lots):</span>
-                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                <?php }
-                $query->closeCursor(); ?>
-            </div>
+			<?php
+				if($_SESSION['conf_indicateur3Accueil']==1)
+				{ ?>
+	            <div class="col-md-4 col-sm-6 col-xs-12">
+	                <!-- small box -->
+	                <?php
+	                $query = $db->query('SELECT COUNT(*) as nb FROM LOTS_LOTS WHERE idEtat = 1 AND (frequenceInventaire IS NOT NULL) AND ((DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) < CURRENT_DATE) OR (DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) = CURRENT_DATE));');
+	                $data = $query->fetch();
+	
+	                if ($data['nb']>0)
+	                { ?>
+	
+	                    <div class="info-box">
+	                        <a data-toggle="modal" data-target="#modalAccueilAlerteInventaire"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Lots en attente d'inventaire:</span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+	                            <span class="info-box-more">Cliquer sur l'icone</span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php }
+	                else
+	                { ?>
+	                    <div class="info-box">
+	                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Lots en attente d'inventaire:</span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php }
+	                $query->closeCursor(); ?>
+	            </div>
+            <?php } ?>
             <!-- ./col -->
-            <div class="col-md-4 col-sm-6 col-xs-12">
-                <!-- small box -->
-                <?php
-                $query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (quantite < quantiteAlerte OR quantite = quantiteAlerte) AND idEtat = 1;');
-                $data = $query->fetch();
 
-                if ($data['nb']>0)
-                { ?>
-
-                    <div class="info-box">
-                        <a data-toggle="modal" data-target="#modalAccueilAlerteQuantité"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Matériels manquants (Lots):</span>
-                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
-                            <span class="info-box-more">Cliquer sur l'icone</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                <?php }
-                else
-                { ?>
-                    <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Matériels manquants (Lots):</span>
-                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                <?php }
-                $query->closeCursor(); ?>
-            </div>
-
-            <div class="col-md-4 col-sm-6 col-xs-12">
-                <!-- small box -->
-                <?php
-                $query = $db->query('SELECT COUNT(*) as nb FROM LOTS_LOTS WHERE idEtat = 1 AND (frequenceInventaire IS NOT NULL) AND ((DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) < CURRENT_DATE) OR (DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) = CURRENT_DATE));');
-                $data = $query->fetch();
-
-                if ($data['nb']>0)
-                { ?>
-
-                    <div class="info-box">
-                        <a data-toggle="modal" data-target="#modalAccueilAlerteInventaire"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Lots en attente d'inventaire:</span>
-                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
-                            <span class="info-box-more">Cliquer sur l'icone</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                <?php }
-                else
-                { ?>
-                    <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Lots en attente d'inventaire:</span>
-                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                <?php }
-                $query->closeCursor(); ?>
-            </div>
-            <!-- ./col -->
-
-            <div class="col-md-4 col-sm-6 col-xs-12">
-                <?php
-                if ($nbLotsNOK>0)
-                { ?>
-
-                    <div class="info-box">
-                        <a data-toggle="modal" data-target="#modalAccueilAlerteConformite"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Lots non-conformes:</span>
-                            <span class="info-box-number"><?php echo $nbLotsNOK; ?></span>
-                            <span class="info-box-more">Cliquer sur l'icone</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                <?php }
-                else
-                { ?>
-                    <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Lots non-conformes:</span>
-                            <span class="info-box-number"><?php echo $nbLotsNOK; ?></span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                <?php } ?>
-
-            </div>
+			<?php
+				if($_SESSION['conf_indicateur4Accueil']==1)
+				{ ?>
+	            <div class="col-md-4 col-sm-6 col-xs-12">
+	                <?php
+	                if ($nbLotsNOK>0)
+	                { ?>
+	
+	                    <div class="info-box">
+	                        <a data-toggle="modal" data-target="#modalAccueilAlerteConformite"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Lots non-conformes:</span>
+	                            <span class="info-box-number"><?php echo $nbLotsNOK; ?></span>
+	                            <span class="info-box-more">Cliquer sur l'icone</span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php }
+	                else
+	                { ?>
+	                    <div class="info-box">
+	                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Lots non-conformes:</span>
+	                            <span class="info-box-number"><?php echo $nbLotsNOK; ?></span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php } ?>
+	            </div>
+            <?php } ?>
             
-            <div class="col-md-4 col-sm-6 col-xs-12">
-                <!-- small box -->
-                <?php
-                $query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE peremptionReserve < CURRENT_DATE OR peremptionReserve = CURRENT_DATE;');
-                $data = $query->fetch();
-
-                if ($data['nb']>0)
-                { ?>
-                    <div class="info-box">
-                        <a data-toggle="modal" data-target="#modalAccueilAlertePeremptionReserve"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Matériels périmés (Réserve):</span>
-                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
-                            <span class="info-box-more">Cliquer sur l'icone</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                <?php }
-                else
-                { ?>
-                    <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Matériels périmés (Réserve):</span>
-                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                <?php }
-                $query->closeCursor(); ?>
-            </div>
-            <!-- ./col -->
-            <div class="col-md-4 col-sm-6 col-xs-12">
-                <!-- small box -->
-                <?php
-                $query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE quantiteReserve < quantiteAlerteReserve OR quantiteReserve = quantiteAlerteReserve;');
-                $data = $query->fetch();
-
-                if ($data['nb']>0)
-                { ?>
-
-                    <div class="info-box">
-                        <a data-toggle="modal" data-target="#modalAccueilAlerteQuantitéReserve"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Matériels manquants (Réserve):</span>
-                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
-                            <span class="info-box-more">Cliquer sur l'icone</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                <?php }
-                else
-                { ?>
-                    <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Matériels manquants (Réserve):</span>
-                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                <?php }
-                $query->closeCursor(); ?>
-            </div>
+            <?php
+				if($_SESSION['conf_indicateur5Accueil']==1)
+				{ ?>
+	            <div class="col-md-4 col-sm-6 col-xs-12">
+	                <!-- small box -->
+	                <?php
+	                $query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE peremptionReserve < CURRENT_DATE OR peremptionReserve = CURRENT_DATE;');
+	                $data = $query->fetch();
+	
+	                if ($data['nb']>0)
+	                { ?>
+	                    <div class="info-box">
+	                        <a data-toggle="modal" data-target="#modalAccueilAlertePeremptionReserve"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Matériels périmés (Réserve):</span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+	                            <span class="info-box-more">Cliquer sur l'icone</span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php }
+	                else
+	                { ?>
+	                    <div class="info-box">
+	                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Matériels périmés (Réserve):</span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php }
+	                $query->closeCursor(); ?>
+	            </div>
+            <?php } ?>
+            
+            
+            <?php
+				if($_SESSION['conf_indicateur6Accueil']==1)
+				{ ?>
+	            <div class="col-md-4 col-sm-6 col-xs-12">
+	                <!-- small box -->
+	                <?php
+	                $query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE quantiteReserve < quantiteAlerteReserve OR quantiteReserve = quantiteAlerteReserve;');
+	                $data = $query->fetch();
+	
+	                if ($data['nb']>0)
+	                { ?>
+	
+	                    <div class="info-box">
+	                        <a data-toggle="modal" data-target="#modalAccueilAlerteQuantitéReserve"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Matériels manquants (Réserve):</span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+	                            <span class="info-box-more">Cliquer sur l'icone</span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php }
+	                else
+	                { ?>
+	                    <div class="info-box">
+	                        <span class="info-box-icon bg-green"><i class="ion ion-checkmark"></i></span>
+	
+	                        <div class="info-box-content">
+	                            <span class="info-box-text">Matériels manquants (Réserve):</span>
+	                            <span class="info-box-number"><?php echo $data['nb']; ?></span>
+	                        </div>
+	                        <!-- /.info-box-content -->
+	                    </div>
+	                <?php }
+	                $query->closeCursor(); ?>
+	            </div>
+            <?php } ?>
             
         </div>
 
 		<div class="row">	
-	        <div class="col-md-6">
-	            <div class="box box-success">
-	
-	                <div class="box-header with-border">
-	                    <i class="fa fa-bullhorn"></i>
-	                    <h3 class="box-title">Messages généraux</h3>
-	                    <div class="box-tools pull-right">
-	                    	<?php if ($_SESSION['messages_ajout']==1) {?><a href="messagesForm.php" class="btn btn-sm modal-form"><i class="fa fa-plus"></i></a><?php } ?>
-	                    </div>
-	                </div>
-	
-	                <!-- /.box-header -->
-	                <div class="box-body">
-	                    <?php
-	                    $query = $db->query('SELECT COUNT(*) as nb FROM MESSAGES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne;');
-	                    $data = $query->fetch();
-	
-	                    if ($data['nb'] == 0)
-	                    {
-	                        echo '<center>Aucun message à afficher.</center>';
-	                    }
-	                    else
-	                    {
-	                        $query = $db->query('SELECT * FROM MESSAGES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne;');
-	                        while ($data = $query->fetch())
-	                        {
-	                            echo '<div class="callout callout-info">';
-	                            echo '<h4>' . $data['titreMessage'] . '<small> '. $data['prenomPersonne'] . '</small></h4>';
-	                            echo '<p>' . $data['corpsMessage'] . '</p>';
-	                            echo '</div>';
-	                        }
-	                    }
-	                    ?>
-	
-	                </div>
-	            </div>
-	            <!-- /.box-body -->
-	        </div>
-	        <div class="col-md-6">
-	            <!--<div class="box box-success">
-	            	Calendrier de l'équipe
-	            </div>-->
-	        </div>
-        </div>
-    </section>
-    <section class="content-header">
-      <h1>
-        Vue personnelle
-      </h1>
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-
-		<div class="row">
-	        <?php include('confirmationBox.php'); ?>
-	        <div class="col-md-6">
+	        <div class="col-md-12">
 	            <div class="box box-success">
 	                <div class="box-header with-border">
 	                    <i class="fa fa-ambulance"></i>
@@ -379,9 +347,129 @@ require_once('logCheck.php');
 	            </div>
 	        </div>
 	        <div class="col-md-6">
-	            <!--<div class="box box-success">
-	            	Calendrier personnel
-	            </div>-->
+	            <div class="box box-success">
+	
+	                <div class="box-header with-border">
+	                    <i class="fa fa-bullhorn"></i>
+	                    <h3 class="box-title">Messages généraux</h3>
+	                    <div class="box-tools pull-right">
+	                    	<?php if ($_SESSION['messages_ajout']==1) {?><a href="messagesForm.php" class="btn btn-sm modal-form"><i class="fa fa-plus"></i></a><?php } ?>
+	                    </div>
+	                </div>
+	
+	                <!-- /.box-header -->
+	                <div class="box-body">
+	                    <?php
+	                    $query = $db->query('SELECT COUNT(*) as nb FROM MESSAGES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne;');
+	                    $data = $query->fetch();
+	
+	                    if ($data['nb'] == 0)
+	                    {
+	                        echo '<center>Aucun message à afficher.</center>';
+	                    }
+	                    else
+	                    {
+	                        $query = $db->query('SELECT * FROM MESSAGES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne;');
+	                        while ($data = $query->fetch())
+	                        {
+	                            echo '<div class="callout callout-info">';
+	                            echo '<h4>' . $data['titreMessage'] . '<small> '. $data['prenomPersonne'] . '</small></h4>';
+	                            echo '<p>' . $data['corpsMessage'] . '</p>';
+	                            echo '</div>';
+	                        }
+	                    }
+	                    ?>
+	
+	                </div>
+	            </div>
+	            <!-- /.box-body -->
+	        </div>
+	        <div class="col-md-6">
+	            <div class="box box-success">
+	            	<div class="box-header with-border">
+	            		<i class="fa fa-calendar"></i>
+	                    <h3 class="box-title">Evènements sous <?php echo $_SESSION['conf_joursCalendAccueil']; ?> jours</h3>
+	            	</div>
+	            	<div class="box-body">
+	            		<table class="table table-bordered">
+	                        <tr>
+	                            <th>Echéance</th>
+	                            <th>Type</th>
+	                            <th>Element</th>
+	                        </tr>
+	                        <?php
+	                        $nblibne = 0;
+	                        $query = $db->prepare('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (peremptionNotification < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY) OR peremptionNotification = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY)) AND idEtat = 1;');
+	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+	                        while ($data = $query->fetch())
+	                        {
+	                            ?>
+	                            <tr>
+	                                <?php $nblibne = $nblibne + 1; ?>
+	                                <td><?php echo $data['peremption']; ?></td>
+	                                <td>Peremption de matériel (lots)</td>
+	                                <td><?php echo $data['libelleLot']; ?> > <?php echo $data['libelleSac']; ?> > <?php echo $data['libelleEmplacement']; ?> > <?php echo $data['libelleMateriel']; ?></td>
+	                            </tr>
+	                            <?php
+	                        }
+	                        $query->closeCursor(); ?>
+	                        
+	                        <?php
+	                        $query = $db->prepare('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur=c.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue WHERE peremptionReserve < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY) OR peremptionReserve = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY);');
+	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+	                        while ($data = $query->fetch())
+	                        {
+	                            ?>
+	                            <tr>
+	                                <?php $nblibne = $nblibne + 1; ?>
+	                                <td><?php echo $data['peremptionReserve']; ?></td>
+	                                <td>Peremption de matériel (réserve)</td>
+	                                <td><?php echo $data['libelleConteneur']; ?> > <?php echo $data['libelleMateriel']; ?></td>
+	                            </tr>
+	                            <?php
+	                        }
+	                        $query->closeCursor(); ?>
+	                        
+	                        <?php
+	                        $query = $db->prepare('SELECT * FROM LOTS_LOTS WHERE (dateDernierInventaire + INTERVAL frequenceInventaire DAY) = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY) OR (dateDernierInventaire + INTERVAL frequenceInventaire DAY) < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY);');
+	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+	                        while ($data = $query->fetch())
+	                        {
+	                            ?>
+	                            <tr>
+	                                <?php $nblibne = $nblibne + 1; ?>
+	                                <td><?php echo $data['dateDernierInventaire']; ?></td>
+	                                <td>Inventaire</td>
+	                                <td><?php echo $data['libelleLot']; ?></td>
+	                            </tr>
+	                            <?php
+	                        }
+	                        $query->closeCursor(); ?>
+	                        
+	                        <?php
+	                        $query = $db->prepare('SELECT * FROM COMMANDES WHERE idEtat = 4 AND (dateLivraisonPrevue = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY)  OR dateLivraisonPrevue < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY));');
+	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+	                        while ($data = $query->fetch())
+	                        {
+	                            ?>
+	                            <tr>
+	                                <?php $nblibne = $nblibne + 1; ?>
+	                                <td><?php echo date_format(date_create($data['dateLivraisonPrevue']), 'Y-m-d'); ?></td>
+	                                <td>Livraison prévue</td>
+	                                <td>Commande <?php echo $data['idCommande']; ?></td>
+	                            </tr>
+	                            <?php
+	                        }
+	                        $query->closeCursor(); ?>
+	                    </table>
+	                    <?php 
+	                    	if ($nblibne == 0)
+		                    { ?>
+		                        <center>Aucune action sous <?php echo $_SESSION['conf_joursCalendAccueil']; ?> jours.</center>
+		                    <?php }
+	                    ?>
+	            	</div>
+	            </div>
 	        </div>
 	    </div>
     </section>

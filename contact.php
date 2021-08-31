@@ -35,7 +35,7 @@ require_once('logCheck.php');
             <div class="box box-info">
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <form role="form" action="contactSend.php" method="POST">
+                    <form role="form" class="spinnerAttenteSubmit" action="contactSend.php" method="POST">
                         <!-- text input -->
                         <div class="row">
                             <div class="col-md-4">

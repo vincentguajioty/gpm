@@ -167,7 +167,7 @@ if ($_SESSION['lots_lecture']==0)
                 <div class="col-md-12">
                     <div class="box box-success collapsed-box box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Contenu de: <?php echo $data['libelleLot']; ?></h3> <?php if ($_SESSION['lots_modification']==1) {?><a href="lotsForm.php?id=<?=$_GET['id']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
+                            <h3 class="box-title">Contenu de: <?php echo $data['libelleLot']; ?></h3> <?php if ($_SESSION['lots_modification']==1) {?><a href="lotsForm.php?id=<?=$_GET['id']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?><?php if ($_SESSION['lots_lecture']==1) {?><a href="lotsInventaire.php?id=<?=$data['idLot']?>" target="_blank" class="btn btn-xs"><i class="fa fa-print"></i></a><?php }?>
                             <div class="box-tools pull-right">
                             	<?php if ($_SESSION['sac_ajout']==1) {?><a href="sacsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un sac</a><?php } ?>
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
@@ -428,10 +428,7 @@ if ($_SESSION['lots_lecture']==0)
                         </div>
                         <div class="box-body">
                             <?php if ($_SESSION['lots_modification']==1) {?>
-                                <a href="lotsInventaireNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Faire un nouvel inventaire</a>
-                            <?php }?>
-                            <?php if ($_SESSION['lots_lecture']==1) {?>
-                                <a href="lotsInventaire.php?id=<?=$data['idLot']?>" target="_blank" class="btn btn-sm btn-info"><i class="fa fa-print"></i> Imprimer un état des lieux</a>
+                                <a href="lotsInventaireNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-success spinnerAttenteClick"><i class="fa fa-plus"></i> Faire un nouvel inventaire</a>
                             <?php }?>
                         </div>
                         <div class="box-body">

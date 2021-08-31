@@ -171,6 +171,14 @@ if ($data['idIP'] == "")
         $_SESSION['vhf_equipement_ajout'] = $data['vhf_equipement_ajout'];
         $_SESSION['vhf_equipement_modification'] = $data['vhf_equipement_modification'];
         $_SESSION['vhf_equipement_suppression'] = $data['vhf_equipement_suppression'];
+        
+        $_SESSION['conf_joursCalendAccueil'] = $data['conf_joursCalendAccueil'];
+        $_SESSION['conf_indicateur1Accueil'] = $data['conf_indicateur1Accueil'];
+        $_SESSION['conf_indicateur2Accueil'] = $data['conf_indicateur2Accueil'];
+        $_SESSION['conf_indicateur3Accueil'] = $data['conf_indicateur3Accueil'];
+        $_SESSION['conf_indicateur4Accueil'] = $data['conf_indicateur4Accueil'];
+        $_SESSION['conf_indicateur5Accueil'] = $data['conf_indicateur5Accueil'];
+        $_SESSION['conf_indicateur6Accueil'] = $data['conf_indicateur6Accueil'];
 	    
 	    $_SESSION['LAST_ACTIVITY'] = time();
 	    $_SESSION['derniereConnexion'] = $data['derniereConnexion'];

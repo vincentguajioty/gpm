@@ -7,7 +7,7 @@ require_once 'config/config.php';
     <!-- Logo -->
     <a href="index.php" class="logo">
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b><?php echo $APPNAME; ?></b> <small><?php echo $VERSION; ?></small></span>
+        <span class="logo-lg spinnerAttenteClick"><b><?php echo $APPNAME; ?></b> <small><?php echo $VERSION; ?></small></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">

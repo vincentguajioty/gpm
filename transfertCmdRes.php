@@ -51,7 +51,7 @@ if ($_SESSION['reserve_cmdVersReserve']==0)
 	                    <div class="tab-content">
 							<?php if($_SESSION['transfertStade']>0){?>
 		                        <div class="<?= $_SESSION['transfertStade']==1 ? 'active' : ''?> tab-pane" id="1">
-	                                <form role="form" action="transfertCmdResGo2.php" method="POST">
+	                                <form role="form" class="spinnerAttenteSubmit" action="transfertCmdResGo2.php" method="POST">
 	                                    <div class="form-group">
 	                                        <label>Commande: <small style="color:grey;">Requis</small></label>
 	                                        <select <?= $_SESSION['transfertStade']!=1 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertCmd']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idCommande" required>
@@ -76,7 +76,7 @@ if ($_SESSION['reserve_cmdVersReserve']==0)
 		                    <?php } ?>
 							<?php if($_SESSION['transfertStade']>1){?>
 								<div class="<?= $_SESSION['transfertStade']==2 ? 'active' : ''?> tab-pane" id="2">
-		                            <form role="form" action="transfertCmdResGo3.php" method="POST">
+		                            <form role="form" class="spinnerAttenteSubmit" action="transfertCmdResGo3.php" method="POST">
 	                                    <div class="form-group">
 	                                        <label>Item de la commande: <small style="color:grey;">Requis</small></label>
 	                                        <select <?= $_SESSION['transfertStade']!=2 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertIdMaterielCatalogue']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idMaterielCatalogue" required>
@@ -113,7 +113,7 @@ if ($_SESSION['reserve_cmdVersReserve']==0)
 							<?php } ?>	
 							<?php if($_SESSION['transfertStade']>2){?>
 								<div class="<?= $_SESSION['transfertStade']==3 ? 'active' : ''?> tab-pane" id="3">
-		                            <form role="form" action="transfertCmdResGo4.php" method="POST">
+		                            <form role="form" class="spinnerAttenteSubmit" action="transfertCmdResGo4.php" method="POST">
 	                                    <div class="form-group">
 	                                        <label>Conteneur de destination: <small style="color:grey;">Requis</small></label>
 	                                        <select <?= $_SESSION['transfertStade']!=3 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertIdReserveElement']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idReserveElement" required>
@@ -149,7 +149,7 @@ if ($_SESSION['reserve_cmdVersReserve']==0)
 		                            RECAP A FAIRE
 		                            <div class="box-footer">
 	                                    <a href="transfertReset.php" class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir abandonner la transfert ?');">Abandon du transfert</a>
-	                                    <?php if ($_SESSION['transfertStade']==4) { ?><a href="transfertCmdResGoOK.php" class="btn btn-success pull-right">Effectuer</a> <?php } ?>
+	                                    <?php if ($_SESSION['transfertStade']==4) { ?><a href="transfertCmdResGoOK.php" class="btn btn-success pull-right spinnerAttenteClick">Effectuer</a> <?php } ?>
 	                                </div>
 		                        </div>
 		                    <?php } ?>

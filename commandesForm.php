@@ -41,7 +41,7 @@ if ($_SESSION['commande_ajout']==0)
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <form role="form" action="commandesAdd.php" method="POST">
+                    <form role="form" class="spinnerAttenteSubmit" action="commandesAdd.php" method="POST">
                         <!-- text input -->
                         <div class="form-group">
                             <label>Demandeur: <small style="color:grey;">Requis</small></label>
