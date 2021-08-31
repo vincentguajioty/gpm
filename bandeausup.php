@@ -141,11 +141,18 @@ require_once 'config/config.php';
                 </div>
                 <table class="table table-bordered">
                     <tr>
-                        <th>LOTS</th>
+                        <th></th>
                         <th>Lecture</th>
                         <th>Ajout</th>
                         <th>Modification</th>
                         <th>Suppression</th>
+                    </tr>
+                    <tr>
+                        <th>LOTS</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     <tr>
                         <td>Lots</td>
@@ -175,40 +182,12 @@ require_once 'config/config.php';
                         <td><?php if($_SESSION['materiel_modification'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
                         <td><?php if($_SESSION['materiel_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
                     </tr>
-                </table>
-                <table class="table table-bordered">
-                    <tr>
-                        <th>COMMANDES</th>
-                        <th>Lecture</th>
-                        <th>Ajout/Modification</th>
-                        <th>Valider</th>
-                        <th>Etre en charge</th>
-                        <th>Abandonner/Supprimer</th>
-                    </tr>
-                    <tr>
-                        <td>Commandes</td>
-                        <td><?php if($_SESSION['commande_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
-                        <td><?php if($_SESSION['commande_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
-                        <td><?php if($_SESSION['commande_valider'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
-                        <td><?php if($_SESSION['commande_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
-                        <td><?php if($_SESSION['commande_abandonner'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
-                    </tr>
-                    <tr>
-                        <td>Centres de coûts</td>
-                        <td><?php if($_SESSION['cout_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
-                        <td><?php if($_SESSION['cout_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
-                        <td></td>
-                        <td><?php if($_SESSION['cout_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
-                        <td><?php if($_SESSION['cout_supprimer'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
-                    </tr>
-                </table>
-				<table class="table table-bordered">
                     <tr>
                         <th>ANNUAIRE</th>
-                        <th>Lecture</th>
-                        <th>Ajout</th>
-                        <th>Modification</th>
-                        <th>Suppression</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     <tr>
                         <td>Annuaire</td>
@@ -224,14 +203,12 @@ require_once 'config/config.php';
                         <td><?php if($_SESSION['profils_modification'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
                         <td><?php if($_SESSION['profils_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
                     </tr>
-                </table>
-                <table class="table table-bordered">
                     <tr>
                         <th>PARAMETRES</th>
-                        <th>Lecture</th>
-                        <th>Ajout</th>
-                        <th>Modification</th>
-                        <th>Suppression</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     <tr>
                         <td>Catégories</td>
@@ -274,6 +251,32 @@ require_once 'config/config.php';
                         <td><?php if($_SESSION['messages_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
                         <td></td>
                         <td><?php if($_SESSION['messages_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                    </tr>
+                </table>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>COMMANDES</th>
+                        <th>Lecture</th>
+                        <th>Ajout Modification</th>
+                        <th>Valider</th>
+                        <th>Etre en charge</th>
+                        <th>Abandonner Supprimer</th>
+                    </tr>
+                    <tr>
+                        <td>Commandes</td>
+                        <td><?php if($_SESSION['commande_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['commande_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['commande_valider'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['commande_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['commande_abandonner'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                    </tr>
+                    <tr>
+                        <td>Centres de coûts</td>
+                        <td><?php if($_SESSION['cout_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['cout_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td></td>
+                        <td><?php if($_SESSION['cout_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['cout_supprimer'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
                     </tr>
                 </table>
             </div>

@@ -15,8 +15,6 @@ require_once('logCheck.php');
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
-    <?php require_once 'modal.php'; ?>
-    
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -38,7 +36,7 @@ require_once('logCheck.php');
             <div class="box">
                 <div class="box-header">
                     <?php if ($_SESSION['catalogue_ajout']==1) {?>
-                        <h3 class="box-title"><a data-toggle="modal" data-target="#modalCatalogueAdd" class="btn btn-sm btn-success">Ajouter un élément au catalogue</a></h3>
+                        <h3 class="box-title"><a href="catalogueForm.php" class="btn btn-sm btn-success modal-form">Ajouter un élément au catalogue</a></h3>
                     <?php } else {?>
                         </br>
                     <?php } ?>
@@ -48,11 +46,11 @@ require_once('logCheck.php');
                     <table id="tri2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Libelle</th>
-                                <th>Catégorie</th>
-                                <th>Commentaires</th>
-                                <th>Actions</th>
+                                <th class="all" style="width: 10px">#</th>
+                                <th class="all">Libelle</th>
+                                <th class="not-mobile">Catégorie</th>
+                                <th class="not-mobile">Commentaires</th>
+                                <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -67,7 +65,7 @@ require_once('logCheck.php');
                                 <td><?php echo $data['commentairesMateriel']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['catalogue_modification']==1) {?>
-                                        <a href="catalogueForm.php?id=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
+                                        <a href="catalogueForm.php?id=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['catalogue_suppression']==1) {?>
                                         <a href="catalogueDelete.php?id=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>

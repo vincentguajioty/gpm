@@ -12,20 +12,18 @@
     <!-- Bootstrap 3.3.6 -->
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="../dist/css/AdminLTE.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
 </header>
 
 <body class="hold-transition login-page">
-<div class="login-box">
-    <!-- /.login-logo -->
-    <div class="row">
+    <div class="login-box">
         <div class="alert alert-warning">
             <center>
                 <h4>INSTALLATION</h4>
@@ -50,10 +48,8 @@
                 </form>
             </center>
         </div>
+        <!-- /.login-box-body -->
     </div>
-
-    <!-- /.login-box-body -->
-</div>
 <!-- /.login-box -->
 
 </body>

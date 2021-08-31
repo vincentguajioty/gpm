@@ -111,80 +111,80 @@ if ($_SESSION['appli_conf']==0)
                         <table class="table table-bordered">
                             <tr>
                                 <th></th>
-                                <th>Demandeur</th>
-                                <th>Valideur</th>
-                                <th>Gérant</th>
-                                <th>Observateur</th>
+                                <th>Demandeur&nbsp;<input type="checkbox" id="check-demandeur" class="checkAll"/></th>
+                                <th>Valideur&nbsp;<input type="checkbox" id="check-valideur" class="checkAll"/></th>
+                                <th>Gérant&nbsp;<input type="checkbox" id="check-gerant" class="checkAll"/></th>
+                                <th>Observateur&nbsp;<input type="checkbox" id="check-observateur" class="checkAll"/></th>
                             </tr>
                             <tr>
                                 <td>La commande est créée</td>
-                                <td><input <?php if($data['notifications_commandes_demandeur_creation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_demandeur_creation"></td>
-                                <td><input <?php if($data['notifications_commandes_valideur_creation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_valideur_creation"></td>
-                                <td><input <?php if($data['notifications_commandes_affectee_creation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_affectee_creation"></td>
-                                <td><input <?php if($data['notifications_commandes_observateur_creation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_observateur_creation"></td>
+                                <td><input <?php if($data['notifications_commandes_demandeur_creation'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-demandeur" value="1" name="notifications_commandes_demandeur_creation"></td>
+                                <td><input <?php if($data['notifications_commandes_valideur_creation'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-valideur" value="1" name="notifications_commandes_valideur_creation"></td>
+                                <td><input <?php if($data['notifications_commandes_affectee_creation'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-gerant" value="1" name="notifications_commandes_affectee_creation"></td>
+                                <td><input <?php if($data['notifications_commandes_observateur_creation'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-observateur" value="1" name="notifications_commandes_observateur_creation"></td>
                             </tr>
                             <tr>
                                 <td>La demande de validation est faite</td>
-                                <td><input <?php if($data['notifications_commandes_demandeur_validation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_demandeur_validation"></td>
-                                <td><input <?php if($data['notifications_commandes_valideur_validation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_valideur_validation"></td>
-                                <td><input <?php if($data['notifications_commandes_affectee_validation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_affectee_validation"></td>
-                                <td><input <?php if($data['notifications_commandes_observateur_validation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_observateur_validation"></td>
+                                <td><input <?php if($data['notifications_commandes_demandeur_validation'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-demandeur" value="1" name="notifications_commandes_demandeur_validation"></td>
+                                <td><input <?php if($data['notifications_commandes_valideur_validation'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-valideur" value="1" name="notifications_commandes_valideur_validation"></td>
+                                <td><input <?php if($data['notifications_commandes_affectee_validation'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-gerant" value="1" name="notifications_commandes_affectee_validation"></td>
+                                <td><input <?php if($data['notifications_commandes_observateur_validation'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-observateur" value="1" name="notifications_commandes_observateur_validation"></td>
                             </tr>
                             <tr>
-                                <td>La validation est positive/td>
-                                <td><input <?php if($data['notifications_commandes_demandeur_validationOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_demandeur_validationOK"></td>
-                                <td><input <?php if($data['notifications_commandes_valideur_validationOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_valideur_validationOK"></td>
-                                <td><input <?php if($data['notifications_commandes_affectee_validationOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_affectee_validationOK"></td>
-                                <td><input <?php if($data['notifications_commandes_observateur_validationOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_observateur_validationOK"></td>
+                                <td>La validation est positive</td>
+                                <td><input <?php if($data['notifications_commandes_demandeur_validationOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-demandeur" value="1" name="notifications_commandes_demandeur_validationOK"></td>
+                                <td><input <?php if($data['notifications_commandes_valideur_validationOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-valideur" value="1" name="notifications_commandes_valideur_validationOK"></td>
+                                <td><input <?php if($data['notifications_commandes_affectee_validationOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-gerant" value="1" name="notifications_commandes_affectee_validationOK"></td>
+                                <td><input <?php if($data['notifications_commandes_observateur_validationOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-observateur" value="1" name="notifications_commandes_observateur_validationOK"></td>
                             </tr>
                             <tr>
                                 <td>La validation est négative</td>
-                                <td><input <?php if($data['notifications_commandes_demandeur_validationNOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_demandeur_validationNOK"></td>
-                                <td><input <?php if($data['notifications_commandes_valideur_validationNOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_valideur_validationNOK"></td>
-                                <td><input <?php if($data['notifications_commandes_affectee_validationNOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_affectee_validationNOK"></td>
-                                <td><input <?php if($data['notifications_commandes_observateur_validationNOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_observateur_validationNOK"></td>
+                                <td><input <?php if($data['notifications_commandes_demandeur_validationNOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-demandeur" value="1" name="notifications_commandes_demandeur_validationNOK"></td>
+                                <td><input <?php if($data['notifications_commandes_valideur_validationNOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-valideur" value="1" name="notifications_commandes_valideur_validationNOK"></td>
+                                <td><input <?php if($data['notifications_commandes_affectee_validationNOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-gerant" value="1" name="notifications_commandes_affectee_validationNOK"></td>
+                                <td><input <?php if($data['notifications_commandes_observateur_validationNOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-observateur" value="1" name="notifications_commandes_observateur_validationNOK"></td>
                             </tr>
                             <tr>
                                 <td>La commande est passée chez le fournisseur</td>
-                                <td><input <?php if($data['notifications_commandes_demandeur_passee'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_demandeur_passee"></td>
-                                <td><input <?php if($data['notifications_commandes_valideur_passee'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_valideur_passee"></td>
-                                <td><input <?php if($data['notifications_commandes_affectee_passee'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_affectee_passee"></td>
-                                <td><input <?php if($data['notifications_commandes_observateur_passee'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_observateur_passee"></td>
+                                <td><input <?php if($data['notifications_commandes_demandeur_passee'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-demandeur" value="1" name="notifications_commandes_demandeur_passee"></td>
+                                <td><input <?php if($data['notifications_commandes_valideur_passee'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-valideur" value="1" name="notifications_commandes_valideur_passee"></td>
+                                <td><input <?php if($data['notifications_commandes_affectee_passee'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-gerant" value="1" name="notifications_commandes_affectee_passee"></td>
+                                <td><input <?php if($data['notifications_commandes_observateur_passee'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-observateur" value="1" name="notifications_commandes_observateur_passee"></td>
                             </tr>
                             <tr>
                                 <td>La commande est receptionnée sans SAV</td>
-                                <td><input <?php if($data['notifications_commandes_demandeur_livraisonOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_demandeur_livraisonOK"></td>
-                                <td><input <?php if($data['notifications_commandes_valideur_livraisonOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_valideur_livraisonOK"></td>
-                                <td><input <?php if($data['notifications_commandes_affectee_livraisonOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_affectee_livraisonOK"></td>
-                                <td><input <?php if($data['notifications_commandes_observateur_livraisonOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_observateur_livraisonOK"></td>
+                                <td><input <?php if($data['notifications_commandes_demandeur_livraisonOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-demandeur" value="1" name="notifications_commandes_demandeur_livraisonOK"></td>
+                                <td><input <?php if($data['notifications_commandes_valideur_livraisonOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-valideur" value="1" name="notifications_commandes_valideur_livraisonOK"></td>
+                                <td><input <?php if($data['notifications_commandes_affectee_livraisonOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-gerant" value="1" name="notifications_commandes_affectee_livraisonOK"></td>
+                                <td><input <?php if($data['notifications_commandes_observateur_livraisonOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-observateur" value="1" name="notifications_commandes_observateur_livraisonOK"></td>
                             </tr>
                             <tr>
                                 <td>La commande est receptionnée avec SAV</td>
-                                <td><input <?php if($data['notifications_commandes_demandeur_livraisonNOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_demandeur_livraisonNOK"></td>
-                                <td><input <?php if($data['notifications_commandes_valideur_livraisonNOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_valideur_livraisonNOK"></td>
-                                <td><input <?php if($data['notifications_commandes_affectee_livraisonNOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_affectee_livraisonNOK"></td>
-                                <td><input <?php if($data['notifications_commandes_observateur_livraisonNOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_observateur_livraisonNOK"></td>
+                                <td><input <?php if($data['notifications_commandes_demandeur_livraisonNOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-demandeur" value="1" name="notifications_commandes_demandeur_livraisonNOK"></td>
+                                <td><input <?php if($data['notifications_commandes_valideur_livraisonNOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-valideur" value="1" name="notifications_commandes_valideur_livraisonNOK"></td>
+                                <td><input <?php if($data['notifications_commandes_affectee_livraisonNOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-gerant" value="1" name="notifications_commandes_affectee_livraisonNOK"></td>
+                                <td><input <?php if($data['notifications_commandes_observateur_livraisonNOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-observateur" value="1" name="notifications_commandes_observateur_livraisonNOK"></td>
                             </tr>
                             <tr>
                                 <td>Le SAV est clos</td>
-                                <td><input <?php if($data['notifications_commandes_demandeur_savOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_demandeur_savOK"></td>
-                                <td><input <?php if($data['notifications_commandes_valideur_savOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_valideur_savOK"></td>
-                                <td><input <?php if($data['notifications_commandes_affectee_savOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_affectee_savOK"></td>
-                                <td><input <?php if($data['notifications_commandes_observateur_savOK'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_observateur_savOK"></td>
+                                <td><input <?php if($data['notifications_commandes_demandeur_savOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-demandeur" value="1" name="notifications_commandes_demandeur_savOK"></td>
+                                <td><input <?php if($data['notifications_commandes_valideur_savOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-valideur" value="1" name="notifications_commandes_valideur_savOK"></td>
+                                <td><input <?php if($data['notifications_commandes_affectee_savOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-gerant" value="1" name="notifications_commandes_affectee_savOK"></td>
+                                <td><input <?php if($data['notifications_commandes_observateur_savOK'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-observateur" value="1" name="notifications_commandes_observateur_savOK"></td>
                             </tr>
                             <tr>
                                 <td>La commande est close</td>
-                                <td><input <?php if($data['notifications_commandes_demandeur_cloture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_demandeur_cloture"></td>
-                                <td><input <?php if($data['notifications_commandes_valideur_cloture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_valideur_cloture"></td>
-                                <td><input <?php if($data['notifications_commandes_affectee_cloture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_affectee_cloture"></td>
-                                <td><input <?php if($data['notifications_commandes_observateur_cloture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_observateur_cloture"></td>
+                                <td><input <?php if($data['notifications_commandes_demandeur_cloture'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-demandeur" value="1" name="notifications_commandes_demandeur_cloture"></td>
+                                <td><input <?php if($data['notifications_commandes_valideur_cloture'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-valideur" value="1" name="notifications_commandes_valideur_cloture"></td>
+                                <td><input <?php if($data['notifications_commandes_affectee_cloture'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-gerant" value="1" name="notifications_commandes_affectee_cloture"></td>
+                                <td><input <?php if($data['notifications_commandes_observateur_cloture'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-observateur" value="1" name="notifications_commandes_observateur_cloture"></td>
                             </tr>
                             <tr>
                                 <td>La commande est abandonnée</td>
-                                <td><input <?php if($data['notifications_commandes_demandeur_abandon'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_demandeur_abandon"></td>
-                                <td><input <?php if($data['notifications_commandes_valideur_abandon'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_valideur_abandon"></td>
-                                <td><input <?php if($data['notifications_commandes_affectee_abandon'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_affectee_abandon"></td>
-                                <td><input <?php if($data['notifications_commandes_observateur_abandon'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_observateur_abandon"></td>
+                                <td><input <?php if($data['notifications_commandes_demandeur_abandon'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-demandeur" value="1" name="notifications_commandes_demandeur_abandon"></td>
+                                <td><input <?php if($data['notifications_commandes_valideur_abandon'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-valideur" value="1" name="notifications_commandes_valideur_abandon"></td>
+                                <td><input <?php if($data['notifications_commandes_affectee_abandon'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-gerant" value="1" name="notifications_commandes_affectee_abandon"></td>
+                                <td><input <?php if($data['notifications_commandes_observateur_abandon'] == 1) { echo 'checked'; } ?> type="checkbox" class="check-observateur" value="1" name="notifications_commandes_observateur_abandon"></td>
                             </tr>
 
                         </table>

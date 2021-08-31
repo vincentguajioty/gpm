@@ -101,11 +101,18 @@ require_once('logCheck.php');
                             </div>
                             <table class="table table-bordered">
                                 <tr>
-                                    <th>LOTS</th>
+                                    <th></th>
                                     <th>Lecture</th>
                                     <th>Ajout</th>
                                     <th>Modification</th>
                                     <th>Suppression</th>
+                                </tr>
+                                <tr>
+                                    <th>LOTS</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                                 <tr>
                                     <td>Lots</td>
@@ -135,40 +142,12 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="materiel_modification"></td>
                                     <td><input type="checkbox" value="1" name="materiel_suppression"></td>
                                 </tr>
-                            </table>
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th>COMMANDES</th>
-                                    <th>Lecture</th>
-                                    <th>Ajout/Modification</th>
-                                    <th>Valider</th>
-                                    <th>Etre en charge</th>
-                                    <th>Abandonner/Supprimer</th>
-                                </tr>
-                                <tr>
-                                    <td>Commandes</td>
-                                    <td><input type="checkbox" value="1" name="commande_lecture"></td>
-                                    <td><input type="checkbox" value="1" name="commande_ajout"></td>
-                                    <td><input type="checkbox" value="1" name="commande_valider"></td>
-                                    <td><input type="checkbox" value="1" name="commande_etreEnCharge"></td>
-                                    <td><input type="checkbox" value="1" name="commande_abandonner"></td>
-                                </tr>
-                                <tr>
-                                    <td>Centres de coûts</td>
-                                    <td><input type="checkbox" value="1" name="cout_lecture"></td>
-                                    <td><input type="checkbox" value="1" name="cout_ajout"></td>
-                                    <td></td>
-                                    <td><input type="checkbox" value="1" name="cout_etreEnCharge"></td>
-                                    <td><input type="checkbox" value="1" name="cout_supprimer"></td>
-                                </tr>
-                            </table>
-                            <table class="table table-bordered">
                                 <tr>
                                     <th>ANNUAIRE</th>
-                                    <th>Lecture</th>
-                                    <th>Ajout</th>
-                                    <th>Modification</th>
-                                    <th>Suppression</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                                 <tr>
                                     <td>Annuaire</td>
@@ -184,14 +163,12 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="profils_modification"></td>
                                     <td><input type="checkbox" value="1" name="profils_suppression"></td>
                                 </tr>
-                            </table>
-                            <table class="table table-bordered">
                                 <tr>
                                     <th>PARAMETRES</th>
-                                    <th>Lecture</th>
-                                    <th>Ajout</th>
-                                    <th>Modification</th>
-                                    <th>Suppression</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                                 <tr>
                                     <td>Catégories</td>
@@ -234,6 +211,32 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="messages_ajout"></td>
                                     <td></td>
                                     <td><input type="checkbox" value="1" name="messages_suppression"></td>
+                                </tr>
+                            </table>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>COMMANDES</th>
+                                    <th>Lecture</th>
+                                    <th>Ajout/Modification</th>
+                                    <th>Valider</th>
+                                    <th>Etre en charge</th>
+                                    <th>Abandonner/Supprimer</th>
+                                </tr>
+                                <tr>
+                                    <td>Commandes</td>
+                                    <td><input type="checkbox" value="1" name="commande_lecture"></td>
+                                    <td><input type="checkbox" value="1" name="commande_ajout"></td>
+                                    <td><input type="checkbox" value="1" name="commande_valider"></td>
+                                    <td><input type="checkbox" value="1" name="commande_etreEnCharge"></td>
+                                    <td><input type="checkbox" value="1" name="commande_abandonner"></td>
+                                </tr>
+                                <tr>
+                                    <td>Centres de coûts</td>
+                                    <td><input type="checkbox" value="1" name="cout_lecture"></td>
+                                    <td><input type="checkbox" value="1" name="cout_ajout"></td>
+                                    <td></td>
+                                    <td><input type="checkbox" value="1" name="cout_etreEnCharge"></td>
+                                    <td><input type="checkbox" value="1" name="cout_supprimer"></td>
                                 </tr>
                             </table>
                             <div class="box-footer">
@@ -341,11 +344,18 @@ require_once('logCheck.php');
                             </div>
                             <table class="table table-bordered">
                                 <tr>
-                                    <th>LOTS</th>
+                                    <th></th>
                                     <th>Lecture</th>
                                     <th>Ajout</th>
                                     <th>Modification</th>
                                     <th>Suppression</th>
+                                </tr>
+                                <tr>
+                                    <th>LOTS</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                                 <tr>
                                     <td>Lots</td>
@@ -375,40 +385,12 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['materiel_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="materiel_modification"></td>
                                     <td><input <?php if($data['materiel_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="materiel_suppression"></td>
                                 </tr>
-                            </table>
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th>COMMANDES</th>
-                                    <th>Lecture</th>
-                                    <th>Ajout/Modification</th>
-                                    <th>Valider</th>
-                                    <th>Etre en charge</th>
-                                    <th>Abandonner/Supprimer</th>
-                                </tr>
-                                <tr>
-                                    <td>Commandes</td>
-                                    <td><input <?php if($data['commande_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_lecture"></td>
-                                    <td><input <?php if($data['commande_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_ajout"></td>
-                                    <td><input <?php if($data['commande_valider'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_valider"></td>
-                                    <td><input <?php if($data['commande_etreEnCharge'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_etreEnCharge"></td>
-                                    <td><input <?php if($data['commande_abandonner'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_abandonner"></td>
-                                </tr>
-                                <tr>
-                                    <td>Centres de coûts</td>
-                                    <td><input <?php if($data['cout_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_lecture"></td>
-                                    <td><input <?php if($data['cout_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_ajout"></td>
-                                    <td></td>
-                                    <td><input <?php if($data['cout_etreEnCharge'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_etreEnCharge"></td>
-                                    <td><input <?php if($data['cout_supprimer'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_supprimer"></td>
-                                </tr>
-                            </table>
-							<table class="table table-bordered">
                                 <tr>
                                     <th>ANNUAIRE</th>
-                                    <th>Lecture</th>
-                                    <th>Ajout</th>
-                                    <th>Modification</th>
-                                    <th>Suppression</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                                 <tr>
                                     <td>Annuaire</td>
@@ -424,14 +406,12 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['profils_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="profils_modification"></td>
                                     <td><input <?php if($data['profils_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="profils_suppression"></td>
                                 </tr>
-                            </table>
-                            <table class="table table-bordered">
                                 <tr>
                                     <th>PARAMETRES</th>
-                                    <th>Lecture</th>
-                                    <th>Ajout</th>
-                                    <th>Modification</th>
-                                    <th>Suppression</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                                 <tr>
                                     <td>Catégories</td>
@@ -474,6 +454,32 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['messages_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="messages_ajout"></td>
                                     <td></td>
                                     <td><input <?php if($data['messages_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="messages_suppression"></td>
+                                </tr>
+                            </table>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>COMMANDES</th>
+                                    <th>Lecture</th>
+                                    <th>Ajout/Modification</th>
+                                    <th>Valider</th>
+                                    <th>Etre en charge</th>
+                                    <th>Abandonner/Supprimer</th>
+                                </tr>
+                                <tr>
+                                    <td>Commandes</td>
+                                    <td><input <?php if($data['commande_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_lecture"></td>
+                                    <td><input <?php if($data['commande_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_ajout"></td>
+                                    <td><input <?php if($data['commande_valider'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_valider"></td>
+                                    <td><input <?php if($data['commande_etreEnCharge'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_etreEnCharge"></td>
+                                    <td><input <?php if($data['commande_abandonner'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_abandonner"></td>
+                                </tr>
+                                <tr>
+                                    <td>Centres de coûts</td>
+                                    <td><input <?php if($data['cout_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_lecture"></td>
+                                    <td><input <?php if($data['cout_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_ajout"></td>
+                                    <td></td>
+                                    <td><input <?php if($data['cout_etreEnCharge'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_etreEnCharge"></td>
+                                    <td><input <?php if($data['cout_supprimer'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_supprimer"></td>
                                 </tr>
                             </table>
                             <div class="box-footer">

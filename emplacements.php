@@ -15,7 +15,6 @@ if ($_SESSION['sac2_lecture']==0)
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
-    <?php require_once 'modal.php'; ?>
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -37,7 +36,7 @@ if ($_SESSION['sac2_lecture']==0)
             <div class="box">
                 <div class="box-header">
                     <?php if ($_SESSION['sac2_ajout']==1) {?>
-                        <h3 class="box-title"><a data-toggle="modal" data-target="#modalEmplacementAdd" class="btn btn-sm btn-success">Ajouter un emplacement</a></h3>
+                        <h3 class="box-title"><a href="emplacementsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un emplacement</a></h3>
                     <?php } else {?>
                         </br>
                     <?php } ?>
@@ -47,12 +46,12 @@ if ($_SESSION['sac2_lecture']==0)
                     <table id="tri2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Libelle</th>
-                                <th>Sac</th>
-                                <th>Lot</th>
-                                <th>Quantité de matériel</th>
-                                <th>Actions</th>
+                                <th class="all" style="width: 10px">#</th>
+                                <th class="all">Libelle</th>
+                                <th class="not-mobile">Sac</th>
+                                <th class="not-mobile">Lot</th>
+                                <th class="not-mobile">Quantité de matériel</th>
+                                <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -75,7 +74,7 @@ if ($_SESSION['sac2_lecture']==0)
                                         <a href="emplacementsContenu.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['sac2_modification']==1) {?>
-                                        <a href="emplacementsForm.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
+                                        <a href="emplacementsForm.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['sac2_suppression']==1) {?>
                                         <a href="emplacementsDelete.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>

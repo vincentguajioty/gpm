@@ -40,14 +40,14 @@ if ($_SESSION['commande_lecture']==0)
                     <table id="tri2R" class="table table-bordered table-hover" >
                         <thead>
                         <tr>
-                            <th style="width: 10px">#</th>
-                            <th>dateCreation</th>
-                            <th>Fournisseur</th>
-                            <th>Référence fournisseur</th>
-                            <th>Etat</th>
-                            <th>Demandeur</th>
-                            <th>Gerant</th>
-                            <th>Actions</th>
+                            <th class="all" style="width: 10px">#</th>
+                            <th class="all">dateCreation</th>
+                            <th class="all">Fournisseur</th>
+                            <th class="not-mobile">Référence fournisseur</th>
+                            <th class="not-mobile">Etat</th>
+                            <th class="not-mobile">Demandeur</th>
+                            <th class="not-mobile">Gerant</th>
+                            <th class="not-mobile">Actions</th>
                         </tr>
                         </thead>
                         <tbody>

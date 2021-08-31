@@ -28,12 +28,11 @@ require_once('logCheck.php');
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-home"></i>Accueil</a></li>
       </ol>
-        <?php include('confirmationBox.php'); ?>
     </section>
 
     <!-- Main content -->
     <section class="content">
-
+        <?php include('confirmationBox.php'); ?>
         <div class="row">
 
             <?php
@@ -190,7 +189,7 @@ require_once('logCheck.php');
 	                    <i class="fa fa-bullhorn"></i>
 	                    <h3 class="box-title">Messages généraux</h3>
 	                    <div class="box-tools pull-right">
-	                    	<?php if ($_SESSION['messages_ajout']==1) {?><a data-toggle="modal" data-target="#modalMessageGeneralAdd" class="btn btn-sm"><i class="fa fa-plus"></i></a><?php } ?>
+	                    	<?php if ($_SESSION['messages_ajout']==1) {?><a href="messagesForm.php" class="btn btn-sm modal-form"><i class="fa fa-plus"></i></a><?php } ?>
 	                    </div>
 	                </div>
 	

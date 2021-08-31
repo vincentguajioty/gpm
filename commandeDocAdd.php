@@ -18,6 +18,7 @@ $query->execute(array(
     'idTypeDocument' => $_POST['idTypeDocument']
 ));
 
+
 $query = $db->query('SELECT MAX(idDocCommande) as idDocCommande FROM DOCUMENTS_COMMANDES;');
 $data = $query->fetch();
 

@@ -15,7 +15,6 @@ if ($_SESSION['cout_lecture']==0)
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
-    <?php require_once 'modal.php'; ?>
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -37,7 +36,7 @@ if ($_SESSION['cout_lecture']==0)
             <div class="box">
                 <div class="box-header">
                     <?php if ($_SESSION['cout_ajout']==1) {?>
-                        <h3 class="box-title"><a data-toggle="modal" data-target="#modalCoutAdd" class="btn btn-sm btn-success">Ajouter un centre de couts</a></h3>
+                        <h3 class="box-title"><a href="centreCoutsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un centre de couts</a></h3>
                     <?php } else {?>
                         </br>
                     <?php } ?>
@@ -47,10 +46,10 @@ if ($_SESSION['cout_lecture']==0)
                     <table id="tri2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Libelle</th>
-                                <th>Responsable</th>
-                                <th>Actions</th>
+                                <th class="all" style="width: 10px">#</th>
+                                <th class="all">Libelle</th>
+                                <th class="not-mobile">Responsable</th>
+                                <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,7 +63,7 @@ if ($_SESSION['cout_lecture']==0)
                                 <td><?php echo $data['identifiant']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['cout_ajout']==1) {?>
-                                        <a href="centreCoutsForm.php?id=<?=$data['idCentreDeCout']?>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
+                                        <a href="centreCoutsForm.php?id=<?=$data['idCentreDeCout']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['cout_supprimer']==1) {?>
                                         <a href="centreCoutsDelete.php?id=<?=$data['idCentreDeCout']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>

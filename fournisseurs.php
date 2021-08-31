@@ -15,7 +15,6 @@ if ($_SESSION['fournisseurs_lecture']==0)
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
-    <?php require_once 'modal.php'; ?>
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -37,7 +36,7 @@ if ($_SESSION['fournisseurs_lecture']==0)
             <div class="box">
             	<div class="box-header">
                     <?php if ($_SESSION['fournisseurs_ajout']==1) {?>
-                        <h3 class="box-title"><a data-toggle="modal" data-target="#modalFournisseursAdd" class="btn btn-sm btn-success">Ajouter un fournisseur</a></h3>
+                        <h3 class="box-title"><a href="fournisseursForm.php" class="btn btn-sm btn-success modal-form">Ajouter un fournisseur</a></h3>
                     <?php } else {?>
                         </br>
                     <?php } ?>
@@ -62,7 +61,7 @@ if ($_SESSION['fournisseurs_lecture']==0)
                                 <td><?php echo $data['nomFournisseur']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['lieux_modification']==1) {?>
-                                        <a href="fournisseursForm.php?id=<?=$data['idFournisseur']?>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
+                                        <a href="fournisseursForm.php?id=<?=$data['idFournisseur']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['lieux_suppression']==1) {?>
                                         <a href="fournisseursDelete.php?id=<?=$data['idFournisseur']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>

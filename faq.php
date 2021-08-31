@@ -42,6 +42,34 @@ require_once 'config/config.php';
                                     <ul class="timeline timeline-inverse">
                                         <li class="time-label">
                                               <span class="bg-purple">
+                                                Version 2.6
+                                              </span>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-orange"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">16 Octobre 2017</span>
+                                                <h3 class="timeline-header">Livraison en recette de la version 2.6</h3>
+                                                <div class="timeline-body">
+                                                    Nouveautés par rapport à la version précédente:
+                                                    <ul>
+                                                        <li>Possibilité d'éditer les lots, sacs, emplacements et matériels depuis les fiches détaillées des lots (vue graphique).</li>
+                                                        <li>Mise en place de la fonctionnalité de duplication des profils (pour en créer des nouveaux plus rapidement)</li>
+                                                    </ul>
+                                                    Corrections apportées:
+                                                    <ul>
+                                                        <li>Correctifs de securité</li>
+                                                        <li>Formulaires de modification des éléments déjà ajoutés à une commande</li>
+                                                        <li>Corrections des champs Dates + Heures dans les formulaires</li>
+                                                        <li>Meilleure gestion de l'affichage sur mobiles</li>
+                                                        <li>Correction de l'affichage des tableaux de création/modification de profils</li>
+                                                        <li>Améliorations de l'ergonomie générale de la plateforme.</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="time-label">
+                                              <span class="bg-purple">
                                                 Version 2.5
                                               </span>
                                         </li>

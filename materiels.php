@@ -15,7 +15,6 @@ if ($_SESSION['materiel_lecture']==0)
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
-    <?php require_once 'modal.php'; ?>
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -37,7 +36,7 @@ if ($_SESSION['materiel_lecture']==0)
             <div class="box">
                 <div class="box-header">
                     <?php if ($_SESSION['materiel_ajout']==1) {?>
-                        <h3 class="box-title"><a data-toggle="modal" data-target="#modalMaterielAdd" class="btn btn-sm btn-success">Ajouter un materiel</a></h3>
+                        <h3 class="box-title"><a href="materielsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un materiel</a></h3>
                     <?php } else {?>
                         </br>
                     <?php } ?>
@@ -46,15 +45,15 @@ if ($_SESSION['materiel_lecture']==0)
                     <table id="tri2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Libelle</th>
-                                <th>Emplacement</th>
-                                <th>Sac</th>
-                                <th>Lot</th>
-                                <th>Quantité</th>
-                                <th>Péremption</th>
-                                <th>Notifications</th>
-                                <th>Actions</th>
+                                <th class="all" style="width: 10px">#</th>
+                                <th class="all">Libelle</th>
+                                <th class="not-mobile">Emplacement</th>
+                                <th class="not-mobile">Sac</th>
+                                <th class="not-mobile">Lot</th>
+                                <th class="not-mobile">Quantité</th>
+                                <th class="not-mobile">Péremption</th>
+                                <th class="not-mobile">Notifications</th>
+                                <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -103,7 +102,7 @@ if ($_SESSION['materiel_lecture']==0)
                                 </td>
                                 <td>
                                     <?php if ($_SESSION['materiel_modification']==1) {?>
-                                        <a href="materielsForm.php?id=<?=$data['idElement']?>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
+                                        <a href="materielsForm.php?id=<?=$data['idElement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['materiel_suppression']==1) {?>
                                         <a href="materielsDelete.php?id=<?=$data['idElement']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>

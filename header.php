@@ -35,6 +35,9 @@ require_once 'config/config.php';
     <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
     <!-- DataTables -->
     <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="plugins/datatables/extensions/Responsive/css/dataTables.responsive.css">
+    <!-- Datetime picker-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -46,6 +49,6 @@ require_once 'config/config.php';
 
     <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
 
-
-
+    <script type="text/javascript" src="plugins/pace/pace.min.js"></script>
+    <link rel="stylesheet" href="plugins/pace/pace.min.css">
 </head>

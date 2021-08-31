@@ -117,7 +117,7 @@ if ($_SESSION['sac2_lecture']==0)
                 <div class="col-md-12">
                     <div class="box box-warning box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $data['libelleEmplacement']; ?></h3>
+                            <h3 class="box-title"><?php echo $data['libelleEmplacement']; ?></h3> <?php if ($_SESSION['sac2_modification']==1) {?><a href="emplacementsForm.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                 </button>
@@ -179,7 +179,7 @@ if ($_SESSION['sac2_lecture']==0)
                                         </td>
                                         <td>
                                             <?php if ($_SESSION['materiel_modification']==1) {?>
-                                                <a href="materielsForm.php?id=<?=$data9['idElement']?>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
+                                                <a href="materielsForm.php?id=<?=$data9['idElement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                             <?php }?>
                                             <?php if ($_SESSION['materiel_suppression']==1) {?>
                                                 <a href="materielsDelete.php?id=<?=$data9['idElement']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>

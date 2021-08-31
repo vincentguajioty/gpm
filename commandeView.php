@@ -11,12 +11,12 @@ require_once('config/config.php');
 if ($_SESSION['commande_lecture']==0)
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 ?>
+
 <body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
-    <?php require_once 'modal.php'; ?>
     <?php require_once 'documentsGetIcone.php'; ?>
 
     <?php
@@ -236,12 +236,12 @@ if ($_SESSION['commande_lecture']==0)
 								                  <td><?php echo $data2['prixProduitTTC']*$data2['quantiteCommande']; $totalCMD = $totalCMD + ($data2['prixProduitTTC']*$data2['quantiteCommande']);?> €</td>
 								                  <td>
 								                	<?php if(($data['idEtat']==1) AND (($_SESSION['commande_ajout']==1) OR ($_SESSION['commande_etreEnCharge']==1))){ ?>
-								                		<a data-toggle="modal" data-target="#modalCommandesUpdateItem" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
+								                		<?php if ($data2['idMaterielCatalogue'] != Null){ ?><a href="commandeItemForm.php?idCommande=<?= $_GET['id'] ?>&idElement=<?= $data2['idMaterielCatalogue'] ?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a><?php }else{ ?><a href="#" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a><?php } ?>
 								                		<a href="commandeItemDelete.php?idCommande=<?=$data2['idCommande']?>&idMaterielCatalogue=<? if($data2['idMaterielCatalogue'] == Null){echo '-1';}else{echo $data2['idMaterielCatalogue'];}?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-minus"></i></a>
 								                	<?php }?>
 								                	
 								                	<?php if(($data['idEtat']>1) AND ($_SESSION['commande_lecture']==1)){ ?>
-								                		<a data-toggle="modal" data-target="#modalCommandesViewItem" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
+								                		<a href="commandeItemForm.php?idCommande=<?= $_GET['id'] ?>&idElement=<?= $data2['idMaterielCatalogue'] ?>" class="btn btn-xs btn-info modal-form"><i class="fa fa-folder-open"></i></a>
 								                	<?php }?>
 								                	
 								                  </td>
@@ -264,7 +264,7 @@ if ($_SESSION['commande_lecture']==0)
 										        	<td></td>
 										        	<td></td>
 										        	<td></td>
-										        	<td><a data-toggle="modal" data-target="#modalCommandesAddItem" class="btn btn-xs btn-success"><i class="fa fa-plus"></i></a></td>
+										        	<td><a href="commandeItemForm.php?idCommande=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-plus"></i></a></td>
 										        <tr>
 										  <?php }?>
 					              </table>
@@ -318,7 +318,7 @@ if ($_SESSION['commande_lecture']==0)
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td><a data-toggle="modal" data-target="#modalCommandesDocAdd" class="btn btn-xs btn-success"><i class="fa fa-plus"></i></a></td>
+                                                <td><a href="commandeDocForm.php?idCommande=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form"><i class="fa fa-plus"></i></a></td>
                                             <tr>
                                         <?php }?>
                                     </table>
@@ -406,7 +406,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                                <div class="input-group-addon">
 	                                                    <i class="fa fa-calendar"></i>
 	                                                </div>
-	                                                <input <?php if(($data['idEtat']>3) OR ($_SESSION['commande_etreEnCharge']==0) OR ($_SESSION['idPersonne'] != $data['idAffectee'])){echo 'disabled';}?> type="text" class="input-datepicker form-control" name="datePassage" value="<?php echo $data['datePassage']; ?>">
+	                                                <input <?php if(($data['idEtat']>3) OR ($_SESSION['commande_etreEnCharge']==0) OR ($_SESSION['idPersonne'] != $data['idAffectee'])){echo 'disabled';}?> type="text" class="input-datetimepicker form-control" name="datePassage" value="<?php echo $data['datePassage']; ?>">
 	                                            </div>
 	                                        </div>
 	                                    </div>
@@ -422,7 +422,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                                <div class="input-group-addon">
 	                                                    <i class="fa fa-calendar"></i>
 	                                                </div>
-	                                                <input <?php if(($data['idEtat']>3) OR ($_SESSION['commande_etreEnCharge']==0) OR ($_SESSION['idPersonne'] != $data['idAffectee'])){echo 'disabled';}?> type="text" class="input-datepicker form-control" name="dateLivraisonPrevue" value="<?php echo $data['dateLivraisonPrevue']; ?>">
+	                                                <input <?php if(($data['idEtat']>3) OR ($_SESSION['commande_etreEnCharge']==0) OR ($_SESSION['idPersonne'] != $data['idAffectee'])){echo 'disabled';}?> type="text" class="input-datetimepicker form-control" name="dateLivraisonPrevue" value="<?php echo $data['dateLivraisonPrevue']; ?>">
 	                                            </div>
 	                                        </div>
 	                                    </div>
@@ -472,7 +472,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                                <div class="input-group-addon">
 	                                                    <i class="fa fa-calendar"></i>
 	                                                </div>
-	                                                <input <?php if(($data['idEtat']>4) OR ($_SESSION['commande_etreEnCharge']==0) OR ($_SESSION['idPersonne'] != $data['idAffectee'])){echo 'disabled';}?> type="text" class="input-datepicker form-control" name="dateLivraisoneffective" value="<?php echo $data['dateLivraisoneffective']; ?>">
+	                                                <input <?php if(($data['idEtat']>4) OR ($_SESSION['commande_etreEnCharge']==0) OR ($_SESSION['idPersonne'] != $data['idAffectee'])){echo 'disabled';}?> type="text" class="input-datetimepicker form-control" name="dateLivraisoneffective" value="<?php echo $data['dateLivraisoneffective']; ?>">
 	                                            </div>
 	                                        </div>
 	                                    </div>
@@ -493,7 +493,7 @@ if ($_SESSION['commande_lecture']==0)
 	                </div>
 	                
 	                <?php if ((($_SESSION['idPersonne'] == $data['idDemandeur']) OR ($_SESSION['idPersonne'] == $data['idObservateur']) OR ($_SESSION['idPersonne'] == $data['idValideur']) OR ($_SESSION['idPersonne'] == $data['idAffectee'])) AND ($data['idEtat']<7)){ ?>
-	                <div class="box box">
+	                <div class="box box-warning">
 	                	<div class="box-body">
 	                		<form role="form" action="commandesNotesAdd.php?id=<?=$_GET['id']?>" method="POST">
 	                                <div class="form-group">

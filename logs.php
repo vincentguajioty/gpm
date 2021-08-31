@@ -96,11 +96,11 @@ if ($_SESSION['logs_lecture']==0)
                     <table id="tri0" class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th>Date/Heure</th>
-                            <th>Utilisateur</th>
-                            <th>Adresse IP</th>
-                            <th>Type d'évènement</th>
-                            <th>Détails</th>
+                            <th class="all">Date/Heure</th>
+                            <th class="not-mobile">Utilisateur</th>
+                            <th class="not-mobile">Adresse IP</th>
+                            <th class="all">Type d'évènement</th>
+                            <th class="not-mobile">Détails</th>
                         </tr>
                         </thead>
                         <tbody>

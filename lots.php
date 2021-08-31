@@ -16,7 +16,6 @@ if ($_SESSION['lots_lecture']==0)
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
     <?php require_once 'checkLotsConf.php'; ?>
-    <?php require_once 'modal.php'; ?>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -37,7 +36,7 @@ if ($_SESSION['lots_lecture']==0)
             <div class="box">
                 <div class="box-header">
                     <?php if ($_SESSION['lots_ajout']==1) {?>
-                        <h3 class="box-title"><a data-toggle="modal" data-target="#modalLotsAdd" class="btn btn-sm btn-success">Ajouter un lot</a></h3>
+                        <h3 class="box-title"><a href="lotsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un lot</a></h3>
                     <?php } else {?>
                         </br>
                     <?php } ?>
@@ -47,14 +46,14 @@ if ($_SESSION['lots_lecture']==0)
                     <table id="tri2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Libelle</th>
-                                <th>Référentiel</th>
-                                <th>Etat</th>
-                                <th>Référent</th>
-                                <th>Prochain Inventaire</th>
-                                <th>Notifications</th>
-                                <th>Actions</th>
+                                <th class="all" style="width: 10px">#</th>
+                                <th class="all">Libelle</th>
+                                <th class="not-mobile">Référentiel</th>
+                                <th class="not-mobile">Etat</th>
+                                <th class="not-mobile">Référent</th>
+                                <th class="not-mobile">Prochain Inventaire</th>
+                                <th class="not-mobile">Notifications</th>
+                                <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -111,7 +110,7 @@ if ($_SESSION['lots_lecture']==0)
                                         <a href="lotsContenu.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['lots_modification']==1) {?>
-                                        <a href="lotsForm.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
+                                        <a href="lotsForm.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['lots_suppression']==1) {?>
                                         <a href="lotsDelete.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>

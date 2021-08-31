@@ -42,68 +42,12 @@ if ($_SESSION['typesLots_lecture']==0)
 
         <!-- Main content -->
         <section class="content">
-                <?php if ($_SESSION['typesLots_modification']==1)
-                { ?>
-                    <?php include('confirmationBox.php'); ?>
-                    <div class="box box-success">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Ajouter un matériel au référentiel</h3>
-                        </div>
-                        <div class="box-body">
-                            <form role="form" action="referentielsAddItem.php?idLot=<?=$_GET['id']?>" method="POST">
-                                <!-- select -->
-                                <div class="form-group">
-                                    <label>Matériel: </label>
-                                    <select class="form-control select2" style="width: 100%;" name="libelleMateriel">
-                                        <?php
-                                        $query = $db->prepare('SELECT c.idMaterielCatalogue, c.libelleMateriel FROM MATERIEL_CATALOGUE c LEFT OUTER JOIN (SELECT idMaterielCatalogue FROM REFERENTIELS WHERE idTypeLot= :idTypeLot) r ON c.idMaterielCatalogue = r.idMaterielCatalogue WHERE r.idMaterielCatalogue IS NULL ORDER BY libelleMateriel;');
-                                        $query->execute(array('idTypeLot' => $_GET['id']));
-                                        while ($data = $query->fetch())
-                                        {
-                                            ?>
-                                            <option value="<?php echo $data['idMaterielCatalogue']; ?>"><?php echo $data['libelleMateriel']; ?></option>
-                                            <?php
-                                        }
-                                        $query->closeCursor(); ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Quantité:</label>
-                                    <input type="text" class="form-control" placeholder="1-2-3 ..."
-                                           name="quantiteReferentiel">
-                                </div>
-                                <div class="form-group">
-                                    <label>Obligation:</label>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="obligatoire" id="optionsRadios1" value="option1" checked>
-                                            Ce matériel est obligatoire.
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="obligatoire" id="optionsRadios2" value="option2">
-                                            Ce matériel est facultatif.
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Commentaires:</label>
-                                    <textarea class="form-control" rows="3" placeholder="Spécifiez d'autres détails"
-                                              name="commentairesReferentiel"></textarea>
-                                </div>
-                                <div class="box-footer">
-                                    <button type="submit" class="btn btn-info pull-right">Ajouter</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                <?php } ?>
-
-
                 <div class="box box-warning">
                     <div class="box-header">
                         <h3 class="box-title">Contenu du référentiel</h3>
+                        <div class="box-tools pull-right">
+	                    	<?php if ($_SESSION['typesLots_modification']==1) {?><a href="referentielsContenuForm.php?id=<?= $_GET['id'] ?>" class="btn btn-success btn-sm modal-form">Ajouter un élément</a><?php } ?>
+	                    </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">

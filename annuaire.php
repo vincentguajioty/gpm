@@ -16,7 +16,6 @@ if ($_SESSION['annuaire_lecture']==0)
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
-    <?php require_once 'modal.php'; ?>
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -39,23 +38,23 @@ if ($_SESSION['annuaire_lecture']==0)
             <div class="box">
                 <div class="box-header">
 	                <?php if ($_SESSION['annuaire_ajout']==1) {?>
-	                    <h3 class="box-title"><a data-toggle="modal" data-target="#modalAnnuaireAdd" class="btn btn-sm btn-success">Ajouter un utilisateur</a></h3>
+	                    <h3 class="box-title"><a href="annuaireForm.php" class="btn btn-sm btn-success modal-form">Ajouter un utilisateur</a></h3>
 	                <?php } else {?>
 	                    </br>
 	                <?php } ?>
 	            </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                                        <table id="tri2" class="table table-bordered table-hover">
+                    <table id="tri2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Identifiant de connexion</th>
-                                <th>Nom</th>
-                                <th>Prénom</th>
-                                <th>Fonction</th>
-                                <th>Profil</th>
-                                <th>Actions</th>
+                                <th class="all" style="width: 10px">#</th>
+                                <th class="all">Identifiant de connexion</th>
+                                <th class="not-mobile">Nom</th>
+                                <th class="not-mobile">Prénom</th>
+                                <th class="not-mobile">Fonction</th>
+                                <th class="not-mobile">Profil</th>
+                                <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,10 +75,10 @@ if ($_SESSION['annuaire_lecture']==0)
                                 <td><?php echo $data['nomPersonne']; ?></td>
                                 <td><?php echo $data['prenomPersonne']; ?></td>
                                 <td><?php echo $data['fonction']; ?></td>
-                                <td><?php echo $data['libelleProfil']; ?> <?php if ($_SESSION['profils_lecture']==1) {?><a href="profilsForm.php?id=<?=$data['idProfil']?>"><i class="fa fa-info-circle"></i></a><?php } ?></td>
+                                <td><?php echo $data['libelleProfil']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['annuaire_modification']==1) {?>
-                                        <a href="annuaireForm.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
+                                        <a href="annuaireForm.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['annuaire_mdp']==1) {?>
                                         <a href="annuaireRAZ.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-info" onclick="return confirm('Etes-vous sûr de vouloir réinitialiser ce mot de passe (le nouveau mot de passe prendra la valeur de l\'identifiant)?');"><i class="fa fa-lock"></i></a>
@@ -93,8 +92,6 @@ if ($_SESSION['annuaire_lecture']==0)
                         }
                         $query->closeCursor(); ?>
                         </tbody>
-
-
                     </table>
                 </div>
             </div>

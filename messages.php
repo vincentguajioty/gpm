@@ -36,7 +36,7 @@ if ($_SESSION['messages_ajout']==0 AND $_SESSION['messages_suppression']==0)
             <div class="box box-warning">
             	<div class = "box-header">
             		<?php if ($_SESSION['messages_ajout']==1) {?>
-                        <h3 class="box-title"><a data-toggle="modal" data-target="#modalMessageGeneralAdd" class="btn btn-sm btn-success">Ajouter un message</a></h3>
+                        <h3 class="box-title"><a href="messagesForm.php" class="btn btn-sm btn-success modal-form">Ajouter un message</a></h3>
                     <?php } else {?>
                         </br>
                     <?php } ?>

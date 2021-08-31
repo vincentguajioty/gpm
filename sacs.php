@@ -16,7 +16,6 @@ if ($_SESSION['sac_lecture']==0)
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
-    <?php require_once 'modal.php'; ?>
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -38,7 +37,7 @@ if ($_SESSION['sac_lecture']==0)
             <div class="box">
                 <div class="box-header">
                     <?php if ($_SESSION['sac_ajout']==1) {?>
-                        <h3 class="box-title"><a data-toggle="modal" data-target="#modalSacsAdd" class="btn btn-sm btn-success">Ajouter un sac</a></h3>
+                        <h3 class="box-title"><a href="sacsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un sac</a></h3>
                     <?php } else {?>
                         </br>
                     <?php } ?>
@@ -48,12 +47,12 @@ if ($_SESSION['sac_lecture']==0)
                     <table id="tri2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Libelle</th>
-                                <th>Lot</th>
-                                <th>Quantité d'emplacements</th>
-                                <th>Quantité de matériel</th>
-                                <th>Actions</th>
+                                <th class="all" style="width: 10px">#</th>
+                                <th class="all">Libelle</th>
+                                <th class="not-mobile">Lot</th>
+                                <th class="not-mobile">Quantité d'emplacements</th>
+                                <th class="not-mobile">Quantité de matériel</th>
+                                <th class="not-mobile not-tablet">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -88,7 +87,7 @@ if ($_SESSION['sac_lecture']==0)
                                         <a href="sacsContenu.php?id=<?=$data['idSac']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['sac_modification']==1) {?>
-                                        <a href="sacsForm.php?id=<?=$data['idSac']?>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
+                                        <a href="sacsForm.php?id=<?=$data['idSac']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['sac_suppression']==1) {?>
                                         <a href="sacsDelete.php?id=<?=$data['idSac']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
