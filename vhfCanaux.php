@@ -23,7 +23,7 @@ if ($_SESSION['vhf_canal_lecture']==0)
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Gestion des cannaux
+                Gestion des canaux
             </h1>
             <ol class="breadcrumb">
                 <li><a href="index.php"><i class="fa fa-home"></i>Accueil</a></li>

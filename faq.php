@@ -68,7 +68,7 @@ require_once 'config/config.php';
 
                         <!-- /.box-header -->
                         <div class="box-body">
-                            Copyright &copy; 2017 Vincent Guajioty. All rights reserved.
+                            <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a> Copyright &copy; 2017 Vincent Guajioty. All rights reserved.
                             <br/><br/>
                             Version <?php echo $VERSION; ?> <a href="http://www.guajioty.fr/majDist/gpm.zip"><b style="color:red;"><?php echo file_get_contents("https://www.guajioty.fr/majDist/gpmMAJ.php?versionClient=".$VERSION); ?></b></a>
                             <br/><br/>

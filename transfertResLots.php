@@ -134,7 +134,122 @@ if ($_SESSION['reserve_ReserveVersLot']==0)
 	                    	<?php } ?>   
 							<?php if($_SESSION['transfertStade']>3){?>
 								<div class="<?= $_SESSION['transfertStade']==4 ? 'active' : ''?> tab-pane" id="4">
-                                    <?= $_SESSION['transfertStade'] . ' - ' .$_SESSION['transfertIdMaterielLot'] .' - '.$_SESSION['transfertIdMaterielCatalogue'].' - '.$_SESSION['transfertIdReserveElement'].' - '.$_SESSION['transfertqttTrans']?>
+                                    <table class="table table-bordered">
+			                            <tr>
+			                                <th></th>
+			                                <th>Conteneur source</th>
+			                                <th>Lot destination</th>
+			                            </tr>
+			                            <tr>
+			                            	<th>Matériel</th>
+			                            	<?php
+												$query = $db->prepare('SELECT * FROM MATERIEL_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue;');
+												$query->execute(array(
+													'idMaterielCatalogue' => $_SESSION['transfertIdMaterielCatalogue']
+												));
+												$data = $query->fetch();
+											?>
+			                            	<td><?= $data['libelleMateriel'] ?></td>
+			                            	<td></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Conteneur</th>
+			                            	<?php
+												$query = $db->prepare('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur = c.idConteneur WHERE m.idReserveElement = :idReserveElement;');
+												$query->execute(array(
+													'idReserveElement' => $_SESSION['transfertIdReserveElement']
+												));
+												$data = $query->fetch();
+											?>
+			                            	<td><?= $data['libelleConteneur'] ?></td>
+			                            	<td></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Quantité avant transfert</th>
+			                            	<td><?= $data['quantiteReserve'] ?></td>
+			                            	<td></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Quantité à transferer</th>
+			                            	<td><?= $_SESSION['transfertqttTrans'] ?></td>
+			                            	<td></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Quantité après transfert</th>
+			                            	<td><?= $data['quantiteReserve'] - $_SESSION['transfertqttTrans'] ?></td>
+			                            	<td></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Lot</th>
+			                            	<?php
+												$query = $db->prepare('SELECT * FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_EMPLACEMENT p ON e.idEmplacement = p.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON p.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot WHERE idElement = :idElement;');
+												$query->execute(array(
+													'idElement' => $_SESSION['transfertIdMaterielLot']
+												));
+												$data = $query->fetch();
+											?>
+			                            	<td></td>
+			                            	<td><?= $data['libelleLot'] ?></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Sac</th>
+			                            	<td></td>
+			                            	<td><?= $data['libelleSac'] ?></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Emplacement</th>
+			                            	<td></td>
+			                            	<td><?= $data['libelleEmplacement'] ?></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Quantité avant transfert</th>
+			                            	<td></td>
+			                            	<td><?= $data['quantite'] ?></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Péremption avant transfert</th>
+			                            	<td></td>
+			                            	<td><?= $data['peremption'] ?></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Quantité après transfert</th>
+			                            	<td></td>
+			                            	<td><?= $data['quantite'] + $_SESSION['transfertqttTrans'] ?></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Péremption après transfert</th>
+			                            	<td></td>
+			                            	<td><?php
+			                            	$query = $db->prepare('SELECT * FROM RESERVES_MATERIEL WHERE idReserveElement = :idReserveElement;');
+											$query->execute(array(
+										        'idReserveElement' => $_SESSION['transfertIdReserveElement']
+										    ));
+										    $reserve = $query->fetch();
+			                            	if (isset($reserve['peremptionReserve']))
+												{
+													if ($data['peremption'] != Null)
+													{
+														if ($data['peremption'] > $reserve['peremptionReserve'])
+														{
+															echo $reserve['peremptionReserve'];
+														}
+														else
+														{
+															echo $data['peremption'];
+														}
+													}
+													else
+													{
+														echo $reserve['peremptionReserve'];
+													}
+												}
+												else
+												{
+													echo $data['peremption'];
+												}
+			                            	?></td>
+			                            </tr>
+			                        </table>
 		                            <div class="box-footer">
 	                                    <a href="transfertReset.php" class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir abandonner la transfert ?');">Abandon du transfert</a>
 	                                    <?php if ($_SESSION['transfertStade']==4) { ?><a href="transfertResLotsGoOK.php" class="btn btn-success pull-right spinnerAttenteClick">Effectuer</a> <?php } ?>

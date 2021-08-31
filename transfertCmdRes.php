@@ -81,7 +81,7 @@ if ($_SESSION['reserve_cmdVersReserve']==0)
 	                                        <label>Item de la commande: <small style="color:grey;">Requis</small></label>
 	                                        <select <?= $_SESSION['transfertStade']!=2 ? 'disabled' : '' ?> <?= isset($_SESSION['transfertIdMaterielCatalogue']) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idMaterielCatalogue" required>
 	                                            <?php
-	                                            $query = $db->prepare('SELECT * FROM COMMANDES_MATERIEL m LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE idCommande = :idCommande;');
+	                                            $query = $db->prepare('SELECT * FROM COMMANDES_MATERIEL m LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE idCommande = :idCommande AND quantiteAtransferer > 0;');
 	                                            $query->execute(array(
         											'idCommande' => $_SESSION['transfertCmd']
         										));
@@ -146,7 +146,107 @@ if ($_SESSION['reserve_cmdVersReserve']==0)
 	                    	<?php } ?>   
 							<?php if($_SESSION['transfertStade']>3){?>
 								<div class="<?= $_SESSION['transfertStade']==4 ? 'active' : ''?> tab-pane" id="4">
-		                            RECAP A FAIRE
+	                            	<table class="table table-bordered">
+			                            <tr>
+			                                <th></th>
+			                                <th>Commande source</th>
+			                                <th>Conteneur destination</th>
+			                            </tr>
+			                            <tr>
+			                            	<th>Commande</th>
+			                            	<td><?= $_SESSION['transfertCmd'] ?></td>
+			                            	<td></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Fournisseur</th>
+			                            	<?php
+			                            		$query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE idCommande = :idCommande;');
+	                                            $query->execute(array(
+        											'idCommande' => $_SESSION['transfertCmd']
+        										));
+        										$data = $query->fetch();
+			                            	?>
+			                            	<td><?= $data['nomFournisseur'] ?></td>
+			                            	<td></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Matériel</th>
+			                            	<?php
+			                            		$query = $db->prepare('SELECT * FROM MATERIEL_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue;');
+	                                            $query->execute(array(
+        											'idMaterielCatalogue' => $_SESSION['transfertIdMaterielCatalogue']
+        										));
+        										$data = $query->fetch();
+			                            	?>
+			                            	<td><?= $data['libelleMateriel'] ?></td>
+			                            	<td></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Quantité à transférer</th>
+			                            	<td><?= $_SESSION['transfertqttTrans'] ?></td>
+			                            	<td></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Restera à transférer</th>
+			                            	<td><?= $_SESSION['transfertQttMax'] - $_SESSION['transfertqttTrans'] ?></td>
+			                            	<td></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Conteneur</th>
+			                            	<?php
+			                            		$query = $db->prepare('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur = c.idConteneur WHERE m.idReserveElement = :idReserveElement;');
+	                                            $query->execute(array(
+        											'idReserveElement' => $_SESSION['transfertIdReserveElement']
+        										));
+        										$data = $query->fetch();
+			                            	?>
+			                            	<td></td>
+			                            	<td><?= $data['libelleConteneur'] ?></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Quantité avant transfert</th>
+			                            	<td></td>
+			                            	<td><?= $data['quantiteReserve'] ?></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Péremption avant transfert</th>
+			                            	<td></td>
+			                            	<td><?= $data['peremptionReserve'] ?></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Quantité après transfert</th>
+			                            	<td></td>
+			                            	<td><?= $data['quantiteReserve'] + $_SESSION['transfertqttTrans'] ?></td>
+			                            </tr>
+			                            <tr>
+			                            	<th>Péremption après transfert</th>
+			                            	<td></td>
+			                            	<td><?php
+				                            	if (isset($_SESSION['transfertPeremption']))
+												{
+													if ($data['peremptionReserve'] != Null)
+													{
+														if ($data['peremptionReserve'] > $_SESSION['transfertPeremption'])
+														{
+															echo $_SESSION['transfertPeremption'];
+														}
+														else
+														{
+															echo $data['peremptionReserve'];
+														}
+													}
+													else
+													{
+														echo $_SESSION['transfertPeremption'];
+													}
+												}
+												else
+												{
+													echo $data['peremptionReserve'];
+												}
+											?></td>
+			                            </tr>
+			                        </table>
 		                            <div class="box-footer">
 	                                    <a href="transfertReset.php" class="btn btn-danger" onclick="return confirm('Etes-vous sûr de vouloir abandonner la transfert ?');">Abandon du transfert</a>
 	                                    <?php if ($_SESSION['transfertStade']==4) { ?><a href="transfertCmdResGoOK.php" class="btn btn-success pull-right spinnerAttenteClick">Effectuer</a> <?php } ?>

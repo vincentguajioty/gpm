@@ -529,7 +529,7 @@ require_once 'config/bdd.php';
                         echo 'class="active"';
                     }
                     ?>
-                    ><a href="documentation.php"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
+                    ><a href="https://gpm.guajioty.fr" target="_blank"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
                     <li <?php
                     if ($_SESSION['page'] == 502)
                     {

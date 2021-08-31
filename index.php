@@ -52,7 +52,7 @@ require_once('logCheck.php');
 	                if ($data['nb']>0)
 	                { ?>
 	                    <div class="info-box">
-	                        <a data-toggle="modal" data-target="#modalAccueilAlertePeremption"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
+	                        <a data-toggle="modal" data-target="#modalAccueilAlertePeremption"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled faa-flash animated"></i></span></a>
 	
 	                        <div class="info-box-content">
 	                            <span class="info-box-text">Matériels périmés (Lots):</span>
@@ -91,7 +91,7 @@ require_once('logCheck.php');
 	                { ?>
 	
 	                    <div class="info-box">
-	                        <a data-toggle="modal" data-target="#modalAccueilAlerteQuantité"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
+	                        <a data-toggle="modal" data-target="#modalAccueilAlerteQuantité"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled faa-flash animated"></i></span></a>
 	
 	                        <div class="info-box-content">
 	                            <span class="info-box-text">Matériels manquants (Lots):</span>
@@ -130,7 +130,7 @@ require_once('logCheck.php');
 	                { ?>
 	
 	                    <div class="info-box">
-	                        <a data-toggle="modal" data-target="#modalAccueilAlerteInventaire"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
+	                        <a data-toggle="modal" data-target="#modalAccueilAlerteInventaire"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled faa-flash animated"></i></span></a>
 	
 	                        <div class="info-box-content">
 	                            <span class="info-box-text">Lots en attente d'inventaire:</span>
@@ -166,7 +166,7 @@ require_once('logCheck.php');
 	                { ?>
 	
 	                    <div class="info-box">
-	                        <a data-toggle="modal" data-target="#modalAccueilAlerteConformite"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
+	                        <a data-toggle="modal" data-target="#modalAccueilAlerteConformite"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled faa-flash animated"></i></span></a>
 	
 	                        <div class="info-box-content">
 	                            <span class="info-box-text">Lots non-conformes:</span>
@@ -203,7 +203,7 @@ require_once('logCheck.php');
 	                if ($data['nb']>0)
 	                { ?>
 	                    <div class="info-box">
-	                        <a data-toggle="modal" data-target="#modalAccueilAlertePeremptionReserve"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
+	                        <a data-toggle="modal" data-target="#modalAccueilAlertePeremptionReserve"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled faa-flash animated"></i></span></a>
 	
 	                        <div class="info-box-content">
 	                            <span class="info-box-text">Matériels périmés (Réserve):</span>
@@ -243,7 +243,7 @@ require_once('logCheck.php');
 	                { ?>
 	
 	                    <div class="info-box">
-	                        <a data-toggle="modal" data-target="#modalAccueilAlerteQuantitéReserve"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
+	                        <a data-toggle="modal" data-target="#modalAccueilAlerteQuantitéReserve"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled faa-flash animated"></i></span></a>
 	
 	                        <div class="info-box-content">
 	                            <span class="info-box-text">Matériels manquants (Réserve):</span>

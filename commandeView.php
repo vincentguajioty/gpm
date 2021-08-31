@@ -78,14 +78,27 @@ if ($_SESSION['commande_lecture']==0)
 	                                            <label>Demandeur: </label>
 	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idDemandeur">
 	                                                <?php
-	                                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1;');
-	                                                while ($data2 = $query2->fetch())
+	                                                if($data['idEtat']==1)
 	                                                {
-	                                                    ?>
-	                                                    <option value="<?php echo $data2['idPersonne']; ?>" <?php if ($data['idDemandeur'] == $data2['idPersonne']) { echo 'selected'; } ?> ><?php echo $data2['identifiant']; ?></option>
-	                                                    <?php
+		                                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1;');
+		                                                while ($data2 = $query2->fetch())
+		                                                {
+		                                                    ?>
+		                                                    <option value="<?php echo $data2['idPersonne']; ?>" <?php if ($data['idDemandeur'] == $data2['idPersonne']) { echo 'selected'; } ?> ><?php echo $data2['identifiant']; ?></option>
+		                                                    <?php
+		                                                }
 	                                                }
-	                                                $query2->closeCursor(); ?>
+	                                                else
+	                                                {
+	                                                	$query2 = $db->prepare('SELECT * FROM PERSONNE_REFERENTE p WHERE idPersonne = :idPersonne;');
+	                                                	$query2->execute(array('idPersonne' => $data['idDemandeur']));
+	                                                	$data2 = $query2->fetch();
+	                                                	?>
+	                                                		<option value="<?php echo $data2['idPersonne']; ?>" selected ><?php echo $data2['identifiant']; ?></option>
+	                                                	<?php
+	                                                }
+	                                                $query2->closeCursor();
+	                                                ?>
 	                                            </select>
 	                                        </div>
 	                                        <div class="form-group">
@@ -93,12 +106,24 @@ if ($_SESSION['commande_lecture']==0)
 	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idObservateur">
 	                                                <option></option>
 	                                                <?php
-	                                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1;');
-	                                                while ($data2 = $query2->fetch())
+	                                                if($data['idEtat']==1)
 	                                                {
-	                                                    ?>
-	                                                    <option value="<?php echo $data2['idPersonne']; ?>" <?php if ($data['idObservateur'] == $data2['idPersonne']) { echo 'selected'; } ?>><?php echo $data2['identifiant']; ?></option>
-	                                                    <?php
+		                                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1;');
+		                                                while ($data2 = $query2->fetch())
+		                                                {
+		                                                    ?>
+		                                                    <option value="<?php echo $data2['idPersonne']; ?>" <?php if ($data['idObservateur'] == $data2['idPersonne']) { echo 'selected'; } ?>><?php echo $data2['identifiant']; ?></option>
+		                                                    <?php
+		                                                }
+	                                                }
+	                                                else
+	                                                {
+	                                                	$query2 = $db->prepare('SELECT * FROM PERSONNE_REFERENTE p WHERE idPersonne = :idPersonne;');
+	                                                	$query2->execute(array('idPersonne' => $data['idObservateur']));
+	                                                	$data2 = $query2->fetch();
+	                                                	?>
+	                                                		<option value="<?php echo $data2['idPersonne']; ?>" selected ><?php echo $data2['identifiant']; ?></option>
+	                                                	<?php
 	                                                }
 	                                                $query2->closeCursor(); ?>
 	                                            </select>
@@ -148,12 +173,24 @@ if ($_SESSION['commande_lecture']==0)
 	                                            <label>Affectation: </label>
 	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idAffectee">
 	                                                <?php
-	                                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1 AND commande_etreEnCharge = 1;');
-	                                                while ($data2 = $query2->fetch())
+	                                                if($data['idEtat']==1)
 	                                                {
-	                                                    ?>
-	                                                    <option value="<?php echo $data2['idPersonne']; ?>" <?php if ($data['idAffectee'] == $data2['idPersonne']) { echo 'selected'; } ?>><?php echo $data2['identifiant']; ?></option>
-	                                                    <?php
+		                                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1 AND commande_etreEnCharge = 1;');
+		                                                while ($data2 = $query2->fetch())
+		                                                {
+		                                                    ?>
+		                                                    <option value="<?php echo $data2['idPersonne']; ?>" <?php if ($data['idAffectee'] == $data2['idPersonne']) { echo 'selected'; } ?>><?php echo $data2['identifiant']; ?></option>
+		                                                    <?php
+		                                                }
+	                                                }
+	                                                else
+	                                                {
+	                                                	$query2 = $db->prepare('SELECT * FROM PERSONNE_REFERENTE p WHERE idPersonne = :idPersonne;');
+	                                                	$query2->execute(array('idPersonne' => $data['idAffectee']));
+	                                                	$data2 = $query2->fetch();
+	                                                	?>
+	                                                		<option value="<?php echo $data2['idPersonne']; ?>" selected ><?php echo $data2['identifiant']; ?></option>
+	                                                	<?php
 	                                                }
 	                                                $query2->closeCursor(); ?>
 	                                            </select>
@@ -162,12 +199,24 @@ if ($_SESSION['commande_lecture']==0)
 	                                            <label>Validation de la demande de commande par: </label>
 	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idValideur">
 	                                                <?php
-	                                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1 AND commande_valider = 1;');
-	                                                while ($data2 = $query2->fetch())
+	                                                if($data['idEtat']==1)
 	                                                {
-	                                                    ?>
-	                                                    <option value="<?php echo $data2['idPersonne']; ?>" <?php if ($data['idValideur'] == $data2['idPersonne']) { echo 'selected'; } ?>><?php echo $data2['identifiant']; ?></option>
-	                                                    <?php
+		                                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1 AND commande_valider = 1;');
+		                                                while ($data2 = $query2->fetch())
+		                                                {
+		                                                    ?>
+		                                                    <option value="<?php echo $data2['idPersonne']; ?>" <?php if ($data['idValideur'] == $data2['idPersonne']) { echo 'selected'; } ?>><?php echo $data2['identifiant']; ?></option>
+		                                                    <?php
+		                                                }
+	                                                }
+	                                                else
+	                                                {
+	                                                	$query2 = $db->prepare('SELECT * FROM PERSONNE_REFERENTE p WHERE idPersonne = :idPersonne;');
+	                                                	$query2->execute(array('idPersonne' => $data['idValideur']));
+	                                                	$data2 = $query2->fetch();
+	                                                	?>
+	                                                		<option value="<?php echo $data2['idPersonne']; ?>" selected ><?php echo $data2['identifiant']; ?></option>
+	                                                	<?php
 	                                                }
 	                                                $query2->closeCursor(); ?>
 	                                            </select>
@@ -352,18 +401,12 @@ if ($_SESSION['commande_lecture']==0)
 	                                    <div class="col-md-4">
 	                                        <div class="form-group">
 	                                            <label>Valideur: </label>
-	                                            <select disabled class="form-control" name="idValideur">
-	                                                <option></option>
-	                                                <?php
-	                                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1 AND commande_valider = 1;');
-	                                                while ($data2 = $query2->fetch())
-	                                                {
-	                                                    ?>
-	                                                    <option value="<?php echo $data2['idPersonne']; ?>" <?php if ($data['idValideur'] == $data2['idPersonne']) { echo 'selected'; } ?>><?php echo $data2['identifiant']; ?></option>
-	                                                    <?php
-	                                                }
-	                                                $query2->closeCursor(); ?>
-	                                            </select>
+	                                            <?php
+	                                                $query2 = $db->prepare('SELECT * FROM PERSONNE_REFERENTE p WHERE idPersonne = :idPersonne;');
+                                                	$query2->execute(array('idPersonne' => $data['idValideur']));
+                                                	$data2 = $query2->fetch();
+                                                ?>
+	                                            <input type="text" class="form-control" value="<?= $data2['identifiant'] ?>" name="prenomPersonne" disabled>
 	                                        </div>
 	                                    </div>
 	                                    <div class="col-md-4">
