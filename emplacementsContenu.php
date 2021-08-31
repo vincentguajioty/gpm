@@ -69,9 +69,9 @@ if ($_SESSION['sac2_lecture']==0)
                     </div>
                     <div class="box-footer no-padding">
                         <ul class="nav nav-stacked">
-                            <li><a>Lots de rattachement <span class="pull-right"><?php echo $data['libelleLot']; ?></span></a></li>
+                            <li><a href="lotsContenu.php?id=<?php echo $data['idLot'];?>">Lots de rattachement <span class="pull-right"><?php echo $data['libelleLot']; ?></span></a></li>
                             <li><a>Personne responsable <span class="pull-right"><?php echo $data['identifiant']; ?></span></a></li>
-                            <li><a>Sac de rattachement <span class="pull-right"><?php echo $data['libelleSac']; ?></span></a></li>
+                            <li><a href="sacsContenu.php?id=<?php echo $data['idSac'];?>">Sac de rattachement <span class="pull-right"><?php echo $data['libelleSac']; ?></span></a></li>
                             <li><a>Quantite de matériel <span class="pull-right"><?php echo $data4['nb']; ?></span></a></li>
                         </ul>
                     </div>

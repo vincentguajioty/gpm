@@ -152,6 +152,7 @@ if ($data['idIP'] == "")
 	    $_SESSION['cout_etreEnCharge'] = $data['cout_etreEnCharge'];
 	    $_SESSION['cout_supprimer'] = $data['cout_supprimer'];
 	    $_SESSION['appli_conf'] = $data['appli_conf'];
+	    $_SESSION['notifications'] = $data['notifications'];
 	    
 	    $_SESSION['LAST_ACTIVITY'] = time();
 	    $_SESSION['derniereConnexion'] = $data['derniereConnexion'];

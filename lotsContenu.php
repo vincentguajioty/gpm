@@ -16,6 +16,7 @@ if ($_SESSION['lots_lecture']==0)
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
     <?php require_once 'checkLotsConf.php'; ?>
+    <?php require_once 'modal.php'; ?>
 
     <?php
     $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne WHERE idLot = :idLot;');
@@ -139,14 +140,14 @@ if ($_SESSION['lots_lecture']==0)
                                             echo '<span class="pull-right badge bg-green">' . $data6['nb'] .'</span>';
                                         }
                                         ?></span></a></li>
-                                <li><a>Inventaire<?php
+                                <li><a>Prochain inventaire<?php
                                     if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) <= date('Y-m-d'))
                                     {
-                                        echo '<span class="pull-right badge bg-red">En retard</span>';
+                                        echo '<span class="pull-right badge bg-red">' . date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) . '</span>';
                                     }
                                     else
                                     {
-                                        echo '<span class="pull-right badge bg-green">A jour</span>';
+                                        echo '<span class="pull-right badge bg-green">' . date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) . '</span>';
                                     }
                                         ?></a></li>
                                 <li><a>Notifications<?php
@@ -170,6 +171,7 @@ if ($_SESSION['lots_lecture']==0)
                         <div class="box-header with-border">
                             <h3 class="box-title">Contenu de: <?php echo $data['libelleLot']; ?></h3>
                             <div class="box-tools pull-right">
+                            	<?php if ($_SESSION['sac_ajout']==1) {?><a data-toggle="modal" data-target="#modalSacsAdd" class="btn btn-sm btn-success">Ajouter un sac</a><?php } ?>
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
                                 </button>
                             </div>
@@ -189,6 +191,7 @@ if ($_SESSION['lots_lecture']==0)
                                         <div class="box-header with-border">
                                             <h3 class="box-title"><?php echo $data7['libelleSac']; ?></h3>
                                             <div class="box-tools pull-right">
+                                            	<?php if ($_SESSION['sac2_ajout']==1) {?><a data-toggle="modal" data-target="#modalEmplacementAdd" class="btn btn-sm btn-info">Ajouter un emplacement</a><?php } ?>
                                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                                 </button>
                                             </div>
@@ -208,6 +211,7 @@ if ($_SESSION['lots_lecture']==0)
                                                         <div class="box-header with-border">
                                                             <h3 class="box-title"><?php echo $data8['libelleEmplacement']; ?></h3>
                                                             <div class="box-tools pull-right">
+                                                            	<?php if ($_SESSION['materiel_ajout']==1) {?><a data-toggle="modal" data-target="#modalMaterielAdd" class="btn btn-sm btn-warning">Ajouter un materiel</a><?php } ?>
                                                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                                                 </button>
                                                             </div>

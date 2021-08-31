@@ -36,15 +36,15 @@ require_once('logCheck.php');
         <section class="content">
             <?php include('confirmationBox.php'); ?>
             <div class="box">
+                <div class="box-header">
+                    <?php if ($_SESSION['catalogue_ajout']==1) {?>
+                        <h3 class="box-title"><a data-toggle="modal" data-target="#modalCatalogueAdd" class="btn btn-sm btn-success">Ajouter un élément au catalogue</a></h3>
+                    <?php } else {?>
+                        </br>
+                    <?php } ?>
+                </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <div class="box-header">
-                        <?php if ($_SESSION['catalogue_ajout']==1) {?>
-                            <h3 class="box-title"><a data-toggle="modal" data-target="#modalCatalogueAdd" class="btn btn-sm btn-success">Ajouter un élément au catalogue</a></h3>
-                        <?php } else {?>
-                            </br>
-                        <?php } ?>
-                    </div>
                     <table id="tri2" class="table table-bordered table-hover">
                         <thead>
                             <tr>

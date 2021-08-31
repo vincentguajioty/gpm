@@ -10,7 +10,16 @@ $query->execute(array(
 ));
 $data = $query->fetch();
 
-header('Content-type: application/pdf');
+switch($data['formatDocCommande'])
+{
+	case "pdf": $application = "application/pdf"; break;
+    case "png": $ctype="image/png"; break;
+    case "jpg": $ctype="image/jpeg"; break;
+    case "jpeg": $ctype="image/jpeg"; break;
+	default:
+}
+
+header('Content-type: '.$application);
 header('Content-Disposition: inline; filename='.$data['nomDocCommande'].'.'.$data['formatDocCommande']);
 @readfile($data['urlFichierDocCommande']);
 

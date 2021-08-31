@@ -25,7 +25,6 @@ require_once 'config/config.php';
                 <li class="active">A propos</li>
             </ol>
         </section>
-
         <!-- Main content -->
         <section class="content">
             <div class="row">
@@ -40,7 +39,42 @@ require_once 'config/config.php';
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <ul class="timeline">
+                                    <ul class="timeline timeline-inverse">
+                                        <li class="time-label">
+                                              <span class="bg-purple">
+                                                Version 2.5
+                                              </span>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-green"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">15 octobre 2017</span>
+                                                <h3 class="timeline-header">Livraison en production de la version 2.5</h3>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-orange"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">14 octobre 2017</span>
+                                                <h3 class="timeline-header">Livraison en recette de la version 2.5</h3>
+                                                <div class="timeline-body">
+                                                    Nouveautés par rapport à la version précédente:
+                                                    <ul>
+                                                        <li>Possibilité de mettre l'adresse mail expéditrice des notifications en copie de tous les mails envoyés par la plateforme.</li>
+                                                        <li>Ajout de la visualisation en ligne des documents joints au format PNG, JPG et JPEG (PDF déjà supporté dans la version précédente).</li>
+                                                        <li>Tous les utilisateurs peuvent consulter de détail de leur profil depuis le menu MON COMPTE. Il ne s'agit que d'une consultation, et ils ne peuvent accéder qu'à leur profil.</li>
+                                                        <li>Les emails de notifications envoyés lors des changement de stades des commandes sont personnalisables (quel mail envoyé à quelle personne et à quel moment).</li>
+                                                    </ul>
+                                                    Corrections apportées:
+                                                    <ul>
+                                                        <li>Amélioration de la page de saisie d'un inventaire de lot: chaque sac fait l'objet d'un tableau à part.</li>
+                                                        <li>Dans les tableaux qui faisait figurer les dates des derniers inventaires des lots, figurent maintenant les dates des prochains inventaires. La coloration reste identique: si l'invetnaire est à jour: vert, si l'inventaire est le jour même: orange, si l'inventaire est en retard: rouge.</li>
+                                                        <li>Améliorations de l'ergonomie générale de la plateforme.</li>
+                                                        <li>Corrections d'erreurs mineures.</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
                                         <li class="time-label">
                                               <span class="bg-purple">
                                                 Version 2.4

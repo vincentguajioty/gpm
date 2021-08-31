@@ -152,7 +152,6 @@ require_once('config/bdd.php');
 
 
 
-
 <!-- LOTS -->
 <?php if($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots_modification']==1 OR $_SESSION['lots_suppression']==1){?>
     <div class="modal fade" id="modalLotsAdd">
@@ -830,7 +829,7 @@ require_once('config/bdd.php');
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Création d'un centre de cout</h4>
+                    <h4 class="modal-title">Ajout d'un message général</h4>
                 </div>
                 <form role="form" action="messagesAdd.php" method="POST">
                     <div class="modal-body">
@@ -855,3 +854,8 @@ require_once('config/bdd.php');
         </div>
     </div>
 <?php } ?>
+
+
+
+
+

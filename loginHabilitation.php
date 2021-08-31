@@ -6,7 +6,7 @@ require_once('logCheck.php');
 require_once 'config/config.php';
 ?>
 <?php include('header.php'); ?>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>

@@ -2,11 +2,7 @@
 
 require_once 'bdd.php';
 
-
-$VERSIONCHECK = '2.4';
-
-
-
+$VERSIONCHECK = '2.5';
 
 $query = $db->query('SELECT * FROM CONFIG;');
 $data = $query->fetch();
@@ -16,6 +12,7 @@ $APPNAME = $data['appname'];
 $URLSITE = $data['urlsite'];
 $VERSION = $data['version'];
 $MAILSERVER = $data['mailserver'];
+$MAILCOPY = $data['mailcopy'];
 $LOGOUTTEMP = $data['logouttemp'];
 
 ?>

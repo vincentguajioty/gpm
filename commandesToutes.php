@@ -35,15 +35,15 @@ if ($_SESSION['commande_lecture']==0)
             <?php include('confirmationBox.php'); ?>
 
             <div class="box">
+                <div class="box-header">
+	                <?php if ($_SESSION['commande_ajout']==1) {?>
+	                    <h3 class="box-title"><a href="commandesForm.php" class="btn btn-sm btn-success">Nouvelle commande</a></h3>
+	                <?php } else {?>
+	                    </br>
+	                <?php } ?>
+	            </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <div class="box-header">
-                        <?php if ($_SESSION['commande_ajout']==1) {?>
-                            <h3 class="box-title"><a href="commandesForm.php" class="btn btn-sm btn-success">Nouvelle commande</a></h3>
-                        <?php } else {?>
-                            </br>
-                        <?php } ?>
-                    </div>
                     <table id="tri2R" class="table table-bordered table-hover" >
                         <thead>
                         <tr>

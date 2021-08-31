@@ -182,71 +182,20 @@ require_once('logCheck.php');
             </div>
         </div>
 
-		<div class="row">
-	        <?php include('confirmationBox.php'); ?>
+		<div class="row">	
 	        <div class="col-md-6">
 	            <div class="box box-success">
-	                <div class="box-header with-border">
-	                    <i class="fa fa-ambulance"></i>
-	
-	                    <h3 class="box-title">Lots dont j'ai la charge</h3>
-	                </div>
-	
-	                <!-- /.box-header -->
-	                <div class="box-body">
-	                    <table class="table table-bordered">
-	                        <tr>
-	                            <th style="width: 10px">#</th>
-	                            <th>Libelle</th>
-	                            <th>Etat</th>
-	                            <th>Dernier Inventaire</th>
-	                        </tr>
-	                        <?php
-	                        $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN ETATS s on l.idEtat = s.idEtat LEFT OUTER JOIN LIEUX e ON l.idLieu = e.idLieu LEFT OUTER JOIN PERSONNE_REFERENTE p on l.idPersonne = p.idPersonne WHERE l.idPersonne = :idPersonne;');
-	                        $query->execute(array('idPersonne' => $_SESSION['idPersonne']));
-	                        while ($data = $query->fetch())
-	                        {
-	                            ?>
-	                            <tr>
-	                                <td><?php echo $data['idLot']; ?></td>
-	                                <td><?php echo $data['libelleLot']; ?></td>
-	                                <td><?php echo $data['libelleEtat']; ?></td>
-	                                <td><?php
-	                                    if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) < date('Y-m-d'))
-	                                    {
-	                                        ?><span class="badge bg-red"><?php echo $data['dateDernierInventaire']; ?></span><?php
-	                                    }
-	                                    else if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) == date('Y-m-d'))
-	                                    {
-	                                        ?><span class="badge bg-orange"><?php echo $data['dateDernierInventaire']; ?></span><?php
-	                                    }
-	                                    else
-	                                    {
-	                                        ?><span class="badge bg-green"><?php echo $data['dateDernierInventaire']; ?></span><?php
-	                                    }
-	                                    ?>
-	                                </td>
-	                            </tr>
-	                            <?php
-	                        }
-	                        $query->closeCursor(); ?>
-	                    </table>
-	                </div>
-	            </div>
-	        </div>
-	
-	        <div class="col-md-6">
-	            <div class="box box-warning">
 	
 	                <div class="box-header with-border">
 	                    <i class="fa fa-bullhorn"></i>
-	
 	                    <h3 class="box-title">Messages généraux</h3>
+	                    <div class="box-tools pull-right">
+	                    	<?php if ($_SESSION['messages_ajout']==1) {?><a data-toggle="modal" data-target="#modalMessageGeneralAdd" class="btn btn-sm"><i class="fa fa-plus"></i></a><?php } ?>
+	                    </div>
 	                </div>
 	
 	                <!-- /.box-header -->
 	                <div class="box-body">
-	
 	                    <?php
 	                    $query = $db->query('SELECT COUNT(*) as nb FROM MESSAGES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne;');
 	                    $data = $query->fetch();
@@ -272,7 +221,104 @@ require_once('logCheck.php');
 	            </div>
 	            <!-- /.box-body -->
 	        </div>
+	        <div class="col-md-6">
+	            <div class="box box-success">
+	            	Calendrier de l'équipe
+	            </div>
+	        </div>
         </div>
+    </section>
+    <section class="content-header">
+      <h1>
+        Vue personnelle
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+		<div class="row">
+	        <?php include('confirmationBox.php'); ?>
+	        <div class="col-md-6">
+	            <div class="box box-success">
+	                <div class="box-header with-border">
+	                    <i class="fa fa-ambulance"></i>
+	
+	                    <h3 class="box-title">Lots dont j'ai la charge</h3>
+	                </div>
+	
+	                <!-- /.box-header -->
+	                <div class="box-body">
+	                    <table class="table table-bordered">
+	                        <tr>
+	                            <th>Libelle</th>
+	                            <th>Etat</th>
+	                            <th>Référentiel</th>
+	                            <th>Prochain inventaire</th>
+	                            <th></th>
+	                        </tr>
+	                        <?php
+	                        $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN ETATS s on l.idEtat = s.idEtat LEFT OUTER JOIN LIEUX e ON l.idLieu = e.idLieu LEFT OUTER JOIN PERSONNE_REFERENTE p on l.idPersonne = p.idPersonne WHERE l.idPersonne = :idPersonne;');
+	                        $query->execute(array('idPersonne' => $_SESSION['idPersonne']));
+	                        while ($data = $query->fetch())
+	                        {
+	                            ?>
+	                            <tr>
+	                                <td><?php echo $data['libelleLot']; ?></td>
+	                                <td><?php echo $data['libelleEtat']; ?></td>
+	                                <td>
+		                                <?php
+	                                    if ($data['libelleTypeLot'] == Null)
+	                                    {
+	                                        ?><span class="badge bg-orange">NA</span><?php
+	                                    }
+	                                    else
+	                                    {
+	                                        if (checkLotsConf($data['idLot'])==0)
+	                                        {
+	                                            ?><span class="badge bg-green"><?php echo $data['libelleTypeLot']; ?></span><?php
+	                                        }
+	                                        else
+	                                        {
+	                                            ?><span class="badge bg-red"><?php echo $data['libelleTypeLot']; ?></span><?php
+	                                        }
+	                                    }
+	                                    ?>
+	                                </td>
+	                                <td><?php
+	                                    if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) < date('Y-m-d'))
+	                                    {
+	                                        ?><span class="badge bg-red"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+	                                    }
+	                                    else if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) == date('Y-m-d'))
+	                                    {
+	                                        ?><span class="badge bg-orange"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+	                                    }
+	                                    else
+	                                    {
+	                                        ?><span class="badge bg-green"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+	                                    }
+	                                    ?>
+	                                </td>
+	                                <td>
+		                                <?php if ($_SESSION['lots_lecture']==1) {?>
+	                                        <a href="lotsContenu.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
+	                                    <?php }?>
+	                                </td>
+	                            </tr>
+	                            <?php
+	                        }
+	                        $query->closeCursor(); ?>
+	                    </table>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="col-md-6">
+	            <div class="box box-success">
+	            	Calendrier personnel
+	            </div>
+	        </div>
+	    </div>
     </section>
     <!-- /.content -->
   </div>

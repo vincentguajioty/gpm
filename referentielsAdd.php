@@ -22,21 +22,24 @@ else
             writeInLogs("Ajout du référentiel " . $_POST['libelleTypeLot'], '2');
             $_SESSION['returnMessage'] = 'Référentiel ajouté avec succès.';
             $_SESSION['returnType'] = '1';
+            $query = $db->query('SELECT MAX(idTypeLot) as idTypeLot FROM LOTS_TYPES;');
+            $data = $query->fetch();
+            echo "<script type='text/javascript'>document.location.replace('referentielsContenu.php?id=" . $data['idTypeLot'] . "');</script>";
             break;
 
         case '23000':
             writeInLogs("Doublon détecté lors de l'ajout du référentiel " . $_POST['libelleTypeLot'], '5');
             $_SESSION['returnMessage'] = "Un référentiel existe déjà avec le même libellé. Merci de changer le libellé";
             $_SESSION['returnType'] = '2';
+            echo "<script>javascript:history.go(-2);</script>";
             break;
 
         default:
             writeInLogs("Erreur inconnue lors de l'ajout du référentiel " . $_POST['libelleTypeLot'], '5');
             $_SESSION['returnMessage'] = "Erreur inconnue lors de l'ajout du référentiel.";
             $_SESSION['returnType'] = '2';
+            echo "<script>javascript:history.go(-2);</script>";
     }
-
-
-    echo "<script>javascript:history.go(-2);</script>";
+  
 }
 ?>

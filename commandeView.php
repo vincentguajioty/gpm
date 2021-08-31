@@ -295,7 +295,7 @@ if ($_SESSION['commande_lecture']==0)
                                                 <td><i class="fa <?php echo documentsGetIcone($data2['formatDocCommande']);?>"></i></td>
                                                 <td>
                                                     <?php if($_SESSION['commande_lecture']==1){
-                                                    		if ($data2['formatDocCommande'] == 'pdf'){?>
+                                                    		if ($data2['formatDocCommande'] == 'pdf' OR $data2['formatDocCommande'] == 'jpg' OR $data2['formatDocCommande'] == 'jpeg' OR $data2['formatDocCommande'] == 'png'){?>
                                                         		<a href="commandeDocView.php?idDoc=<?=$data2['idDocCommande']?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
                                                     <?php } else { ?>
                                                     			<a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>

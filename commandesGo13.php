@@ -14,6 +14,9 @@ if ($_SESSION['commande_valider']==0)
 }
 else
 {
+    $query = $db->query('SELECT * FROM CONFIG;');
+    $config = $query -> fetch();
+
     if ($_POST['button'] == 'ok')
     {
         $query = $db->prepare('UPDATE COMMANDES SET idEtat = 3, remarquesValidation = :remarquesValidation, dateValidation = CURRENT_TIMESTAMP WHERE idCommande = :idCommande;');
@@ -23,65 +26,83 @@ else
         ));
         addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " valide la commande avec le commentaire: " . $_POST['remarquesValidation'], "13");
 
-        $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idObservateur = p.idPersonne WHERE idCommande = :idCommande;');
-        $query->execute(array(
-            'idCommande' => $_GET['id']
-        ));
-        $data = $query->fetch();
+        $sujet = "[" . $APPNAME . "] Validation positive de la commande " .$_GET['id'];
 
-        $sujet = "[" . $APPNAME . "] Validation POSITIVE de la commande " .$_GET['id'];
-        $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes observateur vient d'être acceptée lors de son étape de validation.";
-        $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-
-        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-        if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+        if($config['notifications_commandes_demandeur_validationOK']==1)
         {
-            writeInLogs("Mail de validation à l'observateur pour la commande " . $_GET['id'], '2');
+            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idDemandeur = p.idPersonne WHERE idCommande = :idCommande;');
+            $query->execute(array(
+                'idCommande' => $_GET['id']
+            ));
+            $data = $query->fetch();
+            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes le demandeur vient d'être acceptée.";
+            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            {
+                writeInLogs("Mail d'information de validation positive de commande envoyé au demandeur pour la commande " . $_GET['id'], '2');
+            }
+            else
+            {
+                writeInLogs("Erreur lors de l'envoi du mail d'information de validation positive de commande au demandeur pour la commande " . $_GET['id'], '5');
+            }
         }
-        else
+        if($config['notifications_commandes_valideur_validationOK']==1)
         {
-            writeInLogs("Erreur lors de l'envoi du mail de validation à l'observateur pour la commande " . $_GET['id'], '5');
+            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idValideur = p.idPersonne WHERE idCommande = :idCommande;');
+            $query->execute(array(
+                'idCommande' => $_GET['id']
+            ));
+            $data = $query->fetch();
+            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> La commande " . $_GET['id'] . " dont vous êtes le valideur vient d'être acceptée.";
+            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            {
+                writeInLogs("Mail d'information de validation positive de commande envoyé au valideur pour la commande " . $_GET['id'], '2');
+            }
+            else
+            {
+                writeInLogs("Erreur lors de l'envoi du mail d'information de validation positive de commande au valideur pour la commande " . $_GET['id'], '5');
+            }
         }
-
-
-        $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idDemandeur = p.idPersonne WHERE idCommande = :idCommande;');
-        $query->execute(array(
-            'idCommande' => $_GET['id']
-        ));
-        $data = $query->fetch();
-
-        $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes le demandeur vient d'être acceptée lors de son étape de validation.";
-        $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-
-        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-        if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+        if($config['notifications_commandes_affectee_validationOK']==1)
         {
-            writeInLogs("Mail de validation au demandeur pour la commande " . $_GET['id'], '2');
+            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idAffectee = p.idPersonne WHERE idCommande = :idCommande;');
+            $query->execute(array(
+                'idCommande' => $_GET['id']
+            ));
+            $data = $query->fetch();
+            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " qui vous est affectée vient d'être acceptée.";
+            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            {
+                writeInLogs("Mail d'information de validation positive de commande envoyé au gérant pour la commande " . $_GET['id'], '2');
+            }
+            else
+            {
+                writeInLogs("Erreur lors de l'envoi du mail de passage de validation positive de commande au gérant pour la commande " . $_GET['id'], '5');
+            }
         }
-        else
+        if($config['notifications_commandes_observateur_validationOK']==1)
         {
-            writeInLogs("Erreur lors de l'envoi du mail de validation au demandeur pour la commande " . $_GET['id'], '5');
-        }
-
-
-        $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idAffectee = p.idPersonne WHERE idCommande = :idCommande;');
-        $query->execute(array(
-            'idCommande' => $_GET['id']
-        ));
-        $data = $query->fetch();
-
-        $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous le réalisateur/responsable vient d'être acceptée lors de son étape de validation.";
-        $message = $message . "<br/><br/>Vous pouvez désormais passer la commande auprès du fournisseur en tenant bien le dossier " . $APPNAME . " à jour.";
-        $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-
-        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-        if(sendmail($data['mailPersonne'], $sujet, 2, $message))
-        {
-            writeInLogs("Mail de validation envoyé au realisateur pour la commande " . $_GET['id'], '2');
-        }
-        else
-        {
-            writeInLogs("Erreur lors de l'envoi du mail de validation au realisateur pour la commande " . $_GET['id'], '5');
+            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idObservateur = p.idPersonne WHERE idCommande = :idCommande;');
+            $query->execute(array(
+                'idCommande' => $_GET['id']
+            ));
+            $data = $query->fetch();
+            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes l'observateur vient d'être acceptée.";
+            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            {
+                writeInLogs("Mail d'information de validation positive de commande envoyé à l'observateur pour la commande " . $_GET['id'], '2');
+            }
+            else
+            {
+                writeInLogs("Erreur lors de l'envoi du mail de passage de validation positive de commande à l'observateur pour la commande " . $_GET['id'], '5');
+            }
         }
     }
     else
@@ -93,66 +114,83 @@ else
         ));
         addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " refuse la commande avec le commentaire: " . $_POST['remarquesValidation'], "19");
 
-        $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idObservateur = p.idPersonne WHERE idCommande = :idCommande;');
-        $query->execute(array(
-            'idCommande' => $_GET['id']
-        ));
-        $data = $query->fetch();
+        $sujet = "[" . $APPNAME . "] Validation négative de la commande " .$_GET['id'];
 
-        $sujet = "[" . $APPNAME . "] Validation NEGATIVE de la commande " .$_GET['id'];
-        $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes observateur vient d'être refusée lors de son étape de validation.";
-        $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-
-        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-        if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+        if($config['notifications_commandes_demandeur_validationNOK']==1)
         {
-            writeInLogs("Mail de validation envoyé à l'observateur pour la commande " . $_GET['id'], '2');
+            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idDemandeur = p.idPersonne WHERE idCommande = :idCommande;');
+            $query->execute(array(
+                'idCommande' => $_GET['id']
+            ));
+            $data = $query->fetch();
+            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes le demandeur vient d'être refusée.";
+            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            {
+                writeInLogs("Mail d'information de validation négative de commande envoyé au demandeur pour la commande " . $_GET['id'], '2');
+            }
+            else
+            {
+                writeInLogs("Erreur lors de l'envoi du mail d'information de validation négative de commande au demandeur pour la commande " . $_GET['id'], '5');
+            }
         }
-        else
+        if($config['notifications_commandes_valideur_validationNOK']==1)
         {
-            writeInLogs("Erreur lors de l'envoi du mail de validation à l'observateur pour la commande " . $_GET['id'], '5');
+            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idValideur = p.idPersonne WHERE idCommande = :idCommande;');
+            $query->execute(array(
+                'idCommande' => $_GET['id']
+            ));
+            $data = $query->fetch();
+            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> La commande " . $_GET['id'] . " dont vous êtes le valideur vient d'être refusée.";
+            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            {
+                writeInLogs("Mail d'information de validation négative de commande envoyé au valideur pour la commande " . $_GET['id'], '2');
+            }
+            else
+            {
+                writeInLogs("Erreur lors de l'envoi du mail d'information de validation négative de commande au valideur pour la commande " . $_GET['id'], '5');
+            }
         }
-
-
-        $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idDemandeur = p.idPersonne WHERE idCommande = :idCommande;');
-        $query->execute(array(
-            'idCommande' => $_GET['id']
-        ));
-        $data = $query->fetch();
-
-        $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes le demandeur vient d'être refusée lors de son étape de validation.";
-        $message = $message . "<br/><br/>Vous avez à nouveau le contrôle sur cette commande afin de la modifier et de la soumettre à nouveau à validation. Le valideur a laissé un commentaire qui vous accessible depuis la frise chronologique de la commande.";
-        $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-
-        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-        if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+        if($config['notifications_commandes_affectee_validationNOK']==1)
         {
-            writeInLogs("Mail de validation envoyé au demandeur pour la commande " . $_GET['id'], '2');
+            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idAffectee = p.idPersonne WHERE idCommande = :idCommande;');
+            $query->execute(array(
+                'idCommande' => $_GET['id']
+            ));
+            $data = $query->fetch();
+            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " qui vous est affectée vient d'être refusée.";
+            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            {
+                writeInLogs("Mail d'information de validation négative de commande envoyé au gérant pour la commande " . $_GET['id'], '2');
+            }
+            else
+            {
+                writeInLogs("Erreur lors de l'envoi du mail de passage de validation négative de commande au gérant pour la commande " . $_GET['id'], '5');
+            }
         }
-        else
+        if($config['notifications_commandes_observateur_validationNOK']==1)
         {
-            writeInLogs("Erreur lors de l'envoi du mail de validation au demandeur pour la commande " . $_GET['id'], '5');
-        }
-
-
-        $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idAffectee = p.idPersonne WHERE idCommande = :idCommande;');
-        $query->execute(array(
-            'idCommande' => $_GET['id']
-        ));
-        $data = $query->fetch();
-
-        $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous le réalisateur/responsable vient d'être refusée lors de son étape de validation.";
-        $message = $message . "<br/><br/>Vous avez à nouveau le contrôle sur cette commande afin de la modifier et de la soumettre à nouveau à validation. Le valideur a laissé un commentaire qui vous accessible depuis la frise chronologique de la commande.";
-        $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-
-        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-        if(sendmail($data['mailPersonne'], $sujet, 2, $message))
-        {
-            writeInLogs("Mail de validation envoyé au realisateur pour la commande " . $_GET['id'], '2');
-        }
-        else
-        {
-            writeInLogs("Erreur lors de l'envoi du mail de validation au realisateur pour la commande " . $_GET['id'], '5');
+            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idObservateur = p.idPersonne WHERE idCommande = :idCommande;');
+            $query->execute(array(
+                'idCommande' => $_GET['id']
+            ));
+            $data = $query->fetch();
+            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes l'observateur vient d'être refusée.";
+            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            {
+                writeInLogs("Mail d'information de validation négative de commande envoyé à l'observateur pour la commande " . $_GET['id'], '2');
+            }
+            else
+            {
+                writeInLogs("Erreur lors de l'envoi du mail de passage de validation négative de commande à l'observateur pour la commande " . $_GET['id'], '5');
+            }
         }
     }
 

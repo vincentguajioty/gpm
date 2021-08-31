@@ -60,7 +60,7 @@ if ($_SESSION['sac_lecture']==0)
             </h1>
             <ol class="breadcrumb">
                 <li><a href="index.php"><i class="fa fa-home"></i>Accueil</a></li>
-                <li><a href="sacs.php">Lots</a></li>
+                <li><a href="sacs.php">Sacs</a></li>
                 <li class="active"><?php echo $data['libelleSac']; ?></li>
             </ol>
         </section>
@@ -79,7 +79,7 @@ if ($_SESSION['sac_lecture']==0)
                     </div>
                     <div class="box-footer no-padding">
                         <ul class="nav nav-stacked">
-                            <li><a>Lot de rattachement <span class="pull-right"><?php echo $data['libelleLot']; ?></span></a></li>
+                            <li><a href="lotsContenu.php?id=<?php echo $data['idLot'];?>">Lot de rattachement <span class="pull-right"><?php echo $data['libelleLot']; ?></span></a></li>
                             <li><a>Personne responsable <span class="pull-right"><?php echo $data['identifiant']; ?></span></a></li>
                             <li><a>Nombre d'emplacements <span class="pull-right"><?php echo $data3['nb']; ?></span></a></li>
                             <li><a>Quantite de matériel <span class="pull-right"><?php echo $data4['nb']; ?></span></a></li>

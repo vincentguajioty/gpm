@@ -8,12 +8,19 @@ function sendMail($adresseDest, $sujet, $niveau, $contenu)
 {
     global $APPNAME;
     global $MAILSERVER;
+    global $MAILCOPY;
     global $RETOURLIGNE;
 
     $boundary = "-----=".md5(rand());
     $header = "From: \"" . $APPNAME . "\"<" . $MAILSERVER . ">".$RETOURLIGNE;
     $header.= "Reply-to: ".$MAILSERVER.$RETOURLIGNE;
     $header.= "MIME-Version: 1.0".$RETOURLIGNE;
+    
+    if($MAILCOPY == 1)
+    {
+        $header.= "Cc: ".$MAILSERVER.$RETOURLIGNE;
+    }
+    
     if ($niveau == 1)
     {
         $header .= "X-Priority: 5".$RETOURLIGNE;

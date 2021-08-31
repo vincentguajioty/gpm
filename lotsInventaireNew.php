@@ -75,42 +75,54 @@ if ($_SESSION['lots_modification']==0)
                         </div>
                     </div>
                 </div>
-                <div class="box">
-                    <div class="box-body">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Sac</th>
-                                <th>Emplacement</th>
-                                <th>Libelle du matériel</th>
-                                <th>Quantité</th>
-                                <th>Péremption</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            $query2 = $db->prepare('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement = e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE idLot = :idLot ORDER BY libelleSac, libelleEmplacement, libelleMateriel;');
-                            $query2->execute(array(
-                                'idLot' => $_GET['id']
-                            ));
-                            while ($data2 = $query2->fetch()) { ?>
-
-                                <tr>
-                                    <td><?php echo $data2['idElement']; ?></td>
-                                    <td><?php echo $data2['libelleSac']; ?></td>
-                                    <td><?php echo $data2['libelleEmplacement']; ?></td>
-                                    <td><?php echo $data2['libelleMateriel']; ?></td>
-                                    <td><input type="text" class="form-control" value="<?php echo $data2['quantite']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $data2['idSac']; ?>][<?php echo $data2['idEmplacement']; ?>][<?php echo $data2['idElement']; ?>][qtt]"></td>
-                                    <td><input type="text" class="input-datepicker form-control" value="<?php echo $data2['peremption']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $data2['idSac']; ?>][<?php echo $data2['idEmplacement']; ?>][<?php echo $data2['idElement']; ?>][per]" <?php if ($data2['peremption'] != Null) echo 'required';?>></td>
-                                </tr>
-                            <?php
-                            }
-                            ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <?php
+                $query3 = $db->prepare('SELECT * FROM MATERIEL_SAC WHERE idLot = :idLot;');
+                $query3->execute(array(
+                    'idLot' => $_GET['id']
+                ));
+                while ($data3=$query3->fetch())
+                {
+                ?>
+	                <div class="box">
+	                    <div class="box-header">
+	                    	<h3 class="box-title"><?php echo $data3['libelleSac']; ?></h3>
+	                    </div>
+	                    <div class="box-body">
+	                        <table class="table table-striped">
+	                            <thead>
+	                            <tr>
+	                                <th style="width: 10px">#</th>
+	                                <th>Emplacement</th>
+	                                <th>Libelle du matériel</th>
+	                                <th>Quantité</th>
+	                                <th>Péremption</th>
+	                            </tr>
+	                            </thead>
+	                            <tbody>
+	                            <?php
+	                            $query2 = $db->prepare('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement = e.idEmplacement LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE idSac = :idSac ORDER BY libelleEmplacement, libelleMateriel;');
+	                            $query2->execute(array(
+	                                'idSac' => $data3['idSac']
+	                            ));
+	                            while ($data2 = $query2->fetch()) { ?>
+	
+	                                <tr>
+	                                    <td><?php echo $data2['idElement']; ?></td>
+	                                    <td><?php echo $data2['libelleEmplacement']; ?></td>
+	                                    <td><?php echo $data2['libelleMateriel']; ?></td>
+	                                    <td><input type="text" class="form-control" value="<?php echo $data2['quantite']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $data2['idSac']; ?>][<?php echo $data2['idEmplacement']; ?>][<?php echo $data2['idElement']; ?>][qtt]"></td>
+	                                    <td><input type="text" class="input-datepicker form-control" value="<?php echo $data2['peremption']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $data2['idSac']; ?>][<?php echo $data2['idEmplacement']; ?>][<?php echo $data2['idElement']; ?>][per]" <?php if ($data2['peremption'] != Null) echo 'required';?>></td>
+	                                </tr>
+	                            <?php
+	                            }
+	                            ?>
+	                            </tbody>
+	                        </table>
+	                    </div>
+	                </div>
+                <?php
+                }
+                ?>
                 <div class="box">
                     <div class="box-body">
                         <div class="form-group">

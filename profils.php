@@ -34,15 +34,15 @@ if ($_SESSION['profils_lecture']==0)
         <section class="content">
             <?php include('confirmationBox.php'); ?>
             <div class="box">
+                <div class="box-header">
+                    <?php if ($_SESSION['profils_ajout']==1) {?>
+                        <h3 class="box-title"><a href="profilsForm.php?id=0" class="btn btn-sm btn-success">Ajouter un profil</a></h3>
+                    <?php } else {?>
+                        </br>
+                    <?php } ?>
+                </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <div class="box-header">
-                        <?php if ($_SESSION['profils_ajout']==1) {?>
-                            <h3 class="box-title"><a href="profilsForm.php?id=0" class="btn btn-sm btn-success">Ajouter un profil</a></h3>
-                        <?php } else {?>
-                            </br>
-                        <?php } ?>
-                    </div>
                     <table id="tri2" class="table table-bordered table-hover">
                         <thead>
                             <tr>

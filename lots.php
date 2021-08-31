@@ -35,15 +35,15 @@ if ($_SESSION['lots_lecture']==0)
         <section class="content">
             <?php include('confirmationBox.php'); ?>
             <div class="box">
+                <div class="box-header">
+                    <?php if ($_SESSION['lots_ajout']==1) {?>
+                        <h3 class="box-title"><a data-toggle="modal" data-target="#modalLotsAdd" class="btn btn-sm btn-success">Ajouter un lot</a></h3>
+                    <?php } else {?>
+                        </br>
+                    <?php } ?>
+                </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <div class="box-header">
-                        <?php if ($_SESSION['lots_ajout']==1) {?>
-                            <h3 class="box-title"><a data-toggle="modal" data-target="#modalLotsAdd" class="btn btn-sm btn-success">Ajouter un lot</a></h3>
-                        <?php } else {?>
-                            </br>
-                        <?php } ?>
-                    </div>
                     <table id="tri2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
@@ -52,7 +52,7 @@ if ($_SESSION['lots_lecture']==0)
                                 <th>Référentiel</th>
                                 <th>Etat</th>
                                 <th>Référent</th>
-                                <th>Dernier Inventaire</th>
+                                <th>Prochain Inventaire</th>
                                 <th>Notifications</th>
                                 <th>Actions</th>
                             </tr>
@@ -91,15 +91,15 @@ if ($_SESSION['lots_lecture']==0)
                                 <td><?php
                                     if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) < date('Y-m-d'))
                                     {
-                                        ?><span class="badge bg-red"><?php echo $data['dateDernierInventaire']; ?></span><?php
+                                        ?><span class="badge bg-red"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
                                     }
                                     else if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) == date('Y-m-d'))
                                     {
-                                        ?><span class="badge bg-orange"><?php echo $data['dateDernierInventaire']; ?></span><?php
+                                        ?><span class="badge bg-orange"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
                                     }
                                     else
                                     {
-                                        ?><span class="badge bg-green"><?php echo $data['dateDernierInventaire']; ?></span><?php
+                                        ?><span class="badge bg-green"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
                                     }
                                     ?>
                                 </td>
