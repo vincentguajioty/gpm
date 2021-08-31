@@ -41,7 +41,7 @@ else
                 $_SESSION['returnType'] = '2';
         }
 
-        $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS a ON p.idProfil = a.idProfil WHERE p.identifiant= :identifiant;');
+        $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS a ON p.idPersonne = a.idPersonne WHERE p.identifiant= :identifiant;');
         $query->execute(array(
             'identifiant' => $_SESSION['identifiant']
         ));

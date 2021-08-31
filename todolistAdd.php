@@ -16,7 +16,6 @@ else
 
     $query = $db->prepare('INSERT INTO TODOLIST(
                                                 idCreateur,
-                                                idExecutant,
                                                 dateCreation,
                                                 dateExecution,
                                                 titre,
@@ -25,23 +24,20 @@ else
                                                 realisee
                                                 ) VALUES(
                                                 :idCreateur,
-                                                :idExecutant,
                                                 :dateCreation,
                                                 :dateExecution,
                                                 :titre,
                                                 :details,
                                                 :priorite,
                                                 0
-                                                );'
-                        );
+                                                );');
     $query->execute(array(
         'idCreateur'    => $_GET['idCreateur'],
-        'idExecutant'   => $_GET['idExecutant'],
         'dateCreation'  => date('Y-m-d H:i:s'),
         'dateExecution' => $_POST['dateExecution'],
         'titre'         => $_POST['titre'],
         'details'         => $_POST['details'],
-        'priorite'         => $_POST['priorite'],
+        'priorite'         => $_POST['priorite']
     ));
 
     switch($query->errorCode())
@@ -49,7 +45,18 @@ else
         case '00000':
             writeInLogs("Ajout d'une TDL.", '2');
             $_SESSION['returnMessage'] = 'Tache ajoutée avec succès.';
-            $_SESSION['returnType'] = '1';       
+            $_SESSION['returnType'] = '1';
+            
+            $query = $db->query('SELECT MAX(idTache) as idTache FROM TODOLIST;');
+            $data = $query->fetch();
+            
+            $query = $db->prepare('INSERT INTO TODOLIST_PERSONNES(idTache, idExecutant) VALUES(:idTache, :idExecutant);');
+		    $query->execute(array(
+		        'idExecutant'    => $_GET['idExecutant'],
+		        'idTache'  => $data['idTache']
+		    ));
+            
+            
         break;
 
 

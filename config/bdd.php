@@ -5,10 +5,10 @@ function createDB()
 {
     //---------------------- BASE DE DONNEES ----------------------
     $SERVEURDB = 'x.x.x.x'; //adresse IP du serveur entre simple cote, ex: $SERVEUR = '192.169.1.5';
-    $DBNAME = 'GPM'; //nom de la base de données, ex: $DB = 'GPM';
+    $DBNAME = 'xxxx'; //nom de la base de données, ex: $DB = 'GPM';
     $CHARSET = 'utf8'; //type d'interclassement, utf8 étant recommandé, ex: $CHARSET = 'utf8';
-    $USER = 'xxx'; //nom d'utilisateur d'accès à la base de données, ex: $USER = 'utilisateur';
-    $PASSWORD = 'xxx'; //mot de passe d'accès à la base de données, ex: $PASSWORD = 'motDePasse';
+    $USER = 'xxxx'; //nom d'utilisateur d'accès à la base de données, ex: $USER = 'utilisateur';
+    $PASSWORD = 'xxxx'; //mot de passe d'accès à la base de données, ex: $PASSWORD = 'motDePasse';
     //-------------------- FIN BASE DE DONNEES ---------------------
 
     try {
@@ -346,6 +346,22 @@ function cmdEstDemandeur ($idPersonne, $idCommande)
     $data = $query->fetchAll();
     
     if(in_array($idPersonne, array_column($data, 'idDemandeur')))
+    {
+    	return 1;
+    }
+    else
+    {
+    	return 0;
+    }
+}
+function tdlEstExecutant ($idPersonne, $idTache)
+{
+	global $db;
+	$query = $db->prepare('SELECT idExecutant FROM TODOLIST_PERSONNES WHERE idTache = :idTache;');
+    $query -> execute(array('idTache' => $idTache));
+    $data = $query->fetchAll();
+    
+    if(in_array($idPersonne, array_column($data, 'idExecutant')))
     {
     	return 1;
     }

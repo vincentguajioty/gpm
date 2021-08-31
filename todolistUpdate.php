@@ -5,27 +5,15 @@ require_once 'config/bdd.php';
 require_once 'config/config.php';
 require_once 'config/mailFunction.php';
 
-if ($_POST['idExecutant'] == Null)
-{
-	$query = $db->prepare('SELECT * FROM TODOLIST WHERE idTache = :idTache');
-	$query->execute(array(
-	    'idTache'       => $_GET['id']
-	));
-	$data = $query->fetch();
-	$_POST['idExecutant'] = $data['idExecutant'];
-}
-
-if ($_SESSION['todolist_modification']==0 AND ($_POST['idExecutant']!=$_SESSION['idPersonne'] OR ($_POST['idExecutant']==$_SESSION['idPersonne'] AND $_SESSION['todolist_perso']==0)))
+if ($_SESSION['todolist_modification']==0 AND (tdlEstExecutant($_SESSION['idPersonne'], $_GET['id'])==0 OR (tdlEstExecutant($_SESSION['idPersonne'], $_GET['id']) AND $_SESSION['todolist_perso']==0)))
 {
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 }
 else
 {
-    $_POST['idExecutant'] = ($_POST['idExecutant'] == Null) ? Null : $_POST['idExecutant'];
     $_POST['dateExecution'] = ($_POST['dateExecution'] == Null) ? Null : $_POST['dateExecution'];
 
     $query = $db->prepare('UPDATE TODOLIST SET 
-                                                idExecutant = :idExecutant,
                                                 dateExecution = :dateExecution,
                                                 titre = :titre,
                                                 details = :details,
@@ -35,7 +23,6 @@ else
                                             ;'
                         );
     $query->execute(array(
-        'idExecutant'   => $_POST['idExecutant'],
         'dateExecution' => $_POST['dateExecution'],
         'titre'         => $_POST['titre'],
         'details'       => $_POST['details'],
@@ -48,7 +35,22 @@ else
         case '00000':
             writeInLogs("Modification d'une TDL.", '3');
             $_SESSION['returnMessage'] = 'Tache modifiée avec succès.';
-            $_SESSION['returnType'] = '1';       
+            $_SESSION['returnType'] = '1';
+            
+            $queryDelete = $db->prepare('DELETE FROM TODOLIST_PERSONNES WHERE idTache = :idTache');
+            $queryDelete->execute([
+                ':idTache' => $_GET['id']
+            ]);
+            if (!empty($_POST['idExecutant'])) {
+                $insertSQL = 'INSERT INTO TODOLIST_PERSONNES (idExecutant, idTache) VALUES';
+                foreach ($_POST['idExecutant'] as $idExecutant) {
+                    $insertSQL .= ' ('. (int)$idExecutant.', '. (int)$_GET['id'] .'),';
+                }
+
+                $insertSQL = substr($insertSQL, 0, -1);
+
+                $db->query($insertSQL);
+            }
         break;
 
 

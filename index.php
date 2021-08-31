@@ -476,7 +476,7 @@ require_once('logCheck.php');
 	        <div class="col-md-6">
 			    <div class="box box-success">
 					<div class="box-header">
-						<i class="ion ion-clipboard"></i>
+						<i class="fa fa-check-square-o"></i>
 						<h3 class="box-title">To Do List</h3>
 						<div class="box-tools pull-right">
 	                    	<?php if ($_SESSION['todolist_perso']==1) {?><a href="todolistForm.php?idCreateur=<?= $_SESSION['idPersonne'] ?>&idExecutant=<?= $_SESSION['idPersonne'] ?>" class="btn btn-sm modal-form" title="Ajouter un tache"><i class="fa fa-plus"></i></a><?php } ?>
@@ -486,7 +486,7 @@ require_once('logCheck.php');
 					<div class="box-body">
 						<ul class="todo-list">
 							<?php
-								$query = $db->prepare('SELECT * FROM TODOLIST WHERE idExecutant = :idExecutant AND realisee = 0');
+								$query = $db->prepare('SELECT * FROM TODOLIST_PERSONNES tp JOIN TODOLIST tdl ON tp.idTache = tdl.idTache WHERE idExecutant = :idExecutant AND realisee = 0');
 								$query->execute(array('idExecutant'=>$_SESSION['idPersonne']));
 								while ($data = $query->fetch())
 								{ ?>

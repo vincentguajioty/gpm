@@ -75,12 +75,7 @@ else
         'idExecutant' => $_GET['id']
     ));
     
-    $query = $db->prepare('DELETE FROM TODOLIST WHERE idExecutant = :idPersonne AND realisee = 1');
-    $query->execute([
-        ':idPersonne' => $_GET['id']
-    ]);
-    
-    $query = $db->prepare('UPDATE TODOLIST SET idExecutant = Null WHERE idExecutant = :idPersonne AND realisee = 0');
+    $query = $db->prepare('DELETE FROM TODOLIST_PERSONNES WHERE idExecutant = :idPersonne');
     $query->execute([
         ':idPersonne' => $_GET['id']
     ]);

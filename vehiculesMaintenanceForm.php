@@ -32,7 +32,7 @@ if($_SESSION['vehicules_lecture']==1 OR $_SESSION['vehicules_modification']==1)
                             <label>Executant <small style="color:grey;"> Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="idExecutant">
                                 <?php
-                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE vehicules_modification = 1;');
+                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE vehicules_modification = 1;');
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>

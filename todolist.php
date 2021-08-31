@@ -53,7 +53,7 @@ if ($_SESSION['todolist_lecture']==0)
 	                                <div class="box-body">
 	                                    <ul class="todo-list">
 	                                        <?php
-	                                            $query2 = $db->prepare('SELECT * FROM TODOLIST WHERE idExecutant = :idExecutant AND realisee = 0');
+	                                            $query2 = $db->prepare('SELECT * FROM TODOLIST_PERSONNES tp JOIN TODOLIST tdl ON tp.idTache = tdl.idTache WHERE idExecutant = :idExecutant AND realisee = 0');
 	                                            $query2->execute(array('idExecutant'=>$data['idPersonne']));
 	                                            while ($data2 = $query2->fetch())
 	                                            { ?>
@@ -94,7 +94,7 @@ if ($_SESSION['todolist_lecture']==0)
 	                                    <th></th>
 	                                </tr>
 	                                <?php
-	                                $query = $db->query('SELECT * FROM TODOLIST WHERE idExecutant IS NULL;');
+	                                $query = $db->query('SELECT tdl.*, tp.idExecutant FROM TODOLIST tdl LEFT OUTER JOIN TODOLIST_PERSONNES tp ON tdl.idTache = tp.idTache WHERE idExecutant IS NULL;');
 	                                while ($data = $query->fetch())
 	                                {
 	                                    ?>

@@ -47,7 +47,7 @@ if ($_SESSION['vehicules_lecture']==0)
                     <!-- Widget: user widget style 1 -->
                     <div class="box box-success">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Détails</h3>
+                            <h3 class="box-title">Détails</h3> <?php if ($_SESSION['vehicules_modification']==1) {?><a href="vehiculesForm.php?id=<?=$_GET['id']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
                         </div>
 
                         <!-- /.box-header -->
@@ -137,7 +137,7 @@ if ($_SESSION['vehicules_lecture']==0)
                                         <th>Date</th>
                                         <th>Intervention</th>
                                         <th>Intervenant</th>
-                                        <th></th>
+                                        <th><?php if($_SESSION['vehicules_modification']==1){ ?><a href="vehiculesMaintenanceForm.php?idVehicule=<?=$_GET['id']?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a><?php } ?></th>
                                     </tr>
                                     <?php
                                     $query2 = $db->prepare('SELECT * FROM VEHICULES_MAINTENANCE m LEFT OUTER JOIN VEHICULES_MAINTENANCE_TYPES t ON m.idTypeMaintenance = t.idTypeMaintenance LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idExecutant = p.idPersonne WHERE idVehicule = :idVehicule ORDER BY dateMaintenance DESC;');
@@ -162,14 +162,6 @@ if ($_SESSION['vehicules_lecture']==0)
                                     }
                                     $query2->closeCursor(); ?>
                                     
-                                    <?php if($_SESSION['vehicules_modification']==1){ ?>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td><a href="vehiculesMaintenanceForm.php?idVehicule=<?=$_GET['id']?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a></td>
-                                    <tr>
-                                        <?php }?>
                                 </table>
                             </div>
 							
@@ -209,7 +201,7 @@ if ($_SESSION['vehicules_lecture']==0)
                                         <th>Type de document</th>
                                         <th>Date de chargement</th>
                                         <th>Format</th>
-                                        <th></th>
+                                        <th><?php if($_SESSION['vehicules_modification']==1){ ?><a href="vehiculesDocForm.php?idVehicule=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a><?php } ?></th>
                                     </tr>
                                     <?php
                                     $query2 = $db->prepare('SELECT * FROM DOCUMENTS_VEHICULES c LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument WHERE idVehicule = :idVehicule ORDER BY nomDocVehicule ASC ;');
@@ -241,15 +233,6 @@ if ($_SESSION['vehicules_lecture']==0)
                                     }
                                     $query2->closeCursor(); ?>
 
-                                    <?php if($_SESSION['vehicules_modification']==1){ ?>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td><a href="vehiculesDocForm.php?idVehicule=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a></td>
-                                    <tr>
-                                        <?php }?>
                                 </table>
                             </div>
 
