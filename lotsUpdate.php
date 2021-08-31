@@ -12,50 +12,19 @@ if ($_SESSION['lots_modification']==0)
 else
 {
 
-    if ($_POST['libelleTypeLot'] == Null)
-    {
-        $idTypeLot = Null;
-    }
-    else
-    {
-        $idTypeLot = $_POST['libelleTypeLot'];
-    }
-
-    if ($_POST['libelleEtat'] == Null)
-    {
-        $idEtat = Null;
-    }
-    else
-    {
-        $idEtat = $_POST['libelleEtat'];
-    }
-
-    if ($_POST['libelleLieu'] == Null)
-    {
-        $idLieu = Null;
-    }
-    else
-    {
-        $idLieu = $_POST['libelleLieu'];
-    }
-
-    if ($_POST['identifiant'] == Null)
-    {
-        $idPersonne = Null;
-    }
-    else
-    {
-        $idPersonne = $_POST['identifiant'];
-    }
+    $_POST['libelleTypeLot'] = ($_POST['libelleTypeLot'] == Null) ? Null : $_POST['libelleTypeLot'];
+	$_POST['libelleEtat'] = ($_POST['libelleEtat'] == Null) ? Null : $_POST['libelleEtat'];
+	$_POST['libelleLieu'] = ($_POST['libelleLieu'] == Null) ? Null : $_POST['libelleLieu'];
+	$_POST['identifiant'] = ($_POST['identifiant'] == Null) ? Null : $_POST['identifiant'];
 
     $query = $db->prepare('UPDATE LOTS_LOTS SET libelleLot = :libelleLot, idTypeLot = :idTypeLot, idEtat = :idEtat, idLieu = :idLieu, idPersonne = :idPersonne, dateDernierInventaire = :dateDernierInventaire, frequenceInventaire = :frequenceInventaire, commentairesLots = :commentairesLots WHERE idLot = :idLot;');
     $query->execute(array(
         'idLot' => $_GET['id'],
         'libelleLot' => $_POST['libelleLot'],
-        'idTypeLot' => $idTypeLot,
-        'idEtat' => $idEtat,
-        'idLieu' => $idLieu,
-        'idPersonne' => $idPersonne,
+        'idTypeLot' => $_POST['libelleTypeLot'],
+        'idEtat' => $_POST['libelleEtat'],
+        'idLieu' => $_POST['libelleLieu'],
+        'idPersonne' => $_POST['identifiant'],
         'dateDernierInventaire' => $_POST['dateDernierInventaire'],
         'frequenceInventaire' => $_POST['frequenceInventaire'],
         'commentairesLots' => $_POST['commentairesLots']

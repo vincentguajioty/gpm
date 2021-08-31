@@ -10,21 +10,16 @@ if ($_SESSION['lieux_modification']==0)
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 }
 else {
-    if ($_POST['accesReserve']=='option1')
-    {
-        $acces = '0';
-    }
-    else
-    {
-        $acces = '1';
-    }
+
+    $_POST['accesReserve'] = ($_POST['accesReserve'] == 'option1') ? 0 : 1;
+    
     $query = $db->prepare('UPDATE LIEUX SET libelleLieu = :libelleLieu, adresseLieu = :adresseLieu, detailsLieu = :detailsLieu, accesReserve = :accesReserve WHERE idLieu = :idLieu ;');
     $query->execute(array(
         'idLieu' => $_GET['id'],
         'libelleLieu' => $_POST['libelleLieu'],
         'adresseLieu' => $_POST['adresseLieu'],
         'detailsLieu' => $_POST['detailsLieu'],
-        'accesReserve' => $acces
+        'accesReserve' => $_POST['accesReserve']
     ));
 
     switch($query->errorCode())

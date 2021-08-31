@@ -17,6 +17,11 @@ else
     ));
     $data = $query->fetch();
 
+	$query = $db->prepare('DELETE FROM COMMANDES_MATERIEL WHERE idMaterielCatalogue = :idMaterielCatalogue;');
+    $query->execute(array(
+        'idMaterielCatalogue' => $_GET['id']
+    ));
+
     $query = $db->prepare('DELETE FROM MATERIEL_ELEMENT WHERE idMaterielCatalogue = :idMaterielCatalogue;');
     $query->execute(array(
         'idMaterielCatalogue' => $_GET['id']

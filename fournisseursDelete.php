@@ -27,6 +27,10 @@ else
         'idFournisseur' => $_GET['id']
     ));
 
+	$query = $db->prepare('UPDATE COMMANDES SET idFournisseur = Null WHERE idFournisseur = :idFournisseur ;');
+    $query->execute(array(
+        'idFournisseur' => $_GET['id']
+    ));
 
     $query = $db->prepare('DELETE FROM FOURNISSEURS WHERE idFournisseur = :idFournisseur;');
     $query->execute(array(

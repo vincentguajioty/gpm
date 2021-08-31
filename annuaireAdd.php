@@ -11,18 +11,11 @@ if ($_SESSION['annuaire_ajout']==0)
 }
 else
 {
-    if ($_POST['libelleProfil'] == Null)
-    {
-        $idProfil = Null;
-    }
-    else
-    {
-        $idProfil = $_POST['libelleProfil'];
-    }
+    $_POST['libelleProfil'] = ($_POST['libelleProfil'] == Null) ? Null : $_POST['libelleProfil'];
 
     $query = $db->prepare('INSERT INTO PERSONNE_REFERENTE(idProfil, identifiant, motDePasse, nomPersonne, prenomPersonne, mailPersonne, telPersonne, fonction) VALUES(:idProfil, :identifiant, :motDePasse, :nomPersonne, :prenomPersonne, :mailPersonne, :telPersonne, :fonction);');
     $query->execute(array(
-        'idProfil' => $idProfil,
+        'idProfil' => $_POST['libelleProfil'],
         'identifiant' => $_POST['identifiant'],
         'motDePasse' => password_hash($_POST['identifiant'], PASSWORD_DEFAULT),
         'nomPersonne' => $_POST['nomPersonne'],

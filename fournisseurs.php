@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); ?>
+<?php include('header.php'); require_once('config/version.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 305;
@@ -10,7 +10,7 @@ require_once('logCheck.php');
 if ($_SESSION['fournisseurs_lecture']==0)
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 ?>
-<body class="hold-transition skin-blue sidebar-mini fixed">
+<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>

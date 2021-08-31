@@ -11,21 +11,13 @@ if ($_SESSION['sac2_modification']==0)
 }
 else
 {
-
-    if ($_POST['libelleSac'] == Null)
-    {
-        $idSac=  Null;
-    }
-    else
-    {
-        $idSac = $_POST['libelleSac'];
-    }
+    $_POST['libelleSac'] = ($_POST['libelleSac'] == Null) ? Null : $_POST['libelleSac'];
 
     $query = $db->prepare('UPDATE MATERIEL_EMPLACEMENT SET libelleEmplacement = :libelleEmplacement, idSac = :idSac WHERE idEmplacement = :idEmplacement;');
     $query->execute(array(
         'idEmplacement' => $_GET['id'],
         'libelleEmplacement' => $_POST['libelleEmplacement'],
-        'idSac' => $idSac
+        'idSac' => $_POST['libelleSac']
     ));
 
     switch($query->errorCode())

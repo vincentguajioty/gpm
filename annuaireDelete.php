@@ -11,6 +11,7 @@ if ($_SESSION['annuaire_suppression']==0)
 }
 else
 {
+    
     $query2 = $db->prepare('SELECT * FROM PERSONNE_REFERENTE WHERE idPersonne = :idPersonne ;');
     $query2->execute(array(
         'idPersonne' => $_GET['id']
@@ -20,6 +21,31 @@ else
     $query = $db->prepare('UPDATE LOTS_LOTS SET idPersonne = Null WHERE idPersonne = :idPersonne ;');
     $query->execute(array(
         'idPersonne' => $_GET['id']
+    ));
+    
+    $query = $db->prepare('UPDATE CENTRE_COUTS SET idResponsable = Null WHERE idResponsable = :idResponsable ;');
+    $query->execute(array(
+        'idResponsable' => $_GET['id']
+    ));
+    
+    $query = $db->prepare('UPDATE COMMANDES SET idDemandeur = Null WHERE idDemandeur = :idDemandeur ;');
+    $query->execute(array(
+        'idDemandeur' => $_GET['id']
+    ));
+    
+    $query = $db->prepare('UPDATE COMMANDES SET idObservateur = Null WHERE idObservateur = :idObservateur ;');
+    $query->execute(array(
+        'idObservateur' => $_GET['id']
+    ));
+    
+    $query = $db->prepare('UPDATE COMMANDES SET idValideur = Null WHERE idValideur = :idValideur ;');
+    $query->execute(array(
+        'idValideur' => $_GET['id']
+    ));
+    
+    $query = $db->prepare('UPDATE COMMANDES SET idAffectee = Null WHERE idAffectee = :idAffectee ;');
+    $query->execute(array(
+        'idAffectee' => $_GET['id']
     ));
 
     $query = $db->prepare('UPDATE MESSAGES SET idPersonne = Null WHERE idPersonne = :idPersonne ;');

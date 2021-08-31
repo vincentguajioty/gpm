@@ -11,14 +11,8 @@ if ($_SESSION['typesLots_modification']==0)
 }
 else
 {
-    if ($_POST['obligatoire']=='option1')
-    {
-        $varObli = '1';
-    }
-    else
-    {
-        $varObli = '0';
-    }
+    $_POST['obligatoire'] = ($_POST['obligatoire'] == 'option1') ? 1 : 0;
+    $_POST['libelleMateriel'] = ($_POST['libelleMateriel'] == Null) ? Null : $_POST['libelleMateriel'];
 
     $query = $db->prepare('SELECT * FROM LOTS_TYPES WHERE idTypeLot = :idTypeLot;');
     $query->execute(array(
@@ -26,21 +20,12 @@ else
     ));
     $data2 = $query->fetch();
 
-    if ($_POST['libelleMateriel'] == Null)
-    {
-        $idMaterielCatalogue = Null;
-    }
-    else
-    {
-        $idMaterielCatalogue = $_POST['libelleMateriel'];
-    }
-
     $query = $db->prepare('INSERT INTO REFERENTIELS(idMaterielCatalogue, idTypeLot, quantiteReferentiel, obligatoire, commentairesReferentiel) VALUES(:idMaterielCatalogue, :idTypeLot, :quantiteReferentiel, :obligatoire, :commentairesReferentiel);');
     $query->execute(array(
-        'idMaterielCatalogue' => $idMaterielCatalogue,
+        'idMaterielCatalogue' => $_POST['libelleMateriel'],
         'idTypeLot' => $_GET['idLot'],
         'quantiteReferentiel' => $_POST['quantiteReferentiel'],
-        'obligatoire' => $varObli,
+        'obligatoire' => $_POST['obligatoire'],
         'commentairesReferentiel' => $_POST['commentairesReferentiel'],
     ));
 

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); ?>
+<?php include('header.php'); require_once('config/version.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 401;
 require_once('logCheck.php');
 ?>
-<body class="hold-transition skin-blue sidebar-mini fixed">
+<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -72,7 +72,7 @@ require_once('logCheck.php');
                                        name="fonction">
                             </div>
                             <div class="form-group">
-                                <label>Profil d'habilitations Apollon: </label>
+                                <label>Profil d'habilitation: </label>
                                 <select class="form-control" name="libelleProfil">
                                     <option></option>
                                     <?php
@@ -147,7 +147,7 @@ require_once('logCheck.php');
                                        name="fonction">
                             </div>
                             <div class="form-group">
-                                <label>Profil d'habilitations Apollon: </label>
+                                <label>Profil d'habilitation: </label>
                                 <select class="form-control" name="libelleProfil">
                                     <option></option>
                                     <?php

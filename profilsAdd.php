@@ -65,8 +65,17 @@ else
     $messages_ajout = ($_POST['messages_ajout'] ==1) ? 1 : 0;
     $messages_suppression = ($_POST['messages_suppression'] ==1) ? 1 : 0;
     $verrouIP = ($_POST['verrouIP'] ==1) ? 1 : 0;
+    $commande_lecture = ($_POST['commande_lecture'] ==1) ? 1 : 0;
+    $commande_ajout = ($_POST['commande_ajout'] ==1) ? 1 : 0;
+    $commande_valider = ($_POST['commande_valider'] ==1) ? 1 : 0;
+    $commande_etreEnCharge = ($_POST['commande_etreEnCharge'] ==1) ? 1 : 0;
+    $commande_abandonner = ($_POST['commande_abandonner'] ==1) ? 1 : 0;
+    $cout_lecture = ($_POST['cout_lecture'] ==1) ? 1 : 0;
+    $cout_ajout = ($_POST['cout_ajout'] ==1) ? 1 : 0;
+    $cout_etreEnCharge = ($_POST['cout_etreEnCharge'] ==1) ? 1 : 0;
+    $cout_supprimer = ($_POST['cout_supprimer'] ==1) ? 1 : 0;
 
-    $query = $db->prepare('INSERT INTO PROFILS(libelleProfil, descriptifProfil, connexion_connexion, logs_lecture, annuaire_lecture, annuaire_ajout, annuaire_modification, annuaire_mdp, annuaire_suppression, profils_lecture, profils_ajout, profils_modification, profils_suppression, categories_lecture, categories_ajout, categories_modification, categories_suppression, fournisseurs_lecture, fournisseurs_ajout, fournisseurs_modification, fournisseurs_suppression, typesLots_lecture, typesLots_ajout, typesLots_modification, typesLots_suppression, etats_lecture, etats_ajout, etats_modification, etats_suppression, lieux_lecture, lieux_ajout, lieux_modification, lieux_suppression, lots_lecture, lots_ajout, lots_modification, lots_suppression, sac_lecture, sac_ajout, sac_modification, sac_suppression, sac2_lecture, sac2_ajout, sac2_modification, sac2_suppression, catalogue_lecture, catalogue_ajout, catalogue_modification, catalogue_suppression, materiel_lecture, materiel_ajout, materiel_modification, materiel_suppression, messages_ajout, messages_suppression, notifications, verrouIP) VALUES (:libelleProfil, :descriptifProfil, :connexion_connexion, :logs_lecture, :annuaire_lecture, :annuaire_ajout, :annuaire_modification, :annuaire_mdp, :annuaire_suppression, :profils_lecture, :profils_ajout, :profils_modification, :profils_suppression, :categories_lecture, :categories_ajout, :categories_modification, :categories_suppression, :fournisseurs_lecture, :fournisseurs_ajout, :fournisseurs_modification, :fournisseurs_suppression, :typesLots_lecture, :typesLots_ajout, :typesLots_modification, :typesLots_suppression, :etats_lecture, :etats_ajout, :etats_modification, :etats_suppression, :lieux_lecture, :lieux_ajout, :lieux_modification, :lieux_suppression, :lots_lecture, :lots_ajout, :lots_modification, :lots_suppression, :sac_lecture, :sac_ajout, :sac_modification, :sac_suppression, :sac2_lecture, :sac2_ajout, :sac2_modification, :sac2_suppression, :catalogue_lecture, :catalogue_ajout, :catalogue_modification, :catalogue_suppression, :materiel_lecture, :materiel_ajout, :materiel_modification, :materiel_suppression, :messages_ajout, :messages_suppression, :notifications, :verrouIP);');
+    $query = $db->prepare('INSERT INTO PROFILS(libelleProfil, descriptifProfil, connexion_connexion, logs_lecture, annuaire_lecture, annuaire_ajout, annuaire_modification, annuaire_mdp, annuaire_suppression, profils_lecture, profils_ajout, profils_modification, profils_suppression, categories_lecture, categories_ajout, categories_modification, categories_suppression, fournisseurs_lecture, fournisseurs_ajout, fournisseurs_modification, fournisseurs_suppression, typesLots_lecture, typesLots_ajout, typesLots_modification, typesLots_suppression, etats_lecture, etats_ajout, etats_modification, etats_suppression, lieux_lecture, lieux_ajout, lieux_modification, lieux_suppression, lots_lecture, lots_ajout, lots_modification, lots_suppression, sac_lecture, sac_ajout, sac_modification, sac_suppression, sac2_lecture, sac2_ajout, sac2_modification, sac2_suppression, catalogue_lecture, catalogue_ajout, catalogue_modification, catalogue_suppression, materiel_lecture, materiel_ajout, materiel_modification, materiel_suppression, messages_ajout, messages_suppression, notifications, verrouIP, commande_lecture, commande_ajout, commande_valider, commande_etreEnCharge, commande_abandonner, cout_lecture, cout_ajout, cout_etreEnCharge, cout_supprimer) VALUES (:libelleProfil, :descriptifProfil, :connexion_connexion, :logs_lecture, :annuaire_lecture, :annuaire_ajout, :annuaire_modification, :annuaire_mdp, :annuaire_suppression, :profils_lecture, :profils_ajout, :profils_modification, :profils_suppression, :categories_lecture, :categories_ajout, :categories_modification, :categories_suppression, :fournisseurs_lecture, :fournisseurs_ajout, :fournisseurs_modification, :fournisseurs_suppression, :typesLots_lecture, :typesLots_ajout, :typesLots_modification, :typesLots_suppression, :etats_lecture, :etats_ajout, :etats_modification, :etats_suppression, :lieux_lecture, :lieux_ajout, :lieux_modification, :lieux_suppression, :lots_lecture, :lots_ajout, :lots_modification, :lots_suppression, :sac_lecture, :sac_ajout, :sac_modification, :sac_suppression, :sac2_lecture, :sac2_ajout, :sac2_modification, :sac2_suppression, :catalogue_lecture, :catalogue_ajout, :catalogue_modification, :catalogue_suppression, :materiel_lecture, :materiel_ajout, :materiel_modification, :materiel_suppression, :messages_ajout, :messages_suppression, :notifications, :verrouIP, :commande_lecture, :commande_ajout, :commande_valider, :commande_etreEnCharge, :commande_abandonner, :cout_lecture, :cout_ajout, :cout_etreEnCharge, :cout_supprimer);');
     $query->execute(array(
         'libelleProfil'  =>  $_POST['libelleProfil'],
         'descriptifProfil'  =>  $_POST['descriptifProfil'],
@@ -124,7 +133,17 @@ else
         'messages_ajout' => $messages_ajout,
         'messages_suppression' => $messages_suppression,
         'notifications' => $_POST['notifications'],
-        'verrouIP' => $verrouIP));
+        'verrouIP' => $verrouIP,
+        'commande_lecture' => $commande_lecture,
+	    'commande_ajout' => $commande_ajout,
+	    'commande_valider' => $commande_valider,
+	    'commande_etreEnCharge' => $commande_etreEnCharge,
+	    'commande_abandonner' => $commande_abandonner,
+	    'cout_lecture' => $cout_lecture,
+	    'cout_ajout' => $cout_ajout,
+	    'cout_etreEnCharge' => $cout_etreEnCharge,
+	    'cout_supprimer' => $cout_supprimer
+));
 
     switch($query->errorCode())
     {

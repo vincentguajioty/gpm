@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); ?>
+<?php include('header.php'); require_once('config/version.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 401;
 require_once('logCheck.php');
+
 ?>
 <?php
 if ($_SESSION['annuaire_lecture']==0)
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 ?>
-<body class="hold-transition skin-blue sidebar-mini fixed">
+<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -52,7 +53,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                 <th>Nom</th>
                                 <th>Prénom</th>
                                 <th>Fonction</th>
-                                <th>Profil Apollon</th>
+                                <th>Profil</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>

@@ -11,24 +11,9 @@ if ($_SESSION['materiel_ajout']==0)
 }
 else
 {
-
-    if ($_POST['libelleMateriel'] == Null)
-    {
-        $idMaterielCatalogue = Null;
-    }
-    else
-    {
-        $idMaterielCatalogue = $_POST['libelleMateriel'];
-    }
-
-    if($_POST['nomFournisseur'] == Null)
-    {
-        $idFournisseur = Null;
-    }
-    else
-    {
-        $idFournisseur = $_POST['nomFournisseur'];
-    }
+    $_POST['libelleMateriel'] = ($_POST['libelleMateriel'] == Null) ? Null : $_POST['libelleMateriel'];
+    $_POST['nomFournisseur'] = ($_POST['nomFournisseur'] == Null) ? Null : $_POST['nomFournisseur'];
+	$_POST['libelleEmplacement'] = ($_POST['libelleEmplacement'] == Null) ? Null : $_POST['libelleEmplacement'];
 
     if ($_POST['boolPeremption'] == '1')
     {
@@ -41,20 +26,11 @@ else
         $peremptionNotification = Null;
     }
 
-    if ($_POST['libelleEmplacement'] == NULL)
-    {
-        $idEmplacement = Null;
-    }
-    else
-    {
-        $idEmplacement = $_POST['libelleEmplacement'];
-    }
-
     $query = $db->prepare('INSERT INTO MATERIEL_ELEMENT(idMaterielCatalogue, idEmplacement, idFournisseur, quantite, quantiteAlerte, peremption, peremptionNotification, commentairesElement)VALUES(:idMaterielCatalogue, :idEmplacement, :idFournisseur, :quantite, :quantiteAlerte, :peremption, :peremptionNotification, :commentairesElement);');
     $query->execute(array(
-        'idMaterielCatalogue' => $idMaterielCatalogue,
-        'idEmplacement' => $idEmplacement,
-        'idFournisseur' => $idFournisseur,
+        'idMaterielCatalogue' => $_POST['libelleMateriel'],
+        'idEmplacement' => $_POST['libelleEmplacement'],
+        'idFournisseur' => $_POST['nomFournisseur'],
         'quantite' => $_POST['quantite'],
         'quantiteAlerte' => $_POST['quantiteAlerte'],
         'peremption' => $peremption,

@@ -12,32 +12,9 @@ if ($_SESSION['materiel_modification']==0)
 else
 {
 
-    if ($_POST['libelleMateriel'] == Null)
-    {
-        $idMaterielCatalogue = Null;
-    }
-    else
-    {
-        $idMaterielCatalogue = $_POST['libelleMateriel'];
-    }
-
-    if($_POST['nomFournisseur'] == Null)
-    {
-        $idFournisseur = Null;
-    }
-    else
-    {
-        $idFournisseur = $_POST['nomFournisseur'];
-    }
-
-    if ($_POST['libelleEmplacement'] == NULL)
-    {
-        $idEmplacement = Null;
-    }
-    else
-    {
-        $idEmplacement = $_POST['libelleEmplacement'];
-    }
+    $_POST['libelleMateriel'] = ($_POST['libelleMateriel'] == Null) ? Null : $_POST['libelleMateriel'];
+    $_POST['nomFournisseur'] = ($_POST['nomFournisseur'] == Null) ? Null : $_POST['nomFournisseur'];
+	$_POST['libelleEmplacement'] = ($_POST['libelleEmplacement'] == Null) ? Null : $_POST['libelleEmplacement'];
 
     if ($_POST['boolPeremption'] == '1')
     {
@@ -53,9 +30,9 @@ else
     $query = $db->prepare('UPDATE MATERIEL_ELEMENT SET idMaterielCatalogue = :idMaterielCatalogue, idEmplacement = :idEmplacement, idFournisseur = :idFournisseur, quantite = :quantite, quantiteAlerte = :quantiteAlerte, peremption = :peremption, peremptionNotification = :peremptionNotification, commentairesElement = :commentairesElement WHERE idElement = :idElement;');
     $query->execute(array(
         'idElement' => $_GET['id'],
-        'idMaterielCatalogue' => $idMaterielCatalogue,
-        'idEmplacement' => $idEmplacement,
-        'idFournisseur' => $idFournisseur,
+        'idMaterielCatalogue' => $_POST['libelleMateriel'],
+        'idEmplacement' => $_POST['libelleEmplacement'],
+        'idFournisseur' => $_POST['nomFournisseur'],
         'quantite' => $_POST['quantite'],
         'quantiteAlerte' => $_POST['quantiteAlerte'],
         'peremption' => $peremption,

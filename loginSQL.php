@@ -120,6 +120,15 @@ if ($data['idIP'] == "")
 	    $_SESSION['messages_ajout'] = $data['messages_ajout'];
 	    $_SESSION['messages_suppression'] = $data['messages_suppression'];
 	    $_SESSION['verrouIP'] = $data['verrouIP'];
+	    $_SESSION['commande_lecture'] = $data['commande_lecture'];
+	    $_SESSION['commande_ajout'] = $data['commande_ajout'];
+	    $_SESSION['commande_valider'] = $data['commande_valider'];
+	    $_SESSION['commande_etreEnCharge'] = $data['commande_etreEnCharge'];
+	    $_SESSION['commande_abandonner'] = $data['commande_abandonner'];
+	    $_SESSION['cout_lecture'] = $data['cout_lecture'];
+	    $_SESSION['cout_ajout'] = $data['cout_ajout'];
+	    $_SESSION['cout_etreEnCharge'] = $data['cout_etreEnCharge'];
+	    $_SESSION['cout_supprimer'] = $data['cout_supprimer'];
 	
 	    if ((password_verify($_POST['identifiant'], $data['motDePasse'])))
 	    {

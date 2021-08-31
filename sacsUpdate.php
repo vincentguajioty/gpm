@@ -12,32 +12,17 @@ if ($_SESSION['sac_modification']==0)
 else
 {
 
-    if ($_POST['libelleLot'] == Null)
-    {
-        $idLot = Null;
-    }
-    else
-    {
-        $idLot = $_POST['libelleLot'];
-    }
-
-    if ($_POST['nomFournisseur'] == Null)
-    {
-        $idFournisseur = Null;
-    }
-    else
-    {
-        $idFournisseur = $_POST['nomFournisseur'];
-    }
+    $_POST['libelleLot'] = ($_POST['libelleLot'] == Null) ? Null : $_POST['libelleLot'];
+	$_POST['nomFournisseur'] = ($_POST['nomFournisseur'] == Null) ? Null : $_POST['nomFournisseur'];
 
     $query = $db->prepare('UPDATE MATERIEL_SAC SET libelleSac = :libelleSac, idLot = :idLot, taille = :taille, couleur = :couleur, idFournisseur = :idFournisseur WHERE idSac = :idSac;');
     $query->execute(array(
         'idSac' => $_GET['id'],
         'libelleSac' => $_POST['libelleSac'],
-        'idLot' => $idLot,
+        'idLot' => $_POST['libelleLot'],
         'taille' => $_POST['taille'],
         'couleur' => $_POST['couleur'],
-        'idFournisseur' => $idFournisseur
+        'idFournisseur' => $_POST['nomFournisseur']
     ));
 
     switch($query->errorCode())

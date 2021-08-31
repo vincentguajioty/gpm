@@ -3,6 +3,7 @@
 <?php
 session_start();
 require_once('logCheck.php');
+require_once 'config/version.php';
 ?>
 <?php include('header.php'); ?>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -22,7 +23,7 @@ require_once('logCheck.php');
                     <h3><i class="fa fa-warning text-red"></i> Oups! Erreur d'habilitation.</h3>
 
                     <p>
-                        Apollon est équipé d'un dispositif de controle d'accès. Les administrateurs sont en mesure de définir pour chaque utilisateur s'il a le droit de consulter certaines pages ou pas.
+                        <?php echo $APPNAME; ?> est équipé d'un dispositif de controle d'accès. Les administrateurs sont en mesure de définir pour chaque utilisateur s'il a le droit de consulter certaines pages ou pas.
                         <br/><br/>
                         Visiblement, vous n'êtes pas habilité à accéder à cette page.
                         <br/><br/>

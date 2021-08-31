@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); ?>
+<?php include('header.php'); require_once('config/version.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 502;
 require_once('logCheck.php');
 require_once 'config/version.php';
 ?>
-<body class="hold-transition skin-blue sidebar-mini fixed">
+<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -43,6 +43,43 @@ require_once 'config/version.php';
                                     <ul class="timeline">
                                         <li class="time-label">
                                               <span class="bg-purple">
+                                                Version 2.0
+                                              </span>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-green"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">1 octobre 2017</span>
+                                                <h3 class="timeline-header">Livraison en production de la version 2.0</h3>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-orange"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">29 septembre 2017</span>
+                                                <h3 class="timeline-header">Livraison en recette de la version 2.0</h3>
+                                                <div class="timeline-body">
+                                                    Nouveautés par rapport à la version précédente:
+                                                    <ul>
+                                                        <li>Module de gestion des commandes</li>
+                                                        <li>Module de gestion des centres de cout</li>
+                                                        <li>Formulaire de contact du developpeur</li>
+                                                        <li>Possibilité de renommer l'application</li>
+                                                        <li>Possibilité de spécifier l'adresse mail expéditrice des notifications</li>
+                                                        <li>Possibilité de changer la couleur générale du site</li>
+                                                    </ul>
+                                                    Corrections apportées:
+                                                    <ul>
+                                                        <li>Optimisation des traitements sur tous les formulaires</li>
+                                                        <li>Mise à jour de la documentation</li>
+                                                        <li>Simplification de la syntaxe du fichier bdd.php qui contient la configuration de la base de données (plus simple pour l'installation et mises à jour par l'administrateur)</li>
+                                                        <li>Les rubriques générales du menu vertical de droite disparaissent lorsque l'utilisateur n'a aucun droit dedans (disparaissent plutôt que d'être vides).</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="time-label">
+                                              <span class="bg-purple">
                                                 Version 1.6
                                               </span>
                                         </li>
@@ -54,7 +91,7 @@ require_once 'config/version.php';
                                             </div>
                                         </li>
                                         <li>
-                                            <i class="fa bg-green"></i>
+                                            <i class="fa bg-orange"></i>
                                             <div class="timeline-item">
                                                 <span class="time">27 Septembre 2017</span>
                                                 <h3 class="timeline-header">Livraison en recette de la version 1.6</h3>
@@ -84,7 +121,7 @@ require_once 'config/version.php';
                                             </div>
                                         </li>
                                         <li>
-                                            <i class="fa bg-green"></i>
+                                            <i class="fa bg-orange"></i>
                                             <div class="timeline-item">
                                                 <span class="time">1 juillet 2017</span>
                                                 <h3 class="timeline-header">Livraison en recette de la version 1.5</h3>
@@ -105,7 +142,7 @@ require_once 'config/version.php';
                                               </span>
                                         </li>
                                         <li>
-                                            <i class="fa bg-green"></i>
+                                            <i class="fa bg-orange"></i>
                                             <div class="timeline-item">
                                                 <span class="time">09 Juin 2017</span>
                                                 <h3 class="timeline-header">Livraison en recette de la version 1.4</h3>
@@ -130,7 +167,7 @@ require_once 'config/version.php';
                                               </span>
                                         </li>
                                         <li>
-                                            <i class="fa bg-green"></i>
+                                            <i class="fa bg-orange"></i>
                                             <div class="timeline-item">
                                                 <span class="time">06 Juin 2017</span>
                                                 <h3 class="timeline-header">Livraison en recette de la version 1.3</h3>
@@ -149,7 +186,7 @@ require_once 'config/version.php';
                                               </span>
                                         </li>
                                         <li>
-                                            <i class="fa bg-green"></i>
+                                            <i class="fa bg-orange"></i>
                                             <div class="timeline-item">
                                                 <span class="time">02 Juin 2017</span>
                                                 <h3 class="timeline-header">Livraison en recette de la version 1.2</h3>
@@ -172,7 +209,7 @@ require_once 'config/version.php';
                                               </span>
                                         </li>
                                         <li>
-                                            <i class="fa bg-green"></i>
+                                            <i class="fa bg-orange"></i>
                                             <div class="timeline-item">
                                                 <span class="time">01 Juin 2017</span>
                                                 <h3 class="timeline-header">Livraison en recette de la version 1.1</h3>
@@ -206,7 +243,7 @@ require_once 'config/version.php';
                                               </span>
                                         </li>
                                         <li>
-                                            <i class="fa bg-green"></i>
+                                            <i class="fa bg-orange"></i>
                                             <div class="timeline-item">
                                                 <span class="time">29 Mai 2017</span>
                                                 <h3 class="timeline-header">Livraison en recette de la version 1.0</h3>
@@ -238,7 +275,7 @@ require_once 'config/version.php';
                                               </span>
                                         </li>
                                         <li>
-                                            <i class="fa bg-green"></i>
+                                            <i class="fa bg-orange"></i>
 
                                             <div class="timeline-item">
                                                 <span class="time">1er Mai 2017</span>
@@ -275,9 +312,10 @@ require_once 'config/version.php';
                         <div class="box-body">
                             <ul>
                                 <li>Possiblité de réinitialiser un mot de passe oublié par mail</li>
-                                <li>Sur la page matériel, au-dessus du tableau récap, mettre un calendrier en vue mensuelle avec un point rouge sur toutes les dates de péremption des éléments</li>
+                                <li>Mettre un calendrier en vue mensuelle avec un point rouge sur toutes les dates de péremption des éléments et un point bleu sur toutes les dates d'inventaires de lots</li>
                                 <li>Nouvelle fonctionnalité: gestion de la reserve de matériel. Pour le moment c'est faisable en assimilant la réserve à un lot. Idée: avoir un système spécifique à la réserve</li>
-                                <li>Nouvelle fonctionnalité: demandes d'achat de consommables. Possibilité de créer la demande, affecter la gestion de l'achat à un user, marquer la demande comme étant commandée, réceptionnée, ...</li>
+                                <li>Adaptation de l'interface aux affichages mobiles (téléphones, tablettes, ...)</li>
+                                <li>Adaptation de le design des mails de notification</li>
                             </ul>
                         </div>
                     </div>
@@ -294,9 +332,13 @@ require_once 'config/version.php';
 
                         <!-- /.box-header -->
                         <div class="box-body">
-                            Soluton Apollon: <strong>Copyright &copy; Vincent Guajioty.</strong> All rights reserved. - Version <?php echo $VERSION; ?>
-                            <br/>
-                            Thème HTML: <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved. - Version 2.3.8
+                            <strong>Solution Apollon:</strong> Copyright &copy; 2017 Vincent Guajioty. All rights reserved. - Version <?php echo $VERSION; ?>
+                            <br/><br/>
+                            <strong>Thème HTML:</strong> Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>. All rights reserved. - Version 2.3.8
+                            <br/><br/>
+                            <strong>Adresse mail de l'administrateur de cette instance d'Apollon:</strong> <?php echo $MAILSERVER; ?>
+                            <br/><br/>
+                            <a href="contact.php">Formulaire de contact du developpeur<a/>
                         </div>
                     </div>
                 </div>

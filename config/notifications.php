@@ -1,6 +1,7 @@
 <?php
 
 require_once 'bdd.php';
+require_once 'version.php';
 
 //======================================================== RECOPIE DE LA FONCTION ========================================================
 function checkLotsConf($idLot)
@@ -98,17 +99,17 @@ if ($nbDest > 0)
 
     if ($nbAlertes == 0)
     {
-        $sujet = "APOLLON - Bilan journalier - Aucune alerte";
+        $sujet = $APPNAME . " - Bilan journalier - Aucune alerte";
     }
     else
     {
         if ($nbAlertes == 1)
         {
-            $sujet = "APOLLON - Bilan journalier - 1 alerte en cours sur votre parc materiel";
+            $sujet = $APPNAME . " - Bilan journalier - 1 alerte en cours sur votre parc materiel";
         }
         else
         {
-            $sujet = "APOLLON - Bilan journalier - " . $nbAlertes  . " alertes en cours sur votre parc materiel";
+            $sujet = $APPNAME . " - Bilan journalier - " . $nbAlertes  . " alertes en cours sur votre parc materiel";
         }
     }
 
@@ -166,8 +167,8 @@ if ($nbDest > 0)
     //==========
 
     //=====Création du header de l'e-mail.
-    $header = "From: \"APOLLON\"<contact@guajioty.fr>".$passage_ligne;
-    $header.= "Reply-to: contact@guajioty.fr".$passage_ligne;
+    $header = "From: \"" . $APPNAME . "\"<" . $MAILSERVER . ">".$passage_ligne;
+    $header.= "Reply-to: ".$MAILSERVER.$passage_ligne;
     $header.= "MIME-Version: 1.0".$passage_ligne;
     if ($nbAlertes > 0)
     {

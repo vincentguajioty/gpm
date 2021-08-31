@@ -21,6 +21,11 @@ else
     $query->execute(array(
         'idLieu' => $_GET['id']
     ));
+    
+    $query = $db->prepare('UPDATE COMMANDES SET idLieuLivraison = Null WHERE idLieuLivraison = :idLieuLivraison;');
+    $query->execute(array(
+        'idLieuLivraison' => $_GET['id']
+    ));
 
     $query = $db->prepare('DELETE FROM LIEUX WHERE idLieu = :idLieu;');
     $query->execute(array(

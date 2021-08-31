@@ -11,32 +11,16 @@ if ($_SESSION['sac_ajout']==0)
 }
 else
 {
-
-    if ($_POST['libelleLot'] == Null)
-    {
-        $idLot = Null;
-    }
-    else
-    {
-        $idLot = $_POST['libelleLot'];
-    }
-
-    if ($_POST['nomFournisseur'] == Null)
-    {
-        $idFournisseur = Null;
-    }
-    else
-    {
-        $idFournisseur = $_POST['nomFournisseur'];
-    }
+    $_POST['libelleLot'] = ($_POST['libelleLot'] == Null) ? Null : $_POST['libelleLot'];
+	$_POST['nomFournisseur'] = ($_POST['nomFournisseur'] == Null) ? Null : $_POST['nomFournisseur'];
 
     $query = $db->prepare('INSERT INTO MATERIEL_SAC(libelleSac, idLot, taille, couleur, idFournisseur) VALUES(:libelleSac, :idLot, :taille, :couleur, :idFournisseur);');
     $query->execute(array(
         'libelleSac' => $_POST['libelleSac'],
-        'idLot' => $idLot,
+        'idLot' => $_POST['libelleLot'],
         'taille' => $_POST['taille'],
         'couleur' => $_POST['couleur'],
-        'idFournisseur' => $idFournisseur
+        'idFournisseur' => $_POST['nomFournisseur']
     ));
 
     switch($query->errorCode())

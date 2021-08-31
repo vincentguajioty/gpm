@@ -5,8 +5,8 @@ session_start();
 $_SESSION['page'] = 503;
 require_once('logCheck.php');
 ?>
-<?php include('header.php'); ?>
-<body class="hold-transition skin-blue sidebar-mini fixed">
+<?php include('header.php'); require_once('config/version.php'); ?>
+<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -65,6 +65,8 @@ require_once('logCheck.php');
                             <dd>Un référentiel, c'est une liste de matériel que doit contenir tout lot qui lui est rattaché. Il ne s'agit pas forcément d'un référentiel nationnal conforme à ceux dictés dans le Référentiel Nationnal des Dispositif de Premiers Secours. Vous êtes libres de concocter vos propres référentiels. Il est toute fois conseiller de se baser sur le RNDPS. Les lots se verront ensuite rattaché aux référentiels et Apollon vérifiera si vos lots sont conformes à leurs référentiels.</dd>
                             <br/>
                             <dd>Un lot, c'est un ensemble de sacs. Un sac c'est un ensemble d'emplacements. Et un emplacement contient un ensemble de matériels. Donc pour créer un lot, il faut commencer par déclarer le lot dans l'onglet <i>Lots</i>, puis créer les sacs qui composent ce lot en les affectant au lot créé (opération à faire dans l'onglet <i>Sacs</i>), puis créer les emplacement dans les sacs (onglet <i>Emplacements</i>). Une fois que cette structure est crée, vous n'avez plus qu'à ajouter du matériel dans les emplacements via l'onglet <i>Matériel</i>. Afin d'avoir une vue globale du matériel et de sa disponisition dans un lot, allez dans l'onglet <i>Lots</i> et cliquez sur le dossier bleu afin d'ouvrir la fiche détaillée du lot sur laquelle apparaitra la structure du lot (sacs, emplacements, matériels).</dd>
+                            <br/>
+                            <dd>Le module sur les commandes permet de suivi des commandes de consommable. Apollon ne passe pas les commandes tout seul auprès des fournisseurs. La vocation de ce module est de centraliser les informations quant aux commandes passées et d'instaurer un processus de commande efficace. Le processus est détaillé plus bas sur cette page.</dd>
                         </dl>
                     </div>
                     <!-- /.box-body -->
@@ -101,7 +103,7 @@ require_once('logCheck.php');
                                     <dd>Le matériel sera supprimé.<br/>Aucun impact sur les inventaires passés.<br/>Le matériel ne fera plus partie de la liste du matériel lors des prochains inventaires.</dd>
 
                                     <dt>Suppression d'un élément dans le catalogue:</dt>
-                                    <dd>Tous les items matériels liés à cet élément du catalogue seront supprimés.<br/>Toutes les apparissions de ce matériel dans les inventaires seront supprimées.<br/>Toutes les apparissions de ce matériel dans les référentiels seront supprimées.</dd>
+                                    <dd>Tous les items matériels liés à cet élément du catalogue seront supprimés.<br/>Toutes les apparissions de ce matériel dans les inventaires seront supprimées.<br/>Toutes les apparissions de ce matériel dans les référentiels seront supprimées.<br/>Toutes les apparissions de ce matériel dans les commandes seront supprimées impactant ainsi le contenu et le montant des commandes.</dd>
 
                                     <dt>Suppression d'un référentiel:</dt>
                                     <dd>Les lots rattachés au référentiel supprimé ne seront plus rattachés à aucun référentiel et sortiront donc de la boucle de vérification de conformité.</dd>
@@ -113,13 +115,13 @@ require_once('logCheck.php');
                                     <dd>Tous les lots liés à l'état supprimés se veront sans état.</dd>
 
                                     <dt>Suppression d'un lieu de stockage:</dt>
-                                    <dd>Tous les lots liés au lieu de stockage supprimé se veront sans lieu de stockage.</dd>
+                                    <dd>Tous les lots liés au lieu de stockage supprimé se veront sans lieu de stockage.<br/>Toutes les commandes utilisant ce lieu comme lieu de livraison n'auront plus de lieu de livraison.</dd>
 
                                     <dt>Suppression d'un fournisseur:</dt>
-                                    <dd>Tous les sacs et éléments de matériel qui étaient liés au fournisseur supprimé se veront sans fournisseur.</dd>
+                                    <dd>Tous les sacs et éléments de matériel qui étaient liés au fournisseur supprimé se veront sans fournisseur.<br/>Toutes les commandes utilisant ce fournisseur n'auront plus de fournisseur.</dd>
 
                                     <dt>Suppression d'un utilisateur:</dt>
-                                    <dd>Tous les lots dont l'utilisateur était responsable vont se retrouver sans responsables.<br/>Tous les messages généraux postés par l'utilisateur n'auront plus de rédacteur.<br/>Tous les messages échangés avec l'utilisateur dans le chat seront supprimés.</dd>
+                                    <dd>Tous les lots dont l'utilisateur était responsable vont se retrouver sans responsables.<br/>Tous les messages généraux postés par l'utilisateur n'auront plus de rédacteur.<br/>Tous les messages échangés avec l'utilisateur dans le chat seront supprimés.<br/>Toutes les apparition de l'utilisateur dans les commandes seront supprimées (donc plus de demandeur, plus de valideur, ...).<br/>Tous les centres de coûts gérés par cet utilisateurs n'auront plus de personne référente.</dd>
 
                                     <dt>Suppression d'un profil:</dt>
                                     <dd>Les utilisateurs liés au profil se trouveront sans profil et ne pourrons plus se connecter.</dd>
@@ -308,6 +310,52 @@ require_once('logCheck.php');
                 <!-- /.box -->
             </div>
 
+            <!-- ============================================================= -->
+
+            <div class="col-md-12">
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Commandes de consommables</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <dl>                            
+                            <dd>Le module de commade permet la gestion des commandes de consommables. Ne peuvent être insérés dans les commandes que les éléments déjà presents dans le catalogue. Une commande est obligatoirement reliée à un et un seul fournisseur. L'affichage d'une commande évolue au fil de son cycle de vie. Par exemple, tant qu'aucune demande de validation n'est faite, l'onglet Validation n'est pas visible.</dd>
+                            <br/>
+                            <dt>Les onglets</dt>
+                            <dd>Ls onglets "Toutes les commandes" et "Abandonnées" ne prennent pas en compte l'identité de l'utilisateur connecté sur Apollon. Ils permettent d'accéder à toutes les commandes. En revanche, les onglets "Je dois valider" , "Je dois traiter" , "Je dois suivre" n'affichent ques les commandes qui concernent l'utilisateur actuel.</dd>
+                            <br/>
+                            <dt>Processus de commande</dt>
+                            <dd><ul>
+	                            <li>La commande est crée par un demandeur. Elle est alors à l'état "Nouveau". C'est l'état qui permet de travailler sur la commande, y ajouter des produits, en retirer, changer les informations tels que le fournisseur, les intervenants...
+	                            <li>Une fois la commande prête, cliquer sur "Soumettre à validation". Ceci verouille la commande, plus rien ne peut être modifié. La personne désignée comme "Valideur" a la main sur l'onglet validation et peut alors accepte ou refuser la commande. Si la commnde est refusée, elle est renvoyée à l'état "Nouveau" et est donc déverouillée pour être retravaillée. Si la commande est acceptée, elle reste vérouillée et passe au stade "Validation OK".
+	                            <li>La personne en charge de la commande peut donc passer la commande après du fournisseur. L'onglet "Passage de la commande" apparait et permet de renseigner des informations relatives à la commande chez le fournisseur. Une fois la commande passée, cliquer sur "Commande passée > En attente de livraison".
+	                            <li>Dès que la commande est réceptionnée, renseigner l'onglet "Livraison" qui est apparu. La validation de cet onglet se fait soit par "Commande reçue > OK" ce qui valide la réception de la commande, soit par "Commande reçue > SAV" ce qui engage une procédure de SAV. Durant toute la procédure de SAV, la case "Note" prmet d'ajouter des notes au dossier et de faire ainsi le suivi du SAV. Une fois le SAV terminé, le bouton "SAV terminé > Commande OK" permet de ramener la commande dans le même état que si sa réception s'était bien déroulée dès le début.
+	                            <li>Une fois la commande en état "Livraison OK", il ne reste plus qu'à clôturer la commande. L'état "Livraison OK" permet de garder la commande accessible le temps de ranger le matériel reçu ou de l'affecter à un lot par exemple. Une fois la commande clôturée, elle apparaitera toujours dans l'onglet "Toutes les commandes" mais ne figurera plus dans les trois onglets personnels.
+                            </ul></dd>
+                            <br/><br/>
+                            <dt>Rôles des intervenants</dt>
+                            <dd>Quatre personnes interviennent le long d'une commande:
+                                <ul>
+                                    <li>Le demandeur: il initie la commande. Il est en charge de la formulée complètement et d'y ajouter les éléments à commander (onglet Contenu)
+                                    <li>Le réalisateur: la commande lui est affecté. Il fait le suivi de la commande et est en charge de la passer au moment voulu auprès du fournisseur et de traiter sa réception.
+                                    <li>Le valideur: il est responsable des commandes passées ou refusées. Il a le pouvoir de refuser une commande, tout comme il a le pouvoir de la valider. Il prend la responsabilité financière et organisationnelle de la commande. Son aval est obligatoire dans le process de commande.
+                                    <li>L'observateur: il est spectateur de la commande. Il n'a aucune action à mener.
+                                </ul>
+                                Une même personne peut assumer plusieurs rôles dans une commande. Ceci dépend de l'organisation voulue.
+                                <br/>
+                                Pour qu'un utilisateur d'Apollon aparaisse dans les commandes (en tant que demandeur, réalisateur, valideur, observateur), il faut que son profil le lui permette.
+                                <br/>
+                                En fonction de l'état d'avancement de la commande et des droits de l'utilisateur connecté, les formulaires et les boutons permettant de faire avancer les commandes sont accessibles ou bloqués.
+                                <br/>
+                                Tous les prix dans le module de commande doivent être renseignés en € TTC.
+                            </dd>
+                        </dl>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
 
 
             <div class="row"></div>

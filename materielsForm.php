@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); ?>
+<?php include('header.php'); require_once('config/version.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 104;
 require_once('logCheck.php');
 ?>
-<body class="hold-transition skin-blue sidebar-mini fixed">
+<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
 
 
 

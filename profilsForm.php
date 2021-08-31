@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); ?>
+<?php include('header.php'); require_once('config/version.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 402;
 require_once('logCheck.php');
 ?>
-<body class="hold-transition skin-blue sidebar-mini fixed">
+<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
+    <?php require_once 'config/version.php'; ?>
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -52,52 +53,50 @@ require_once('logCheck.php');
                                           name="descriptifProfil"></textarea>
                             </div>
                             <div class="form-group">
+                                <label>Connexion à <?php echo $APPNAME;?>:</label>
+                                </br>
+                                <div class="checkbox">
+	                                <label>
+	                                    <input type="checkbox" value="1" name="connexion_connexion"> Autorisé à se connecter à <?php echo $APPNAME;?>
+	                                </label>
+	                            </div>
+                                </br>
+                            </div>
+                            <div class="form-group">
                                 <label>Notifications:</label>
                                 </br>
                                 <div class="notifications">
-                                    <label>
-                                        <input type="radio" name="notifications" id="optionsRadios1" value="0" checked>
-                                        Notifications mail désactivées
-                                    </label>
+                                    <input type="radio" name="notifications" id="optionsRadios1" value="0" checked> Notifications mail désactivées
                                 </div>
                                 <div class="notifications">
-                                    <label>
-                                        <input type="radio" name="notifications" id="optionsRadios2" value="1">
-                                        Notifications mail uniquement sur alerte
-                                    </label>
+                                    <input type="radio" name="notifications" id="optionsRadios2" value="1"> Notifications mail uniquement sur alerte
                                 </div>
                                 <div class="notifications">
-                                    <label>
-                                        <input type="radio" name="notifications" id="optionsRadios3" value="2">
-                                        Notifications mail journalières
-                                    </label>
+                                    <input type="radio" name="notifications" id="optionsRadios3" value="2"> Notifications mail journalières
                                 </div>
+                                </br>
+                            </div>
+                            <div class="form-group">
+                                <label>Réinitialisation des mots de passe:</label>
+                                </br>
+                                <div class="checkbox">
+	                                <label>
+	                                    <input type="checkbox" value="1" name="annuaire_mdp"> Réinitialiser les mots de passe des autres utilisateurs
+	                                </label>
+	                            </div>
                                 </br>
                             </div>
                             <table class="table table-bordered">
                                 <tr>
-                                    <th>Domaine d'action</th>
+                                    <th>Modules</th>
                                     <th>Lecture</th>
                                     <th>Ajout</th>
                                     <th>Modification</th>
                                     <th>Suppression</th>
-                                    <th>Connexion</th>
-                                    <th>Réinitialisation</th>
-                                </tr>
-                                <tr>
-                                    <td>Connexion</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><input type="checkbox" value="1" name="connexion_connexion"></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Logs</td>
                                     <td><input type="checkbox" value="1" name="logs_lecture"></td>
-                                    <td></td>
-                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -108,8 +107,6 @@ require_once('logCheck.php');
                                     <td></td>
                                     <td></td>
                                     <td><input type="checkbox" value="1" name="verrouIP"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Annuaire</td>
@@ -117,8 +114,6 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="annuaire_ajout"></td>
                                     <td><input type="checkbox" value="1" name="annuaire_modification"></td>
                                     <td><input type="checkbox" value="1" name="annuaire_suppression"></td>
-                                    <td></td>
-                                    <td><input type="checkbox" value="1" name="annuaire_mdp"></td>
                                 </tr>
                                 <tr>
                                     <td>Profils</td>
@@ -126,8 +121,6 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="profils_ajout"></td>
                                     <td><input type="checkbox" value="1" name="profils_modification"></td>
                                     <td><input type="checkbox" value="1" name="profils_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Catégories</td>
@@ -135,8 +128,6 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="categories_ajout"></td>
                                     <td><input type="checkbox" value="1" name="categories_modification"></td>
                                     <td><input type="checkbox" value="1" name="categories_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Fournisseurs</td>
@@ -144,8 +135,6 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="fournisseurs_ajout"></td>
                                     <td><input type="checkbox" value="1" name="fournisseurs_modification"></td>
                                     <td><input type="checkbox" value="1" name="fournisseurs_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Référentiels</td>
@@ -153,8 +142,6 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="typesLots_ajout"></td>
                                     <td><input type="checkbox" value="1" name="typesLots_modification"></td>
                                     <td><input type="checkbox" value="1" name="typesLots_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Etats</td>
@@ -162,8 +149,6 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="etats_ajout"></td>
                                     <td><input type="checkbox" value="1" name="etats_modification"></td>
                                     <td><input type="checkbox" value="1" name="etats_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Lieux</td>
@@ -171,8 +156,6 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="lieux_ajout"></td>
                                     <td><input type="checkbox" value="1" name="lieux_modification"></td>
                                     <td><input type="checkbox" value="1" name="lieux_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Lots</td>
@@ -180,8 +163,6 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="lots_ajout"></td>
                                     <td><input type="checkbox" value="1" name="lots_modification"></td>
                                     <td><input type="checkbox" value="1" name="lots_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Sacs</td>
@@ -189,8 +170,6 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="sac_ajout"></td>
                                     <td><input type="checkbox" value="1" name="sac_modification"></td>
                                     <td><input type="checkbox" value="1" name="sac_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Emplacements</td>
@@ -198,8 +177,6 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="sac2_ajout"></td>
                                     <td><input type="checkbox" value="1" name="sac2_modification"></td>
                                     <td><input type="checkbox" value="1" name="sac2_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Catalogue</td>
@@ -207,8 +184,6 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="catalogue_ajout"></td>
                                     <td><input type="checkbox" value="1" name="catalogue_modification"></td>
                                     <td><input type="checkbox" value="1" name="catalogue_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Matériels/Consommables</td>
@@ -216,8 +191,6 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="materiel_ajout"></td>
                                     <td><input type="checkbox" value="1" name="materiel_modification"></td>
                                     <td><input type="checkbox" value="1" name="materiel_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Messages généraux</td>
@@ -225,8 +198,32 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="messages_ajout"></td>
                                     <td></td>
                                     <td><input type="checkbox" value="1" name="messages_suppression"></td>
+                                </tr>
+                            </table>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Modules</th>
+                                    <th>Lecture</th>
+                                    <th>Ajout/Modification</th>
+                                    <th>Valider</th>
+                                    <th>Etre en charge</th>
+                                    <th>Abandonner/Supprimer</th>
+                                </tr>
+                                <tr>
+                                    <td>Commandes</td>
+                                    <td><input type="checkbox" value="1" name="commande_lecture"></td>
+                                    <td><input type="checkbox" value="1" name="commande_ajout"></td>
+                                    <td><input type="checkbox" value="1" name="commande_valider"></td>
+                                    <td><input type="checkbox" value="1" name="commande_etreEnCharge"></td>
+                                    <td><input type="checkbox" value="1" name="commande_abandonner"></td>
+                                </tr>
+                                <tr>
+                                    <td>Centres de coûts</td>
+                                    <td><input type="checkbox" value="1" name="cout_lecture"></td>
+                                    <td><input type="checkbox" value="1" name="cout_ajout"></td>
                                     <td></td>
-                                    <td></td>
+                                    <td><input type="checkbox" value="1" name="cout_etreEnCharge"></td>
+                                    <td><input type="checkbox" value="1" name="cout_supprimer"></td>
                                 </tr>
                             </table>
                             <div class="box-footer">
@@ -269,66 +266,67 @@ require_once('logCheck.php');
                                           name="descriptifProfil"><?=$data['descriptifProfil']?></textarea>
                             </div>
                             <div class="form-group">
+                                <label>Connexion à <?php echo $APPNAME;?>:</label>
+                                </br>
+                                <div class="checkbox">
+	                                <label>
+	                                    <input type="checkbox" value="1" name="connexion_connexion" <?php if ($data['connexion_connexion']==1) {echo 'checked';} ?>> Autorisé à se connecter à <?php echo $APPNAME;?>
+	                                </label>
+	                            </div>
+                                </br>
+                            </div>
+                            <div class="form-group">
                                 <label>Notifications:</label>
                                 </br>
                                 <div class="notifications">
-                                    <label>
-                                        <input type="radio" name="notifications" id="optionsRadios1" value="0" <?php
-                                        if ($data['notifications']==0)
-                                        {
-                                            echo "checked";
-                                        }
-                                        ?>>
-                                        Notifications mail désactivées
-                                    </label>
+                                    <input type="radio" name="notifications" id="optionsRadios1" value="0" <?php
+                                    if ($data['notifications']==0)
+                                    {
+                                        echo "checked";
+                                    }
+                                    ?>>
+                                    Notifications mail désactivées
                                 </div>
                                 <div class="notifications">
-                                    <label>
-                                        <input type="radio" name="notifications" id="optionsRadios2" value="1" <?php
-                                        if ($data['notifications']==1)
-                                        {
-                                            echo "checked";
-                                        }
-                                        ?>>
-                                        Notifications mail uniquement sur alerte
-                                    </label>
+                                    <input type="radio" name="notifications" id="optionsRadios2" value="1" <?php
+                                    if ($data['notifications']==1)
+                                    {
+                                        echo "checked";
+                                    }
+                                    ?>>
+                                    Notifications mail uniquement sur alerte
                                 </div>
                                 <div class="notifications">
-                                    <label>
-                                        <input type="radio" name="notifications" id="optionsRadios3" value="2" <?php
-                                        if ($data['notifications']==2)
-                                        {
-                                            echo "checked";
-                                        }
-                                        ?>>
-                                        Notifications mail journalières
-                                    </label>
+                                    <input type="radio" name="notifications" id="optionsRadios3" value="2" <?php
+                                    if ($data['notifications']==2)
+                                    {
+                                        echo "checked";
+                                    }
+                                    ?>>
+                                    Notifications mail journalières
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Réinitialisation des mots de passe:</label>
+                                </br>
+                                <div class="checkbox">
+	                                <label>
+	                                    <input type="checkbox" value="1" name="annuaire_mdp" <?php if ($data['annuaire_mdp']==1) {echo 'checked';} ?>> Réinitialiser les mots de passe des autres utilisateurs
+	                                </label>
+	                            </div>
+                                </br>
                             </div>
                             <table class="table table-bordered">
                                 <tr>
-                                    <th>Domaine d'action</th>
+                                    <th>Modules</th>
                                     <th>Lecture</th>
                                     <th>Ajout</th>
                                     <th>Modification</th>
                                     <th>Suppression</th>
-                                    <th>Connexion</th>
-                                    <th>Réinitialisation</th>
-                                </tr>
-                                <tr>
-                                    <td>Connexion</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><input <?php if($data['connexion_connexion'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="connexion_connexion"></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Logs</td>
                                     <td><input <?php if($data['logs_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="logs_lecture"></td>
-                                    <td></td>
-                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -339,8 +337,6 @@ require_once('logCheck.php');
                                     <td></td>
                                     <td></td>
                                     <td><input <?php if($data['verrouIP'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="verrouIP"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Annuaire</td>
@@ -348,8 +344,6 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['annuaire_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="annuaire_ajout"></td>
                                     <td><input <?php if($data['annuaire_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="annuaire_modification"></td>
                                     <td><input <?php if($data['annuaire_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="annuaire_suppression"></td>
-                                    <td></td>
-                                    <td><input <?php if($data['annuaire_mdp'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="annuaire_mdp"></td>
                                 </tr>
                                 <tr>
                                     <td>Profils</td>
@@ -357,8 +351,6 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['profils_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="profils_ajout"></td>
                                     <td><input <?php if($data['profils_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="profils_modification"></td>
                                     <td><input <?php if($data['profils_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="profils_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Catégories</td>
@@ -366,8 +358,6 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['categories_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="categories_ajout"></td>
                                     <td><input <?php if($data['categories_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="categories_modification"></td>
                                     <td><input <?php if($data['categories_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="categories_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Fournisseurs</td>
@@ -375,8 +365,6 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['fournisseurs_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="fournisseurs_ajout"></td>
                                     <td><input <?php if($data['fournisseurs_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="fournisseurs_modification"></td>
                                     <td><input <?php if($data['fournisseurs_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="fournisseurs_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Référentiels</td>
@@ -384,8 +372,6 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['typesLots_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesLots_ajout"></td>
                                     <td><input <?php if($data['typesLots_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesLots_modification"></td>
                                     <td><input <?php if($data['typesLots_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesLots_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Etats</td>
@@ -393,8 +379,6 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['etats_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="etats_ajout"></td>
                                     <td><input <?php if($data['etats_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="etats_modification"></td>
                                     <td><input <?php if($data['etats_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="etats_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Lieux</td>
@@ -402,8 +386,6 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['lieux_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="lieux_ajout"></td>
                                     <td><input <?php if($data['lieux_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="lieux_modification"></td>
                                     <td><input <?php if($data['lieux_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="lieux_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Lots</td>
@@ -411,8 +393,6 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['lots_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="lots_ajout"></td>
                                     <td><input <?php if($data['lots_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="lots_modification"></td>
                                     <td><input <?php if($data['lots_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="lots_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Sacs</td>
@@ -420,8 +400,6 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['sac_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="sac_ajout"></td>
                                     <td><input <?php if($data['sac_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="sac_modification"></td>
                                     <td><input <?php if($data['sac_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="sac_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Emplacements</td>
@@ -429,8 +407,6 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['sac2_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="sac2_ajout"></td>
                                     <td><input <?php if($data['sac2_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="sac2_modification"></td>
                                     <td><input <?php if($data['sac2_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="sac2_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Catalogue</td>
@@ -438,8 +414,6 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['catalogue_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="catalogue_ajout"></td>
                                     <td><input <?php if($data['catalogue_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="catalogue_modification"></td>
                                     <td><input <?php if($data['catalogue_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="catalogue_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Matériels/Consommables</td>
@@ -447,8 +421,6 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['materiel_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="materiel_ajout"></td>
                                     <td><input <?php if($data['materiel_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="materiel_modification"></td>
                                     <td><input <?php if($data['materiel_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="materiel_suppression"></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Messages généraux</td>
@@ -456,8 +428,32 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['messages_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="messages_ajout"></td>
                                     <td></td>
                                     <td><input <?php if($data['messages_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="messages_suppression"></td>
+                                </tr>
+                            </table>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th></th>
+                                    <th>Lecture</th>
+                                    <th>Ajout/Modification</th>
+                                    <th>Valider</th>
+                                    <th>Etre en charge</th>
+                                    <th>Abandonner/Supprimer</th>
+                                </tr>
+                                <tr>
+                                    <td>Commandes</td>
+                                    <td><input <?php if($data['commande_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_lecture"></td>
+                                    <td><input <?php if($data['commande_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_ajout"></td>
+                                    <td><input <?php if($data['commande_valider'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_valider"></td>
+                                    <td><input <?php if($data['commande_etreEnCharge'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_etreEnCharge"></td>
+                                    <td><input <?php if($data['commande_abandonner'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_abandonner"></td>
+                                </tr>
+                                <tr>
+                                    <td>Centres de coûts</td>
+                                    <td><input <?php if($data['cout_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_lecture"></td>
+                                    <td><input <?php if($data['cout_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_ajout"></td>
                                     <td></td>
-                                    <td></td>
+                                    <td><input <?php if($data['cout_etreEnCharge'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_etreEnCharge"></td>
+                                    <td><input <?php if($data['cout_supprimer'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_supprimer"></td>
                                 </tr>
                             </table>
 

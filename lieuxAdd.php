@@ -10,22 +10,15 @@ if ($_SESSION['lieux_ajout']==0)
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 }
 else
-{
-    if ($_POST['accesReserve']=='option1')
-    {
-        $acces = '0';
-    }
-    else
-    {
-        $acces = '1';
-    }
+{    
+    $_POST['accesReserve'] = ($_POST['accesReserve'] == 'option1') ? 0 : 1;
 
     $query = $db->prepare('INSERT INTO LIEUX(libelleLieu, adresseLieu, detailsLieu, accesReserve) VALUES(:libelleLieu, :adresseLieu, :detailsLieu, :accesReserve);');
     $query->execute(array(
         'libelleLieu' => $_POST['libelleLieu'],
         'adresseLieu' => $_POST['adresseLieu'],
         'detailsLieu' => $_POST['detailsLieu'],
-        'accesReserve' => $acces
+        'accesReserve' => $_POST['accesReserve']
     ));
 
     switch($query->errorCode())

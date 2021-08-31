@@ -4,12 +4,14 @@
 session_start();
 $_SESSION['page'] = 000;
 require_once('logCheck.php');
+
 ?>
-<?php include('header.php'); ?>
-<body class="hold-transition skin-blue sidebar-mini fixed">
+<?php include('header.php'); require_once('config/version.php'); ?>
+<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
+    <?php require_once('config/version.php'); ?>
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -66,7 +68,7 @@ require_once('logCheck.php');
                                    name="fonction">
                         </div>
                         <div class="form-group">
-                            <label>Mon profil Apollon:</label>
+                            <label>Mon profil <?php echo $APPNAME;?>:</label>
                             <input type="text" class="form-control" value="<?=$_SESSION['libelleProfil']?>"
                                    name="libelleProfil" disabled>
                         </div>

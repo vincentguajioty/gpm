@@ -11,19 +11,12 @@ if ($_SESSION['annuaire_modification']==0)
 }
 else {
 
-    if ($_POST['libelleProfil'] == Null)
-    {
-        $idProfil = Null;
-    }
-    else
-    {
-        $idProfil = $_POST['libelleProfil'];
-    }
+    $_POST['libelleProfil'] = ($_POST['libelleProfil'] == Null) ? Null : $_POST['libelleProfil'];
 
     $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET idProfil = :idProfil, identifiant = :identifiant, nomPersonne = :nomPersonne, prenomPersonne = :prenomPersonne, mailPersonne = :mailPersonne, telPersonne = :telPersonne, fonction = :fonction WHERE idPersonne = :idPersonne ;');
     $query->execute(array(
         'idPersonne' => $_GET['id'],
-        'idProfil' => $idProfil,
+        'idProfil' => $_POST['libelleProfil'],
         'identifiant' => $_POST['identifiant'],
         'nomPersonne' => $_POST['nomPersonne'],
         'prenomPersonne' => $_POST['prenomPersonne'],

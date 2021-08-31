@@ -5,8 +5,8 @@ session_start();
 $_SESSION['page'] = 000;
 require_once('logCheck.php');
 ?>
-<?php include('header.php'); ?>
-<body class="hold-transition skin-blue sidebar-mini fixed">
+<?php include('header.php'); require_once('config/version.php'); ?>
+<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>

@@ -11,21 +11,13 @@ if ($_SESSION['sac2_ajout']==0)
 }
 else
 {
-
-    if ($_POST['libelleSac'] == Null)
-    {
-        $idSac=  Null;
-    }
-    else
-    {
-        $idSac = $_POST['libelleSac'];
-    }
+    $_POST['libelleSac'] = ($_POST['libelleSac'] == Null) ? Null : $_POST['libelleSac'];
 
 
     $query = $db->prepare('INSERT INTO MATERIEL_EMPLACEMENT(libelleEmplacement, idSac) VALUES(:libelleEmplacement, :idSac);');
     $query->execute(array(
         'libelleEmplacement' => $_POST['libelleEmplacement'],
-        'idSac' => $idSac
+        'idSac' => $_POST['libelleSac']
     ));
 
     switch($query->errorCode())

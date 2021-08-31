@@ -7,7 +7,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <b>APOLLON</b><br/><small>Gestion du parc matériel</small>
+        <b><?php echo $APPNAME;?></b><br/><small>Gestion du parc matériel</small>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
