@@ -37,7 +37,7 @@ require_once 'config/config.php';
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <?php echo file_get_contents("https://www.guajioty.fr/majDist/gpmTimeLine.php?versionClient=".$VERSION); ?>
+                            <?php echo file_get_contents("https://maj.guajioty.fr/gpmTimeLine.php?versionClient=".$VERSION); ?>
                         </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@ require_once 'config/config.php';
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <?php echo file_get_contents("https://www.guajioty.fr/majDist/gpmDevStack.php"); ?>
+                            <?php echo file_get_contents("https://maj.guajioty.fr/gpmDevStack.php"); ?>
                             <a href="contact.php">N'hésitez pas à me faire parvenir vos idées !</a>
                         </div>
                     </div>
@@ -70,7 +70,7 @@ require_once 'config/config.php';
                         <div class="box-body">
                             <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a> Copyright &copy; 2017 Vincent Guajioty. All rights reserved.
                             <br/><br/>
-                            Version <?php echo $VERSION; ?> <a href="http://www.guajioty.fr/majDist/gpm.zip"><b style="color:red;"><?php echo file_get_contents("https://www.guajioty.fr/majDist/gpmMAJ.php?versionClient=".$VERSION); ?></b></a>
+                            Version <?php echo $VERSION; ?> <a href="http://maj.guajioty.fr/gpm.zip"><b style="color:red;"><?php echo file_get_contents("https://maj.guajioty.fr/gpmMAJ.php?versionClient=".$VERSION); ?></b></a>
                             <br/><br/>
                             Adresse mail de l'administrateur de cette instance de GPM: <?php echo $MAILSERVER; ?>
                             <br/><br/>

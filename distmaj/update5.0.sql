@@ -127,3 +127,5 @@ ALTER TABLE PERSONNE_REFERENTE ADD conf_indicateur7Accueil INT;
 ALTER TABLE PERSONNE_REFERENTE ADD conf_indicateur8Accueil INT;
 
 UPDATE PERSONNE_REFERENTE SET conf_indicateur7Accueil = 1, conf_indicateur8Accueil = 1;
+
+INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt) VALUES(CURRENT_TIMESTAMP, 'local', 'sysAdmin', 2, 'Mise à jour vers la version 5.0.');

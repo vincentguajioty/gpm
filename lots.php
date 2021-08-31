@@ -48,8 +48,8 @@ if ($_SESSION['lots_lecture']==0)
                                 <th class="not-mobile">Référentiel <a href="lotsCheckConfTotalManu.php" class="btn btn-xs spinnerAttenteClick"><i class="fa fa-refresh"></i></a></th>
                                 <th class="not-mobile">Etat</th>
                                 <th class="not-mobile">Référent</th>
+                                <th class="not-mobile">Quantité Matériel</th>
                                 <th class="not-mobile">Prochain Inventaire</th>
-                                <th class="not-mobile">Notifications</th>
                                 <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
@@ -82,8 +82,81 @@ if ($_SESSION['lots_lecture']==0)
                                     }
                                     ?>
                                 </td>
-                                <td><?php echo $data['libelleEtat']; ?></td>
+                                <td><?php echo $data['libelleEtat']; ?> (<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>)</td>
                                 <td><?php echo $data['identifiant']; ?></td>
+                                <td>
+                                    <?php
+                                        $query2 = $db->prepare('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_EMPLACEMENT p ON e.idEmplacement=p.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON p.idSac=s.idSac
+                                            WHERE idLot = :idLot AND
+                                            (
+                                                quantite > quantiteAlerte AND
+                                                (
+                                                    peremptionNotification > CURRENT_DATE
+                                                    OR
+                                                    peremptionNotification IS NULL
+                                                )
+                                            );');
+                                        $query2->execute(array(
+                                            'idLot' => $data['idLot']
+                                        ));
+                                        $data2 = $query2->fetch();
+                                        if($data2['nb']>0)
+                                        {
+                                            ?><span class="badge bg-green"><?= $data2['nb'] ?></span><?php
+                                        }
+                                    ?>
+                                    <?php
+                                    $query2 = $db->prepare('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_EMPLACEMENT p ON e.idEmplacement=p.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON p.idSac=s.idSac
+                                            WHERE idLot = :idLot AND
+                                            (
+                                                (
+                                                    quantite = quantiteAlerte
+                                                    AND
+                                                    peremptionNotification = CURRENT_DATE
+                                                )
+                                                OR
+                                                (
+                                                    quantite = quantiteAlerte
+                                                    AND
+                                                    (
+                                                        peremptionNotification > CURRENT_DATE
+                                                        OR
+                                                        peremptionNotification IS NULL
+                                                    )
+                                                )
+                                                OR
+                                                (
+                                                    quantite > quantiteAlerte
+                                                    AND
+                                                    peremptionNotification = CURRENT_DATE
+                                                )
+                                            );');
+                                    $query2->execute(array(
+                                        'idLot' => $data['idLot']
+                                    ));
+                                    $data2 = $query2->fetch();
+                                    if($data2['nb']>0)
+                                    {
+                                        ?><span class="badge bg-orange"><?= $data2['nb'] ?></span><?php
+                                    }
+                                    ?>
+                                    <?php
+                                    $query2 = $db->prepare('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_EMPLACEMENT p ON e.idEmplacement=p.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON p.idSac=s.idSac
+                                            WHERE idLot = :idLot AND
+                                            (
+                                                quantite < quantiteAlerte OR
+                                                peremptionNotification < CURRENT_DATE
+                                            );');
+                                    $query2->execute(array(
+                                        'idLot' => $data['idLot']
+                                    ));
+                                    $data2 = $query2->fetch();
+                                    if($data2['nb']>0)
+                                    {
+                                        ?><span class="badge bg-red"><?= $data2['nb'] ?></span><?php
+                                    }
+                                    ?>
+                                </td>
                                 <td><?php
                                     if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) < date('Y-m-d'))
                                     {
@@ -98,9 +171,6 @@ if ($_SESSION['lots_lecture']==0)
                                         ?><span class="badge bg-green"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
                                     }
                                     ?>
-                                </td>
-                                <td>
-                                	<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>
                                 </td>
                                 <td>
                                     <?php if ($_SESSION['lots_lecture']==1) {?>

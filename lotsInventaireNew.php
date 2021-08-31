@@ -34,7 +34,7 @@ if ($_SESSION['lots_modification']==0)
             <ol class="breadcrumb">
                 <li><a href="index.php"><i class="fa fa-home"></i>Accueil</a></li>
                 <li><a href="lots.php">Lots</a></li>
-                <li class="active"><?php echo $data['libelleLot']; ?></li>
+                <li class="active"><?php echo $data['libelleLot'];?></li>
             </ol>
         </section>
 

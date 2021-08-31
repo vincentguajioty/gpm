@@ -49,8 +49,8 @@ if ($_SESSION['vehicules_lecture']==0)
                                 <th class="not-mobile">Type</th>
                                 <th class="not-mobile">Immatriculation</th>
                                 <th class="not-mobile">Marque/Modele</th>
+                                <th class="not-mobile">Contrôles</th>
                                 <th class="not-mobile">Etat</th>
-                                <th class="not-mobile">Notifications</th>
                                 <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
@@ -65,8 +65,60 @@ if ($_SESSION['vehicules_lecture']==0)
                                 <td><?php echo $data['libelleType']; ?></td>
                                 <td><?php echo $data['immatriculation']; ?></td>
                                 <td><?php echo $data['marqueModele']; ?></td>
-                                <td><?php echo $data['libelleEtat']; ?></td>
-                                <td><?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?></td>
+                                <td>
+                                    <span class="badge bg-<?php
+                                            if($data['dateNextRevision']==date('Y-m-d'))
+                                            {
+                                                echo "orange";
+                                            }
+                                            else
+                                            {
+                                                if($data['dateNextRevision']>date('Y-m-d'))
+                                                {
+                                                    echo "green";
+                                                }
+                                                else
+                                                {
+                                                    echo "red";
+                                                }
+                                            }
+                                        ?>">Révision</span>
+                                    <span class="badge bg-<?php
+                                        if($data['dateNextCT']==date('Y-m-d'))
+                                        {
+                                            echo "orange";
+                                        }
+                                        else
+                                        {
+                                            if($data['dateNextCT']>date('Y-m-d'))
+                                            {
+                                                echo "green";
+                                            }
+                                            else
+                                            {
+                                                echo "red";
+                                            }
+                                        }
+                                        ?>">CT</span>
+                                    <span class="badge bg-<?php
+                                        if($data['assuranceExpiration']==date('Y-m-d'))
+                                        {
+                                            echo "orange";
+                                        }
+                                        else
+                                        {
+                                            if($data['assuranceExpiration']>date('Y-m-d'))
+                                            {
+                                                echo "green";
+                                            }
+                                            else
+                                            {
+                                                echo "red";
+                                            }
+                                        }
+                                        ?>">Assurance</span>
+                                </td>
+                                <td><?php echo $data['libelleEtat']; ?> (<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>)</td>
                                 <td>
                                     <?php if ($_SESSION['vehicules_lecture']==1) {?>
                                         <a href="vehiculesContenu.php?id=<?=$data['idVehicule']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>

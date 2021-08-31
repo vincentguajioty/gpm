@@ -13,16 +13,26 @@ else {
 
     $_POST['libelleProfil'] = ($_POST['libelleProfil'] == Null) ? Null : $_POST['libelleProfil'];
 
-    $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET idProfil = :idProfil, identifiant = :identifiant, nomPersonne = :nomPersonne, prenomPersonne = :prenomPersonne, mailPersonne = :mailPersonne, telPersonne = :telPersonne, fonction = :fonction WHERE idPersonne = :idPersonne ;');
+    $query = $db->prepare('UPDATE PERSONNE_REFERENTE
+                                        SET
+                                            idProfil       = :idProfil,
+                                            identifiant    = :identifiant,
+                                            nomPersonne    = :nomPersonne,
+                                            prenomPersonne = :prenomPersonne,
+                                            mailPersonne   = :mailPersonne,
+                                            telPersonne    = :telPersonne,
+                                            fonction       = :fonction
+                                        WHERE
+                                            idPersonne     = :idPersonne ;');
     $query->execute(array(
-        'idPersonne' => $_GET['id'],
-        'idProfil' => $_POST['libelleProfil'],
-        'identifiant' => $_POST['identifiant'],
-        'nomPersonne' => $_POST['nomPersonne'],
+        'idPersonne'     => $_GET['id'],
+        'idProfil'       => $_POST['libelleProfil'],
+        'identifiant'    => $_POST['identifiant'],
+        'nomPersonne'    => $_POST['nomPersonne'],
         'prenomPersonne' => $_POST['prenomPersonne'],
-        'mailPersonne' => $_POST['mailPersonne'],
-        'telPersonne' => $_POST['telPersonne'],
-        'fonction' => $_POST['fonction']
+        'mailPersonne'   => $_POST['mailPersonne'],
+        'telPersonne'    => $_POST['telPersonne'],
+        'fonction'       => $_POST['fonction']
     ));
 
     switch($query->errorCode())

@@ -515,7 +515,7 @@ require_once('logCheck.php');
 	                            ?>
 	                            <tr>
 	                                <?php $nblibne = $nblibne + 1; ?>
-	                                <td><?php echo $data['dateDernierInventaire']; ?></td>
+	                                <td><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +'.$data['frequenceInventaire'].' day')); ?></td>
 	                                <td>Inventaire (lots)</td>
 	                                <td><?php echo $data['libelleLot']; ?></td>
 	                            </tr>

@@ -15,16 +15,42 @@ else
 {
     $_POST['libelleProfil'] = ($_POST['libelleProfil'] == Null) ? Null : $_POST['libelleProfil'];
 
-    $query = $db->prepare('INSERT INTO PERSONNE_REFERENTE(idProfil, identifiant, motDePasse, nomPersonne, prenomPersonne, mailPersonne, telPersonne, fonction, conf_joursCalendAccueil, conf_indicateur1Accueil, conf_indicateur2Accueil, conf_indicateur3Accueil, conf_indicateur4Accueil, conf_indicateur5Accueil, conf_indicateur6Accueil , conf_indicateur7Accueil , conf_indicateur8Accueil) VALUES(:idProfil, :identifiant, :motDePasse, :nomPersonne, :prenomPersonne, :mailPersonne, :telPersonne, :fonction, 15, 1, 1, 1, 1, 1, 1, 1, 1);');
+    $query = $db->prepare('INSERT INTO PERSONNE_REFERENTE(
+                                                idProfil,
+                                                identifiant,
+                                                motDePasse,
+                                                nomPersonne,
+                                                prenomPersonne,
+                                                mailPersonne,
+                                                telPersonne,
+                                                fonction,
+                                                conf_joursCalendAccueil,
+                                                conf_indicateur1Accueil,
+                                                conf_indicateur2Accueil,
+                                                conf_indicateur3Accueil,
+                                                conf_indicateur4Accueil,
+                                                conf_indicateur5Accueil,
+                                                conf_indicateur6Accueil ,
+                                                conf_indicateur7Accueil ,
+                                                conf_indicateur8Accueil) VALUES(:idProfil,
+                                                :identifiant,
+                                                :motDePasse,
+                                                :nomPersonne,
+                                                :prenomPersonne,
+                                                :mailPersonne,
+                                                :telPersonne,
+                                                :fonction,
+                                                15, 1, 1, 1, 1, 1, 1, 1, 1);'
+                        );
     $query->execute(array(
-        'idProfil' => $_POST['libelleProfil'],
-        'identifiant' => $_POST['identifiant'],
-        'motDePasse' => password_hash($_POST['identifiant'], PASSWORD_DEFAULT),
-        'nomPersonne' => $_POST['nomPersonne'],
+        'idProfil'       => $_POST['libelleProfil'],
+        'identifiant'    => $_POST['identifiant'],
+        'motDePasse'     => password_hash($_POST['identifiant'], PASSWORD_DEFAULT),
+        'nomPersonne'    => $_POST['nomPersonne'],
         'prenomPersonne' => $_POST['prenomPersonne'],
-        'mailPersonne' => $_POST['mailPersonne'],
-        'telPersonne' => $_POST['telPersonne'],
-        'fonction' => $_POST['fonction']
+        'mailPersonne'   => $_POST['mailPersonne'],
+        'telPersonne'    => $_POST['telPersonne'],
+        'fonction'       => $_POST['fonction']
     ));
     switch($query->errorCode())
     {

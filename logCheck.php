@@ -9,8 +9,17 @@ if (($VERSION != $VERSIONCHECK) AND (file_exists('distmaj/INSTALL.php')))
     exit;
 }
 
-if (($_SESSION['connexion_connexion'] == 0) OR (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > $LOGOUTTEMP * 60)))
-        { echo "<script type='text/javascript'>document.location.replace('logout.php');</script>"; exit; }
+if ($_SESSION['connexion_connexion'] == 0)
+{
+    echo "<script type='text/javascript'>document.location.replace('logout.php');</script>";
+    exit;
+}
+
+if ((strpos($_SERVER['HTTP_REFERER'], "lotsInventaireNew.php") == false) AND (strpos($_SERVER['HTTP_REFERER'], "reserveInventaireNew.php") == false) AND (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > $LOGOUTTEMP * 60)))
+{
+    echo "<script type='text/javascript'>document.location.replace('logout.php');</script>";
+    exit;
+}
         
 
 if (checkIP($_SERVER['REMOTE_ADDR'])==1)

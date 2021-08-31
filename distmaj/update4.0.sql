@@ -175,3 +175,5 @@ vhf_equipement_lecture = 0,
 vhf_equipement_ajout = 0,
 vhf_equipement_modification = 0,
 vhf_equipement_suppression = 0;
+
+INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt) VALUES(CURRENT_TIMESTAMP, 'local', 'sysAdmin', 2, 'Mise à jour vers la version 4.0.');

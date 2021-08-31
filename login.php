@@ -8,7 +8,7 @@ require_once 'verrouIPcheck.php';
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <b><?php echo $APPNAME;?></b><br/><small>Gestion du Parc Matériel</small>
+        <b><?php echo $APPNAME;?></b>
     </div>
     <!-- /.login-logo -->
     <?php
@@ -61,14 +61,14 @@ require_once 'verrouIPcheck.php';
                 <h4>ATTENTION</h4>
                 Suite à un nombre trop important d'erreurs de connexion depuis votre adresse IP (<?php echo $_SERVER['REMOTE_ADDR'];?>), tous les accès depuis cette adresse ont été bloqués.
                 <br/><br/>
-                Merci de contacter un administrateur <?php echo $APPNAME;?> pour envisager un déblocage de votre adresse.
+                Merci de contacter un administrateur <?php echo $APPNAME;?>.
             </center>
         </div>
     <?php }
     ?>
     <!-- /.login-box-body -->
 </div>
-<center>Gestionnaire de Parc Matériel</center>
+<center>GPM - Gestionnaire de Parc Matériel</center>
 <center>Version <?php echo $VERSION; ?></center>
 <!-- /.login-box -->
 

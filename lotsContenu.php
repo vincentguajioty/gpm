@@ -151,7 +151,7 @@ if ($_SESSION['lots_lecture']==0)
                                     }
                                         ?></a></li>
                                 <li><a>Notifications<?php
-                                    if ($data['idEtat']==1)
+                                    if ($data[4]==1) /*Attention, indice passé en fonction de la requete -> si la requete change vérifier que l'indice soit toujours en même position.*/
                                     {
                                         echo '<span class="pull-right badge bg-green"><i class="fa fa-bell-o"></i></span>';
                                     }
