@@ -15,10 +15,12 @@ else
 {
     $_POST['idLieu'] = ($_POST['idLieu'] == Null) ? Null : $_POST['idLieu'];
 
-    $query = $db->prepare('INSERT INTO RESERVES_CONTENEUR(idLieu, libelleConteneur) VALUES(:idLieu, :libelleConteneur);');
+    $query = $db->prepare('INSERT INTO RESERVES_CONTENEUR(idLieu, libelleConteneur, dateDernierInventaire, frequenceInventaire) VALUES(:idLieu, :libelleConteneur, :dateDernierInventaire, :frequenceInventaire);');
     $query->execute(array(
         'idLieu' => $_POST['idLieu'],
-        'libelleConteneur' => $_POST['libelleConteneur']
+        'libelleConteneur' => $_POST['libelleConteneur'],
+        'dateDernierInventaire' => $_POST['dateDernierInventaire'],
+        'frequenceInventaire' => $_POST['frequenceInventaire']
     ));
     switch($query->errorCode())
     {

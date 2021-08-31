@@ -95,7 +95,7 @@ if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
                             </label>
                         </div>
 
-                        <div class="form-group" id="perem">
+                        <div class="form-group">
                             <label>Date de péremption:</label>
                             <div class="input-group">
                                 <div class="input-group-addon">
@@ -103,11 +103,15 @@ if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
                                 </div>
                                 <input class="input-datepicker form-control" name="peremptionReserve" value="<?= isset($data['peremptionReserve']) ? $data['peremptionReserve'] : '' ?>">
                             </div>
-                            <br/>
-                            <label>Jours d'anticipation de l'alerte de péremption:</label>
-                            <input type="text" class="form-control" value="<?= isset($data['peremptionReserve']) ? ((strtotime($data['peremptionReserve']) - strtotime($data['peremptionNotificationReserve']))/86400) : '' ?>"
-                                   name="delaisPeremptionReserve">
-                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group">
+                            <label>Anticipation de la notification:</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input class="input-datepicker form-control" name="peremptionNotificationReserve" value="<?= isset($data['peremptionNotificationReserve']) ? $data['peremptionNotificationReserve'] : '' ?>">
+                            </div>
                         </div>
 
                         <div class="form-group">

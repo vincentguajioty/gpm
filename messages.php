@@ -33,13 +33,11 @@ if ($_SESSION['messages_ajout']==0 AND $_SESSION['messages_suppression']==0)
         <section class="content">
             <?php include('confirmationBox.php'); ?>
             <div class="box box-warning">
-            	<div class = "box-header">
-            		<?php if ($_SESSION['messages_ajout']==1) {?>
+            	<?php if ($_SESSION['messages_ajout']==1) {?>
+            		<div class = "box-header">
                         <h3 class="box-title"><a href="messagesForm.php" class="btn btn-sm btn-success modal-form">Ajouter un message</a></h3>
-                    <?php } else {?>
-                        </br>
-                    <?php } ?>
-            	</div>
+                    </div>
+            	<?php } ?>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="tri2" class="table table-bordered table-hover">

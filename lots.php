@@ -33,13 +33,11 @@ if ($_SESSION['lots_lecture']==0)
         <section class="content">
             <?php include('confirmationBox.php'); ?>
             <div class="box">
-                <div class="box-header">
-                    <?php if ($_SESSION['lots_ajout']==1) {?>
-                        <h3 class="box-title"><a href="lotsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un lot</a></h3>
-                    <?php } else {?>
-                        </br>
-                    <?php } ?>
-                </div>
+                <?php if ($_SESSION['lots_ajout']==1) {?>
+	                <div class="box-header">
+						<h3 class="box-title"><a href="lotsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un lot</a></h3>
+	                </div>
+                <?php }?>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="tri2" class="table table-bordered table-hover">

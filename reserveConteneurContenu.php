@@ -43,7 +43,7 @@ if ($_SESSION['reserve_lecture']==0)
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        <div class="row">
+
         <section class="content-header">
             <h1>
                 Gestion du conteneur de réserve: <?php echo $data['libelleConteneur']; ?>
@@ -58,148 +58,218 @@ if ($_SESSION['reserve_lecture']==0)
         <!-- Main content -->
         
     	<section class="content">
-            <?php include('confirmationBox.php'); ?>
-
-            <div class="col-md-6">
-                <!-- Widget: user widget style 1 -->
-                <div class="box box-widget widget-user-2">
-                    <!-- Add the bg color to the header using any of the bg-* classes -->
-                    <div class="widget-user-header bg-blue">
-                        <!-- /.widget-user-image -->
-                        <h3 class="widget-user-username">Informations générales</h3>
-                    </div>
-                    <div class="box-footer no-padding">
-                        <ul class="nav nav-stacked">
-                            <li><a>Lieu <span class="pull-right"><?php echo $data['libelleLieu']; ?></span></a></li>
-							<li><a>Quantite de matériel <span class="pull-right"><?php echo $data4['nb']; ?></span></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /.widget-user -->
-            </div>
-            <div class="col-md-6">
-                <!-- Widget: user widget style 1 -->
-                <div class="box box-widget widget-user-2">
-                    <!-- Add the bg color to the header using any of the bg-* classes -->
-                    <div class="widget-user-header bg-blue">
-                        <!-- /.widget-user-image -->
-                        <h3 class="widget-user-username">Verifications</h3>
-                    </div>
-                    <div class="box-footer no-padding">
-                        <ul class="nav nav-stacked">
-                            <li><a>Elements périmés<?php
-                                    if ($data5['nb']>0)
-                                    {
-                                        echo '<span class="pull-right badge bg-red">' . $data5['nb'] .'</span>';
-                                    }
-                                    else
-                                    {
-                                        echo '<span class="pull-right badge bg-green">' . $data5['nb'] .'</span>';
-                                    }
-                                    ?></span></a></li>
-                            <li><a>Matériel manquant<?php
-                                    if ($data6['nb']>0)
-                                    {
-                                        echo '<span class="pull-right badge bg-red">' . $data6['nb'] .'</span>';
-                                    }
-                                    else
-                                    {
-                                        echo '<span class="pull-right badge bg-green">' . $data6['nb'] .'</span>';
-                                    }
-                                    ?></span></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /.widget-user -->
-            </div>
-
-            <div class="col-md-12">
-                <div class="box box-warning box-solid">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><?php echo $data['libelleConteneur']; ?></h3> <?php if ($_SESSION['reserve_modification']==1) {?><a href="reserveConteneurForm.php?id=<?=$data['idConteneur']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                            </button>
+    		<?php include('confirmationBox.php'); ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Widget: user widget style 1 -->
+                    <div class="box box-widget widget-user-2">
+                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                        <div class="widget-user-header bg-blue">
+                            <!-- /.widget-user-image -->
+                            <h3 class="widget-user-username">Informations générales</h3>
                         </div>
-                        <!-- /.box-tools -->
+                        <div class="box-footer no-padding">
+                            <ul class="nav nav-stacked">
+                                <li><a>Lieu <span class="pull-right"><?php echo $data['libelleLieu']; ?></span></a></li>
+                                <li><a>Quantite de matériel <span class="pull-right"><?php echo $data4['nb']; ?></span></a></li>
+                                <li><a>Dernier inventaire <span class="pull-right"><?php echo $data['dateDernierInventaire']; ?></span></a></li>
+                                <li><a>Fréquence d'inventaire <span class="pull-right"><?php echo $data['frequenceInventaire']; ?></span></a></li>
+                            </ul>
+                        </div>
                     </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Libelle</th>
-                                <th>Quantité</th>
-                                <th>Péremption</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            $query9 = $db->prepare('SELECT * FROM RESERVES_MATERIEL e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue WHERE idConteneur = :idConteneur;');
-                            $query9->execute(array(
-                                'idConteneur' => $data['idConteneur']
-                            ));
-                            while ($data9 = $query9->fetch())
-                            { ?>
-                                <tr>
-                                    <td><?php echo $data9['idReserveElement']; ?></td>
-                                    <td><?php echo $data9['libelleMateriel']; ?></td>
-                                    <td><?php
-                                        if ($data9['quantiteReserve'] < $data9['quantiteAlerteReserve'])
-                                        {
-                                            ?><span class="badge bg-red"><?php echo $data9['quantiteReserve']; ?></span><?php
-                                        }
-                                        else if ($data9['quantiteReserve'] == $data9['quantiteAlerteReserve'])
-                                        {
-                                            ?><span class="badge bg-orange"><?php echo $data9['quantiteReserve']; ?></span><?php
-                                        }
-                                        else
-                                        {
-                                            ?><span class="badge bg-green"><?php echo $data9['quantiteReserve']; ?></span><?php
-                                        }
-                                        ?>
-                                    </td>
-                                    <td><?php
-                                        if ($data9['peremptionReserve'] <= date('Y-m-d'))
-                                        {
-                                            ?><span class="badge bg-red"><?php echo $data9['peremptionReserve']; ?></span><?php
-                                        }
-                                        else if ($data9['peremptionNotificationReserve'] <= date('Y-m-d'))
-                                        {
-                                            ?><span class="badge bg-orange"><?php echo $data9['peremptionReserve']; ?></span><?php
-                                        }
-                                        else
-                                        {
-                                            ?><span class="badge bg-green"><?php echo $data9['peremptionReserve']; ?></span><?php
-                                        }
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <?php if ($_SESSION['reserve_modification']==1) {?>
-                                            <a href="reserveMaterielForm.php?id=<?=$data9['idReserveElement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
-                                        <?php }?>
-                                        <?php if ($_SESSION['reserve_suppression']==1) {?>
-                                            <a href="reserveMaterielDelete.php?id=<?=$data9['idReserveElement']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
-                                        <?php }?>
-                                    </td>
-                                </tr>
-                                <?php
-                            }
-                            ?>
-                            </tbody>
-
-
-                        </table>
-
-                    </div>
-                    <!-- /.box-body -->
+                    <!-- /.widget-user -->
                 </div>
-                <!-- /.box -->
+                <div class="col-md-6">
+                    <!-- Widget: user widget style 1 -->
+                    <div class="box box-widget widget-user-2">
+                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                        <div class="widget-user-header bg-blue">
+                            <!-- /.widget-user-image -->
+                            <h3 class="widget-user-username">Verifications</h3>
+                        </div>
+                        <div class="box-footer no-padding">
+                            <ul class="nav nav-stacked">
+                                <li><a>Elements périmés<?php
+                                        if ($data5['nb']>0)
+                                        {
+                                            echo '<span class="pull-right badge bg-red">' . $data5['nb'] .'</span>';
+                                        }
+                                        else
+                                        {
+                                            echo '<span class="pull-right badge bg-green">' . $data5['nb'] .'</span>';
+                                        }
+                                        ?></span></a></li>
+                                <li><a>Matériel manquant<?php
+                                        if ($data6['nb']>0)
+                                        {
+                                            echo '<span class="pull-right badge bg-red">' . $data6['nb'] .'</span>';
+                                        }
+                                        else
+                                        {
+                                            echo '<span class="pull-right badge bg-green">' . $data6['nb'] .'</span>';
+                                        }
+                                        ?></span></a></li>
+                                <li><a>Prochain inventaire<?php
+                                    if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) <= date('Y-m-d'))
+                                    {
+                                        echo '<span class="pull-right badge bg-red">' . date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) . '</span>';
+                                    }
+                                    else
+                                    {
+                                        echo '<span class="pull-right badge bg-green">' . date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) . '</span>';
+                                    }
+                                        ?></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /.widget-user -->
+                </div>
+
+                <div class="col-md-12">
+                    <div class="box box-warning box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><?php echo $data['libelleConteneur']; ?></h3> <?php if ($_SESSION['reserve_modification']==1) {?><a href="reserveConteneurForm.php?id=<?=$data['idConteneur']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Libelle</th>
+                                    <th>Quantité</th>
+                                    <th>Péremption</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                $query9 = $db->prepare('SELECT * FROM RESERVES_MATERIEL e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue WHERE idConteneur = :idConteneur;');
+                                $query9->execute(array(
+                                    'idConteneur' => $data['idConteneur']
+                                ));
+                                while ($data9 = $query9->fetch())
+                                { ?>
+                                    <tr>
+                                        <td><?php echo $data9['idReserveElement']; ?></td>
+                                        <td><?php echo $data9['libelleMateriel']; ?></td>
+                                        <td><?php
+                                            if ($data9['quantiteReserve'] < $data9['quantiteAlerteReserve'])
+                                            {
+                                                ?><span class="badge bg-red"><?php echo $data9['quantiteReserve']; ?></span><?php
+                                            }
+                                            else if ($data9['quantiteReserve'] == $data9['quantiteAlerteReserve'])
+                                            {
+                                                ?><span class="badge bg-orange"><?php echo $data9['quantiteReserve']; ?></span><?php
+                                            }
+                                            else
+                                            {
+                                                ?><span class="badge bg-green"><?php echo $data9['quantiteReserve']; ?></span><?php
+                                            }
+                                            ?>
+                                        </td>
+                                        <td><?php
+                                            if ($data9['peremptionReserve'] <= date('Y-m-d'))
+                                            {
+                                                ?><span class="badge bg-red"><?php echo $data9['peremptionReserve']; ?></span><?php
+                                            }
+                                            else if ($data9['peremptionNotificationReserve'] <= date('Y-m-d'))
+                                            {
+                                                ?><span class="badge bg-orange"><?php echo $data9['peremptionReserve']; ?></span><?php
+                                            }
+                                            else
+                                            {
+                                                ?><span class="badge bg-green"><?php echo $data9['peremptionReserve']; ?></span><?php
+                                            }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php if ($_SESSION['reserve_modification']==1) {?>
+                                                <a href="reserveMaterielForm.php?id=<?=$data9['idReserveElement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
+                                            <?php }?>
+                                            <?php if ($_SESSION['reserve_suppression']==1) {?>
+                                                <a href="reserveMaterielDelete.php?id=<?=$data9['idReserveElement']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
+                                            <?php }?>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                                </tbody>
+
+
+                            </table>
+
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="box box-success box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Inventaires</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <?php if ($_SESSION['reserve_modification']==1) {?>
+                                <a href="reserveInventaireNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-success spinnerAttenteClick"><i class="fa fa-plus"></i> Faire un nouvel inventaire</a>
+                            <?php }?>
+                        </div>
+                        <div class="box-body">
+
+                            <br/>
+                            <table id="tri2R" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Date de l'inventaire</th>
+                                    <th>Personne ayant réalisé l'inventaire</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $query2 = $db->prepare('SELECT * FROM RESERVES_INVENTAIRES i LEFT OUTER JOIN PERSONNE_REFERENTE p ON i.idPersonne = p.idPersonne WHERE idConteneur = :idConteneur;');
+                                    $query2->execute(array(
+                                        'idConteneur' => $_GET['id']
+                                    ));
+                                    while ($data2 = $query2->fetch()) {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $data2['idReserveInventaire']; ?></td>
+                                            <td><?php echo $data2['dateInventaire']; ?></td>
+                                            <td><?php echo $data2['identifiant']; ?></td>
+                                            <td>
+                                                <a href="reserveInventaireShow.php?id=<?=$data2['idReserveInventaire']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
+                                                <?php if ($_SESSION['reserve_modification']==1) {?>
+                                                    <a href="reserveInventaireDelete.php?id=<?php echo $data2['idReserveInventaire']; ?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-trash"></i></a>
+                                                <?php }?>
+                                            </td>
+                                        </tr>
+
+                                        <?php
+                                    }
+                                    ?>
+                                </tbody>
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
     	</section>
-    	</div>
         <!-- /.content -->
         
     </div>

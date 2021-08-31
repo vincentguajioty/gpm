@@ -47,6 +47,20 @@ if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
                                 $query2->closeCursor(); ?>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label>Date du dernier inventaire: <small style="color:grey;">Requis</small></label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input class="input-datepicker form-control" name="dateDernierInventaire" value="<?= isset($data['dateDernierInventaire']) ? $data['dateDernierInventaire'] : '' ?>" required>
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group">
+                            <label>Fréquence inventaire (jours): <small style="color:grey;">Requis</small></label>
+                            <input type="number" class="form-control" value="<?= isset($data['frequenceInventaire']) ? $data['frequenceInventaire'] : '' ?>" name="frequenceInventaire" required>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>

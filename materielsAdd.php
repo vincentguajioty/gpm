@@ -14,17 +14,8 @@ else
     $_POST['libelleMateriel'] = ($_POST['libelleMateriel'] == Null) ? Null : $_POST['libelleMateriel'];
     $_POST['nomFournisseur'] = ($_POST['nomFournisseur'] == Null) ? Null : $_POST['nomFournisseur'];
 	$_POST['libelleEmplacement'] = ($_POST['libelleEmplacement'] == Null) ? Null : $_POST['libelleEmplacement'];
-
-    if ($_POST['boolPeremption'] == '1')
-    {
-        $peremption = $_POST['peremption'];
-        $peremptionNotification = date('Y-m-d', strtotime($_POST['peremption'] . ' -' . $_POST['delaisPeremption'] . ' days'));
-    }
-    else
-    {
-        $peremption = Null;
-        $peremptionNotification = Null;
-    }
+	$_POST['peremption'] = ($_POST['peremption'] == Null) ? Null : $_POST['peremption'];
+	$_POST['peremptionNotification'] = ($_POST['peremptionNotification'] == Null) ? Null : $_POST['peremptionNotification'];
 
     $query = $db->prepare('INSERT INTO MATERIEL_ELEMENT(idMaterielCatalogue, idEmplacement, idFournisseur, quantite, quantiteAlerte, peremption, peremptionNotification, commentairesElement)VALUES(:idMaterielCatalogue, :idEmplacement, :idFournisseur, :quantite, :quantiteAlerte, :peremption, :peremptionNotification, :commentairesElement);');
     $query->execute(array(
@@ -33,8 +24,8 @@ else
         'idFournisseur' => $_POST['nomFournisseur'],
         'quantite' => $_POST['quantite'],
         'quantiteAlerte' => $_POST['quantiteAlerte'],
-        'peremption' => $peremption,
-        'peremptionNotification' => $peremptionNotification,
+        'peremption' => $_POST['peremption'],
+        'peremptionNotification' => $_POST['peremptionNotification'],
         'commentairesElement' => $_POST['commentairesElement']
     ));
 

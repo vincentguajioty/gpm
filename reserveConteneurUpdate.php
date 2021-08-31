@@ -15,11 +15,13 @@ else
 {
     $_POST['idLieu'] = ($_POST['idLieu'] == Null) ? Null : $_POST['idLieu'];
 
-    $query = $db->prepare('UPDATE RESERVES_CONTENEUR SET idLieu = :idLieu, libelleConteneur = :libelleConteneur WHERE idConteneur = :idConteneur;');
+    $query = $db->prepare('UPDATE RESERVES_CONTENEUR SET idLieu = :idLieu, libelleConteneur = :libelleConteneur, dateDernierInventaire = :dateDernierInventaire, frequenceInventaire = :frequenceInventaire WHERE idConteneur = :idConteneur;');
     $query->execute(array(
         'idLieu' => $_POST['idLieu'],
         'libelleConteneur' => $_POST['libelleConteneur'],
-		'idConteneur' => $_GET['id']
+		'idConteneur' => $_GET['id'],
+		'dateDernierInventaire' => $_POST['dateDernierInventaire'],
+        'frequenceInventaire' => $_POST['frequenceInventaire']
     ));
     switch($query->errorCode())
     {

@@ -181,6 +181,7 @@ if ($data['idIP'] == "")
         $_SESSION['vehicules_types_suppression'] = $data['vehicules_types_suppression'];
         
         $_SESSION['conf_joursCalendAccueil'] = $data['conf_joursCalendAccueil'];
+        $_SESSION['conf_accueilRefresh'] = $data['conf_accueilRefresh'];
         $_SESSION['conf_indicateur1Accueil'] = $data['conf_indicateur1Accueil'];
         $_SESSION['conf_indicateur2Accueil'] = $data['conf_indicateur2Accueil'];
         $_SESSION['conf_indicateur3Accueil'] = $data['conf_indicateur3Accueil'];

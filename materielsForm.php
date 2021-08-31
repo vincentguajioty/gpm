@@ -83,20 +83,7 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                             <input type="text" class="form-control"  value="<?= isset($data['quantiteAlerte']) ? $data['quantiteAlerte'] : '' ?>" name="quantiteAlerte" required>
                         </div>
 
-                        <div class="checkbox">
-                            <label>
-                                <input
-                                    <?php
-                                    if (isset($data['peremption']) AND ($data['peremption'] != Null))
-                                    {
-                                        echo 'checked';
-                                    }
-                                    ?>
-                                        type="checkbox" value="1" name="boolPeremption" onClick="montrer_cacher(this,'perem')"> Le matériel a une date de péremption
-                            </label>
-                        </div>
-
-                        <div class="form-group" id="perem">
+                        <div class="form-group">
                             <label>Date de péremption:</label>
                             <div class="input-group">
                                 <div class="input-group-addon">
@@ -104,11 +91,15 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                                 </div>
                                 <input class="input-datepicker form-control" name="peremption" value="<?= isset($data['peremption']) ? $data['peremption'] : '' ?>">
                             </div>
-                            <br/>
-                            <label>Jours d'anticipation de l'alerte de péremption:</label>
-                            <input type="text" class="form-control" value="<?= isset($data['peremption']) ? ((strtotime($data['peremption']) - strtotime($data['peremptionNotification']))/86400) : '' ?>"
-                                   name="delaisPeremption">
-                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group">
+                            <label>Anticipation de la notification:</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input class="input-datepicker form-control" name="peremptionNotification" value="<?= isset($data['peremptionNotification']) ? $data['peremptionNotification'] : '' ?>">
+                            </div>
                         </div>
 
                         <div class="form-group">

@@ -34,13 +34,11 @@ if ($_SESSION['categories_lecture']==0)
         <section class="content">
             <?php include('confirmationBox.php'); ?>
             <div class="box">
-                <div class="box-header">
-                    <?php if ($_SESSION['categories_ajout']==1) {?>
+                <?php if ($_SESSION['categories_ajout']==1) {?>
+                	<div class="box-header">
                         <h3 class="box-title"><a href="categoriesForm.php" class="btn btn-sm btn-success modal-form">Ajouter une categorie</a></h3>
-                    <?php } else {?>
-                        </br>
-                    <?php } ?>
-                </div>
+                	</div>
+                <?php } ?>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="tri2" class="table table-bordered table-hover">

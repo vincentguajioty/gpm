@@ -36,13 +36,11 @@ if ($_SESSION['reserve_lecture']==0)
             <?php include('confirmationBox.php'); ?>
 
             <div class="box">
-                <div class="box-header">
-	                <?php if ($_SESSION['reserve_ajout']==1) {?>
+                <?php if ($_SESSION['reserve_ajout']==1) {?>
+                	<div class="box-header">
 	                    <h3 class="box-title"><a href="reserveConteneurForm.php" class="btn btn-sm btn-success modal-form">Ajouter un conteneur</a></h3>
-	                <?php } else {?>
-	                    </br>
-	                <?php } ?>
-	            </div>
+	            	</div>
+	            <?php } ?>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="tri2" class="table table-bordered table-hover">
@@ -51,6 +49,7 @@ if ($_SESSION['reserve_lecture']==0)
                                 <th class="all" style="width: 10px">#</th>
                                 <th class="all">Libelle</th>
                                 <th class="not-mobile">Lieu</th>
+                                <th class="not-mobile">Prochain inventaire</th>
                                 <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
@@ -63,6 +62,21 @@ if ($_SESSION['reserve_lecture']==0)
                                 <td><?php echo $data['idConteneur']; ?></td>
 								<td><?php echo $data['libelleConteneur']; ?></td>
 								<td><?php echo $data['libelleLieu']; ?></td>
+								<td><?php
+                                    if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) < date('Y-m-d'))
+                                    {
+                                        ?><span class="badge bg-red"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+                                    }
+                                    else if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) == date('Y-m-d'))
+                                    {
+                                        ?><span class="badge bg-orange"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+                                    }
+                                    else
+                                    {
+                                        ?><span class="badge bg-green"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+                                    }
+                                    ?>
+                                </td>
                                 <td>
                                     <?php if ($_SESSION['reserve_lecture']==1) {?>
                                         <a href="reserveConteneurContenu.php?id=<?=$data['idConteneur']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>

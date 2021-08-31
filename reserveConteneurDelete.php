@@ -11,6 +11,22 @@ if ($_SESSION['reserve_suppression']==0)
 }
 else
 {
+    $query = $db->prepare('SELECT * FROM RESERVES_INVENTAIRES WHERE idConteneur = :idConteneur;');
+    $query->execute(array(
+        'idConteneur' => $_GET['id']
+    ));
+    while ($data = $query->fetch())
+    {
+        $query2 = $db->prepare('DELETE FROM RESERVES_INVENTAIRES_CONTENUS WHERE idReserveInventaire = :idReserveInventaire;');
+        $query2->execute(array(
+            'idReserveInventaire' => $data['idReserveInventaire']
+        ));
+    }
+    $query2 = $db->prepare('DELETE FROM RESERVES_INVENTAIRES WHERE idConteneur = :idConteneur;');
+    $query2->execute(array(
+        'idConteneur' => $_GET['id']
+    ));
+    
     $query = $db->prepare('SELECT * FROM RESERVES_CONTENEUR WHERE idConteneur = :idConteneur;');
     $query->execute(array(
         'idConteneur' => $_GET['id']

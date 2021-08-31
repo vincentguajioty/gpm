@@ -126,6 +126,10 @@ require_once('logCheck.php');
 		                            <input type="number" min="1" max="60" class="form-control" value="<?= $_SESSION['conf_joursCalendAccueil'] ?>" name="conf_joursCalendAccueil" required>
 		                        </div>
 		                        <div class="form-group">
+		                            <label>Rafraichissement automatique de la page d'accueil (secondes) :</label>
+		                            <input type="number" min="10" class="form-control" value="<?= $_SESSION['conf_accueilRefresh'] ?>" name="conf_accueilRefresh" required>
+		                        </div>
+		                        <div class="form-group">
 		                            <label>Présence des indicateurs sur la page d'accueil:</label><br/>
 			                        <div class="checkbox">
 	                                	<label><input <?php if($_SESSION['conf_indicateur1Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur1Accueil"> Matériels périmés (lots)</label>

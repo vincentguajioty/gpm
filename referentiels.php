@@ -34,13 +34,11 @@ if ($_SESSION['typesLots_lecture']==0)
         <section class="content">
             <?php include('confirmationBox.php'); ?>
             <div class="box">
-                <div class="box-header">
-                    <?php if ($_SESSION['typesLots_ajout']==1) {?>
+                <?php if ($_SESSION['typesLots_ajout']==1) {?>
+                	<div class="box-header">
                         <h3 class="box-title"><a href="referentielsForm.php?id=0" class="btn btn-sm btn-success">Ajouter un référentiel</a></h3>
-                    <?php } else {?>
-                        </br>
-                    <?php } ?>
-                </div>
+                	</div>
+                <?php } ?>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="tri2" class="table table-bordered table-hover">

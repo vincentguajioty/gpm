@@ -36,13 +36,11 @@ if ($_SESSION['annuaire_lecture']==0)
             <?php include('confirmationBox.php'); ?>
 
             <div class="box">
-                <div class="box-header">
-	                <?php if ($_SESSION['annuaire_ajout']==1) {?>
+                <?php if ($_SESSION['annuaire_ajout']==1) {?>
+                	<div class="box-header">
 	                    <h3 class="box-title"><a href="annuaireForm.php" class="btn btn-sm btn-success modal-form">Ajouter un utilisateur</a></h3>
-	                <?php } else {?>
-	                    </br>
-	                <?php } ?>
-	            </div>
+	            	</div>
+	            <?php } ?>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="tri2" class="table table-bordered table-hover">

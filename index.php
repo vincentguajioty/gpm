@@ -6,6 +6,7 @@ $_SESSION['page'] = 000;
 require_once('logCheck.php');
 ?>
 <?php include('header.php'); require_once('config/config.php'); ?>
+<meta http-equiv="refresh" content="<?= $_SESSION['conf_accueilRefresh'] ?>"; url="mapage.php" />
 <body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
@@ -515,7 +516,7 @@ require_once('logCheck.php');
 	                            <tr>
 	                                <?php $nblibne = $nblibne + 1; ?>
 	                                <td><?php echo $data['dateDernierInventaire']; ?></td>
-	                                <td>Inventaire</td>
+	                                <td>Inventaire (lots)</td>
 	                                <td><?php echo $data['libelleLot']; ?></td>
 	                            </tr>
 	                            <?php
@@ -581,6 +582,22 @@ require_once('logCheck.php');
 	                                <td><?php echo date_format(date_create($data['assuranceExpiration']), 'Y-m-d'); ?></td>
 	                                <td>Assurnace véhicule</td>
 	                                <td>Commande <?php echo $data['libelleVehicule']; ?></td>
+	                            </tr>
+	                            <?php
+	                        }
+	                        $query->closeCursor(); ?>
+	                        
+	                        <?php
+	                        $query = $db->prepare('SELECT * FROM RESERVES_CONTENEUR WHERE (dateDernierInventaire + INTERVAL frequenceInventaire DAY) = (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY) OR (dateDernierInventaire + INTERVAL frequenceInventaire DAY) < (CURRENT_DATE + INTERVAL :conf_joursCalendAccueil DAY);');
+	                        $query->execute(array('conf_joursCalendAccueil' => $_SESSION['conf_joursCalendAccueil']));
+	                        while ($data = $query->fetch())
+	                        {
+	                            ?>
+	                            <tr>
+	                                <?php $nblibne = $nblibne + 1; ?>
+	                                <td><?php echo $data['dateDernierInventaire']; ?></td>
+	                                <td>Inventaire (réserve)</td>
+	                                <td><?php echo $data['libelleConteneur']; ?></td>
 	                            </tr>
 	                            <?php
 	                        }

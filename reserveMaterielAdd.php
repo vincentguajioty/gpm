@@ -14,17 +14,8 @@ else
     $_POST['idMaterielCatalogue'] = ($_POST['idMaterielCatalogue'] == Null) ? Null : $_POST['idMaterielCatalogue'];
     $_POST['idFournisseur'] = ($_POST['idFournisseur'] == Null) ? Null : $_POST['idFournisseur'];
 	$_POST['idConteneur'] = ($_POST['idConteneur'] == Null) ? Null : $_POST['idConteneur'];
-
-    if ($_POST['boolPeremption'] == '1')
-    {
-        $peremptionReserve = $_POST['peremptionReserve'];
-        $peremptionNotificationReserve = date('Y-m-d', strtotime($_POST['peremptionReserve'] . ' -' . $_POST['delaisPeremptionReserve'] . ' days'));
-    }
-    else
-    {
-        $peremptionReserve = Null;
-        $peremptionNotificationReserve = Null;
-    }
+	$_POST['peremptionReserve'] = ($_POST['peremptionReserve'] == Null) ? Null : $_POST['peremptionReserve'];
+	$_POST['peremptionNotificationReserve'] = ($_POST['peremptionNotificationReserve'] == Null) ? Null : $_POST['peremptionNotificationReserve'];
 
     $query = $db->prepare('INSERT INTO RESERVES_MATERIEL(idMaterielCatalogue, idConteneur, idFournisseur, quantiteReserve, quantiteAlerteReserve, peremptionReserve, peremptionNotificationReserve, commentairesReserveElement)VALUES(:idMaterielCatalogue, :idConteneur, :idFournisseur, :quantiteReserve, :quantiteAlerteReserve, :peremptionReserve, :peremptionNotificationReserve, :commentairesReserveElement);');
     $query->execute(array(
@@ -33,8 +24,8 @@ else
         'idFournisseur' => $_POST['idFournisseur'],
         'quantiteReserve' => $_POST['quantiteReserve'],
         'quantiteAlerteReserve' => $_POST['quantiteAlerteReserve'],
-        'peremptionReserve' => $peremptionReserve,
-        'peremptionNotificationReserve' => $peremptionNotificationReserve,
+        'peremptionReserve' => $_POST['peremptionReserve'],
+        'peremptionNotificationReserve' => $_POST['peremptionNotificationReserve'],
         'commentairesReserveElement' => $_POST['commentairesReserveElement']
     ));
 

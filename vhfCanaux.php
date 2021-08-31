@@ -36,13 +36,11 @@ if ($_SESSION['vhf_canal_lecture']==0)
             <?php include('confirmationBox.php'); ?>
 
             <div class="box">
-                <div class="box-header">
-                    <?php if ($_SESSION['vhf_canal_ajout']==1) {?>
+                <?php if ($_SESSION['vhf_canal_ajout']==1) {?>
+                	<div class="box-header">
                         <h3 class="box-title"><a href="vhfCanauxForm.php" class="btn btn-sm btn-success modal-form">Ajouter un canal</a></h3>
-                    <?php } else {?>
-                        </br>
-                    <?php } ?>
-                </div>
+                	</div>
+                <?php } ?>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="tri2" class="table table-bordered table-hover">
