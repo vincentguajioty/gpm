@@ -5,7 +5,7 @@ session_start();
 require_once('logCheck.php');
 require_once 'config/bdd.php';
 
-if($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSION['commande_valider']==1 OR $_SESSION['commande_etreEnCharge']==1 OR $_SESSION['commande_abandonner']==1)
+if($_SESSION['commande_lecture']==1)
 {?>
     <div class="modal fade" id="modalCommandesDocAdd">
         <div class="modal-dialog">

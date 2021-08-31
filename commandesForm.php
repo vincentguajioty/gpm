@@ -45,9 +45,9 @@ if ($_SESSION['commande_ajout']==0)
                         <!-- text input -->
                         <div class="form-group">
                             <label>Demandeur: <small style="color:grey;">Requis</small></label>
-                            <select class="form-control select2" style="width: 100%;" name="idDemandeur">
+                            <select class="form-control select2" style="width: 100%;" name="idDemandeur[]" multiple>
                                 <?php
-                                $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1;');
+                                $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE commande_lecture = 1;');
                                 while ($data = $query->fetch())
                                 {
                                     ?>
@@ -59,10 +59,9 @@ if ($_SESSION['commande_ajout']==0)
                         </div>
                         <div class="form-group">
                             <label>Observateur: </label>
-                            <select class="form-control select2" style="width: 100%;" name="idObservateur">
-                                <option value="">--- Pas d'Observateur ---</option>
+                            <select class="form-control select2" style="width: 100%;" name="idObservateur[]" multiple>
                                 <?php
-                                $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1;');
+                                $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE commande_lecture = 1;');
                                 while ($data = $query->fetch())
                                 {
                                     ?>
@@ -74,9 +73,9 @@ if ($_SESSION['commande_ajout']==0)
                         </div>
                         <div class="form-group">
                             <label>Validation de la demande de commande par: <small style="color:grey;">Requis</small></label>
-                            <select class="form-control select2" style="width: 100%;" name="idValideur" required>
+                            <select class="form-control select2" style="width: 100%;" name="idValideur[]" multiple required>
                                 <?php
-                                $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1 AND commande_valider = 1;');
+                                $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE commande_lecture = 1 AND commande_valider = 1;');
                                 while ($data = $query->fetch())
                                 {
                                     ?>
@@ -88,9 +87,9 @@ if ($_SESSION['commande_ajout']==0)
                         </div>
                         <div class="form-group">
                             <label>Affectation (commande traitée par): <small style="color:grey;">Requis</small></label>
-                            <select class="form-control select2" style="width: 100%;" name="idAffectee" required>
+                            <select class="form-control select2" style="width: 100%;" name="idAffectee[]" multiple required>
                                 <?php
-                                $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1 AND commande_etreEnCharge = 1;');
+                                $query = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE commande_lecture = 1 AND commande_etreEnCharge = 1;');
                                 while ($data = $query->fetch())
                                 {
                                     ?>

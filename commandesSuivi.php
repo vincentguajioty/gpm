@@ -53,7 +53,9 @@ if ($_SESSION['commande_lecture']==0)
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->prepare('SELECT c.idCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat, p1.identifiant AS demandeur, p2.identifiant AS affectee  FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p1 ON c.idDemandeur = p1.idPersonne LEFT OUTER JOIN PERSONNE_REFERENTE p2 ON c.idAffectee = p2.idPersonne LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE (idDemandeur = :idPersonne OR idObservateur = :idPersonne OR idAffectee = :idPersonne) AND (c.idEtat = 4 OR c.idEtat = 5 OR c.idEtat = 6);');
+                        $query = $db->prepare('SELECT c.idCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat FROM COMMANDES_AFFECTEES j LEFT OUTER JOIN COMMANDES c ON j.idCommande = c.idCommande LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE (idAffectee = :idPersonne) AND (c.idEtat = 4 OR c.idEtat = 5 OR c.idEtat = 6)
+                        UNION
+                        SELECT c.idCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat FROM COMMANDES_OBSERVATEURS j LEFT OUTER JOIN COMMANDES c ON j.idCommande = c.idCommande LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE (idObservateur = :idPersonne) AND (c.idEtat = 4 OR c.idEtat = 5 OR c.idEtat = 6);');
                         $query->execute(array(
                             'idPersonne' => $_SESSION['idPersonne']
                         ));

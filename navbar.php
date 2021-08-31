@@ -173,7 +173,7 @@ require_once 'config/bdd.php';
 	                    <?php } ?>
 	                    <?php if ($_SESSION['commande_valider']==1){ ?>
 	                        <?php
-	                        $query = $db->prepare('SELECT COUNT(*) as nb FROM COMMANDES WHERE idValideur = :idPersonne AND idEtat = 2;');
+	                        $query = $db->prepare('SELECT COUNT(*) as nb FROM COMMANDES_VALIDEURS v JOIN COMMANDES c ON v.idCommande = c.idCommande WHERE idValideur = :idPersonne AND idEtat = 2;');
 	                        $query->execute(array(
 	                            'idPersonne' => $_SESSION['idPersonne']
 	                        ));
@@ -188,36 +188,22 @@ require_once 'config/bdd.php';
 	                        ><a href="commandesValidations.php"><i class="fa fa-map-signs"></i> <span>Je dois valider</span><?php if ($data['nb']>0) { ?><span class="pull-right-container"><small class="label pull-right bg-red"><?php echo $data['nb'];?></small></span> <?php } ?></a></li>
 	                    <?php } ?>
 	                    <?php if ($_SESSION['commande_etreEnCharge']==1){ ?>
-	                        <?php
-	                        $query = $db->prepare('SELECT COUNT(*) as nb FROM COMMANDES WHERE (idDemandeur = :idPersonne OR idObservateur = :idPersonne OR idAffectee = :idPersonne) AND (idEtat = 1 OR idEtat = 3);');
-	                        $query->execute(array(
-	                            'idPersonne' => $_SESSION['idPersonne']
-	                        ));
-	                        $data = $query -> fetch();
-	                        ?>
 	                        <li <?php
 	                        if ($_SESSION['page'] == 603)
 	                        {
 	                            echo 'class="active"';
 	                        }
 	                        ?>
-	                        ><a href="commandesTraiter.php"><i class="fa fa-file"></i> <span>Je dois traiter</span><?php if ($data['nb']>0) { ?><span class="pull-right-container"><small class="label pull-right bg-red"><?php echo $data['nb'];?></small></span> <?php } ?></a></li>
+	                        ><a href="commandesTraiter.php"><i class="fa fa-file"></i> <span>Je dois traiter</span></a></li>
 	                    <?php } ?>
 	                    <?php if ($_SESSION['commande_etreEnCharge']==1){ ?>
-	                        <?php
-	                        $query = $db->prepare('SELECT COUNT(*) as nb FROM COMMANDES WHERE (idDemandeur = :idPersonne OR idObservateur = :idPersonne OR idAffectee = :idPersonne) AND (idEtat = 4 OR idEtat = 5 OR idEtat = 6);');
-	                        $query->execute(array(
-	                            'idPersonne' => $_SESSION['idPersonne']
-	                        ));
-	                        $data = $query -> fetch();
-	                        ?>
 	                        <li <?php
 	                        if ($_SESSION['page'] == 604)
 	                        {
 	                            echo 'class="active"';
 	                        }
 	                        ?>
-	                        ><a href="commandesSuivi.php"><i class="fa fa-truck"></i> <span>Je dois suivre</span><?php if ($data['nb']>0) { ?><span class="pull-right-container"><small class="label pull-right bg-blue"><?php echo $data['nb'];?></small></span> <?php } ?></a></li>
+	                        ><a href="commandesSuivi.php"><i class="fa fa-truck"></i> <span>Je dois suivre</span></a></li>
 	                    <?php } ?>
 	                    <?php if ($_SESSION['cout_lecture']==1){ ?>
 	                        <li <?php

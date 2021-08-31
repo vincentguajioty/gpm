@@ -5,7 +5,7 @@ session_start();
 require_once('logCheck.php');
 require_once 'config/bdd.php';
 
-if($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSION['commande_valider']==1 OR $_SESSION['commande_etreEnCharge']==1 OR $_SESSION['commande_abandonner']==1)
+if($_SESSION['commande_lecture']==1)
 {?>
     
     <?php
@@ -32,12 +32,20 @@ if($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSI
                         <select <?= (isset($_GET['idElement'])) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idMaterielCatalogue">
                             <option value="-1">Frais de port</option>
                             <?php
-                            $query2 = $db->prepare('SELECT c.idMaterielCatalogue, c.libelleMateriel FROM MATERIEL_CATALOGUE c LEFT OUTER JOIN (SELECT idMaterielCatalogue FROM COMMANDES_MATERIEL WHERE idCommande= :idCommande) o ON c.idMaterielCatalogue = o.idMaterielCatalogue WHERE o.idMaterielCatalogue IS NULL ORDER BY libelleMateriel;');
-                            $query2->execute(array('idCommande' => $_GET['idCommande']));
+                            if(isset($_GET['idElement']))
+                            {
+                            	$query2 = $db->prepare('SELECT idMaterielCatalogue, libelleMateriel FROM MATERIEL_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue;');
+                            	$query2->execute(array('idMaterielCatalogue' => $_GET['idElement']));
+                            }
+                            else
+                            {
+                            	$query2 = $db->prepare('SELECT c.idMaterielCatalogue, c.libelleMateriel FROM MATERIEL_CATALOGUE c LEFT OUTER JOIN (SELECT idMaterielCatalogue FROM COMMANDES_MATERIEL WHERE idCommande= :idCommande) o ON c.idMaterielCatalogue = o.idMaterielCatalogue WHERE o.idMaterielCatalogue IS NULL ORDER BY libelleMateriel;');
+                            	$query2->execute(array('idCommande' => $_GET['idCommande']));
+                            }
                             while ($data2 = $query2->fetch())
                             {
                                 ?>
-                                <option <?php if (isset($data['idMaterielCatalogue']) AND ($data['idMaterielCatalogue'] == $data2['idMaterielCatalogue'])){ echo 'selected'; }?> value="<?php echo $data2['idMaterielCatalogue']; ?>"><?php echo $data2['libelleMateriel']; ?></option>
+                                <option <?php if (isset($_GET['idElement']) AND ($_GET['idElement'] == $data2['idMaterielCatalogue'])){ echo 'selected'; }?> value="<?php echo $data2['idMaterielCatalogue']; ?>"><?php echo $data2['libelleMateriel']; ?></option>
                                 <?php
                             }
                             $query2->closeCursor(); ?>

@@ -37,78 +37,78 @@ else
 
         if($config['notifications_commandes_demandeur_livraisonOK']==1)
         {
-            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idDemandeur = p.idPersonne WHERE idCommande = :idCommande;');
-            $query->execute(array(
-                'idCommande' => $_GET['id']
-            ));
+            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
             $data = $query->fetch();
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes le demandeur vient d'être livrée sans SAV.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            if(cmdEstDemandeur($data['idPersonne'],$_GET['id']))
             {
-                writeInLogs("Mail d'information de livraison de commande envoyé au demandeur pour la commande " . $_GET['id'], '2');
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail d'information de livraison de commande au demandeur pour la commande " . $_GET['id'], '5');
+                $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes le demandeur vient d'être livrée sans SAV.";
+                $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+                $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+                if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+                {
+                    writeInLogs("Mail d'information de livraison de commande envoyé au demandeur pour la commande " . $_GET['id'], '2');
+                }
+                else
+                {
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de livraison de commande au demandeur pour la commande " . $_GET['id'], '5');
+                }
             }
         }
         if($config['notifications_commandes_valideur_livraisonOK']==1)
         {
-            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idValideur = p.idPersonne WHERE idCommande = :idCommande;');
-            $query->execute(array(
-                'idCommande' => $_GET['id']
-            ));
+            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
             $data = $query->fetch();
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> La commande " . $_GET['id'] . " dont vous êtes le valideur vient d'être livrée sans SAV.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            if(cmdEstValideur($data['idPersonne'],$_GET['id']))
             {
-                writeInLogs("Mail d'information de livraison de commande envoyé au valideur pour la commande " . $_GET['id'], '2');
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail d'information de livraison de commande au valideur pour la commande " . $_GET['id'], '5');
+                $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> La commande " . $_GET['id'] . " dont vous êtes le valideur vient d'être livrée sans SAV.";
+                $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+                $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+                if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+                {
+                    writeInLogs("Mail d'information de livraison de commande envoyé au valideur pour la commande " . $_GET['id'], '2');
+                }
+                else
+                {
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de livraison de commande au valideur pour la commande " . $_GET['id'], '5');
+                }
             }
         }
         if($config['notifications_commandes_affectee_livraisonOK']==1)
         {
-            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idAffectee = p.idPersonne WHERE idCommande = :idCommande;');
-            $query->execute(array(
-                'idCommande' => $_GET['id']
-            ));
+            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
             $data = $query->fetch();
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " qui vous est affectée vient d'être livrée sans SAV.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            if(cmdEstAffectee($data['idPersonne'],$_GET['id']))
             {
-                writeInLogs("Mail d'information de livraison de commande envoyé au gérant pour la commande " . $_GET['id'], '2');
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail de passage de livraison de commande au gérant pour la commande " . $_GET['id'], '5');
+                $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " qui vous est affectée vient d'être livrée sans SAV.";
+                $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+                $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+                if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+                {
+                    writeInLogs("Mail d'information de livraison de commande envoyé au gérant pour la commande " . $_GET['id'], '2');
+                }
+                else
+                {
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de livraison de commande au gérant pour la commande " . $_GET['id'], '5');
+                }
             }
         }
         if($config['notifications_commandes_observateur_livraisonOK']==1)
         {
-            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idObservateur = p.idPersonne WHERE idCommande = :idCommande;');
-            $query->execute(array(
-                'idCommande' => $_GET['id']
-            ));
+            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
             $data = $query->fetch();
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes l'observateur vient d'être livrée sans SAV.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            if(cmdEstObservateur($data['idPersonne'],$_GET['id']))
             {
-                writeInLogs("Mail d'information de livraison de commande envoyé à l'observateur pour la commande " . $_GET['id'], '2');
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail de passage de livraison de commande à l'observateur pour la commande " . $_GET['id'], '5');
+                $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes l'observateur vient d'être livrée sans SAV.";
+                $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+                $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+                if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+                {
+                    writeInLogs("Mail d'information de livraison de commande envoyé à l'observateur pour la commande " . $_GET['id'], '2');
+                }
+                else
+                {
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de livraison de commande à l'observateur pour la commande " . $_GET['id'], '5');
+                }
             }
         }
 
@@ -127,78 +127,78 @@ else
 
         if($config['notifications_commandes_demandeur_livraisonNOK']==1)
         {
-            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idDemandeur = p.idPersonne WHERE idCommande = :idCommande;');
-            $query->execute(array(
-                'idCommande' => $_GET['id']
-            ));
+            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
             $data = $query->fetch();
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes le demandeur vient d'être livrée avec ouverture d'un SAV.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            if(cmdEstDemandeur($data['idPersonne'],$_GET['id']))
             {
-                writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé au demandeur pour la commande " . $_GET['id'], '2');
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail d'information de livraison avec ouverture de SAV de commande au demandeur pour la commande " . $_GET['id'], '5');
+                $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes le demandeur vient d'être livrée avec ouverture d'un SAV.";
+                $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+                $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+                if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+                {
+                    writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé au demandeur pour la commande " . $_GET['id'], '2');
+                }
+                else
+                {
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de livraison avec ouverture de SAV de commande au demandeur pour la commande " . $_GET['id'], '5');
+                }
             }
         }
         if($config['notifications_commandes_valideur_livraisonNOK']==1)
         {
-            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idValideur = p.idPersonne WHERE idCommande = :idCommande;');
-            $query->execute(array(
-                'idCommande' => $_GET['id']
-            ));
+            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
             $data = $query->fetch();
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> La commande " . $_GET['id'] . " dont vous êtes le valideur vient d'être livrée avec ouverture d'un SAV.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            if(cmdEstValideur($data['idPersonne'],$_GET['id']))
             {
-                writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé au valideur pour la commande " . $_GET['id'], '2');
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail d'information de livraison avec ouverture de SAV de commande au valideur pour la commande " . $_GET['id'], '5');
+                $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> La commande " . $_GET['id'] . " dont vous êtes le valideur vient d'être livrée avec ouverture d'un SAV.";
+                $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+                $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+                if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+                {
+                    writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé au valideur pour la commande " . $_GET['id'], '2');
+                }
+                else
+                {
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de livraison avec ouverture de SAV de commande au valideur pour la commande " . $_GET['id'], '5');
+                }
             }
         }
         if($config['notifications_commandes_affectee_livraisonNOK']==1)
         {
-            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idAffectee = p.idPersonne WHERE idCommande = :idCommande;');
-            $query->execute(array(
-                'idCommande' => $_GET['id']
-            ));
+            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
             $data = $query->fetch();
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " qui vous est affectée vient d'être livrée avec ouverture d'un SAV.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            if(cmdEstAffectee($data['idPersonne'],$_GET['id']))
             {
-                writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé au gérant pour la commande " . $_GET['id'], '2');
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail de passage de livraison avec ouverture de SAV de commande au gérant pour la commande " . $_GET['id'], '5');
+                $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " qui vous est affectée vient d'être livrée avec ouverture d'un SAV.";
+                $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+                $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+                if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+                {
+                    writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé au gérant pour la commande " . $_GET['id'], '2');
+                }
+                else
+                {
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de livraison avec ouverture de SAV de commande au gérant pour la commande " . $_GET['id'], '5');
+                }
             }
         }
         if($config['notifications_commandes_observateur_livraisonNOK']==1)
         {
-            $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idObservateur = p.idPersonne WHERE idCommande = :idCommande;');
-            $query->execute(array(
-                'idCommande' => $_GET['id']
-            ));
+            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
             $data = $query->fetch();
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes l'observateur vient d'être livrée avec ouverture d'un SAV.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            if(cmdEstObservateur($data['idPersonne'],$_GET['id']))
             {
-                writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé à l'observateur pour la commande " . $_GET['id'], '2');
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail de passage de livraison avec ouverture de SAV de commande à l'observateur pour la commande " . $_GET['id'], '5');
+                $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes l'observateur vient d'être livrée avec ouverture d'un SAV.";
+                $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+                $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+                if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+                {
+                    writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé à l'observateur pour la commande " . $_GET['id'], '2');
+                }
+                else
+                {
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de livraison avec ouverture de SAV de commande à l'observateur pour la commande " . $_GET['id'], '5');
+                }
             }
         }
 

@@ -53,7 +53,7 @@ if ($_SESSION['commande_lecture']==0)
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->prepare('SELECT c.idCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat, p1.identifiant AS demandeur, p2.identifiant AS affectee  FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p1 ON c.idDemandeur = p1.idPersonne LEFT OUTER JOIN PERSONNE_REFERENTE p2 ON c.idAffectee = p2.idPersonne LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE (idValideur = :idPersonne) AND (c.idEtat = 2);');
+                        $query = $db->prepare('SELECT c.idCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat FROM COMMANDES_VALIDEURS j LEFT OUTER JOIN COMMANDES c ON j.idCommande = c.idCommande LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE (idValideur = :idPersonne) AND (c.idEtat = 2);');
                         $query->execute(array(
                             'idPersonne' => $_SESSION['idPersonne']
                         ));
@@ -92,8 +92,26 @@ if ($_SESSION['commande_lecture']==0)
                                             break;
                                     }
                                     ?>"><?php echo $data['libelleEtat']; ?></span></td>
-                                <td><?php echo $data['demandeur']; ?></td>
-                                <td><?php echo $data['affectee']; ?></td>
+                                <td>
+                                	<?php
+                                		$query2 = $db->prepare('SELECT * FROM COMMANDES_DEMANDEURS c JOIN PERSONNE_REFERENTE p ON c.idDemandeur = p.idPersonne WHERE idCommande = :idCommande');
+                                		$query2->execute(array('idCommande'=>$data['idCommande']));
+                                		while($data2 = $query2->fetch())
+                                		{
+                                			echo $data2['prenomPersonne'].' '.$data2['nomPersonne'].'<br/>';
+                                		}
+                                	?>
+                                </td>
+                                <td>
+	                                <?php
+	                            		$query2 = $db->prepare('SELECT * FROM COMMANDES_AFFECTEES c JOIN PERSONNE_REFERENTE p ON c.idAffectee = p.idPersonne WHERE idCommande = :idCommande');
+	                            		$query2->execute(array('idCommande'=>$data['idCommande']));
+	                            		while($data2 = $query2->fetch())
+	                            		{
+	                            			echo $data2['prenomPersonne'].' '.$data2['nomPersonne'].'<br/>';
+	                            		}
+	                            	?>
+                                </td>
                                 <td>
                                     <a href="commandeView.php?id=<?=$data['idCommande']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                 </td>

@@ -28,24 +28,21 @@ else
         'idResponsable' => $_GET['id']
     ));
     
-    $query = $db->prepare('UPDATE COMMANDES SET idDemandeur = Null WHERE idDemandeur = :idDemandeur ;');
+    $query = $db->prepare('DELETE FROM COMMANDES_AFFECTEES WHERE idAffectee = :idPersonne;');
     $query->execute(array(
-        'idDemandeur' => $_GET['id']
+        'idPersonne' => $_GET['id']
     ));
-    
-    $query = $db->prepare('UPDATE COMMANDES SET idObservateur = Null WHERE idObservateur = :idObservateur ;');
+    $query = $db->prepare('DELETE FROM COMMANDES_VALIDEURS WHERE idValideur = :idPersonne;');
     $query->execute(array(
-        'idObservateur' => $_GET['id']
+        'idPersonne' => $_GET['id']
     ));
-    
-    $query = $db->prepare('UPDATE COMMANDES SET idValideur = Null WHERE idValideur = :idValideur ;');
+    $query = $db->prepare('DELETE FROM COMMANDES_OBSERVATEURS WHERE idObservateur = :idPersonne;');
     $query->execute(array(
-        'idValideur' => $_GET['id']
+        'idPersonne' => $_GET['id']
     ));
-    
-    $query = $db->prepare('UPDATE COMMANDES SET idAffectee = Null WHERE idAffectee = :idAffectee ;');
+    $query = $db->prepare('DELETE FROM COMMANDES_DEMANDEURS WHERE idDemandeur = :idPersonne;');
     $query->execute(array(
-        'idAffectee' => $_GET['id']
+        'idPersonne' => $_GET['id']
     ));
 
     $query = $db->prepare('UPDATE MESSAGES SET idPersonne = Null WHERE idPersonne = :idPersonne ;');

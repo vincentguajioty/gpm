@@ -35,6 +35,23 @@ else
         ));
     }
 
+    $query = $db->prepare('DELETE FROM COMMANDES_AFFECTEES WHERE idCommande = :idCommande;');
+    $query->execute(array(
+        'idCommande' => $_GET['id']
+    ));
+    $query = $db->prepare('DELETE FROM COMMANDES_VALIDEURS WHERE idCommande = :idCommande;');
+    $query->execute(array(
+        'idCommande' => $_GET['id']
+    ));
+    $query = $db->prepare('DELETE FROM COMMANDES_OBSERVATEURS WHERE idCommande = :idCommande;');
+    $query->execute(array(
+        'idCommande' => $_GET['id']
+    ));
+    $query = $db->prepare('DELETE FROM COMMANDES_DEMANDEURS WHERE idCommande = :idCommande;');
+    $query->execute(array(
+        'idCommande' => $_GET['id']
+    ));
+    
     $query = $db->prepare('DELETE FROM COMMANDES WHERE idCommande = :idCommande;');
     $query->execute(array(
         'idCommande' => $_GET['id']
