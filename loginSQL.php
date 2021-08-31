@@ -115,10 +115,6 @@ if ($data['idIP'] == "")
 	    $_SESSION['typesLots_ajout'] = $data['typesLots_ajout'];
 	    $_SESSION['typesLots_modification'] = $data['typesLots_modification'];
 	    $_SESSION['typesLots_suppression'] = $data['typesLots_suppression'];
-	    $_SESSION['etats_lecture'] = $data['etats_lecture'];
-	    $_SESSION['etats_ajout'] = $data['etats_ajout'];
-	    $_SESSION['etats_modification'] = $data['etats_modification'];
-	    $_SESSION['etats_suppression'] = $data['etats_suppression'];
 	    $_SESSION['lieux_lecture'] = $data['lieux_lecture'];
 	    $_SESSION['lieux_ajout'] = $data['lieux_ajout'];
 	    $_SESSION['lieux_modification'] = $data['lieux_modification'];

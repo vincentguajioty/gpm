@@ -17,6 +17,7 @@ if ($_SESSION['commande_lecture']==0)
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
     <?php require_once 'modal.php'; ?>
+    <?php require_once 'documentsGetIcone.php'; ?>
 
     <?php
     $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat WHERE idCommande=:idCommande;');
@@ -291,8 +292,14 @@ if ($_SESSION['commande_lecture']==0)
                                                 <td><?php echo $data2['nomDocCommande'];?></td>
                                                 <td><?php echo $data2['libelleTypeDocument'];?></td>
                                                 <td><?php echo $data2['dateDocCommande'];?></td>
-                                                <td><?php echo $data2['formatDocCommande'];?></td>
+                                                <td><i class="fa <?php echo documentsGetIcone($data2['formatDocCommande']);?>"></i></td>
                                                 <td>
+                                                    <?php if($_SESSION['commande_lecture']==1){
+                                                    		if ($data2['formatDocCommande'] == 'pdf'){?>
+                                                        		<a href="commandeDocView.php?idDoc=<?=$data2['idDocCommande']?>" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                                                    <?php } else { ?>
+                                                    			<a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                                    <?php }}?>
                                                     <?php if($_SESSION['commande_lecture']==1){ ?>
                                                         <a href="commandeDocDL.php?idDoc=<?=$data2['idDocCommande']?>" class="btn btn-xs btn-success"><i class="fa fa-download"></i></a>
                                                     <?php }?>

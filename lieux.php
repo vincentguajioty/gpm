@@ -67,11 +67,11 @@ if ($_SESSION['lieux_lecture']==0)
                                 <td><?php
                                     if ($data['accesReserve'] == 0)
                                     {
-                                        ?><span class="badge bg-green">Accès libre</span><?php
+                                        ?><i class="fa fa-unlock"></i><?php
                                     }
                                     else
                                     {
-                                        ?><span class="badge bg-red">Accès réglementé</span><?php
+                                        ?><i class="fa fa-lock"></i><?php
                                     }
                                 ?></td>
                                 <td><?php echo $data['detailsLieu']; ?></td>

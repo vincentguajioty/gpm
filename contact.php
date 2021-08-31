@@ -78,6 +78,7 @@ require_once('logCheck.php');
                                 <div class="form-group">
                                     <label>Je veux: </label>
                                     <select class="form-control" name="motif">
+                                        <option>Demander de l'aide sur l'utilisation de l'outil</option>
                                         <option>Faire une suggestion</option>
                                         <option>Signaler un dysfonctionnement dans un module</option>
                                         <option>Signaler une faille de sécurité</option>
@@ -96,7 +97,8 @@ require_once('logCheck.php');
                                         <option>Module de commandes</option>
                                         <option>Module de gestion de l'annuaire</option>
                                         <option>Module de gestion des profils</option>
-                                        <option>Paramètres (catégories de matériels, états des lots, lieux, fournisseurs ...)</option>
+                                        <option>Paramètres fonctionnels (catégories, états , lieux, fournisseurs ...)</option>
+                                        <option>Paramètres techniques de l'application</option>
                                         <option>Autre</option>
                                     </select>
                                 </div>
@@ -104,7 +106,7 @@ require_once('logCheck.php');
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Ma version de GPM:</label>
-                                    <input type="text" class="form-control" value="<?php echo $VERSION;?>" name="version">
+                                    <input type="text" class="form-control" value="DB<?php echo $VERSION;?> - WEB<?php echo $VERSIONCHECK;?>" name="version">
                                 </div>
                             </div>
                         </div>

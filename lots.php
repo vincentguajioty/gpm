@@ -53,6 +53,7 @@ if ($_SESSION['lots_lecture']==0)
                                 <th>Etat</th>
                                 <th>Référent</th>
                                 <th>Dernier Inventaire</th>
+                                <th>Notifications</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -101,6 +102,9 @@ if ($_SESSION['lots_lecture']==0)
                                         ?><span class="badge bg-green"><?php echo $data['dateDernierInventaire']; ?></span><?php
                                     }
                                     ?>
+                                </td>
+                                <td>
+                                	<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>
                                 </td>
                                 <td>
                                     <?php if ($_SESSION['lots_lecture']==1) {?>

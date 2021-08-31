@@ -119,7 +119,7 @@ else
 
 
 
-    echo "<script type='text/javascript'>document.location.replace('commandesAbandonnees.php');</script>";
+    echo "<script type='text/javascript'>document.location.replace('commandesToutes.php');</script>";
 
 }
 ?>

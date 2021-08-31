@@ -16,7 +16,7 @@ require_once 'config/bdd.php';
             }
             ?>
             ><a href="index.php"><i class="fa fa-home"></i> <span>Accueil</span></a></li>
-
+<li class="header">MODULES</li>
 			<?php
 			if ($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots_modification']==1 OR $_SESSION['lots_suppression']==1 OR $_SESSION['sac_lecture']==1 OR $_SESSION['sac_ajout']==1 OR $_SESSION['sac_modification']==1 OR $_SESSION['sac_suppression']==1 OR $_SESSION['sac2_lecture']==1 OR $_SESSION['sac2_ajout']==1 OR $_SESSION['sac2_modification']==1 OR $_SESSION['sac2_suppression']==1 OR $_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSION['materiel_modification']==1 OR $_SESSION['materiel_suppression']==1)
 			{
@@ -24,7 +24,7 @@ require_once 'config/bdd.php';
 	            <li <?php
 	            if (((int)($_SESSION['page']/100))==1)
 	            {
-	                echo 'class="active treeview menu-open"';
+	                echo 'class="active treeview"';
 	            }
 	            else
 	            {
@@ -33,7 +33,7 @@ require_once 'config/bdd.php';
 	            ?>
 	            >
 	                <a href="#">
-	                    <span>GESTION DES LOTS</span>
+	                    <i class="fa fa-medkit"></i> <span>LOTS OPERATIONNELS</span>
 	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
 	                </a>
 	                <ul class="treeview-menu">
@@ -44,7 +44,7 @@ require_once 'config/bdd.php';
 	                            echo 'class="active"';
 	                        }
 	                        ?>
-	                        ><a href="lots.php"><i class="fa fa-ambulance"></i> <span>Lots</span></a></li>
+	                        ><a href="lots.php"><i class="fa fa-h-square"></i> <span>Lots</span></a></li>
 	                    <?php } ?>
 	                    <?php if ($_SESSION['sac_lecture']==1){ ?>
 	                        <li <?php
@@ -62,7 +62,7 @@ require_once 'config/bdd.php';
 	                            echo 'class="active"';
 	                        }
 	                        ?>
-	                        ><a href="emplacements.php"><i class="fa fa-plus-square"></i> <span>Emplacements</span></a></li>
+	                        ><a href="emplacements.php"><i class="fa fa-cubes"></i> <span>Emplacements</span></a></li>
 	                    <?php } ?>
 	                    <?php if ($_SESSION['materiel_lecture']==1){ ?>
 	                        <li <?php
@@ -80,48 +80,13 @@ require_once 'config/bdd.php';
 			?>
             
             <?php
-			if ($_SESSION['typesLots_lecture']==1 OR $_SESSION['typesLots_ajout']==1 OR $_SESSION['typesLots_modification']==1 OR $_SESSION['typesLots_suppression']==1)
-			{
-			?>
-	            <li <?php
-	            if (((int)($_SESSION['page']/100))==2)
-	            {
-	                echo 'class="active treeview menu-open"';
-	            }
-	            else
-	            {
-	                echo 'class="treeview"';
-	            }
-	            ?>
-	            >
-	                <a href="#">
-	                    <span>REFERENTIELS</span>
-	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
-	                </a>
-	                <ul class="treeview-menu">
-	                    <?php if ($_SESSION['typesLots_lecture']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 201)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="referentiels.php"><i class="fa fa-bank"></i> <span>Référentiels</span></a></li>
-	                    <?php } ?>
-	                </ul>
-	            </li>
-	        <?php
-			}
-			?>
-            
-            <?php
 			if ($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSION['commande_valider']==1 OR $_SESSION['commande_etreEnCharge']==1 OR $_SESSION['commande_abandonner']==1 OR $_SESSION['cout_lecture']==1 OR $_SESSION['cout_ajout']==1 OR $_SESSION['cout_etreEnCharge']==1 OR $_SESSION['cout_supprimer']==1)
 			{
 			?>
 	            <li <?php
 	            if (((int)($_SESSION['page']/100))==6)
 	            {
-	                echo 'class="active treeview menu-open"';
+	                echo 'class="active treeview"';
 	            }
 	            else
 	            {
@@ -130,7 +95,7 @@ require_once 'config/bdd.php';
 	            ?>
 	            >
 	                <a href="#">
-	                    <span>COMMANDES</span>
+	                    <i class="fa fa-truck"></i> <span>COMMANDES</span>
 	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
 	                </a>
 	                <ul class="treeview-menu">
@@ -145,6 +110,22 @@ require_once 'config/bdd.php';
 	                        }
 	                        ?>
 	                        ><a href="commandesToutes.php"><i class="fa fa-reorder"></i> <span>Toutes les commandes</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['commande_lecture']==1){ ?>
+	                        <?php
+	                        $query = $db->prepare('SELECT COUNT(*) as nb FROM COMMANDES WHERE idEtat < 7;');
+	                        $query->execute(array(
+	                            'idPersonne' => $_SESSION['idPersonne']
+	                        ));
+	                        $data = $query -> fetch();
+	                        ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 607)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="commandesNonCloses.php"><i class="fa fa-spinner"></i> <span>Non closes</span><?php if ($data['nb']>0) { ?><span class="pull-right-container"><small class="label pull-right bg-blue"><?php echo $data['nb'];?></small></span> <?php } ?></a></li>
 	                    <?php } ?>
 	                    <?php if ($_SESSION['commande_valider']==1){ ?>
 	                        <?php
@@ -192,16 +173,7 @@ require_once 'config/bdd.php';
 	                            echo 'class="active"';
 	                        }
 	                        ?>
-	                        ><a href="commandesSuivi.php"><i class="fa fa-cubes"></i> <span>Je dois suivre</span><?php if ($data['nb']>0) { ?><span class="pull-right-container"><small class="label pull-right bg-blue"><?php echo $data['nb'];?></small></span> <?php } ?></a></li>
-	                    <?php } ?>
-	                    <?php if ($_SESSION['commande_lecture']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 605)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="commandesAbandonnees.php"><i class="fa fa-trash"></i> <span>Abandonnées</span></a></li>
+	                        ><a href="commandesSuivi.php"><i class="fa fa-truck"></i> <span>Je dois suivre</span><?php if ($data['nb']>0) { ?><span class="pull-right-container"><small class="label pull-right bg-blue"><?php echo $data['nb'];?></small></span> <?php } ?></a></li>
 	                    <?php } ?>
 	                    <?php if ($_SESSION['cout_lecture']==1){ ?>
 	                        <li <?php
@@ -217,9 +189,50 @@ require_once 'config/bdd.php';
 	        <?php
 			}
 	        ?>
-            
+	        
+	        
+	        
+<li class="header">PARAMETRES</li>
+
+
             <?php
-			if ($_SESSION['catalogue_lecture']==1 OR $_SESSION['catalogue_ajout']==1 OR $_SESSION['catalogue_modification']==1 OR $_SESSION['catalogue_suppression']==1 OR $_SESSION['categories_lecture']==1 OR $_SESSION['categories_ajout']==1 OR $_SESSION['categories_modification']==1 OR $_SESSION['categories_suppression']==1 OR $_SESSION['etats_lecture']==1 OR $_SESSION['etats_ajout']==1 OR $_SESSION['etats_modification']==1 OR $_SESSION['etats_suppression']==1 OR $_SESSION['lieux_lecture']==1 OR $_SESSION['lieux_ajout']==1 OR $_SESSION['lieuxl_modification']==1 OR $_SESSION['lieux_suppression']==1 OR $_SESSION['fournisseurs_lecture']==1 OR $_SESSION['fournisseurs_ajout']==1 OR $_SESSION['fournisseurs_modification']==1 OR $_SESSION['fournisseurs_suppression']==1)
+			if ($_SESSION['typesLots_lecture']==1 OR $_SESSION['typesLots_ajout']==1 OR $_SESSION['typesLots_modification']==1 OR $_SESSION['typesLots_suppression']==1)
+			{
+			?>
+	            <li <?php
+	            if (((int)($_SESSION['page']/100))==2)
+	            {
+	                echo 'class="active treeview"';
+	            }
+	            else
+	            {
+	                echo 'class="treeview"';
+	            }
+	            ?>
+	            >
+	                <a href="#">
+	                    <i class="fa fa-bank"></i> <span>REFERENTIELS</span>
+	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+	                </a>
+	                <ul class="treeview-menu">
+	                    <?php if ($_SESSION['typesLots_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 201)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="referentiels.php"><i class="fa fa-bank"></i> <span>Référentiels</span></a></li>
+	                    <?php } ?>
+	                </ul>
+	            </li>
+	        <?php
+			}
+			?>
+			
+			
+            <?php
+			if ($_SESSION['catalogue_lecture']==1 OR $_SESSION['catalogue_ajout']==1 OR $_SESSION['catalogue_modification']==1 OR $_SESSION['catalogue_suppression']==1 OR $_SESSION['categories_lecture']==1 OR $_SESSION['categories_ajout']==1 OR $_SESSION['categories_modification']==1 OR $_SESSION['categories_suppression']==1 OR $_SESSION['lieux_lecture']==1 OR $_SESSION['lieux_ajout']==1 OR $_SESSION['lieuxl_modification']==1 OR $_SESSION['lieux_suppression']==1 OR $_SESSION['fournisseurs_lecture']==1 OR $_SESSION['fournisseurs_ajout']==1 OR $_SESSION['fournisseurs_modification']==1 OR $_SESSION['fournisseurs_suppression']==1)
 			{
 			?>
 	            <li <?php
@@ -234,7 +247,7 @@ require_once 'config/bdd.php';
 	            ?>
 	            >
 	                <a href="#">
-	                    <span>PARAMETRES</span>
+	                    <i class="fa fa-table"></i> <span>CHAMPS ET LIBELLES</span>
 	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
 	                </a>
 	                <ul class="treeview-menu">
@@ -256,15 +269,6 @@ require_once 'config/bdd.php';
 	                        ?>
 	                        ><a href="categories.php"><i class="fa fa-table"></i> <span>Catégories matériels</span></a></li>
 	                    <?php } ?>
-	                    <?php if ($_SESSION['etats_lecture']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 303)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="etats.php"><i class="fa fa-dashboard"></i> <span>Etats des lots</span></a></li>
-	                    <?php } ?>
 	                    <?php if ($_SESSION['lieux_lecture']==1){ ?>
 	                        <li <?php
 	                        if ($_SESSION['page'] == 304)
@@ -272,7 +276,7 @@ require_once 'config/bdd.php';
 	                            echo 'class="active"';
 	                        }
 	                        ?>
-	                        ><a href="lieux.php"><i class="fa fa-building"></i> <span>Lieux de stockage</span></a></li>
+	                        ><a href="lieux.php"><i class="fa fa-map-pin"></i> <span>Lieux de stockage</span></a></li>
 	                    <?php } ?>
 	                    <?php if ($_SESSION['fournisseurs_lecture']==1){ ?>
 	                        <li <?php
@@ -296,7 +300,7 @@ require_once 'config/bdd.php';
 	            <li <?php
 	            if (((int)($_SESSION['page']/100))==4)
 	            {
-	                echo 'class="active treeview menu-open"';
+	                echo 'class="active treeview"';
 	            }
 	            else
 	            {
@@ -305,7 +309,7 @@ require_once 'config/bdd.php';
 	            ?>
 	            >
 	                <a href="#">
-	                    <span>ANNUAIRE</span>
+	                    <i class="fa fa-users"></i> <span>ANNUAIRE</span>
 	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
 	                </a>
 	                <ul class="treeview-menu">
@@ -338,7 +342,7 @@ require_once 'config/bdd.php';
             <li <?php
             if (((int)($_SESSION['page']/100))==5)
             {
-                echo 'class="active treeview menu-open"';
+                echo 'class="active treeview"';
             }
             else
             {
@@ -347,7 +351,7 @@ require_once 'config/bdd.php';
             ?>
             >
                 <a href="#">
-                    <span>AUTRES</span>
+                    <i class="fa fa-wrench"></i> <span>AUTRES</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">

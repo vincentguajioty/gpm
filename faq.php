@@ -43,6 +43,43 @@ require_once 'config/config.php';
                                     <ul class="timeline">
                                         <li class="time-label">
                                               <span class="bg-purple">
+                                                Version 2.4
+                                              </span>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-green"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">12 octobre 2017</span>
+                                                <h3 class="timeline-header">Livraison en production de la version 2.4</h3>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-orange"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">11 octobre 2017</span>
+                                                <h3 class="timeline-header">Livraison en recette de la version 2.4</h3>
+                                                <div class="timeline-body">
+                                                    Nouveautés par rapport à la version précédente:
+                                                    <ul>
+                                                        <li>Possibilité de visionner en ligne les documents joints aux commandes au lieu de les télécharger. Ne remplace pas pour autant le bouton télécharger.</li>
+                                                        <li>Retrait du module ETATS DES LOTS. Les états ne sont plus paramétrables, seuls deux états sont disponibles: "Opérationnel" et "Au rebus". L'objectif à terme est que cet indicatif d'état permette de désactiver les notifications sur le lot et le matériel qui lui est rattaché.</li>
+                                                        <li>Etant donné que deux états de lots sont disponibles, le système d'alerte par mail ainsi que les quatres indicateurs généraux de la page d'accueil a été modifié pour ne prendre en compte que les lots / matériels rattachés à des lots OPERATIONNELS (exclusion de tout ce qui est AU REBUS, sans état spécifié, pas rattaché à un lot, rattaché à un lot AU REBUS).</li>
+                                                        <li>Ajout d'une colonne sur la page des lots pour indiquer si le lot est sujet aux notifications (redondant par rapport à l'état car c'est l'état qui dicte la présence des notifications, mais l'information est plus claire)</li>
+                                                        <li>Modification de l'icone du site (dans les favoris et les onglets du navigateur)</li>
+                                                    </ul>
+                                                    Corrections apportées:
+                                                    <ul>
+                                                        <li>Mise en place d'une barre de défilement horizontal lorsque les tableaux ne peuvent pas s'afficher complètement (particulièrement utile pour les affichages sur mobile).</li>
+                                                        <li>Lors de l'ajout d'éléments dans une commande, les matériels déjà ajoutés à une commande sont exclus de la liste des éléments ajoutables à la commande.</li>
+                                                        <li>Ré-organisation du menu de navigation</li>
+                                                        <li>Modification de certaines icones</li>
+                                                        <li>Réorganisation des formulaire de gestion des profils</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="time-label">
+                                              <span class="bg-purple">
                                                 Version 2.3
                                               </span>
                                         </li>
@@ -442,7 +479,7 @@ require_once 'config/config.php';
                         <div class="box-body">
                             Copyright &copy; 2017 Vincent Guajioty. All rights reserved.
                             <br/><br/>
-                            Version <?php echo $VERSION; ?> <a href="https://cloud.guajioty.fr/sharing/qXPFbvvpV"><b style="color:red;"><?php echo file_get_contents("https://www.guajioty.fr/majDist/gpmMAJ.php?versionClient=".$VERSION); ?></b></a>
+                            Version <?php echo $VERSION; ?> <a href="http://www.guajioty.fr/majDist/gpm.zip"><b style="color:red;"><?php echo file_get_contents("https://www.guajioty.fr/majDist/gpmMAJ.php?versionClient=".$VERSION); ?></b></a>
                             <br/><br/>
                             Adresse mail de l'administrateur de cette instance de GPM: <?php echo $MAILSERVER; ?>
                             <br/><br/>

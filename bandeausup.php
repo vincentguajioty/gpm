@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once('logCheck.php');
-require_once 'config/bdd.php';
 require_once 'config/config.php';
 ?>
 <header class="main-header">

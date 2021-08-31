@@ -21,8 +21,8 @@ require_once('config/bdd.php');
                         <select class="form-control select2" style="width: 100%;" name="idMaterielCatalogue">
                             <option value="-1">Frais de port</option>
                             <?php
-                            $query2 = $db->prepare('SELECT * FROM MATERIEL_CATALOGUE ORDER BY libelleMateriel;');
-                            $query2->execute(array('idTypeLot' => $_GET['id']));
+                            $query2 = $db->prepare('SELECT c.idMaterielCatalogue, c.libelleMateriel FROM MATERIEL_CATALOGUE c LEFT OUTER JOIN (SELECT idMaterielCatalogue FROM COMMANDES_MATERIEL WHERE idCommande= :idCommande) o ON c.idMaterielCatalogue = o.idMaterielCatalogue WHERE o.idMaterielCatalogue IS NULL ORDER BY libelleMateriel;');
+                            $query2->execute(array('idCommande' => $_GET['id']));
                             while ($data2 = $query2->fetch())
                             {
                                 ?>
@@ -599,34 +599,6 @@ require_once('config/bdd.php');
                         <div class="form-group">
                             <label>Libellé:<small style="color:grey;"> Requis</small></label>
                             <input type="text" class="form-control" placeholder="Libellé de la catégorie à ajouter" name="libelleCategorie" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
-                        <button type="submit" class="btn btn-primary pull-right">Ajouter</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-<?php } ?>
-
-
-
-
-<!-- ETATS -->
-<?php if($_SESSION['etats_lecture']==1 OR $_SESSION['etats_ajout']==1 OR $_SESSION['etats_modification']==1 OR $_SESSION['etats_suppression']==1) { ?>
-    <div class="modal fade" id="modalEtatAdd">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Création d'un état</h4>
-                </div>
-                <form role="form" action="etatsAdd.php" method="POST">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Libellé:<small style="color:grey;"> Requis</small></label>
-                            <input type="text" class="form-control" placeholder="Libellé de l'état à ajouter" name="libelleEtat" required>
                         </div>
                     </div>
                     <div class="modal-footer">

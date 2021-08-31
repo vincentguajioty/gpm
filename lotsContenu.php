@@ -149,6 +149,16 @@ if ($_SESSION['lots_lecture']==0)
                                         echo '<span class="pull-right badge bg-green">A jour</span>';
                                     }
                                         ?></a></li>
+                                <li><a>Notifications<?php
+                                    if ($data['idEtat']==1)
+                                    {
+                                        echo '<span class="pull-right badge bg-green"><i class="fa fa-bell-o"></i></span>';
+                                    }
+                                    else
+                                    {
+                                        echo '<span class="pull-right badge bg-orange"><i class="fa fa-bell-slash-o"></i></span>';
+                                    }
+                                        ?></a></li>
                             </ul>
                         </div>
                     </div>

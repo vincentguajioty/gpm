@@ -38,7 +38,7 @@ require_once('logCheck.php');
 
             <?php
             $nbLotsNOK = 0;
-            $query = $db->query('SELECT * FROM LOTS_LOTS WHERE idTypeLot IS NOT NULL;');
+            $query = $db->query('SELECT * FROM LOTS_LOTS WHERE idTypeLot IS NOT NULL AND idEtat = 1;');
             while ($data = $query->fetch())
             {
                 $nbLotsNOK = $nbLotsNOK + checkLotsConf($data['idLot']);
@@ -48,7 +48,7 @@ require_once('logCheck.php');
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <!-- small box -->
                 <?php
-                $query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE peremption < CURRENT_DATE OR peremption = CURRENT_DATE;');
+                $query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (peremption < CURRENT_DATE OR peremption = CURRENT_DATE) AND idEtat = 1;');
                 $data = $query->fetch();
 
                 if ($data['nb']>0)
@@ -82,7 +82,7 @@ require_once('logCheck.php');
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <!-- small box -->
                 <?php
-                $query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE quantite < quantiteAlerte OR quantite = quantiteAlerte;');
+                $query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (quantite < quantiteAlerte OR quantite = quantiteAlerte) AND idEtat = 1;');
                 $data = $query->fetch();
 
                 if ($data['nb']>0)
@@ -117,7 +117,7 @@ require_once('logCheck.php');
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <!-- small box -->
                 <?php
-                $query = $db->query('SELECT COUNT(*) as nb FROM LOTS_LOTS WHERE (frequenceInventaire IS NOT NULL) AND ((DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) < CURRENT_DATE) OR (DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) = CURRENT_DATE));');
+                $query = $db->query('SELECT COUNT(*) as nb FROM LOTS_LOTS WHERE idEtat = 1 AND (frequenceInventaire IS NOT NULL) AND ((DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) < CURRENT_DATE) OR (DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) = CURRENT_DATE));');
                 $data = $query->fetch();
 
                 if ($data['nb']>0)
@@ -297,7 +297,7 @@ require_once('logCheck.php');
             </div>
             <div class="modal-body">
                 <?php
-                $query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE peremptionNotification < CURRENT_DATE OR peremptionNotification = CURRENT_DATE;');
+                $query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (peremption < CURRENT_DATE OR peremption = CURRENT_DATE) AND idEtat = 1;');
                 ?>
                 <ul>
                     <?php
@@ -323,7 +323,7 @@ require_once('logCheck.php');
             </div>
             <div class="modal-body">
                 <?php
-                $query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE quantite < quantiteAlerte OR quantite = quantiteAlerte;');
+                $query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (quantite < quantiteAlerte OR quantite = quantiteAlerte) AND idEtat = 1;');
                 ?>
                 <ul>
                     <?php
@@ -349,7 +349,7 @@ require_once('logCheck.php');
             </div>
             <div class="modal-body">
                 <?php
-                $query = $db->query('SELECT * FROM LOTS_LOTS WHERE dateDernierInventaire IS NOT NULL AND frequenceInventaire != 0 AND CURRENT_DATE >= DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY);');
+                $query = $db->query('SELECT * FROM LOTS_LOTS WHERE idEtat = 1 AND dateDernierInventaire IS NOT NULL AND frequenceInventaire != 0 AND CURRENT_DATE >= DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY);');
                 ?>
                 <ul>
                     <?php
@@ -376,7 +376,7 @@ require_once('logCheck.php');
             <div class="modal-body">
                 <ul>
                     <?php
-                    $query = $db->query('SELECT * FROM LOTS_LOTS WHERE idTypeLot IS NOT NULL;');
+                    $query = $db->query('SELECT * FROM LOTS_LOTS WHERE idTypeLot IS NOT NULL AND idEtat = 1;');
                     while ($data = $query->fetch())
                     {
                         if(checkLotsConf($data['idLot'])==1)

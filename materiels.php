@@ -54,6 +54,7 @@ if ($_SESSION['materiel_lecture']==0)
                                 <th>Lot</th>
                                 <th>Quantité</th>
                                 <th>Péremption</th>
+                                <th>Notifications</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -97,6 +98,9 @@ if ($_SESSION['materiel_lecture']==0)
                                         ?><span class="badge bg-green"><?php echo $data['peremption']; ?></span><?php
                                     }
                                     ?>
+                                </td>
+                                <td>
+                                	<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>
                                 </td>
                                 <td>
                                     <?php if ($_SESSION['materiel_modification']==1) {?>

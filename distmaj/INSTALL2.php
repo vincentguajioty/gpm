@@ -11,8 +11,13 @@ switch($data['version'])
         $query = $db->query(file_get_contents ("update2.3.sql"));
         echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
         break;
-
+        
     case '2.3':
+        $query = $db->query(file_get_contents ("update2.4.sql"));
+        echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
+        break;
+
+    case '2.4':
         echo "<script type='text/javascript'>document.location.replace('INSTALLFINISH.php');</script>";
         break;
 

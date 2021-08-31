@@ -61,11 +61,26 @@ require_once('logCheck.php');
                                 </br>
                             </div>
                             <div class="form-group">
-                                <label>Paramétrage général de <?php echo $APPNAME;?>:</label>
+                                <label>Administration de <?php echo $APPNAME;?>:</label>
                                 </br>
                                 <div class="checkbox">
 	                                <label>
-	                                    <input type="checkbox" value="1" name="appli_conf"> Autorisé à modifier la configuration de <?php echo $APPNAME;?>
+	                                    <input type="checkbox" value="1" name="appli_conf"> Modifier la configuration générale de <?php echo $APPNAME;?>
+	                                </label>
+	                            </div>
+	                            <div class="checkbox">
+	                                <label>
+	                                    <input type="checkbox" value="1" name="annuaire_mdp"> Réinitialiser les mots de passe des autres utilisateurs
+	                                </label>
+	                            </div>
+	                            <div class="checkbox">
+	                                <label>
+	                                    <input type="checkbox" value="1" name="verrouIP"> Gérer les adresses IP bloquées
+	                                </label>
+	                            </div>
+	                            <div class="checkbox">
+	                                <label>
+	                                    <input type="checkbox" value="1" name="logs_lecture"> Lire les logs
 	                                </label>
 	                            </div>
                                 </br>
@@ -84,16 +99,6 @@ require_once('logCheck.php');
                                 </div>
                                 </br>
                             </div>
-                            <div class="form-group">
-                                <label>Réinitialisation des mots de passe:</label>
-                                </br>
-                                <div class="checkbox">
-	                                <label>
-	                                    <input type="checkbox" value="1" name="annuaire_mdp"> Réinitialiser les mots de passe des autres utilisateurs
-	                                </label>
-	                            </div>
-                                </br>
-                            </div>
                             <table class="table table-bordered">
                                 <tr>
                                     <th>Modules</th>
@@ -101,20 +106,6 @@ require_once('logCheck.php');
                                     <th>Ajout</th>
                                     <th>Modification</th>
                                     <th>Suppression</th>
-                                </tr>
-                                <tr>
-                                    <td>Logs</td>
-                                    <td><input type="checkbox" value="1" name="logs_lecture"></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Verouillage IP</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><input type="checkbox" value="1" name="verrouIP"></td>
                                 </tr>
                                 <tr>
                                     <td>Annuaire</td>
@@ -150,13 +141,6 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="typesLots_ajout"></td>
                                     <td><input type="checkbox" value="1" name="typesLots_modification"></td>
                                     <td><input type="checkbox" value="1" name="typesLots_suppression"></td>
-                                </tr>
-                                <tr>
-                                    <td>Etats</td>
-                                    <td><input type="checkbox" value="1" name="etats_lecture"></td>
-                                    <td><input type="checkbox" value="1" name="etats_ajout"></td>
-                                    <td><input type="checkbox" value="1" name="etats_modification"></td>
-                                    <td><input type="checkbox" value="1" name="etats_suppression"></td>
                                 </tr>
                                 <tr>
                                     <td>Lieux</td>
@@ -282,11 +266,26 @@ require_once('logCheck.php');
                                 </br>
                             </div>
                             <div class="form-group">
-                                <label>Paramétrage général de <?php echo $APPNAME;?>:</label>
+                                <label>Administration de <?php echo $APPNAME;?>:</label>
                                 </br>
                                 <div class="checkbox">
 	                                <label>
-	                                    <input type="checkbox" value="1" name="appli_conf" <?php if ($data['appli_conf']==1) {echo 'checked';} ?>> Autorisé à modifier la configuration de <?php echo $APPNAME;?>
+	                                    <input type="checkbox" value="1" name="appli_conf" <?php if ($data['appli_conf']==1) {echo 'checked';} ?>> Modifier la configuration générale de <?php echo $APPNAME;?>
+	                                </label>
+	                            </div>
+	                            <div class="checkbox">
+	                                <label>
+	                                    <input type="checkbox" value="1" name="annuaire_mdp" <?php if ($data['annuaire_mdp']==1) {echo 'checked';} ?>> Réinitialiser les mots de passe des autres utilisateurs
+	                                </label>
+	                            </div>
+	                            <div class="checkbox">
+	                                <label>
+	                                    <input type="checkbox" value="1" name="verrouIP" <?php if($data['verrouIP'] == 1) { echo 'checked'; } ?>> Gérer les adresses IP bloquées
+	                                </label>
+	                            </div>
+	                            <div class="checkbox">
+	                                <label>
+	                                    <input type="checkbox" value="1" name="logs_lecture" <?php if($data['logs_lecture'] == 1) { echo 'checked'; } ?>> Lire les logs
 	                                </label>
 	                            </div>
                                 </br>
@@ -322,16 +321,6 @@ require_once('logCheck.php');
                                     Notifications mail journalières
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label>Réinitialisation des mots de passe:</label>
-                                </br>
-                                <div class="checkbox">
-	                                <label>
-	                                    <input type="checkbox" value="1" name="annuaire_mdp" <?php if ($data['annuaire_mdp']==1) {echo 'checked';} ?>> Réinitialiser les mots de passe des autres utilisateurs
-	                                </label>
-	                            </div>
-                                </br>
-                            </div>
                             <table class="table table-bordered">
                                 <tr>
                                     <th>Modules</th>
@@ -339,20 +328,6 @@ require_once('logCheck.php');
                                     <th>Ajout</th>
                                     <th>Modification</th>
                                     <th>Suppression</th>
-                                </tr>
-                                <tr>
-                                    <td>Logs</td>
-                                    <td><input <?php if($data['logs_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="logs_lecture"></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Verouillage IP</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><input <?php if($data['verrouIP'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="verrouIP"></td>
                                 </tr>
                                 <tr>
                                     <td>Annuaire</td>
@@ -388,13 +363,6 @@ require_once('logCheck.php');
                                     <td><input <?php if($data['typesLots_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesLots_ajout"></td>
                                     <td><input <?php if($data['typesLots_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesLots_modification"></td>
                                     <td><input <?php if($data['typesLots_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesLots_suppression"></td>
-                                </tr>
-                                <tr>
-                                    <td>Etats</td>
-                                    <td><input <?php if($data['etats_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="etats_lecture"></td>
-                                    <td><input <?php if($data['etats_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="etats_ajout"></td>
-                                    <td><input <?php if($data['etats_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="etats_modification"></td>
-                                    <td><input <?php if($data['etats_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="etats_suppression"></td>
                                 </tr>
                                 <tr>
                                     <td>Lieux</td>

@@ -44,7 +44,7 @@ if ($_SESSION['commande_lecture']==0)
                             </br>
                         <?php } ?>
                     </div>
-                    <table id="tri2R" class="table table-bordered table-hover">
+                    <table id="tri2R" class="table table-bordered table-hover" >
                         <thead>
                         <tr>
                             <th style="width: 10px">#</th>
@@ -59,7 +59,7 @@ if ($_SESSION['commande_lecture']==0)
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query('SELECT c.idCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat, p1.identifiant AS demandeur, p2.identifiant AS affectee  FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p1 ON c.idDemandeur = p1.idPersonne LEFT OUTER JOIN PERSONNE_REFERENTE p2 ON c.idAffectee = p2.idPersonne LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE c.idEtat <> 8;');
+                        $query = $db->query('SELECT c.idCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat, p1.identifiant AS demandeur, p2.identifiant AS affectee  FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p1 ON c.idDemandeur = p1.idPersonne LEFT OUTER JOIN PERSONNE_REFERENTE p2 ON c.idAffectee = p2.idPersonne LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur;');
                         while ($data = $query->fetch())
                         {?>
                             <tr>

@@ -3,7 +3,7 @@
 require_once 'bdd.php';
 
 
-$VERSIONCHECK = '2.3';
+$VERSIONCHECK = '2.4';
 
 
 

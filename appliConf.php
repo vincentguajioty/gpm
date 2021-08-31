@@ -74,7 +74,7 @@ if ($_SESSION['appli_conf']==0)
                         </div>
                         <div class="form-group">
                             <label>Temps avant déconnexion d'un utilisateur inactif (minutes):</label>
-                            <input type="number" class="form-control" value="<?=$data['logouttemp']?>" name="logouttemp" required>
+                            <input type="number" class="form-control" value="<?=$data['logouttemp']?>" min="1" name="logouttemp" required>
                         </div>
 
                         <div class="box-footer">

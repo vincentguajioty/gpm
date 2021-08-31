@@ -76,7 +76,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                 <td><?php echo $data['nomPersonne']; ?></td>
                                 <td><?php echo $data['prenomPersonne']; ?></td>
                                 <td><?php echo $data['fonction']; ?></td>
-                                <td><?php echo $data['libelleProfil']; ?></td>
+                                <td><?php echo $data['libelleProfil']; ?> <?php if ($_SESSION['profils_lecture']==1) {?><a href="profilsForm.php?id=<?=$data['idProfil']?>"><i class="fa fa-info-circle"></i></a><?php } ?></td>
                                 <td>
                                     <?php if ($_SESSION['annuaire_modification']==1) {?>
                                         <a href="annuaireForm.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>

@@ -13,6 +13,6 @@ if ($_SESSION['commande_ajout']==0 AND $_SESSION['commande_valider']==0 AND $_SE
 else
 {
     addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " ajoute le commentaire: " . $_POST['notes'], "36");
-    echo "<script>javascript:history.go(-1);</script>";
+    echo "<script>window.location = document.referrer;</script>";
 }
 ?>

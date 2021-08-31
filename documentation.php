@@ -111,9 +111,6 @@ require_once('logCheck.php');
                                     <dt>Suppression d'une catégorie de matériel:</dt>
                                     <dd>Tous les éléments matériels liés à la catégorie supprimée se verront sans catégorie.</dd>
 
-                                    <dt>Suppression d'un état de lots:</dt>
-                                    <dd>Tous les lots liés à l'état supprimé se verront sans état.</dd>
-
                                     <dt>Suppression d'un lieu de stockage:</dt>
                                     <dd>Tous les lots liés au lieu de stockage supprimé se verront sans lieu de stockage.<br/>Toutes les commandes utilisant ce lieu comme lieu de livraison n'auront plus de lieu de livraison.</dd>
 
@@ -172,16 +169,16 @@ require_once('logCheck.php');
                     <div class="box-body">
                         <dl class="dl-horizontal">
                             <dt><a class="btn btn-xs btn-success"><i class="fa fa-print"></i></a></dt>
-                            <dd>Permet de lancer l'impression de la fiche détaillée d'un élément</dd>
+                            <dd>Lancer l'impression de la fiche détaillée d'un élément</dd>
 
                             <dt><a class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a></dt>
-                            <dd>Permet d'ouvrir la fiche détaillée d'un élément</dd>
+                            <dd>Ouvrir la fiche détaillée d'un élément</dd>
 
                             <dt><a class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a></dt>
-                            <dd>Permet de modifier un élément</dd>
+                            <dd>Mdifier un élément</dd>
 
                             <dt><a class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a></dt>
-                            <dd>Permet de supprimer un élément</dd>
+                            <dd>Supprimer un élément</dd>
 
                             <dt><a class="btn btn-xs btn-info"><i class="fa fa-lock"></i></a></dt>
                             <dd>Réinitialiser un mot de passe</dd>
@@ -278,12 +275,14 @@ require_once('logCheck.php');
                     <div class="box-body">
                         <dl>
                             <dd>Un système de mail permet de notifier les utilisateurs des alertes sur GPM. Dans les emails, les 3 alertes suivantes apparaissent: alerte de quantité de matériel insuffisante, alerte de péremption, alerte de non-conformité des lots.
-                                <br/>
-                                Si aucune alerte n'est présente, la notification est quand même envoyée. Ceci permet de s'assurer que le système fonctionne.
-                                <br/>
+                                <br/><br/>
+                                En fonction des profils, il est possible de ne recevoir aucune notification journalière, de recevoir une notification uniquement en cas d'alerte, ou de revoir systématiquement un mail permettant d'être informé quotidiennement de la présence ou pas d'alertes.
+                                <br/><br/>
                                 Pour qu'un utilisateur puisse recevoir les notifications, il faut qu'il soit rattaché à un profil pour lequel les notifications soient activées. Il faut également que son adresse mail soit correctement renseignée.
-                                <br/>
-                                Les emails sont envoyés de l'adresse contact@guajioty.fr qui porte le nom GPM. Il est possible que les emails arrivent dans les courriers indésirables, marqués comme SPAM.
+                                <br/><br/>
+                                Les emails sont envoyés de l'adresse paramétrée par les administrateurs. Le nom donné à l'instance de GPM apparaitra dans l'objet des mails. Il est possible que les emails arrivent dans les courriers indésirables, marqués comme SPAM.
+                                <br/><br/>
+                                Pour qu'un lot soit analysé par le sustème d'alerte, il est OBLIGATOIRE que ce lot soit à l'état "Opérationnel". Si le lot n'a pas d'état ou est "Au rebus", il ne figurera pas dans les alertes. De même, les éléments de matériel qui figurent dans les alertes de péremption et de quantité snt uniquement des élément rattachés à un lot qui est à l'état "Opérationnel". Autrement dit, tout ce qui est Au rebus ou sans état ne fera pas l'objet d'une alerte.
                             </dd>
                         </dl>
                     </div>

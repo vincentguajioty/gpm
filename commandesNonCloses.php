@@ -3,7 +3,7 @@
 <?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
-$_SESSION['page'] = 605;
+$_SESSION['page'] = 607;
 require_once('logCheck.php');
 ?>
 <?php
@@ -22,12 +22,11 @@ if ($_SESSION['commande_lecture']==0)
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Commandes abandonnées
+                Toutes les commandes non closes et non abandonnées
             </h1>
             <ol class="breadcrumb">
                 <li><a href="index.php"><i class="fa fa-home"></i>Accueil</a></li>
-                <li><a href="commandesToutes.php">Commandes</a></li>
-                <li class="active">Commandes abandonnées</li>
+                <li class="active">Commandes</li>
             </ol>
         </section>
 
@@ -38,7 +37,14 @@ if ($_SESSION['commande_lecture']==0)
             <div class="box">
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table id="tri2R" class="table table-bordered table-hover">
+                    <div class="box-header">
+                        <?php if ($_SESSION['commande_ajout']==1) {?>
+                            <h3 class="box-title"><a href="commandesForm.php" class="btn btn-sm btn-success">Nouvelle commande</a></h3>
+                        <?php } else {?>
+                            </br>
+                        <?php } ?>
+                    </div>
+                    <table id="tri2R" class="table table-bordered table-hover" >
                         <thead>
                         <tr>
                             <th style="width: 10px">#</th>
@@ -53,7 +59,7 @@ if ($_SESSION['commande_lecture']==0)
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query('SELECT c.idCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat, p1.identifiant AS demandeur, p2.identifiant AS affectee  FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p1 ON c.idDemandeur = p1.idPersonne LEFT OUTER JOIN PERSONNE_REFERENTE p2 ON c.idAffectee = p2.idPersonne LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE c.idEtat = 8;');
+                        $query = $db->query('SELECT c.idCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat, p1.identifiant AS demandeur, p2.identifiant AS affectee  FROM COMMANDES c LEFT OUTER JOIN PERSONNE_REFERENTE p1 ON c.idDemandeur = p1.idPersonne LEFT OUTER JOIN PERSONNE_REFERENTE p2 ON c.idAffectee = p2.idPersonne LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE c.idEtat <> 8 AND c.idEtat <> 7;');
                         while ($data = $query->fetch())
                         {?>
                             <tr>
