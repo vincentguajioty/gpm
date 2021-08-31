@@ -78,6 +78,50 @@ require_once 'config/bdd.php';
 	        <?php
 			}
 			?>
+			
+			<?php
+			if ($_SESSION['reserve_lecture']==1 OR $_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1 OR $_SESSION['reserve_suppression']==1)
+			{
+			?>
+	            <li <?php
+	            if (((int)($_SESSION['page']/100))==7)
+	            {
+	                echo 'class="active treeview"';
+	            }
+	            else
+	            {
+	                echo 'class="treeview"';
+	            }
+	            ?>
+	            >
+	                <a href="#">
+	                    <i class="fa fa-archive"></i> <span>RESERVE</span>
+	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+	                </a>
+	                <ul class="treeview-menu">
+	                    <?php if ($_SESSION['reserve_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 701)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="reserveConteneurs.php"><i class="fa fa-cube"></i> <span>Conteneurs</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['reserve_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 702)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="reserveMateriel.php"><i class="fa fa-stethoscope"></i> <span>Materiel</span></a></li>
+	                    <?php } ?>
+	                </ul>
+	            </li>
+	        <?php
+			}
+			?>
             
             <?php
 			if ($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSION['commande_valider']==1 OR $_SESSION['commande_etreEnCharge']==1 OR $_SESSION['commande_abandonner']==1 OR $_SESSION['cout_lecture']==1 OR $_SESSION['cout_ajout']==1 OR $_SESSION['cout_etreEnCharge']==1 OR $_SESSION['cout_supprimer']==1)
@@ -95,7 +139,7 @@ require_once 'config/bdd.php';
 	            ?>
 	            >
 	                <a href="#">
-	                    <i class="fa fa-truck"></i> <span>COMMANDES</span>
+	                    <i class="fa fa-shopping-cart"></i> <span>COMMANDES</span>
 	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
 	                </a>
 	                <ul class="treeview-menu">
@@ -189,6 +233,50 @@ require_once 'config/bdd.php';
 	        <?php
 			}
 	        ?>
+	        
+	        <?php
+			if ($_SESSION['reserve_cmdVersReserve']==1 OR $_SESSION['reserve_ReserveVersLot']==1)
+			{
+			?>
+	            <li <?php
+	            if (((int)($_SESSION['page']/100))==8)
+	            {
+	                echo 'class="active treeview"';
+	            }
+	            else
+	            {
+	                echo 'class="treeview"';
+	            }
+	            ?>
+	            >
+	                <a href="#">
+	                    <i class="fa fa-exchange"></i> <span>TRANSFERTS</span>
+	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+	                </a>
+	                <ul class="treeview-menu">
+	                    <?php if ($_SESSION['reserve_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 801)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="transfertCmdRes.php"><i class="fa fa-stethoscope"></i> <span>Commandes <i class="fa fa-arrow-right"></i> Reserve</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['reserve_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 802)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="transfertResLots.php"><i class="fa fa-stethoscope"></i> <span>Reserve <i class="fa fa-arrow-right"></i> Lots</span></a></li>
+	                    <?php } ?>
+	                </ul>
+	            </li>
+	        <?php
+			}
+			?>
 	        
 	        
 	        

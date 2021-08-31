@@ -279,6 +279,26 @@ require_once 'config/config.php';
                         <td><?php if($_SESSION['cout_supprimer'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
                     </tr>
                 </table>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>RESERVE</th>
+                        <th>Lecture</th>
+                        <th>Ajout</th>
+                        <th>Modification</th>
+                        <th>Supprimer</th>
+                        <th>Intégrer du matériel dans la réserve suite à une commande</th>
+                        <th>Sortir du matériel de la réserve pour l'intégrer à un lot</th>
+                    </tr>
+                    <tr>
+                        <td>Réserve</td>
+                        <td><?php if($_SESSION['reserve_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['reserve_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['reserve_modification'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['reserve_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['reserve_cmdVersReserve'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                        <td><?php if($_SESSION['reserve_ReserveVersLot'] == 1) { echo '<i class="fa fa-check"></i>'; } ?></td>
+                    </tr>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>

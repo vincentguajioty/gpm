@@ -153,6 +153,12 @@ if ($data['idIP'] == "")
 	    $_SESSION['cout_supprimer'] = $data['cout_supprimer'];
 	    $_SESSION['appli_conf'] = $data['appli_conf'];
 	    $_SESSION['notifications'] = $data['notifications'];
+	    $_SESSION['reserve_lecture'] = $data['reserve_lecture'];
+	    $_SESSION['reserve_ajout'] = $data['reserve_ajout'];
+	    $_SESSION['reserve_modification'] = $data['reserve_modification'];
+	    $_SESSION['reserve_suppression'] = $data['reserve_suppression'];
+	    $_SESSION['reserve_cmdVersReserve'] = $data['reserve_cmdVersReserve'];
+	    $_SESSION['reserve_ReserveVersLot'] = $data['reserve_ReserveVersLot'];
 	    
 	    $_SESSION['LAST_ACTIVITY'] = time();
 	    $_SESSION['derniereConnexion'] = $data['derniereConnexion'];

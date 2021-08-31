@@ -12,9 +12,6 @@ require_once('logCheck.php');
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
     <?php require_once 'checkLotsConf.php'; ?>
-    <?php require_once 'modal.php'; ?>
-
-
 
 
   <!-- Content Wrapper. Contains page content -->
@@ -221,9 +218,9 @@ require_once('logCheck.php');
 	            <!-- /.box-body -->
 	        </div>
 	        <div class="col-md-6">
-	            <div class="box box-success">
+	            <!--<div class="box box-success">
 	            	Calendrier de l'équipe
-	            </div>
+	            </div>-->
 	        </div>
         </div>
     </section>
@@ -313,9 +310,9 @@ require_once('logCheck.php');
 	            </div>
 	        </div>
 	        <div class="col-md-6">
-	            <div class="box box-success">
+	            <!--<div class="box box-success">
 	            	Calendrier personnel
-	            </div>
+	            </div>-->
 	        </div>
 	    </div>
     </section>

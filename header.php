@@ -51,4 +51,6 @@ require_once 'config/config.php';
 
     <script type="text/javascript" src="plugins/pace/pace.min.js"></script>
     <link rel="stylesheet" href="plugins/pace/pace.min.css">
+    
+    <style> .select2-container--default .select2-results__option[aria-disabled=true] { display: none; } </style>  
 </head>

@@ -6,42 +6,43 @@ require_once('logCheck.php');
 require_once 'config/bdd.php';
 
 
-if($_SESSION['cout_lecture']==1 OR $_SESSION['cout_ajout']==1 OR $_SESSION['cout_etreEnCharge']==1 OR $_SESSION['cout_supprimer']==1)
+if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
 { ?>
     
     <?php
     	if (isset($_GET['id']))
-    	{
-		    $query = $db->prepare('SELECT * FROM CENTRE_COUTS WHERE idCentreDeCout=:idCentreDeCout;');
-		    $query->execute(array('idCentreDeCout' => $_GET['id']));
+		{
+		    $query = $db->prepare('SELECT * FROM RESERVES_CONTENEUR WHERE idConteneur=:idConteneur;');
+		    $query->execute(array('idConteneur' => $_GET['id']));
 		    $data = $query->fetch();
 		    $query->closeCursor();
 		}
-
     ?>
     
-    <div class="modal fade" id="modalCoutAdd">
+    
+    <div class="modal fade" id="modalReserveConteneur">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"><?= isset($_GET['id']) ? 'Modification' : 'Création' ?> d'un centre de cout</h4>
+                    <h4 class="modal-title"><?= isset($_GET['id']) ? 'Modification' : 'Création' ?> d'un conteneur</h4>
                 </div>
-                <form role="form" action="<?= isset($_GET['id']) ? 'centreCoutsUpdate.php?id='.$_GET['id'] : 'centreCoutsAdd.php' ?>" method="POST">
+                <form role="form" action="<?= isset($_GET['id']) ? 'reserveConteneurUpdate.php?id='.$_GET['id'] : 'reserveConteneurAdd.php' ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Libellé:</label>
-                            <input type="text" class="form-control" name="libelleCentreDecout" required value="<?= isset($data['libelleCentreDecout']) ? $data['libelleCentreDecout'] : '' ?>">
+                            <input type="text" class="form-control" value="<?= isset($data['libelleConteneur']) ? $data['libelleConteneur'] : ''?>"
+                                   name="libelleConteneur" required>
                         </div>
                         <div class="form-group">
-                            <label>Personne référente</label>
-                            <select class="form-control select2" style="width: 100%;" name="idResponsable">
+                            <label>Lieu de stockage:</label>
+                            <select class="form-control select2" style="width: 100%;" name="idLieu">
                                 <option></option>
                                 <?php
-                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE cout_etreEnCharge=1 ORDER BY identifiant;');
+                                $query2 = $db->query('SELECT * FROM LIEUX ORDER BY libelleLieu;');
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>
-                                    <option value="<?php echo $data2['idPersonne']; ?>" <?php if (isset($data['idResponsable']) AND ($data2['idPersonne'] == $data['idResponsable'])){echo 'selected'; }?>><?php echo $data2['identifiant']; ?></option>
+                                    <option value ="<?php echo $data2['idLieu']; ?>" <?php if (isset($data['idLieu']) AND ($data2['idLieu'] == $data['idLieu'])) { echo 'selected'; } ?> ><?php echo $data2['libelleLieu']; ?></option>
                                     <?php
                                 }
                                 $query2->closeCursor(); ?>

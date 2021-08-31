@@ -239,6 +239,26 @@ require_once('logCheck.php');
                                     <td><input type="checkbox" value="1" name="cout_supprimer"></td>
                                 </tr>
                             </table>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>RESERVE</th>
+                                    <th>Lecture</th>
+                                    <th>Ajout</th>
+                                    <th>Modification</th>
+                                    <th>Supprimer</th>
+                                    <th>Intégrer du matériel dans la réserve suite à une commande</th>
+                                    <th>Sortir du matériel de la réserve pour l'intégrer à un lot</th>
+                                </tr>
+                                <tr>
+                                    <td>Réserve</td>
+                                    <td><input type="checkbox" value="1" name="reserve_lecture"></td>
+                                    <td><input type="checkbox" value="1" name="reserve_ajout"></td>
+                                    <td><input type="checkbox" value="1" name="reserve_modification"></td>
+                                    <td><input type="checkbox" value="1" name="reserve_suppression"></td>
+                                    <td><input type="checkbox" value="1" name="reserve_cmdVersReserve"></td>
+                                    <td><input type="checkbox" value="1" name="reserve_ReserveVersLot"></td>
+                                </tr>
+                            </table>
                             <div class="box-footer">
                                 <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
                                 <button type="submit" class="btn btn-info pull-right">Ajouter</button>
@@ -480,6 +500,26 @@ require_once('logCheck.php');
                                     <td></td>
                                     <td><input <?php if($data['cout_etreEnCharge'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_etreEnCharge"></td>
                                     <td><input <?php if($data['cout_supprimer'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_supprimer"></td>
+                                </tr>
+                            </table>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>RESERVE</th>
+                                    <th>Lecture</th>
+                                    <th>Ajout</th>
+                                    <th>Modification</th>
+                                    <th>Supprimer</th>
+                                    <th>Intégrer du matériel dans la réserve suite à une commande</th>
+                                    <th>Sortir du matériel de la réserve pour l'intégrer à un lot</th>
+                                </tr>
+                                <tr>
+                                    <td>Réserve</td>
+                                    <td><input <?php if($data['reserve_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="reserve_lecture"></td>
+                                    <td><input <?php if($data['reserve_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="reserve_ajout"></td>
+                                    <td><input <?php if($data['reserve_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="reserve_modification"></td>
+                                    <td><input <?php if($data['reserve_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="reserve_suppression"></td>
+                                    <td><input <?php if($data['reserve_cmdVersReserve'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="reserve_cmdVersReserve"></td>
+                                    <td><input <?php if($data['reserve_ReserveVersLot'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="reserve_ReserveVersLot"></td>
                                 </tr>
                             </table>
                             <div class="box-footer">

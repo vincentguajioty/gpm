@@ -42,6 +42,39 @@ require_once 'config/config.php';
                                     <ul class="timeline timeline-inverse">
                                         <li class="time-label">
                                               <span class="bg-purple">
+                                                Version 3.0
+                                              </span>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-green"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">18 octobre 2017</span>
+                                                <h3 class="timeline-header">Livraison en production de la version 3.0</h3>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-orange"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">17 octobre 2017</span>
+                                                <h3 class="timeline-header">Livraison en recette de la version 3.0</h3>
+                                                <div class="timeline-body">
+                                                    Nouveautés par rapport à la version précédente:
+                                                    <ul>
+                                                        <li>Module de gestion de la réserve de matériel (conteneurs de réserve + matériel dans les conteneurs).</li>
+                                                        <li>Module de transfert du matériel (d'une commande vers la réserve, et de la réserve vers les lots).</li>
+                                                    </ul>
+                                                    Corrections apportées:
+                                                    <ul>
+                                                        <li>Ajout d'un indicateur de chargement.</li>
+                                                        <li>Optimisation du chargement des formulaires.</li>
+                                                        <li>Réparation des dépenses de champs dans les forumlaires.</li>
+                                                        <li>Réparation des champs dates et heures dans les formulaires.</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="time-label">
+                                              <span class="bg-purple">
                                                 Version 2.6
                                               </span>
                                         </li>

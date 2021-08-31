@@ -95,6 +95,8 @@ require_once('logCheck.php');
                                         <option>Module gérant le catalogue du matériel</option>
                                         <option>Module gérant les référentiels</option>
                                         <option>Module de commandes</option>
+                                        <option>Module gérant la réserve</option>
+                                        <option>Module gérant les transferts de matériel les autres modules</option>
                                         <option>Module de gestion de l'annuaire</option>
                                         <option>Module de gestion des profils</option>
                                         <option>Paramètres fonctionnels (catégories, états , lieux, fournisseurs ...)</option>

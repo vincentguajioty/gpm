@@ -73,6 +73,24 @@
                     modal.modal().on('hidden.bs.modal', function () {
                         $(this).remove();
                     });
+
+		    modal.on('shown.bs.modal', function () {
+                        $('.input-datepicker').datepicker({format: 'yyyy-mm-dd', language: 'fr'});
+
+			$('.input-datetimepicker').datetimepicker({
+			    format: 'YYYY-MM-DD HH:mm',
+			    locale: 'fr'
+			});
+
+			//Initialize Select2 Elements
+			$(".select2").select2();
+			listenSelect('select[name="emplacementLot"]', 'select[name="libelleSac"]');
+			$('select[name="libelleSac"]').children('option').prop('disabled', true);
+
+			listenSelect('select[name="materielLot"]', 'select[name="materielSac"]');
+			listenSelect('select[name="materielSac"]', 'select[name="libelleEmplacement"]');
+			$('select[name="materielSac"], select[name="libelleEmplacement"]').children('option').prop('disabled', true);
+                    });
                 }
             });
         });
@@ -128,3 +146,4 @@
         });
     });
 </script>
+
