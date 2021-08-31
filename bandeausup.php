@@ -34,7 +34,8 @@ require_once 'config/config.php';
                         <li class="user-header">
                             <p>
                                 <?php echo $_SESSION['nomPersonne'];?> <?php echo $_SESSION['prenomPersonne'];?>
-                                <small><?php echo $_SESSION['libelleProfil'];?></small>
+                                <br/><?php echo $_SESSION['libelleProfil'];?>
+                                <small>Dernière connexion: <?php echo $_SESSION['derniereConnexion'];?></small>
                             </p>
                         </li>
                         <!-- Menu Footer-->

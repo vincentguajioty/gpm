@@ -155,6 +155,15 @@ if ($data['idIP'] == "")
 	    $_SESSION['cout_ajout'] = $data['cout_ajout'];
 	    $_SESSION['cout_etreEnCharge'] = $data['cout_etreEnCharge'];
 	    $_SESSION['cout_supprimer'] = $data['cout_supprimer'];
+	    $_SESSION['appli_conf'] = $data['appli_conf'];
+	    
+	    $_SESSION['LAST_ACTIVITY'] = time();
+	    $_SESSION['derniereConnexion'] = $data['derniereConnexion'];
+	    
+	    $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET derniereConnexion = CURRENT_TIMESTAMP WHERE idPersonne = :idPersonne;');
+		$query->execute(array(
+		    'idPersonne' => $_SESSION['idPersonne']
+		));
 	
 	    if ((password_verify($_POST['identifiant'], $data['motDePasse'])))
 	    {

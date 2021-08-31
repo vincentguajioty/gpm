@@ -59,6 +59,6 @@ else
     }
 
 
-    echo "<script>javascript:history.go(-2);</script>";
+    echo "<script>window.location = document.referrer;</script>";
 }
 ?>

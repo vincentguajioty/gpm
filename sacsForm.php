@@ -30,153 +30,76 @@ require_once('logCheck.php');
 
         <!-- Main content -->
         <section class="content">
-            <?php
-            if ($_GET['id'] == 0) {
-                ?>
-                <!-- general form elements disabled -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Ajout d'un sac</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <form role="form" action="sacsAdd.php" method="POST">
-                            <!-- text input -->
-                            <div class="form-group">
-                                <label>Libellé:</label>
-                                <input type="text" class="form-control" placeholder="Entrez un nom pour ce sac"
-                                       name="libelleSac" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Lot d'appartenance: </label>
-                                <select class="form-control select2" style="width: 100%;" name="libelleLot">
-                                    <option></option>
-                                    <?php
-                                    $query = $db->query('SELECT * FROM LOTS_LOTS ORDER BY libelleLot;');
-                                    while ($data = $query->fetch())
-                                    {
-                                        ?>
-                                        <option value="<?php echo $data['idLot']; ?>"><?php echo $data['libelleLot']; ?></option>
-                                        <?php
-                                    }
-                                    $query->closeCursor(); ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Taille:</label>
-                                <input type="text" class="form-control" placeholder="100L, 50L, 50cmx50cm"
-                                       name="taille">
-                            </div>
-                            <div class="form-group">
-                                <label>Couleur:</label>
-                                <input type="text" class="form-control" placeholder="Rouge, Bleue"
-                                       name="couleur">
-                            </div>
-                            <div class="form-group">
-                                <label>Fournisseur: </label>
-                                <select class="form-control select2" style="width: 100%;" name="nomFournisseur">
-                                    <option></option>
-                                    <?php
-                                    $query = $db->query('SELECT * FROM FOURNISSEURS ORDER BY nomFournisseur;');
-                                    while ($data = $query->fetch())
-                                    {
-                                        ?>
-                                        <option value="<?php echo $data['idFournisseur']; ?>"><?php echo $data['nomFournisseur']; ?></option>
-                                        <?php
-                                    }
-                                    $query->closeCursor(); ?>
-                                </select>
-                            </div>
-
-                            <div class="box-footer">
-                                <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
-                                <button type="submit" class="btn btn-info pull-right">Ajouter</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- /.box-body -->
-
+            <!-- general form elements disabled -->
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Modification d'un sac</h3>
                 </div>
-
-                <?php
-            }
-            else {
-                ?>
-
-                <!-- general form elements disabled -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Modification d'un sac</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <form role="form" action="sacsUpdate.php?id=<?=$_GET['id']?>" method="POST">
-                            <?php
-                            $query = $db->prepare('SELECT * FROM MATERIEL_SAC s LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN FOURNISSEURS f ON s.idFournisseur = f.idFournisseur WHERE idSac = :idSac;');
-                            $query->execute(array('idSac' => $_GET['id']));
-                            $data = $query->fetch();
-                            ?>
-                            <!-- text input -->
-                            <div class="form-group">
-                                <label>Libellé:</label>
-                                <input type="text" class="form-control" value="<?=$data['libelleSac']?>"
-                                       name="libelleSac" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Lot d'appartenance: </label>
-                                <select class="form-control select2" style="width: 100%;" name="libelleLot">
-                                    <option></option>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form role="form" action="sacsUpdate.php?id=<?=$_GET['id']?>" method="POST">
+                        <?php
+                        $query = $db->prepare('SELECT * FROM MATERIEL_SAC s LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN FOURNISSEURS f ON s.idFournisseur = f.idFournisseur WHERE idSac = :idSac;');
+                        $query->execute(array('idSac' => $_GET['id']));
+                        $data = $query->fetch();
+                        ?>
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Libellé:</label>
+                            <input type="text" class="form-control" value="<?=$data['libelleSac']?>"
+                                   name="libelleSac" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Lot d'appartenance: </label>
+                            <select class="form-control select2" style="width: 100%;" name="libelleLot">
+                                <option></option>
+                                <?php
+                                $query2 = $db->query('SELECT * FROM LOTS_LOTS ORDER BY libelleLot;');
+                                while ($data2 = $query2->fetch())
+                                {
+                                    ?>
+                                    <option value="<?php echo $data2['idLot']; ?>" <?php if ($data2['idLot'] == $data['idLot']) { echo 'selected'; } ?> ><?php echo $data2['libelleLot']; ?></option>
                                     <?php
-                                    $query2 = $db->query('SELECT * FROM LOTS_LOTS ORDER BY libelleLot;');
-                                    while ($data2 = $query2->fetch())
-                                    {
-                                        ?>
-                                        <option value="<?php echo $data2['idLot']; ?>" <?php if ($data2['idLot'] == $data['idLot']) { echo 'selected'; } ?> ><?php echo $data2['libelleLot']; ?></option>
-                                        <?php
-                                    }
-                                    $query2->closeCursor(); ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Taille:</label>
-                                <input type="text" class="form-control" value="<?=$data['taille']?>"
-                                       name="taille">
-                            </div>
-                            <div class="form-group">
-                                <label>Couleur:</label>
-                                <input type="text" class="form-control" value="<?=$data['couleur']?>"
-                                       name="couleur">
-                            </div>
-                            <div class="form-group">
-                                <label>Fournisseur: </label>
-                                <select class="form-control select2" style="width: 100%;" name="nomFournisseur">
-                                    <option></option>
+                                }
+                                $query2->closeCursor(); ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Taille:</label>
+                            <input type="text" class="form-control" value="<?=$data['taille']?>"
+                                   name="taille">
+                        </div>
+                        <div class="form-group">
+                            <label>Couleur:</label>
+                            <input type="text" class="form-control" value="<?=$data['couleur']?>"
+                                   name="couleur">
+                        </div>
+                        <div class="form-group">
+                            <label>Fournisseur: </label>
+                            <select class="form-control select2" style="width: 100%;" name="nomFournisseur">
+                                <option></option>
+                                <?php
+                                $query2 = $db->query('SELECT * FROM FOURNISSEURS ORDER BY nomFournisseur;');
+                                while ($data2 = $query2->fetch())
+                                {
+                                    ?>
+                                    <option value="<?php echo $data2['idFournisseur']; ?>" <?php if ($data2['idFournisseur'] == $data['idFournisseur']) { echo 'selected'; } ?> ><?php echo $data2['nomFournisseur']; ?></option>
                                     <?php
-                                    $query2 = $db->query('SELECT * FROM FOURNISSEURS ORDER BY nomFournisseur;');
-                                    while ($data2 = $query2->fetch())
-                                    {
-                                        ?>
-                                        <option value="<?php echo $data2['idFournisseur']; ?>" <?php if ($data2['idFournisseur'] == $data['idFournisseur']) { echo 'selected'; } ?> ><?php echo $data2['nomFournisseur']; ?></option>
-                                        <?php
-                                    }
-                                    $query2->closeCursor(); ?>
-                                </select>
-                            </div>
+                                }
+                                $query2->closeCursor(); ?>
+                            </select>
+                        </div>
 
-                            <div class="box-footer">
-                                <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
-                                <button type="submit" class="btn btn-info pull-right">Modifier</button>
-                            </div>
+                        <div class="box-footer">
+                            <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
+                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
+                        </div>
 
-                        </form>
-                    </div>
-                    <!-- /.box-body -->
-
+                    </form>
                 </div>
+                <!-- /.box-body -->
 
-                <?php
-            }
-            ?>
+            </div>
 
         </section>
         <!-- /.content -->

@@ -29,130 +29,64 @@ require_once('logCheck.php');
 
         <!-- Main content -->
         <section class="content">
-            <?php
-            if ($_GET['id'] == 0) {
-                ?>
-                <!-- general form elements disabled -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Ajout d'un emplacement</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <form role="form" action="emplacementsAdd.php" method="POST">
-                            <!-- text input -->
-                            <div class="form-group">
-                                <label>Libellé:</label>
-                                <input type="text" class="form-control" placeholder="Entrez un nom pour cet emplacement"
-                                       name="libelleEmplacement" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Lot d'appartenance: </label>
-                                <select class="form-control select2" style="width: 100%;" name="libelleLot">
-                                    <option></option>
-                                    <?php
-                                    $query = $db->query('SELECT * FROM LOTS_LOTS ORDER BY libelleLot;');
-                                    while ($data = $query->fetch())
-                                    {
-                                        ?>
-                                        <option value="<?php echo $data['idLot']; ?>"><?php echo $data['libelleLot']; ?></option>
-                                        <?php
-                                    }
-                                    $query->closeCursor(); ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Sac d'appartenance: </label>
-                                <select class="form-control select2" style="width: 100%;" name="libelleSac">
-                                    <option></option>
-                                    <?php
-                                    $query = $db->query('SELECT * FROM MATERIEL_SAC s LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot ORDER BY libelleSac;');
-                                    while ($data = $query->fetch())
-                                    {
-                                        ?>
-                                        <option value="<?php echo $data['idSac']; ?>" data-id="<?php echo $data['idLot']; ?>"><?php echo $data['libelleSac']; ?></option>
-                                        <?php
-                                    }
-                                    $query->closeCursor(); ?>
-                                </select>
-                            </div>
-                            <div class="box-footer">
-                                <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
-                                <button type="submit" class="btn btn-info pull-right">Ajouter</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- /.box-body -->
-
+            <!-- general form elements disabled -->
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Modification d'un emplacement</h3>
                 </div>
-
-                <?php
-            }
-            else {
-                ?>
-
-                <!-- general form elements disabled -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Modification d'un emplacement</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <form role="form" action="emplacementsUpdate.php?id=<?=$_GET['id']?>" method="POST">
-                            <?php
-                            $query = $db->prepare('SELECT * FROM MATERIEL_EMPLACEMENT e LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot WHERE idEmplacement = :idEmplacement;');
-                            $query->execute(array('idEmplacement' => $_GET['id']));
-                            $data = $query->fetch();
-                            ?>
-                            <div class="form-group">
-                                <label>Libellé:</label>
-                                <input type="text" class="form-control" value="<?=$data['libelleEmplacement']?>"
-                                       name="libelleEmplacement" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Lot d'appartenance: </label>
-                                <select class="form-control select2" style="width: 100%;" name="libelleLot">
-                                    <option></option>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form role="form" action="emplacementsUpdate.php?id=<?=$_GET['id']?>" method="POST">
+                        <?php
+                        $query = $db->prepare('SELECT * FROM MATERIEL_EMPLACEMENT e LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot WHERE idEmplacement = :idEmplacement;');
+                        $query->execute(array('idEmplacement' => $_GET['id']));
+                        $data = $query->fetch();
+                        ?>
+                        <div class="form-group">
+                            <label>Libellé:</label>
+                            <input type="text" class="form-control" value="<?=$data['libelleEmplacement']?>"
+                                   name="libelleEmplacement" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Lot d'appartenance: </label>
+                            <select class="form-control select2" style="width: 100%;" name="libelleLot">
+                                <option></option>
+                                <?php
+                                $query2 = $db->query('SELECT * FROM LOTS_LOTS ORDER BY libelleLot;');
+                                while ($data2 = $query2->fetch())
+                                {
+                                    ?>
+                                    <option value="<?php echo $data2['idLot']; ?>" <?php if ($data2['idLot'] == $data['idLot']) { echo 'selected'; } ?> ><?php echo $data2['libelleLot']; ?></option>
                                     <?php
-                                    $query2 = $db->query('SELECT * FROM LOTS_LOTS ORDER BY libelleLot;');
-                                    while ($data2 = $query2->fetch())
-                                    {
-                                        ?>
-                                        <option value="<?php echo $data2['idLot']; ?>" <?php if ($data2['idLot'] == $data['idLot']) { echo 'selected'; } ?> ><?php echo $data2['libelleLot']; ?></option>
-                                        <?php
-                                    }
-                                    $query2->closeCursor(); ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Sac d'appartenance: </label>
-                                <select class="form-control select2" style="width: 100%;" name="libelleSac">
-                                    <option></option>
+                                }
+                                $query2->closeCursor(); ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Sac d'appartenance: </label>
+                            <select class="form-control select2" style="width: 100%;" name="libelleSac">
+                                <option></option>
+                                <?php
+                                $query2 = $db->query('SELECT * FROM MATERIEL_SAC ORDER BY libelleSac;');
+                                while ($data2 = $query2->fetch())
+                                {
+                                    ?>
+                                    <option value="<?php echo $data2['idSac']; ?>" data-id="<?php echo $data2['idLot']; ?>" <?php if ($data2['idSac'] == $data['idSac']) { echo 'selected'; } ?> ><?php echo $data2['libelleSac']; ?></option>
                                     <?php
-                                    $query2 = $db->query('SELECT * FROM MATERIEL_SAC ORDER BY libelleSac;');
-                                    while ($data2 = $query2->fetch())
-                                    {
-                                        ?>
-                                        <option value="<?php echo $data2['idSac']; ?>" data-id="<?php echo $data2['idLot']; ?>" <?php if ($data2['idSac'] == $data['idSac']) { echo 'selected'; } ?> ><?php echo $data2['libelleSac']; ?></option>
-                                        <?php
-                                    }
-                                    $query2->closeCursor(); ?>
-                                </select>
-                            </div>
-                            <div class="box-footer">
-                                <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
-                                <button type="submit" class="btn btn-info pull-right">Modifier</button>
-                            </div>
+                                }
+                                $query2->closeCursor(); ?>
+                            </select>
+                        </div>
+                        <div class="box-footer">
+                            <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
+                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
+                        </div>
 
-                        </form>
-                    </div>
-                    <!-- /.box-body -->
-
+                    </form>
                 </div>
+                <!-- /.box-body -->
 
-                <?php
-            }
-            ?>
+            </div>
 
         </section>
         <!-- /.content -->

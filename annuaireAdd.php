@@ -49,8 +49,8 @@ else
     if ($_POST['notificationMailCreation']==1)
     {
         $sujet = "[" . $APPNAME . "] Bienvenue sur " . $APPNAME;
-        $message = "Bonjour " . $_POST['prenomPersonne'] . ", <br/><br/> Votre session a été crée. Voici vos identifiants:<br/>Nom d'utilisateur: " . $_POST['identifiant'] . "<br/>Mot de passe: ". $_POST['identifiant'];
-        $message = $message . "<br/><br/>Vous serez invité à changer votre mot de passe à votre première connexion.<br/>Voici le lien d'accès à l'outil: " . $URLSITE;
+        $message = "Bonjour " . $_POST['prenomPersonne'] . ", <br/><br/> Votre session a été créée. Voici vos identifiants:<br/>Nom d'utilisateur: " . $_POST['identifiant'] . "<br/>Mot de passe: ". $_POST['identifiant'];
+        $message = $message . "<br/><br/>Vous serez invité(e) à changer votre mot de passe à votre première connexion.<br/>Voici le lien d'accès à l'outil: " . $URLSITE;
         $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
 
         $message = $RETOURLIGNE.$message.$RETOURLIGNE;
@@ -64,7 +64,7 @@ else
         }
     }
 
-    echo "<script>javascript:history.go(-2);</script>";
+    echo "<script>window.location = document.referrer;</script>";
 
 
 }

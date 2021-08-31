@@ -360,6 +360,15 @@ require_once 'config/bdd.php';
                         ?>
                         ><a href="verrouIP.php"><i class="fa fa-shield"></i> <span>Verrouillage IP</span></a></li>
                     <?php } ?>
+                    <?php if ($_SESSION['appli_conf']==1){ ?>
+                        <li <?php
+                        if ($_SESSION['page'] == 505)
+                        {
+                            echo 'class="active"';
+                        }
+                        ?>
+                        ><a href="appliConf.php"><i class="fa fa-wrench"></i> <span>Configuration générale</span></a></li>
+                    <?php } ?>
                     <?php if ($_SESSION['logs_lecture']==1){ ?>
                         <li <?php
                         if ($_SESSION['page'] == 501)

@@ -5,8 +5,6 @@ require_once 'config/bdd.php';
 require_once 'config/config.php';
 require_once 'config/mailFunction.php';
 
-$sujet = "[GMP] - Formulaire de contact - " . $_POST['motif'] . " - " . $_POST['module'];
-
 $message = "Nom: " . $_POST['nom'] . "<br/>";
 $message = $message . "Prénom: " . $_POST['prenom'] . "<br/>";
 $message = $message . "Mail: " . $_POST['mail'] . "<br/>";
@@ -19,6 +17,11 @@ $message = $message . "Version: " . $_POST['version'] . "<br/><br/>";
 $message = $message . "Message:<br/>" . $_POST['contenu'];
 
 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+
+$sujet = "[" . $APPNAME . "] - Votre demande a bien été enregistrée";
+sendmail($_POST['mail'], $sujet, 2, $message);
+
+$sujet = "[GMP] - Formulaire de contact - " . $_POST['motif'] . " - " . $_POST['module'];
 if(sendmail('contact@guajioty.fr', $sujet, 2, $message))
 {
     $_SESSION['returnMessage'] = 'Demande envoyée avec succès.';

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/config.php'); ?>
+<?php include('header.php'); ?>
 <?php
 session_start();
 $_SESSION['page'] = 502;
@@ -41,6 +41,41 @@ require_once 'config/config.php';
                             <div class="row">
                                 <div class="col-md-12">
                                     <ul class="timeline">
+                                        <li class="time-label">
+                                              <span class="bg-purple">
+                                                Version 2.2
+                                              </span>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-green"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">3 octobre 2017</span>
+                                                <h3 class="timeline-header">Livraison en production de la version 2.2</h3>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <i class="fa bg-orange"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">2 octobre 2017</span>
+                                                <h3 class="timeline-header">Livraison en recette de la version 2.2</h3>
+                                                <div class="timeline-body">
+                                                    Nouveautés par rapport à la version précédente:
+                                                    <ul>
+                                                        <li>Télédistribution de l'alerte de mise à jour dans le pied de page et sur la page A Propos.</li>
+                                                        <li>Télédistribution des idées pour les futurs développements ainsi que les développemens en cours.</li>
+                                                        <li>Sur la page d'accueil, les icones d'alertes deviennent des liens qui ouvrent des fenètres contextuelles affichant le détail des alertes.</li>
+                                                        <li>Possibilité de paramétrer la durée en minutes avant déconnexion d'un utilisateur inactif.</li>
+                                                        <li>La date et heure de la dernière connexion de chaque utilisateur est mémorisée pour que les administrateurs puissent dépister les comptes inactifs.</li>
+                                                        <li>Possibilité d'attacher des pièces joints aux commandes(Bon de commande, Devis, BL, ...)</li>
+                                                    </ul>
+                                                    Corrections apportées:
+                                                    <ul>
+                                                        <li>Correction de préchargement de formulaires</li>
+                                                        <li>La configuration de l'application se stocke en base pour assurer sa portabilité lors des mises à jour.</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
                                         <li class="time-label">
                                               <span class="bg-purple">
                                                 Version 2.1
@@ -344,19 +379,27 @@ require_once 'config/config.php';
                 <div class="col-md-4">
                     <div class="box box-warning">
                         <div class="box-header with-border">
-                            <i class="fa fa-wrench"></i>
+                            <i class="fa fa-paper-plane-o"></i>
 
-                            <h3 class="box-title">Idées pour les futurs développements</h3>
+                            <h3 class="box-title">Vos suggestions</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <ul>
-                                <li>Possiblité de réinitialiser un mot de passe oublié par mail</li>
-                                <li>Mettre un calendrier en vue mensuelle avec un point rouge sur toutes les dates de péremption des éléments et un point bleu sur toutes les dates d'inventaires de lots</li>
-                                <li>Nouvelle fonctionnalité: gestion de la reserve de matériel. Pour le moment c'est faisable en assimilant la réserve à un lot. Idée: avoir un système spécifique à la réserve</li>
-                                <li>Adaptation de l'interface aux affichages mobiles (téléphones, tablettes, ...)</li>
-                                <li>Adaptation de le design des mails de notification</li>
-                            </ul>
+                            <?php echo file_get_contents("https://www.guajioty.fr/majDist/gpmDevStack.php"); ?>
+                            <a href="contact.php">N'hésitez pas à me faire parvenir vos idées !</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="box box-warning">
+                        <div class="box-header with-border">
+                            <i class="fa fa-hourglass-half"></i>
+                            <h3 class="box-title">Développements en cours</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <?php echo file_get_contents("https://www.guajioty.fr/majDist/gpmDevCurrent.php"); ?>
                         </div>
                     </div>
                 </div>
@@ -374,11 +417,11 @@ require_once 'config/config.php';
                         <div class="box-body">
                             Copyright &copy; 2017 Vincent Guajioty. All rights reserved.
                             <br/><br/>
-                            Version <?php echo $VERSION; ?>
+                            Version <?php echo $VERSION; ?> <a href="https://cloud.guajioty.fr/sharing/qXPFbvvpV"><b style="color:red;"><?php echo file_get_contents("https://www.guajioty.fr/majDist/gpmMAJ.php?versionClient=".$VERSION); ?></b></a>
                             <br/><br/>
                             Adresse mail de l'administrateur de cette instance de GPM: <?php echo $MAILSERVER; ?>
                             <br/><br/>
-                            <a href="contact.php">Formulaire de contact du developpeur<a/>
+                            <a href="contact.php">Formulaire de contact du developpeur</a>
                         </div>
                     </div>
                 </div>

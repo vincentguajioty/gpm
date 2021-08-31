@@ -15,6 +15,7 @@ require_once('logCheck.php');
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
+    <?php require_once 'modal.php'; ?>
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -38,7 +39,7 @@ require_once('logCheck.php');
                 <div class="box-body">
                     <div class="box-header">
                         <?php if ($_SESSION['catalogue_ajout']==1) {?>
-                            <h3 class="box-title"><a href="catalogueForm.php?id=0" class="btn btn-sm btn-success">Ajouter un item</a></h3>
+                            <h3 class="box-title"><a data-toggle="modal" data-target="#modalCatalogueAdd" class="btn btn-sm btn-success">Ajouter un élément au catalogue</a></h3>
                         <?php } else {?>
                             </br>
                         <?php } ?>

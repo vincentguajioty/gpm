@@ -34,6 +34,6 @@ else
     }
 
 
-    echo "<script type='text/javascript'>document.location.replace('messages.php');</script>";
+    echo "<script>window.location = document.referrer;</script>";
 }
 ?>

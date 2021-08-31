@@ -18,7 +18,7 @@ require_once('logCheck.php');
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Etats des lots opérationnels
+                Ajout d'un élément dans le catalogue
             </h1>
             <ol class="breadcrumb">
                 <li><a href="index.php"><i class="fa fa-home"></i>Accueil</a></li>
@@ -29,165 +29,84 @@ require_once('logCheck.php');
 
         <!-- Main content -->
         <section class="content">
-            <?php
-            if ($_GET['id'] == 0) {
-                ?>
-                <!-- general form elements disabled -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Ajout d'un item dans le catalogue</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <form role="form" action="catalogueAdd.php" method="POST">
-                            <!-- text input -->
-                            <div class="form-group">
-                                <label>Libellé:</label>
-                                <input type="text" class="form-control" placeholder="Libellé le l'item à ajouter"
-                                       name="libelleMateriel" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Catégorie: </label>
-                                <select class="form-control select2" style="width: 100%;" name="libelleCategorie">
-                                    <option></option>
-                                    <?php
-                                    $query = $db->query('SELECT * FROM MATERIEL_CATEGORIES ORDER BY libelleCategorie;');
-                                    while ($data2 = $query->fetch())
-                                    {
-                                        ?>
-                                        <option value="<?php echo $data2['idCategorie']; ?>"><?php echo $data2['libelleCategorie']; ?></option>
-                                        <?php
-                                    }
-                                    $query->closeCursor(); ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Taille:</label>
-                                <input type="text" class="form-control" placeholder="5cmx5cm, L, Adulte, Pédiatrique"
-                                       name="taille">
-                            </div>
-                            <div class="form-group">
-                                <label>Stérilité:</label>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="sterilite" id="optionsRadios1" value="option1" checked>
-                                        Matériel non-stérile
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="sterilite" id="optionsRadios2" value="option2">
-                                        Matériel stérile
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Conditionnement:</label>
-                                <input type="text" class="form-control" placeholder="3 compresses par sachet ..."
-                                       name="conditionnementMultiple">
-                            </div>
-                            <div class="form-group">
-                                <label>Commentaires</label>
-                                <textarea class="form-control" rows="3" placeholder="Spécifiez d'autres détails"
-                                          name="commentairesMateriel"></textarea>
-                            </div>
-                            <div class="box-footer">
-                                <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
-                                <button type="submit" class="btn btn-info pull-right">Ajouter</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- /.box-body -->
-
+            <!-- general form elements disabled -->
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Modification d'un item du catalogue</h3>
                 </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form role="form" action="catalogueUpdate.php?id=<?=$_GET['id']?>" method="POST">
+                        <?php
+                        $query = $db->prepare('SELECT * FROM MATERIEL_CATALOGUE c LEFT OUTER JOIN MATERIEL_CATEGORIES b ON c.idCategorie = b.idCategorie WHERE idMaterielCatalogue=:idMaterielCatalogue;');
+                        $query->execute(array('idMaterielCatalogue' => $_GET['id']));
+                        $data = $query->fetch();
+                        ?>
 
-                <?php
-            }
-            else {
-                ?>
-
-                <!-- general form elements disabled -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Modification d'un item du catalogue</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <form role="form" action="catalogueUpdate.php?id=<?=$_GET['id']?>" method="POST">
-                            <?php
-                            $query = $db->prepare('SELECT * FROM MATERIEL_CATALOGUE c LEFT OUTER JOIN MATERIEL_CATEGORIES b ON c.idCategorie = b.idCategorie WHERE idMaterielCatalogue=:idMaterielCatalogue;');
-                            $query->execute(array('idMaterielCatalogue' => $_GET['id']));
-                            $data = $query->fetch();
-                            ?>
-
-                            <div class="form-group">
-                                <label>Libellé:</label>
-                                <input type="text" class="form-control" value="<?=$data['libelleMateriel']?>"
-                                       name="libelleMateriel" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Catégorie: </label>
-                                <select class="form-control select2" style="width: 100%;" name="libelleCategorie">
-                                    <option></option>
+                        <div class="form-group">
+                            <label>Libellé:</label>
+                            <input type="text" class="form-control" value="<?=$data['libelleMateriel']?>"
+                                   name="libelleMateriel" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Catégorie: </label>
+                            <select class="form-control select2" style="width: 100%;" name="libelleCategorie">
+                                <option></option>
+                                <?php
+                                $query2 = $db->query('SELECT * FROM MATERIEL_CATEGORIES ORDER BY libelleCategorie;');
+                                while ($data2 = $query2->fetch())
+                                {
+                                    ?>
+                                    <option value="<?php echo $data2['idCategorie']; ?>" <?php if ($data2['libelleCategorie'] == $data['libelleCategorie']) { echo 'selected'; } ?> ><?php echo $data2['libelleCategorie']; ?></option>
                                     <?php
-                                    $query2 = $db->query('SELECT * FROM MATERIEL_CATEGORIES ORDER BY libelleCategorie;');
-                                    while ($data2 = $query2->fetch())
-                                    {
-                                        ?>
-                                        <option value="<?php echo $data2['idCategorie']; ?>" <?php if ($data2['libelleCategorie'] == $data['libelleCategorie']) { echo 'selected'; } ?> ><?php echo $data2['libelleCategorie']; ?></option>
-                                        <?php
-                                    }
-                                    $query->closeCursor();
-                                    $query2->closeCursor();?>
-                                </select>
+                                }
+                                $query->closeCursor();
+                                $query2->closeCursor();?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Taille:</label>
+                            <input type="text" class="form-control" value="<?=$data['taille']?>"
+                                   name="taille">
+                        </div>
+                        <div class="form-group">
+                            <label>Stérilité:</label>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="sterilite" id="optionsRadios1" value="option1" <?php if ($data['sterilite']==0)
+                                        echo 'checked'?>
+                                    >
+                                    Matériel non-stérile
+                                </label>
                             </div>
-                            <div class="form-group">
-                                <label>Taille:</label>
-                                <input type="text" class="form-control" value="<?=$data['taille']?>"
-                                       name="taille">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="sterilite" id="optionsRadios2" value="option2"<?php if ($data['sterilite']==1)
+                                            echo 'checked'?>>
+                                    Matériel stérile
+                                </label>
                             </div>
-                            <div class="form-group">
-                                <label>Stérilité:</label>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="sterilite" id="optionsRadios1" value="option1" <?php if ($data['sterilite']==0)
-                                            echo 'checked'?>
-                                        >
-                                        Matériel non-stérile
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="sterilite" id="optionsRadios2" value="option2"<?php if ($data['sterilite']==1)
-                                                echo 'checked'?>>
-                                        Matériel stérile
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Conditionnement:</label>
-                                <input type="text" class="form-control" value="<?=$data['conditionnementMultiple']?>"
-                                       name="conditionnementMultiple">
-                            </div>
-                            <div class="form-group">
-                                <label>Commentaires</label>
-                                <textarea class="form-control" rows="3" placeholder="Spécifiez d'autres détails"
-                                          name="commentairesMateriel"><?php echo $data['commentairesMateriel']?></textarea>
-                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Conditionnement:</label>
+                            <input type="text" class="form-control" value="<?=$data['conditionnementMultiple']?>"
+                                   name="conditionnementMultiple">
+                        </div>
+                        <div class="form-group">
+                            <label>Commentaires</label>
+                            <textarea class="form-control" rows="3" placeholder="Spécifiez d'autres détails"
+                                      name="commentairesMateriel"><?php echo $data['commentairesMateriel']?></textarea>
+                        </div>
 
-                            <div class="box-footer">
-                                <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
-                                <button type="submit" class="btn btn-info pull-right">Modifier</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- /.box-body -->
-
+                        <div class="box-footer">
+                            <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
+                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
+                        </div>
+                    </form>
                 </div>
+                <!-- /.box-body -->
 
-                <?php
-            }
-            ?>
+            </div>
 
         </section>
         <!-- /.content -->

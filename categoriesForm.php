@@ -29,72 +29,35 @@ require_once('logCheck.php');
 
         <!-- Main content -->
         <section class="content">
-            <?php
-            if ($_GET['id'] == 0) {
-                ?>
-                <!-- general form elements disabled -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Ajout d'une catégorie</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <form role="form" action="categoriesAdd.php" method="POST">
-                            <!-- text input -->
-                            <div class="form-group">
-                                <label>Libellé:</label>
-                                <input type="text" class="form-control" placeholder="Libellé de la catégorie à ajouter"
-                                       name="libelleCategorie" required>
-                            </div>
-                            <div class="box-footer">
-                                <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
-                                <button type="submit" class="btn btn-info pull-right">Ajouter</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- /.box-body -->
-
+            <!-- general form elements disabled -->
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Modification d'une catégorie</h3>
                 </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form role="form" action="categoriesUpdate.php?id=<?=$_GET['id']?>" method="POST">
+                        <?php
+                        $query = $db->prepare('SELECT * FROM MATERIEL_CATEGORIES WHERE idCategorie=:idCategorie;');
+                        $query->execute(array('idCategorie' => $_GET['id']));
+                        $data = $query->fetch();
+                        ?>
 
-                <?php
-            }
-            else {
-                ?>
+                        <div class="form-group">
+                            <label>Libellé</label>
+                            <input type="text" class="form-control" value="<?=$data['libelleCategorie']?>"
+                                   name="libelleCategorie" required>
+                        </div>
 
-                <!-- general form elements disabled -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Modification d'une catégorie</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <form role="form" action="categoriesUpdate.php?id=<?=$_GET['id']?>" method="POST">
-                            <?php
-                            $query = $db->prepare('SELECT * FROM MATERIEL_CATEGORIES WHERE idCategorie=:idCategorie;');
-                            $query->execute(array('idCategorie' => $_GET['id']));
-                            $data = $query->fetch();
-                            ?>
-
-                            <div class="form-group">
-                                <label>Libellé</label>
-                                <input type="text" class="form-control" value="<?=$data['libelleCategorie']?>"
-                                       name="libelleCategorie" required>
-                            </div>
-
-                            <div class="box-footer">
-                                <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
-                                <button type="submit" class="btn btn-info pull-right">Modifier</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- /.box-body -->
-
+                        <div class="box-footer">
+                            <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
+                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
+                        </div>
+                    </form>
                 </div>
+                <!-- /.box-body -->
 
-                <?php
-            }
-            ?>
-
+            </div>
         </section>
         <!-- /.content -->
     </div>

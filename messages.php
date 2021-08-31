@@ -15,6 +15,7 @@ if ($_SESSION['messages_ajout']==0 AND $_SESSION['messages_suppression']==0)
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
+    <?php require_once 'modal.php'; ?>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -32,36 +33,10 @@ if ($_SESSION['messages_ajout']==0 AND $_SESSION['messages_suppression']==0)
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
-            <?php
-                if ($_SESSION['messages_ajout']==1) {
-                    ?>
-                    <div class="box box-success">
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <form role="form" action="messagesAdd.php" method="POST">
-                                <!-- text input -->
-                                <div class="form-group">
-                                    <label>Titre:</label>
-                                    <input type="text" class="form-control" placeholder="Titre du message"
-                                           name="titreMessage" required>
-                                </div>
-                                <!-- textarea -->
-                                <div class="form-group">
-                                    <label>Message:</label>
-                                    <textarea class="form-control" rows="3" placeholder="Corps du message"
-                                              name="corpsMessage"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-info pull-right">Ajouter</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <?php
-                }
-            ?>
-
             <div class="box box-warning">
+            	<div class = "box-header">
+            		<h3 class="box-title"><a data-toggle="modal" data-target="#modalMessageGeneralAdd" class="btn btn-sm btn-success">Ajouter un message</a></h3>
+            	</div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="tri2" class="table table-bordered table-hover">

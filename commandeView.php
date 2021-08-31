@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
-<?php include('header.php'); require_once('config/config.php'); ?>
+<?php include('header.php');?>
 <?php
 session_start();
 $_SESSION['page'] = 601;
 require_once('logCheck.php');
+require_once('config/config.php');
 ?>
 <?php
 if ($_SESSION['commande_lecture']==0)
@@ -15,6 +16,7 @@ if ($_SESSION['commande_lecture']==0)
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
+    <?php require_once 'modal.php'; ?>
 
     <?php
     $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat WHERE idCommande=:idCommande;');
@@ -46,6 +48,7 @@ if ($_SESSION['commande_lecture']==0)
 	                    <ul class="nav nav-tabs">
 	                        <li class="active"><a href="#general" data-toggle="tab">Informations générales</a></li>
 	                        <li><a href="#contenu" data-toggle="tab">Contenu</a></li>
+	                        <li><a href="#pj" data-toggle="tab">Pièces jointes</a></li>
 	                        <?php if ($data['idEtat']>1) { ?><li><a href="#validation" data-toggle="tab">Validation</a></li> <?php } ?>
 	                        <?php if ($data['idEtat']>2) { ?><li><a href="#fournisseur" data-toggle="tab">Passage de la commande</a></li> <?php } ?>
 	                        <?php if ($data['idEtat']>3) { ?><li><a href="#livraison" data-toggle="tab">Livraison</a></li> <?php } ?>
@@ -143,7 +146,6 @@ if ($_SESSION['commande_lecture']==0)
 	                                        <div class="form-group">
 	                                            <label>Affectation: </label>
 	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idAffectee">
-	                                                <option></option>
 	                                                <?php
 	                                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1 AND commande_etreEnCharge = 1;');
 	                                                while ($data2 = $query2->fetch())
@@ -158,7 +160,6 @@ if ($_SESSION['commande_lecture']==0)
 	                                        <div class="form-group">
 	                                            <label>Validation de la demande de commande par: </label>
 	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idValideur">
-	                                                <option></option>
 	                                                <?php
 	                                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN PROFILS h ON p.idProfil = h.idProfil WHERE commande_lecture = 1 AND commande_valider = 1;');
 	                                                while ($data2 = $query2->fetch())
@@ -234,12 +235,12 @@ if ($_SESSION['commande_lecture']==0)
 								                  <td><?php echo $data2['prixProduitTTC']*$data2['quantiteCommande']; $totalCMD = $totalCMD + ($data2['prixProduitTTC']*$data2['quantiteCommande']);?> €</td>
 								                  <td>
 								                	<?php if(($data['idEtat']==1) AND (($_SESSION['commande_ajout']==1) OR ($_SESSION['commande_etreEnCharge']==1))){ ?>
-								                		<a data-toggle="modal" data-target="#modalUpdateItem" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
+								                		<a data-toggle="modal" data-target="#modalCommandesUpdateItem" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></a>
 								                		<a href="commandeItemDelete.php?idCommande=<?=$data2['idCommande']?>&idMaterielCatalogue=<? if($data2['idMaterielCatalogue'] == Null){echo '-1';}else{echo $data2['idMaterielCatalogue'];}?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-minus"></i></a>
 								                	<?php }?>
 								                	
 								                	<?php if(($data['idEtat']>1) AND ($_SESSION['commande_lecture']==1)){ ?>
-								                		<a data-toggle="modal" data-target="#modalViewItem" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
+								                		<a data-toggle="modal" data-target="#modalCommandesViewItem" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
 								                	<?php }?>
 								                	
 								                  </td>
@@ -262,11 +263,58 @@ if ($_SESSION['commande_lecture']==0)
 										        	<td></td>
 										        	<td></td>
 										        	<td></td>
-										        	<td><a data-toggle="modal" data-target="#modalAddItem" class="btn btn-xs btn-success"><i class="fa fa-plus"></i></a></td>
+										        	<td><a data-toggle="modal" data-target="#modalCommandesAddItem" class="btn btn-xs btn-success"><i class="fa fa-plus"></i></a></td>
 										        <tr>
 										  <?php }?>
 					              </table>
 					              
+					            </div>
+	                        </div>
+	                        
+	                        <div class="tab-pane" id="pj">
+	                            <div class="box-body table-responsive no-padding">
+                                    <table class="table table-hover">
+                                        <tr>
+                                            <th>Nom du document</th>
+                                            <th>Type de document</th>
+                                            <th>Date de chargement</th>
+                                            <th>Format</th>
+                                            <th></th>
+                                        </tr>
+                                        <?php
+                                        $query2 = $db->prepare('SELECT * FROM DOCUMENTS_COMMANDES c LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument WHERE idCommande = :idCommande ORDER BY nomDocCommande ASC ;');
+                                        $query2->execute(array('idCommande' => $_GET['id']));
+                                        while ($data2 = $query2->fetch())
+                                        {
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $data2['nomDocCommande'];?></td>
+                                                <td><?php echo $data2['libelleTypeDocument'];?></td>
+                                                <td><?php echo $data2['dateDocCommande'];?></td>
+                                                <td><?php echo $data2['formatDocCommande'];?></td>
+                                                <td>
+                                                    <?php if($_SESSION['commande_lecture']==1){ ?>
+                                                        <a href="commandeDocDL.php?idDoc=<?=$data2['idDocCommande']?>" class="btn btn-xs btn-success"><i class="fa fa-download"></i></a>
+                                                    <?php }?>
+                                                    <?php if(($data['idEtat']==1) AND (($_SESSION['commande_ajout']==1) OR ($_SESSION['commande_etreEnCharge']==1))){ ?>
+                                                        <a href="commandeDocDelete.php?idDoc=<?=$data2['idDocCommande']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');"><i class="fa fa-minus"></i></a>
+                                                    <?php }?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $query2->closeCursor(); ?>
+
+                                        <?php if(($data['idEtat']<7) AND (($_SESSION['commande_ajout']==1) OR ($_SESSION['commande_etreEnCharge']==1))){ ?>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><a data-toggle="modal" data-target="#modalCommandesDocAdd" class="btn btn-xs btn-success"><i class="fa fa-plus"></i></a></td>
+                                            <tr>
+                                        <?php }?>
+                                    </table>
 					            </div>
 	                        </div>
 	
@@ -456,7 +504,7 @@ if ($_SESSION['commande_lecture']==0)
 	                <div class="box box-warning">
 	                    <div class="box-body">
 	                        <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
-	                        <?php if (($data['idEtat']==1) AND (($_SESSION['commande_ajout']==1)OR($_SESSION['commande_etreEnCharge']==1))) { ?><a href="commandesGo2.php?id=<?=$_GET['id']?>" <?php if($data['idValideur'] == ''){echo 'disabled';}?> class="btn btn-info pull-right">Soumettre à validation</a> <?php } ?>
+	                        <?php if (($data['idEtat']==1) AND ($data['idValideur'] != '') AND(($_SESSION['commande_ajout']==1)OR($_SESSION['commande_etreEnCharge']==1))) { ?><a href="commandesGo2.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right">Soumettre à validation</a> <?php } ?>
 	                        <?php if (($data['idEtat']==3) AND ($_SESSION['idPersonne'] == $data['idAffectee'])) { ?><a href="commandesGo4.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right">Commande passée > En attente de livraison</a> <?php } ?>
 	                        <?php if (($data['idEtat']==5) AND ($_SESSION['idPersonne'] == $data['idAffectee'])) { ?><a href="commandesGo7.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right">Cloturer la commande</a> <?php } ?>
 	                        <?php if (($data['idEtat']==6) AND ($_SESSION['idPersonne'] == $data['idAffectee'])) { ?><a href="commandesGo5.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right">SAV terminé > Commande OK</a> <?php } ?>
@@ -509,110 +557,5 @@ if ($_SESSION['commande_lecture']==0)
 
 <?php include('scripts.php'); ?>
 </body>
-
-
-<!-- Modal -->
-<div class="modal fade" id="modalAddItem">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Ajouter un élément à la commande</h4>
-      </div>
-      <form role="form" action="commandeItemAdd.php?idCommande=<?=$_GET['id']?>" method="POST">
-	      <div class="modal-body">
-	        <div class="form-group">
-				<label>Matériel: </label>
-				<select class="form-control select2" style="width: 100%;" name="idMaterielCatalogue">
-                    <option value="-1">Frais de port</option>
-                    <?php
-					$query2 = $db->prepare('SELECT * FROM MATERIEL_CATALOGUE ORDER BY libelleMateriel;');
-					$query2->execute(array('idTypeLot' => $_GET['id']));
-					while ($data2 = $query2->fetch())
-					{
-						?>
-						<option value="<?php echo $data2['idMaterielCatalogue']; ?>"><?php echo $data2['libelleMateriel']; ?></option>
-						<?php
-					}
-					$query->closeCursor(); ?>
-				</select>
-			</div>
-			<div class="form-group">
-				<label>Quantité:</label>
-				<input type="number" class="form-control" name="quantiteCommande">
-			</div>
-			<div class="row">
-				<div class="col-md-3">
-					<div class="form-group">
-						<label>Prix HT:</label>
-						<input type="number" step="0.01" class="form-control" name="prixProduitHT">
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-						<label>Taxe:</label>
-						<input type="number" step="0.01" class="form-control" name="taxeProduit">
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-						<label>Prix TTC:</label>
-						<input type="number" step="0.01" class="form-control" name="prixProduitTTC">
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-						<label>Remise:</label>
-						<input type="number" step="0.01" class="form-control" name="remiseProduit">
-					</div>
-				</div>
-			</div>
-			<div class="form-group">
-				<label>Référence produit chez le fournisseur:</label>
-				<input type="text" class="form-control" name="referenceProduitFournisseur">
-			</div>
-			<div class="form-group">
-	        	<label>Remarques:</label>
-				<textarea class="form-control" rows="3" name="remarqueArticle"></textarea>
-			</div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
-	        <button type="submit" class="btn btn-primary pull-right">Ajouter</button>
-	      </div>
-	  </form>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="modalUpdateItem">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Modifier un élément de la commande</h4>
-      </div>
-      <div class="modal-body">
-        	EN COURS DE DEV
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="modalViewItem">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">ELEMENT</h4>
-      </div>
-      <div class="modal-body">
-        	EN COURS DE DEV
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 
 </html>

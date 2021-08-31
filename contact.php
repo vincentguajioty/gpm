@@ -103,7 +103,7 @@ require_once('logCheck.php');
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Ma version de GMP:</label>
+                                    <label>Ma version de GPM:</label>
                                     <input type="text" class="form-control" value="<?php echo $VERSION;?>" name="version">
                                 </div>
                             </div>

@@ -16,6 +16,7 @@ if ($_SESSION['lots_lecture']==0)
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
     <?php require_once 'checkLotsConf.php'; ?>
+    <?php require_once 'modal.php'; ?>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -38,7 +39,7 @@ if ($_SESSION['lots_lecture']==0)
                 <div class="box-body">
                     <div class="box-header">
                         <?php if ($_SESSION['lots_ajout']==1) {?>
-                            <h3 class="box-title"><a href="lotsForm.php?id=0" class="btn btn-sm btn-success">Ajouter un lot</a></h3>
+                            <h3 class="box-title"><a data-toggle="modal" data-target="#modalLotsAdd" class="btn btn-sm btn-success">Ajouter un lot</a></h3>
                         <?php } else {?>
                             </br>
                         <?php } ?>

@@ -29,131 +29,65 @@ require_once('logCheck.php');
 
         <!-- Main content -->
         <section class="content">
-            <?php
-                if ($_GET['id'] == 0) {
-                    ?>
-                    <!-- general form elements disabled -->
-                    <div class="box box-info">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Ajout d'un lieu</h3>
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Modification d'un lieu</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form role="form" action="lieuxUpdate.php?id=<?=$_GET['id']?>" method="POST">
+                        <?php
+                        $query = $db->prepare('SELECT * FROM LIEUX WHERE idLieu=:idLieu;');
+                        $query->execute(array('idLieu' => $_GET['id']));
+                        $data = $query->fetch();
+                        ?>
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Libellé du lieu de stockage:</label>
+                            <input type="text" class="form-control" value="<?=$data['libelleLieu']?>" name="libelleLieu" required>
                         </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <form role="form" action="lieuxAdd.php" method="POST">
-                                <!-- text input -->
-                                <div class="form-group">
-                                    <label>Libellé du lieu de stockage:</label>
-                                    <input type="text" class="form-control" placeholder="Entrez un nom pour ce lieu"
-                                           name="libelleLieu" required>
-                                </div>
-                                <!-- textarea -->
-                                <div class="form-group">
-                                    <label>Adresse</label>
-                                    <textarea class="form-control" rows="3" placeholder="Entez l'adresse du lieu"
-                                              name="adresseLieu"></textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Contrôle d'accès:</label>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="accesReserve" id="optionsRadios1" value="option1" checked>
-                                            Accès libre
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="accesReserve" id="optionsRadios2" value="option2">
-                                            Accès règlementé
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <!-- textarea -->
-                                <div class="form-group">
-                                    <label>Détails</label>
-                                    <textarea class="form-control" rows="3" placeholder="Spécifiez d'autres détails"
-                                              name="detailsLieu"></textarea>
-                                </div>
-                                <div class="box-footer">
-                                    <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
-                                    <button type="submit" class="btn btn-info pull-right">Ajouter</button>
-                                </div>
-                            </form>
+                        <!-- textarea -->
+                        <div class="form-group">
+                            <label>Adresse</label>
+                            <textarea class="form-control" rows="3" name="adresseLieu"><?=$data['adresseLieu']?></textarea>
                         </div>
-                        <!-- /.box-body -->
 
-                    </div>
-
-                    <?php
-                }
-                else {
-                    ?>
-
-                    <!-- general form elements disabled -->
-                    <div class="box box-info">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Modification d'un lieu</h3>
+                        <div class="form-group">
+                            <label>Contrôle d'accès:</label>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="accesReserve" id="optionsRadios1" value="option1"
+                                           <?php if ($data['accesReserve']==0)
+                                               echo 'checked'?>
+                                           >
+                                    Accès libre
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="accesReserve" id="optionsRadios2" value="option2"
+                                        <?php if ($data['accesReserve']==1)
+                                            echo 'checked'?>
+                                            >
+                                    Accès règlementé
+                                </label>
+                            </div>
                         </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <form role="form" action="lieuxUpdate.php?id=<?=$_GET['id']?>" method="POST">
-                                <?php
-                                $query = $db->prepare('SELECT * FROM LIEUX WHERE idLieu=:idLieu;');
-                                $query->execute(array('idLieu' => $_GET['id']));
-                                $data = $query->fetch();
-                                ?>
-                                <!-- text input -->
-                                <div class="form-group">
-                                    <label>Libellé du lieu de stockage:</label>
-                                    <input type="text" class="form-control" value="<?=$data['libelleLieu']?>" name="libelleLieu" required>
-                                </div>
-                                <!-- textarea -->
-                                <div class="form-group">
-                                    <label>Adresse</label>
-                                    <textarea class="form-control" rows="3" name="adresseLieu"><?=$data['adresseLieu']?></textarea>
-                                </div>
 
-                                <div class="form-group">
-                                    <label>Contrôle d'accès:</label>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="accesReserve" id="optionsRadios1" value="option1"
-                                                   <?php if ($data['accesReserve']==0)
-                                                       echo 'checked'?>
-                                                   >
-                                            Accès libre
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="accesReserve" id="optionsRadios2" value="option2"
-                                                <?php if ($data['accesReserve']==1)
-                                                    echo 'checked'?>
-                                                    >
-                                            Accès règlementé
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <!-- textarea -->
-                                <div class="form-group">
-                                    <label>Détails</label>
-                                    <textarea class="form-control" rows="3" name="detailsLieu"><?=$data['detailsLieu']?></textarea>
-                                </div>
-                                <div class="box-footer">
-                                    <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
-                                    <button type="submit" class="btn btn-info pull-right">Modifier</button>
-                                </div>
-                            </form>
+                        <!-- textarea -->
+                        <div class="form-group">
+                            <label>Détails</label>
+                            <textarea class="form-control" rows="3" name="detailsLieu"><?=$data['detailsLieu']?></textarea>
                         </div>
-                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
+                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-body -->
 
-                    </div>
-
-                    <?php
-                }
-            ?>
+            </div>
 
         </section>
         <!-- /.content -->

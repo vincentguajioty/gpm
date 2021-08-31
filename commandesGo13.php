@@ -36,11 +36,11 @@ else
         $message = $RETOURLIGNE.$message.$RETOURLIGNE;
         if(sendmail($data['mailPersonne'], $sujet, 2, $message))
         {
-            writeInLogs("Mail d'abandon envoyé à l'observateur pour la commande " . $_GET['id'], '2');
+            writeInLogs("Mail de validation à l'observateur pour la commande " . $_GET['id'], '2');
         }
         else
         {
-            writeInLogs("Erreur lors de l'envoi du mail du mail d'abandon à l'observateur pour la commande " . $_GET['id'], '5');
+            writeInLogs("Erreur lors de l'envoi du mail de validation à l'observateur pour la commande " . $_GET['id'], '5');
         }
 
 
@@ -56,11 +56,11 @@ else
         $message = $RETOURLIGNE.$message.$RETOURLIGNE;
         if(sendmail($data['mailPersonne'], $sujet, 2, $message))
         {
-            writeInLogs("Mail d'abandon envoyé au demandeur pour la commande " . $_GET['id'], '2');
+            writeInLogs("Mail de validation au demandeur pour la commande " . $_GET['id'], '2');
         }
         else
         {
-            writeInLogs("Erreur lors de l'envoi du mail du mail d'abandon au demandeur pour la commande " . $_GET['id'], '5');
+            writeInLogs("Erreur lors de l'envoi du mail de validation au demandeur pour la commande " . $_GET['id'], '5');
         }
 
 
@@ -77,11 +77,11 @@ else
         $message = $RETOURLIGNE.$message.$RETOURLIGNE;
         if(sendmail($data['mailPersonne'], $sujet, 2, $message))
         {
-            writeInLogs("Mail d'abandon envoyé au realisateur pour la commande " . $_GET['id'], '2');
+            writeInLogs("Mail de validation envoyé au realisateur pour la commande " . $_GET['id'], '2');
         }
         else
         {
-            writeInLogs("Erreur lors de l'envoi du mail du mail d'abandon au realisateur pour la commande " . $_GET['id'], '5');
+            writeInLogs("Erreur lors de l'envoi du mail de validation au realisateur pour la commande " . $_GET['id'], '5');
         }
     }
     else
@@ -106,11 +106,11 @@ else
         $message = $RETOURLIGNE.$message.$RETOURLIGNE;
         if(sendmail($data['mailPersonne'], $sujet, 2, $message))
         {
-            writeInLogs("Mail d'abandon envoyé à l'observateur pour la commande " . $_GET['id'], '2');
+            writeInLogs("Mail de validation envoyé à l'observateur pour la commande " . $_GET['id'], '2');
         }
         else
         {
-            writeInLogs("Erreur lors de l'envoi du mail du mail d'abandon à l'observateur pour la commande " . $_GET['id'], '5');
+            writeInLogs("Erreur lors de l'envoi du mail de validation à l'observateur pour la commande " . $_GET['id'], '5');
         }
 
 
@@ -127,11 +127,11 @@ else
         $message = $RETOURLIGNE.$message.$RETOURLIGNE;
         if(sendmail($data['mailPersonne'], $sujet, 2, $message))
         {
-            writeInLogs("Mail d'abandon envoyé au demandeur pour la commande " . $_GET['id'], '2');
+            writeInLogs("Mail de validation envoyé au demandeur pour la commande " . $_GET['id'], '2');
         }
         else
         {
-            writeInLogs("Erreur lors de l'envoi du mail du mail d'abandon au demandeur pour la commande " . $_GET['id'], '5');
+            writeInLogs("Erreur lors de l'envoi du mail de validation au demandeur pour la commande " . $_GET['id'], '5');
         }
 
 
@@ -148,11 +148,11 @@ else
         $message = $RETOURLIGNE.$message.$RETOURLIGNE;
         if(sendmail($data['mailPersonne'], $sujet, 2, $message))
         {
-            writeInLogs("Mail d'abandon envoyé au realisateur pour la commande " . $_GET['id'], '2');
+            writeInLogs("Mail de validation envoyé au realisateur pour la commande " . $_GET['id'], '2');
         }
         else
         {
-            writeInLogs("Erreur lors de l'envoi du mail du mail d'abandon au realisateur pour la commande " . $_GET['id'], '5');
+            writeInLogs("Erreur lors de l'envoi du mail de validation au realisateur pour la commande " . $_GET['id'], '5');
         }
     }
 

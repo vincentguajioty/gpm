@@ -39,20 +39,25 @@ if ($_SESSION['logs_lecture']==0)
                         <h4>Selection de la plage</h4>
                         <!-- text input -->
                         <div class="form-group">
-                            <label>Date de début:</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input class="input-datepicker form-control" name="dateInf" value="<?=$_GET['dateInf']?>">
-                            </div>
-                            <br/>
-                            <label>Date de fin:</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input class="input-datepicker form-control" name="dateSup" value="<?=$_GET['dateSup']?>">
+                        	<div class="row">
+	                        	<div class="col-md-6">
+		                            <label>Date de début:</label>
+		                            <div class="input-group">
+		                                <div class="input-group-addon">
+		                                    <i class="fa fa-calendar"></i>
+		                                </div>
+		                                <input class="input-datepicker form-control" name="dateInf" value="<?=$_GET['dateInf']?>">
+		                            </div>
+	                            </div>
+	                            <div class="col-md-6">
+		                            <label>Date de fin:</label>
+		                            <div class="input-group">
+		                                <div class="input-group-addon">
+		                                    <i class="fa fa-calendar"></i>
+		                                </div>
+		                                <input class="input-datepicker form-control" name="dateSup" value="<?=$_GET['dateSup']?>">
+		                            </div>
+	                            </div>
                             </div>
                             <br/>
                             <button type="submit" class="btn btn-info pull-right">Appliquer</button>

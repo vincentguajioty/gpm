@@ -16,6 +16,7 @@ if ($_SESSION['annuaire_lecture']==0)
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
+    <?php require_once 'modal.php'; ?>
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -40,7 +41,7 @@ if ($_SESSION['annuaire_lecture']==0)
                 <div class="box-body">
                     <div class="box-header">
                         <?php if ($_SESSION['annuaire_ajout']==1) {?>
-                            <h3 class="box-title"><a href="annuaireForm.php?id=0" class="btn btn-sm btn-success">Ajouter un utilisateur</a></h3>
+                            <h3 class="box-title"><a data-toggle="modal" data-target="#modalAnnuaireAdd" class="btn btn-sm btn-success">Ajouter un utilisateur</a></h3>
                         <?php } else {?>
                             </br>
                         <?php } ?>
@@ -64,7 +65,14 @@ if ($_SESSION['annuaire_lecture']==0)
                         {?>
                             <tr>
                                 <td><?php echo $data['idPersonne']; ?></td>
-                                <td><?php echo $data['identifiant']; ?></td>
+                                <td><?php
+                                	if($data['connexion_connexion']==1 AND (date('Y-m-d') > date('Y-m-d', strtotime($data['derniereConnexion'] . ' + 60 days'))))
+                                	{ ?>
+                                		<span class="badge bg-red"><?php echo $data['identifiant']; ?></span>
+                                	<?php }else{
+                                		echo $data['identifiant'];
+                                	} ?>
+                            	</td>
                                 <td><?php echo $data['nomPersonne']; ?></td>
                                 <td><?php echo $data['prenomPersonne']; ?></td>
                                 <td><?php echo $data['fonction']; ?></td>

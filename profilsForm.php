@@ -43,14 +43,12 @@ require_once('logCheck.php');
                         <form role="form" action="profilsAdd.php" method="POST">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>Libellé:</label>
-                                <input type="text" class="form-control" placeholder="Libellé du profil à ajouter"
-                                       name="libelleProfil" required>
+                                <label>Libellé:<small style="color:grey;"> Requis</small></label>
+                                <input type="text" class="form-control" placeholder="Libellé du profil à ajouter" name="libelleProfil" required>
                             </div>
                             <div class="form-group">
                                 <label>Description:</label>
-                                <textarea class="form-control" rows="3" placeholder="Spécifiez l'utilité du profil"
-                                          name="descriptifProfil"></textarea>
+                                <textarea class="form-control" rows="3" placeholder="Spécifiez l'utilité du profil" name="descriptifProfil"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Connexion à <?php echo $APPNAME;?>:</label>
@@ -58,6 +56,16 @@ require_once('logCheck.php');
                                 <div class="checkbox">
 	                                <label>
 	                                    <input type="checkbox" value="1" name="connexion_connexion"> Autorisé à se connecter à <?php echo $APPNAME;?>
+	                                </label>
+	                            </div>
+                                </br>
+                            </div>
+                            <div class="form-group">
+                                <label>Paramétrage général de <?php echo $APPNAME;?>:</label>
+                                </br>
+                                <div class="checkbox">
+	                                <label>
+	                                    <input type="checkbox" value="1" name="appli_conf"> Autorisé à modifier la configuration de <?php echo $APPNAME;?>
 	                                </label>
 	                            </div>
                                 </br>
@@ -256,14 +264,12 @@ require_once('logCheck.php');
                             ?>
 
                             <div class="form-group">
-                                <label>Libellé:</label>
-                                <input type="text" class="form-control" value="<?=$data['libelleProfil']?>"
-                                       name="libelleProfil" required>
+                                <label>Libellé:<small style="color:grey;"> Requis</small></label>
+                                <input type="text" class="form-control" value="<?=$data['libelleProfil']?>" name="libelleProfil" required>
                             </div>
                             <div class="form-group">
                                 <label>Description:</label>
-                                <textarea class="form-control" rows="3"
-                                          name="descriptifProfil"><?=$data['descriptifProfil']?></textarea>
+                                <textarea class="form-control" rows="3" name="descriptifProfil"><?=$data['descriptifProfil']?></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Connexion à <?php echo $APPNAME;?>:</label>
@@ -271,6 +277,16 @@ require_once('logCheck.php');
                                 <div class="checkbox">
 	                                <label>
 	                                    <input type="checkbox" value="1" name="connexion_connexion" <?php if ($data['connexion_connexion']==1) {echo 'checked';} ?>> Autorisé à se connecter à <?php echo $APPNAME;?>
+	                                </label>
+	                            </div>
+                                </br>
+                            </div>
+                            <div class="form-group">
+                                <label>Paramétrage général de <?php echo $APPNAME;?>:</label>
+                                </br>
+                                <div class="checkbox">
+	                                <label>
+	                                    <input type="checkbox" value="1" name="appli_conf" <?php if ($data['appli_conf']==1) {echo 'checked';} ?>> Autorisé à modifier la configuration de <?php echo $APPNAME;?>
 	                                </label>
 	                            </div>
                                 </br>

@@ -232,7 +232,7 @@ require_once('logCheck.php');
                     <div class="box-body">
                         <dl>
                             <dt>Conformité des lots:</dt>
-                            <dd>L'outil de vérification de conformité des lots analyse chaque lot qui est associé à un référentiel. Si un lot n'est pas associé à un référentiel, aucune alerte n'apparait et le lot n'est pas analysé. Ceci permet de désactiver cette analyse si besoin.
+                            	<dd>L'outil de vérification de conformité des lots analyse chaque lot qui est associé à un référentiel. Si un lot n'est pas associé à un référentiel, aucune alerte n'apparait et le lot n'est pas analysé. Ceci permet de désactiver cette analyse si besoin.
                                 <br>
                                 Pour analyser un lot, GPM prend le référentiel auquel le lot est lié et le déroule. Pour chaque élément du référentiel, le processus vérifie que la quantité demandée dans le référentiel est bien présente dans le lot. De même, si l'item est marqué comme étant stérile dans sa description, GPM vérifie également que sa péremption n'est pas passée. Important: seuls les éléments marqués comme OBLIGATOIRES dans les référentiels sont analysés.
                                 <br/>
@@ -243,7 +243,7 @@ require_once('logCheck.php');
                                 L'analyse de conformité est faite en temps réel. Il suffit d'actualiser les pages pour que les analyses se fassent.</dd>
                             <br/><br/>
                             <dt>Alertes de quantité de matériel:</dt>
-                            <dd>Les quantités spécifiées dans les descriptifs des matériels font l'objet d'une analyse par la plateforme GPM. Si aucune quantité n'est renseignée, les alertes de quantité se déclenchent et le label orange "0" apparait dans les colonnes de quantité.
+                            	<dd>Les quantités spécifiées dans les descriptifs des matériels font l'objet d'une analyse par la plateforme GPM. Si aucune quantité n'est renseignée, les alertes de quantité se déclenchent et le label orange "0" apparait dans les colonnes de quantité.
                                 <br/>
                                 Si les quantités sont supérieures aux seuils d'alerte, alors les quantités apparaissent dans un label vert et aucune alerte n'est déclcenchée.
                                 <br/>
@@ -252,11 +252,14 @@ require_once('logCheck.php');
                                 Si les quantités passent en-dessous des seuils d'alerte, alors les quantités apparaissent dans un label rouge et les alertes sont déclenchées.</dd>
                             <br/><br/>
                             <dt>Alertes sur les péremptions:</dt>
-                            <dd>Les dates de péremption sont analysées par GPM. Si aucune date n'est renseignée mais que la case "Aucune date de péremption" n'est pas cochée, GPM considère qu'il y a eu un oubli de saisi et matériel passe en alerte.
+                            	<dd>Les dates de péremption sont analysées par GPM. Si aucune date n'est renseignée mais que la case "Aucune date de péremption" n'est pas cochée, GPM considère qu'il y a eu un oubli de saisi et matériel passe en alerte.
                                 <br/>
                                 Si aucune anticiption d'alerte n'est renseignée sur la fiche du matériel, alors l'alerte est binaire: soit la date de péremption est ultérieure et aucune alerte n'est déclenchée, soit la date est inférieure ou égale à la date du jour et l'alerte se déclenche. (Colorations vertes ou rouges en fonction)
                                 <br/>
                                 Si une anticiaption d'alerte est renseignée, le matériel passe en alerte avant sa date de péremption, conformément à l'anticiaption demandée. Il figurera donc en Orange dans la liste du matériel ainsi que dans les emails de notification, mais ne fera pas passer un lot en Non-Conforme, et ne fera pas non-plus basculer l'indicateur général de la page d'accueil.</dd>
+                            <br/><br/>
+                            <dt>Alertes sur l'annuaire:</dt>
+                            	<dd>Sur la page de l'annuaire, les identifiants peuvent apparaitre entourés en rouge. Ceci veut dire que l'utilisateur ne s'est pas connecté sur les deux mois précédents alors qu'il a un profil qui lui donne le droit de se connecter. Il s'agirait donc potentiellement d'un compte actif qui n'est plus utilisé. Il serait sage de le désactiver.</dd>
                         </dl>
                     </div>
                     <!-- /.box-body -->
@@ -330,7 +333,7 @@ require_once('logCheck.php');
 	                            <li>Dès que la commande est réceptionnée, renseigner l'onglet "Livraison" qui est apparu. La validation de cet onglet se fait soit par "Commande reçue > OK" ce qui valide la réception de la commande, soit par "Commande reçue > SAV" ce qui engage une procédure de SAV. Durant toute la procédure de SAV, la case "Note" permet d'ajouter des notes au dossier et de faire ainsi le suivi du SAV. Une fois le SAV terminé, le bouton "SAV terminé > Commande OK" permet de ramener la commande dans le même état que si sa réception s'était bien déroulée dès le début.
 	                            <li>Une fois la commande en état "Livraison OK", il ne reste plus qu'à clôturer la commande. L'état "Livraison OK" permet de garder la commande accessible le temps de ranger le matériel reçu ou de l'affecter à un lot par exemple. Une fois la commande clôturée, elle apparaitra toujours dans l'onglet "Toutes les commandes" mais ne figurera plus dans les trois onglets personnels.
                             </ul></dd>
-                            <br/><br/>
+                            <br/>
                             <dt>Rôles des intervenants</dt>
                             <dd>Quatre personnes interviennent le long d'une commande:
                                 <ul>

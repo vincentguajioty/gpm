@@ -12,6 +12,7 @@ require_once('logCheck.php');
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
     <?php require_once 'checkLotsConf.php'; ?>
+    <?php require_once 'modal.php'; ?>
 
 
 
@@ -53,11 +54,12 @@ require_once('logCheck.php');
                 if ($data['nb']>0)
                 { ?>
                     <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span>
+                        <a data-toggle="modal" data-target="#modalAccueilAlertePeremption"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Matériel périmé:</span>
                             <span class="info-box-number"><?php echo $data['nb']; ?></span>
+                            <span class="info-box-more">Cliquer sur l'icone</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -85,12 +87,14 @@ require_once('logCheck.php');
 
                 if ($data['nb']>0)
                 { ?>
+
                     <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span>
+                        <a data-toggle="modal" data-target="#modalAccueilAlerteQuantité"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Matériel manquant:</span>
                             <span class="info-box-number"><?php echo $data['nb']; ?></span>
+                            <span class="info-box-more">Cliquer sur l'icone</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -118,12 +122,14 @@ require_once('logCheck.php');
 
                 if ($data['nb']>0)
                 { ?>
+
                     <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span>
+                        <a data-toggle="modal" data-target="#modalAccueilAlerteInventaire"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Lot en attente d'inventaire:</span>
                             <span class="info-box-number"><?php echo $data['nb']; ?></span>
+                            <span class="info-box-more">Cliquer sur l'icone</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -148,12 +154,14 @@ require_once('logCheck.php');
                 <?php
                 if ($nbLotsNOK>0)
                 { ?>
+
                     <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span>
+                        <a data-toggle="modal" data-target="#modalAccueilAlerteConformite"><span class="info-box-icon bg-red"><i class="ion ion-alert-circled"></i></span></a>
 
                         <div class="info-box-content">
                             <span class="info-box-text">Lot non-conforme:</span>
                             <span class="info-box-number"><?php echo $nbLotsNOK; ?></span>
+                            <span class="info-box-more">Cliquer sur l'icone</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -280,4 +288,111 @@ require_once('logCheck.php');
 
 <?php include('scripts.php'); ?>
 </body>
+
+<div class="modal fade modal-danger" id="modalAccueilAlertePeremption">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alertes de péremption</h4>
+            </div>
+            <div class="modal-body">
+                <?php
+                $query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE peremptionNotification < CURRENT_DATE OR peremptionNotification = CURRENT_DATE;');
+                ?>
+                <ul>
+                    <?php
+                    while($data=$query->fetch())
+                    {
+                        echo '<li>' . $data['libelleMateriel'] . '</li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+                <?php if ($_SESSION['materiel_lecture']==1){ ?><a href="materiels.php"><button type="button" class="btn btn-default pull-right">Accéder aux matériels</button></a><? } ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-danger" id="modalAccueilAlerteQuantité">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alertes de quantité</h4>
+            </div>
+            <div class="modal-body">
+                <?php
+                $query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE quantite < quantiteAlerte OR quantite = quantiteAlerte;');
+                ?>
+                <ul>
+                    <?php
+                    while($data=$query->fetch())
+                    {
+                        echo '<li>' . $data['libelleMateriel'] . '</li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+                <?php if ($_SESSION['materiel_lecture']==1){ ?><a href="materiels.php"><button type="button" class="btn btn-default pull-right">Accéder aux matériels</button></a><? } ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-danger" id="modalAccueilAlerteInventaire">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alertes d'inventaires</h4>
+            </div>
+            <div class="modal-body">
+                <?php
+                $query = $db->query('SELECT * FROM LOTS_LOTS WHERE dateDernierInventaire IS NOT NULL AND frequenceInventaire != 0 AND CURRENT_DATE >= DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY);');
+                ?>
+                <ul>
+                    <?php
+                    while($data=$query->fetch())
+                    {
+                        echo '<li>' . $data['libelleLot'] . '</li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+                <?php if ($_SESSION['lots_lecture']==1){ ?><a href="lots.php"><button type="button" class="btn btn-default pull-right">Accéder aux lots</button></a><? } ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-danger" id="modalAccueilAlerteConformite">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alertes de conformité</h4>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <?php
+                    $query = $db->query('SELECT * FROM LOTS_LOTS WHERE idTypeLot IS NOT NULL;');
+                    while ($data = $query->fetch())
+                    {
+                        if(checkLotsConf($data['idLot'])==1)
+                        {
+                            echo '<li>' . $data['libelleLot'] . '</li>';
+                        }
+                    }
+                    ?>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+                <?php if ($_SESSION['lots_lecture']==1){ ?><a href="lots.php"><button type="button" class="btn btn-default pull-right">Accéder aux lots</button></a><? } ?>
+            </div>
+        </div>
+    </div>
+</div>
+
 </html>

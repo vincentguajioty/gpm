@@ -15,6 +15,7 @@ if ($_SESSION['materiel_lecture']==0)
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
+    <?php require_once 'modal.php'; ?>
 
 
     <!-- Content Wrapper. Contains page content -->
@@ -38,7 +39,7 @@ if ($_SESSION['materiel_lecture']==0)
                 <div class="box-body">
                     <div class="box-header">
                         <?php if ($_SESSION['materiel_ajout']==1) {?>
-                            <h3 class="box-title"><a href="materielsForm.php?id=0" class="btn btn-sm btn-success">Ajouter un matériel</a></h3>
+                            <h3 class="box-title"><a data-toggle="modal" data-target="#modalMaterielAdd" class="btn btn-sm btn-success">Ajouter un materiel</a></h3>
                         <?php } else {?>
                             </br>
                         <?php } ?>

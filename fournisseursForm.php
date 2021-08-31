@@ -29,103 +29,49 @@ require_once('logCheck.php');
 
         <!-- Main content -->
         <section class="content">
-            <?php
-            if ($_GET['id'] == 0) {
-                ?>
-                <!-- general form elements disabled -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Ajout d'un fournisseur</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <form role="form" action="fournisseursAdd.php" method="POST">
-                            <!-- text input -->
-                            <div class="form-group">
-                                <label>Nom:</label>
-                                <input type="text" class="form-control" placeholder="Entrez le nom du fournisseur"
-                                       name="nomFournisseur" required>
-                            </div>
-                            <!-- textarea -->
-                            <div class="form-group">
-                                <label>Adresse</label>
-                                <textarea class="form-control" rows="3" placeholder="Entez l'adresse du fournisseur"
-                                          name="adresseFournisseur"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Téléphone:</label>
-                                <input type="tel" class="form-control" placeholder="Entrez le numéro de téléphone du fournisseur"
-                                       name="telephoneFournisseur">
-                            </div>
-                            <div class="form-group">
-                                <label>eMail:</label>
-                                <input type="email" class="form-control" placeholder="Entrez l'eMail du fournisseur"
-                                       name="mailFournisseur">
-                            </div>
-
-                            <div class="box-footer">
-                                <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
-                                <button type="submit" class="btn btn-info pull-right">Ajouter</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- /.box-body -->
-
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Modification d'un fournisseur</h3>
                 </div>
-
-                <?php
-            }
-            else {
-                ?>
-
-                <!-- general form elements disabled -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Modification d'un fournisseur</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <form role="form" action="fournisseursUpdate.php?id=<?=$_GET['id']?>" method="POST">
-                            <?php
-                            $query = $db->prepare('SELECT * FROM FOURNISSEURS WHERE idFournisseur=:idFournisseur;');
-                            $query->execute(array('idFournisseur' => $_GET['id']));
-                            $data = $query->fetch();
-                            ?>
-                            <!-- text input -->
-                            <div class="form-group">
-                                <label>Nom:</label>
-                                <input type="text" class="form-control" value="<?=$data['nomFournisseur']?>"
-                                       name="nomFournisseur" required>
-                            </div>
-                            <!-- textarea -->
-                            <div class="form-group">
-                                <label>Adresse</label>
-                                <textarea class="form-control" rows="3"
-                                          name="adresseFournisseur"><?=$data['adresseFournisseur']?></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Téléphone:</label>
-                                <input type="tel" class="form-control" value="<?=$data['telephoneFournisseur']?>"
-                                       name="telephoneFournisseur">
-                            </div>
-                            <div class="form-group">
-                                <label>eMail:</label>
-                                <input type="email" class="form-control" value="<?=$data['mailFournisseur']?>"
-                                       name="mailFournisseur">
-                            </div>
-                            <div class="box-footer">
-                                <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
-                                <button type="submit" class="btn btn-info pull-right">Modifier</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- /.box-body -->
-
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form role="form" action="fournisseursUpdate.php?id=<?=$_GET['id']?>" method="POST">
+                        <?php
+                        $query = $db->prepare('SELECT * FROM FOURNISSEURS WHERE idFournisseur=:idFournisseur;');
+                        $query->execute(array('idFournisseur' => $_GET['id']));
+                        $data = $query->fetch();
+                        ?>
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Nom:</label>
+                            <input type="text" class="form-control" value="<?=$data['nomFournisseur']?>"
+                                   name="nomFournisseur" required>
+                        </div>
+                        <!-- textarea -->
+                        <div class="form-group">
+                            <label>Adresse</label>
+                            <textarea class="form-control" rows="3"
+                                      name="adresseFournisseur"><?=$data['adresseFournisseur']?></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Téléphone:</label>
+                            <input type="tel" class="form-control" value="<?=$data['telephoneFournisseur']?>"
+                                   name="telephoneFournisseur">
+                        </div>
+                        <div class="form-group">
+                            <label>eMail:</label>
+                            <input type="email" class="form-control" value="<?=$data['mailFournisseur']?>"
+                                   name="mailFournisseur">
+                        </div>
+                        <div class="box-footer">
+                            <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
+                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
+                        </div>
+                    </form>
                 </div>
+                <!-- /.box-body -->
 
-                <?php
-            }
-            ?>
+            </div>
 
         </section>
         <!-- /.content -->

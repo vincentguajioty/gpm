@@ -94,7 +94,6 @@ $nbDest = $data['nb'];
 
 if ($nbDest > 0)
 {
-    $passage_ligne = "\r\n";
 
     $nbAlertes = $nbManquant + $nbPerime + $nbLotsNOK;
 
@@ -115,52 +114,35 @@ if ($nbDest > 0)
     }
 
     //=====Déclaration des messages au format texte et au format HTML.
-    $message_html = file_get_contents('notificationsC1.html', FILE_USE_INCLUDE_PATH);
+    $message_html = "Bonjour, <br/><br/>Ceci est une notification journalière d'alerte sur " . $APPNAME . "<br/><br/>Alertes de péremption des consommables:<br/><ul>";
     $query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne WHERE peremptionNotification < CURRENT_DATE OR peremptionNotification = CURRENT_DATE;');
     while($data = $query->fetch())
     {
-        $message_html = $message_html . "<tr>";
-        $message_html = $message_html . "<th>".$data['idElement']."</th>";
-        $message_html = $message_html . "<th>".$data['libelleMateriel']."</th>";
-        $message_html = $message_html . "<th>".$data['libelleEmplacement']."</th>";
-        $message_html = $message_html . "<th>".$data['libelleSac']."</th>";
-        $message_html = $message_html . "<th>".$data['libelleLot']."</th>";
-        $message_html = $message_html . "<th>".$data['identifiant']."</th>";
-        $message_html = $message_html . "<th>".$data['peremption']."</th>";
-        $message_html = $message_html . "</tr>";
+        $message_html = $message_html . "<li>".$data['libelleLot'] . " > " . $data['libelleSac'] . " > " . $data['libelleEmplacement'] . " > " . $data['libelleMateriel']."</li>";
     }
+    $message_html = $message_html."</ul><br/><br/>";
 
-    $message_html = $message_html . file_get_contents('notificationsC2.html', FILE_USE_INCLUDE_PATH);
+    $message_html = $message_html . "Alertes de quantité:<br/><ul>";
     $query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE quantite < quantiteAlerte OR quantite = quantiteAlerte;');
     while($data = $query->fetch())
     {
-        $message_html = $message_html . "<tr>";
-        $message_html = $message_html . "<th>".$data['idElement']."</th>";
-        $message_html = $message_html . "<th>".$data['libelleMateriel']."</th>";
-        $message_html = $message_html . "<th>".$data['libelleEmplacement']."</th>";
-        $message_html = $message_html . "<th>".$data['libelleSac']."</th>";
-        $message_html = $message_html . "<th>".$data['libelleLot']."</th>";
-        $message_html = $message_html . "<th>".$data['identifiant']."</th>";
-        $message_html = $message_html . "<th>".$data['quantite']."</th>";
-        $message_html = $message_html . "</tr>";
+        $message_html = $message_html . "<li>".$data['libelleLot'] . " > " . $data['libelleSac'] . " > " . $data['libelleEmplacement'] . " > " . $data['libelleMateriel']."</li>";
     }
+    $message_html = $message_html."</ul><br/><br/>";
 
-    $message_html = $message_html . file_get_contents('notificationsC3.html', FILE_USE_INCLUDE_PATH);
+    $message_html = $message_html . "Alertes de conformité des lots:<br/><ul>";
     $query = $db->query('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot WHERE l.idTypeLot IS NOT NULL;');
     while($data = $query->fetch())
     {
         if(checkLotsConf($data['idLot']) == 1)
         {
-            $message_html = $message_html . "<tr>";
-            $message_html = $message_html . "<th>".$data['idLot']."</th>";
-            $message_html = $message_html . "<th>".$data['libelleLot']."</th>";
-            $message_html = $message_html . "<th>".$data['libelleTypeLot']."</th>";
-            $message_html = $message_html . "<th>".$data['identifiant']."</th>";
-            $message_html = $message_html . "</tr>";
+            $message_html = $message_html . "<li>".$data['libelleLot'] . "</li>";
         }
     }
+    $message_html = $message_html."</ul><br/><br/>";
 
-    $message_html = $message_html . file_get_contents('notificationsC4.html', FILE_USE_INCLUDE_PATH);
+    $message_html = $message_html . "Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+
 
     if ($nbAlertes > 0)
     {
@@ -174,18 +156,8 @@ if ($nbDest > 0)
     //==========
 
     //=====Création du message.
-    //$message = $passage_ligne."--".$boundary.$passage_ligne;
-    //=====Ajout du message au format HTML.
-    //$message.= "Content-Type: text/html".$passage_ligne;
-    //$message.= "Content-Transfer-Encoding: 8bit".$passage_ligne;
-    $message.= $passage_ligne.$message_html.$passage_ligne;
+    $message.= $RETOURLIGNE.$message_html.$RETOURLIGNE;
     //==========
-
-    //==========
-    //$message.= $passage_ligne."--".$boundary."--".$passage_ligne;
-    //$message.= $passage_ligne."--".$boundary."--".$passage_ligne;
-    //==========
-
     //=====Envoi de l'e-mail.
     if ($nbAlertes == 0)
     {
