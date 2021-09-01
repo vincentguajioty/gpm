@@ -12,6 +12,13 @@ if ($_SESSION['commande_ajout']==0 AND $_SESSION['commande_etreEnCharge']==0)
 }
 else
 {
+    $_POST['idMaterielCatalogue'] = ($_POST['idMaterielCatalogue'] == Null) ? Null : $_POST['idMaterielCatalogue'];
+    $_POST['quantiteCommande'] = ($_POST['quantiteCommande'] == Null) ? Null : $_POST['quantiteCommande'];
+    $_POST['referenceProduitFournisseur'] = ($_POST['referenceProduitFournisseur'] == Null) ? Null : $_POST['referenceProduitFournisseur'];
+    $_POST['remiseProduit'] = ($_POST['remiseProduit'] == Null) ? Null : $_POST['remiseProduit'];
+    $_POST['prixProduitHT'] = ($_POST['prixProduitHT'] == Null) ? Null : $_POST['prixProduitHT'];
+    $_POST['taxeProduit'] = ($_POST['taxeProduit'] == Null) ? Null : $_POST['taxeProduit'];
+    $_POST['prixProduitTTC'] = ($_POST['prixProduitTTC'] == Null) ? Null : $_POST['prixProduitTTC'];
     
     if ($_POST['idMaterielCatalogue'] == -1)
     {

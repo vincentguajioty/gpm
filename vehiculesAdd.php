@@ -18,6 +18,8 @@ else
     $_POST['assuranceExpiration'] = ($_POST['assuranceExpiration'] == Null) ? Null : $_POST['assuranceExpiration'];
     
     $_POST['idLieu'] = ($_POST['idLieu'] == Null) ? Null : $_POST['idLieu'];
+    $_POST['kilometrage'] = ($_POST['kilometrage'] == Null) ? Null : $_POST['kilometrage'];
+    $_POST['nbPlaces'] = ($_POST['nbPlaces'] == Null) ? Null : $_POST['nbPlaces'];
     $_POST['idVehiculesType'] = ($_POST['idVehiculesType'] == Null) ? Null : $_POST['idVehiculesType'];
     $_POST['idEtat'] = ($_POST['idEtat'] == Null) ? Null : $_POST['idEtat'];
     $_POST['idResponsable'] = ($_POST['idResponsable'] == Null) ? Null : $_POST['idResponsable'];
@@ -30,6 +32,7 @@ else
     $_POST['signaletique3tons'] = ($_POST['signaletique3tons'] == Null) ? Null : $_POST['signaletique3tons'];
     $_POST['pmv'] = ($_POST['pmv'] == Null) ? Null : $_POST['pmv'];
     $_POST['fleche'] = ($_POST['fleche'] == Null) ? Null : $_POST['fleche'];
+    $_POST['nbCones'] = ($_POST['nbCones'] == Null) ? Null : $_POST['nbCones'];
     $_POST['priseAlimentation220'] = ($_POST['priseAlimentation220'] == Null) ? Null : $_POST['priseAlimentation220'];
 
     $query = $db->prepare('INSERT INTO VEHICULES(libelleVehicule, immatriculation, marqueModele, idLieu, kilometrage, nbPlaces, dimensions, idVehiculesType, idEtat, idResponsable, dateAchat, dateNextRevision, dateNextCT, assuranceNumero, assuranceExpiration, pneusAVhivers, pneusARhivers, climatisation, signaletiqueOrange, signaletiqueBleue, signaletique2tons, signaletique3tons, pmv, fleche, nbCones, priseAlimentation220, remarquesVehicule) VALUES (:libelleVehicule, :immatriculation, :marqueModele, :idLieu, :kilometrage, :nbPlaces, :dimensions, :idVehiculesType, :idEtat, :idResponsable, :dateAchat, :dateNextRevision, :dateNextCT, :assuranceNumero, :assuranceExpiration, :pneusAVhivers, :pneusARhivers, :climatisation, :signaletiqueOrange, :signaletiqueBleue, :signaletique2tons, :signaletique3tons, :pmv, :fleche, :nbCones, :priseAlimentation220, :remarquesVehicule);');

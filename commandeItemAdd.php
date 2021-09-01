@@ -1,8 +1,6 @@
 <?php
 session_start();
 require_once('logCheck.php');
-?>
-<?php
 require_once 'config/bdd.php';
 require_once 'commandesCommentAdd.php';
 
@@ -12,6 +10,16 @@ if ($_SESSION['commande_ajout']==0 AND $_SESSION['commande_etreEnCharge']==0)
 }
 else
 {
+    $_GET['idCommande'] = ($_GET['idCommande'] == Null) ? Null : $_GET['idCommande'];
+    $_POST['idMaterielCatalogue'] = ($_POST['idMaterielCatalogue'] == Null) ? Null : $_POST['idMaterielCatalogue'];
+    $_POST['quantiteCommande'] = ($_POST['quantiteCommande'] == Null) ? Null : $_POST['quantiteCommande'];
+    $_POST['referenceProduitFournisseur'] = ($_POST['referenceProduitFournisseur'] == Null) ? Null : $_POST['referenceProduitFournisseur'];
+    $_POST['remiseProduit'] = ($_POST['remiseProduit'] == Null) ? Null : $_POST['remiseProduit'];
+    $_POST['prixProduitHT'] = ($_POST['prixProduitHT'] == Null) ? Null : $_POST['prixProduitHT'];
+    $_POST['taxeProduit'] = ($_POST['taxeProduit'] == Null) ? Null : $_POST['taxeProduit'];
+    $_POST['prixProduitTTC'] = ($_POST['prixProduitTTC'] == Null) ? Null : $_POST['prixProduitTTC'];
+    
+    
     if ($_POST['idMaterielCatalogue'] == -1)
     {
         $query = $db->prepare('INSERT INTO COMMANDES_MATERIEL(idCommande, idMaterielCatalogue, 	quantiteCommande, referenceProduitFournisseur, remiseProduit, prixProduitHT, taxeProduit, prixProduitTTC, remarqueArticle) VALUES(:idCommande, :idMaterielCatalogue, 	:quantiteCommande, :referenceProduitFournisseur, :remiseProduit, :prixProduitHT, :taxeProduit, :prixProduitTTC, :remarqueArticle);');

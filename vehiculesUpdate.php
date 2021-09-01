@@ -17,6 +17,8 @@ else
     $_POST['assuranceExpiration'] = ($_POST['assuranceExpiration'] == Null) ? Null : $_POST['assuranceExpiration'];
     
     $_POST['idLieu'] = ($_POST['idLieu'] == Null) ? Null : $_POST['idLieu'];
+    $_POST['kilometrage'] = ($_POST['kilometrage'] == Null) ? Null : $_POST['kilometrage'];
+    $_POST['nbPlaces'] = ($_POST['nbPlaces'] == Null) ? Null : $_POST['nbPlaces'];
     $_POST['idVehiculesType'] = ($_POST['idVehiculesType'] == Null) ? Null : $_POST['idVehiculesType'];
     $_POST['idEtat'] = ($_POST['idEtat'] == Null) ? Null : $_POST['idEtat'];
     $_POST['idResponsable'] = ($_POST['idResponsable'] == Null) ? Null : $_POST['idResponsable'];
@@ -29,6 +31,7 @@ else
     $_POST['signaletique3tons'] = ($_POST['signaletique3tons'] == Null) ? Null : $_POST['signaletique3tons'];
     $_POST['pmv'] = ($_POST['pmv'] == Null) ? Null : $_POST['pmv'];
     $_POST['fleche'] = ($_POST['fleche'] == Null) ? Null : $_POST['fleche'];
+    $_POST['nbCones'] = ($_POST['nbCones'] == Null) ? Null : $_POST['nbCones'];
     $_POST['priseAlimentation220'] = ($_POST['priseAlimentation220'] == Null) ? Null : $_POST['priseAlimentation220'];
 
     $query = $db->prepare('UPDATE VEHICULES SET libelleVehicule = :libelleVehicule, immatriculation = :immatriculation, marqueModele = :marqueModele, idLieu = :idLieu, kilometrage = :kilometrage, nbPlaces = :nbPlaces, dimensions = :dimensions, idVehiculesType = :idVehiculesType, idEtat = :idEtat, idResponsable = :idResponsable, dateAchat = :dateAchat, dateNextRevision = :dateNextRevision, dateNextCT = :dateNextCT, assuranceNumero = :assuranceNumero, assuranceExpiration = :assuranceExpiration, pneusAVhivers = :pneusAVhivers, pneusARhivers = :pneusARhivers, climatisation = :climatisation, signaletiqueOrange = :signaletiqueOrange, signaletiqueBleue = :signaletiqueBleue, signaletique2tons = :signaletique2tons, signaletique3tons = :signaletique3tons, pmv = :pmv, fleche = :fleche, nbCones = :nbCones, priseAlimentation220 = :priseAlimentation220, remarquesVehicule = :remarquesVehicule WHERE idVehicule = :idVehicule;');

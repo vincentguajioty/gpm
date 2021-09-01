@@ -42,11 +42,11 @@ if($_SESSION['tenuesCatalogue_lecture']==1 OR $_SESSION['tenuesCatalogue_ajout']
                         </div>
                         <div class="form-group">
                             <label>Stock:</label>
-                            <input type="number" class="form-control" name="stockCatalogueTenue" value="<?= isset($data['stockCatalogueTenue']) ? $data['stockCatalogueTenue'] : '' ?>">
+                            <input type="number" class="form-control" name="stockCatalogueTenue" required value="<?= isset($data['stockCatalogueTenue']) ? $data['stockCatalogueTenue'] : '' ?>">
                         </div>
                         <div class="form-group">
                             <label>Stock d'alerte:</label>
-                            <input type="number" min="0" class="form-control" name="stockAlerteCatalogueTenue" value="<?= isset($data['stockAlerteCatalogueTenue']) ? $data['stockAlerteCatalogueTenue'] : '' ?>">
+                            <input type="number" min="0" class="form-control" name="stockAlerteCatalogueTenue" required value="<?= isset($data['stockAlerteCatalogueTenue']) ? $data['stockAlerteCatalogueTenue'] : '' ?>">
                         </div>
                         <div class="form-group">
                             <label>Fournisseur: </label>
