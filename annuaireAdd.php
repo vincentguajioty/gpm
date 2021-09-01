@@ -1,8 +1,6 @@
 <?php
 session_start();
 require_once('logCheck.php');
-?>
-<?php
 require_once 'config/bdd.php';
 require_once 'config/config.php';
 require_once 'config/mailFunction.php';
@@ -86,6 +84,29 @@ else
 
                 $db->query($insertSQL);
             }
+            
+            if ($_POST['notificationMailCreation']==1)
+		    {
+		        $sujet = "[" . $APPNAME . "] Bienvenue sur " . $APPNAME;
+		        $message = "Bonjour " . $_POST['prenomPersonne'] . ", <br/><br/> Votre session a été créée. Voici vos identifiants:<br/>Nom d'utilisateur: " . $_POST['identifiant'] . "<br/>Mot de passe: ". $_POST['identifiant'];
+		        $message = $message . "<br/><br/>Vous serez invité(e) à changer votre mot de passe à votre première connexion.<br/>Voici le lien d'accès à l'outil: " . $URLSITE;
+		        $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+		
+		        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+		        if(sendmail($_POST['mailPersonne'], $sujet, 2, $message))
+		        {
+		            writeInLogs("Mail d'accueil envoyé à " . $_POST['identifiant'], '2');
+		        }
+		        else
+		        {
+		            writeInLogs("Erreur lors de l'envoi du mail d'accueil à " . $_POST['identifiant'], '5');
+		        }
+		    }
+		
+		    $query = $db->query('SELECT MAX(idPersonne) as idPersonne FROM PERSONNE_REFERENTE;');
+		    $data = $query->fetch();
+		    majIndicateursPersonne($data['idPersonne']);
+		    majNotificationsPersonne($data['idPersonne']);
         break;
 
         case '23000':
@@ -100,28 +121,7 @@ else
             $_SESSION['returnType'] = '2';
     }
 
-    if ($_POST['notificationMailCreation']==1)
-    {
-        $sujet = "[" . $APPNAME . "] Bienvenue sur " . $APPNAME;
-        $message = "Bonjour " . $_POST['prenomPersonne'] . ", <br/><br/> Votre session a été créée. Voici vos identifiants:<br/>Nom d'utilisateur: " . $_POST['identifiant'] . "<br/>Mot de passe: ". $_POST['identifiant'];
-        $message = $message . "<br/><br/>Vous serez invité(e) à changer votre mot de passe à votre première connexion.<br/>Voici le lien d'accès à l'outil: " . $URLSITE;
-        $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-
-        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-        if(sendmail($_POST['mailPersonne'], $sujet, 2, $message))
-        {
-            writeInLogs("Mail d'accueil envoyé à " . $_POST['identifiant'], '2');
-        }
-        else
-        {
-            writeInLogs("Erreur lors de l'envoi du mail d'accueil à " . $_POST['identifiant'], '5');
-        }
-    }
-
-    $query = $db->query('SELECT MAX(idPersonne) as idPersonne FROM PERSONNE_REFERENTE;');
-    $data = $query->fetch();
-    majIndicateursPersonne($data['idPersonne']);
-    majNotificationsPersonne($data['idPersonne']);
+    
 
     echo "<script>window.location = document.referrer;</script>";
 

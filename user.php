@@ -88,41 +88,21 @@ require_once('logCheck.php');
 				                <div class="form-group">
 				                    <label>Connexion à <?php echo $APPNAME;?>:</label>
 				                    </br>
-				                    <div class="checkbox">
-				                        <label>
-				                            <input disabled type="checkbox" value="1" name="connexion_connexion" <?php if ($_SESSION['connexion_connexion']==1) {echo 'checked';} ?>> Autorisé à se connecter à <?php echo $APPNAME;?>
-				                        </label>
-				                    </div>
+				                    <?php if($_SESSION['connexion_connexion'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Autorisé à se connecter à <?php echo $APPNAME;?>
 				                    </br>
 				                </div>
 				                <div class="form-group">
 				                    <label>Administration de <?php echo $APPNAME;?>:</label>
 				                    </br>
-				                    <div class="checkbox">
-				                        <label>
-				                            <input disabled type="checkbox" value="1" name="appli_conf" <?php if ($_SESSION['appli_conf']==1) {echo 'checked';} ?>> Modifier la configuration générale de <?php echo $APPNAME;?>
-				                        </label>
-				                    </div>
-				                    <div class="checkbox">
-				                        <label>
-				                            <input disabled type="checkbox" value="1" name="annuaire_mdp" <?php if ($_SESSION['annuaire_mdp']==1) {echo 'checked';} ?>> Réinitialiser les mots de passe des autres utilisateurs
-				                        </label>
-				                    </div>
-				                    <div class="checkbox">
-				                        <label>
-				                            <input disabled type="checkbox" value="1" name="maintenance" <?php if ($_SESSION['maintenance']==1) {echo 'checked';} ?>> Se connecter même en mode maitenance
-				                        </label>
-				                    </div>
-				                    <div class="checkbox">
-				                        <label>
-				                            <input disabled type="checkbox" value="1" name="verrouIP" <?php if($_SESSION['verrouIP'] == 1) { echo 'checked'; } ?>> Gérer les adresses IP bloquées
-				                        </label>
-				                    </div>
-				                    <div class="checkbox">
-				                        <label>
-				                            <input disabled type="checkbox" value="1" name="logs_lecture" <?php if($_SESSION['logs_lecture'] == 1) { echo 'checked'; } ?>> Lire les logs
-				                        </label>
-				                    </div>
+				                    <?php if($_SESSION['appli_conf'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Modifier la configuration générale de <?php echo $APPNAME;?>
+				                    </br>
+				                    <?php if($_SESSION['annuaire_mdp'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Réinitialiser les mots de passe des autres utilisateurs
+				                    </br>
+				                    <?php if($_SESSION['maintenance'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Se connecter même en mode maitenance
+				                    </br>
+				                    <?php if($_SESSION['verrouIP'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Gérer les adresses IP bloquées
+				                    </br>
+				                    <?php if($_SESSION['logs_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Lire les logs
 				                    </br>
 				                </div>
 				                <table class="table table-bordered">
@@ -230,6 +210,13 @@ require_once('logCheck.php');
 				                        <td><?php if($_SESSION['tenuesCatalogue_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 				                        <td><?php if($_SESSION['tenuesCatalogue_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 				                        <td><?php if($_SESSION['tenuesCatalogue_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                    </tr>
+				                    <tr>
+				                        <td>Cautions</td>
+				                        <td><?php if($_SESSION['cautions_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['cautions_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['cautions_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['cautions_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 				                    </tr>
 				                    <tr>
 				                        <th>PARAMETRES</th>

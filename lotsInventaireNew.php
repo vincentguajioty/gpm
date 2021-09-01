@@ -95,6 +95,7 @@ if ($_SESSION['lots_modification']==0)
 	                                <th>Libelle du matériel</th>
 	                                <th>Quantité</th>
 	                                <th>Péremption</th>
+	                                <th>Notification de Péremption</th>
 	                            </tr>
 	                            </thead>
 	                            <tbody>
@@ -111,6 +112,7 @@ if ($_SESSION['lots_modification']==0)
 	                                    <td><?php echo $data2['libelleMateriel']; ?></td>
 	                                    <td><input type="text" class="form-control" value="<?php echo $data2['quantite']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $data2['idSac']; ?>][<?php echo $data2['idEmplacement']; ?>][<?php echo $data2['idElement']; ?>][qtt]"></td>
 	                                    <td><input type="text" class="input-datepicker form-control" value="<?php echo $data2['peremption']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $data2['idSac']; ?>][<?php echo $data2['idEmplacement']; ?>][<?php echo $data2['idElement']; ?>][per]" <?php if ($data2['peremption'] != Null) echo 'required';?>></td>
+	                                    <td><input type="text" class="input-datepicker form-control" value="<?php echo $data2['peremptionNotification']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $data2['idSac']; ?>][<?php echo $data2['idEmplacement']; ?>][<?php echo $data2['idElement']; ?>][perNot]" <?php if ($data2['peremptionNotification'] != Null) echo 'required';?>></td>
 	                                </tr>
 	                            <?php
 	                            }

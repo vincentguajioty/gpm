@@ -39,6 +39,7 @@ if ($_SESSION['annuaire_lecture']==0)
                 <?php if ($_SESSION['annuaire_ajout']==1) {?>
                 	<div class="box-header">
 	                    <h3 class="box-title"><a href="annuaireForm.php" class="btn btn-sm btn-success modal-form">Ajouter un utilisateur</a></h3>
+	                    <h3 class="box-title"><a href="annuaireImport.php" class="btn btn-sm btn-success">Import d'utilisateurs</a></h3>
 	            	</div>
 	            <?php } ?>
                 <!-- /.box-header -->

@@ -199,6 +199,10 @@ if ($data['idIP'] == "")
 		$_SESSION['tenuesCatalogue_ajout'] = $data['tenuesCatalogue_ajout'];
 		$_SESSION['tenuesCatalogue_modification'] = $data['tenuesCatalogue_modification'];
 		$_SESSION['tenuesCatalogue_suppression'] = $data['tenuesCatalogue_suppression'];
+		$_SESSION['cautions_lecture'] = $data['cautions_lecture'];
+		$_SESSION['cautions_ajout'] = $data['cautions_ajout'];
+		$_SESSION['cautions_modification'] = $data['cautions_modification'];
+		$_SESSION['cautions_suppression'] = $data['cautions_suppression'];
         $_SESSION['maintenance'] = $data['maintenance'];
         $_SESSION['todolist_perso'] = $data['todolist_perso'];
 		$_SESSION['todolist_lecture'] = $data['todolist_lecture'];

@@ -390,6 +390,15 @@ require_once 'config/bdd.php';
                             ?>
                             ><a href="tenuesAffectations.php"><i class="fa fa-street-view"></i> <span>Affectations</span></a></li>
                         <?php } ?>
+                        <?php if ($_SESSION['cautions_lecture']==1){ ?>
+                            <li <?php
+                            if ($_SESSION['page'] == 1103)
+                            {
+                                echo 'class="active"';
+                            }
+                            ?>
+                            ><a href="cautions.php"><i class="fa fa-money"></i> <span>Cautions</span></a></li>
+                        <?php } ?>
                     </ul>
                 </li>
                 <?php

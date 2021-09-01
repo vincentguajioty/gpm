@@ -48,9 +48,10 @@ else
                         foreach ($materiel as $idElement => $matos){
                             if ($matos['per'] != Null)
                             {
-                                $query = $db->prepare('UPDATE MATERIEL_ELEMENT SET peremption = :peremption, quantite = :quantite WHERE idElement = :idElement;');
+                                $query = $db->prepare('UPDATE MATERIEL_ELEMENT SET peremption = :peremption, peremptionNotification = :peremptionNotification, quantite = :quantite WHERE idElement = :idElement;');
                                 $query->execute(array(
                                     'peremption' => $matos['per'],
+                                    'peremptionNotification' => $matos['perNot'],
                                     'quantite' => $matos['qtt'],
                                     'idElement' => $idElement
                                 ));

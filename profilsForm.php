@@ -199,6 +199,13 @@ require_once('logCheck.php');
                                 <td><input <?php if(isset($_GET['id']) AND $data['tenuesCatalogue_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="tenuesCatalogue_suppression"></td>
                             </tr>
                             <tr>
+                                <td>Cautions</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['cautions_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cautions_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['cautions_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cautions_ajout"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['cautions_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cautions_modification"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['cautions_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cautions_suppression"></td>
+                            </tr>
+                            <tr>
                                 <th>PARAMETRES</th>
                                 <th></th>
                                 <th></th>
@@ -353,6 +360,47 @@ require_once('logCheck.php');
                 <!-- /.box-body -->
 
             </div>
+            
+            <?php
+            	if (isset($_GET['id']) AND $_SESSION['profils_modification']==1)
+            	{ ?>
+            		<div class="box box-info">
+			            <div class="box-header with-border">
+		                    <h3 class="box-title">Utilisateurs rattachés à ce profil</h3>
+		                </div>
+		                <!-- /.box-header -->
+		                <div class="box-body">
+		                	<form role="form" action="profilsUsersUpdate.php?idProfil=<?= $_GET['id'] ?>" method="POST">
+		                		<div class="form-group">
+		                            <label>Personnes: </label>
+		                            <select class="form-control select2" style="width: 100%;" name="idPersonne[]" multiple>
+		                                <?php
+							            
+							            $query2 = $db->prepare('SELECT ao.*, aop.idProfil FROM PERSONNE_REFERENTE ao LEFT JOIN PROFILS_PERSONNES aop ON (ao.idPersonne = aop.idPersonne AND aop.idProfil = :idProfil) ORDER BY nomPersonne, prenomPersonne;');
+							            $query2->execute(array('idProfil' => $_GET['id']));
+		
+		                                while ($data2 = $query2->fetch())
+		                                {
+		                                    
+		                                    echo '<option value=' . $data2['idPersonne'];
+		
+							                if (isset($data2['idProfil']) AND $data2['idProfil'])
+							                {
+							                    echo " selected ";
+							                }
+							                echo '>' . $data2['nomPersonne'] . ' ' . $data2['prenomPersonne']  . '</option>';
+		                                }
+		                                $query2->closeCursor();?>
+		                            </select>
+		                        </div>
+		                		<div class="box-footer">
+		                			<button type="submit" class="btn btn-info pull-right">Enregistrer</button>
+		                		</div>
+		                	</form>
+		                </div>
+		            </div>
+            	<?php }
+            ?>
 
         </section>
         <!-- /.content -->
