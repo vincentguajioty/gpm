@@ -77,7 +77,10 @@ if ($_SESSION['appli_conf']==0)
                             <label>Temps avant déconnexion d'un utilisateur inactif (minutes):</label>
                             <input type="number" class="form-control" value="<?=$data['logouttemp']?>" min="1" name="logouttemp" required>
                         </div>
-
+						<div class="form-group">
+	                        <label>Mot de sécurité sur les confirmations de suppression: <small style="color:grey;">Requis</small></label>
+	                        <input type="text" class="form-control" name="confirmationSuppression" value="<?= $data['confirmationSuppression'] ?>" required>
+	                    </div>
                         <div class="box-footer">
                             <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
                             <button type="submit" class="btn btn-info pull-right">Modifier</button>

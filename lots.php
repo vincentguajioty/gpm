@@ -45,23 +45,25 @@ if ($_SESSION['lots_lecture']==0)
                             <tr>
                                 <th class="all" style="width: 10px">#</th>
                                 <th class="all">Libelle</th>
-                                <th class="not-mobile">Référentiel <a href="lotsCheckConfTotalManu.php" class="btn btn-xs spinnerAttenteClick"><i class="fa fa-refresh"></i></a></th>
                                 <th class="not-mobile">Etat</th>
+                                <th class="not-mobile">Référentiel <a href="lotsCheckConfTotalManu.php" class="btn btn-xs spinnerAttenteClick"><i class="fa fa-refresh"></i></a></th>
                                 <th class="not-mobile">Référent</th>
                                 <th class="not-mobile">Quantité Matériel</th>
                                 <th class="not-mobile">Prochain Inventaire</th>
+                                <th class="not-mobile">Notifications</th>
                                 <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN ETATS s on l.idEtat = s.idEtat LEFT OUTER JOIN LIEUX e ON l.idLieu = e.idLieu LEFT OUTER JOIN PERSONNE_REFERENTE p on l.idPersonne = p.idPersonne;');
+                        $query = $db->query('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN ETATS s on l.idEtat = s.idEtat LEFT OUTER JOIN LIEUX e ON l.idLieu = e.idLieu LEFT OUTER JOIN PERSONNE_REFERENTE p on l.idPersonne = p.idPersonne LEFT OUTER JOIN LOTS_ETATS et ON l.idLotsEtat = et.idLotsEtat;');
                         while ($data = $query->fetch())
                         {
                             ?>
                             <tr <?php if ($_SESSION['lots_lecture']==1) {?>data-href="lotsContenu.php?id=<?=$data['idLot']?>"<?php }?>>
                                 <td><?php echo $data['idLot']; ?></td>
                                 <td><?php echo $data['libelleLot']; ?></td>
+                                <td><?php echo $data['libelleLotsEtat']; ?></td>
                                 <td>
                                     <?php
                                     //echo $data['libelleTypeLot'];
@@ -82,7 +84,6 @@ if ($_SESSION['lots_lecture']==0)
                                     }
                                     ?>
                                 </td>
-                                <td><?php echo $data['libelleEtat']; ?> (<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>)</td>
                                 <td><?php echo $data['identifiant']; ?></td>
                                 <td>
                                     <?php
@@ -172,6 +173,7 @@ if ($_SESSION['lots_lecture']==0)
                                     }
                                     ?>
                                 </td>
+                                <td><?php echo $data['libelleEtat']; ?> (<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>)</td>
                                 <td>
                                     <?php if ($_SESSION['lots_lecture']==1) {?>
                                         <a href="lotsContenu.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>

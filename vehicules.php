@@ -47,22 +47,24 @@ if ($_SESSION['vehicules_lecture']==0)
                                 <th class="all" style="width: 10px">#</th>
                                 <th class="all">Libelle</th>
                                 <th class="not-mobile">Type</th>
+                                <th class="not-mobile">Etat</th>
                                 <th class="not-mobile">Immatriculation</th>
                                 <th class="not-mobile">Marque/Modele</th>
                                 <th class="not-mobile">Contrôles</th>
-                                <th class="not-mobile">Etat</th>
+                                <th class="not-mobile">Notifications</th>
                                 <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query('SELECT * FROM VEHICULES v LEFT OUTER JOIN ETATS e ON v.idEtat = e.idEtat LEFT OUTER JOIN VEHICULES_TYPES t ON v.idVehiculesType = t.idVehiculesType ;');
+                        $query = $db->query('SELECT * FROM VEHICULES v LEFT OUTER JOIN ETATS e ON v.idEtat = e.idEtat LEFT OUTER JOIN VEHICULES_TYPES t ON v.idVehiculesType = t.idVehiculesType LEFT OUTER JOIN VEHICULES_ETATS ve ON v.idVehiculesEtat = ve.idVehiculesEtat;');
                         while ($data = $query->fetch())
                         {?>
                             <tr <?php if ($_SESSION['vehicules_lecture']==1) {?>data-href="vehiculesContenu.php?id=<?=$data['idVehicule']?>"<?php }?>>
                                 <td><?php echo $data['idVehicule']; ?></td>
                                 <td><?php echo $data['libelleVehicule']; ?></td>
                                 <td><?php echo $data['libelleType']; ?></td>
+                                <td><?php echo $data['libelleVehiculesEtat']; ?></td>
                                 <td><?php echo $data['immatriculation']; ?></td>
                                 <td><?php echo $data['marqueModele']; ?></td>
                                 <td>

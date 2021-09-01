@@ -72,8 +72,8 @@ else {
             $_SESSION['returnType'] = '2';
     }
 
-    majIndicateursPersonne($_GET['id']);
-    majNotificationsPersonne($_GET['id']);
+    majIndicateursPersonne($_GET['id'],1);
+    majNotificationsPersonne($_GET['id'],1);
 
     echo "<script>window.location = document.referrer;</script>";
 }

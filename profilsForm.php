@@ -18,6 +18,7 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
 - box de visualisation de droits dans user.php
 - rechargement dynamique des droits dans loginReloadHabilitation.php
 - rechargement dynamique des droits dans userReloadHabilitation.php
+- chargement initial des doits dans loginSQL.php
 */
 ?>
 
@@ -269,6 +270,13 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <td><input <?php if(isset($_GET['id']) AND $data['vehicules_types_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_types_ajout"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['vehicules_types_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_types_modification"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['vehicules_types_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_types_suppression"></td>
+                            </tr>
+                            <tr>
+                                <td>Etats</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['etats_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="etats_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['etats_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="etats_ajout"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['etats_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="etats_modification"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['etats_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="etats_suppression"></td>
                             </tr>
                         </table>
                         <table class="table table-bordered">

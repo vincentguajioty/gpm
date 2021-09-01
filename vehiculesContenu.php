@@ -70,7 +70,7 @@ if ($_SESSION['vehicules_lecture']==0)
                                     <td><?= $data['libelleType'] ?></td>
                                 </tr>
                                 <tr>
-                                    <td>Etat</td>
+                                    <td>Notifications</td>
                                     <td><?= $data['libelleEtat'] ?></td>
                                 </tr>
                                 <tr>
@@ -78,8 +78,22 @@ if ($_SESSION['vehicules_lecture']==0)
                                     <td><?= $data['libelleLieu'] ?></td>
                                 </tr>
                                 <tr>
-                                    <td>Kilmetrage</td>
-                                    <td><?= $data['kilometrage'] ?></td>
+                                    <td>Dernier relevé kilométrique</td>
+                                    <td>
+                                    	<?php
+                                    		$kilometrages = $db->prepare('SELECT * FROM VEHICULES_RELEVES WHERE idVehicule = :idVehicule ORDER BY dateReleve DESC;');
+                                    		$kilometrages->execute(array('idVehicule'=>$_GET['id']));
+                                    		$kilometrage = $kilometrages->fetch();
+                                    		if(!(isset($kilometrage['releveKilometrique'])) OR $kilometrage['releveKilometrique'] == Null)
+                                    		{
+                                    			echo 'Pas de relevé fait';
+                                    		}
+                                    		else
+                                    		{
+                                    			echo $kilometrage['releveKilometrique'].'km ('.$kilometrage['dateReleve'].')';
+                                    		}
+                                    	?>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Nombre de places</td>
@@ -143,6 +157,7 @@ if ($_SESSION['vehicules_lecture']==0)
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#maintenance" data-toggle="tab">Taches de maintenance</a></li>
+                            <li><a href="#km" data-toggle="tab">Relevés kilométriques</a></li>
 							<li><a href="#lots" data-toggle="tab">Lots opérationnels affetés</a></li>
                             <li><a href="#pj" data-toggle="tab">Pièces jointes</a></li>
                         </ul>
@@ -180,6 +195,40 @@ if ($_SESSION['vehicules_lecture']==0)
                                     
                                 </table>
                             </div>
+							
+							<div class="tab-pane" id="km">
+								<table class="table table-hover">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Relevé kilométrique</th>
+                                        <th>Intervenant</th>
+                                        <th><?php if($_SESSION['vehicules_modification']==1){ ?><a href="vehiculesReleveForm.php?idVehicule=<?=$_GET['id']?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a><?php } ?></th>
+                                    </tr>
+                                    <?php
+                                    $query2 = $db->prepare('SELECT * FROM VEHICULES_RELEVES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne WHERE idVehicule = :idVehicule ORDER BY dateReleve DESC;');
+                                    $query2->execute(array('idVehicule' => $_GET['id']));
+                                    while ($data2 = $query2->fetch())
+                                    {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $data2['dateReleve'];?></td>
+                                            <td><?php echo $data2['releveKilometrique'];?> km</td>
+                                            <td><?php echo $data2['identifiant'];?></td>
+                                            <td>
+                                                <?php if($_SESSION['vehicules_lecture']==1){ ?>
+                                                    <a href="vehiculesReleveForm.php?idVehicule=<?=$_GET['id']?>&id=<?=$data2['idReleve']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
+                                                <?php }?>
+                                                <?php if ($_SESSION['vehicules_suppression']==1) {?>
+			                                        <a href="modalDeleteConfirm.php?case=vehiculesReleveDelete&id=<?=$data2['idReleve']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
+			                                    <?php }?>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    $query2->closeCursor(); ?>
+                                    
+                                </table>
+							</div>							
 							
 							<div class="tab-pane" id="lots">
 								<table class="table table-hover">

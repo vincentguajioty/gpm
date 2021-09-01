@@ -445,7 +445,7 @@ require_once 'config/bdd.php';
 			
 			
             <?php
-			if ($_SESSION['catalogue_lecture']==1 OR $_SESSION['categories_lecture']==1 OR $_SESSION['lieux_lecture']==1 OR $_SESSION['fournisseurs_lecture']==1 OR $_SESSION['vehicules_types_lecture']==1)
+			if ($_SESSION['catalogue_lecture']==1 OR $_SESSION['categories_lecture']==1 OR $_SESSION['lieux_lecture']==1 OR $_SESSION['fournisseurs_lecture']==1 OR $_SESSION['vehicules_types_lecture']==1 OR $_SESSION['etats_lecture']==1)
 			{
 			?>
 	            <li <?php
@@ -508,6 +508,15 @@ require_once 'config/bdd.php';
 	                        }
 	                        ?>
 	                        ><a href="vehiculesTypes.php"><i class="fa fa-ambulance"></i> <span>Types de véhicules</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['etats_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 303)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="etats.php"><i class="fa fa-adjust"></i> <span>Etats</span></a></li>
 	                    <?php } ?>
 	                </ul>
 	            </li>

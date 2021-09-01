@@ -33,7 +33,7 @@ else {
     switch($query->errorCode())
     {
         case '00000':
-            majNotificationsPersonne($_GET['id']);
+            majNotificationsPersonne($_GET['id'],1);
             
             writeInLogs("Réinitialisation des notifications de l'utilisateur " . $_GET['id'], '3');
             $_SESSION['returnMessage'] = 'Notifications utilisateur réinitialisées avec succès.';

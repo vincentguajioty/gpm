@@ -37,7 +37,7 @@ if ($_SESSION['todolist_lecture']==0)
 			<div class="row">
 	            <div class="col-sm-6">
 	                <?php
-	                    $query = $db->query('SELECT DISTINCT * FROM PERSONNE_REFERENTE pe LEFT OUTER JOIN PROFILS_PERSONNES po ON pe.idPersonne = po.idPersonne WHERE idProfil IS NOT NULL;');
+	                    $query = $db->query('SELECT DISTINCT pe.* FROM PERSONNE_REFERENTE pe LEFT OUTER JOIN PROFILS_PERSONNES po ON pe.idPersonne = po.idPersonne WHERE idProfil IS NOT NULL;');
 	                    while($data = $query->fetch())
 	                    { ?>
 	                        <div class="col-md-12">

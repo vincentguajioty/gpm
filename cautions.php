@@ -62,7 +62,7 @@ if ($_SESSION['cautions_lecture']==0)
                             ?>
                                 <tr>
                                     <td><?php echo $data['idCaution']; ?></td>
-                                    <td><?php echo $data['nomPersonne'].' '.$data['prenomPersonne'].$data['personneNonGPM']; ?></td>
+                                    <td><?php echo $data['nomPersonne'].' '.$data['prenomPersonne'].$data['personneNonGPM']; if($data['personneNonGPM'] != ''){echo ' (ext)';}?></td>
                                     <td><?php echo $data['dateEmissionCaution']; ?></td>
                                     <td><?php echo $data['dateExpirationCaution']; ?></td>
                                     <td><?php echo $data['montantCaution']; ?></td>

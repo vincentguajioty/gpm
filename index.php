@@ -64,9 +64,9 @@ include('logCheck.php');
 				                    <table class="table table-bordered">
 				                        <tr>
 				                            <th>Libelle</th>
-				                            <th>Etat</th>
 				                            <th>Référentiel</th>
 				                            <th>Prochain inventaire</th>
+				                            <th>Notifications</th>
 				                            <th></th>
 				                        </tr>
 				                        <?php
@@ -77,7 +77,6 @@ include('logCheck.php');
 				                            ?>
 				                            <tr <?php if ($_SESSION['lots_lecture']==1) {?>data-href="lotsContenu.php?id=<?=$data['idLot']?>"<?php }?>>
 				                                <td><?php echo $data['libelleLot']; ?></td>
-				                                <td><?php echo $data['libelleEtat']; ?></td>
 				                                <td>
 					                                <?php
 				                                    if ($data['libelleTypeLot'] == Null)
@@ -112,6 +111,7 @@ include('logCheck.php');
 				                                    }
 				                                    ?>
 				                                </td>
+				                                <td><?php echo $data['libelleEtat']; ?></td>
 				                                <td>
 					                                <?php if ($_SESSION['lots_lecture']==1) {?>
 				                                        <a href="lotsContenu.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>

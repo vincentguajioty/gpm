@@ -51,13 +51,14 @@ if ($_SESSION['materiel_lecture']==0)
                                 <th class="not-mobile">Lot</th>
                                 <th class="not-mobile">Quantité</th>
                                 <th class="not-mobile">Péremption</th>
+                                <th class="not-mobile">Etat</th>
                                 <th class="not-mobile">Notifications</th>
                                 <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue;');
+                        $query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue LEFT OUTER JOIN MATERIEL_ETATS me ON m.idMaterielsEtat = me.idMaterielsEtat;');
                         while ($data = $query->fetch())
                         {?>
                             <tr>
@@ -96,6 +97,7 @@ if ($_SESSION['materiel_lecture']==0)
                                     }
                                     ?>
                                 </td>
+                                <td><?php echo $data['libelleMaterielsEtat']; ?></td>
                                 <td>
                                 	<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>
                                 </td>

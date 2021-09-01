@@ -13,14 +13,15 @@ else
 {
 	$_POST['mailcopy'] = ($_POST['mailcopy'] ==1) ? 1 : 0;
 	
-    $query = $db->prepare('UPDATE CONFIG SET appname = :appname, sitecolor = :sitecolor, urlsite = :urlsite, mailserver = :mailserver, logouttemp = :logouttemp, mailcopy = :mailcopy;');
+    $query = $db->prepare('UPDATE CONFIG SET appname = :appname, sitecolor = :sitecolor, urlsite = :urlsite, mailserver = :mailserver, logouttemp = :logouttemp, mailcopy = :mailcopy, confirmationSuppression = :confirmationSuppression;');
     $query->execute(array(
         'appname' => $_POST['appname'],
         'sitecolor' => $_POST['sitecolor'],
         'urlsite' => $_POST['urlsite'],
         'mailserver' => $_POST['mailserver'],
         'logouttemp' => $_POST['logouttemp'],
-        'mailcopy' => $_POST['mailcopy']
+        'mailcopy' => $_POST['mailcopy'],
+    	'confirmationSuppression' => $_POST['confirmationSuppression']
     ));
 
     switch($query->errorCode())

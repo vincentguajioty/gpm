@@ -5,7 +5,7 @@ require_once('logCheck.php');
 <?php
 require_once 'config/bdd.php';
 
-if(strtoupper($_POST['confirmation']) <> 'CONFIRMATION')
+if(strtoupper($_POST['confirmation']) <> strtoupper($CONFSUPPRESSION))
 {
 	$_SESSION['returnMessage'] = "Vérification échouée. Suppression annulée";
     $_SESSION['returnType'] = '2';

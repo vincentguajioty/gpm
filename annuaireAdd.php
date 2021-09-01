@@ -105,8 +105,8 @@ else
 		
 		    $query = $db->query('SELECT MAX(idPersonne) as idPersonne FROM PERSONNE_REFERENTE;');
 		    $data = $query->fetch();
-		    majIndicateursPersonne($data['idPersonne']);
-		    majNotificationsPersonne($data['idPersonne']);
+		    majIndicateursPersonne($data['idPersonne'],1);
+		    majNotificationsPersonne($data['idPersonne'],1);
         break;
 
         case '23000':

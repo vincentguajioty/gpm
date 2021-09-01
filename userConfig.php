@@ -65,8 +65,8 @@ switch($query->errorCode())
         $_SESSION['returnMessage'] = 'Profil mis à jour avec succès.';
         $_SESSION['returnType'] = '1';
         
-        majIndicateursPersonne($_SESSION['idPersonne']);
-    	majNotificationsPersonne($_SESSION['idPersonne']);
+        majIndicateursPersonne($_SESSION['idPersonne'],1);
+    	majNotificationsPersonne($_SESSION['idPersonne'],1);
     	
     	$query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE WHERE idPersonne = :idPersonne');
     	$query->execute(array(

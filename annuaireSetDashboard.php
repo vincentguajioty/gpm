@@ -31,7 +31,7 @@ else {
     switch($query->errorCode())
     {
         case '00000':
-            majIndicateursPersonne($_GET['id']);
+            majIndicateursPersonne($_GET['id'],1);
 
             writeInLogs("Réinitialisation des indicateur du dashboard de l'utilisateur " . $_GET['id'], '3');
             $_SESSION['returnMessage'] = 'Dashboard utilisateur réinitialisé avec succès.';

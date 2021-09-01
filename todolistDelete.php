@@ -6,7 +6,7 @@ require_once 'config/bdd.php';
 require_once 'config/config.php';
 require_once 'config/mailFunction.php';
 
-if(strtoupper($_POST['confirmation']) <> 'CONFIRMATION')
+if(strtoupper($_POST['confirmation']) <> strtoupper($CONFSUPPRESSION))
 {
 	$_SESSION['returnMessage'] = "Vérification échouée. Suppression annulée";
     $_SESSION['returnType'] = '2';

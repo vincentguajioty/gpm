@@ -59,7 +59,16 @@ if($_SESSION['tenues_lecture']==1 OR $_SESSION['tenues_ajout']==1 OR $_SESSION['
                         </div>
                         <div class="form-group">
                             <label>Affectée à un externe:</label>
-                            <input type="text" class="form-control" name="personneNonGPM" placeholder="Selectionner 'Affectée à un externe' au-dessus" value="<?= isset($data['personneNonGPM']) ? $data['personneNonGPM'] : '' ?>">
+                            <input list="externesConnus" type="text" class="form-control" name="personneNonGPM" placeholder="Selectionner 'Affectée à un externe' au-dessus" value="<?= isset($data['personneNonGPM']) ? $data['personneNonGPM'] : '' ?>">
+                            <datalist id="externesConnus">
+                            	<?php
+                            		$connus = $db->query('SELECT DISTINCT personneNonGPM FROM TENUES_AFFECTATION ORDER BY personneNonGPM;');
+                            		while($connu = $connus->fetch())
+                            		{
+                            			echo '<option value="'.$connu['personneNonGPM'].'">';
+                            		}
+                            	?>
+                            </datalist>
                         </div>
                         <div class="form-group">
                             <label>Date d'affectation:</label>

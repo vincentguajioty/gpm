@@ -42,10 +42,6 @@ if($_SESSION['vehicules_lecture']==1 OR $_SESSION['vehicules_ajout']==1 OR $_SES
                             <input type="text" class="form-control" value="<?= isset($data['marqueModele']) ? $data['marqueModele'] : ''?>" name="marqueModele">
                         </div>
 						<div class="form-group">
-                            <label>Kilométrage:</label>
-                            <input type="number" class="form-control" value="<?= isset($data['kilometrage']) ? $data['kilometrage'] : ''?>" name="kilometrage">
-                        </div>
-						<div class="form-group">
                             <label>Nombre de places:</label>
                             <input type="number" class="form-control" value="<?= isset($data['nbPlaces']) ? $data['nbPlaces'] : ''?>" name="nbPlaces">
                         </div>
@@ -68,8 +64,22 @@ if($_SESSION['vehicules_lecture']==1 OR $_SESSION['vehicules_ajout']==1 OR $_SES
                                 $query2->closeCursor(); ?>
                             </select>
                         </div>
-						<div class="form-group">
+                        <div class="form-group">
                             <label>Etat: <small style="color:grey;">Requis</small></label>
+                            <select class="form-control select2" style="width: 100%;" name="idVehiculesEtat">
+                                <?php
+                                $query2 = $db->query('SELECT * FROM VEHICULES_ETATS ORDER BY libelleVehiculesEtat;');
+                                while ($data2 = $query2->fetch())
+                                {
+                                    ?>
+                                    <option value ="<?php echo $data2['idVehiculesEtat']; ?>" <?php if (isset($data['idVehiculesEtat']) AND ($data2['idVehiculesEtat'] == $data['idVehiculesEtat'])) { echo 'selected'; } ?> ><?php echo $data2['libelleVehiculesEtat']; ?></option>
+                                    <?php
+                                }
+                                $query2->closeCursor(); ?>
+                            </select>
+                        </div>
+						<div class="form-group">
+                            <label>Notifications: <small style="color:grey;">Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="idEtat">
                                 <?php
                                 $query2 = $db->query('SELECT * FROM ETATS ORDER BY libelleEtat;');

@@ -45,7 +45,16 @@ if($_SESSION['cautions_lecture']==1 OR $_SESSION['cautions_ajout']==1 OR $_SESSI
                         </div>
                         <div class="form-group">
                             <label>De la part d'un externe:</label>
-                            <input type="text" class="form-control" name="personneNonGPM" placeholder="Selectionner 'Affectée à un externe' au-dessus" value="<?= isset($data['personneNonGPM']) ? $data['personneNonGPM'] : '' ?>">
+                            <input list="externesConnus" type="text" class="form-control" name="personneNonGPM" placeholder="Selectionner 'Affectée à un externe' au-dessus" value="<?= isset($data['personneNonGPM']) ? $data['personneNonGPM'] : '' ?>">
+                            <datalist id="externesConnus">
+                            	<?php
+                            		$connus = $db->query('SELECT DISTINCT personneNonGPM FROM CAUTIONS ORDER BY personneNonGPM;');
+                            		while($connu = $connus->fetch())
+                            		{
+                            			echo '<option value="'.$connu['personneNonGPM'].'">';
+                            		}
+                            	?>
+                            </datalist>
                         </div>
                         <div class="form-group">
                             <label>Montant:</label>

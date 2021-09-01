@@ -48,6 +48,20 @@ if($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots
                         </div>
                         <div class="form-group">
                             <label>Etat: <small style="color:grey;">Requis</small></label>
+                            <select class="form-control select2" style="width: 100%;" name="idLotsEtat">
+                                <?php
+                                $query2 = $db->query('SELECT * FROM LOTS_ETATS ORDER BY libelleLotsEtat;');
+                                while ($data2 = $query2->fetch())
+                                {
+                                    ?>
+                                    <option value ="<?php echo $data2['idLotsEtat']; ?>" <?php if (isset($data['idLotsEtat']) AND ($data2['idLotsEtat'] == $data['idLotsEtat'])) { echo 'selected'; } ?> ><?php echo $data2['libelleLotsEtat']; ?></option>
+                                    <?php
+                                }
+                                $query2->closeCursor(); ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Notifications: <small style="color:grey;">Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="libelleEtat">
                                 <?php
                                 $query2 = $db->query('SELECT * FROM ETATS ORDER BY libelleEtat;');

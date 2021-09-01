@@ -97,8 +97,8 @@ switch($data['version'])
         $query = $db->query('SELECT idPersonne FROM PERSONNE_REFERENTE;');
         while($data = $query->fetch())
         {
-            majIndicateursPersonne($data['idPersonne']);
-            majNotificationsPersonne($data['idPersonne']);
+            majIndicateursPersonne($data['idPersonne'],1);
+            majNotificationsPersonne($data['idPersonne'],1);
         }
         echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
         break;
@@ -137,8 +137,30 @@ switch($data['version'])
         $query = $db->query(file_get_contents ("update7.3.sql"));
         echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
         break;
-
+        
     case '7.3':
+        $query = $db->query(file_get_contents ("update7.4.1.sql"));
+        $vehicules = $db->query('SELECT * FROM VEHICULES WHERE kilometrage > 0;');
+        while($vehicule = $vehicules->fetch())
+        {
+        	$addSQL = $db->prepare('INSERT INTO VEHICULES_RELEVES SET idVehicule = :idVehicule, releveKilometrique = :releveKilometrique, dateReleve = :dateReleve, idPersonne = Null;');
+        	$addSQL->execute(array(
+        		'idVehicule' => $vehicule['idVehicule'],
+        		'releveKilometrique' => $vehicule['kilometrage'],
+        		'dateReleve' => date('Y-m-d')
+        	));
+        }
+        $query = $db->query(file_get_contents ("update7.4.2.sql"));
+        $query = $db->query('SELECT idPersonne FROM PERSONNE_REFERENTE;');
+        while($data = $query->fetch())
+        {
+            majIndicateursPersonne($data['idPersonne'],1);
+            majNotificationsPersonne($data['idPersonne'],1);
+        }
+        echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
+        break;
+
+    case '7.4':
         echo "<script type='text/javascript'>document.location.replace('INSTALLFINISH.php');</script>";
         break;
 

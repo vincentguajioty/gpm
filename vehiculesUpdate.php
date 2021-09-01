@@ -17,7 +17,6 @@ else
     $_POST['assuranceExpiration'] = ($_POST['assuranceExpiration'] == Null) ? Null : $_POST['assuranceExpiration'];
     
     $_POST['idLieu'] = ($_POST['idLieu'] == Null) ? Null : $_POST['idLieu'];
-    $_POST['kilometrage'] = ($_POST['kilometrage'] == Null) ? Null : $_POST['kilometrage'];
     $_POST['nbPlaces'] = ($_POST['nbPlaces'] == Null) ? Null : $_POST['nbPlaces'];
     $_POST['idVehiculesType'] = ($_POST['idVehiculesType'] == Null) ? Null : $_POST['idVehiculesType'];
     $_POST['idEtat'] = ($_POST['idEtat'] == Null) ? Null : $_POST['idEtat'];
@@ -33,14 +32,14 @@ else
     $_POST['fleche'] = ($_POST['fleche'] == Null) ? Null : $_POST['fleche'];
     $_POST['nbCones'] = ($_POST['nbCones'] == Null) ? Null : $_POST['nbCones'];
     $_POST['priseAlimentation220'] = ($_POST['priseAlimentation220'] == Null) ? Null : $_POST['priseAlimentation220'];
+    $_POST['idVehiculesEtat'] = ($_POST['idVehiculesEtat'] == Null) ? Null : $_POST['idVehiculesEtat'];
 
-    $query = $db->prepare('UPDATE VEHICULES SET libelleVehicule = :libelleVehicule, immatriculation = :immatriculation, marqueModele = :marqueModele, idLieu = :idLieu, kilometrage = :kilometrage, nbPlaces = :nbPlaces, dimensions = :dimensions, idVehiculesType = :idVehiculesType, idEtat = :idEtat, idResponsable = :idResponsable, dateAchat = :dateAchat, dateNextRevision = :dateNextRevision, dateNextCT = :dateNextCT, assuranceNumero = :assuranceNumero, assuranceExpiration = :assuranceExpiration, pneusAVhivers = :pneusAVhivers, pneusARhivers = :pneusARhivers, climatisation = :climatisation, signaletiqueOrange = :signaletiqueOrange, signaletiqueBleue = :signaletiqueBleue, signaletique2tons = :signaletique2tons, signaletique3tons = :signaletique3tons, pmv = :pmv, fleche = :fleche, nbCones = :nbCones, priseAlimentation220 = :priseAlimentation220, remarquesVehicule = :remarquesVehicule WHERE idVehicule = :idVehicule;');
+    $query = $db->prepare('UPDATE VEHICULES SET libelleVehicule = :libelleVehicule, immatriculation = :immatriculation, marqueModele = :marqueModele, idLieu = :idLieu, nbPlaces = :nbPlaces, dimensions = :dimensions, idVehiculesType = :idVehiculesType, idEtat = :idEtat, idResponsable = :idResponsable, dateAchat = :dateAchat, dateNextRevision = :dateNextRevision, dateNextCT = :dateNextCT, assuranceNumero = :assuranceNumero, assuranceExpiration = :assuranceExpiration, pneusAVhivers = :pneusAVhivers, pneusARhivers = :pneusARhivers, climatisation = :climatisation, signaletiqueOrange = :signaletiqueOrange, signaletiqueBleue = :signaletiqueBleue, signaletique2tons = :signaletique2tons, signaletique3tons = :signaletique3tons, pmv = :pmv, fleche = :fleche, nbCones = :nbCones, priseAlimentation220 = :priseAlimentation220, remarquesVehicule = :remarquesVehicule, idVehiculesEtat = :idVehiculesEtat WHERE idVehicule = :idVehicule;');
     $query->execute(array(
         'libelleVehicule' => $_POST['libelleVehicule'],
         'immatriculation' => $_POST['immatriculation'],
         'marqueModele' => $_POST['marqueModele'],
         'idLieu' => $_POST['idLieu'],
-        'kilometrage' => $_POST['kilometrage'],
         'nbPlaces' => $_POST['nbPlaces'],
         'dimensions' => $_POST['dimensions'],
         'idVehiculesType' => $_POST['idVehiculesType'],
@@ -63,6 +62,7 @@ else
         'nbCones' => $_POST['nbCones'],
         'priseAlimentation220' => $_POST['priseAlimentation220'],
         'remarquesVehicule' => $_POST['remarquesVehicule'],
+        'idVehiculesEtat' => $_POST['idVehiculesEtat'],
         'idVehicule' => $_GET['id']
     ));
 

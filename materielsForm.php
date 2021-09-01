@@ -101,7 +101,20 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                                 <input class="input-datepicker form-control" name="peremptionNotification" value="<?= isset($data['peremptionNotification']) ? $data['peremptionNotification'] : '' ?>">
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label>Etat: <small style="color:grey;">Requis</small></label>
+                            <select class="form-control select2" style="width: 100%;" name="idMaterielsEtat">
+                                <?php
+                                $query2 = $db->query('SELECT * FROM MATERIEL_ETATS ORDER BY libelleMaterielsEtat;');
+                                while ($data2 = $query2->fetch())
+                                {
+                                    ?>
+                                    <option value ="<?php echo $data2['idMaterielsEtat']; ?>" <?php if (isset($data['idMaterielsEtat']) AND ($data2['idMaterielsEtat'] == $data['idMaterielsEtat'])) { echo 'selected'; } ?> ><?php echo $data2['libelleMaterielsEtat']; ?></option>
+                                    <?php
+                                }
+                                $query2->closeCursor(); ?>
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label>Commentaires</label>
                             <textarea class="form-control" rows="3" placeholder="Spécifiez d'autres détails"

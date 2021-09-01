@@ -17,7 +17,7 @@ if ($_SESSION['lots_lecture']==0)
     <?php require_once 'config/bdd.php'; ?>
 
     <?php
-    $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LIEUX w ON l.idLieu = w.idLieu LEFT OUTER JOIN VEHICULES v ON l.idVehicule = v.idVehicule LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne WHERE idLot = :idLot;');
+    $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LIEUX w ON l.idLieu = w.idLieu LEFT OUTER JOIN VEHICULES v ON l.idVehicule = v.idVehicule LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne LEFT OUTER JOIN LOTS_ETATS et ON l.idLotsEtat = et.idLotsEtat WHERE idLot = :idLot;');
     $query->execute(array(
         'idLot' => $_GET['id']
     ));
@@ -150,6 +150,7 @@ if ($_SESSION['lots_lecture']==0)
                                         echo '<span class="pull-right badge bg-green">' . date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) . '</span>';
                                     }
                                         ?></a></li>
+                                <li><a>Etat <span class="pull-right"><?php echo $data['libelleLotsEtat']; ?></span></a></li>
                                 <li><a>Notifications<?php
                                     if ($data[3]==1) /*Attention, indice passé en fonction de la requete -> si la requete change vérifier que l'indice soit toujours en même position.*/
                                     {

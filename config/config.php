@@ -2,7 +2,7 @@
 
 require_once 'bdd.php';
 
-$VERSIONCHECK = '7.3';
+$VERSIONCHECK = '7.4';
 
 $query = $db->query('SELECT * FROM CONFIG;');
 $data = $query->fetch();
@@ -15,5 +15,6 @@ $MAILSERVER = $data['mailserver'];
 $MAILCOPY = $data['mailcopy'];
 $LOGOUTTEMP = $data['logouttemp'];
 $MAINTENANCE = $data['maintenance'];
+$CONFSUPPRESSION = $data['confirmationSuppression'];
 
 ?>

@@ -131,9 +131,13 @@ $_SESSION['todolist_perso'] = $data['todolist_perso'];
 $_SESSION['todolist_lecture'] = $data['todolist_lecture'];
 $_SESSION['todolist_modification'] = $data['todolist_modification'];
 $_SESSION['contactMailGroupe'] = $data['contactMailGroupe'];
+$_SESSION['etats_lecture'] = $data['etats_lecture'];
+$_SESSION['etats_ajout'] = $data['etats_ajout'];
+$_SESSION['etats_modification'] = $data['etats_modification'];
+$_SESSION['etats_suppression'] = $data['etats_suppression'];
 
-majIndicateursPersonne($_SESSION['idPersonne']);
-majNotificationsPersonne($_SESSION['idPersonne']);
+majIndicateursPersonne($_SESSION['idPersonne'],0);
+majNotificationsPersonne($_SESSION['idPersonne'],0);
 
 echo "<script>window.location = document.referrer;</script>";
 

@@ -5,7 +5,7 @@ require_once('logCheck.php');
 <?php
 require_once 'config/bdd.php';
 
-if(strtoupper($_POST['confirmation']) <> 'CONFIRMATION')
+if(strtoupper($_POST['confirmation']) <> strtoupper($CONFSUPPRESSION))
 {
 	$_SESSION['returnMessage'] = "Vérification échouée. Suppression annulée";
     $_SESSION['returnType'] = '2';
@@ -81,6 +81,11 @@ else
     $query = $db->prepare('UPDATE VEHICULES_MAINTENANCE SET idExecutant = Null WHERE idExecutant = :idExecutant ;');
     $query->execute(array(
         'idExecutant' => $_GET['id']
+    ));
+    
+    $query = $db->prepare('UPDATE VEHICULES_RELEVES SET idPersonne = Null WHERE idPersonne = :idPersonne ;');
+    $query->execute(array(
+        'idPersonne' => $_GET['id']
     ));
     
     $query = $db->prepare('DELETE FROM TODOLIST_PERSONNES WHERE idExecutant = :idPersonne');

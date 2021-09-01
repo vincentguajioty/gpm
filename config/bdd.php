@@ -5,7 +5,7 @@ function createDB()
 {
     //---------------------- BASE DE DONNEES ----------------------
     $SERVEURDB = 'x.x.x.x'; //adresse IP du serveur entre simple cote, ex: $SERVEUR = '192.169.1.5';
-    $DBNAME = 'xxx'; //nom de la base de données, ex: $DB = 'GPM';
+    $DBNAME = 'GPM'; //nom de la base de données, ex: $DB = 'GPM';
     $CHARSET = 'utf8'; //type d'interclassement, utf8 étant recommandé, ex: $CHARSET = 'utf8';
     $USER = 'xxx'; //nom d'utilisateur d'accès à la base de données, ex: $USER = 'utilisateur';
     $PASSWORD = 'xxx'; //mot de passe d'accès à la base de données, ex: $PASSWORD = 'motDePasse';
@@ -116,76 +116,76 @@ function checkLotsConf($idLot)
 
 function checkAllConf()
 {
-	global $db;
-	$query = $db->query('SELECT * FROM LOTS_LOTS;');
-	
-	while ($data = $query->fetch())
-	{
-		if ($data['idTypeLot'] > 0)
-		{
-			if (checkLotsConf($data['idLot']) == 1)
-			{
-				$query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = True WHERE idLot = :idLot;');
-				$query2->execute(array(
-	            	'idLot' => $data['idLot']
-	        	));
-			}
-			else
-			{
-				$query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = False WHERE idLot = :idLot;');
-				$query2->execute(array(
-	            	'idLot' => $data['idLot']
-	        	));
-			}
-		}
-		else
-		{
-			$query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = Null WHERE idLot = :idLot;');
-			$query2->execute(array(
-            	'idLot' => $data['idLot']
-        	));
-		}
-	}
+    global $db;
+    $query = $db->query('SELECT * FROM LOTS_LOTS;');
+    
+    while ($data = $query->fetch())
+    {
+        if ($data['idTypeLot'] > 0)
+        {
+            if (checkLotsConf($data['idLot']) == 1)
+            {
+                $query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = True WHERE idLot = :idLot;');
+                $query2->execute(array(
+                    'idLot' => $data['idLot']
+                ));
+            }
+            else
+            {
+                $query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = False WHERE idLot = :idLot;');
+                $query2->execute(array(
+                    'idLot' => $data['idLot']
+                ));
+            }
+        }
+        else
+        {
+            $query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = Null WHERE idLot = :idLot;');
+            $query2->execute(array(
+                'idLot' => $data['idLot']
+            ));
+        }
+    }
 }
 
 
 function checkOneConf($idLot)
 {
-	global $db;
-	$query = $db->prepare('SELECT * FROM LOTS_LOTS WHERE idLot = :idLot;');
-	$query->execute(array(
-    	'idLot' => $idLot
-	));
-	
-	$data = $query->fetch();
-	
-	if ($data['idTypeLot'] > 0)
-	{
-		if (checkLotsConf($data['idLot']) == 1)
-		{
-			$query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = True WHERE idLot = :idLot;');
-			$query2->execute(array(
-            	'idLot' => $data['idLot']
-        	));
-		}
-		else
-		{
-			$query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = False WHERE idLot = :idLot;');
-			$query2->execute(array(
-            	'idLot' => $data['idLot']
-        	));
-		}
-	}
-	else
-	{
-		$query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = Null WHERE idLot = :idLot;');
-		$query2->execute(array(
-        	'idLot' => $data['idLot']
-    	));
-	}
+    global $db;
+    $query = $db->prepare('SELECT * FROM LOTS_LOTS WHERE idLot = :idLot;');
+    $query->execute(array(
+        'idLot' => $idLot
+    ));
+    
+    $data = $query->fetch();
+    
+    if ($data['idTypeLot'] > 0)
+    {
+        if (checkLotsConf($data['idLot']) == 1)
+        {
+            $query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = True WHERE idLot = :idLot;');
+            $query2->execute(array(
+                'idLot' => $data['idLot']
+            ));
+        }
+        else
+        {
+            $query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = False WHERE idLot = :idLot;');
+            $query2->execute(array(
+                'idLot' => $data['idLot']
+            ));
+        }
+    }
+    else
+    {
+        $query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = Null WHERE idLot = :idLot;');
+        $query2->execute(array(
+            'idLot' => $data['idLot']
+        ));
+    }
 }
 
-function majIndicateursPersonne($idPersonne)
+function majIndicateursPersonne($idPersonne, $enableLog)
 {
     global $db;
 
@@ -216,19 +216,22 @@ function majIndicateursPersonne($idPersonne)
     $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET conf_indicateur1Accueil = :conf_indicateur1Accueil, conf_indicateur2Accueil = :conf_indicateur2Accueil, conf_indicateur3Accueil = :conf_indicateur3Accueil, conf_indicateur4Accueil = :conf_indicateur4Accueil, conf_indicateur5Accueil = :conf_indicateur5Accueil, conf_indicateur6Accueil = :conf_indicateur6Accueil, conf_indicateur7Accueil = :conf_indicateur7Accueil, conf_indicateur8Accueil = :conf_indicateur8Accueil, conf_indicateur9Accueil = :conf_indicateur9Accueil, conf_indicateur10Accueil = :conf_indicateur10Accueil WHERE idPersonne = :idPersonne ;');
     $query->execute(array(
         'idPersonne' => $idPersonne,
-        'conf_indicateur1Accueil' => $conf_indicateur1Accueil,
-        'conf_indicateur2Accueil' => $conf_indicateur2Accueil,
-        'conf_indicateur3Accueil' => $conf_indicateur3Accueil,
-        'conf_indicateur4Accueil' => $conf_indicateur4Accueil,
-        'conf_indicateur5Accueil' => $conf_indicateur5Accueil,
-        'conf_indicateur6Accueil' => $conf_indicateur6Accueil,
-        'conf_indicateur7Accueil' => $conf_indicateur7Accueil,
-        'conf_indicateur8Accueil' => $conf_indicateur8Accueil,
-        'conf_indicateur9Accueil' => $conf_indicateur9Accueil,
-        'conf_indicateur10Accueil' => $conf_indicateur10Accueil
+        'conf_indicateur1Accueil' => (int)$conf_indicateur1Accueil,
+        'conf_indicateur2Accueil' => (int)$conf_indicateur2Accueil,
+        'conf_indicateur3Accueil' => (int)$conf_indicateur3Accueil,
+        'conf_indicateur4Accueil' => (int)$conf_indicateur4Accueil,
+        'conf_indicateur5Accueil' => (int)$conf_indicateur5Accueil,
+        'conf_indicateur6Accueil' => (int)$conf_indicateur6Accueil,
+        'conf_indicateur7Accueil' => (int)$conf_indicateur7Accueil,
+        'conf_indicateur8Accueil' => (int)$conf_indicateur8Accueil,
+        'conf_indicateur9Accueil' => (int)$conf_indicateur9Accueil,
+        'conf_indicateur10Accueil' => (int)$conf_indicateur10Accueil
     ));
 
-    writeInLogs("Revue des indicateurs d'accueil pour la personne " . $idPersonne, '3');
+    if ($enableLog == 1)
+    {
+        writeInLogs("Revue des indicateurs d'accueil pour la personne " . $idPersonne, '3');
+    }
 }
 
 function majIndicateursProfil($idProfil)
@@ -245,45 +248,48 @@ function majIndicateursProfil($idProfil)
     }
 }
 
-function majNotificationsPersonne($idPersonne)
+function majNotificationsPersonne($idPersonne, $enableLog)
 {
-	global $db;
+    global $db;
 
     $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE p JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE p.idPersonne = :idPersonne;');
     $query -> execute(array('idPersonne' => $idPersonne));
     $data = $query->fetch();
     
     $notif_lots_manquants = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_manquants']);
-	$notif_lots_peremptions = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_peremptions']);
-	$notif_lots_inventaires = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_inventaires']);
-	$notif_lots_conformites = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_conformites']);
-	$notif_reserves_manquants = ($data['reserve_lecture']) && ($data['notif_reserves_manquants']);
-	$notif_reserves_peremptions = ($data['reserve_lecture']) && ($data['notif_reserves_peremptions']);
-	$notif_reserves_inventaires = ($data['reserve_lecture']) && ($data['notif_reserves_inventaires']);
-	$notif_vehicules_assurances = ($data['vehicules_lecture']) && ($data['notif_vehicules_assurances']);
-	$notif_vehicules_revisions = ($data['vehicules_lecture']) && ($data['notif_vehicules_revisions']);
-	$notif_vehicules_ct = ($data['vehicules_lecture']) && ($data['notif_vehicules_ct']);
-	$notif_tenues_stock = ($data['tenuesCatalogue_lecture']) && ($data['notif_tenues_stock']);
-	$notif_tenues_retours = ($data['tenues_lecture']) && ($data['notif_tenues_retours']);
-	
-	$query = $db->prepare('UPDATE PERSONNE_REFERENTE SET notif_lots_manquants = :notif_lots_manquants, notif_lots_peremptions = :notif_lots_peremptions, notif_lots_inventaires = :notif_lots_inventaires, notif_lots_conformites = :notif_lots_conformites, notif_reserves_manquants = :notif_reserves_manquants, notif_reserves_peremptions = :notif_reserves_peremptions, notif_reserves_inventaires = :notif_reserves_inventaires, notif_vehicules_assurances = :notif_vehicules_assurances, notif_vehicules_revisions = :notif_vehicules_revisions, notif_vehicules_ct = :notif_vehicules_ct, notif_tenues_stock = :notif_tenues_stock, notif_tenues_retours = :notif_tenues_retours WHERE idPersonne = :idPersonne ;');
+    $notif_lots_peremptions = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_peremptions']);
+    $notif_lots_inventaires = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_inventaires']);
+    $notif_lots_conformites = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_conformites']);
+    $notif_reserves_manquants = ($data['reserve_lecture']) && ($data['notif_reserves_manquants']);
+    $notif_reserves_peremptions = ($data['reserve_lecture']) && ($data['notif_reserves_peremptions']);
+    $notif_reserves_inventaires = ($data['reserve_lecture']) && ($data['notif_reserves_inventaires']);
+    $notif_vehicules_assurances = ($data['vehicules_lecture']) && ($data['notif_vehicules_assurances']);
+    $notif_vehicules_revisions = ($data['vehicules_lecture']) && ($data['notif_vehicules_revisions']);
+    $notif_vehicules_ct = ($data['vehicules_lecture']) && ($data['notif_vehicules_ct']);
+    $notif_tenues_stock = ($data['tenuesCatalogue_lecture']) && ($data['notif_tenues_stock']);
+    $notif_tenues_retours = ($data['tenues_lecture']) && ($data['notif_tenues_retours']);
+    
+    $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET notif_lots_manquants = :notif_lots_manquants, notif_lots_peremptions = :notif_lots_peremptions, notif_lots_inventaires = :notif_lots_inventaires, notif_lots_conformites = :notif_lots_conformites, notif_reserves_manquants = :notif_reserves_manquants, notif_reserves_peremptions = :notif_reserves_peremptions, notif_reserves_inventaires = :notif_reserves_inventaires, notif_vehicules_assurances = :notif_vehicules_assurances, notif_vehicules_revisions = :notif_vehicules_revisions, notif_vehicules_ct = :notif_vehicules_ct, notif_tenues_stock = :notif_tenues_stock, notif_tenues_retours = :notif_tenues_retours WHERE idPersonne = :idPersonne ;');
     $query->execute(array(
         'idPersonne' => $idPersonne,
-        'notif_lots_manquants' => $notif_lots_manquants,
-		'notif_lots_peremptions' => $notif_lots_peremptions,
-		'notif_lots_inventaires' => $notif_lots_inventaires,
-		'notif_lots_conformites' => $notif_lots_conformites,
-		'notif_reserves_manquants' => $notif_reserves_manquants,
-		'notif_reserves_peremptions' => $notif_reserves_peremptions,
-		'notif_reserves_inventaires' => $notif_reserves_inventaires,
-		'notif_vehicules_assurances' => $notif_vehicules_assurances,
-		'notif_vehicules_revisions' => $notif_vehicules_revisions,
-		'notif_vehicules_ct' => $notif_vehicules_ct,
-		'notif_tenues_stock' => $notif_tenues_stock,
-		'notif_tenues_retours' => $notif_tenues_retours
+        'notif_lots_manquants' => (int)$notif_lots_manquants,
+        'notif_lots_peremptions' => (int)$notif_lots_peremptions,
+        'notif_lots_inventaires' => (int)$notif_lots_inventaires,
+        'notif_lots_conformites' => (int)$notif_lots_conformites,
+        'notif_reserves_manquants' => (int)$notif_reserves_manquants,
+        'notif_reserves_peremptions' => (int)$notif_reserves_peremptions,
+        'notif_reserves_inventaires' => (int)$notif_reserves_inventaires,
+        'notif_vehicules_assurances' => (int)$notif_vehicules_assurances,
+        'notif_vehicules_revisions' => (int)$notif_vehicules_revisions,
+        'notif_vehicules_ct' => (int)$notif_vehicules_ct,
+        'notif_tenues_stock' => (int)$notif_tenues_stock,
+        'notif_tenues_retours' => (int)$notif_tenues_retours
     ));
     
-    writeInLogs("Revue des notifications pour la personne " . $idPersonne, '3');
+    if ($enableLog == 1)
+    {
+        writeInLogs("Revue des notifications pour la personne " . $idPersonne, '3');
+    }
 }
 
 function majNotificationsProfil($idProfil)
@@ -302,82 +308,82 @@ function majNotificationsProfil($idProfil)
 
 function cmdEstAffectee ($idPersonne, $idCommande)
 {
-	global $db;
-	$query = $db->prepare('SELECT idAffectee FROM COMMANDES_AFFECTEES WHERE idCommande = :idCommande;');
+    global $db;
+    $query = $db->prepare('SELECT idAffectee FROM COMMANDES_AFFECTEES WHERE idCommande = :idCommande;');
     $query -> execute(array('idCommande' => $idCommande));
     $data = $query->fetchAll();
     
     if(in_array($idPersonne, array_column($data, 'idAffectee')))
     {
-    	return 1;
+        return 1;
     }
     else
     {
-    	return 0;
+        return 0;
     }
 }
 function cmdEstValideur ($idPersonne, $idCommande)
 {
-	global $db;
-	$query = $db->prepare('SELECT idValideur FROM COMMANDES_VALIDEURS WHERE idCommande = :idCommande;');
+    global $db;
+    $query = $db->prepare('SELECT idValideur FROM COMMANDES_VALIDEURS WHERE idCommande = :idCommande;');
     $query -> execute(array('idCommande' => $idCommande));
     $data = $query->fetchAll();
 
     if(in_array($idPersonne, array_column($data, 'idValideur')))
     {
-    	return 1;
+        return 1;
     }
     else
     {
-    	return 0;
+        return 0;
     }
 }
 function cmdEstObservateur ($idPersonne, $idCommande)
 {
-	global $db;
-	$query = $db->prepare('SELECT idObservateur FROM COMMANDES_OBSERVATEURS WHERE idCommande = :idCommande;');
+    global $db;
+    $query = $db->prepare('SELECT idObservateur FROM COMMANDES_OBSERVATEURS WHERE idCommande = :idCommande;');
     $query -> execute(array('idCommande' => $idCommande));
     $data = $query->fetchAll();
     
     if(in_array($idPersonne, array_column($data, 'idObservateur')))
     {
-    	return 1;
+        return 1;
     }
     else
     {
-    	return 0;
+        return 0;
     }
 }
 function cmdEstDemandeur ($idPersonne, $idCommande)
 {
-	global $db;
-	$query = $db->prepare('SELECT idDemandeur FROM COMMANDES_DEMANDEURS WHERE idCommande = :idCommande;');
+    global $db;
+    $query = $db->prepare('SELECT idDemandeur FROM COMMANDES_DEMANDEURS WHERE idCommande = :idCommande;');
     $query -> execute(array('idCommande' => $idCommande));
     $data = $query->fetchAll();
     
     if(in_array($idPersonne, array_column($data, 'idDemandeur')))
     {
-    	return 1;
+        return 1;
     }
     else
     {
-    	return 0;
+        return 0;
     }
 }
 function tdlEstExecutant ($idPersonne, $idTache)
 {
-	global $db;
-	$query = $db->prepare('SELECT idExecutant FROM TODOLIST_PERSONNES WHERE idTache = :idTache;');
+    global $db;
+    $query = $db->prepare('SELECT idExecutant FROM TODOLIST_PERSONNES WHERE idTache = :idTache;');
     $query -> execute(array('idTache' => $idTache));
     $data = $query->fetchAll();
     
     if(in_array($idPersonne, array_column($data, 'idExecutant')))
     {
-    	return 1;
+        return 1;
     }
     else
     {
-    	return 0;
+        return 0;
     }
 }
 

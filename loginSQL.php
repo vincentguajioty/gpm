@@ -208,6 +208,10 @@ if ($data['idIP'] == "")
 		$_SESSION['todolist_lecture'] = $data['todolist_lecture'];
 		$_SESSION['todolist_modification'] = $data['todolist_modification'];
 		$_SESSION['contactMailGroupe'] = $data['contactMailGroupe'];
+		$_SESSION['etats_lecture'] = $data['etats_lecture'];
+		$_SESSION['etats_ajout'] = $data['etats_ajout'];
+		$_SESSION['etats_modification'] = $data['etats_modification'];
+		$_SESSION['etats_suppression'] = $data['etats_suppression'];
         
         $_SESSION['conf_accueilRefresh'] = $data['conf_accueilRefresh'];
         $_SESSION['conf_indicateur1Accueil'] = $data['conf_indicateur1Accueil'];
