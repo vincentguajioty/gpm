@@ -45,7 +45,8 @@ else
                                                 conf_indicateur8Accueil,
                                                 conf_indicateur9Accueil,
                                                 conf_indicateur10Accueil,
-                                                conf_accueilRefresh) VALUES(:identifiant,
+                                                conf_accueilRefresh,
+                                                tableRowPerso) VALUES(:identifiant,
                                                 :motDePasse,
                                                 :nomPersonne,
                                                 :prenomPersonne,
@@ -54,7 +55,8 @@ else
                                                 :fonction,
                                                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                                                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                                                120);'
+                                                120,
+                                                25);'
 	                        );
 	    $query2->execute(array(
 	        'identifiant'    => $data['identifiant'],
@@ -74,9 +76,9 @@ else
 				$query2 = $db->query('SELECT MAX(idPersonne) as idPersonne FROM PERSONNE_REFERENTE;');
 	            $data2 = $query2->fetch();
 	
-	            if (!empty($_POST['libelleProfil'])) {
+	            if (!empty($_POST['idProfil'])) {
 	                $insertSQL = 'INSERT INTO PROFILS_PERSONNES (idProfil, idPersonne) VALUES';
-	                foreach ($_POST['libelleProfil'] as $idProfil) {
+	                foreach ($_POST['idProfil'] as $idProfil) {
 	                    $insertSQL .= ' ('. (int)$idProfil.', '. (int)$data2['idPersonne'] .'),';
 	                }
 	

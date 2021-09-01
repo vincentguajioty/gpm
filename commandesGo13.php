@@ -28,9 +28,9 @@ else
 
         if($config['notifications_commandes_demandeur_validationOK']==1)
         {
-            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
-            $data = $query->fetch();
-            if(cmdEstDemandeur($data['idPersonne'],$_GET['id']))
+            $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_DEMANDEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idDemandeur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
+            $query->execute(array('idCommande'=>$_GET['id']));
+            while($data = $query->fetch())
             {
                 $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes le demandeur vient d'être acceptée.";
                 $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
@@ -47,9 +47,9 @@ else
         }
         if($config['notifications_commandes_valideur_validationOK']==1)
         {
-            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
-            $data = $query->fetch();
-            if(cmdEstValideur($data['idPersonne'],$_GET['id']))
+            $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_VALIDEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idValideur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
+            $query->execute(array('idCommande'=>$_GET['id']));
+            while($data = $query->fetch())
             {
                 $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> La commande " . $_GET['id'] . " dont vous êtes le valideur vient d'être acceptée.";
                 $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
@@ -66,9 +66,9 @@ else
         }
         if($config['notifications_commandes_affectee_validationOK']==1)
         {
-            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
-            $data = $query->fetch();
-            if(cmdEstAffectee($data['idPersonne'],$_GET['id']))
+            $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_AFFECTEES ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idAffectee = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
+            $query->execute(array('idCommande'=>$_GET['id']));
+            while($data = $query->fetch())
             {
                 $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " qui vous est affectée vient d'être acceptée.";
                 $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
@@ -85,9 +85,9 @@ else
         }
         if($config['notifications_commandes_observateur_validationOK']==1)
         {
-            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
-            $data = $query->fetch();
-            if(cmdEstObservateur($data['idPersonne'],$_GET['id']))
+            $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_OBSERVATEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idObservateur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
+            $query->execute(array('idCommande'=>$_GET['id']));
+            while($data = $query->fetch())
             {
                 $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes l'observateur vient d'être acceptée.";
                 $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
@@ -116,9 +116,9 @@ else
 
         if($config['notifications_commandes_demandeur_validationNOK']==1)
         {
-            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
-            $data = $query->fetch();
-            if(cmdEstDemandeur($data['idPersonne'],$_GET['id']))
+            $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_DEMANDEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idDemandeur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
+            $query->execute(array('idCommande'=>$_GET['id']));
+            while($data = $query->fetch())
             {
                 $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes le demandeur vient d'être refusée.";
                 $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
@@ -135,9 +135,9 @@ else
         }
         if($config['notifications_commandes_valideur_validationNOK']==1)
         {
-            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
-            $data = $query->fetch();
-            if(cmdEstValideur($data['idPersonne'],$_GET['id']))
+            $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_VALIDEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idValideur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
+            $query->execute(array('idCommande'=>$_GET['id']));
+            while($data = $query->fetch())
             {
                 $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> La commande " . $_GET['id'] . " dont vous êtes le valideur vient d'être refusée.";
                 $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
@@ -154,9 +154,9 @@ else
         }
         if($config['notifications_commandes_affectee_validationNOK']==1)
         {
-            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
-            $data = $query->fetch();
-            if(cmdEstAffectee($data['idPersonne'],$_GET['id']))
+            $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_AFFECTEES ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idAffectee = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
+            $query->execute(array('idCommande'=>$_GET['id']));
+            while($data = $query->fetch())
             {
                 $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " qui vous est affectée vient d'être refusée.";
                 $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
@@ -173,9 +173,9 @@ else
         }
         if($config['notifications_commandes_observateur_validationNOK']==1)
         {
-            $query = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
-            $data = $query->fetch();
-            if(cmdEstObservateur($data['idPersonne'],$_GET['id']))
+            $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_OBSERVATEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idObservateur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
+            $query->execute(array('idCommande'=>$_GET['id']));
+            while($data = $query->fetch())
             {
                 $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes l'observateur vient d'être refusée.";
                 $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;

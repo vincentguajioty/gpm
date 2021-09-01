@@ -83,8 +83,8 @@ if ($_SESSION['annuaire_ajout']==0)
 		                            <form role="form" class="spinnerAttenteSubmit" action="annuaireImportGoOK.php" method="POST">
 			                            <div class="box-body">
 				                            <div class="form-group">
-					                            <label>Profil d'habilitation: </label>
-					                            <select class="form-control select2" style="width: 100%;" name="libelleProfil[]" multiple <?php if($_SESSION['profils_modification']==0){ echo 'disabled'; } ?>>
+					                            <label>Profils d'habilitation: </label>
+					                            <select class="form-control select2" style="width: 100%;" name="idProfil[]" multiple <?php if($_SESSION['profils_modification']==0){ echo 'disabled'; } ?>>
 					                                <?php
 										            if (isset($_GET['id']))
 										            {

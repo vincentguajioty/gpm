@@ -11,7 +11,6 @@ if ($_SESSION['annuaire_modification']==0)
 }
 else {
 
-    $_POST['libelleProfil'] = ($_POST['libelleProfil'] == Null) ? Null : $_POST['libelleProfil'];
 
     $query = $db->prepare('UPDATE PERSONNE_REFERENTE
                                         SET
@@ -46,9 +45,9 @@ else {
 	            $queryDelete->execute([
 	                ':idPersonne' => $_GET['id']
 	            ]);
-	            if (!empty($_POST['libelleProfil'])) {
+	            if (!empty($_POST['idProfil'])) {
 	                $insertSQL = 'INSERT INTO PROFILS_PERSONNES (idProfil, idPersonne) VALUES';
-	                foreach ($_POST['libelleProfil'] as $idProfil) {
+	                foreach ($_POST['idProfil'] as $idProfil) {
 	                    $insertSQL .= ' ('. (int)$idProfil.', '. (int)$_GET['id'] .'),';
 	                }
 	

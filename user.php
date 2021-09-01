@@ -447,6 +447,12 @@ require_once('logCheck.php');
 			                        		$tenues = $_SESSION['tenues_lecture'] OR $_SESSION['tenuesCatalogue_lecture'];
 			                        	?>
 			                            <label>Présence des indicateurs sur la page d'accueil:</label><br/>
+			                            <?php
+			                            	if ($lots+$reserves+$vehicules+$tenues == 0)
+			                            	{ ?>
+			                            		<i><center>Votre profil actuel ne vous permet pas d'afficher des indicateurs sur votre dashboard.</center></i>
+			                            	<?php }
+			                            ?>
 				                        <div class="checkbox">
 		                                	<label><input <?php if($_SESSION['conf_indicateur1Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur1Accueil" <?php if ($lots == 0){echo 'disabled';} ?>> Matériels périmés (lots)</label>
 		                                </div>
@@ -485,6 +491,12 @@ require_once('logCheck.php');
 			                        		$data = $query->fetch();
 			                        	?>
 			                            <label>Abonnements aux notifications journalières par mail:</label><br/>
+			                            <?php
+			                            	if ($data['notifications']==0 OR ($lots+$reserves+$vehicules+$tenues == 0))
+			                            	{ ?>
+			                            		<i><center>Votre profil actuel ne vous permet pas de vous abonner aux notifications mail.</center></i>
+			                            	<?php }
+			                            ?>
 				                        <div class="checkbox">
 		                                	<label><input <?php if($data['notif_lots_manquants'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_lots_manquants" <?php if ($lots == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Matériels manquants (lots)</label>
 		                                </div>

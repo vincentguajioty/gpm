@@ -16,6 +16,7 @@ if ($_SESSION['annuaire_lecture']==0)
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
+    
 
 
     <!-- Content Wrapper. Contains page content -->

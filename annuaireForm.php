@@ -54,7 +54,7 @@ if($_SESSION['annuaire_lecture']==1 OR $_SESSION['annuaire_ajout']==1 OR $_SESSI
                         </div>
                         <div class="form-group">
                             <label>Profil d'habilitation: </label>
-                            <select class="form-control select2" style="width: 100%;" name="libelleProfil[]" multiple <?php if($_SESSION['profils_modification']==0){ echo 'disabled'; } ?>>
+                            <select class="form-control select2" style="width: 100%;" name="idProfil[]" multiple <?php if($_SESSION['profils_modification']==0){ echo 'disabled'; } ?>>
                                 <?php
 					            if (isset($_GET['id']))
 					            {

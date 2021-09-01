@@ -476,7 +476,7 @@ if ($_SESSION['commande_lecture']==0)
 	                        
 	                        
 	                        <div class="tab-pane" id="fournisseur">
-	                            <form role="form" class="spinnerAttenteSubmit" action="commandesUpdateFour.php?id=<?=$_GET['id']?>" method="POST">
+	                            <form role="form" class="spinnerAttenteSubmit" action="commandesGo4.php?id=<?=$_GET['id']?>" method="POST">
 	                                <div class="row">
 	                                    <div class="col-md-6">
 	                                        <div class="form-group">
@@ -521,7 +521,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                    </div>
 	                                </div>
 	                                <div class="box-footer">
-	                                    <?php if (($data['idEtat']==3) AND ($_SESSION['commande_etreEnCharge']==1) AND cmdEstAffectee($_SESSION['idPersonne'], $_GET['id'])) { ?><button type="submit" class="btn btn-warning pull-right">Modifier</button> <?php } ?>
+	                                    <?php if (($data['idEtat']==3) AND ($_SESSION['commande_etreEnCharge']==1) AND cmdEstAffectee($_SESSION['idPersonne'], $_GET['id'])) { ?><button type="submit" class="btn btn-info pull-right">Commande passée > En attente de livraison</button> <?php } ?>
 	                                </div>
 	                            </form>
 	                        </div>
@@ -605,7 +605,6 @@ if ($_SESSION['commande_lecture']==0)
 	                    <div class="box-body">
 	                        <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
 	                        <?php if (($data['idEtat']==1) AND(($_SESSION['commande_ajout']==1)OR($_SESSION['commande_etreEnCharge']==1))) { ?><a href="commandesGo2.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">Soumettre à validation</a> <?php } ?>
-	                        <?php if ($data['idEtat']==3 AND cmdEstAffectee($_SESSION['idPersonne'], $_GET['id'])) { ?><a href="commandesGo4.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">Commande passée > En attente de livraison</a> <?php } ?>
 	                        <?php if ($data['idEtat']==5 AND cmdEstAffectee($_SESSION['idPersonne'], $_GET['id'])) { ?><a href="commandesGo7.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">Cloturer la commande</a> <?php } ?>
 	                        <?php if ($data['idEtat']==6 AND cmdEstAffectee($_SESSION['idPersonne'], $_GET['id'])) { ?><a href="commandesGo5.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">SAV terminé > Commande OK</a> <?php } ?>
 	                    </div>

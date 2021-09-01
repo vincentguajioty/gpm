@@ -11,7 +11,6 @@ if ($_SESSION['annuaire_ajout']==0)
 }
 else
 {
-    $_POST['libelleProfil'] = ($_POST['libelleProfil'] == Null) ? Null : $_POST['libelleProfil'];
 
     $query = $db->prepare('INSERT INTO PERSONNE_REFERENTE(
                                                 identifiant,
@@ -76,9 +75,9 @@ else
             $query = $db->query('SELECT MAX(idPersonne) as idPersonne FROM PERSONNE_REFERENTE;');
             $data = $query->fetch();
 
-            if (!empty($_POST['libelleProfil'])) {
+            if (!empty($_POST['idProfil'])) {
                 $insertSQL = 'INSERT INTO PROFILS_PERSONNES (idProfil, idPersonne) VALUES';
-                foreach ($_POST['libelleProfil'] as $idProfil) {
+                foreach ($_POST['idProfil'] as $idProfil) {
                     $insertSQL .= ' ('. (int)$idProfil.', '. (int)$data['idPersonne'] .'),';
                 }
 
