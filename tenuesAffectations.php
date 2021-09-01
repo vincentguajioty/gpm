@@ -57,7 +57,7 @@ if ($_SESSION['tenues_lecture']==0)
                             {
                                
                             ?>
-                                <tr>
+                                <tr <?php if ($_SESSION['tenues_lecture']==1) {?>data-href="tenuesAffectationsContenu.php?case=int&id=<?=$data['idPersonne']?>"<?php }?>>
                                     <?php
                                         $query2 = $db->prepare('SELECT * FROM PERSONNE_REFERENTE WHERE idPersonne  = :idPersonne;');
                                         $query2->execute(array('idPersonne'=>$data['idPersonne']));
@@ -94,7 +94,7 @@ if ($_SESSION['tenues_lecture']==0)
                             {
                                
                             ?>
-                                <tr>
+                                <tr <?php if ($_SESSION['tenues_lecture']==1) {?>data-href="tenuesAffectationsContenu.php?case=ext&personneNonGPM=<?=$data['personneNonGPM']?>"<?php }?>>
                                     <td>Ext</td>
                                     <td><?php echo $data['personneNonGPM']; ?></td>
                                     <td>

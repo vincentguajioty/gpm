@@ -61,7 +61,7 @@ if ($_SESSION['vhf_canal_lecture']==0)
                         $query = $db->query('SELECT * FROM VHF_CANAL c LEFT OUTER JOIN VHF_TECHNOLOGIES t  ON c.idVhfTechno = t.idVhfTechno ORDER BY chName;');
                         while ($data = $query->fetch())
                         {?>
-                            <tr>
+                            <tr <?php if ($_SESSION['vhf_canal_lecture']==1) {?>data-href="vhfCanauxContenu.php?id=<?=$data['idVhfCanal']?>"<?php }?>>
                                 <td><?php echo $data['idVhfCanal']; ?></td>
                                 <td><?php echo $data['chName']; ?></td>
                                 <td><?php echo $data['libelleTechno']; ?></td>

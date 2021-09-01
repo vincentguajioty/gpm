@@ -61,7 +61,7 @@ if ($_SESSION['commande_lecture']==0)
                         ));
                         while ($data = $query->fetch())
                         {?>
-                            <tr>
+                            <tr <?php if ($_SESSION['commande_lecture']==1) {?>data-href="commandeView.php?id=<?=$data['idCommande']?>"<?php }?>>
                                 <td><?php echo $data['idCommande']; ?></td>
                                 <td><?php echo $data['dateCreation']; ?></td>
                                 <td><?php echo $data['nomFournisseur']; ?></td>
@@ -97,7 +97,9 @@ if ($_SESSION['commande_lecture']==0)
                                 <td><?php echo $data['demandeur']; ?></td>
                                 <td><?php echo $data['affectee']; ?></td>
                                 <td>
-                                    <a href="commandeView.php?id=<?=$data['idCommande']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
+                                    <?php if ($_SESSION['commande_lecture']==1) {?>
+                                    	<a href="commandeView.php?id=<?=$data['idCommande']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
+                                	<?php } ?>
                                 </td>
                             </tr>
                             <?php

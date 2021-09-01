@@ -60,7 +60,7 @@ if ($_SESSION['vhf_equipement_lecture']==0)
                         $query = $db->query('SELECT * FROM VHF_EQUIPEMENTS e LEFT OUTER JOIN VHF_PLAN p ON e.idVhfPlan = p.idVhfPlan LEFT OUTER JOIN VHF_TECHNOLOGIES t ON e.idVhfTechno = t.idVhfTechno LEFT OUTER JOIN VHF_ETATS s ON e.idVhfEtat=s.idVhfEtat LEFT OUTER JOIN VHF_TYPES_EQUIPEMENTS c ON e.idVhfType = c.idVhfType ORDER BY vhfIndicatif;');
                         while ($data = $query->fetch())
                         {?>
-                            <tr>
+                            <tr <?php if ($_SESSION['vhf_equipement_lecture']==1) {?>data-href="vhfEquipementsContenu.php?id=<?=$data['idVhfEquipement']?>"<?php }?>>
                                 <td><?php echo $data['idVhfEquipement']; ?></td>
                                 <td><?php echo $data['vhfIndicatif']; ?></td>
                                 <td><?php echo $data['libelleType']; ?></td>

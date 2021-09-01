@@ -55,7 +55,7 @@ if ($_SESSION['commande_lecture']==0)
                         $query = $db->query('SELECT c.idCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat  FROM COMMANDES c LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE c.idEtat <> 8 AND c.idEtat <> 7;');
                         while ($data = $query->fetch())
                         {?>
-                            <tr>
+                            <tr <?php if ($_SESSION['commande_lecture']==1) {?>data-href="commandeView.php?id=<?=$data['idCommande']?>"<?php }?>>
                                 <td><?php echo $data['idCommande']; ?></td>
                                 <td><?php echo $data['dateCreation']; ?></td>
                                 <td><?php echo $data['nomFournisseur']; ?></td>
@@ -109,7 +109,9 @@ if ($_SESSION['commande_lecture']==0)
 	                            	?>
                                 </td>
                                 <td>
-                                    <a href="commandeView.php?id=<?=$data['idCommande']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
+                                    <?php if ($_SESSION['commande_lecture']==1) {?>
+                                    	<a href="commandeView.php?id=<?=$data['idCommande']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
+                                	<?php } ?>
                                 </td>
                             </tr>
                             <?php

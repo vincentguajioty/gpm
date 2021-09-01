@@ -59,7 +59,7 @@ if ($_SESSION['vehicules_lecture']==0)
                         $query = $db->query('SELECT * FROM VEHICULES v LEFT OUTER JOIN ETATS e ON v.idEtat = e.idEtat LEFT OUTER JOIN VEHICULES_TYPES t ON v.idVehiculesType = t.idVehiculesType ;');
                         while ($data = $query->fetch())
                         {?>
-                            <tr>
+                            <tr <?php if ($_SESSION['vehicules_lecture']==1) {?>data-href="vehiculesContenu.php?id=<?=$data['idVehicule']?>"<?php }?>>
                                 <td><?php echo $data['idVehicule']; ?></td>
                                 <td><?php echo $data['libelleVehicule']; ?></td>
                                 <td><?php echo $data['libelleType']; ?></td>

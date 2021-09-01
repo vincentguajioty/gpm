@@ -58,7 +58,7 @@ if ($_SESSION['reserve_lecture']==0)
                         $query = $db->query('SELECT * FROM RESERVES_CONTENEUR c LEFT OUTER JOIN LIEUX l  ON c.idLieu = l.idLieu ORDER BY libelleConteneur;');
                         while ($data = $query->fetch())
                         {?>
-                            <tr>
+                            <tr <?php if ($_SESSION['reserve_lecture']==1) {?>data-href="reserveConteneurContenu.php?id=<?=$data['idConteneur']?>"<?php }?>>
                                 <td><?php echo $data['idConteneur']; ?></td>
 								<td><?php echo $data['libelleConteneur']; ?></td>
 								<td><?php echo $data['libelleLieu']; ?></td>

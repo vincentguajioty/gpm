@@ -114,6 +114,22 @@ if ($_SESSION['vehicules_lecture']==0)
                                     <td><?= $data['dateNextCT'] ?></td>
                                 </tr>
                                 <tr>
+                                    <td>Equipements embarqués</td>
+                                    <td>
+                                    	<?= ($data['pneusAVhivers']==1)? 'Pneus hivers Avant<br/>':'' ?>
+                                    	<?= ($data['pneusARhivers']==1)? 'Pneus hivers Arrière<br/>':'' ?>
+                                    	<?= ($data['priseAlimentation220']==1)? 'Prise MARECHAL 220V<br/>':'' ?>
+                                    	<?= ($data['climatisation']==1)? 'Climatisation<br/>':'' ?>
+                                    	<?= ($data['signaletiqueOrange']==1)? 'Feux oranges<br/>':'' ?>
+                                    	<?= ($data['signaletiqueBleue']==1)? 'Feux bleux<br/>':'' ?>
+                                    	<?= ($data['signaletique2tons']==1)? 'Sirène 2 tons<br/>':'' ?>
+                                    	<?= ($data['signaletique3tons']==1)? 'Sirène 3 tons<br/>':'' ?>
+                                    	<?= ($data['pmv']==1)? 'Panneau à message variable<br/>':'' ?>
+                                    	<?= ($data['fleche']==1)? 'Flèche<br/>':'' ?>
+                                    	<?= ($data['nbCones']>0)? $data['nbCones'].' cônes de lubëck<br/>':'' ?>
+                                	</td>
+                                </tr>
+                                <tr>
                                     <td>Remarques</td>
                                     <td><?= $data['remarquesVehicule'] ?></td>
                                 </tr>

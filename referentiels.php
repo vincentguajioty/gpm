@@ -54,7 +54,7 @@ if ($_SESSION['typesLots_lecture']==0)
                         $query = $db->query('SELECT * FROM LOTS_TYPES ORDER BY libelleTypeLot;');
                         while ($data = $query->fetch())
                         {?>
-                            <tr>
+                            <tr <?php if ($_SESSION['typesLots_lecture']==1) {?>data-href="referentielsContenu.php?id=<?=$data['idTypeLot']?>"<?php }?>>
                                 <td><?php echo $data['idTypeLot']; ?></td>
                                 <td><?php echo $data['libelleTypeLot']; ?></td>
                                 <td>

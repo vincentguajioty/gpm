@@ -61,7 +61,7 @@ if ($_SESSION['sac2_lecture']==0)
                             $query2->execute(array('idEmplacement' => $data['idEmplacement']));
                             $data2 = $query2->fetch();
                             ?>
-                            <tr>
+                            <tr <?php if ($_SESSION['sac2_lecture']==1) {?>data-href="emplacementsContenu.php?id=<?=$data['idEmplacement']?>"<?php }?>>
                                 <td><?php echo $data['idEmplacement']; ?></td>
                                 <td><?php echo $data['libelleEmplacement']; ?></td>
                                 <td><?php echo $data['libelleSac']; ?></td>

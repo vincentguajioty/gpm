@@ -90,10 +90,6 @@ switch ($_GET['case']) {
         $lien = "vhfPlansDelete.php?id=".$_GET['id'];
         $contenu = "<li>Tous les documents liés à ce plan de fréquence seront supprimés.</li><li>Tous les équipements radio bénéficiant de ce plan de fréquences se verront sans plan de fréquence.</li>";
         break;
-    case 'annuaireProfilOff':
-        $lien = "annuaireProfilOff.php?id=".$_GET['id'];
-        $contenu = "<li>L'utilisateur n'aura plus de profil et ne pourra plus se connecter.</li>";
-        break;
     case 'referentielsDeleteItem':
         $lien = "referentielsDeleteItem.php?idLot=".$_GET['idLot']."&idMateriel=".$_GET['idMateriel'];
         $contenu = "<li>Aucun impact collatéral</li>";
@@ -151,17 +147,22 @@ switch ($_GET['case']) {
             <div class="modal-header">
                 <h4 class="modal-title">Avertissement avant suppression</h4>
             </div>
-            
-            <div class="modal-body">
-                Cette suppression aura les impacts suivants:
-                <ul>
-                	<?php echo $contenu; ?>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
-                <a href="<?php echo $lien; ?>"><button type="button" class="btn btn-default pull-right">Confirmer la suppression</button></a>
-            </div>
+            <form role="form" action="<?php echo $lien; ?>" method="POST">
+	            <div class="modal-body">
+	                Cette suppression aura les impacts suivants:
+	                <ul>
+	                	<?php echo $contenu; ?>
+	                </ul>
+	                <div class="form-group">
+                        <label>Ecrire <i>CONFIRMATION</i> dans la case ci-dessous:</label>
+                        <input type="text" class="form-control" name="confirmation" required>
+                    </div>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
+	                <button type="submit" class="btn btn-default pull-right">Confirmer la suppression</button>
+	            </div>
+            </form>
         </div>
     </div>
 </div>

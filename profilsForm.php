@@ -6,6 +6,22 @@ session_start();
 $_SESSION['page'] = 402;
 require_once('logCheck.php');
 ?>
+
+<?php
+/*
+ATTENTION: modification d'un profil necessite à mettre à jour:
+- formulaire des profils
+- vue DB VIEW_HABILITATIONS
+- scripts Add et Update
+- script duplicate profils
+- modal de visualisation des droits depuis la page annuaire.php
+- box de visualisation de droits dans user.php
+- rechargement dynamique des droits dans loginReloadHabilitation.php
+- rechargement dynamique des droits dans userReloadHabilitation.php
+*/
+?>
+
+
 <body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>

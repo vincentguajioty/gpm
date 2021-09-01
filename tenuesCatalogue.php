@@ -57,7 +57,7 @@ if ($_SESSION['tenuesCatalogue_lecture']==0)
                         while ($data = $query->fetch())
                         {
                             ?>
-                            <tr>
+                            <tr <?php if ($_SESSION['tenuesCatalogue_lecture']==1) {?>data-href="tenuesCatalogueContenu.php?id=<?=$data['idCatalogueTenue']?>"<?php }?>>
                                 <td><?php echo $data['idCatalogueTenue']; ?></td>
                                 <td><?php echo $data['libelleCatalogueTenue']; ?></td>
                                 <td><?php echo $data['tailleCatalogueTenue']; ?></td>

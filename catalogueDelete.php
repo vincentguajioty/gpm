@@ -5,6 +5,14 @@ require_once('logCheck.php');
 <?php
 require_once 'config/bdd.php';
 
+if(strtoupper($_POST['confirmation']) <> 'CONFIRMATION')
+{
+	$_SESSION['returnMessage'] = "Vérification échouée. Suppression annulée";
+    $_SESSION['returnType'] = '2';
+    echo "<script>window.location = document.referrer;</script>";
+    exit;
+}
+
 if ($_SESSION['catalogue_suppression']==0)
 {
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";

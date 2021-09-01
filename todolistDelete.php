@@ -6,6 +6,13 @@ require_once 'config/bdd.php';
 require_once 'config/config.php';
 require_once 'config/mailFunction.php';
 
+if(strtoupper($_POST['confirmation']) <> 'CONFIRMATION')
+{
+	$_SESSION['returnMessage'] = "Vérification échouée. Suppression annulée";
+    $_SESSION['returnType'] = '2';
+    echo "<script>window.location = document.referrer;</script>";
+    exit;
+}
 
 if ($_SESSION['todolist_modification']==0 AND (tdlEstExecutant($_SESSION['idPersonne'], $_GET['id'])==0 OR (tdlEstExecutant($_SESSION['idPersonne'], $_GET['id']) AND $_SESSION['todolist_perso']==0)))
 {

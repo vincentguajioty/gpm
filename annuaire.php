@@ -80,6 +80,9 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <?php if ($_SESSION['annuaire_modification']==1) {?>
                                         <a href="annuaireForm.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
+                                    <?php if ($_SESSION['profils_lecture']==1) {?>
+                                        <a href="annuaireShowProfils.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-info modal-form" title="Voir les habilitations"><i class="fa fa-users"></i></a>
+                                    <?php }?>
                                     <?php if ($_SESSION['annuaire_modification']==1) {?>
                                         <a href="annuaireSetDashboard.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-success" onclick="return confirm('Etes-vous sûr de vouloir réactiver les indicateurs sur la page d\'accueil de l\'utilisateur ?');" title="Forcer les indicateurs sur la page d'accueil"><i class="fa fa-dashboard"></i></a>
                                     <?php }?>

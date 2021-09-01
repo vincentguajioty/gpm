@@ -3,7 +3,10 @@
 <?php
 session_start();
 $_SESSION['page'] = 000;
-require_once('logCheck.php');
+include('logCheck.php');
+require_once('loginReloadHabilitation.php');
+include('logCheck.php');
+/*Laisser le touble logCheck.php pour la prise en compte du retrait de connexion_connexion*/
 ?>
 <?php include('header.php'); require_once('config/config.php'); ?>
 <meta http-equiv="refresh" content="<?= $_SESSION['conf_accueilRefresh'] ?>"; url="mapage.php" />
@@ -72,7 +75,7 @@ require_once('logCheck.php');
 				                        while ($data = $query->fetch())
 				                        {
 				                            ?>
-				                            <tr>
+				                            <tr <?php if ($_SESSION['lots_lecture']==1) {?>data-href="lotsContenu.php?id=<?=$data['idLot']?>"<?php }?>>
 				                                <td><?php echo $data['libelleLot']; ?></td>
 				                                <td><?php echo $data['libelleEtat']; ?></td>
 				                                <td>
@@ -347,7 +350,7 @@ require_once('logCheck.php');
 				                        }
 			                        }
 		
-		                         	$query = $db->prepare('SELECT * FROM TODOLIST WHERE idExecutant = :idExecutant AND realisee=0;');
+		                         	$query = $db->prepare('SELECT * FROM TODOLIST_PERSONNES tp LEFT OUTER JOIN TODOLIST t ON tp.idTache=t.idTache WHERE idExecutant = :idExecutant AND realisee=0;');
 		                         	$query->execute(array('idExecutant'=>$_SESSION['idPersonne']));
 			                        while ($data = $query->fetch())
 			                        {

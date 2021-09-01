@@ -81,7 +81,7 @@ require_once('logCheck.php');
 			        <div class="col-md-12">
 			            <div class="box box-info">
 			                <div class="box-header with-border">
-			                    <h3 class="box-title">Mes habilitations sur <?php echo $APPNAME;?></h3>
+			                    <h3 class="box-title">Mes habilitations sur <?php echo $APPNAME;?> <a href="userReloadHabilitation.php" class="btn btn-xs spinnerAttenteClick"><i class="fa fa-refresh"></i> Rafraichir mes habilitations</a></h3>
 			                </div>
 			                <!-- /.box-header -->
 			                <div class="box-body">

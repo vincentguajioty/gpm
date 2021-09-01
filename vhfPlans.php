@@ -62,7 +62,7 @@ if ($_SESSION['vhf_plan_lecture']==0)
                                 'idVhfPlan' => $data['idVhfPlan']));
                             $data2 = $query2->fetch();
                             ?>
-                            <tr>
+                            <tr <?php if ($_SESSION['vhf_plan_lecture']==1) {?>data-href="vhfPlansContenu.php?id=<?=$data['idVhfPlan']?>"<?php }?>>
                                 <td><?php echo $data['idVhfPlan']; ?></td>
                                 <td><?php echo $data['libellePlan']; ?></td>
                                 <td><?php echo $data2['nb']; ?></td>

@@ -61,7 +61,7 @@ if ($_SESSION['sac_lecture']==0)
                         while ($data = $query->fetch())
                         {
                             ?>
-                            <tr>
+                            <tr <?php if ($_SESSION['sac_lecture']==1) {?>data-href="sacsContenu.php?id=<?=$data['idSac']?>"<?php }?>>
                                 <td><?php echo $data['idSac']; ?></td>
                                 <td><?php echo $data['libelleSac']; ?></td>
                                 <td><?php echo $data['libelleLot']; ?></td>
