@@ -44,6 +44,12 @@ if($_SESSION['profils_lecture']==1)
                         <?php if($data['logs_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Lire les logs
                         </br>
                     </div>
+                    <div class="form-group">
+                        <label>Notifications journalières par mail:</label>
+                        </br>
+                        <?php if($data['notifications'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Autorisé à recevoir les notifications journalières par mail
+                        </br>
+                    </div>
                     <table class="table table-bordered">
                         <tr>
                             <th></th>

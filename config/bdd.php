@@ -256,18 +256,29 @@ function majNotificationsPersonne($idPersonne, $enableLog)
     $query -> execute(array('idPersonne' => $idPersonne));
     $data = $query->fetch();
     
-    $notif_lots_manquants = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_manquants']);
-    $notif_lots_peremptions = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_peremptions']);
-    $notif_lots_inventaires = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_inventaires']);
-    $notif_lots_conformites = ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_conformites']);
-    $notif_reserves_manquants = ($data['reserve_lecture']) && ($data['notif_reserves_manquants']);
-    $notif_reserves_peremptions = ($data['reserve_lecture']) && ($data['notif_reserves_peremptions']);
-    $notif_reserves_inventaires = ($data['reserve_lecture']) && ($data['notif_reserves_inventaires']);
-    $notif_vehicules_assurances = ($data['vehicules_lecture']) && ($data['notif_vehicules_assurances']);
-    $notif_vehicules_revisions = ($data['vehicules_lecture']) && ($data['notif_vehicules_revisions']);
-    $notif_vehicules_ct = ($data['vehicules_lecture']) && ($data['notif_vehicules_ct']);
-    $notif_tenues_stock = ($data['tenuesCatalogue_lecture']) && ($data['notif_tenues_stock']);
-    $notif_tenues_retours = ($data['tenues_lecture']) && ($data['notif_tenues_retours']);
+    $notif_lots_manquants = $data['notifications'] && ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_manquants']);
+    
+    $notif_lots_peremptions = $data['notifications'] && ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_peremptions']);
+    
+    $notif_lots_inventaires = $data['notifications'] && ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_inventaires']);
+    
+    $notif_lots_conformites = $data['notifications'] && ($data['lots_lecture'] OR $data['sac_lecture'] OR $data['sac2_lecture'] OR $data['materiel_lecture']) && ($data['notif_lots_conformites']);
+    
+    $notif_reserves_manquants = $data['notifications'] && ($data['reserve_lecture']) && ($data['notif_reserves_manquants']);
+    
+    $notif_reserves_peremptions = $data['notifications'] && ($data['reserve_lecture']) && ($data['notif_reserves_peremptions']);
+    
+    $notif_reserves_inventaires = $data['notifications'] && ($data['reserve_lecture']) && ($data['notif_reserves_inventaires']);
+    
+    $notif_vehicules_assurances = $data['notifications'] && ($data['vehicules_lecture']) && ($data['notif_vehicules_assurances']);
+    
+    $notif_vehicules_revisions = $data['notifications'] && ($data['vehicules_lecture']) && ($data['notif_vehicules_revisions']);
+    
+    $notif_vehicules_ct = $data['notifications'] && ($data['vehicules_lecture']) && ($data['notif_vehicules_ct']);
+    
+    $notif_tenues_stock = $data['notifications'] && ($data['tenuesCatalogue_lecture']) && ($data['notif_tenues_stock']);
+    
+    $notif_tenues_retours = $data['notifications'] && ($data['tenues_lecture']) && ($data['notif_tenues_retours']);
     
     $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET notif_lots_manquants = :notif_lots_manquants, notif_lots_peremptions = :notif_lots_peremptions, notif_lots_inventaires = :notif_lots_inventaires, notif_lots_conformites = :notif_lots_conformites, notif_reserves_manquants = :notif_reserves_manquants, notif_reserves_peremptions = :notif_reserves_peremptions, notif_reserves_inventaires = :notif_reserves_inventaires, notif_vehicules_assurances = :notif_vehicules_assurances, notif_vehicules_revisions = :notif_vehicules_revisions, notif_vehicules_ct = :notif_vehicules_ct, notif_tenues_stock = :notif_tenues_stock, notif_tenues_retours = :notif_tenues_retours WHERE idPersonne = :idPersonne ;');
     $query->execute(array(

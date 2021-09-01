@@ -43,7 +43,8 @@ else
                                                 conf_indicateur8Accueil,
                                                 conf_indicateur9Accueil,
                                                 conf_indicateur10Accueil,
-                                                conf_accueilRefresh) VALUES(:identifiant,
+                                                conf_accueilRefresh,
+                                                tableRowPerso) VALUES(:identifiant,
                                                 :motDePasse,
                                                 :nomPersonne,
                                                 :prenomPersonne,
@@ -52,7 +53,8 @@ else
                                                 :fonction,
                                                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                                                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                                                120);'
+                                                120,
+                                                25);'
                         );
     $query->execute(array(
         'identifiant'    => $_POST['identifiant'],

@@ -126,7 +126,8 @@ else
 		etats_lecture,
 		etats_ajout,
 		etats_modification,
-		etats_suppression)
+		etats_suppression,
+		notifications)
 	VALUES (
 		:libelleProfil,
 		:descriptifProfil,
@@ -236,7 +237,8 @@ else
 		:etats_lecture,
 		:etats_ajout,
 		:etats_modification,
-		:etats_suppression
+		:etats_suppression,
+		:notifications
 	);');
     $query->execute(array(
         'libelleProfil'  =>  $data['libelleProfil'] . ' - Copie',
@@ -347,7 +349,8 @@ else
 		'etats_lecture' => $data['etats_lecture'],
 		'etats_ajout' => $data['etats_ajout'],
 		'etats_modification' => $data['etats_modification'],
-		'etats_suppression' => $data['etats_suppression']
+		'etats_suppression' => $data['etats_suppression'],
+		'notifications' => $data['notifications']
 ));
 
     switch($query->errorCode())

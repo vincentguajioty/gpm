@@ -109,6 +109,16 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                             </div>
                             </br>
                         </div>
+                        <div class="form-group">
+                            <label>Notifications journalières par mail:</label>
+                            </br>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="1" name="notifications" <?php if (isset($_GET['id']) AND ($data['notifications']==1)) {echo 'checked';} ?>> Autorisé à recevoir les notifications journalières par mail
+                                </label>
+                            </div>
+                            </br>
+                        </div>
                         <table class="table table-bordered">
                             <tr>
                                 <th></th>

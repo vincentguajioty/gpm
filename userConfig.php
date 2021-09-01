@@ -27,7 +27,7 @@ require_once 'config/bdd.php';
 	$_POST['notif_tenues_stock'] = ($_POST['notif_tenues_stock'] ==1) ? 1 : 0;
 	$_POST['notif_tenues_retours'] = ($_POST['notif_tenues_retours'] ==1) ? 1 : 0;
     
-    $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET conf_indicateur1Accueil = :conf_indicateur1Accueil, conf_indicateur2Accueil = :conf_indicateur2Accueil, conf_indicateur3Accueil = :conf_indicateur3Accueil, conf_indicateur4Accueil = :conf_indicateur4Accueil, conf_indicateur5Accueil = :conf_indicateur5Accueil, conf_indicateur6Accueil = :conf_indicateur6Accueil, conf_indicateur7Accueil = :conf_indicateur7Accueil, conf_indicateur8Accueil = :conf_indicateur8Accueil, conf_indicateur9Accueil = :conf_indicateur9Accueil, conf_indicateur10Accueil = :conf_indicateur10Accueil, conf_accueilRefresh = :conf_accueilRefresh, notif_lots_manquants = :notif_lots_manquants, notif_lots_peremptions = :notif_lots_peremptions, notif_lots_inventaires = :notif_lots_inventaires, notif_lots_conformites = :notif_lots_conformites, notif_reserves_manquants = :notif_reserves_manquants, notif_reserves_peremptions = :notif_reserves_peremptions, notif_reserves_inventaires = :notif_reserves_inventaires, notif_vehicules_assurances = :notif_vehicules_assurances, notif_vehicules_revisions = :notif_vehicules_revisions, notif_vehicules_ct = :notif_vehicules_ct, notif_tenues_stock = :notif_tenues_stock, notif_tenues_retours = :notif_tenues_retours WHERE idPersonne = :idPersonne ;');
+    $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET conf_indicateur1Accueil = :conf_indicateur1Accueil, conf_indicateur2Accueil = :conf_indicateur2Accueil, conf_indicateur3Accueil = :conf_indicateur3Accueil, conf_indicateur4Accueil = :conf_indicateur4Accueil, conf_indicateur5Accueil = :conf_indicateur5Accueil, conf_indicateur6Accueil = :conf_indicateur6Accueil, conf_indicateur7Accueil = :conf_indicateur7Accueil, conf_indicateur8Accueil = :conf_indicateur8Accueil, conf_indicateur9Accueil = :conf_indicateur9Accueil, conf_indicateur10Accueil = :conf_indicateur10Accueil, conf_accueilRefresh = :conf_accueilRefresh, notif_lots_manquants = :notif_lots_manquants, notif_lots_peremptions = :notif_lots_peremptions, notif_lots_inventaires = :notif_lots_inventaires, notif_lots_conformites = :notif_lots_conformites, notif_reserves_manquants = :notif_reserves_manquants, notif_reserves_peremptions = :notif_reserves_peremptions, notif_reserves_inventaires = :notif_reserves_inventaires, notif_vehicules_assurances = :notif_vehicules_assurances, notif_vehicules_revisions = :notif_vehicules_revisions, notif_vehicules_ct = :notif_vehicules_ct, notif_tenues_stock = :notif_tenues_stock, notif_tenues_retours = :notif_tenues_retours, tableRowPerso = :tableRowPerso WHERE idPersonne = :idPersonne ;');
     $query->execute(array(
         'idPersonne' => $_SESSION['idPersonne'],
         'conf_indicateur1Accueil' => $_POST['conf_indicateur1Accueil'],
@@ -52,10 +52,11 @@ require_once 'config/bdd.php';
 		'notif_vehicules_revisions' => $_POST['notif_vehicules_revisions'],
 		'notif_vehicules_ct' => $_POST['notif_vehicules_ct'],
 		'notif_tenues_stock' => $_POST['notif_tenues_stock'],
-		'notif_tenues_retours' => $_POST['notif_tenues_retours']
+		'notif_tenues_retours' => $_POST['notif_tenues_retours'],
+		'tableRowPerso' => $_POST['tableRowPerso']
     ));
 
-    
+    $_SESSION['tableRowPerso'] = $_POST['tableRowPerso'];
 
 
 switch($query->errorCode())

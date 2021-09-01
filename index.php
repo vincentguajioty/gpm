@@ -111,7 +111,7 @@ include('logCheck.php');
 				                                    }
 				                                    ?>
 				                                </td>
-				                                <td><?php echo $data['libelleEtat']; ?></td>
+				                                <td><?php echo $data['libelleEtat']; ?> (<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>)</td>
 				                                <td>
 					                                <?php if ($_SESSION['lots_lecture']==1) {?>
 				                                        <a href="lotsContenu.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>

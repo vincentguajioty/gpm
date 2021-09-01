@@ -162,12 +162,13 @@ if ($_SESSION['sac_lecture']==0)
                                                     <th>Libelle</th>
                                                     <th>Quantité</th>
                                                     <th>Péremption</th>
+                                                    <th>Etat</th>
                                                     <th>Actions</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 <?php
-                                                $query9 = $db->prepare('SELECT * FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue WHERE idEmplacement = :idEmplacement;');
+                                                $query9 = $db->prepare('SELECT * FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue LEFT OUTER JOIN MATERIEL_ETATS me ON e.idMaterielsEtat = me.idMaterielsEtat WHERE idEmplacement = :idEmplacement;');
                                                 $query9->execute(array(
                                                     'idEmplacement' => $data8['idEmplacement']
                                                 ));
@@ -206,6 +207,7 @@ if ($_SESSION['sac_lecture']==0)
                                                             }
                                                             ?>
                                                         </td>
+                                                        <td><?= $data9['libelleMaterielsEtat'] ?></td>
                                                         <td>
                                                             <?php if ($_SESSION['reserve_ReserveVersLot']==1) {?>
                                                             	<a href="transfertResLotsFromLots.php?idElement=<?=$data9['idElement']?>&idMaterielCatalogue=<?=$data9['idMaterielCatalogue']?>" class="btn btn-xs btn-success modal-form" title="Approvisionner depuis la réserve"><i class="fa fa-exchange"></i></a>

@@ -91,11 +91,52 @@
 
 <script>
     $(function () {
-        $("#tri0").DataTable({"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"}, "ordering": false, responsive: true});
-        $("#tri1").DataTable({"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"}, "order": [[ 0, 'asc']], responsive: true});
-        $("#tri1R").DataTable({"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"}, "order": [[ 0, 'desc']], responsive: true});
-        $("#tri2").DataTable({"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"}, "order": [[ 1, 'asc']], responsive: true});
-        $("#tri2R").DataTable({"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"}, "order": [[ 1, 'desc']], responsive: true});
+        $("#tri0").DataTable({
+        	"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"},
+        	"ordering": false,
+        	"pageLength": <?= $_SESSION['tableRowPerso'] ?>,
+        	lengthMenu: [
+                [ 10, 25, 50, 75, 100, -1 ],
+                [ '10', '25', '50', '75', '100', 'Tous' ]
+            ],
+        	responsive: true
+        	});
+        $("#tri1").DataTable({
+        	"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"},
+        	"order": [[ 0, 'asc']],
+        	"pageLength": <?= $_SESSION['tableRowPerso'] ?>,
+        	lengthMenu: [
+                [ 10, 25, 50, 75, 100, -1 ],
+                [ '10', '25', '50', '75', '100', 'Tous' ]
+            ],
+        	responsive: true});
+        $("#tri1R").DataTable({
+        	"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"},
+        	"order": [[ 0, 'desc']],
+        	"pageLength": <?= $_SESSION['tableRowPerso'] ?>,
+        	lengthMenu: [
+                [ 10, 25, 50, 75, 100, -1 ],
+                [ '10', '25', '50', '75', '100', 'Tous' ]
+            ],
+        	responsive: true});
+        $("#tri2").DataTable({
+        	"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"},
+        	"order": [[ 1, 'asc']],
+        	"pageLength": <?= $_SESSION['tableRowPerso'] ?>,
+        	lengthMenu: [
+                [ 10, 25, 50, 75, 100, -1 ],
+                [ '10', '25', '50', '75', '100', 'Tous' ]
+            ],
+        	responsive: true});
+        $("#tri2R").DataTable({
+        	"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"},
+        	"order": [[ 1, 'desc']],
+        	"pageLength": <?= $_SESSION['tableRowPerso'] ?>,
+        	lengthMenu: [
+                [ 10, 25, 50, 75, 100, -1 ],
+                [ '10', '25', '50', '75', '100', 'Tous' ]
+            ],
+        	responsive: true});
 
         $('#tri0F').DataTable( {
             initComplete: function () {
@@ -121,6 +162,11 @@
             },
             "language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"},
             "ordering": false,
+            "pageLength": <?= $_SESSION['tableRowPerso'] ?>,
+            lengthMenu: [
+                [ 10, 25, 50, 75, 100, -1 ],
+                [ '10', '25', '50', '75', '100', 'Tous' ]
+            ],
             responsive: true
         } );
         $('#tri1F').DataTable( {
@@ -147,6 +193,11 @@
             },
             "language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"},
             "order": [[ 0, 'asc']],
+            "pageLength": <?= $_SESSION['tableRowPerso'] ?>,
+            lengthMenu: [
+                [ 10, 25, 50, 75, 100, -1 ],
+                [ '10', '25', '50', '75', '100', 'Tous' ]
+            ],
             responsive: true
         } );
         $('#tri1RF').DataTable( {
@@ -173,6 +224,11 @@
             },
             "language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"},
             "order": [[ 0, 'desc']],
+            "pageLength": <?= $_SESSION['tableRowPerso'] ?>,
+            lengthMenu: [
+                [ 10, 25, 50, 75, 100, -1 ],
+                [ '10', '25', '50', '75', '100', 'Tous' ]
+            ],
             responsive: true
         } );
         $('#tri2F').DataTable( {
@@ -199,6 +255,11 @@
             },
             "language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"},
             "order": [[ 1, 'asc']],
+            "pageLength": <?= $_SESSION['tableRowPerso'] ?>,
+            lengthMenu: [
+                [ 10, 25, 50, 75, 100, -1 ],
+                [ '10', '25', '50', '75', '100', 'Tous' ]
+            ],
             responsive: true
         } );
         $('#tri2RF').DataTable( {
@@ -225,6 +286,11 @@
             },
             "language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"},
             "order": [[ 1, 'desc']],
+            "pageLength": <?= $_SESSION['tableRowPerso'] ?>,
+            lengthMenu: [
+                [ 10, 25, 50, 75, 100, -1 ],
+                [ '10', '25', '50', '75', '100', 'Tous' ]
+            ],
             responsive: true
         } );
     });

@@ -118,6 +118,7 @@ else
 	$etats_ajout = ($_POST['etats_ajout'] ==1) ? 1 : 0;
 	$etats_modification = ($_POST['etats_modification'] ==1) ? 1 : 0;
 	$etats_suppression = ($_POST['etats_suppression'] ==1) ? 1 : 0;
+	$notifications = ($_POST['notifications'] ==1) ? 1 : 0;
 
 	$query = $db->prepare('INSERT INTO PROFILS(
 		libelleProfil,
@@ -228,7 +229,8 @@ else
 		etats_lecture,
 		etats_ajout,
 		etats_modification,
-		etats_suppression
+		etats_suppression,
+		notifications
 	)VALUES(
 		:libelleProfil,
 		:descriptifProfil,
@@ -338,7 +340,8 @@ else
 		:etats_lecture,
 		:etats_ajout,
 		:etats_modification,
-		:etats_suppression
+		:etats_suppression,
+		:notifications
 	);');
     $query->execute(array(
         'libelleProfil'  =>  $_POST['libelleProfil'],
@@ -449,7 +452,8 @@ else
 		'etats_lecture' => $etats_lecture,
 		'etats_ajout' => $etats_ajout,
 		'etats_modification' => $etats_modification,
-		'etats_suppression' => $etats_suppression
+		'etats_suppression' => $etats_suppression,
+		'notifications' => $notifications
 ));
 
     switch($query->errorCode())

@@ -212,6 +212,9 @@ if ($data['idIP'] == "")
 		$_SESSION['etats_ajout'] = $data['etats_ajout'];
 		$_SESSION['etats_modification'] = $data['etats_modification'];
 		$_SESSION['etats_suppression'] = $data['etats_suppression'];
+		$_SESSION['notifications'] = $data['notifications'];
+		
+		$_SESSION['tableRowPerso'] = $data['tableRowPerso'];
         
         $_SESSION['conf_accueilRefresh'] = $data['conf_accueilRefresh'];
         $_SESSION['conf_indicateur1Accueil'] = $data['conf_indicateur1Accueil'];
