@@ -33,6 +33,8 @@ else
 												notif_vehicules_assurances,
 												notif_vehicules_revisions,
 												notif_vehicules_ct,
+												notif_tenues_stock,
+												notif_tenues_retours,
                                                 conf_indicateur1Accueil,
                                                 conf_indicateur2Accueil,
                                                 conf_indicateur3Accueil,
@@ -41,6 +43,8 @@ else
                                                 conf_indicateur6Accueil ,
                                                 conf_indicateur7Accueil ,
                                                 conf_indicateur8Accueil,
+                                                conf_indicateur9Accueil,
+                                                conf_indicateur10Accueil,
                                                 conf_accueilRefresh) VALUES(:identifiant,
                                                 :motDePasse,
                                                 :nomPersonne,
@@ -48,8 +52,8 @@ else
                                                 :mailPersonne,
                                                 :telPersonne,
                                                 :fonction,
+                                                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                                                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                                                1, 1, 1, 1, 1, 1, 1, 1,
                                                 120);'
                         );
     $query->execute(array(

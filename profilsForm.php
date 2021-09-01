@@ -178,25 +178,25 @@ require_once('logCheck.php');
                                 <td><input <?php if(isset($_GET['id']) AND $data['vehicules_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_suppression"></td>
                             </tr>
                             <tr>
-                                <th>ANNUAIRE</th>
+                                <th>TENUES</th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
                             </tr>
                             <tr>
-                                <td>Annuaire</td>
-                                <td><input <?php if(isset($_GET['id']) AND $data['annuaire_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="annuaire_lecture"></td>
-                                <td><input <?php if(isset($_GET['id']) AND $data['annuaire_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="annuaire_ajout"></td>
-                                <td><input <?php if(isset($_GET['id']) AND $data['annuaire_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="annuaire_modification"></td>
-                                <td><input <?php if(isset($_GET['id']) AND $data['annuaire_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="annuaire_suppression"></td>
+                                <td>Tenues</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['tenues_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="tenues_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['tenues_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="tenues_ajout"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['tenues_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="tenues_modification"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['tenues_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="tenues_suppression"></td>
                             </tr>
                             <tr>
-                                <td>Profils</td>
-                                <td><input <?php if(isset($_GET['id']) AND $data['profils_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="profils_lecture"></td>
-                                <td><input <?php if(isset($_GET['id']) AND $data['profils_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="profils_ajout"></td>
-                                <td><input <?php if(isset($_GET['id']) AND $data['profils_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="profils_modification"></td>
-                                <td><input <?php if(isset($_GET['id']) AND $data['profils_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="profils_suppression"></td>
+                                <td>Catalogue des tenues</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['tenuesCatalogue_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="tenuesCatalogue_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['tenuesCatalogue_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="tenuesCatalogue_ajout"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['tenuesCatalogue_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="tenuesCatalogue_modification"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['tenuesCatalogue_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="tenuesCatalogue_suppression"></td>
                             </tr>
                             <tr>
                                 <th>PARAMETRES</th>
@@ -303,6 +303,22 @@ require_once('logCheck.php');
 		                        <th>Modification de sa propre liste</th>
 		                        <th>Supprimer</th>
 		                    </tr>
+		                    <tr>
+                                <td>Annuaire</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['annuaire_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="annuaire_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['annuaire_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="annuaire_ajout"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['annuaire_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="annuaire_modification"></td>
+                                <td></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['annuaire_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="annuaire_suppression"></td>
+                            </tr>
+                            <tr>
+                                <td>Profils</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['profils_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="profils_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['profils_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="profils_ajout"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['profils_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="profils_modification"></td>
+                                <td></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['profils_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="profils_suppression"></td>
+                            </tr>
 		                    <tr>
 		                        <td>Messages généraux</td>
 		                        <td></td>

@@ -5,10 +5,10 @@ function createDB()
 {
     //---------------------- BASE DE DONNEES ----------------------
     $SERVEURDB = 'x.x.x.x'; //adresse IP du serveur entre simple cote, ex: $SERVEUR = '192.169.1.5';
-    $DBNAME = 'xxxx'; //nom de la base de données, ex: $DB = 'GPM';
+    $DBNAME = 'xxx'; //nom de la base de données, ex: $DB = 'GPM';
     $CHARSET = 'utf8'; //type d'interclassement, utf8 étant recommandé, ex: $CHARSET = 'utf8';
-    $USER = 'xxxx'; //nom d'utilisateur d'accès à la base de données, ex: $USER = 'utilisateur';
-    $PASSWORD = 'xxxx'; //mot de passe d'accès à la base de données, ex: $PASSWORD = 'motDePasse';
+    $USER = 'xxx'; //nom d'utilisateur d'accès à la base de données, ex: $USER = 'utilisateur';
+    $PASSWORD = 'xxx'; //mot de passe d'accès à la base de données, ex: $PASSWORD = 'motDePasse';
     //-------------------- FIN BASE DE DONNEES ---------------------
 
     try {
@@ -208,8 +208,12 @@ function majIndicateursPersonne($idPersonne)
     $conf_indicateur7Accueil = ($data['vehicules_lecture']) && ($data['conf_indicateur7Accueil']);
 
     $conf_indicateur8Accueil = ($data['vehicules_lecture']) && ($data['conf_indicateur8Accueil']);
+    
+    $conf_indicateur9Accueil = ($data['tenues_lecture'] OR $data['tenuesCatalogue_lecture']) && ($data['conf_indicateur9Accueil']);
+    
+    $conf_indicateur10Accueil = ($data['tenues_lecture'] OR $data['tenuesCatalogue_lecture']) && ($data['conf_indicateur10Accueil']);
 
-    $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET conf_indicateur1Accueil = :conf_indicateur1Accueil, conf_indicateur2Accueil = :conf_indicateur2Accueil, conf_indicateur3Accueil = :conf_indicateur3Accueil, conf_indicateur4Accueil = :conf_indicateur4Accueil, conf_indicateur5Accueil = :conf_indicateur5Accueil, conf_indicateur6Accueil = :conf_indicateur6Accueil, conf_indicateur7Accueil = :conf_indicateur7Accueil, conf_indicateur8Accueil = :conf_indicateur8Accueil WHERE idPersonne = :idPersonne ;');
+    $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET conf_indicateur1Accueil = :conf_indicateur1Accueil, conf_indicateur2Accueil = :conf_indicateur2Accueil, conf_indicateur3Accueil = :conf_indicateur3Accueil, conf_indicateur4Accueil = :conf_indicateur4Accueil, conf_indicateur5Accueil = :conf_indicateur5Accueil, conf_indicateur6Accueil = :conf_indicateur6Accueil, conf_indicateur7Accueil = :conf_indicateur7Accueil, conf_indicateur8Accueil = :conf_indicateur8Accueil, conf_indicateur9Accueil = :conf_indicateur9Accueil, conf_indicateur10Accueil = :conf_indicateur10Accueil WHERE idPersonne = :idPersonne ;');
     $query->execute(array(
         'idPersonne' => $idPersonne,
         'conf_indicateur1Accueil' => $conf_indicateur1Accueil,
@@ -219,7 +223,9 @@ function majIndicateursPersonne($idPersonne)
         'conf_indicateur5Accueil' => $conf_indicateur5Accueil,
         'conf_indicateur6Accueil' => $conf_indicateur6Accueil,
         'conf_indicateur7Accueil' => $conf_indicateur7Accueil,
-        'conf_indicateur8Accueil' => $conf_indicateur8Accueil
+        'conf_indicateur8Accueil' => $conf_indicateur8Accueil,
+        'conf_indicateur9Accueil' => $conf_indicateur9Accueil,
+        'conf_indicateur10Accueil' => $conf_indicateur10Accueil
     ));
 
     writeInLogs("Revue des indicateurs d'accueil pour la personne " . $idPersonne, '3');
@@ -257,8 +263,10 @@ function majNotificationsPersonne($idPersonne)
 	$notif_vehicules_assurances = ($data['vehicules_lecture']) && ($data['notif_vehicules_assurances']);
 	$notif_vehicules_revisions = ($data['vehicules_lecture']) && ($data['notif_vehicules_revisions']);
 	$notif_vehicules_ct = ($data['vehicules_lecture']) && ($data['notif_vehicules_ct']);
+	$notif_tenues_stock = ($data['tenuesCatalogue_lecture']) && ($data['notif_tenues_stock']);
+	$notif_tenues_retours = ($data['tenues_lecture']) && ($data['notif_tenues_retours']);
 	
-	$query = $db->prepare('UPDATE PERSONNE_REFERENTE SET notif_lots_manquants = :notif_lots_manquants, notif_lots_peremptions = :notif_lots_peremptions, notif_lots_inventaires = :notif_lots_inventaires, notif_lots_conformites = :notif_lots_conformites, notif_reserves_manquants = :notif_reserves_manquants, notif_reserves_peremptions = :notif_reserves_peremptions, notif_reserves_inventaires = :notif_reserves_inventaires, notif_vehicules_assurances = :notif_vehicules_assurances, notif_vehicules_revisions = :notif_vehicules_revisions, notif_vehicules_ct = :notif_vehicules_ct WHERE idPersonne = :idPersonne ;');
+	$query = $db->prepare('UPDATE PERSONNE_REFERENTE SET notif_lots_manquants = :notif_lots_manquants, notif_lots_peremptions = :notif_lots_peremptions, notif_lots_inventaires = :notif_lots_inventaires, notif_lots_conformites = :notif_lots_conformites, notif_reserves_manquants = :notif_reserves_manquants, notif_reserves_peremptions = :notif_reserves_peremptions, notif_reserves_inventaires = :notif_reserves_inventaires, notif_vehicules_assurances = :notif_vehicules_assurances, notif_vehicules_revisions = :notif_vehicules_revisions, notif_vehicules_ct = :notif_vehicules_ct, notif_tenues_stock = :notif_tenues_stock, notif_tenues_retours = :notif_tenues_retours WHERE idPersonne = :idPersonne ;');
     $query->execute(array(
         'idPersonne' => $idPersonne,
         'notif_lots_manquants' => $notif_lots_manquants,
@@ -270,7 +278,9 @@ function majNotificationsPersonne($idPersonne)
 		'notif_reserves_inventaires' => $notif_reserves_inventaires,
 		'notif_vehicules_assurances' => $notif_vehicules_assurances,
 		'notif_vehicules_revisions' => $notif_vehicules_revisions,
-		'notif_vehicules_ct' => $notif_vehicules_ct
+		'notif_vehicules_ct' => $notif_vehicules_ct,
+		'notif_tenues_stock' => $notif_tenues_stock,
+		'notif_tenues_retours' => $notif_tenues_retours
     ));
     
     writeInLogs("Revue des notifications pour la personne " . $idPersonne, '3');

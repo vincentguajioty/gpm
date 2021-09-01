@@ -55,7 +55,7 @@ switch ($_GET['case']) {
         break;
 
     case 'commandes':
-        $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idAffectee = p.idPersonne LEFT OUTER JOIN LIEUX l ON c.idLieuLivraison = l.idLieu WHERE idCommande = :id;');
+        $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur LEFT OUTER JOIN LIEUX l ON c.idLieuLivraison = l.idLieu WHERE idCommande = :id;');
         $query->execute(array('id'=>$_GET['id']));
         $data = $query->fetch();
 
@@ -67,7 +67,16 @@ switch ($_GET['case']) {
                 <li>Référence commande interne: " . $data['idCommande'] . "</li>
                 <li>Date prévisionnelle de livraison: " . $data['dateLivraisonPrevue'] . "</li>
                 <li>Lieu de livraison: " . $data['libelleLieu'] . "</li>
-                <li>Gérée par: " . $data['prenomPersonne'] . " " . $data['nomPersonne'] . "</li>
+                <li>Gérée par: ";
+                
+                $query = $db->prepare('SELECT * FROM COMMANDES_AFFECTEES aff JOIN PERSONNE_REFERENTE p ON aff.idAffectee = p.idPersonne WHERE idCommande = :id');
+                $query->execute(array('id'=>$_GET['id']));
+                while($data = $query->fetch())
+                {
+                	$contenu = $contenu . $data['nomPersonne'] . ' ' . $data['prenomPersonne'] . "; ";
+                }
+                
+                $contenu = $contenu . "</li>
             </ul>
         ";
         break;
@@ -133,6 +142,23 @@ switch ($_GET['case']) {
             </ul>
         ";
         break;
+        
+    case 'tenuesRecup':
+        $query = $db->prepare('SELECT * FROM TENUES_AFFECTATION ta JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne WHERE idTenue = :id');
+        $query->execute(array('id'=>$_GET['id']));
+        $data = $query->fetch();
+
+        $contenu = "
+            <ul>
+                <li>Tenue: " . $data['libelleCatalogueTenue'] . " (" . $data['tailleCatalogueTenue'] . ")</li>
+                <li>Affectée à: " . $data['nomPersonne'] . ' ' . $data['prenomPersonne'] . $data['personneNonGPM'] . "</li>
+                <li>Affectée le: " . $data['dateAffectation'] . "</li>
+                <li>Retour prévu le: " . $data['dateRetour'] . "</li>
+            </ul>
+        ";
+        break;
+        
+        
     
 }
 

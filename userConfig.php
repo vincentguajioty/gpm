@@ -11,6 +11,8 @@ require_once 'config/bdd.php';
 	$_POST['conf_indicateur6Accueil'] = ($_POST['conf_indicateur6Accueil'] ==1) ? 1 : 0;
 	$_POST['conf_indicateur7Accueil'] = ($_POST['conf_indicateur7Accueil'] ==1) ? 1 : 0;
 	$_POST['conf_indicateur8Accueil'] = ($_POST['conf_indicateur8Accueil'] ==1) ? 1 : 0;
+	$_POST['conf_indicateur9Accueil'] = ($_POST['conf_indicateur9Accueil'] ==1) ? 1 : 0;
+	$_POST['conf_indicateur10Accueil'] = ($_POST['conf_indicateur10Accueil'] ==1) ? 1 : 0;
 	
 	$_POST['notif_lots_manquants'] = ($_POST['notif_lots_manquants'] ==1) ? 1 : 0;
 	$_POST['notif_lots_peremptions'] = ($_POST['notif_lots_peremptions'] ==1) ? 1 : 0;
@@ -22,8 +24,10 @@ require_once 'config/bdd.php';
 	$_POST['notif_vehicules_assurances'] = ($_POST['notif_vehicules_assurances'] ==1) ? 1 : 0;
 	$_POST['notif_vehicules_revisions'] = ($_POST['notif_vehicules_revisions'] ==1) ? 1 : 0;
 	$_POST['notif_vehicules_ct'] = ($_POST['notif_vehicules_ct'] ==1) ? 1 : 0;
+	$_POST['notif_tenues_stock'] = ($_POST['notif_tenues_stock'] ==1) ? 1 : 0;
+	$_POST['notif_tenues_retours'] = ($_POST['notif_tenues_retours'] ==1) ? 1 : 0;
     
-    $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET conf_indicateur1Accueil = :conf_indicateur1Accueil, conf_indicateur2Accueil = :conf_indicateur2Accueil, conf_indicateur3Accueil = :conf_indicateur3Accueil, conf_indicateur4Accueil = :conf_indicateur4Accueil, conf_indicateur5Accueil = :conf_indicateur5Accueil, conf_indicateur6Accueil = :conf_indicateur6Accueil, conf_indicateur7Accueil = :conf_indicateur7Accueil, conf_indicateur8Accueil = :conf_indicateur8Accueil, conf_accueilRefresh = :conf_accueilRefresh, notif_lots_manquants = :notif_lots_manquants, notif_lots_peremptions = :notif_lots_peremptions, notif_lots_inventaires = :notif_lots_inventaires, notif_lots_conformites = :notif_lots_conformites, notif_reserves_manquants = :notif_reserves_manquants, notif_reserves_peremptions = :notif_reserves_peremptions, notif_reserves_inventaires = :notif_reserves_inventaires, notif_vehicules_assurances = :notif_vehicules_assurances, notif_vehicules_revisions = :notif_vehicules_revisions, notif_vehicules_ct = :notif_vehicules_ct WHERE idPersonne = :idPersonne ;');
+    $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET conf_indicateur1Accueil = :conf_indicateur1Accueil, conf_indicateur2Accueil = :conf_indicateur2Accueil, conf_indicateur3Accueil = :conf_indicateur3Accueil, conf_indicateur4Accueil = :conf_indicateur4Accueil, conf_indicateur5Accueil = :conf_indicateur5Accueil, conf_indicateur6Accueil = :conf_indicateur6Accueil, conf_indicateur7Accueil = :conf_indicateur7Accueil, conf_indicateur8Accueil = :conf_indicateur8Accueil, conf_indicateur9Accueil = :conf_indicateur9Accueil, conf_indicateur10Accueil = :conf_indicateur10Accueil, conf_accueilRefresh = :conf_accueilRefresh, notif_lots_manquants = :notif_lots_manquants, notif_lots_peremptions = :notif_lots_peremptions, notif_lots_inventaires = :notif_lots_inventaires, notif_lots_conformites = :notif_lots_conformites, notif_reserves_manquants = :notif_reserves_manquants, notif_reserves_peremptions = :notif_reserves_peremptions, notif_reserves_inventaires = :notif_reserves_inventaires, notif_vehicules_assurances = :notif_vehicules_assurances, notif_vehicules_revisions = :notif_vehicules_revisions, notif_vehicules_ct = :notif_vehicules_ct, notif_tenues_stock = :notif_tenues_stock, notif_tenues_retours = :notif_tenues_retours WHERE idPersonne = :idPersonne ;');
     $query->execute(array(
         'idPersonne' => $_SESSION['idPersonne'],
         'conf_indicateur1Accueil' => $_POST['conf_indicateur1Accueil'],
@@ -34,6 +38,8 @@ require_once 'config/bdd.php';
         'conf_indicateur6Accueil' => $_POST['conf_indicateur6Accueil'],
         'conf_indicateur7Accueil' => $_POST['conf_indicateur7Accueil'],
         'conf_indicateur8Accueil' => $_POST['conf_indicateur8Accueil'],
+        'conf_indicateur9Accueil' => $_POST['conf_indicateur9Accueil'],
+        'conf_indicateur10Accueil' => $_POST['conf_indicateur10Accueil'],
         'conf_accueilRefresh' => $_POST['conf_accueilRefresh'],
         'notif_lots_manquants' => $_POST['notif_lots_manquants'],
 		'notif_lots_peremptions' => $_POST['notif_lots_peremptions'],
@@ -44,7 +50,9 @@ require_once 'config/bdd.php';
 		'notif_reserves_inventaires' => $_POST['notif_reserves_inventaires'],
 		'notif_vehicules_assurances' => $_POST['notif_vehicules_assurances'],
 		'notif_vehicules_revisions' => $_POST['notif_vehicules_revisions'],
-		'notif_vehicules_ct' => $_POST['notif_vehicules_ct']
+		'notif_vehicules_ct' => $_POST['notif_vehicules_ct'],
+		'notif_tenues_stock' => $_POST['notif_tenues_stock'],
+		'notif_tenues_retours' => $_POST['notif_tenues_retours']
     ));
 
     
@@ -74,6 +82,8 @@ switch($query->errorCode())
 	    $_SESSION['conf_indicateur6Accueil'] = $data['conf_indicateur6Accueil'];
 	    $_SESSION['conf_indicateur7Accueil'] = $data['conf_indicateur7Accueil'];
 	    $_SESSION['conf_indicateur8Accueil'] = $data['conf_indicateur8Accueil'];
+	    $_SESSION['conf_indicateur9Accueil'] = $data['conf_indicateur9Accueil'];
+	    $_SESSION['conf_indicateur10Accueil'] = $data['conf_indicateur10Accueil'];
 	    $_SESSION['conf_accueilRefresh'] = $data['conf_accueilRefresh'];
         
         break;

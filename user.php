@@ -211,25 +211,25 @@ require_once('logCheck.php');
 				                        <td><?php if($_SESSION['vehicules_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 				                    </tr>
 				                    <tr>
-				                        <th>ANNUAIRE</th>
+				                        <th>TENUES</th>
 				                        <th></th>
 				                        <th></th>
 				                        <th></th>
 				                        <th></th>
 				                    </tr>
 				                    <tr>
-				                        <td>Annuaire</td>
-				                        <td><?php if($_SESSION['annuaire_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['annuaire_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['annuaire_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['annuaire_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td>Tenues</td>
+				                        <td><?php if($_SESSION['tenues_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['tenues_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['tenues_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['tenues_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 				                    </tr>
 				                    <tr>
-				                        <td>Profils</td>
-				                        <td><?php if($_SESSION['profils_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['profils_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['profils_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['profils_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td>Catalogue des tenues</td>
+				                        <td><?php if($_SESSION['tenuesCatalogue_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['tenuesCatalogue_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['tenuesCatalogue_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['tenuesCatalogue_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 				                    </tr>
 				                    <tr>
 				                        <th>PARAMETRES</th>
@@ -340,6 +340,22 @@ require_once('logCheck.php');
 				                        <th>Supprimer</th>
 				                    </tr>
 				                    <tr>
+				                        <td>Annuaire</td>
+				                        <td><?php if($_SESSION['annuaire_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['annuaire_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['annuaire_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td></td>
+				                        <td><?php if($_SESSION['annuaire_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                    </tr>
+				                    <tr>
+				                        <td>Profils</td>
+				                        <td><?php if($_SESSION['profils_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['profils_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['profils_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td></td>
+				                        <td><?php if($_SESSION['profils_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                    </tr>
+				                    <tr>
 				                        <td>Messages généraux</td>
 				                        <td></td>
 				                        <td><?php if($_SESSION['messages_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
@@ -417,6 +433,7 @@ require_once('logCheck.php');
 			                        		$lots = $_SESSION['lots_lecture'] OR $_SESSION['sac_lecture'] OR $_SESSION['sac2_lecture'] OR $_SESSION['materiel_lecture'];
 			                        		$reserves = $_SESSION['reserve_lecture'];
 			                        		$vehicules = $_SESSION['vehicules_lecture'];
+			                        		$tenues = $_SESSION['tenues_lecture'] OR $_SESSION['tenuesCatalogue_lecture'];
 			                        	?>
 			                            <label>Présence des indicateurs sur la page d'accueil:</label><br/>
 				                        <div class="checkbox">
@@ -442,6 +459,12 @@ require_once('logCheck.php');
 		                                </div>
 		                                <div class="checkbox">
 		                                	<label><input <?php if($_SESSION['conf_indicateur8Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur8Accueil" <?php if ($vehicules == 0){echo 'disabled';} ?>> Contrôles techniques et révisions véhicules</label>
+		                                </div>
+		                                <div class="checkbox">
+		                                	<label><input <?php if($_SESSION['conf_indicateur9Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur9Accueil" <?php if ($tenues == 0){echo 'disabled';} ?>> Stock des tenues</label>
+		                                </div>
+		                                <div class="checkbox">
+		                                	<label><input <?php if($_SESSION['conf_indicateur10Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur10Accueil" <?php if ($tenues == 0){echo 'disabled';} ?>> Non retour de tenues</label>
 		                                </div>
 			                        </div>
 			                        <div class="form-group">
@@ -480,6 +503,12 @@ require_once('logCheck.php');
 		                                </div>
 		                                <div class="checkbox">
 		                                	<label><input <?php if($data['notif_vehicules_ct'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_ct" <?php if ($vehicules == 0){echo 'disabled';} ?>> Contrôles techniques véhicules</label>
+		                                </div>
+		                                <div class="checkbox">
+		                                	<label><input <?php if($data['notif_tenues_stock'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_tenues_stock" <?php if ($tenues == 0){echo 'disabled';} ?>> Stock des tenues</label>
+		                                </div>
+		                                <div class="checkbox">
+		                                	<label><input <?php if($data['notif_tenues_retours'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_tenues_retours" <?php if ($tenues == 0){echo 'disabled';} ?>> Non retour de tenues</label>
 		                                </div>
 			                        </div>
 			                        <div class="box-footer">

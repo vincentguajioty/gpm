@@ -85,6 +85,11 @@ else
         ':idPersonne' => $_GET['id']
     ]);
 
+    $query = $db->prepare('DELETE FROM TENUES_AFFECTATION WHERE idPersonne = :idPersonne');
+    $query->execute([
+        ':idPersonne' => $_GET['id']
+    ]);
+
     $query = $db->prepare('DELETE FROM PROFILS_PERSONNES WHERE idPersonne = :idPersonne');
     $query->execute([
         ':idPersonne' => $_GET['id']

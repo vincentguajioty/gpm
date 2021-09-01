@@ -316,6 +316,7 @@ require_once 'config/bdd.php';
                 <?php
             }
             ?>
+            
             <?php
             if ($_SESSION['vehicules_lecture']==1)
             {
@@ -352,78 +353,48 @@ require_once 'config/bdd.php';
             ?>
             
             <?php
-			if ($_SESSION['annuaire_lecture']==1 OR $_SESSION['profils_lecture']==1 OR $_SESSION['messages_ajout']==1 OR $_SESSION['messages_suppression']==1 OR $_SESSION['todolist_lecture']==1 OR $_SESSION['contactMailGroupe']==1)
-			{
-			?>
-	            <li <?php
-	            if (((int)($_SESSION['page']/100))==4)
-	            {
-	                echo 'class="active treeview"';
-	            }
-	            else
-	            {
-	                echo 'class="treeview"';
-	            }
-	            ?>
-	            >
-	                <a href="#">
-	                    <i class="fa fa-users"></i> <span>GESTION EQUIPE</span>
-	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
-	                </a>
-	                <ul class="treeview-menu">
-	                    <?php if ($_SESSION['annuaire_lecture']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 401)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="annuaire.php"><i class="fa fa-user"></i> <span>Utilisateurs</span></a></li>
-	                    <?php } ?>
-	                    <?php if ($_SESSION['profils_lecture']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 402)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="profils.php"><i class="fa fa-users"></i> <span>Profils</span></a></li>
-	                    <?php } ?>
-	                    <?php if ($_SESSION['messages_ajout']==1 OR $_SESSION['messages_suppression']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 403)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="messages.php"><i class="fa fa-bullhorn"></i> <span>Messages généraux</span></a></li>
-	                    <?php } ?>
-	                    <?php if ($_SESSION['contactMailGroupe']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 404)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="messagesMails.php"><i class="fa fa-envelope"></i> <span>Messages mails</span></a></li>
-	                    <?php } ?>
-	                    <?php if ($_SESSION['todolist_lecture']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 405)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="todolist.php"><i class="fa fa-check-square-o"></i> <span>ToDoList</span></a></li>
-	                    <?php } ?>
-	                </ul>
-	            </li>
-	       <?php
-			}
-	       ?>
-            
-	        
-	        
+            if ($_SESSION['tenues_lecture']==1 OR $_SESSION['tenuesCatalogue_lecture']==1)
+            {
+                ?>
+                <li <?php
+                if (((int)($_SESSION['page']/100))==11)
+                {
+                    echo 'class="active treeview"';
+                }
+                else
+                {
+                    echo 'class="treeview"';
+                }
+                ?>
+                >
+                    <a href="#">
+                        <i class="fa fa-grav"></i> <span>TENUES</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <?php if ($_SESSION['tenuesCatalogue_lecture']==1){ ?>
+                            <li <?php
+                            if ($_SESSION['page'] == 1101)
+                            {
+                                echo 'class="active"';
+                            }
+                            ?>
+                            ><a href="tenuesCatalogue.php"><i class="fa fa-grav"></i> <span>Catalogue des tenues</span></a></li>
+                        <?php } ?>
+                        <?php if ($_SESSION['tenues_lecture']==1){ ?>
+                            <li <?php
+                            if ($_SESSION['page'] == 1102)
+                            {
+                                echo 'class="active"';
+                            }
+                            ?>
+                            ><a href="tenuesAffectations.php"><i class="fa fa-street-view"></i> <span>Affectations</span></a></li>
+                        <?php } ?>
+                    </ul>
+                </li>
+                <?php
+            }
+            ?>
 	        
 <li class="header">PARAMETRES</li>
 
@@ -534,6 +505,77 @@ require_once 'config/bdd.php';
 	        <?php
 			}
 			?>
+			
+			<?php
+			if ($_SESSION['annuaire_lecture']==1 OR $_SESSION['profils_lecture']==1 OR $_SESSION['messages_ajout']==1 OR $_SESSION['messages_suppression']==1 OR $_SESSION['todolist_lecture']==1 OR $_SESSION['contactMailGroupe']==1)
+			{
+			?>
+	            <li <?php
+	            if (((int)($_SESSION['page']/100))==4)
+	            {
+	                echo 'class="active treeview"';
+	            }
+	            else
+	            {
+	                echo 'class="treeview"';
+	            }
+	            ?>
+	            >
+	                <a href="#">
+	                    <i class="fa fa-users"></i> <span>GESTION EQUIPE</span>
+	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+	                </a>
+	                <ul class="treeview-menu">
+	                    <?php if ($_SESSION['annuaire_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 401)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="annuaire.php"><i class="fa fa-user"></i> <span>Utilisateurs</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['profils_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 402)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="profils.php"><i class="fa fa-users"></i> <span>Profils</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['messages_ajout']==1 OR $_SESSION['messages_suppression']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 403)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="messages.php"><i class="fa fa-bullhorn"></i> <span>Messages généraux</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['contactMailGroupe']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 404)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="messagesMails.php"><i class="fa fa-envelope"></i> <span>Messages mails</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['todolist_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 405)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="todolist.php"><i class="fa fa-check-square-o"></i> <span>ToDoList</span></a></li>
+	                    <?php } ?>
+	                </ul>
+	            </li>
+	       <?php
+			}
+	       ?>
 	       
             
             

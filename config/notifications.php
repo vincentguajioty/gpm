@@ -6,7 +6,7 @@ require_once 'mailFunction.php';
 
 checkAllConf();
 
-$query = $db->query('SELECT COUNT(*) as nb FROM PERSONNE_REFERENTE WHERE notif_lots_manquants = 1 OR notif_lots_peremptions = 1 OR notif_lots_inventaires = 1 OR notif_lots_conformites = 1 OR notif_reserves_manquants = 1 OR notif_reserves_peremptions = 1 OR notif_reserves_inventaires = 1 OR notif_vehicules_assurances = 1 OR notif_vehicules_revisions = 1 OR notif_vehicules_ct = 1;');
+$query = $db->query('SELECT COUNT(*) as nb FROM PERSONNE_REFERENTE WHERE notif_lots_manquants = 1 OR notif_lots_peremptions = 1 OR notif_lots_inventaires = 1 OR notif_lots_conformites = 1 OR notif_reserves_manquants = 1 OR notif_reserves_peremptions = 1 OR notif_reserves_inventaires = 1 OR notif_vehicules_assurances = 1 OR notif_vehicules_revisions = 1 OR notif_vehicules_ct = 1 OR notif_tenues_stock = 1 OR notif_tenues_retours = 1;');
 $data = $query->fetch();
 $nbDest = $data['nb'];
 
@@ -51,8 +51,16 @@ if ($nbDest > 0)
 	$query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_CONTENEUR WHERE (frequenceInventaire IS NOT NULL) AND ((DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) < CURRENT_DATE) OR (DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) = CURRENT_DATE));');
 	$data = $query->fetch();
 	$nbInventairesReserve = $data['nb'];
-    
-    $nbAlertes = $nbManquant + $nbPerime + $nbLotsNOK + $nbManquantReserve + $nbPerimeReserve + $nbAssurance + $nbRevisions + $nbInventaires + $nbInventairesReserve + $nbCT;
+
+	$query = $db->query('SELECT COUNT(*) as nb FROM TENUES_CATALOGUE WHERE stockCatalogueTenue < stockAlerteCatalogueTenue OR stockCatalogueTenue = stockAlerteCatalogueTenue;');
+	$data = $query->fetch();
+	$nbManquantTenues = $data['nb'];
+	
+	$query = $db->query('SELECT COUNT(*) as nb FROM TENUES_AFFECTATION WHERE dateRetour < CURRENT_DATE OR dateRetour = CURRENT_DATE;');
+	$data = $query->fetch();
+	$nbRetoursTenues = $data['nb'];
+
+    $nbAlertes = $nbManquant + $nbPerime + $nbLotsNOK + $nbManquantReserve + $nbPerimeReserve + $nbAssurance + $nbRevisions + $nbInventaires + $nbInventairesReserve + $nbCT + $nbManquantTenues + $nbRetoursTenues;
 
     if ($nbAlertes == 0)
     {
@@ -177,12 +185,34 @@ if ($nbDest > 0)
 	    }
 	    $message_CT = $message_CT."</ul><br/><br/>";
 	}
+	
+	if ($nbManquantTenues > 0)
+	{
+	    $message_TenuesManquantes = $message_TenuesManquantes . "Elements de tenue dont le stock est insuffisant:<br/><ul>";
+	    $query = $db->query('SELECT * FROM TENUES_CATALOGUE WHERE stockCatalogueTenue < stockAlerteCatalogueTenue OR stockCatalogueTenue = stockAlerteCatalogueTenue;');
+	    while($data = $query->fetch())
+	    {
+	        $message_TenuesManquantes = $message_TenuesManquantes . "<li>".$data['libelleCatalogueTenue'] . "</li>";
+	    }
+	    $message_TenuesManquantes = $message_TenuesManquantes."</ul><br/><br/>";
+	}
+	
+	if ($nbRetoursTenues > 0)
+	{
+	    $message_TenuesRetour = $message_TenuesRetour . "Tenues à récupérer:<br/><ul>";
+	    $query = $db->query('SELECT * FROM TENUES_AFFECTATION ta JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne WHERE dateRetour < CURRENT_DATE OR dateRetour = CURRENT_DATE;');
+	    while($data = $query->fetch())
+	    {
+	        $message_TenuesRetour = $message_TenuesRetour . "<li>".$data['nomPersonne'] . ' ' . $data['prenomPersonne'] . $data['personneNonGPM'] . ' - ' . $data['libelleCatalogueTenue'] . "</li>";
+	    }
+	    $message_TenuesRetour = $message_TenuesRetour."</ul><br/><br/>";
+	}
 
 
 
 
 
-    $query = $db->query('SELECT * FROM PERSONNE_REFERENTE WHERE notif_lots_manquants = 1 OR notif_lots_peremptions = 1 OR notif_lots_inventaires = 1 OR notif_lots_conformites = 1 OR notif_reserves_manquants = 1 OR notif_reserves_peremptions = 1 OR notif_reserves_inventaires = 1 OR notif_vehicules_assurances = 1 OR notif_vehicules_revisions = 1 OR notif_vehicules_ct = 1;');
+    $query = $db->query('SELECT * FROM PERSONNE_REFERENTE WHERE notif_lots_manquants = 1 OR notif_lots_peremptions = 1 OR notif_lots_inventaires = 1 OR notif_lots_conformites = 1 OR notif_reserves_manquants = 1 OR notif_reserves_peremptions = 1 OR notif_reserves_inventaires = 1 OR notif_vehicules_assurances = 1 OR notif_vehicules_revisions = 1 OR notif_vehicules_ct = 1 OR notif_tenues_stock = 1 OR notif_tenues_retours = 1;');
 	while($data = $query->fetch())
 	{
 		$nbAlertes = 0;
@@ -196,6 +226,8 @@ if ($nbDest > 0)
 		$nbAlertes += ($data['notif_vehicules_revisions'] == 1) ? $nbRevisions : 0;
 		$nbAlertes += ($data['notif_vehicules_ct'] == 1) ? $nbCT : 0;
 		$nbAlertes += ($data['notif_reserves_inventaires'] == 1) ? $nbInventairesReserve : 0;
+		$nbAlertes += ($data['notif_tenues_stock'] == 1) ? $nbManquantTenues : 0;
+		$nbAlertes += ($data['notif_tenues_retours'] == 1) ? $nbRetoursTenues : 0;
 
 		if($nbAlertes > 0)
 		{
@@ -250,6 +282,14 @@ if ($nbDest > 0)
 		    if(($data['notif_vehicules_ct']) AND ($nbCT>0))
 		    {
 		    	$message_html .= $message_CT;
+		    }
+		    if(($data['notif_tenues_stock']) AND ($nbManquantTenues>0))
+		    {
+		    	$message_html .= $message_TenuesManquantes;
+		    }
+		    if(($data['notif_tenues_retours']) AND ($nbRetoursTenues>0))
+		    {
+		    	$message_html .= $message_TenuesRetour;
 		    }
 		    
 		    $message_html = $message_html . "Cordialement<br/><br/>L'équipe administrative de " . $APPNAME . "<br/><br/>";

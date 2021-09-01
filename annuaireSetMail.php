@@ -21,7 +21,9 @@ else {
                                             notif_reserves_inventaires = 1,
                                             notif_vehicules_assurances = 1,
                                             notif_vehicules_revisions = 1,
-                                            notif_vehicules_ct = 1
+                                            notif_vehicules_ct = 1,
+                                            notif_tenues_stock = 1,
+                                            notif_tenues_retours = 1
                                         WHERE
                                             idPersonne     = :idPersonne ;');
     $query->execute(array(

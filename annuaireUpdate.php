@@ -40,20 +40,22 @@ else {
             $_SESSION['returnMessage'] = 'Utilisateur modifié avec succès.';
             $_SESSION['returnType'] = '1';
 
-            
-            $queryDelete = $db->prepare('DELETE FROM PROFILS_PERSONNES WHERE idPersonne = :idPersonne');
-            $queryDelete->execute([
-                ':idPersonne' => $_GET['id']
-            ]);
-            if (!empty($_POST['libelleProfil'])) {
-                $insertSQL = 'INSERT INTO PROFILS_PERSONNES (idProfil, idPersonne) VALUES';
-                foreach ($_POST['libelleProfil'] as $idProfil) {
-                    $insertSQL .= ' ('. (int)$idProfil.', '. (int)$_GET['id'] .'),';
-                }
-
-                $insertSQL = substr($insertSQL, 0, -1);
-
-                $db->query($insertSQL);
+            if ($_SESSION['profils_modification']==1)
+            {
+	            $queryDelete = $db->prepare('DELETE FROM PROFILS_PERSONNES WHERE idPersonne = :idPersonne');
+	            $queryDelete->execute([
+	                ':idPersonne' => $_GET['id']
+	            ]);
+	            if (!empty($_POST['libelleProfil'])) {
+	                $insertSQL = 'INSERT INTO PROFILS_PERSONNES (idProfil, idPersonne) VALUES';
+	                foreach ($_POST['libelleProfil'] as $idProfil) {
+	                    $insertSQL .= ' ('. (int)$idProfil.', '. (int)$_GET['id'] .'),';
+	                }
+	
+	                $insertSQL = substr($insertSQL, 0, -1);
+	
+	                $db->query($insertSQL);
+	            }
             }
 
             break;

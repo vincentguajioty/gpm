@@ -19,7 +19,9 @@ else {
                                             conf_indicateur5Accueil = 1,
                                             conf_indicateur6Accueil = 1,
                                             conf_indicateur7Accueil = 1,
-                                            conf_indicateur8Accueil = 1
+                                            conf_indicateur8Accueil = 1,
+                                            conf_indicateur9Accueil = 1,
+                                            conf_indicateur10Accueil = 1
                                         WHERE
                                             idPersonne     = :idPersonne ;');
     $query->execute(array(

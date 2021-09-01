@@ -191,6 +191,14 @@ if ($data['idIP'] == "")
         $_SESSION['vehicules_types_ajout'] = $data['vehicules_types_ajout'];
         $_SESSION['vehicules_types_modification'] = $data['vehicules_types_modification'];
         $_SESSION['vehicules_types_suppression'] = $data['vehicules_types_suppression'];
+        $_SESSION['tenues_lecture'] = $data['tenues_lecture'];
+		$_SESSION['tenues_ajout'] = $data['tenues_ajout'];
+		$_SESSION['tenues_modification'] = $data['tenues_modification'];
+		$_SESSION['tenues_suppression'] = $data['tenues_suppression'];
+		$_SESSION['tenuesCatalogue_lecture'] = $data['tenuesCatalogue_lecture'];
+		$_SESSION['tenuesCatalogue_ajout'] = $data['tenuesCatalogue_ajout'];
+		$_SESSION['tenuesCatalogue_modification'] = $data['tenuesCatalogue_modification'];
+		$_SESSION['tenuesCatalogue_suppression'] = $data['tenuesCatalogue_suppression'];
         $_SESSION['maintenance'] = $data['maintenance'];
         $_SESSION['todolist_perso'] = $data['todolist_perso'];
 		$_SESSION['todolist_lecture'] = $data['todolist_lecture'];
@@ -206,6 +214,8 @@ if ($data['idIP'] == "")
         $_SESSION['conf_indicateur6Accueil'] = $data['conf_indicateur6Accueil'];
         $_SESSION['conf_indicateur7Accueil'] = $data['conf_indicateur7Accueil'];
         $_SESSION['conf_indicateur8Accueil'] = $data['conf_indicateur8Accueil'];
+        $_SESSION['conf_indicateur9Accueil'] = $data['conf_indicateur9Accueil'];
+	    $_SESSION['conf_indicateur10Accueil'] = $data['conf_indicateur10Accueil'];
 	    
 	    $_SESSION['derniereConnexion'] = $data['derniereConnexion'];
 	    
