@@ -88,6 +88,11 @@ else
         'idPersonne' => $_GET['id']
     ));
     
+    $query = $db->prepare('UPDATE CENTRE_COUTS_OPERATIONS SET idPersonne = Null WHERE idPersonne = :idPersonne ;');
+    $query->execute(array(
+        'idPersonne' => $_GET['id']
+    ));
+    
     $query = $db->prepare('DELETE FROM TODOLIST_PERSONNES WHERE idExecutant = :idPersonne');
     $query->execute([
         ':idPersonne' => $_GET['id']

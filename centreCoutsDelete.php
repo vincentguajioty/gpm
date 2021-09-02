@@ -13,7 +13,7 @@ if(strtoupper($_POST['confirmation']) <> strtoupper($CONFSUPPRESSION))
     exit;
 }
 
-if ($_SESSION['lieux_suppression']==0)
+if ($_SESSION['cout_suppression']==0)
 {
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 }
@@ -25,7 +25,24 @@ else
     ));
     $data = $query->fetch();
 
+    $query = $db->prepare('SELECT idCommande FROM COMMANDES WHERE idCentreDeCout = :idCentreDeCout;');
+    $query->execute(array(
+        'idCentreDeCout' => $_GET['id']
+    ));
+    while($data = $query->fetch())
+    {
+    	$query = $db->prepare('UPDATE COMMANDES SET integreCentreCouts = 0 WHERE idCommande = :idCommande;');
+	    $query->execute(array(
+	        'idCommande' => $data['idCommande']
+	    ));
+    }
+    
     $query = $db->prepare('UPDATE COMMANDES SET idCentreDeCout = Null WHERE idCentreDeCout = :idCentreDeCout;');
+    $query->execute(array(
+        'idCentreDeCout' => $_GET['id']
+    ));
+    
+    $query = $db->prepare('DELETE FROM CENTRE_COUTS_OPERATIONS WHERE idCentreDeCout = :idCentreDeCout;');
     $query->execute(array(
         'idCentreDeCout' => $_GET['id']
     ));

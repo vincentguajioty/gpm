@@ -60,6 +60,11 @@ else
         'idCommande' => $_GET['id']
     ));
     
+    $query = $db->prepare('DELETE FROM CENTRE_COUTS_OPERATIONS WHERE idCommande = :idCommande;');
+    $query->execute(array(
+        'idCommande' => $_GET['id']
+    ));
+    
     $query = $db->prepare('DELETE FROM COMMANDES WHERE idCommande = :idCommande;');
     $query->execute(array(
         'idCommande' => $_GET['id']

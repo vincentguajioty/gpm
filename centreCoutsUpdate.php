@@ -13,11 +13,12 @@ else
 {    
     $_POST['idResponsable'] = ($_POST['idResponsable'] == Null) ? Null : $_POST['idResponsable'];
 
-    $query = $db->prepare('UPDATE CENTRE_COUTS SET libelleCentreDecout = :libelleCentreDecout, idResponsable = :idResponsable WHERE idCentreDeCout = :idCentreDeCout;');
+    $query = $db->prepare('UPDATE CENTRE_COUTS SET libelleCentreDecout = :libelleCentreDecout, idResponsable = :idResponsable, commentairesCentreCout = :commentairesCentreCout WHERE idCentreDeCout = :idCentreDeCout;');
     $query->execute(array(
         'idCentreDeCout' => $_GET['id'],
 		'libelleCentreDecout' => $_POST['libelleCentreDecout'],
-        'idResponsable' => $_POST['idResponsable']
+        'idResponsable' => $_POST['idResponsable'],
+        'commentairesCentreCout' => $_POST['commentairesCentreCout']
     ));
 
     switch($query->errorCode())

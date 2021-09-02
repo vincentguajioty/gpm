@@ -6,7 +6,7 @@ require_once('logCheck.php');
 require_once 'config/bdd.php';
 
 
-if($_SESSION['cout_lecture']==1 OR $_SESSION['cout_ajout']==1 OR $_SESSION['cout_etreEnCharge']==1 OR $_SESSION['cout_supprimer']==1)
+if($_SESSION['cout_ajout']==1)
 { ?>
     
     <?php
@@ -46,6 +46,10 @@ if($_SESSION['cout_lecture']==1 OR $_SESSION['cout_ajout']==1 OR $_SESSION['cout
                                 }
                                 $query2->closeCursor(); ?>
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Remarques</label>
+                            <textarea class="form-control" rows="3" name="commentairesCentreCout"><?= isset($data['commentairesCentreCout']) ? $data['commentairesCentreCout'] : '' ?></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

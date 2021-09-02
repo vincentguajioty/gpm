@@ -13,10 +13,11 @@ else
 {    
     $_POST['idResponsable'] = ($_POST['idResponsable'] == Null) ? Null : $_POST['idResponsable'];
 
-    $query = $db->prepare('INSERT INTO CENTRE_COUTS(libelleCentreDecout, idResponsable) VALUES(:libelleCentreDecout, :idResponsable);');
+    $query = $db->prepare('INSERT INTO CENTRE_COUTS(libelleCentreDecout, idResponsable, commentairesCentreCout) VALUES(:libelleCentreDecout, :idResponsable, :commentairesCentreCout);');
     $query->execute(array(
         'libelleCentreDecout' => $_POST['libelleCentreDecout'],
-        'idResponsable' => $_POST['idResponsable']
+        'idResponsable' => $_POST['idResponsable'],
+        'commentairesCentreCout' => $_POST['commentairesCentreCout']
     ));
 
     switch($query->errorCode())

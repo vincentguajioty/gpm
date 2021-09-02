@@ -36,6 +36,7 @@ if ($_SESSION['lots_lecture']==0)
                 <?php if ($_SESSION['lots_ajout']==1) {?>
 	                <div class="box-header">
 						<h3 class="box-title"><a href="lotsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un lot</a></h3>
+						<h3 class="box-title"><a href="lotsDuplicateForm.php" class="btn btn-sm btn-success modal-form">Dupliquer un lot existant</a></h3>
 	                </div>
                 <?php }?>
                 <!-- /.box-header -->

@@ -8,7 +8,7 @@ require_once 'config/bdd.php';
 switch ($_GET['case']) {
     case 'annuaireDelete':
         $lien = "annuaireDelete.php?id=".$_GET['id'];
-		$contenu = "<li>Les lots gérés par cette personne ne seront plus affectés.</li><li>Les centres de couts gérés par cette personne ne seront plus affectés.</li><li>Les commandes auquelles la personne était ratachée ne seront plus rattachées à personne (attention aux demandes de validation en attente).</li><li>Les messages publics postés par la personne n'auront plus d'auteur.</li><li>les inventaires réalisés par la personne n'auront plus d'auteur.</li><li>Les équipements radio gérés par cette personne ne seront plus affectés.</li><li>Les véhicules gérés par cette personne ne seront plus affectés (véhicules, taches de maintenance, relevés kilométriques).</li><li>Les taches réalisées de la TODOLIST de cet utilisateur seront supprimées.</li><li>Les taches que cet utilisateur n'a pas encore réalisée seront gardées mais non-affectées.</li><li>Les taches que cet utilisateur a donné à d'autres utilisateurs seront maintenues.</li><li>Les éléments de tenue de cette personne seront supprimés.</li><li>Les cautions de cette personne seront supprimées.</li>";
+		$contenu = "<li>Les lots gérés par cette personne ne seront plus affectés.</li><li>Les centres de couts gérés par cette personne ne seront plus affectés.</li><li>Les commandes auquelles la personne était ratachée ne seront plus rattachées à personne (attention aux demandes de validation en attente).</li><li>Les messages publics postés par la personne n'auront plus d'auteur.</li><li>les inventaires réalisés par la personne n'auront plus d'auteur.</li><li>Les équipements radio gérés par cette personne ne seront plus affectés.</li><li>Les véhicules gérés par cette personne ne seront plus affectés (véhicules, taches de maintenance, relevés kilométriques).</li><li>Les taches réalisées de la TODOLIST de cet utilisateur seront supprimées.</li><li>Les taches que cet utilisateur n'a pas encore réalisée seront gardées mais non-affectées.</li><li>Les taches que cet utilisateur a donné à d'autres utilisateurs seront maintenues.</li><li>Les éléments de tenue de cette personne seront supprimés.</li><li>Les cautions de cette personne seront supprimées.</li><li>Les opérations saisies par cette personne dans les centres de couts seront anonymisées.</li>";
         break;
     case 'catalogueDelete':
         $lien = "catalogueDelete.php?id=".$_GET['id'];
@@ -20,11 +20,11 @@ switch ($_GET['case']) {
         break;
     case 'centreCoutsDelete':
         $lien = "centreCoutsDelete.php?id=".$_GET['id'];
-        $contenu = "<li>Les commandes rattachées à ce centre de coût se verront sans centre de coût.</li>";
+        $contenu = "<li>Les commandes rattachées à ce centre de coût se verront sans centre de coût.</li><li>Les commandes pourront être à nouveau intégrées dans un centre de cout.</li><li>Toutes les entrées liées à ce centre de cout vont être supprimées.</li>";
         break;
     case 'commandesDelete':
         $lien = "commandesDelete.php?id=".$_GET['id'];
-        $contenu = "<li>Le détail de la commande va être supprimé.</li><li>Tous les documents rattachés à la commande seront supprimés.</li><li>Tout l'historique de la commande sera supprimé.</li>";
+        $contenu = "<li>Le détail de la commande va être supprimé.</li><li>Tous les documents rattachés à la commande seront supprimés.</li><li>Tout l'historique de la commande sera supprimé.</li><li>Toute trace de cette commande disparaitera du centre de coûts.</li>";
         break;
     case 'emplacementsDelete':
         $lien = "emplacementsDelete.php?id=".$_GET['id'];

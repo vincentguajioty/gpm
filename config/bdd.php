@@ -381,6 +381,22 @@ function cmdEstDemandeur ($idPersonne, $idCommande)
         return 0;
     }
 }
+function centreCoutsEstCharge ($idPersonne, $idCentreDeCout)
+{
+    global $db;
+    $query = $db->prepare('SELECT c.idResponsable FROM CENTRE_COUTS c LEFT OUTER JOIN VIEW_HABILITATIONS v ON c.idResponsable = v.idPersonne WHERE c.idCentreDeCout = :idCentreDeCout AND v.cout_etreEnCharge=1;');
+    $query -> execute(array('idCentreDeCout' => $idCentreDeCout));
+    $data = $query->fetchAll();
+    
+    if(in_array($idPersonne, array_column($data, 'idResponsable')))
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
 function tdlEstExecutant ($idPersonne, $idTache)
 {
     global $db;

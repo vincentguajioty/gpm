@@ -22,7 +22,7 @@ else
     $_POST['idFournisseur'] = ($_POST['idFournisseur'] == Null) ? Null : $_POST['idFournisseur'];
 
 
-    $query = $db->prepare('INSERT INTO COMMANDES(idEtat, idCentreDeCout, idFournisseur, idLieuLivraison, dateCreation, remarquesGenerales) VALUES(1, :idCentreDeCout, :idFournisseur, :idLieuLivraison, CURRENT_TIMESTAMP, :remarquesGenerales);');
+    $query = $db->prepare('INSERT INTO COMMANDES(idEtat, idCentreDeCout, idFournisseur, idLieuLivraison, dateCreation, remarquesGenerales, integreCentreCouts) VALUES(1, :idCentreDeCout, :idFournisseur, :idLieuLivraison, CURRENT_TIMESTAMP, :remarquesGenerales, 0);');
     $query->execute(array(
         'idCentreDeCout' => $_POST['idCentreDeCout'],
         'idFournisseur' => $_POST['idFournisseur'],

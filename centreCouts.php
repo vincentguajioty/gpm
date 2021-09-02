@@ -47,6 +47,8 @@ if ($_SESSION['cout_lecture']==0)
                                 <th class="all" style="width: 10px">#</th>
                                 <th class="all">Libelle</th>
                                 <th class="not-mobile">Responsable</th>
+                                <th class="not-mobile">Solde actuel</th>
+                                <th class="not-mobile">Commandes à intégrer</th>
                                 <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
@@ -60,6 +62,46 @@ if ($_SESSION['cout_lecture']==0)
                                 <td><?php echo $data['libelleCentreDecout']; ?></td>
                                 <td><?php echo $data['identifiant']; ?></td>
                                 <td>
+                                	<?php
+                                		$query2 = $db->prepare('SELECT COALESCE(SUM(montantEntrant),0)-COALESCE(SUM(montantSortant),0) as total FROM CENTRE_COUTS_OPERATIONS WHERE idCentreDeCout = :idCentreDeCout');
+                                		$query2->execute(array('idCentreDeCout'=>$data['idCentreDeCout']));
+                                		$total = $query2->fetch();
+                                        $total = round($total['total'],2);
+                                		if($total == 0)
+                                        {
+                                            echo '<span class="badge bg-orange">'.$total.' €</span>';
+                                        }
+                                        else if($total < 0)
+                                        {
+                                            echo '<span class="badge bg-red">'.$total.' €</span>';
+                                        }
+                                        else
+                                        {
+                                            echo '<span class="badge bg-green">'.$total.' €</span>';
+                                        }
+                                	?>
+                                </td>
+                                <td>
+                                    <?php
+                                        $query2 = $db->prepare('SELECT COUNT(*) as nb FROM COMMANDES c LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat WHERE idCentreDeCout = :idCentreDeCout AND integreCentreCouts = 0 AND c.idEtat > 3;');
+                                        $query2->execute(array('idCentreDeCout'=>$data['idCentreDeCout']));
+                                        $nb = $query2->fetch();
+                                        $nb = $nb['nb'];
+                                        if($nb == 0)
+                                        {
+                                            echo '<span class="badge bg-green">0</span>';
+                                        }
+                                        else
+                                        {
+                                            echo '<span class="badge bg-orange">'.$nb.'</span>';
+                                        }
+
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php if ($_SESSION['cout_lecture']==1) {?>
+                                        <a href="centreCoutsContenu.php?id=<?=$data['idCentreDeCout']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
+                                    <?php }?>
                                     <?php if ($_SESSION['cout_ajout']==1) {?>
                                         <a href="centreCoutsForm.php?id=<?=$data['idCentreDeCout']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>

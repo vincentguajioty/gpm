@@ -168,12 +168,15 @@ if ($_SESSION['lots_lecture']==0)
                 </div>
 
                 <div class="col-md-12">
-                    <div class="box box-success collapsed-box box-solid">
+                    <div class="box box-success box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Contenu de: <?php echo $data['libelleLot']; ?></h3> <?php if ($_SESSION['lots_modification']==1) {?><a href="lotsForm.php?id=<?=$_GET['id']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?><?php if ($_SESSION['lots_lecture']==1) {?><a href="lotsInventaire.php?id=<?=$data['idLot']?>" target="_blank" class="btn btn-xs" title="Imprimer le dernier inventaire"><i class="fa fa-print"></i></a><?php }?>
+                            <h3 class="box-title">Contenu de: <?php echo $data['libelleLot']; ?></h3>
+                            <?php if ($_SESSION['lots_modification']==1) {?><a href="lotsForm.php?id=<?=$_GET['id']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
+                            <?php if ($_SESSION['lots_lecture']==1) {?><a href="lotsInventaire.php?id=<?=$data['idLot']?>" target="_blank" class="btn btn-xs" title="Imprimer le dernier inventaire"><i class="fa fa-print"></i> Impresion inventaire</a><?php }?>
+                            <?php if ($_SESSION['materiel_ajout']==1 AND $data3['nb']>0 AND $data['idTypeLot'] != Null) {?><a href="lotsImportRef.php?id=<?=$data['idLot']?>" class="btn btn-xs" title="Importer dans ce lot le matériel du référentiel indiqué" <?php if($data4['nb']!=0){?>onClick="javascript: return confirm('Ce lot n\'est pas vide. Etes vous sur de vouloir faire un import ?');"<?php } ?>><i class="fa fa-bank"></i> Importer référentiel</a><?php }?>
                             <div class="box-tools pull-right">
                             	<?php if ($_SESSION['sac_ajout']==1) {?><a href="sacsForm.php?idParent=<?= $_GET['id'] ?>" class="btn btn-sm btn-success modal-form">Ajouter un sac</a><?php } ?>
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-plus"></i>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-minus"></i>
                                 </button>
                             </div>
                             <!-- /.box-tools -->
@@ -208,12 +211,12 @@ if ($_SESSION['lots_lecture']==0)
                                             while ($data8 = $query8->fetch())
                                             { ?>
                                                 <div class="col-md-12">
-                                                    <div class="box box-warning box-solid">
+                                                    <div class="box box-warning collapsed-box box-solid">
                                                         <div class="box-header with-border">
                                                             <h3 class="box-title"><?php echo $data8['libelleEmplacement']; ?></h3> <?php if ($_SESSION['sac2_modification']==1) {?><a href="emplacementsForm.php?id=<?=$data8['idEmplacement']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
                                                             <div class="box-tools pull-right">
                                                             	<?php if ($_SESSION['materiel_ajout']==1) {?><a href="materielsForm.php?idParent=<?= $data8['idEmplacement'] ?>" class="btn btn-sm btn-warning modal-form">Ajouter un materiel</a><?php } ?>
-                                                                <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-minus"></i>
+                                                                <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-plus"></i>
                                                                 </button>
                                                             </div>
                                                             <!-- /.box-tools -->
