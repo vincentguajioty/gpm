@@ -77,12 +77,17 @@ if (isset($_GET['id']))
                     <?php } ?>
                     <div class="form-group">
                         <label>Priorité:</label>
-                        <select class="form-control" style="width: 100%;" name="priorite" <?php if(isset($_GET['id']) AND ($_SESSION['todolist_modification']==0 AND (tdlEstExecutant($_SESSION['idPersonne'],$_GET['id']) AND $_SESSION['todolist_perso']==0))){ echo 'disabled'; }?>>
-                            <option value="1 - Urgent" <?php if (isset($data['priorite']) AND ($data['priorite']=='1 - Urgent')) { echo 'selected'; } ?>>1 - Urgent</option>
-                            <option value="2 - Important" <?php if (isset($data['priorite']) AND ($data['priorite']=='2 - Important')) { echo 'selected'; } ?>>2 - Important</option>
-                            <option value="3 - Normal" <?php if (isset($data['priorite']) AND ($data['priorite']=='3 - Normal')) { echo 'selected'; } ?> <?php if (!isset($data['priorite'])) { echo 'selected'; } ?>>3 - Normal</option>
-                            <option value="4 - Faible" <?php if (isset($data['priorite']) AND ($data['priorite']=='4 - Faible')) { echo 'selected'; } ?>>4 - Faible</option>
-                            <option value="5 - Optionel" <?php if (isset($data['priorite']) AND ($data['priorite']=='5 - Optionel')) { echo 'selected'; } ?>>5 - Optionel</option>
+                        <select class="form-control" style="width: 100%;" name="idTDLpriorite" <?php if(isset($_GET['id']) AND ($_SESSION['todolist_modification']==0 AND (tdlEstExecutant($_SESSION['idPersonne'],$_GET['id']) AND $_SESSION['todolist_perso']==0))){ echo 'disabled'; }?>>
+                            <?php
+                                $query2 = $db->query('SELECT * FROM TODOLIST_PRIORITES;');
+                                while ($data2 = $query2->fetch())
+                                {
+                                    ?>
+                                    <option value="<?php echo $data2['idTDLpriorite']; ?>" <?php if ($data['idTDLpriorite'] == $data2['idTDLpriorite']) { echo 'selected'; } ?>><?php echo $data2['libellePriorite']; ?></option>
+                                    <?php
+                                }
+                                $query2->closeCursor();
+                            ?>
                         </select>
                     </div>
                     <div class="form-group">

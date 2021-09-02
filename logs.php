@@ -74,7 +74,7 @@ if ($_SESSION['logs_lecture']==0)
                 'dateInf' => $_GET['dateInf']));
             $data = $query->fetch();
 
-            if ($data['nb']>1000)
+            if ($data['nb']>2000)
                 {
                     $_SESSION['returnMessage'] = "Le nombre d'éléments à afficher est trop important. Veuillez réduire la plage de date ou consulter les logs directement en base.";
                     $_SESSION['returnType'] = 2;

@@ -78,7 +78,7 @@ require_once('logCheck.php');
                                 <div class="form-group">
                                     <label>Je veux: </label>
                                     <select class="form-control" name="motif">
-                                        <option>Demander de l'aide sur l'utilisation de l'outil</option>
+                                        <option>Demander une aide à l'utilisation</option>
                                         <option>Faire une suggestion</option>
                                         <option>Signaler un dysfonctionnement dans un module</option>
                                         <option>Signaler une faille de sécurité</option>
@@ -90,18 +90,24 @@ require_once('logCheck.php');
                                 <div class="form-group">
                                     <label>Sur: </label>
                                     <select class="form-control" name="module">
-                                        <option>Module de gestion des lots/sacs/emplacements</option>
-                                        <option>Module de gestion du matériel</option>
-                                        <option>Module gérant le catalogue du matériel</option>
-                                        <option>Module gérant les référentiels</option>
-                                        <option>Module de commandes</option>
-                                        <option>Module gérant la réserve</option>
-                                        <option>Module gérant les transferts de matériel les autres modules</option>
-                                        <option>Module de gestion des véhicules</option>
-                                        <option>Module de gestion du parc transmissions</option>
-                                        <option>Module de gestion de l'annuaire</option>
-                                        <option>Module de gestion des profils</option>
-                                        <option>Module de base documentaire</option>
+                                        <option>Lots/Sacs/Emplacements</option>
+                                        <option>Matériel opérationnel</option>
+                                        <option>Catalogue du matériel</option>
+                                        <option>Référentiels</option>
+                                        <option>Commandes</option>
+                                        <option>Réserve</option>
+                                        <option>Transferts de matériel les autres modules</option>
+                                        <option>Véhicules</option>
+                                        <option>Transmissions</option>
+                                        <option>Tenues</option>
+                                        <option>Annuaire</option>
+                                        <option>Profils</option>
+                                        <option>Base documentaire</option>
+                                        <option>ToDoList</option>
+                                        <option>Messages généraux</option>
+                                        <option>Messages mails</option>
+                                        <option>Notifications</option>
+                                        <option>Actions massives en base</option>
                                         <option>Paramètres fonctionnels (catégories, états , lieux, fournisseurs ...)</option>
                                         <option>Paramètres techniques de l'application</option>
                                         <option>Autre</option>

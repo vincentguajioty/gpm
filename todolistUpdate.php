@@ -12,12 +12,13 @@ if ($_SESSION['todolist_modification']==0 AND (tdlEstExecutant($_SESSION['idPers
 else
 {
     $_POST['dateExecution'] = ($_POST['dateExecution'] == Null) ? Null : $_POST['dateExecution'];
+    $_POST['idTDLpriorite'] = ($_POST['idTDLpriorite'] == Null) ? Null : $_POST['idTDLpriorite'];
 
     $query = $db->prepare('UPDATE TODOLIST SET 
                                                 dateExecution = :dateExecution,
                                                 titre = :titre,
                                                 details = :details,
-                                                priorite = :priorite
+                                                idTDLpriorite = :idTDLpriorite
                                             WHERE
                                                 idTache = :idTache
                                             ;'
@@ -26,7 +27,7 @@ else
         'dateExecution' => $_POST['dateExecution'],
         'titre'         => $_POST['titre'],
         'details'       => $_POST['details'],
-        'priorite'      => $_POST['priorite'],
+        'idTDLpriorite'      => $_POST['idTDLpriorite'],
         'idTache'       => $_GET['id']
     ));
 

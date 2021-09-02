@@ -54,7 +54,7 @@ include('logCheck.php');
 				        <div class="col-md-12">
 				            <div class="box box-success">
 				                <div class="box-header with-border">
-				                    <i class="fa fa-ambulance"></i>
+				                    <i class="fa fa-medkit"></i>
 				
 				                    <h3 class="box-title">Lots dont j'ai la charge</h3>
 				                </div>
@@ -180,7 +180,7 @@ include('logCheck.php');
 							<div class="box-body">
 								<ul class="todo-list">
 									<?php
-										$query = $db->prepare('SELECT * FROM TODOLIST_PERSONNES tp JOIN TODOLIST tdl ON tp.idTache = tdl.idTache WHERE idExecutant = :idExecutant AND realisee = 0');
+										$query = $db->prepare('SELECT * FROM TODOLIST_PERSONNES tp JOIN TODOLIST tdl ON tp.idTache = tdl.idTache LEFT OUTER JOIN TODOLIST_PRIORITES prio ON tdl.idTDLpriorite = prio.idTDLpriorite WHERE idExecutant = :idExecutant AND realisee = 0');
 										$query->execute(array('idExecutant'=>$_SESSION['idPersonne']));
 										while ($data = $query->fetch())
 										{ ?>
@@ -188,7 +188,7 @@ include('logCheck.php');
 												<!-- todo text -->
 												<span class="text"><?= $data['titre'] ?></span>
 												<!-- Emphasis label -->
-												<small class="label label-info"><?= $data['priorite'] ?></small><small class="label label-success"><?= $data['dateExecution'] ?></small>
+												<small class="label label-<?= $data['couleurPriorite'] ?>"><?= $data['libellePriorite'] ?></small><small class="label label-success"><?= $data['dateExecution'] ?></small>
 												<!-- General tools such as edit or delete-->
 												<div class="tools">
 													<a href="todolistForm.php?id=<?= $data['idTache'] ?>" class="modal-form"><i class="fa fa-edit"></i></a>
@@ -845,7 +845,7 @@ include('logCheck.php');
             </div>
             <div class="modal-body">
                 <?php
-                $query = $db->query('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR e ON m.idConteneur=e.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE peremptionReserve < CURRENT_DATE OR peremptionReserve = CURRENT_DATE;');
+                $query = $db->query('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR e ON m.idConteneur=e.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE peremptionNotificationReserve < CURRENT_DATE OR peremptionNotificationReserve = CURRENT_DATE;');
                 ?>
                 <ul>
                     <?php

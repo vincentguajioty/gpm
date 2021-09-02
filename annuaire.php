@@ -78,23 +78,8 @@ if ($_SESSION['annuaire_lecture']==0)
                                 	?>
                                 </td>
                                 <td>
-                                    <?php if ($_SESSION['annuaire_modification']==1) {?>
-                                        <a href="annuaireForm.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
-                                    <?php }?>
-                                    <?php if ($_SESSION['profils_lecture']==1) {?>
-                                        <a href="annuaireShowProfils.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-info modal-form" title="Voir les habilitations"><i class="fa fa-users"></i></a>
-                                    <?php }?>
-                                    <?php if ($_SESSION['annuaire_modification']==1) {?>
-                                        <a href="annuaireSetDashboard.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-success" onclick="return confirm('Etes-vous sûr de vouloir réactiver les indicateurs sur la page d\'accueil de l\'utilisateur ?');" title="Forcer les indicateurs sur la page d'accueil"><i class="fa fa-dashboard"></i></a>
-                                    <?php }?>
-                                    <?php if ($_SESSION['annuaire_modification']==1) {?>
-                                        <a href="annuaireSetMail.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-success" onclick="return confirm('Etes-vous sûr de vouloir réactiver les notifications pour cet utilisateur ?');" title="Forcer l'activation des notifications"><i class="fa fa-envelope"></i></a>
-                                    <?php }?>
-                                    <?php if ($_SESSION['annuaire_mdp']==1) {?>
-                                        <a href="annuaireRAZ.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-info" onclick="return confirm('Etes-vous sûr de vouloir réinitialiser ce mot de passe (le nouveau mot de passe prendra la valeur de l\'identifiant) ?');" title="Réinitialiser le mot de passe"><i class="fa fa-lock"></i></a>
-                                    <?php }?>
-                                    <?php if ($_SESSION['annuaire_suppression']==1) {?>
-                                        <a href="modalDeleteConfirm.php?case=annuaireDelete&id=<?=$data['idPersonne']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
+                                    <?php if ($_SESSION['annuaire_lecture']==1) {?>
+                                        <a href="annuaireContenu.php?id=<?=$data['idPersonne']?>" class="btn btn-xs btn-info" title="Ouvrir la fiche"><i class="fa fa-folder"></i></a>
                                     <?php }?>
                                 </td>
                             </tr>

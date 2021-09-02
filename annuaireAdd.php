@@ -108,23 +108,24 @@ else
 		    $data = $query->fetch();
 		    majIndicateursPersonne($data['idPersonne'],1);
 		    majNotificationsPersonne($data['idPersonne'],1);
+		    
+		    echo "<script type='text/javascript'>document.location.replace('annuaireContenu.php?id=" . $data['idPersonne'] . "');</script>";
+		    
         break;
 
         case '23000':
             writeInLogs("Doublon détecté lors de l'ajout de l'utilisateur " . $_POST['identifiant'], '5');
             $_SESSION['returnMessage'] = 'Un utilisateur existe déjà avec le même identifiant. Merci de changer l\'identifiant.';
             $_SESSION['returnType'] = '2';
+            echo "<script>window.location = document.referrer;</script>";
         break;
 
         default:
             writeInLogs("Erreur inconnue lors de l'ajout de l'utilisateur " . $_POST['identifiant'], '5');
             $_SESSION['returnMessage'] = 'Erreur inconnue lors de l\'ajout de l\'utilisateur.';
             $_SESSION['returnType'] = '2';
+            echo "<script>window.location = document.referrer;</script>";
     }
-
-    
-
-    echo "<script>window.location = document.referrer;</script>";
 
 
 }

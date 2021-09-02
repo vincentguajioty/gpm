@@ -13,6 +13,7 @@ if ($_SESSION['todolist_modification']==0 AND ($_GET['idExecutant']!=$_SESSION['
 else
 {
     $_POST['dateExecution'] = ($_POST['dateExecution'] == Null) ? Null : $_POST['dateExecution'];
+    $_POST['idTDLpriorite'] = ($_POST['idTDLpriorite'] == Null) ? Null : $_POST['idTDLpriorite'];
 
     $query = $db->prepare('INSERT INTO TODOLIST(
                                                 idCreateur,
@@ -20,7 +21,7 @@ else
                                                 dateExecution,
                                                 titre,
                                                 details,
-                                                priorite,
+                                                idTDLpriorite,
                                                 realisee
                                                 ) VALUES(
                                                 :idCreateur,
@@ -28,7 +29,7 @@ else
                                                 :dateExecution,
                                                 :titre,
                                                 :details,
-                                                :priorite,
+                                                :idTDLpriorite,
                                                 0
                                                 );');
     $query->execute(array(
@@ -37,7 +38,7 @@ else
         'dateExecution' => $_POST['dateExecution'],
         'titre'         => $_POST['titre'],
         'details'         => $_POST['details'],
-        'priorite'         => $_POST['priorite']
+        'idTDLpriorite'         => $_POST['idTDLpriorite']
     ));
 
     switch($query->errorCode())

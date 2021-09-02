@@ -53,7 +53,7 @@ if ($_SESSION['todolist_lecture']==0)
 	                                <div class="box-body">
 	                                    <ul class="todo-list">
 	                                        <?php
-	                                            $query2 = $db->prepare('SELECT * FROM TODOLIST_PERSONNES tp JOIN TODOLIST tdl ON tp.idTache = tdl.idTache WHERE idExecutant = :idExecutant AND realisee = 0');
+	                                            $query2 = $db->prepare('SELECT * FROM TODOLIST_PERSONNES tp JOIN TODOLIST tdl ON tp.idTache = tdl.idTache LEFT OUTER JOIN TODOLIST_PRIORITES prio ON tdl.idTDLpriorite = prio.idTDLpriorite WHERE idExecutant = :idExecutant AND realisee = 0');
 	                                            $query2->execute(array('idExecutant'=>$data['idPersonne']));
 	                                            while ($data2 = $query2->fetch())
 	                                            { ?>
@@ -61,7 +61,7 @@ if ($_SESSION['todolist_lecture']==0)
 	                                                    <!-- todo text -->
 	                                                    <span class="text"><?= $data2['titre'] ?></span>
 	                                                    <!-- Emphasis label -->
-	                                                    <small class="label label-info"><?= $data2['priorite'] ?></small><small class="label label-success"><?= $data2['dateExecution'] ?></small>
+	                                                    <small class="label label-<?= $data2['couleurPriorite'] ?>"><?= $data2['libellePriorite'] ?></small><small class="label label-success"><?= $data2['dateExecution'] ?></small>
 	                                                    <!-- General tools such as edit or delete-->
 	                                                    <div class="tools">
 	                                                        <a href="todolistForm.php?id=<?= $data2['idTache'] ?>" class="modal-form"><i class="fa fa-edit"></i></a>
@@ -94,13 +94,13 @@ if ($_SESSION['todolist_lecture']==0)
 	                                    <th></th>
 	                                </tr>
 	                                <?php
-	                                $query = $db->query('SELECT tdl.*, tp.idExecutant FROM TODOLIST tdl LEFT OUTER JOIN TODOLIST_PERSONNES tp ON tdl.idTache = tp.idTache WHERE idExecutant IS NULL;');
+	                                $query = $db->query('SELECT tdl.*, tp.idExecutant, prio.libellePriorite FROM TODOLIST tdl LEFT OUTER JOIN TODOLIST_PERSONNES tp ON tdl.idTache = tp.idTache LEFT OUTER JOIN TODOLIST_PRIORITES prio ON tdl.idTDLpriorite = prio.idTDLpriorite WHERE idExecutant IS NULL;');
 	                                while ($data = $query->fetch())
 	                                {
 	                                    ?>
 	                                    <tr>
 	                                        <td><?php echo $data['titre']; ?></td>
-	                                        <td><?php echo $data['priorite']; ?></td>
+	                                        <td><?php echo $data['libellePriorite']; ?></td>
 	                                        <td>
 	                                            <?php if ($_SESSION['todolist_modification']==1) {?>
 	                                                <a href="todolistForm.php?id=<?= $data['idTache'] ?>" class="btn btn-xs btn-info modal-form" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
@@ -130,13 +130,13 @@ if ($_SESSION['todolist_lecture']==0)
 	                                    <th></th>
 	                                </tr>
 	                                <?php
-	                                $query = $db->query('SELECT * FROM TODOLIST WHERE realisee = 1;');
+	                                $query = $db->query('SELECT * FROM TODOLIST tdl LEFT OUTER JOIN TODOLIST_PRIORITES prio ON tdl.idTDLpriorite = prio.idTDLpriorite WHERE realisee = 1;');
 	                                while ($data = $query->fetch())
 	                                {
 	                                    ?>
 	                                    <tr>
 	                                        <td><?php echo $data['titre']; ?></td>
-	                                        <td><?php echo $data['priorite']; ?></td>
+	                                        <td><?php echo $data['libellePriorite']; ?></td>
 	                                        <td>
 	                                            <?php if ($_SESSION['todolist_modification']==1) {?>
 	                                            <a href="todolistSetKo.php?id=<?= $data['idTache'] ?>" class="btn btn-xs btn-success modal-form" title="Recycler la tache"><i class="fa fa-refresh"></i></a>

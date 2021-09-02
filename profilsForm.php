@@ -19,6 +19,7 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
 - rechargement dynamique des droits dans loginReloadHabilitation.php
 - rechargement dynamique des droits dans userReloadHabilitation.php
 - chargement initial des doits dans loginSQL.php
+- box de visualisation des droits depuis la page annuaireContenu.php
 */
 ?>
 

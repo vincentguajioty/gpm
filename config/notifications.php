@@ -123,7 +123,7 @@ if ($nbDest > 0)
 	if ($nbPerimeReserve > 0)
 	{
 	    $message_PerimeReserve = $message_PerimeReserve . "Alertes de péremption de la réserve:<br/><ul>";
-	    $query = $db->query('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur=c.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue WHERE peremptionReserve < CURRENT_DATE OR peremptionReserve = CURRENT_DATE;');
+	    $query = $db->query('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur=c.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue WHERE peremptionNotificationReserve < CURRENT_DATE OR peremptionNotificationReserve = CURRENT_DATE;');
 	    while($data = $query->fetch())
 	    {
 	        $message_PerimeReserve = $message_PerimeReserve . "<li>".$data['libelleConteneur'] . " > " . $data['libelleMateriel']."</li>";

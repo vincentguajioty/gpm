@@ -138,6 +138,6 @@ else
     }
 
 
-    echo "<script>javascript:history.go(-1);</script>";
+    echo "<script type='text/javascript'>document.location.replace('annuaire.php');</script>";
 }
 ?>
