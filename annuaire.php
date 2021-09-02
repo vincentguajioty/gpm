@@ -53,6 +53,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                 <th class="all">Identifiant de connexion</th>
                                 <th class="not-mobile">Nom</th>
                                 <th class="not-mobile">Prénom</th>
+                                <th class="not-mobile">Mail</th>
                                 <th class="not-mobile">Fonction</th>
                                 <th class="not-mobile">Profil</th>
                                 <th class="not-mobile">Actions</th>
@@ -68,6 +69,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                 <td><?= $data['identifiant'] ?></td>
                                 <td><?= $data['nomPersonne'] ?></td>
                                 <td><?= $data['prenomPersonne'] ?></td>
+                                <td><?= $data['mailPersonne'] ?></td>
                                 <td><?= $data['fonction'] ?></td>
                                 <td><?php
                                 	$query2 = $db->prepare('SELECT * FROM PROFILS_PERSONNES person LEFT OUTER JOIN PROFILS profil ON person.idProfil = profil.idProfil WHERE idPersonne = :idPersonne;');

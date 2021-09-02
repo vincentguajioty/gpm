@@ -100,7 +100,7 @@ if ($_SESSION['commande_lecture']==0)
                                 		$query2->execute(array('idCommande'=>$data['idCommande']));
                                 		while($data2 = $query2->fetch())
                                 		{
-                                			echo $data2['prenomPersonne'].' '.$data2['nomPersonne'].'<br/>';
+                                			echo $data2['identifiant'].'<br/>';
                                 		}
                                 	?>
                                 </td>
@@ -110,7 +110,7 @@ if ($_SESSION['commande_lecture']==0)
 	                            		$query2->execute(array('idCommande'=>$data['idCommande']));
 	                            		while($data2 = $query2->fetch())
 	                            		{
-	                            			echo $data2['prenomPersonne'].' '.$data2['nomPersonne'].'<br/>';
+	                            			echo $data2['identifiant'].'<br/>';
 	                            		}
 	                            	?>
                                 </td>

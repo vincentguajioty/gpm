@@ -32,547 +32,612 @@ require_once('logCheck.php');
         	<?php include('confirmationBox.php'); ?>
         	<div class="row">
         		<div class="col-md-8 col-sm-12 col-xs-12">
-	        		<div class="col-md-12">
-			            <div class="box box-info">
-			                <div class="box-header with-border">
-			                    <h3 class="box-title">Mes informations personnelles</h3>
+		            <div class="box box-info">
+		                <div class="box-header with-border">
+		                    <h3 class="box-title">Mes informations personnelles</h3>
+		                </div>
+		                <!-- /.box-header -->
+		                <div class="box-body">
+		                    <form role="form" action="userUpdate.php" method="POST">
+		                        <!-- text input -->
+		                        <div class="form-group">
+		                            <label>Mon identifiant:</label>
+		                            <input type="text" class="form-control" value="<?=$_SESSION['identifiant']?>"
+		                                   name="identifiant" disabled>
+		                        </div>
+		                        <div class="form-group">
+		                            <label>Nom:</label>
+		                            <input type="text" class="form-control" value="<?=$_SESSION['nomPersonne']?>"
+		                                   name="nomPersonne">
+		                        </div>
+		                        <div class="form-group">
+		                            <label>Prénom:</label>
+		                            <input type="text" class="form-control" value="<?=$_SESSION['prenomPersonne']?>"
+		                                   name="prenomPersonne">
+		                        </div>
+		                        <div class="form-group">
+		                            <label>Adresse eMail:</label>
+		                            <input type="email" class="form-control" value="<?=$_SESSION['mailPersonne']?>"
+		                                   name="mailPersonne">
+		                        </div>
+		                        <div class="form-group">
+		                            <label>Téléphone</label>
+		                            <input type="tel" class="form-control" value="<?=$_SESSION['telPersonne']?>"
+		                                   name="telPersonne">
+		                        </div>
+		                        <div class="form-group">
+		                            <label>Fonction</label>
+		                            <input type="tel" class="form-control" value="<?=$_SESSION['fonction']?>"
+		                                   name="fonction">
+		                        </div>
+		                        <div class="box-footer">
+		                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
+		                        </div>
+		                    </form>
+		                </div>
+		            </div>
+		            <div class="box box-info">
+		                <div class="box-header with-border">
+		                    <h3 class="box-title">Mes habilitations sur <?php echo $APPNAME;?> <a href="userReloadHabilitation.php" class="btn btn-xs spinnerAttenteClick"><i class="fa fa-refresh"></i> Rafraichir mes habilitations</a></h3>
+		                </div>
+		                <!-- /.box-header -->
+		                <div class="box-body">
+			                <div class="form-group">
+			                    <label>Connexion à <?php echo $APPNAME;?>:</label>
+			                    </br>
+			                    <?php if($_SESSION['connexion_connexion'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Autorisé à se connecter à <?php echo $APPNAME;?>
+			                    </br>
 			                </div>
-			                <!-- /.box-header -->
-			                <div class="box-body">
-			                    <form role="form" action="userUpdate.php" method="POST">
-			                        <!-- text input -->
-			                        <div class="form-group">
-			                            <label>Mon identifiant:</label>
-			                            <input type="text" class="form-control" value="<?=$_SESSION['identifiant']?>"
-			                                   name="identifiant" disabled>
-			                        </div>
-			                        <div class="form-group">
-			                            <label>Nom:</label>
-			                            <input type="text" class="form-control" value="<?=$_SESSION['nomPersonne']?>"
-			                                   name="nomPersonne">
-			                        </div>
-			                        <div class="form-group">
-			                            <label>Prénom:</label>
-			                            <input type="text" class="form-control" value="<?=$_SESSION['prenomPersonne']?>"
-			                                   name="prenomPersonne">
-			                        </div>
-			                        <div class="form-group">
-			                            <label>Adresse eMail:</label>
-			                            <input type="email" class="form-control" value="<?=$_SESSION['mailPersonne']?>"
-			                                   name="mailPersonne">
-			                        </div>
-			                        <div class="form-group">
-			                            <label>Téléphone</label>
-			                            <input type="tel" class="form-control" value="<?=$_SESSION['telPersonne']?>"
-			                                   name="telPersonne">
-			                        </div>
-			                        <div class="form-group">
-			                            <label>Fonction</label>
-			                            <input type="tel" class="form-control" value="<?=$_SESSION['fonction']?>"
-			                                   name="fonction">
-			                        </div>
-			                        <div class="box-footer">
-			                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
-			                        </div>
-			                    </form>
+			                <div class="form-group">
+			                    <label>Administration de <?php echo $APPNAME;?>:</label>
+			                    </br>
+			                    <?php if($_SESSION['appli_conf'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Modifier la configuration générale de <?php echo $APPNAME;?>
+			                    </br>
+			                    <?php if($_SESSION['annuaire_mdp'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Réinitialiser les mots de passe des autres utilisateurs
+			                    </br>
+			                    <?php if($_SESSION['delegation'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Se connecter entant qu'autre utilisateur
+			                    </br>
+			                    <?php if($_SESSION['maintenance'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Se connecter même en mode maitenance
+			                    </br>
+			                    <?php if($_SESSION['verrouIP'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Gérer les adresses IP bloquées
+			                    </br>
+			                    <?php if($_SESSION['actionsMassives'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Mener des actions massives directement en base
+			                    </br>
 			                </div>
+			                <div class="form-group">
+			                    <label>Notifications journalières par mail:</label>
+			                    </br>
+			                    <?php if($_SESSION['notifications'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Autorisé à recevoir les notifications journalières par mail
+			                    </br>
+			                </div>
+			                <table class="table table-bordered">
+			                    <tr>
+			                        <th></th>
+			                        <th>Lecture</th>
+			                        <th>Ajout</th>
+			                        <th>Modification</th>
+			                        <th>Suppression</th>
+			                    </tr>
+			                    <tr>
+			                        <th>LOTS</th>
+			                        <th></th>
+			                        <th></th>
+			                        <th></th>
+			                        <th></th>
+			                    </tr>
+			                    <tr>
+			                        <td>Lots</td>
+			                        <td><?php if($_SESSION['lots_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['lots_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['lots_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['lots_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Sacs</td>
+			                        <td><?php if($_SESSION['sac_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['sac_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['sac_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['sac_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Emplacements</td>
+			                        <td><?php if($_SESSION['sac2_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['sac2_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['sac2_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['sac2_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Matériels/Consommables</td>
+			                        <td><?php if($_SESSION['materiel_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['materiel_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['materiel_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['materiel_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <th>TRANSMISSIONS</th>
+			                        <th></th>
+			                        <th></th>
+			                        <th></th>
+			                        <th></th>
+			                    </tr>
+			                    <tr>
+			                        <td>Canaux</td>
+			                        <td><?php if($_SESSION['vhf_canal_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vhf_canal_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vhf_canal_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vhf_canal_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Plans de fréquences</td>
+			                        <td><?php if($_SESSION['vhf_plan_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vhf_plan_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vhf_plan_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vhf_plan_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Equipements de transmission</td>
+			                        <td><?php if($_SESSION['vhf_equipement_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vhf_equipement_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vhf_equipement_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vhf_equipement_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <th>VEHICULES</th>
+			                        <th></th>
+			                        <th></th>
+			                        <th></th>
+			                        <th></th>
+			                    </tr>
+			                    <tr>
+			                        <td>Véhicules</td>
+			                        <td><?php if($_SESSION['vehicules_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vehicules_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vehicules_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vehicules_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Désinfections</td>
+			                        <td><?php if($_SESSION['desinfections_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['desinfections_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['desinfections_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['desinfections_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <th>TENUES</th>
+			                        <th></th>
+			                        <th></th>
+			                        <th></th>
+			                        <th></th>
+			                    </tr>
+			                    <tr>
+			                        <td>Tenues</td>
+			                        <td><?php if($_SESSION['tenues_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['tenues_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['tenues_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['tenues_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Catalogue des tenues</td>
+			                        <td><?php if($_SESSION['tenuesCatalogue_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['tenuesCatalogue_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['tenuesCatalogue_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['tenuesCatalogue_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Cautions</td>
+			                        <td><?php if($_SESSION['cautions_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['cautions_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['cautions_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['cautions_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <th>PARAMETRES</th>
+			                        <th></th>
+			                        <th></th>
+			                        <th></th>
+			                        <th></th>
+			                    </tr>
+			                    <tr>
+			                        <td>Catégories</td>
+			                        <td><?php if($_SESSION['categories_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['categories_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['categories_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['categories_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Fournisseurs</td>
+			                        <td><?php if($_SESSION['fournisseurs_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['fournisseurs_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['fournisseurs_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['fournisseurs_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Référentiels</td>
+			                        <td><?php if($_SESSION['typesLots_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['typesLots_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['typesLots_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['typesLots_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Lieux</td>
+			                        <td><?php if($_SESSION['lieux_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['lieux_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['lieux_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['lieux_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Catalogue</td>
+			                        <td><?php if($_SESSION['catalogue_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['catalogue_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['catalogue_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['catalogue_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Types de véhicules</td>
+			                        <td><?php if($_SESSION['vehicules_types_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vehicules_types_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vehicules_types_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vehicules_types_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Types de désinfections</td>
+			                        <td><?php if($_SESSION['typesDesinfections_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['typesDesinfections_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['typesDesinfections_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['typesDesinfections_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Etats</td>
+			                        <td><?php if($_SESSION['etats_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['etats_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['etats_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['etats_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                </table>
+			                <br/>
+			                <table class="table table-bordered">
+			                    <tr>
+			                        <th>COMMANDES</th>
+			                        <th>Lecture</th>
+			                        <th>Ajout Modification</th>
+			                        <th>Valider</th>
+			                        <th>Valider à la place de</th>
+			                        <th>Etre en charge</th>
+			                        <th>Abandonner Supprimer</th>
+			                    </tr>
+			                    <tr>
+			                        <td>Commandes</td>
+			                        <td><?php if($_SESSION['commande_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['commande_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['commande_valider'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['commande_valider_delegate'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['commande_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['commande_abandonner'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Centres de coûts</td>
+			                        <td><?php if($_SESSION['cout_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['cout_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td><?php if($_SESSION['cout_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['cout_supprimer'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                </table>
+			                <br/>
+			                <table class="table table-bordered">
+			                    <tr>
+			                        <th>RESERVE</th>
+			                        <th>Lecture</th>
+			                        <th>Ajout</th>
+			                        <th>Modification</th>
+			                        <th>Supprimer</th>
+			                        <th>Intégrer du matériel dans la réserve suite à une commande</th>
+			                        <th>Sortir du matériel de la réserve pour l'intégrer à un lot</th>
+			                    </tr>
+			                    <tr>
+			                        <td>Réserve</td>
+			                        <td><?php if($_SESSION['reserve_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['reserve_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['reserve_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['reserve_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['reserve_cmdVersReserve'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['reserve_ReserveVersLot'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                </table>
+			                <br/>
+			                <table class="table table-bordered">
+			                    <tr>
+			                        <th>GESTION EQUIPE</th>
+			                        <th>Lecture</th>
+			                        <th>Ajout</th>
+			                        <th>Modification</th>
+			                        <th>Modification de sa propre liste</th>
+			                        <th>Supprimer</th>
+			                    </tr>
+			                    <tr>
+			                        <td>Annuaire</td>
+			                        <td><?php if($_SESSION['annuaire_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['annuaire_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['annuaire_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td></td>
+			                        <td><?php if($_SESSION['annuaire_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Profils</td>
+			                        <td><?php if($_SESSION['profils_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['profils_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['profils_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td></td>
+			                        <td><?php if($_SESSION['profils_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Messages généraux</td>
+			                        <td></td>
+			                        <td><?php if($_SESSION['messages_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td><?php if($_SESSION['messages_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
+			                        <td>Messages mails</td>
+			                        <td></td>
+			                        <td><?php if($_SESSION['contactMailGroupe'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td></td>
+			                        <td></td>
+			                        <td></td>
+			                    </tr>
+			                    <tr>
+			                        <td>ToDoList</td>
+			                        <td><?php if($_SESSION['todolist_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td></td>
+			                        <td><?php if($_SESSION['todolist_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['todolist_perso'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td></td>
+			                    </tr>
+			                </table>
 			            </div>
-			        </div>
-			        <div class="col-md-12">
-			            <div class="box box-info">
-			                <div class="box-header with-border">
-			                    <h3 class="box-title">Mes habilitations sur <?php echo $APPNAME;?> <a href="userReloadHabilitation.php" class="btn btn-xs spinnerAttenteClick"><i class="fa fa-refresh"></i> Rafraichir mes habilitations</a></h3>
-			                </div>
-			                <!-- /.box-header -->
-			                <div class="box-body">
-				                <div class="form-group">
-				                    <label>Connexion à <?php echo $APPNAME;?>:</label>
-				                    </br>
-				                    <?php if($_SESSION['connexion_connexion'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Autorisé à se connecter à <?php echo $APPNAME;?>
-				                    </br>
-				                </div>
-				                <div class="form-group">
-				                    <label>Administration de <?php echo $APPNAME;?>:</label>
-				                    </br>
-				                    <?php if($_SESSION['appli_conf'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Modifier la configuration générale de <?php echo $APPNAME;?>
-				                    </br>
-				                    <?php if($_SESSION['annuaire_mdp'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Réinitialiser les mots de passe des autres utilisateurs
-				                    </br>
-				                    <?php if($_SESSION['delegation'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Se connecter entant qu'autre utilisateur
-				                    </br>
-				                    <?php if($_SESSION['maintenance'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Se connecter même en mode maitenance
-				                    </br>
-				                    <?php if($_SESSION['verrouIP'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Gérer les adresses IP bloquées
-				                    </br>
-				                    <?php if($_SESSION['actionsMassives'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Mener des actions massives directement en base
-				                    </br>
-				                </div>
-				                <div class="form-group">
-				                    <label>Notifications journalières par mail:</label>
-				                    </br>
-				                    <?php if($_SESSION['notifications'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Autorisé à recevoir les notifications journalières par mail
-				                    </br>
-				                </div>
-				                <table class="table table-bordered">
-				                    <tr>
-				                        <th></th>
-				                        <th>Lecture</th>
-				                        <th>Ajout</th>
-				                        <th>Modification</th>
-				                        <th>Suppression</th>
-				                    </tr>
-				                    <tr>
-				                        <th>LOTS</th>
-				                        <th></th>
-				                        <th></th>
-				                        <th></th>
-				                        <th></th>
-				                    </tr>
-				                    <tr>
-				                        <td>Lots</td>
-				                        <td><?php if($_SESSION['lots_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['lots_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['lots_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['lots_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Sacs</td>
-				                        <td><?php if($_SESSION['sac_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['sac_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['sac_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['sac_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Emplacements</td>
-				                        <td><?php if($_SESSION['sac2_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['sac2_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['sac2_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['sac2_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Matériels/Consommables</td>
-				                        <td><?php if($_SESSION['materiel_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['materiel_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['materiel_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['materiel_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <th>TRANSMISSIONS</th>
-				                        <th></th>
-				                        <th></th>
-				                        <th></th>
-				                        <th></th>
-				                    </tr>
-				                    <tr>
-				                        <td>Canaux</td>
-				                        <td><?php if($_SESSION['vhf_canal_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['vhf_canal_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['vhf_canal_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['vhf_canal_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Plans de fréquences</td>
-				                        <td><?php if($_SESSION['vhf_plan_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['vhf_plan_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['vhf_plan_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['vhf_plan_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Equipements de transmission</td>
-				                        <td><?php if($_SESSION['vhf_equipement_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['vhf_equipement_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['vhf_equipement_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['vhf_equipement_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <th>VEHICULES</th>
-				                        <th></th>
-				                        <th></th>
-				                        <th></th>
-				                        <th></th>
-				                    </tr>
-				                    <tr>
-				                        <td>Véhicules</td>
-				                        <td><?php if($_SESSION['vehicules_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['vehicules_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['vehicules_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['vehicules_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Désinfections</td>
-				                        <td><?php if($_SESSION['desinfections_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['desinfections_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['desinfections_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['desinfections_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <th>TENUES</th>
-				                        <th></th>
-				                        <th></th>
-				                        <th></th>
-				                        <th></th>
-				                    </tr>
-				                    <tr>
-				                        <td>Tenues</td>
-				                        <td><?php if($_SESSION['tenues_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['tenues_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['tenues_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['tenues_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Catalogue des tenues</td>
-				                        <td><?php if($_SESSION['tenuesCatalogue_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['tenuesCatalogue_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['tenuesCatalogue_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['tenuesCatalogue_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Cautions</td>
-				                        <td><?php if($_SESSION['cautions_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['cautions_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['cautions_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['cautions_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <th>PARAMETRES</th>
-				                        <th></th>
-				                        <th></th>
-				                        <th></th>
-				                        <th></th>
-				                    </tr>
-				                    <tr>
-				                        <td>Catégories</td>
-				                        <td><?php if($_SESSION['categories_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['categories_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['categories_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['categories_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Fournisseurs</td>
-				                        <td><?php if($_SESSION['fournisseurs_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['fournisseurs_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['fournisseurs_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['fournisseurs_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Référentiels</td>
-				                        <td><?php if($_SESSION['typesLots_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['typesLots_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['typesLots_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['typesLots_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Lieux</td>
-				                        <td><?php if($_SESSION['lieux_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['lieux_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['lieux_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['lieux_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Catalogue</td>
-				                        <td><?php if($_SESSION['catalogue_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['catalogue_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['catalogue_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['catalogue_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Types de véhicules</td>
-				                        <td><?php if($_SESSION['vehicules_types_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['vehicules_types_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['vehicules_types_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['vehicules_types_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Types de désinfections</td>
-				                        <td><?php if($_SESSION['typesDesinfections_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['typesDesinfections_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['typesDesinfections_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['typesDesinfections_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Etats</td>
-				                        <td><?php if($_SESSION['etats_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['etats_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['etats_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['etats_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                </table>
-				                <br/>
-				                <table class="table table-bordered">
-				                    <tr>
-				                        <th>COMMANDES</th>
-				                        <th>Lecture</th>
-				                        <th>Ajout Modification</th>
-				                        <th>Valider</th>
-				                        <th>Valider à la place de</th>
-				                        <th>Etre en charge</th>
-				                        <th>Abandonner Supprimer</th>
-				                    </tr>
-				                    <tr>
-				                        <td>Commandes</td>
-				                        <td><?php if($_SESSION['commande_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['commande_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['commande_valider'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['commande_valider_delegate'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['commande_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['commande_abandonner'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Centres de coûts</td>
-				                        <td><?php if($_SESSION['cout_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['cout_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td></td>
-				                        <td></td>
-				                        <td><?php if($_SESSION['cout_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['cout_supprimer'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                </table>
-				                <br/>
-				                <table class="table table-bordered">
-				                    <tr>
-				                        <th>RESERVE</th>
-				                        <th>Lecture</th>
-				                        <th>Ajout</th>
-				                        <th>Modification</th>
-				                        <th>Supprimer</th>
-				                        <th>Intégrer du matériel dans la réserve suite à une commande</th>
-				                        <th>Sortir du matériel de la réserve pour l'intégrer à un lot</th>
-				                    </tr>
-				                    <tr>
-				                        <td>Réserve</td>
-				                        <td><?php if($_SESSION['reserve_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['reserve_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['reserve_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['reserve_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['reserve_cmdVersReserve'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['reserve_ReserveVersLot'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                </table>
-				                <br/>
-				                <table class="table table-bordered">
-				                    <tr>
-				                        <th>GESTION EQUIPE</th>
-				                        <th>Lecture</th>
-				                        <th>Ajout</th>
-				                        <th>Modification</th>
-				                        <th>Modification de sa propre liste</th>
-				                        <th>Supprimer</th>
-				                    </tr>
-				                    <tr>
-				                        <td>Annuaire</td>
-				                        <td><?php if($_SESSION['annuaire_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['annuaire_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['annuaire_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td></td>
-				                        <td><?php if($_SESSION['annuaire_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Profils</td>
-				                        <td><?php if($_SESSION['profils_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['profils_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['profils_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td></td>
-				                        <td><?php if($_SESSION['profils_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Messages généraux</td>
-				                        <td></td>
-				                        <td><?php if($_SESSION['messages_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td></td>
-				                        <td></td>
-				                        <td><?php if($_SESSION['messages_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                    </tr>
-				                    <tr>
-				                        <td>Messages mails</td>
-				                        <td></td>
-				                        <td><?php if($_SESSION['contactMailGroupe'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td></td>
-				                        <td></td>
-				                        <td></td>
-				                    </tr>
-				                    <tr>
-				                        <td>ToDoList</td>
-				                        <td><?php if($_SESSION['todolist_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td></td>
-				                        <td><?php if($_SESSION['todolist_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td><?php if($_SESSION['todolist_perso'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-				                        <td></td>
-				                    </tr>
-				                </table>
-				            </div>
-			            </div>
-			        </div>
+		            </div>
 		        </div>
 		        <div class="col-md-4 col-sm-12 col-xs-12">
-			        <div class="col-md-12">
-			            <div class="box box-info">
-			                <div class="box-header with-border">
-			                    <h3 class="box-title">Mon mot de passe</h3>
-			                </div>
-			                <!-- /.box-header -->
-			                <div class="box-body">
-			                	<?php
-			                		if ($_SESSION['DELEGATION_ACTIVE']==0)
-			                		{ ?>
-				                    <form role="form" action="userPWD.php" method="POST">
-				                        <!-- text input -->
-				                        <div class="form-group">
-				                            <label>Mon mot de passe Actuel:</label>
-				                            <input type="password" class="form-control" placeholder="*****"
-				                                   name="old" required>
-				                        </div>
-				                        <div class="form-group">
-				                            <label>Nouveau mot de passe:</label>
-				                            <input type="password" class="form-control" placeholder="*****"
-				                                   name="new1" required>
-				                        </div>
-				                        <div class="form-group">
-				                            <label>Saisir à nouveau le nouveau mot de passe:</label>
-				                            <input type="password" class="form-control" placeholder="*****"
-				                                   name="new2" required>
-				                        </div>
-				                        <div class="box-footer">
-				                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
-				                        </div>
-				                    </form>
-				                <?php } else { ?>
-				                	<center>La modification du mot de passe est désactivée en mode délégation.</center>
-				                <?php } ?>
-			                </div>
-			            </div>
-			        </div>
-			        <div class="col-md-12">
-			        	<div class="box box-info">
-			                <div class="box-header with-border">
-			                    <h3 class="box-title">Mes paramètres personnels</h3>
-			                </div>
-			                <!-- /.box-header -->
-			                <div class="box-body">
-			                	<form role="form" action="userConfig.php" method="POST">
+		            <div class="box box-info">
+		                <div class="box-header with-border">
+		                    <h3 class="box-title">Mon mot de passe</h3>
+		                </div>
+		                <!-- /.box-header -->
+		                <div class="box-body">
+		                	<?php
+		                		if ($_SESSION['DELEGATION_ACTIVE']==0)
+		                		{ ?>
+			                    <form role="form" action="userPWD.php" method="POST">
+			                        <!-- text input -->
 			                        <div class="form-group">
-			                            <label>Rafraichissement automatique de la page d'accueil (secondes) :</label>
-			                            <input type="number" min="10" class="form-control" value="<?= $_SESSION['conf_accueilRefresh'] ?>" name="conf_accueilRefresh" required>
+			                            <label>Mon mot de passe Actuel:</label>
+			                            <input type="password" class="form-control" placeholder="*****"
+			                                   name="old" required>
 			                        </div>
 			                        <div class="form-group">
-			                            <label>Nombre de ligne par défaut dans les tableaux:</label>
-				                        <select class="form-control select2" style="width: 100%;" name="tableRowPerso">
-				                            <option value="10" <?php if($_SESSION['tableRowPerso']==10){echo 'selected';} ?>>10</option>
-				                            <option value="25" <?php if($_SESSION['tableRowPerso']==25){echo 'selected';} ?>>25</option>
-				                            <option value="50" <?php if($_SESSION['tableRowPerso']==50){echo 'selected';} ?>>50</option>
-				                            <option value="75" <?php if($_SESSION['tableRowPerso']==75){echo 'selected';} ?>>75</option>
-				                            <option value="100" <?php if($_SESSION['tableRowPerso']==100){echo 'selected';} ?>>100</option>
-				                            <option value="-1" <?php if($_SESSION['tableRowPerso']==-1){echo 'selected';} ?>>Tous</option>
-				                        </select>
+			                            <label>Nouveau mot de passe:</label>
+			                            <input type="password" class="form-control" placeholder="*****"
+			                                   name="new1" required>
 			                        </div>
 			                        <div class="form-group">
-			                        	<?php
-			                        		$lots = $_SESSION['lots_lecture'] OR $_SESSION['sac_lecture'] OR $_SESSION['sac2_lecture'] OR $_SESSION['materiel_lecture'];
-			                        		$reserves = $_SESSION['reserve_lecture'];
-			                        		$vehicules = $_SESSION['vehicules_lecture'];
-			                        		$desinfections = $_SESSION['desinfections_lecture'];
-			                        		$tenues = $_SESSION['tenues_lecture'] OR $_SESSION['tenuesCatalogue_lecture'];
-			                        	?>
-			                            <label>Présence des indicateurs sur la page d'accueil:</label><br/>
-			                            <?php
-			                            	if ($lots+$reserves+$vehicules+$tenues == 0)
-			                            	{ ?>
-			                            		<i><center>Votre profil actuel ne vous permet pas d'afficher des indicateurs sur votre dashboard.</center></i>
-			                            	<?php }
-			                            ?>
-				                        <div class="checkbox">
-		                                	<label><input <?php if($_SESSION['conf_indicateur1Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur1Accueil" <?php if ($lots == 0){echo 'disabled';} ?>> Matériels périmés (lots)</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($_SESSION['conf_indicateur2Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur2Accueil" <?php if ($lots == 0){echo 'disabled';} ?>> Matériels manquants (lots)</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($_SESSION['conf_indicateur3Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur3Accueil" <?php if ($lots == 0){echo 'disabled';} ?>> Lots en attente d'inventaire</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($_SESSION['conf_indicateur4Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur4Accueil" <?php if ($lots == 0){echo 'disabled';} ?>> Lots non conformes</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($_SESSION['conf_indicateur5Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur5Accueil" <?php if ($reserves == 0){echo 'disabled';} ?>> Matériels périmés (réserve)</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($_SESSION['conf_indicateur6Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur6Accueil" <?php if ($reserves == 0){echo 'disabled';} ?>> Matériels manquants (réserve)</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($_SESSION['conf_indicateur7Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur7Accueil" <?php if ($vehicules == 0){echo 'disabled';} ?>> Assurances véhicules</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($_SESSION['conf_indicateur8Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur8Accueil" <?php if ($vehicules == 0){echo 'disabled';} ?>> Contrôles techniques et révisions véhicules</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($_SESSION['conf_indicateur11Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur11Accueil" <?php if ($desinfections == 0){echo 'disabled';} ?>> Désinfections des véhicules</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($_SESSION['conf_indicateur9Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur9Accueil" <?php if ($tenues == 0){echo 'disabled';} ?>> Stock des tenues</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($_SESSION['conf_indicateur10Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur10Accueil" <?php if ($tenues == 0){echo 'disabled';} ?>> Non retour de tenues</label>
-		                                </div>
-			                        </div>
-			                        <div class="form-group">
-			                        	<?php
-			                        		$query = $db->prepare('SELECT p.*, h.notifications FROM PERSONNE_REFERENTE p JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE p.idPersonne = :idPersonne;');
-			                        		$query->execute(array('idPersonne' => $_SESSION['idPersonne']));
-			                        		$data = $query->fetch();
-			                        	?>
-			                            <label>Abonnements aux notifications journalières par mail:</label><br/>
-			                            <?php
-			                            	if ($data['notifications']==0 OR ($lots+$reserves+$vehicules+$tenues == 0))
-			                            	{ ?>
-			                            		<i><center>Votre profil actuel ne vous permet pas de vous abonner aux notifications mail.</center></i>
-			                            	<?php }
-			                            ?>
-				                        <div class="checkbox">
-		                                	<label><input <?php if($data['notif_lots_manquants'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_lots_manquants" <?php if ($lots == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Matériels manquants (lots)</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($data['notif_lots_peremptions'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_lots_peremptions" <?php if ($lots == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Matériels périmés (lots)</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($data['notif_lots_inventaires'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_lots_inventaires" <?php if ($lots == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Inventaires (lots)</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($data['notif_lots_conformites'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_lots_conformites" <?php if ($lots == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Lots non conformes</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($data['notif_reserves_manquants'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_reserves_manquants" <?php if ($reserves == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Matériels manquants (réserve)</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($data['notif_reserves_peremptions'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_reserves_peremptions" <?php if ($reserves == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Matériels périmés (réserve)</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($data['notif_reserves_inventaires'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_reserves_inventaires" <?php if ($reserves == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Inventaires (réserve)</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($data['notif_vehicules_assurances'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_assurances" <?php if ($vehicules == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Assurances véhicules</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($data['notif_vehicules_revisions'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_revisions" <?php if ($vehicules == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Révisions véhicules</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($data['notif_vehicules_desinfections'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_desinfections" <?php if ($desinfections == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Désinfections véhicules</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($data['notif_vehicules_ct'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_ct" <?php if ($vehicules == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Contrôles techniques véhicules</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($data['notif_tenues_stock'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_tenues_stock" <?php if ($tenues == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Stock des tenues</label>
-		                                </div>
-		                                <div class="checkbox">
-		                                	<label><input <?php if($data['notif_tenues_retours'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_tenues_retours" <?php if ($tenues == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Non retour de tenues</label>
-		                                </div>
+			                            <label>Saisir à nouveau le nouveau mot de passe:</label>
+			                            <input type="password" class="form-control" placeholder="*****"
+			                                   name="new2" required>
 			                        </div>
 			                        <div class="box-footer">
 			                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
 			                        </div>
 			                    </form>
-			                </div>
-			             </div>
-			        </div>
+			                <?php } else { ?>
+			                	<center>La modification du mot de passe est désactivée en mode délégation.</center>
+			                <?php } ?>
+		                </div>
+		            </div>
+		        	<div class="box box-info">
+		                <div class="box-header with-border">
+		                    <h3 class="box-title">Mes paramètres personnels</h3>
+		                </div>
+		                <!-- /.box-header -->
+		                <div class="box-body">
+		                	<form role="form" action="userConfig.php" method="POST">
+		                        <div class="form-group">
+		                            <label>Rafraichissement automatique de la page d'accueil (secondes) :</label>
+		                            <input type="number" min="10" class="form-control" value="<?= $_SESSION['conf_accueilRefresh'] ?>" name="conf_accueilRefresh" required>
+		                        </div>
+		                        <div class="form-group">
+		                            <label>Nombre de ligne par défaut dans les tableaux:</label>
+			                        <select class="form-control select2" style="width: 100%;" name="tableRowPerso">
+			                            <option value="10" <?php if($_SESSION['tableRowPerso']==10){echo 'selected';} ?>>10</option>
+			                            <option value="25" <?php if($_SESSION['tableRowPerso']==25){echo 'selected';} ?>>25</option>
+			                            <option value="50" <?php if($_SESSION['tableRowPerso']==50){echo 'selected';} ?>>50</option>
+			                            <option value="75" <?php if($_SESSION['tableRowPerso']==75){echo 'selected';} ?>>75</option>
+			                            <option value="100" <?php if($_SESSION['tableRowPerso']==100){echo 'selected';} ?>>100</option>
+			                            <option value="-1" <?php if($_SESSION['tableRowPerso']==-1){echo 'selected';} ?>>Tous</option>
+			                        </select>
+		                        </div>
+		                        <div class="form-group">
+		                        	<?php
+		                        		$lots = $_SESSION['lots_lecture'] OR $_SESSION['sac_lecture'] OR $_SESSION['sac2_lecture'] OR $_SESSION['materiel_lecture'];
+		                        		$reserves = $_SESSION['reserve_lecture'];
+		                        		$vehicules = $_SESSION['vehicules_lecture'];
+		                        		$desinfections = $_SESSION['desinfections_lecture'];
+		                        		$tenues = $_SESSION['tenues_lecture'] OR $_SESSION['tenuesCatalogue_lecture'];
+		                        	?>
+		                            <label>Présence des indicateurs sur la page d'accueil:</label><br/>
+		                            <?php
+		                            	if ($lots+$reserves+$vehicules+$tenues == 0)
+		                            	{ ?>
+		                            		<i><center>Votre profil actuel ne vous permet pas d'afficher des indicateurs sur votre dashboard.</center></i>
+		                            	<?php }
+		                            ?>
+			                        <div class="checkbox">
+	                                	<label><input <?php if($_SESSION['conf_indicateur1Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur1Accueil" <?php if ($lots == 0){echo 'disabled';} ?>> Matériels périmés (lots)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($_SESSION['conf_indicateur2Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur2Accueil" <?php if ($lots == 0){echo 'disabled';} ?>> Matériels manquants (lots)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($_SESSION['conf_indicateur3Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur3Accueil" <?php if ($lots == 0){echo 'disabled';} ?>> Lots en attente d'inventaire</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($_SESSION['conf_indicateur4Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur4Accueil" <?php if ($lots == 0){echo 'disabled';} ?>> Lots non conformes</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($_SESSION['conf_indicateur5Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur5Accueil" <?php if ($reserves == 0){echo 'disabled';} ?>> Matériels périmés (réserve)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($_SESSION['conf_indicateur6Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur6Accueil" <?php if ($reserves == 0){echo 'disabled';} ?>> Matériels manquants (réserve)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($_SESSION['conf_indicateur7Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur7Accueil" <?php if ($vehicules == 0){echo 'disabled';} ?>> Assurances véhicules</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($_SESSION['conf_indicateur8Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur8Accueil" <?php if ($vehicules == 0){echo 'disabled';} ?>> Contrôles techniques et révisions véhicules</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($_SESSION['conf_indicateur11Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur11Accueil" <?php if ($desinfections == 0){echo 'disabled';} ?>> Désinfections des véhicules</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($_SESSION['conf_indicateur9Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur9Accueil" <?php if ($tenues == 0){echo 'disabled';} ?>> Stock des tenues</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($_SESSION['conf_indicateur10Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur10Accueil" <?php if ($tenues == 0){echo 'disabled';} ?>> Non retour de tenues</label>
+	                                </div>
+		                        </div>
+		                        <div class="form-group">
+		                        	<?php
+		                        		$query = $db->prepare('SELECT p.*, h.notifications FROM PERSONNE_REFERENTE p JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE p.idPersonne = :idPersonne;');
+		                        		$query->execute(array('idPersonne' => $_SESSION['idPersonne']));
+		                        		$data = $query->fetch();
+		                        	?>
+		                            <label>Abonnements aux notifications journalières par mail:</label><br/>
+		                            <?php
+		                            	if ($data['notifications']==0 OR ($lots+$reserves+$vehicules+$tenues == 0))
+		                            	{ ?>
+		                            		<i><center>Votre profil actuel ne vous permet pas de vous abonner aux notifications mail.</center></i>
+		                            	<?php }
+		                            ?>
+			                        <div class="checkbox">
+	                                	<label><input <?php if($data['notif_lots_manquants'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_lots_manquants" <?php if ($lots == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Matériels manquants (lots)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_lots_peremptions'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_lots_peremptions" <?php if ($lots == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Matériels périmés (lots)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_lots_inventaires'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_lots_inventaires" <?php if ($lots == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Inventaires (lots)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_lots_conformites'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_lots_conformites" <?php if ($lots == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Lots non conformes</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_reserves_manquants'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_reserves_manquants" <?php if ($reserves == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Matériels manquants (réserve)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_reserves_peremptions'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_reserves_peremptions" <?php if ($reserves == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Matériels périmés (réserve)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_reserves_inventaires'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_reserves_inventaires" <?php if ($reserves == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Inventaires (réserve)</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_vehicules_assurances'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_assurances" <?php if ($vehicules == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Assurances véhicules</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_vehicules_revisions'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_revisions" <?php if ($vehicules == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Révisions véhicules</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_vehicules_desinfections'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_desinfections" <?php if ($desinfections == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Désinfections véhicules</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_vehicules_ct'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_ct" <?php if ($vehicules == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Contrôles techniques véhicules</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_tenues_stock'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_tenues_stock" <?php if ($tenues == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Stock des tenues</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_tenues_retours'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_tenues_retours" <?php if ($tenues == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Non retour de tenues</label>
+	                                </div>
+		                        </div>
+		                        <div class="box-footer">
+		                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
+		                        </div>
+		                    </form>
+		                </div>
+		             </div>
+		            <div class="box box-info">
+		                <div class="box-header with-border">
+		                    <h3 class="box-title">Mes couleurs de calendrier</h3>
+		                </div>
+		                <!-- /.box-header -->
+		                <div class="box-body">
+		                	<form role="form" action="userCalendarColors.php" method="POST">
+		                		<div class="form-group">
+					                <label>Lots péremptions</label>
+					                <input type="text" name="agenda_lots_peremption" value="<?=$_SESSION['agenda_lots_peremption']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>Réserves péremptions</label>
+					                <input type="text" name="agenda_reserves_peremption" value="<?=$_SESSION['agenda_reserves_peremption']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>Lots inventaires à faire</label>
+					                <input type="text" name="agenda_lots_inventaireAF" value="<?=$_SESSION['agenda_lots_inventaireAF']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>Lots inventaires faits</label>
+					                <input type="text" name="agenda_lots_inventaireF" value="<?=$_SESSION['agenda_lots_inventaireF']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>Commandes Livraisons</label>
+					                <input type="text" name="agenda_commandes_livraison" value="<?=$_SESSION['agenda_commandes_livraison']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>Véhicules Révisions</label>
+					                <input type="text" name="agenda_vehicules_revision" value="<?=$_SESSION['agenda_vehicules_revision']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>Véhicules CT</label>
+					                <input type="text" name="agenda_vehicules_ct" value="<?=$_SESSION['agenda_vehicules_ct']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>Véhicules assurance</label>
+					                <input type="text" name="agenda_vehicules_assurance" value="<?=$_SESSION['agenda_vehicules_assurance']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>Véhicules taches de maintenance</label>
+					                <input type="text" name="agenda_vehicules_maintenance" value="<?=$_SESSION['agenda_vehicules_maintenance']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>Vehicules désinfections faites</label>
+					                <input type="text" name="agenda_desinfections_desinfectionF" value="<?=$_SESSION['agenda_desinfections_desinfectionF']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>Vehicules désinfections à faire</label>
+					                <input type="text" name="agenda_desinfections_desinfectionAF" value="<?=$_SESSION['agenda_desinfections_desinfectionAF']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>Réserves inventaires à faire</label>
+					                <input type="text" name="agenda_reserves_inventaireAF" value="<?=$_SESSION['agenda_reserves_inventaireAF']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>Réserves inventaires faits</label>
+					                <input type="text" name="agenda_reserves_inventaireF" value="<?=$_SESSION['agenda_reserves_inventaireF']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>Tenues</label>
+					                <input type="text" name="agenda_tenues_tenues" value="<?=$_SESSION['agenda_tenues_tenues']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>ToDoList</label>
+					                <input type="text" name="agenda_tenues_toDoList" value="<?=$_SESSION['agenda_tenues_toDoList']?>" class="form-control my-colorpicker1">
+					            </div>
+		                        <div class="box-footer">
+		                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
+		                        </div>
+		                    </form>
+		                </div>
+		             </div>
 			    </div>		        
 	         </div>
         </section>

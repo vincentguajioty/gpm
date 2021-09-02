@@ -44,7 +44,7 @@ if ($_SESSION['todolist_lecture']==0)
 	                            <div class="box box-success">
 	                                <div class="box-header">
 	                                    <i class="ion ion-clipboard"></i>
-	                                    <h3 class="box-title"><?php echo $data['nomPersonne'] . ' ' . $data['prenomPersonne'] ; ?></h3>
+	                                    <h3 class="box-title"><?php echo $data['identifiant'] ; ?></h3>
 	                                    <div class="box-tools pull-right">
 	                                        <?php if ($_SESSION['todolist_modification']==1) {?><a href="todolistForm.php?idCreateur=<?= $_SESSION['idPersonne'] ?>&idExecutant=<?= $data['idPersonne'] ?>" class="btn btn-sm modal-form" title="Ajouter un tache"><i class="fa fa-plus"></i></a><?php } ?>
 	                                    </div>

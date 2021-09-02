@@ -74,7 +74,7 @@ if ($_SESSION['annuaire_lecture']==0)
                     </div>
                 </div>
 
-                <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="col-md-4 col-sm-12 col-xs-12">
                     <div class="box box-info">
                         <?php if ($_SESSION['annuaire_modification']==1) {?> <form role="form" action="annuaireUpdate.php?id=<?= $_GET['id'] ?>" method="POST"><?php }?>
                             <div class="box-header with-border">
@@ -148,7 +148,7 @@ if ($_SESSION['annuaire_lecture']==0)
                     </div>
                 </div>
 
-                <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="col-md-4 col-sm-12 col-xs-12">
                     <div class="box box-success">
                         <div class="box-header with-border">
                             <i class="fa fa-user"></i>
@@ -238,6 +238,77 @@ if ($_SESSION['annuaire_lecture']==0)
                         </div>
                         <div class="box-footer with-border">
                         	Légende: <i class="fa fa-check"></i> Activé | <i class="fa fa-minus"></i> Désactivé par l'utilisateur | <i class="fa fa-close"></i> Désactivé par le profil
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                    <div class="box box-success">
+                        <div class="box-header with-border">
+                            <i class="fa fa-user"></i>
+                            <h3 class="box-title">Couleurs personnelles du calendrier</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-group">
+				                <label>Lots péremptions</label>
+				                <input type="text" name="agenda_lots_peremption" value="<?=$data['agenda_lots_peremption']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>Réserves péremptions</label>
+				                <input type="text" name="agenda_reserves_peremption" value="<?=$data['agenda_reserves_peremption']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>Lots inventaires à faire</label>
+				                <input type="text" name="agenda_lots_inventaireAF" value="<?=$data['agenda_lots_inventaireAF']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>Lots inventaires faits</label>
+				                <input type="text" name="agenda_lots_inventaireF" value="<?=$data['agenda_lots_inventaireF']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>Commandes Livraisons</label>
+				                <input type="text" name="agenda_commandes_livraison" value="<?=$data['agenda_commandes_livraison']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>Véhicules Révisions</label>
+				                <input type="text" name="agenda_vehicules_revision" value="<?=$data['agenda_vehicules_revision']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>Véhicules CT</label>
+				                <input type="text" name="agenda_vehicules_ct" value="<?=$data['agenda_vehicules_ct']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>Véhicules assurance</label>
+				                <input type="text" name="agenda_vehicules_assurance" value="<?=$data['agenda_vehicules_assurance']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>Véhicules taches de maintenance</label>
+				                <input type="text" name="agenda_vehicules_maintenance" value="<?=$data['agenda_vehicules_maintenance']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>Vehicules désinfections faites</label>
+				                <input type="text" name="agenda_desinfections_desinfectionF" value="<?=$data['agenda_desinfections_desinfectionF']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>Vehicules désinfections à faire</label>
+				                <input type="text" name="agenda_desinfections_desinfectionAF" value="<?=$data['agenda_desinfections_desinfectionAF']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>Réserves inventaires à faire</label>
+				                <input type="text" name="agenda_reserves_inventaireAF" value="<?=$data['agenda_reserves_inventaireAF']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>Réserves inventaires faits</label>
+				                <input type="text" name="agenda_reserves_inventaireF" value="<?=$data['agenda_reserves_inventaireF']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>Tenues</label>
+				                <input type="text" name="agenda_tenues_tenues" value="<?=$data['agenda_tenues_tenues']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>ToDoList</label>
+				                <input type="text" name="agenda_tenues_toDoList" value="<?=$data['agenda_tenues_toDoList']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
                         </div>
                     </div>
                 </div>

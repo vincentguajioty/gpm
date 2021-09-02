@@ -34,11 +34,10 @@ if ($_SESSION['profils_lecture']==0)
         <section class="content">
             <?php include('confirmationBox.php'); ?>
             <div class="box">
-                <?php if ($_SESSION['profils_ajout']==1) {?>
-                	<div class="box-header">
-                        <h3 class="box-title"><a href="profilsForm.php" class="btn btn-sm btn-success">Ajouter un profil</a></h3> <h3 class="box-title"><a href="profilsFormDupliquer.php" class="btn btn-sm btn-success modal-form">Dupliquer un profil existant</a></h3>
-                	</div>
-                <?php } ?>
+            	<div class="box-header">
+                    <?php if ($_SESSION['profils_ajout']==1) {?><h3 class="box-title"><a href="profilsForm.php" class="btn btn-sm btn-success">Ajouter un profil</a></h3> <h3 class="box-title"><a href="profilsFormDupliquer.php" class="btn btn-sm btn-success modal-form">Dupliquer un profil existant</a></h3><?php } ?>
+                    <h3 class="box-title pull-right"><a href="profilsRecap.php" class="btn btn-sm btn-default">Tableau des habilitations</a></h3>
+            	</div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="tri2" class="table table-bordered table-hover">

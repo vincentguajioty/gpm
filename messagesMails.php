@@ -50,7 +50,7 @@ if ($_SESSION['contactMailGroupe']==0)
 	                                            $query2 = $db->query('SELECT * FROM VIEW_HABILITATIONS WHERE connexion_connexion = 1 AND mailPersonne IS NOT NULL AND mailPersonne <> \'\' ORDER BY nomPersonne, prenomPersonne;');
 	                                            while ($data2 = $query2->fetch())
 	                                            {
-	                                                echo '<option value=' . $data2['idPersonne'] . '>' . $data2['nomPersonne'] . ' ' . $data2['prenomPersonne'] . '</option>';
+	                                                echo '<option value=' . $data2['idPersonne'] . '>' . $data2['identifiant'] . '</option>';
 	                                            }
 	                                            $query2->closeCursor();
 	                                        ?>
@@ -60,7 +60,7 @@ if ($_SESSION['contactMailGroupe']==0)
 	                                            $query2 = $db->query('SELECT * FROM VIEW_HABILITATIONS WHERE (connexion_connexion = 0 OR connexion_connexion IS Null) AND mailPersonne IS NOT NULL AND mailPersonne <> \'\' ORDER BY nomPersonne, prenomPersonne;');
 	                                            while ($data2 = $query2->fetch())
 	                                            {
-	                                                echo '<option value=' . $data2['idPersonne'] . '>' . $data2['nomPersonne'] . ' ' . $data2['prenomPersonne'] . '</option>';
+	                                                echo '<option value=' . $data2['idPersonne'] . '>' . $data2['identifiant'] . '</option>';
 	                                            }
 	                                            $query2->closeCursor();
 	                                        ?>

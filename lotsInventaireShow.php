@@ -30,7 +30,7 @@ if ($_SESSION['lots_lecture']==0)
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <?php echo $data['dateInventaire']; ?> - Inventaire de <?php echo $data['libelleLot']; ?> - Réalisé par <?php echo $data['prenomPersonne']; ?> <?php echo $data['nomPersonne']; ?>
+                <?php echo $data['dateInventaire']; ?> - Inventaire de <?php echo $data['libelleLot']; ?> - Réalisé par <?php echo $data['identifiant']; ?>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="index.php"><i class="fa fa-home"></i>Accueil</a></li>

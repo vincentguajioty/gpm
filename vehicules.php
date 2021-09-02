@@ -48,6 +48,7 @@ if ($_SESSION['vehicules_lecture']==0)
                                 <th class="all">Libelle</th>
                                 <th class="not-mobile">Type</th>
                                 <th class="not-mobile">Etat</th>
+                                <th class="not-mobile">Responsable</th>
                                 <th class="not-mobile">Immatriculation</th>
                                 <th class="not-mobile">Marque/Modele</th>
                                 <th class="not-mobile">Contrôles</th>
@@ -57,7 +58,7 @@ if ($_SESSION['vehicules_lecture']==0)
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query('SELECT * FROM VEHICULES v LEFT OUTER JOIN ETATS e ON v.idEtat = e.idEtat LEFT OUTER JOIN VEHICULES_TYPES t ON v.idVehiculesType = t.idVehiculesType LEFT OUTER JOIN VEHICULES_ETATS ve ON v.idVehiculesEtat = ve.idVehiculesEtat;');
+                        $query = $db->query('SELECT * FROM VEHICULES v LEFT OUTER JOIN ETATS e ON v.idEtat = e.idEtat LEFT OUTER JOIN VEHICULES_TYPES t ON v.idVehiculesType = t.idVehiculesType LEFT OUTER JOIN VEHICULES_ETATS ve ON v.idVehiculesEtat = ve.idVehiculesEtat LEFT OUTER JOIN PERSONNE_REFERENTE p ON v.idResponsable = p.idPersonne;');
                         while ($data = $query->fetch())
                         {?>
                             <tr <?php if ($_SESSION['vehicules_lecture']==1) {?>data-href="vehiculesContenu.php?id=<?=$data['idVehicule']?>"<?php }?>>
@@ -65,57 +66,58 @@ if ($_SESSION['vehicules_lecture']==0)
                                 <td><?php echo $data['libelleVehicule']; ?></td>
                                 <td><?php echo $data['libelleType']; ?></td>
                                 <td><?php echo $data['libelleVehiculesEtat']; ?></td>
+                                <td><?php echo $data['identifiant']; ?></td>
                                 <td><?php echo $data['immatriculation']; ?></td>
                                 <td><?php echo $data['marqueModele']; ?></td>
                                 <td>
                                     <span class="badge bg-<?php
-                                            if($data['dateNextRevision']==date('Y-m-d'))
+                                        if($data['dateNextRevision']<date('Y-m-d'))
+                                        {
+                                            echo "red";
+                                        }
+                                        else
+                                        {
+                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextRevision'] . ' - '.$VEHICULES_REVISION_DELAIS_NOTIF.' days')))
                                             {
                                                 echo "orange";
                                             }
                                             else
                                             {
-                                                if($data['dateNextRevision']>date('Y-m-d'))
-                                                {
-                                                    echo "green";
-                                                }
-                                                else
-                                                {
-                                                    echo "red";
-                                                }
+                                                echo "green";
                                             }
+                                        }
                                         ?>">Révision</span>
                                     <span class="badge bg-<?php
-                                        if($data['dateNextCT']==date('Y-m-d'))
+                                        if($data['dateNextCT']<date('Y-m-d'))
                                         {
-                                            echo "orange";
+                                            echo "red";
                                         }
                                         else
                                         {
-                                            if($data['dateNextCT']>date('Y-m-d'))
+                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextCT'] . ' - '.$VEHICULES_CT_DELAIS_NOTIF.' days')))
                                             {
-                                                echo "green";
+                                                echo "orange";
                                             }
                                             else
                                             {
-                                                echo "red";
+                                                echo "green";
                                             }
                                         }
                                         ?>">CT</span>
                                     <span class="badge bg-<?php
-                                        if($data['assuranceExpiration']==date('Y-m-d'))
+                                        if($data['assuranceExpiration']<date('Y-m-d'))
                                         {
-                                            echo "orange";
+                                            echo "red";
                                         }
                                         else
                                         {
-                                            if($data['assuranceExpiration']>date('Y-m-d'))
+                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['assuranceExpiration'] . ' - '.$VEHICULES_ASSURANCE_DELAIS_NOTIF.' days')))
                                             {
-                                                echo "green";
+                                                echo "orange";
                                             }
                                             else
                                             {
-                                                echo "red";
+                                                echo "green";
                                             }
                                         }
                                         ?>">Assurance</span>

@@ -32,15 +32,18 @@ if ($nbDest > 0)
 	$data = $query->fetch();
 	$nbPerimeReserve = $data['nb'];
 	
-	$query = $db->query('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND (assuranceExpiration IS NOT NULL) AND ((assuranceExpiration < CURRENT_DATE) OR (assuranceExpiration = CURRENT_DATE));');
+	$query = $db->prepare('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND (assuranceExpiration IS NOT NULL) AND ((DATE_SUB(assuranceExpiration, INTERVAL :delai DAY) < CURRENT_DATE) OR (DATE_SUB(assuranceExpiration, INTERVAL :delai DAY) = CURRENT_DATE));');
+	$query->execute(array('delai'=>$VEHICULES_ASSURANCE_DELAIS_NOTIF));
 	$data = $query->fetch();
 	$nbAssurance = $data['nb'];
 	
-	$query = $db->query('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND ((dateNextRevision IS NOT NULL) AND (dateNextRevision < CURRENT_DATE));');
+	$query = $db->prepare('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND ((dateNextRevision IS NOT NULL) AND ((DATE_SUB(dateNextRevision, INTERVAL :delai DAY) < CURRENT_DATE) OR (DATE_SUB(dateNextRevision, INTERVAL :delai DAY) = CURRENT_DATE)));');
+	$query->execute(array('delai'=>$VEHICULES_REVISION_DELAIS_NOTIF));
 	$data = $query->fetch();
 	$nbRevisions = $data['nb'];
 
-	$query = $db->query('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND ((dateNextCT IS NOT NULL) AND ((dateNextCT < CURRENT_DATE) OR (dateNextCT = CURRENT_DATE)));');
+	$query = $db->prepare('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND ((dateNextCT IS NOT NULL) AND ((DATE_SUB(dateNextCT, INTERVAL :delai DAY) < CURRENT_DATE) OR (DATE_SUB(dateNextCT, INTERVAL :delai DAY) = CURRENT_DATE)));');
+	$query->execute(array('delai'=>$VEHICULES_CT_DELAIS_NOTIF));
 	$data = $query->fetch();
 	$nbCT = $data['nb'];
 
@@ -171,7 +174,8 @@ if ($nbDest > 0)
     if ($nbAssurance > 0)
 	{
 	    $message_Assurance = $message_Assurance . "Véhicules dont l'assurance est arrivée à échéance:<br/><ul>";
-	    $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND (assuranceExpiration IS NOT NULL) AND ((assuranceExpiration < CURRENT_DATE) OR (assuranceExpiration = CURRENT_DATE));');
+	    $query = $db->prepare('SELECT * FROM VEHICULES WHERE idEtat = 1 AND (assuranceExpiration IS NOT NULL) AND ((DATE_SUB(assuranceExpiration, INTERVAL :delai DAY) < CURRENT_DATE) OR (DATE_SUB(assuranceExpiration, INTERVAL :delai DAY) = CURRENT_DATE));');
+	    $query->execute(array('delai'=>$VEHICULES_ASSURANCE_DELAIS_NOTIF));
 	    while($data = $query->fetch())
 	    {
 	        $message_Assurance = $message_Assurance . "<li>".$data['libelleVehicule'] . "</li>";
@@ -182,7 +186,8 @@ if ($nbDest > 0)
     if ($nbRevisions > 0)
 	{
 	    $message_Revisions = $message_Revisions . "Véhicules à faire passer à la révision:<br/><ul>";
-	    $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND ((dateNextRevision IS NOT NULL) AND (dateNextRevision < CURRENT_DATE));');
+	    $query = $db->prepare('SELECT * FROM VEHICULES WHERE idEtat = 1 AND ((dateNextRevision IS NOT NULL) AND ((DATE_SUB(dateNextRevision, INTERVAL :delai DAY) < CURRENT_DATE) OR (DATE_SUB(dateNextRevision, INTERVAL :delai DAY) = CURRENT_DATE)));');
+	    $query->execute(array('delai'=>$VEHICULES_REVISION_DELAIS_NOTIF));
 	    while($data = $query->fetch())
 	    {
 	        $message_Revisions = $message_Revisions . "<li>".$data['libelleVehicule'] . "</li>";
@@ -193,7 +198,8 @@ if ($nbDest > 0)
 	if ($nbCT > 0)
 	{
 	    $message_CT = $message_CT . "Véhicules à faire passer au CT:<br/><ul>";
-	    $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND ((dateNextCT IS NOT NULL) AND ((dateNextCT < CURRENT_DATE) OR (dateNextCT = CURRENT_DATE)));');
+	    $query = $db->prepare('SELECT * FROM VEHICULES WHERE idEtat = 1 AND ((dateNextCT IS NOT NULL) AND ((DATE_SUB(dateNextCT, INTERVAL :delai DAY) < CURRENT_DATE) OR (DATE_SUB(dateNextCT, INTERVAL :delai DAY) = CURRENT_DATE)));');
+	    $query->execute(array('delai'=>$VEHICULES_CT_DELAIS_NOTIF));
 	    while($data = $query->fetch())
 	    {
 	        $message_CT = $message_CT . "<li>".$data['libelleVehicule'] . "</li>";

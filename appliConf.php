@@ -106,8 +106,6 @@ if ($_SESSION['appli_conf']==0)
         </section>
 
         <section class="content">
-            <?php include('confirmationBox.php'); ?>
-            <!-- general form elements disabled -->
             <div class="box box-warning">
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -157,7 +155,6 @@ if ($_SESSION['appli_conf']==0)
 
         <!-- Main content -->
         <section class="content">
-            <!-- general form elements disabled -->
             <div class="box box-info">
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -250,8 +247,42 @@ if ($_SESSION['appli_conf']==0)
             </div>
 
         </section>
+        
+        <section class="content-header">
+            <h1>
+                Délais de notification des véhicules
+            </h1>
+        </section>
+        
+        <section class="content">
+            <div class="box box-warning">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form role="form" action="appliConfUpdateVehicules.php" method="POST">
+                        <div class="form-group">
+                            <label>Jours d'anticipation des CT:</label>
+                            <input type="number" min="0" class="form-control" value="<?=$data['vehicules_ct_delais_notif']?>" name="vehicules_ct_delais_notif" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Jours d'anticipation des révisions:</label>
+                            <input type="number" min="0" class="form-control" value="<?=$data['vehicules_revision_delais_notif']?>" name="vehicules_revision_delais_notif" required>
+                        </div>
+						<div class="form-group">
+                            <label>Jours d'anticipation des péremptions d'assurance:</label>
+                            <input type="number" min="0" class="form-control" value="<?=$data['vehicules_assurance_delais_notif']?>" name="vehicules_assurance_delais_notif" required>
+                        </div>
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-body -->
 
-         <section class="content-header">
+            </div>
+
+        </section>
+
+        <section class="content-header">
             <h1>
                 Gestion du mode maintenance
             </h1>

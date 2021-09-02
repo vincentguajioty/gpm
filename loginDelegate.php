@@ -172,6 +172,22 @@ else
 	$_SESSION['conf_indicateur9Accueil']         = $data['conf_indicateur9Accueil'];
 	$_SESSION['conf_indicateur10Accueil']        = $data['conf_indicateur10Accueil'];
 	$_SESSION['conf_indicateur11Accueil']        = $data['conf_indicateur11Accueil'];
+	
+	$_SESSION['agenda_lots_peremption']              = $data['agenda_lots_peremption'];
+	$_SESSION['agenda_reserves_peremption']          = $data['agenda_reserves_peremption'];
+	$_SESSION['agenda_lots_inventaireAF']            = $data['agenda_lots_inventaireAF'];
+	$_SESSION['agenda_lots_inventaireF']             = $data['agenda_lots_inventaireF'];
+	$_SESSION['agenda_commandes_livraison']          = $data['agenda_commandes_livraison'];
+	$_SESSION['agenda_vehicules_revision']           = $data['agenda_vehicules_revision'];
+	$_SESSION['agenda_vehicules_ct']                 = $data['agenda_vehicules_ct'];
+	$_SESSION['agenda_vehicules_assurance']          = $data['agenda_vehicules_assurance'];
+	$_SESSION['agenda_vehicules_maintenance']        = $data['agenda_vehicules_maintenance'];
+	$_SESSION['agenda_desinfections_desinfectionF']  = $data['agenda_desinfections_desinfectionF'];
+	$_SESSION['agenda_desinfections_desinfectionAF'] = $data['agenda_desinfections_desinfectionAF'];
+	$_SESSION['agenda_reserves_inventaireAF']        = $data['agenda_reserves_inventaireAF'];
+	$_SESSION['agenda_reserves_inventaireF']         = $data['agenda_reserves_inventaireF'];
+	$_SESSION['agenda_tenues_tenues']                = $data['agenda_tenues_tenues'];
+	$_SESSION['agenda_tenues_toDoList']              = $data['agenda_tenues_toDoList'];
 
 	$_SESSION['derniereConnexion']               = $data['derniereConnexion'];
 

@@ -51,7 +51,22 @@ else
 				conf_indicateur10Accueil      = 1,
 				conf_indicateur11Accueil      = 1,
 				conf_accueilRefresh           = 120,
-				tableRowPerso                 = 25
+				tableRowPerso                 = 25,
+				agenda_lots_peremption              = "#dd4b39",
+				agenda_reserves_peremption          = "#dd4b39",
+				agenda_lots_inventaireAF            = "#00c0ef",
+				agenda_lots_inventaireF             = "#00c0ef",
+				agenda_commandes_livraison          = "#00a65a",
+				agenda_vehicules_revision           = "#f39c12",
+				agenda_vehicules_ct                 = "#f39c12",
+				agenda_vehicules_assurance          = "#f39c12",
+				agenda_vehicules_maintenance        = "#f39c12",
+				agenda_desinfections_desinfectionF  = "#f39c12",
+				agenda_desinfections_desinfectionAF = "#f39c12",
+				agenda_reserves_inventaireAF        = "#3c8dbc",
+				agenda_reserves_inventaireF         = "#3c8dbc",
+				agenda_tenues_tenues                = "#00a65a",
+				agenda_tenues_toDoList              = "#3c8db"
 			;');
 	    $query2->execute(array(
 	        'identifiant'    => $data['identifiant'],

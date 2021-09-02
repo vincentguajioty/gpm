@@ -24,6 +24,8 @@
 <!-- datepicker -->
 <script src="plugins/datepicker/bootstrap-datepicker.js"></script>
 <script src="plugins/datepicker/locales/bootstrap-datepicker.fr.js"></script>
+<!-- bootstrap color picker -->
+<script src="plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
 <!-- Bootstrap WYSIHTML5 -->
 <script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 <!-- Slimscroll -->
@@ -82,6 +84,9 @@
             });
             return false;
         });
+        
+        //Colorpicker
+		$(".my-colorpicker1").colorpicker();
     });
 </script>
 

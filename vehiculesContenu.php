@@ -118,19 +118,19 @@ if ($_SESSION['vehicules_lecture']==0)
 								<tr>
                                     <td>Expiration d'assurance</td>
                                     <td><span class="badge bg-<?php
-                                        if($data['assuranceExpiration']==date('Y-m-d'))
+                                        if($data['assuranceExpiration']<date('Y-m-d'))
                                         {
-                                            echo "orange";
+                                            echo "red";
                                         }
                                         else
                                         {
-                                            if($data['assuranceExpiration']>date('Y-m-d'))
+                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['assuranceExpiration'] . ' - '.$VEHICULES_ASSURANCE_DELAIS_NOTIF.' days')))
                                             {
-                                                echo "green";
+                                                echo "orange";
                                             }
                                             else
                                             {
-                                                echo "red";
+                                                echo "green";
                                             }
                                         }
                                         ?>"><?= $data['assuranceExpiration'] ?></span></td>
@@ -138,40 +138,40 @@ if ($_SESSION['vehicules_lecture']==0)
 								<tr>
                                     <td>Prochaine révision</td>
                                     <td><span class="badge bg-<?php
-                                            if($data['dateNextRevision']==date('Y-m-d'))
+                                        if($data['dateNextRevision']<date('Y-m-d'))
+                                        {
+                                            echo "red";
+                                        }
+                                        else
+                                        {
+                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextRevision'] . ' - '.$VEHICULES_REVISION_DELAIS_NOTIF.' days')))
                                             {
                                                 echo "orange";
                                             }
                                             else
                                             {
-                                                if($data['dateNextRevision']>date('Y-m-d'))
-                                                {
-                                                    echo "green";
-                                                }
-                                                else
-                                                {
-                                                    echo "red";
-                                                }
+                                                echo "green";
                                             }
+                                        }
                                         ?>"><?= $data['dateNextRevision'] ?></span>
                                     </td>
                                 </tr>
 								<tr>
                                     <td>Prochain contrôle technique</td>
                                     <td><span class="badge bg-<?php
-                                        if($data['dateNextCT']==date('Y-m-d'))
+                                        if($data['dateNextCT']<date('Y-m-d'))
                                         {
-                                            echo "orange";
+                                            echo "red";
                                         }
                                         else
                                         {
-                                            if($data['dateNextCT']>date('Y-m-d'))
+                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextCT'] . ' - '.$VEHICULES_CT_DELAIS_NOTIF.' days')))
                                             {
-                                                echo "green";
+                                                echo "orange";
                                             }
                                             else
                                             {
-                                                echo "red";
+                                                echo "green";
                                             }
                                         }
                                         ?>"><?= $data['dateNextCT'] ?></span></td>

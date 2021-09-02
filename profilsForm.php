@@ -12,6 +12,7 @@ require_once('logCheck.php');
 ATTENTION: modification d'un profil necessite à mettre à jour:
 - formulaire des profils
 - vue DB VIEW_HABILITATIONS
+- profilsRecap.php
 - scripts Add et Update
 - script duplicate profils
 - page de visualisation des droits depuis la page annuaireContenu.php

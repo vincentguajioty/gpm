@@ -389,7 +389,16 @@ if ($_SESSION['cout_lecture']==0)
                     </div>
                     <!-- /.widget-user -->
                 </div>
-
+				<div class="col-md-12">
+					<div class="box box-success">
+						<div class="box-header with-border">
+							<h3 class="box-title">Activité mensuelle du centre de cout (somme des dépenses et des gains par mois)</h3>
+						</div>
+						<div class="box-body chart-responsive">
+							<div class="chart" id="bar-chart" style="height: 300px;"></div>
+						</div>
+					</div>
+				</div>
             </div>
         </section>
         <!-- /.content -->
@@ -405,6 +414,48 @@ if ($_SESSION['cout_lecture']==0)
 <!-- ./wrapper -->
 
 <?php include('scripts.php'); ?>
+<script>
+	$(function () {
+		"use strict";
+		
+		<?php
+			$entrants = $db->prepare("
+				SELECT
+					YEAR(dateOperation) as annee,
+					MONTH(dateOperation) as mois,
+					COALESCE(SUM(montantEntrant), 0) as montantEntrant,
+					COALESCE(SUM(montantSortant), 0) as montantSortant
+				FROM
+					CENTRE_COUTS_OPERATIONS
+				WHERE
+					idCentreDeCout = :idCentreDeCout
+				GROUP BY
+					YEAR(dateOperation),
+					MONTH(dateOperation)
+				;"
+			);
+			$entrants->execute(array('idCentreDeCout'=>$_GET['id']));
+		?>
+		
+	    var line = new Morris.Bar({
+	      element: 'bar-chart',
+	      resize: true,
+	      data: [
+	        <?php
+	        	while($entrant = $entrants->fetch())
+	        	{
+	        		echo "{x: '".$entrant['annee'].'-'.$entrant['mois']."', montantEntrant: ".$entrant['montantEntrant'].", montantSortant: ".round($entrant['montantSortant'],2)."},";
+	        	}
+	        ?>
+	      ],
+	      xkey: 'x',
+	      ykeys: ['montantEntrant','montantSortant'],
+	      labels: ['Entrant','Sortant'],
+	      barColors: ['#5cc709','#ff6b00'],
+	      hideHover: 'auto'
+	    });
+  });
+</script>
 </body>
 </html>
 

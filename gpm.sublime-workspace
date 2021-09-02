@@ -232,7 +232,7 @@
 	],
 	"find":
 	{
-		"height": 39.0
+		"height": 27.0
 	},
 	"find_in_files":
 	{
@@ -249,6 +249,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"aop",
 			"multiple",
 			"aop.",
 			"contenu",
@@ -375,8 +376,7 @@
 			"DOCUMENTS_PLAN_VHF",
 			"?>",
 			"formatDocPlanVHF",
-			"nomDocPlanVHF",
-			"idDocPlanVHF"
+			"nomDocPlanVHF"
 		],
 		"highlight": true,
 		"in_selection": false,

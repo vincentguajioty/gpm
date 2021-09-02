@@ -36,7 +36,7 @@ if (isset($_GET['id']))
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>
-                                    <option value="<?php echo $data2['idPersonne']; ?>" <?php if (isset($data['idCreateur']) AND ($data2['idPersonne'] == $data['idCreateur'])) { echo 'selected'; } ?>><?php echo $data2['nomPersonne'] . ' ' . $data2['prenomPersonne']; ?></option>
+                                    <option value="<?php echo $data2['idPersonne']; ?>" <?php if (isset($data['idCreateur']) AND ($data2['idPersonne'] == $data['idCreateur'])) { echo 'selected'; } ?>><?php echo $data2['identifiant']; ?></option>
                                     <?php
                                 }
                                 $query2->closeCursor(); ?>
@@ -87,7 +87,7 @@ if (isset($_GET['id']))
 					                {
 					                    echo " selected ";
 					                }
-					                echo '>' . $data2['nomPersonne'] . ' ' . $data2['prenomPersonne'] . '</option>';
+					                echo '>' . $data2['identifiant'] . '</option>';
                                 }
                                 $query2->closeCursor();?>
 	                        </select>

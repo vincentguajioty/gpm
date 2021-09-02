@@ -201,6 +201,120 @@ include('logCheck.php');
 				        </div>
 				    <?php } ?>
 				    
+				    <?php
+						if ($_SESSION['vehicules_lecture'] OR $_SESSION['vehicules_ajout'] OR $_SESSION['vehicules_modification'] OR $_SESSION['vehicules_suppression'])
+						{
+					?>
+						<div class="col-md-12">
+				            <div class="box box-success">
+				                <div class="box-header with-border">
+				                    <i class="fa fa-ambulance"></i>
+				
+				                    <h3 class="box-title">Véhicules dont j'ai la charge</h3>
+				                </div>
+				
+				                <!-- /.box-header -->
+				                <div class="box-body">
+				                	<table class="table table-bordered">
+				                        <tr>
+				                            <th>Libelle</th>
+				                            <th>Etat</th>
+				                            <th>Contrôles</th>
+				                            <th>Notifications</th>
+				                            <th></th>
+				                        </tr>
+				                        <?php
+				                        $query = $db->prepare('SELECT * FROM VEHICULES v LEFT OUTER JOIN ETATS e ON v.idEtat = e.idEtat LEFT OUTER JOIN VEHICULES_TYPES t ON v.idVehiculesType = t.idVehiculesType LEFT OUTER JOIN VEHICULES_ETATS ve ON v.idVehiculesEtat = ve.idVehiculesEtat LEFT OUTER JOIN PERSONNE_REFERENTE p ON v.idResponsable = p.idPersonne WHERE v.idResponsable = :idPersonne;');
+				                        $query->execute(array('idPersonne' => $_SESSION['idPersonne']));
+				                        while ($data = $query->fetch())
+				                        {?>
+				                            <tr>
+				                                <td><?php echo $data['libelleVehicule']; ?></td>
+				                                <td><?php echo $data['libelleVehiculesEtat']; ?></td>
+				                                <td>
+				                                    <span class="badge bg-<?php
+				                                        if($data['dateNextRevision']<date('Y-m-d'))
+				                                        {
+				                                            echo "red";
+				                                        }
+				                                        else
+				                                        {
+				                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextRevision'] . ' - '.$VEHICULES_REVISION_DELAIS_NOTIF.' days')))
+				                                            {
+				                                                echo "orange";
+				                                            }
+				                                            else
+				                                            {
+				                                                echo "green";
+				                                            }
+				                                        }
+				                                        ?>">Révision</span>
+				                                    <span class="badge bg-<?php
+				                                        if($data['dateNextCT']<date('Y-m-d'))
+				                                        {
+				                                            echo "red";
+				                                        }
+				                                        else
+				                                        {
+				                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextCT'] . ' - '.$VEHICULES_CT_DELAIS_NOTIF.' days')))
+				                                            {
+				                                                echo "orange";
+				                                            }
+				                                            else
+				                                            {
+				                                                echo "green";
+				                                            }
+				                                        }
+				                                        ?>">CT</span>
+				                                    <span class="badge bg-<?php
+				                                        if($data['assuranceExpiration']<date('Y-m-d'))
+				                                        {
+				                                            echo "red";
+				                                        }
+				                                        else
+				                                        {
+				                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['assuranceExpiration'] . ' - '.$VEHICULES_ASSURANCE_DELAIS_NOTIF.' days')))
+				                                            {
+				                                                echo "orange";
+				                                            }
+				                                            else
+				                                            {
+				                                                echo "green";
+				                                            }
+				                                        }
+				                                        ?>">Assurance</span>
+				                                    <span class="badge bg-<?php
+				                                        if($data['alerteDesinfection'] == Null)
+				                                        {
+				                                            echo "grey";
+				                                        }
+				                                        else
+				                                        {
+				                                            if($data['alerteDesinfection'] == 0)
+				                                            {
+				                                                echo "green";
+				                                            }
+				                                            else
+				                                            {
+				                                                echo "red";
+				                                            }
+				                                        }
+				                                        ?>">Désinfections</span>
+				                                </td>
+				                                <td><?php echo $data['libelleEtat']; ?> (<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>)</td>
+				                                <td>
+				                                    <a href="vehiculesContenu.php?id=<?=$data['idVehicule']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
+				                                </td>
+				                            </tr>
+				                            <?php
+				                        }
+				                        $query->closeCursor(); ?>
+				                    </table>
+				                </div>
+				            </div>
+				        </div>
+					<?php } ?>
+				    
 				    
 			        <div class="col-md-6">
 			            <div class="box box-success">
@@ -290,7 +404,7 @@ include('logCheck.php');
 		                    		$commandes = $_SESSION['commande_lecture'];
 		                    		$tenues = $_SESSION['tenues_lecture'];
 		
-		                    		if($lots)
+		                    		if ($lots)
 		                    		{
 				            			$query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE peremptionNotification IS NOT NULL AND idEtat = 1;');
 				                        while ($data = $query->fetch())
@@ -299,7 +413,7 @@ include('logCheck.php');
 			                                    'date'     => $data['peremption'],
 			                                    'title'    => 'Peremption',
 			                                    'subTitle' => $data['libelleLot'] . ' > ' . $data['libelleSac'] . ' > ' . $data['libelleEmplacement'] . ' > ' . $data['libelleMateriel'],
-			                                    'color'    => '#dd4b39',
+			                                    'color'    => $_SESSION['agenda_lots_peremption'],
 			                                    'url'      => 'indexModalCalendrier.php?case=premptionLot&id='.$data['idElement'],
 			                                ];
 				                        }
@@ -314,7 +428,7 @@ include('logCheck.php');
 			                                    'date'     => $data['peremptionReserve'],
 			                                    'title'    => 'Peremption',
 			                                    'subTitle' => $data['libelleConteneur'] . ' > ' . $data['libelleMateriel'],
-			                                    'color'    => '#dd4b39',
+			                                    'color'    => $_SESSION['agenda_reserves_peremption'],
 			                                    'url'      => 'indexModalCalendrier.php?case=premptionReserve&id='.$data['idReserveElement'],
 			                                ];
 				                        }
@@ -329,10 +443,14 @@ include('logCheck.php');
 		                                        'date'     => date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +'.$data['frequenceInventaire'].' day')),
 		                                        'title'    => 'Inventaire à faire',
 		                                        'subTitle' => $data['libelleLot'],
-		                                        'color'    => '#00c0ef',
+		                                        'color'    => $_SESSION['agenda_lots_inventaireAF'],
 		                                        'url'      => 'indexModalCalendrier.php?case=inventaireLot&id='.$data['idLot'],
 		                                    ];
 		    	                        }
+		    	                    }
+
+		    	                    if ($lots)
+			                        {
 		    	                        $query = $db->query('SELECT * FROM INVENTAIRES i LEFT OUTER JOIN LOTS_LOTS l ON i.idLot = l.idLot WHERE idEtat = 1;');
 		    	                        while ($data = $query->fetch())
 		    	                        {
@@ -340,7 +458,7 @@ include('logCheck.php');
 		                                        'date'     => $data['dateInventaire'],
 		                                        'title'    => 'Inventaire fait',
 		                                        'subTitle' => $data['libelleLot'],
-		                                        'color'    => '#00c0ef',
+		                                        'color'    => $_SESSION['agenda_lots_inventaireF'],
 		                                        'url'      => 'indexModalCalendrier.php?case=inventaireLot&id='.$data['idLot'],
 		                                    ];
 		    	                        }
@@ -355,7 +473,7 @@ include('logCheck.php');
 			                                    'date'     => date_format(date_create($data['dateLivraisonPrevue']), 'Y-m-d'),
 			                                    'title'    => 'Livraison commande',
 			                                    'subTitle' => $data['idCommande'],
-			                                    'color'    => '#00a65a',
+			                                    'color'    => $_SESSION['agenda_commandes_livraison'],
 			                                    'url'      => 'indexModalCalendrier.php?case=commandes&id='.$data['idCommande'],
 			                                ];
 				                        }
@@ -370,7 +488,7 @@ include('logCheck.php');
 			                                    'date'     => date_format(date_create($data['dateNextRevision']), 'Y-m-d'),
 			                                    'title'    => 'Révision',
 			                                    'subTitle' => $data['libelleVehicule'],
-			                                    'color'    => '#f39c12',
+			                                    'color'    => $_SESSION['agenda_vehicules_revision'],
 			                                    'url'      => 'indexModalCalendrier.php?case=vehiculesRev&id='.$data['idVehicule'],
 			                                ];
 				                        }
@@ -385,7 +503,7 @@ include('logCheck.php');
 			                                    'date'     => date_format(date_create($data['dateNextCT']), 'Y-m-d'),
 			                                    'title'    => 'CT',
 			                                    'subTitle' => $data['libelleVehicule'],
-			                                    'color'    => '#f39c12',
+			                                    'color'    => $_SESSION['agenda_vehicules_ct'],
 			                                    'url'      => 'indexModalCalendrier.php?case=vehiculesCT&id='.$data['idVehicule'],
 			                                ];
 				                        }
@@ -400,7 +518,7 @@ include('logCheck.php');
 			                                    'date'     => date_format(date_create($data['assuranceExpiration']), 'Y-m-d'),
 			                                    'title'    => 'Assurance',
 			                                    'subTitle' => $data['libelleVehicule'],
-			                                    'color'    => '#f39c12',
+			                                    'color'    => $_SESSION['agenda_vehicules_assurance'],
 			                                    'url'      => 'indexModalCalendrier.php?case=vehiculesAssu&id='.$data['idVehicule'],
 			                                ];
 				                        }
@@ -415,7 +533,7 @@ include('logCheck.php');
 			                                    'date'     => date_format(date_create($data['dateMaintenance']), 'Y-m-d'),
 			                                    'title'    => 'Maintenance de',
 			                                    'subTitle' => $data['libelleVehicule'],
-			                                    'color'    => '#f39c12',
+			                                    'color'    => $_SESSION['agenda_vehicules_maintenance'],
 			                                    'url'      => 'indexModalCalendrier.php?case=vehiculesMaintenance&id='.$data['idMaintenance'],
 			                                ];
 				                        }
@@ -436,7 +554,7 @@ include('logCheck.php');
 			                                    'date'     => date_format(date_create($data['dateDesinfection']), 'Y-m-d'),
 			                                    'title'    => 'Désinfection faite',
 			                                    'subTitle' => $data['libelleVehicule'],
-			                                    'color'    => '#f39c12',
+			                                    'color'    => $_SESSION['agenda_desinfections_desinfectionF'],
 			                                    'url'      => 'indexModalCalendrier.php?case=vehiculesDesinfectionFaite&id='.$data['idVehiculesDesinfection'],
 			                                ];
 				                        }
@@ -464,7 +582,7 @@ include('logCheck.php');
 			                                    'date'     => date('Y-m-d', strtotime($data['dateDesinfection']. ' + '.$data['frequenceDesinfection'].' days')),
 			                                    'title'    => 'Désinfection à faire',
 			                                    'subTitle' => $data['libelleVehicule'],
-			                                    'color'    => '#f39c12',
+			                                    'color'    => $_SESSION['agenda_desinfections_desinfectionAF'],
 			                                    'url'      => 'indexModalCalendrier.php?case=vehiculesDesinfectionAFaire&id='.$data['idDesinfectionsAlerte'],
 			                                ];
 				                        }
@@ -479,10 +597,14 @@ include('logCheck.php');
 			                                    'date'     => date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +'.$data['frequenceInventaire'].' day')),
 			                                    'title'    => 'Inventaire à faire',
 			                                    'subTitle' => $data['libelleConteneur'],
-			                                    'color'    => '#3c8dbc',
+			                                    'color'    => $_SESSION['agenda_reserves_inventaireAF'],
 			                                    'url'      => 'indexModalCalendrier.php?case=inventaireReserve&id='.$data['idConteneur'],
 			                                ];
 				                        }
+				                    }
+
+				                    if ($reserves)
+			                        {
 				                        $query = $db->query('SELECT * FROM RESERVES_INVENTAIRES i LEFT OUTER JOIN RESERVES_CONTENEUR c ON i.idConteneur = c.idConteneur;');
 				                        while ($data = $query->fetch())
 				                        {
@@ -490,7 +612,7 @@ include('logCheck.php');
 			                                    'date'     => $data['dateInventaire'],
 			                                    'title'    => 'Inventaire fait',
 			                                    'subTitle' => $data['libelleConteneur'],
-			                                    'color'    => '#3c8dbc',
+			                                    'color'    => $_SESSION['agenda_reserves_inventaireF'],
 			                                    'url'      => 'indexModalCalendrier.php?case=inventaireReserve&id='.$data['idConteneur'],
 			                                ];
 				                        }
@@ -505,24 +627,27 @@ include('logCheck.php');
 			                                    'date'     => date_format(date_create($data['dateRetour']), 'Y-m-d'),
 			                                    'title'    => 'Tenues',
 			                                    'subTitle' => $data['nomPersonne'] . ' ' . $data['prenomPersonne'] . $data['personneNonGPM'] . ' - ' . $data['libelleCatalogueTenue'],
-			                                    'color'    => '#00a65a',
+			                                    'color'    => $_SESSION['agenda_tenues_tenues'],
 			                                    'url'      => 'indexModalCalendrier.php?case=tenuesRecup&id='.$data['idTenue'],
 			                                ];
 				                        }
 			                        }
-		
-		                         	$query = $db->prepare('SELECT * FROM TODOLIST_PERSONNES tp LEFT OUTER JOIN TODOLIST t ON tp.idTache=t.idTache WHERE idExecutant = :idExecutant AND realisee=0;');
-		                         	$query->execute(array('idExecutant'=>$_SESSION['idPersonne']));
-			                        while ($data = $query->fetch())
+
+			                        if ($tenues)
 			                        {
-			                        	$events[] = [
-		                                    'date'     => date_format(date_create($data['dateExecution']), 'Y-m-d'),
-		                                    'title'    => 'ToDoList',
-		                                    'subTitle' => $data['titre'],
-		                                    'color'    => '#3c8dbc',
-		                                    'url'      => 'todolistForm.php?id='.$data['idTache'],
-		                                ];
-			                        }
+			                         	$query = $db->prepare('SELECT * FROM TODOLIST_PERSONNES tp LEFT OUTER JOIN TODOLIST t ON tp.idTache=t.idTache WHERE idExecutant = :idExecutant AND realisee=0;');
+			                         	$query->execute(array('idExecutant'=>$_SESSION['idPersonne']));
+				                        while ($data = $query->fetch())
+				                        {
+				                        	$events[] = [
+			                                    'date'     => date_format(date_create($data['dateExecution']), 'Y-m-d'),
+			                                    'title'    => 'ToDoList',
+			                                    'subTitle' => $data['titre'],
+			                                    'color'    => $_SESSION['agenda_tenues_toDoList'],
+			                                    'url'      => 'todolistForm.php?id='.$data['idTache'],
+			                                ];
+				                        }
+				                    }
 			                        
 		            			?>
 		                        <div id="calendar"></div>
