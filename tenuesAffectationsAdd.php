@@ -36,7 +36,7 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout d'une affectation de tenue.", '1', NULL);
+            writeInLogs("Ajout d'une affectation de l'élément de tenue ".$_POST['idCatalogueTenue']." à la personne ".$_POST['idPersonne'].$_POST['personneNonGPM'], '1', NULL);
             $_SESSION['returnMessage'] = 'Element ajouté avec succès.';
             $_SESSION['returnType'] = '1';
             
@@ -45,7 +45,7 @@ else
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout de l'affectation.", '3', NULL);
+            writeInLogs("Erreur lors de l'ajout d'une affectation de l'élément de tenue ".$_POST['idCatalogueTenue']." à la personne ".$_POST['idPersonne'].$_POST['personneNonGPM'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de l'affectation.";
             $_SESSION['returnType'] = '2';
     }

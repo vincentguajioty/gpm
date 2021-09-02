@@ -13,7 +13,7 @@ else
 
 	$query = $db->query('UPDATE CONFIG SET maintenance = 0;');
 
-	writeInLogs("Désactivation de la page de maintenance.", '1', NULL);
+	writeInLogs("Désactivation de la page de maintenance.", '2', NULL);
 	echo "<script type='text/javascript'>document.location.replace('index.php');</script>";
 
 }

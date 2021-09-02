@@ -12,7 +12,6 @@ if ($_SESSION['profils_modification']==0)
 else
 {
     $connexion_connexion = ($_POST['connexion_connexion'] ==1) ? 1 : 0;
-    $logs_lecture = ($_POST['logs_lecture'] ==1) ? 1 : 0;
     $annuaire_lecture = ($_POST['annuaire_lecture'] ==1) ? 1 : 0;
     $annuaire_ajout = ($_POST['annuaire_ajout'] ==1) ? 1 : 0;
     $annuaire_modification = ($_POST['annuaire_modification'] ==1) ? 1 : 0;
@@ -130,7 +129,6 @@ else
             libelleProfil                = :libelleProfil,
             descriptifProfil             = :descriptifProfil,
             connexion_connexion          = :connexion_connexion,
-            logs_lecture                 = :logs_lecture,
             annuaire_lecture             = :annuaire_lecture,
             annuaire_ajout               = :annuaire_ajout,
             annuaire_modification        = :annuaire_modification,
@@ -247,7 +245,6 @@ else
         'libelleProfil'                => $_POST['libelleProfil'],
         'descriptifProfil'             => $_POST['descriptifProfil'],
         'connexion_connexion'          => $connexion_connexion,
-        'logs_lecture'                 => $logs_lecture,
         'annuaire_lecture'             => $annuaire_lecture,
         'annuaire_ajout'               => $annuaire_ajout,
         'annuaire_modification'        => $annuaire_modification,

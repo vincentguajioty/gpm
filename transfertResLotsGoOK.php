@@ -59,7 +59,7 @@ else
     //GESTION DES DATES
 	if (isset($reserve['peremptionReserve']))
 	{
-		if ($lot['peremption'] != Null)
+		if ($lot['peremption'] != Null AND $lot['quantite'])
 		{
 			if ($lot['peremption'] > $reserve['peremptionReserve'])
 			{

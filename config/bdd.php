@@ -33,6 +33,14 @@ $db = createDB();
 
 function writeInLogs($contentEVT, $levelEVT, $userSpecifique)
 {
+    require_once('config.php');
+    global $DEBUG;
+
+    if($levelEVT == 4 AND $DEBUG == 0)
+    {
+        exit;
+    }
+
     switch($levelEVT)
     {
         case '1':
@@ -45,6 +53,10 @@ function writeInLogs($contentEVT, $levelEVT, $userSpecifique)
 
         case '3':
             $logsLevel = 'ERROR';
+        break;
+
+        case '4':
+            $logsLevel = 'DEBUG';
         break;
 
         default:
@@ -62,6 +74,7 @@ function writeInLogs($contentEVT, $levelEVT, $userSpecifique)
             $userSpecifique = 'SYSTEM';
         }
     }
+    $userSpecifique .= $_SESSION['LOGS_DELEGATION_PREFIXE'];
 
     if(isset($_SERVER['REMOTE_ADDR']) AND $_SERVER['REMOTE_ADDR'] != NULL AND $_SERVER['REMOTE_ADDR'] != '')
     {

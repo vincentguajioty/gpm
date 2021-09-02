@@ -41,13 +41,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification d'une caution.", '1', NULL);
+            writeInLogs("Modification d'une caution avec idCaution ".$_GET['id'], '1', NULL);
             $_SESSION['returnMessage'] = 'Caution modifiée avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification d'une caution.", '3', NULL);
+            writeInLogs("Erreur inconnue lors de la modification d'une caution avec idCaution ".$_GET['id'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de la modification.";
             $_SESSION['returnType'] = '2';
     }

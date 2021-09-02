@@ -9,10 +9,9 @@ if ($_SESSION['actionsMassives']==0)
 }
 else
 {
-
-    writeInLogs("Action massive 12 lancée", '1', NULL);
-    $query = $db->query('UPDATE MATERIEL_ELEMENT SET peremption = Null, peremptionNotification = Null;');
-    writeInLogs("Action massive 12 terminée", '1', NULL);
+	writeInLogs("Action massive 14 lancée", '1', NULL);
+    $query = $db->query('UPDATE MATERIEL_ELEMENT SET peremptionNotification = DATE_SUB(peremption, INTERVAL 20 DAY) WHERE peremption IS NOT NULL;');
+    writeInLogs("Action massive 14 terminée", '1', NULL);
 
     $_SESSION['returnMessage'] = 'Requète lancée et terminée';
     $_SESSION['returnType'] = '1';

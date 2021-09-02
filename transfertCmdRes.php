@@ -224,7 +224,7 @@ if ($_SESSION['reserve_cmdVersReserve']==0)
 			                            	<td><?php
 				                            	if (isset($_SESSION['transfertPeremption']))
 												{
-													if ($data['peremptionReserve'] != Null)
+													if ($data['peremptionReserve'] != Null AND $data['quantiteReserve'] > 0)
 													{
 														if ($data['peremptionReserve'] > $_SESSION['transfertPeremption'])
 														{

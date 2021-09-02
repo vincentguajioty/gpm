@@ -9,6 +9,7 @@ if ($_SESSION['actionsMassives']==0)
 }
 else
 {
+    writeInLogs("Action massive 33 lancée", '1', NULL);
 
     $sacs = $db->query('SELECT idSac FROM MATERIEL_SAC WHERE idLot IS NULL;');
     while($sac = $sacs->fetch())
@@ -31,7 +32,8 @@ else
         $delete->execute(array('idSac'=>$sac['idSac']));
     }
 
-    writeInLogs("Action massive 33", '1', NULL);
+    writeInLogs("Action massive 33 terminée", '1', NULL);
+
     $_SESSION['returnMessage'] = 'Requète lancée et terminée';
     $_SESSION['returnType'] = '1';
 

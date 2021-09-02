@@ -40,13 +40,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout d'une caution.", '1', NULL);
+            writeInLogs("Ajout d'une caution pour la personne ".$_POST['idPersonne'].$_POST['personneNonGPM'], '1', NULL);
             $_SESSION['returnMessage'] = 'Caution ajoutée avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout de d'une caution.", '3', NULL);
+            writeInLogs("Erreur lors de l'ajout d'une caution pour la personne ".$_POST['idPersonne'].$_POST['personneNonGPM'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de l'ajout de la caution.";
             $_SESSION['returnType'] = '2';
     }

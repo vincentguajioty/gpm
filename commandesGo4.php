@@ -28,14 +28,14 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification de la commande " . $_GET['id'], '1', NULL);
+            writeInLogs("Modification de la commande " . $_GET['id']." sur la page des renseignements sur le passage auprès des fournisseurs.", '1', NULL);
             addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " modifie les informations de commande données par le fournisseur.", "12");
             $_SESSION['returnMessage'] = 'Informations fournisseur modifiées avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification de la commande.", '3', NULL);
+            writeInLogs("Erreur inconnue lors de la modification de la commande ".$_GET['id']." sur la page des renseignements sur le passage auprès des fournisseurs.", '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la modification des informations fournisseur.";
             $_SESSION['returnType'] = '2';
 
@@ -54,12 +54,12 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification de la commande " . $_GET['id'], '1', NULL);
+            writeInLogs("Passage de la commande " . $_GET['id']." auprès du fournisseur.", '1', NULL);
             addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " a lancer la commande chez le fournisseur. La commande est désormais en attente de livraison.", "21");
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification de la commande.", '3', NULL);
+            writeInLogs("Erreur inconnue lors du passage de la commande ".$_GET['id']." auprès du fournisseur.", '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la modification de la commande.";
             $_SESSION['returnType'] = '2';
 

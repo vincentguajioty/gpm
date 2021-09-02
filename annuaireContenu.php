@@ -29,7 +29,7 @@ if ($_SESSION['annuaire_lecture']==0)
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                <?= $personne['nomPersonne'] ?> <?= $personne['prenomPersonne'] ?>
+                <?= $personne['nomPersonne'] ?> <?= $personne['prenomPersonne'] ?> (<?= $personne['identifiant'] ?>)
             </h1>
             <ol class="breadcrumb">
                 <li><a href="index.php"><i class="fa fa-home"></i>Accueil</a></li>
@@ -258,8 +258,6 @@ if ($_SESSION['annuaire_lecture']==0)
                                 <?php if($personne['maintenance'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Se connecter même en mode maitenance
                                 </br>
                                 <?php if($personne['verrouIP'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Gérer les adresses IP bloquées
-                                </br>
-                                <?php if($personne['logs_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Lire les logs
                                 </br>
                                 <?php if($personne['actionsMassives'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Mener des actions massives directement en base
                                 </br>

@@ -50,7 +50,7 @@ else
         ;');
     $query->execute(array(
         'identifiant'    => $_POST['identifiant'],
-        'motDePasse'     => password_hash($_POST['identifiant'], PASSWORD_DEFAULT),
+        'motDePasse'     => password_hash($SELPRE.$_POST['identifiant'].$SELPOST, PASSWORD_DEFAULT),
         'nomPersonne'    => $_POST['nomPersonne'],
         'prenomPersonne' => $_POST['prenomPersonne'],
         'mailPersonne'   => $_POST['mailPersonne'],

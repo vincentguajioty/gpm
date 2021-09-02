@@ -227,7 +227,7 @@ if ($_SESSION['reserve_ReserveVersLot']==0)
 										    $reserve = $query->fetch();
 			                            	if (isset($reserve['peremptionReserve']))
 												{
-													if ($data['peremption'] != Null)
+													if ($data['peremption'] != Null AND $data['quantite'])
 													{
 														if ($data['peremption'] > $reserve['peremptionReserve'])
 														{

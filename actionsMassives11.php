@@ -9,13 +9,11 @@ if ($_SESSION['actionsMassives']==0)
 }
 else
 {
-
+	writeInLogs("Action massive 11 lancée", '1', NULL);
     $query = $db->query('DELETE FROM MATERIEL_ELEMENT WHERE idEmplacement IS NULL;');
+    writeInLogs("Action massive 11 terminée", '1', NULL);
 
-    $codeSQL = $query->errorCode();
-
-    writeInLogs("Action massive 11 - Code MySQL retourné: ".$codeSQL, '1', NULL);
-    $_SESSION['returnMessage'] = 'Requète lancée et terminée avec le code '.$codeSQL;
+    $_SESSION['returnMessage'] = 'Requète lancée et terminée';
     $_SESSION['returnType'] = '1';
 
 	checkAllConf();

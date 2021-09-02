@@ -45,12 +45,14 @@ if ($_SESSION['actionsMassives']==0)
             		if(password_verify($SELPRE.$_POST['mdp'].$SELPOST, $user['motDePasse']))
             		{
             			$_SESSION['actionsMassives_authent_ok'] = 1;
+            			writeInLogs("Accès autorisé aux actions massives.", '1', NULL);
             		}
             		else
             		{
             			echo '<div class="alert alert-warning">';
 				        echo '<i class="icon fa fa-warning"></i> Erreur dans la vérification de l\'utilisateur.';
 				        echo '</div>';
+				        writeInLogs("Erreur d'authentification de l'utilisateur pour accéder aux actions massives.", '2', NULL);
             		}
             	}
             ?>
@@ -98,6 +100,10 @@ if ($_SESSION['actionsMassives']==0)
             			$M13 = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT WHERE quantiteAlerte != quantite - 1;');
             			$M13 = $M13->fetch();
             			$M13 = $M13['nb'];
+            			
+            			$M14 = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT WHERE peremptionNotification != DATE_SUB(peremption, INTERVAL 20 DAY);');
+            			$M14 = $M14->fetch();
+            			$M14 = $M14['nb'];
             			
             			$M21 = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_EMPLACEMENT WHERE idSac Is Null;');
             			$M21 = $M21->fetch();
@@ -209,6 +215,13 @@ if ($_SESSION['actionsMassives']==0)
             						<td>Modifier tous les matériels de la section opérationnelle pour changer la quantité d'alerte avec la valeur: quantité actuelle - 1.</td>
             						<td><?= $M13 ?></td>
             						<td><a href="actionsMassives13.php" class="btn btn-xs btn-warning spinnerAttenteClick"><i class="fa fa-database"></i> Lancer l'action</a></td>
+            					</tr>
+            					<tr>
+            						<td>14</td>
+            						<td>Matériels</td>
+            						<td>Modifier tous les matériels de la section opérationnelle pour changer la date d'alerte avec la valeur: date de péremption - 20 jours.</td>
+            						<td><?= $M14 ?></td>
+            						<td><a href="actionsMassives14.php" class="btn btn-xs btn-warning spinnerAttenteClick"><i class="fa fa-database"></i> Lancer l'action</a></td>
             					</tr>
             					<tr>
             						<td>21</td>

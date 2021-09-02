@@ -44,9 +44,10 @@ else
         'idReserveElement' => $_SESSION['transfertIdReserveElement'],
         'quantiteReserve' =>$_SESSION['transfertqttTrans']
     ));
-    $query = $db->prepare('UPDATE COMMANDES_MATERIEL SET quantiteAtransferer = quantiteAtransferer - :quantiteReserve WHERE idCommande = :idCommande;');
+    $query = $db->prepare('UPDATE COMMANDES_MATERIEL SET quantiteAtransferer = quantiteAtransferer - :quantiteReserve WHERE idCommande = :idCommande AND idMaterielCatalogue = :idMaterielCatalogue;');
     $query->execute(array(
         'idCommande' => $_SESSION['transfertCmd'],
+        'idMaterielCatalogue' => $_SESSION['transfertIdMaterielCatalogue'],
         'quantiteReserve' =>$_SESSION['transfertqttTrans']
     ));
     
@@ -54,7 +55,7 @@ else
     //GESTION DES DATES
 	if (isset($_SESSION['transfertPeremption']))
 	{
-		if ($data['peremptionReserve'] != Null)
+		if ($data['peremptionReserve'] != Null AND $data['quantiteReserve'] > 0)
 		{
 			if ($data['peremptionReserve'] > $_SESSION['transfertPeremption'])
 			{

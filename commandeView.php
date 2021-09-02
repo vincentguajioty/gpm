@@ -180,7 +180,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                                while ($data2 = $query2->fetch())
 	                                                {
 	                                                    ?>
-	                                                    <option value="<?php echo $data2['idEtat']; ?>" <?php if ($data['idEtat'] == $data2['idEtat']) { echo 'selected'; } ?> ><?php echo $data2['libelleEtat']; ?></option>
+	                                                    <option value="<?php echo $data2['idEtat']; ?>" <?php if ($data['idEtat'] == $data2['idEtat']) { echo 'selected'; } ?> ><?php echo $data2['idEtat'].' - '.$data2['libelleEtat']; ?></option>
 	                                                    <?php
 	                                                }
 	                                                $query2->closeCursor(); ?>

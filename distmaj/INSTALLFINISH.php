@@ -32,7 +32,7 @@
         <div class="alert alert-success">
             <center>
                 <h4>MISE A JOUR TERMINEE AVEC SUCCES</h4>
-                Rappel: le dossier "DOCUMENTS" qui contient les pièces jointes n'a pas été migré automatiquement, il faut le transférer à la main de l'ancien dossier d'installation vers le nouveau.
+                Rappel: les dossiers "DOCUMENTS" et "LOGS" qui contiennent les pièces jointes et fichiers de logs n'ont pas été migrés automatiquement, il faut les transférer à la main de l'ancien dossier d'installation vers le nouveau.
                 <br/><br/>
                 Par mesure de sécurité, veuillez supprimer le dossier DISTMAJ .
                 <br/><br/>

@@ -10,14 +10,14 @@ if ($_SESSION['commande_ajout']==0 AND $_SESSION['commande_etreEnCharge']==0)
 }
 else
 {
-    $_GET['idCommande'] = ($_GET['idCommande'] == Null) ? Null : $_GET['idCommande'];
-    $_POST['idMaterielCatalogue'] = ($_POST['idMaterielCatalogue'] == Null) ? Null : $_POST['idMaterielCatalogue'];
-    $_POST['quantiteCommande'] = ($_POST['quantiteCommande'] == Null) ? Null : $_POST['quantiteCommande'];
+    $_GET['idCommande']                   = ($_GET['idCommande']                   == Null) ? Null : $_GET['idCommande'];
+    $_POST['idMaterielCatalogue']         = ($_POST['idMaterielCatalogue']         == Null) ? Null : $_POST['idMaterielCatalogue'];
+    $_POST['quantiteCommande']            = ($_POST['quantiteCommande']            == Null) ? Null : $_POST['quantiteCommande'];
     $_POST['referenceProduitFournisseur'] = ($_POST['referenceProduitFournisseur'] == Null) ? Null : $_POST['referenceProduitFournisseur'];
-    $_POST['remiseProduit'] = ($_POST['remiseProduit'] == Null) ? Null : $_POST['remiseProduit'];
-    $_POST['prixProduitHT'] = ($_POST['prixProduitHT'] == Null) ? Null : $_POST['prixProduitHT'];
-    $_POST['taxeProduit'] = ($_POST['taxeProduit'] == Null) ? Null : $_POST['taxeProduit'];
-    $_POST['prixProduitTTC'] = ($_POST['prixProduitTTC'] == Null) ? Null : $_POST['prixProduitTTC'];
+    $_POST['remiseProduit']               = ($_POST['remiseProduit']               == Null) ? Null : $_POST['remiseProduit'];
+    $_POST['prixProduitHT']               = ($_POST['prixProduitHT']               == Null) ? Null : $_POST['prixProduitHT'];
+    $_POST['taxeProduit']                 = ($_POST['taxeProduit']                 == Null) ? Null : $_POST['taxeProduit'];
+    $_POST['prixProduitTTC']              = ($_POST['prixProduitTTC']              == Null) ? Null : $_POST['prixProduitTTC'];
     
     
     if ($_POST['idMaterielCatalogue'] == -1)
@@ -86,12 +86,12 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification de la commande " . $_GET['idCommande'], '1', NULL);
+            writeInLogs("Ajout d'un item à la commande " . $_GET['idCommande'], '1', NULL);
             addCommandeComment($_GET['idCommande'], $_SESSION['identifiant'] . " ajoute à la commande " . $data2['libelleMateriel'], "12");
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification de la commande.", '3', NULL);
+            writeInLogs("Erreur inconnue lors d'un item à la commande " . $_GET['idCommande'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la modification de la commande.";
             $_SESSION['returnType'] = '2';
 

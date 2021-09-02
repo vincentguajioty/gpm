@@ -31,6 +31,18 @@ else
             'remarquesLivraison' => $_POST['remarquesLivraison'],
             'dateLivraisoneffective' => $_POST['dateLivraisoneffective']
         ));
+        switch($query->errorCode())
+        {
+            case '00000':
+                writeInLogs("Réception de la commande " . $_GET['id']." sans SAV.", '1', NULL);
+                break;
+
+            default:
+                writeInLogs("Erreur inconnue lors de la réception de la commande ".$_GET['id']." sans SAV.", '3', NULL);
+                $_SESSION['returnMessage'] = "Erreur inconnue lors la réception de la commande.";
+                $_SESSION['returnType'] = '2';
+
+        }
         addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " réceptionne la commande sans déclencher de SAV. La commande n'a plus qu'à être clôturée.", "25");
 
         $sujet = "[" . $APPNAME . "] Livraison de la commande " .$_GET['id']." effectuée avec succès.";
@@ -120,6 +132,18 @@ else
             'remarquesLivraison' => $_POST['remarquesLivraison'],
             'dateLivraisoneffective' => $_POST['dateLivraisoneffective']
         ));
+        switch($query->errorCode())
+        {
+            case '00000':
+                writeInLogs("Réception de la commande " . $_GET['id']." avec SAV.", '1', NULL);
+                break;
+
+            default:
+                writeInLogs("Erreur inconnue lors de la réception de la commande ".$_GET['id']." avec SAV.", '3', NULL);
+                $_SESSION['returnMessage'] = "Erreur inconnue lors la réception de la commande.";
+                $_SESSION['returnType'] = '2';
+
+        }
         addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " réceptionne la commande et engage un SAV.", "30");
 
         $sujet = "[" . $APPNAME . "] Livraison de la commande " .$_GET['id']." effectuée avec engagement d'un SAV.";
@@ -201,19 +225,6 @@ else
                 }
             }
         }
-    }
-
-    switch($query->errorCode())
-    {
-        case '00000':
-            writeInLogs("Modification de la commande " . $_GET['id'], '1', NULL);
-            break;
-
-        default:
-            writeInLogs("Erreur inconnue lors de la modification de la commande.", '3', NULL);
-            $_SESSION['returnMessage'] = "Erreur inconnue lors la réception de la commande.";
-            $_SESSION['returnType'] = '2';
-
     }
 
     echo "<script type='text/javascript'>document.location.replace('commandesToutes.php');</script>";

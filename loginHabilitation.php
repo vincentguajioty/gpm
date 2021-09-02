@@ -19,6 +19,8 @@ require_once 'config/config.php';
         <section class="content">
             <div class="error-page">
 
+                <?php writeInLogs("Accès non-autorisé sur la page " . $_SERVER['HTTP_REFERER'], '2', NULL); ?>
+
                 <div class="error-content">
                     <h3><i class="fa fa-warning text-red"></i> Oups! Erreur d'habilitation.</h3>
 

@@ -9,7 +9,7 @@ if ($_SESSION['actionsMassives']==0)
 }
 else
 {
-
+    writeInLogs("Action massive 22 lancée", '1', NULL);
     $querySelect = $db->query('
     	SELECT
     		c.idEmplacement
@@ -39,7 +39,8 @@ else
 
     $db->query($query);
 
-    writeInLogs("Action massive 22", '1', NULL);
+    writeInLogs("Action massive 22 terminée", '1', NULL);
+
     $_SESSION['returnMessage'] = 'Requète lancée et terminée';
     $_SESSION['returnType'] = '1';
 

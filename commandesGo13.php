@@ -22,6 +22,18 @@ else
             'idCommande' => $_GET['id'],
             'remarquesValidation' => $_POST['remarquesValidation']
         ));
+        switch($query->errorCode())
+        {
+            case '00000':
+                writeInLogs("Validation positive de la commande " . $_GET['id'], '1', NULL);
+                break;
+
+            default:
+                writeInLogs("Erreur inconnue lors de la validation positive de la commande ".$_GET['id'], '3', NULL);
+                $_SESSION['returnMessage'] = "Erreur inconnue lors l'enregistrement de la validation.";
+                $_SESSION['returnType'] = '2';
+
+        }
         addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " valide la commande avec le commentaire: " . $_POST['remarquesValidation'], "13");
 
         $sujet = "[" . $APPNAME . "] Validation positive de la commande " .$_GET['id'];
@@ -110,6 +122,18 @@ else
             'idCommande' => $_GET['id'],
             'remarquesValidation' => '('.$_SESSION['identifiant'].') '.$_POST['remarquesValidation']
         ));
+        switch($query->errorCode())
+        {
+            case '00000':
+                writeInLogs("Validation positive par valideur omniscient de la commande " . $_GET['id'], '1', NULL);
+                break;
+
+            default:
+                writeInLogs("Erreur inconnue lors de la validation positive par valideur omniscient de la commande ".$_GET['id'], '3', NULL);
+                $_SESSION['returnMessage'] = "Erreur inconnue lors l'enregistrement de la validation.";
+                $_SESSION['returnType'] = '2';
+
+        }
         addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " valide via délégation la commande avec le commentaire: " . $_POST['remarquesValidation'], "13");
 
         $sujet = "[" . $APPNAME . "] Validation positive de la commande " .$_GET['id'];
@@ -198,6 +222,18 @@ else
             'idCommande' => $_GET['id'],
             'remarquesValidation' => $_POST['remarquesValidation']
         ));
+        switch($query->errorCode())
+        {
+            case '00000':
+                writeInLogs("Validation négative de la commande " . $_GET['id'], '1', NULL);
+                break;
+
+            default:
+                writeInLogs("Erreur inconnue lors de la validation négative de la commande ".$_GET['id'], '3', NULL);
+                $_SESSION['returnMessage'] = "Erreur inconnue lors l'enregistrement de la validation.";
+                $_SESSION['returnType'] = '2';
+
+        }
         addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " refuse la commande avec le commentaire: " . $_POST['remarquesValidation'], "19");
 
         $sujet = "[" . $APPNAME . "] Validation négative de la commande " .$_GET['id'];
@@ -286,6 +322,18 @@ else
             'idCommande' => $_GET['id'],
             'remarquesValidation' => '('.$_SESSION['identifiant'].') '.$_POST['remarquesValidation']
         ));
+        switch($query->errorCode())
+        {
+            case '00000':
+                writeInLogs("Validation négative par valideur omniscient de la commande " . $_GET['id'], '1', NULL);
+                break;
+
+            default:
+                writeInLogs("Erreur inconnue lors de la validation négative par valideur omniscient de la commande ".$_GET['id'], '3', NULL);
+                $_SESSION['returnMessage'] = "Erreur inconnue lors l'enregistrement de la validation.";
+                $_SESSION['returnType'] = '2';
+
+        }
         addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " refuse via délégation la commande avec le commentaire: " . $_POST['remarquesValidation'], "19");
 
         $sujet = "[" . $APPNAME . "] Validation négative de la commande " .$_GET['id'];
@@ -366,19 +414,6 @@ else
                 }
             }
         }
-    }
-
-    switch($query->errorCode())
-    {
-        case '00000':
-            writeInLogs("Action de validation sur la commande " . $_GET['id'], '1', NULL);
-            break;
-
-        default:
-            writeInLogs("Erreur inconnue lors de la modification de la commande.", '3', NULL);
-            $_SESSION['returnMessage'] = "Erreur inconnue lors l'enregistrement de la validation.";
-            $_SESSION['returnType'] = '2';
-
     }
 
     echo "<script type='text/javascript'>document.location.replace('commandesToutes.php');</script>";

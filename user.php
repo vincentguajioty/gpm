@@ -104,8 +104,6 @@ require_once('logCheck.php');
 				                    </br>
 				                    <?php if($_SESSION['verrouIP'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Gérer les adresses IP bloquées
 				                    </br>
-				                    <?php if($_SESSION['logs_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Lire les logs
-				                    </br>
 				                    <?php if($_SESSION['actionsMassives'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Mener des actions massives directement en base
 				                    </br>
 				                </div>

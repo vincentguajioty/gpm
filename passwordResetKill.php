@@ -25,6 +25,7 @@ if ($RESETPASSWORD == 0)
     <?php
         $delete = $db->prepare('DELETE FROM RESETPASSWORD WHERE idReset = :idReset;');
         $delete->execute(array('idReset'=>$_GET['idReset']));
+        writeInLogs("Suppression à la demande de l'utilisateur du tocken de reset de mot de passe.", '2', NULL);
     ?>
 
 

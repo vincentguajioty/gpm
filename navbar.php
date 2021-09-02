@@ -640,15 +640,6 @@ require_once 'config/bdd.php';
                         ?>
                         ><a href="actionsMassives.php"><i class="fa fa-minus-circle"></i> <span>Actions massives en base</span></a></li>
                     <?php } ?>
-                    <?php if ($_SESSION['logs_lecture']==1){ ?>
-                        <li <?php
-                        if ($_SESSION['page'] == 501)
-                        {
-                            echo 'class="active"';
-                        }
-                        ?>
-                        ><a href="logs.php?dateSup=<?php echo date('Y-m-d', strtotime(date('Y-m-d') . ' +' . ' 1 days')); ?>&dateInf=<?php echo date('Y-m-d', strtotime(date('Y-m-d') . ' -' . ' 30 days')); ?>"><i class="fa fa-history"></i> <span>Logs de la base</span></a></li>
-                    <?php } ?>
                     <li <?php
                     if ($_SESSION['page'] == 503)
                     {

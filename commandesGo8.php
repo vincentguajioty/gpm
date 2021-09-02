@@ -25,14 +25,14 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification de la commande " . $_GET['id'], '1', NULL);
+            writeInLogs("Abandon de la commande " . $_GET['id'], '1', NULL);
             addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " abandonne la commande.", "7");
             $_SESSION['returnMessage'] = 'Commande abandonnée.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification de la commande.", '3', NULL);
+            writeInLogs("Erreur inconnue lors de l'abandon de la commande ".$_GET['id'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors l'abandon de la commande.";
             $_SESSION['returnType'] = '2';
 

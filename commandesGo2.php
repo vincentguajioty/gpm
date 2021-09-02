@@ -25,14 +25,14 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification de la commande " . $_GET['id'], '1', NULL);
+            writeInLogs("Soumission à validation de la commande " . $_GET['id'], '1', NULL);
             addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " envoie la demande de validation.", "14");
             $_SESSION['returnMessage'] = 'Demande de validation enregistrée.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification de la commande.", '3', NULL);
+            writeInLogs("Erreur inconnue lors de la soumission à validation de la commande " . $_GET['id'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la demande de validation.";
             $_SESSION['returnType'] = '2';
 

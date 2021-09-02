@@ -12,6 +12,7 @@ if ($_SESSION['commande_ajout']==0 AND $_SESSION['commande_valider']==0 AND $_SE
 }
 else
 {
+    writeInLogs("Ajout d'un commentaire dans la timeline de la commande " . $_GET['id'], '1', NULL);
     addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " ajoute le commentaire: " . $_POST['notes'], "36");
     echo "<script>window.location = document.referrer;</script>";
 }

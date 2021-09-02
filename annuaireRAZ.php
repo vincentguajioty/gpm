@@ -18,7 +18,7 @@ else {
 
     $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET motDePasse = :motDePasse WHERE idPersonne = :idPersonne ;');
     $query->execute(array(
-        'motDePasse' => password_hash($data['identifiant'], PASSWORD_DEFAULT),
+        'motDePasse' => password_hash($SELPRE.$data['identifiant'].$SELPOST, PASSWORD_DEFAULT),
         'idPersonne' => $_GET['id']
     ));
 

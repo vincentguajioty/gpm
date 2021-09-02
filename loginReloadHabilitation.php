@@ -30,7 +30,6 @@ $query->execute(array(
 $data = $query->fetch();
 
 $_SESSION['connexion_connexion']          = $data['connexion_connexion'];
-$_SESSION['logs_lecture']                 = $data['logs_lecture'];
 $_SESSION['annuaire_lecture']             = $data['annuaire_lecture'];
 $_SESSION['annuaire_ajout']               = $data['annuaire_ajout'];
 $_SESSION['annuaire_modification']        = $data['annuaire_modification'];

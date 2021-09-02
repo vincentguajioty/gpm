@@ -4,6 +4,7 @@ session_start();
 if ($_SESSION['identifiant'] == Null)
     echo "<script type='text/javascript'>document.location.replace('logout.php');</script>";
 require_once 'config/bdd.php';
+require_once 'config/config.php';
 
 if ($_POST['new1'] != $_POST['new2'])
 {

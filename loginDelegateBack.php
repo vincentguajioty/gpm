@@ -31,7 +31,6 @@ else
 	$_SESSION['mailPersonne']                 = $data['mailPersonne'];
 	$_SESSION['telPersonne']                  = $data['telPersonne'];
 	$_SESSION['fonction']                     = $data['fonction'];
-	$_SESSION['logs_lecture']                 = $data['logs_lecture'];
 	$_SESSION['annuaire_lecture']             = $data['annuaire_lecture'];
 	$_SESSION['annuaire_ajout']               = $data['annuaire_ajout'];
 	$_SESSION['annuaire_modification']        = $data['annuaire_modification'];

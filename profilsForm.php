@@ -111,11 +111,6 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" value="1" name="logs_lecture" <?php if(isset($_GET['id']) AND $data['logs_lecture'] == 1) { echo 'checked'; } ?>> Lire les logs
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
                                     <input type="checkbox" value="1" name="actionsMassives" <?php if(isset($_GET['id']) AND $data['actionsMassives'] == 1) { echo 'checked'; } ?>> Mener des actions massives directement en base
                                 </label>
                             </div>

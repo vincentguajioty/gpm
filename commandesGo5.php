@@ -29,12 +29,12 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification de la commande " . $_GET['id'], '1', NULL);
+            writeInLogs("Cloture du SAV de la commande " . $_GET['id'], '1', NULL);
             addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " clôture le SAV. La commande n'a plus qu'à être clôturée.", "25");
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification de la commande.", '3', NULL);
+            writeInLogs("Erreur inconnue lors de la cloture du SAV de la commande ". $_GET['id'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la modification de la commande.";
             $_SESSION['returnType'] = '2';
 
