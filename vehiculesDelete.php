@@ -64,6 +64,28 @@ else
     $query->execute(array(
         'idVehicule' => $_GET['id']
     ));
+
+    $select = $db->prepare('SELECT idVehiculeHealth FROM VEHICULES_HEALTH WHERE idVehicule = :idVehicule;');
+    $select->execute(array(
+        'idVehicule' => $_GET['id']
+    ));
+    while($idVehiculeHealth = $select->fetch())
+    {
+        $query = $db->prepare('DELETE FROM VEHICULES_HEALTH_CHECKS WHERE idVehiculeHealth = :idVehiculeHealth;');
+        $query->execute(array(
+            'idVehiculeHealth' => $idVehiculeHealth['idVehiculeHealth']
+        ));
+    }
+
+    $query = $db->prepare('DELETE FROM VEHICULES_HEALTH WHERE idVehicule = :idVehicule;');
+    $query->execute(array(
+        'idVehicule' => $_GET['id']
+    ));
+
+    $query = $db->prepare('DELETE FROM VEHICULES_HEALTH_ALERTES WHERE idVehicule = :idVehicule;');
+    $query->execute(array(
+        'idVehicule' => $_GET['id']
+    ));
 	
     $query = $db->prepare('DELETE FROM VEHICULES WHERE idVehicule = :idVehicule;');
     $query->execute(array(

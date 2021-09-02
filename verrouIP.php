@@ -38,12 +38,13 @@ if ($_SESSION['verrouIP']==0)
             <div class="box">
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table id="tri2" class="table table-bordered table-hover">
+                    <table id="tri2R" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th style="width: 10px">#</th>
                                 <th>Date de verrouillage</th>
                                 <th>Adresse IP</th>
+                                <th>Commentaire</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -56,7 +57,9 @@ if ($_SESSION['verrouIP']==0)
                                 <td><?php echo $data['idIP']; ?></td>
                                 <td><?php echo $data['dateVerr']; ?></td>
                                 <td><?php echo $data['adresseIPverr']; ?></td>
+                                <td><?php echo $data['commentaire']; ?></td>
                                 <td>
+									<a href="verrouIPForm.php?id=<?=$data['idIP']?>" class="btn btn-xs btn-warning modal-form" title="Commenter"><i class="fa fa-pencil"></i></a>
 									<a href="modalDeleteConfirm.php?case=verrouIPDelete&id=<?=$data['idIP']?>" class="btn btn-xs btn-danger modal-form" title="Déverouiller l'adresse IP"><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>

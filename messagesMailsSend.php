@@ -9,7 +9,7 @@ $echec = 0;
 $envois = 0;
 $message = $RETOURLIGNE.$_POST['contenu'].$RETOURLIGNE;
 
-$sujet = "[" . $APPNAME . "] - " . $_POST['sujet'];
+$sujet = "[" . $APPNAME . "] " . $_POST['sujet'];
 if(sendmail($_SESSION['mailPersonne'], $sujet, 2, $message))
 {
     writeInLogs("Contact des équipes par mail - Copie envoyée à l'expéditeur " . $_SESSION['mailPersonne'], '1', NULL);

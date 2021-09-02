@@ -319,6 +319,12 @@ switch($data['version'])
     case '9.2':
         writeInLogs("Début de l'installation de la mise à jour 9.3", '1', NULL);
         $query = $db->query(file_get_contents ("update9.3.sql"));
+        $query = $db->query('SELECT idPersonne FROM PERSONNE_REFERENTE;');
+        while($data = $query->fetch())
+        {
+            majIndicateursPersonne($data['idPersonne'],1);
+            majNotificationsPersonne($data['idPersonne'],1);
+        }
         writeInLogs("Fin de l'installation de la mise à jour 9.3", '1', NULL);
         echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
         break;
@@ -357,8 +363,23 @@ switch($data['version'])
         writeInLogs("Fin de l'installation de la mise à jour 9.8", '1', NULL);
         echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
         break;
-
+        
     case '9.8':
+        writeInLogs("Début de l'installation de la mise à jour 10.0", '1', NULL);
+        $query = $db->query(file_get_contents ("update10.0.sql"));
+        notificationsConditionsMAJ();
+        notificationsMAJpersonne();
+        $query = $db->query('SELECT idPersonne FROM PERSONNE_REFERENTE;');
+        while($data = $query->fetch())
+        {
+            majIndicateursPersonne($data['idPersonne'],1);
+            majNotificationsPersonne($data['idPersonne'],1);
+        }
+        writeInLogs("Fin de l'installation de la mise à jour 10.0", '1', NULL);
+        echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
+        break;
+
+    case '10.0':
         writeInLogs("Fin des mises à jour", '1', NULL);
         echo "<script type='text/javascript'>document.location.replace('INSTALLFINISH.php');</script>";
         break;

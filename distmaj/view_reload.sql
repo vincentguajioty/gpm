@@ -68,6 +68,7 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		(SELECT MAX(commande_lecture)                FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as commande_lecture,
 		(SELECT MAX(commande_ajout)                  FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as commande_ajout,
 		(SELECT MAX(commande_valider)                FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as commande_valider,
+		(SELECT MAX(commande_valider_seuil)          FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as commande_valider_seuil,
 		(SELECT MAX(commande_etreEnCharge)           FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as commande_etreEnCharge,
 		(SELECT MAX(commande_abandonner)             FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as commande_abandonner,
 		(SELECT MAX(commande_valider_delegate)       FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as commande_valider_delegate,
@@ -137,11 +138,18 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		(SELECT MAX(carburants_lecture)              FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as carburants_lecture,
 		(SELECT MAX(carburants_ajout)                FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as carburants_ajout,
 		(SELECT MAX(carburants_modification)         FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as carburants_modification,
-		(SELECT MAX(carburants_suppression)          FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as carburants_suppression
+		(SELECT MAX(carburants_suppression)          FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as carburants_suppression,
+		(SELECT MAX(vehiculeHealthType_lecture)      FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as vehiculeHealthType_lecture,
+		(SELECT MAX(vehiculeHealthType_ajout)        FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as vehiculeHealthType_ajout,
+		(SELECT MAX(vehiculeHealthType_modification) FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as vehiculeHealthType_modification,
+		(SELECT MAX(vehiculeHealthType_suppression)  FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as vehiculeHealthType_suppression,
+		(SELECT MAX(vehiculeHealth_lecture)          FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as vehiculeHealth_lecture,
+		(SELECT MAX(vehiculeHealth_ajout)            FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as vehiculeHealth_ajout,
+		(SELECT MAX(vehiculeHealth_modification)     FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as vehiculeHealth_modification,
+		(SELECT MAX(vehiculeHealth_suppression)      FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as vehiculeHealth_suppression
 	FROM
 		PERSONNE_REFERENTE p
 ;
-
 CREATE OR REPLACE VIEW VIEW_DOCUMENTS_COMMANDES AS
 	SELECT
 		c.*,

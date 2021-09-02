@@ -205,7 +205,7 @@ if ($_SESSION['actionsMassives']==0)
             					<tr>
             						<td>12</td>
             						<td>Matériels</td>
-            						<td>Modifier tous les matériels de la section opérationnelle pour supprimer toutes les dates de péremption et les dates d'anticipation de péremption.</td>
+            						<td>Modifier tous les matériels de la section opérationnelle pour supprimer toutes les dates de péremption.</td>
             						<td><?= $M12 ?></td>
             						<td><a href="actionsMassives12.php" class="btn btn-xs btn-warning spinnerAttenteClick"><i class="fa fa-database"></i> Lancer l'action</a></td>
             					</tr>
@@ -215,13 +215,6 @@ if ($_SESSION['actionsMassives']==0)
             						<td>Modifier tous les matériels de la section opérationnelle pour changer la quantité d'alerte avec la valeur: quantité actuelle - 1.</td>
             						<td><?= $M13 ?></td>
             						<td><a href="actionsMassives13.php" class="btn btn-xs btn-warning spinnerAttenteClick"><i class="fa fa-database"></i> Lancer l'action</a></td>
-            					</tr>
-            					<tr>
-            						<td>14</td>
-            						<td>Matériels</td>
-            						<td>Modifier tous les matériels de la section opérationnelle pour changer la date d'alerte avec la valeur: date de péremption - 20 jours.</td>
-            						<td><?= $M14 ?></td>
-            						<td><a href="actionsMassives14.php" class="btn btn-xs btn-warning spinnerAttenteClick"><i class="fa fa-database"></i> Lancer l'action</a></td>
             					</tr>
             					<tr>
             						<td>21</td>

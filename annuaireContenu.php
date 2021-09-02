@@ -176,6 +176,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                     $reserves = $personne['reserve_lecture'];
                                     $vehicules = $personne['vehicules_lecture'];
                                     $desinfections = $personne['desinfections_lecture'];
+                                    $health = $personne['vehiculeHealth_lecture'];
                                     $tenues = $personne['tenues_lecture'] OR $personne['tenuesCatalogue_lecture'];
                                 ?>
                                 <label>Présence des indicateurs sur la page d'accueil:</label><br/>
@@ -198,6 +199,8 @@ if ($_SESSION['annuaire_lecture']==0)
                                 <br/>
                                 <?php if ($desinfections > 0){ if($personne['conf_indicateur11Accueil'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Désinfections véhicules
                             	<br/>
+                                <?php if ($health > 0){ if($personne['conf_indicateur12Accueil'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Maintenance régulière des véhicules
+                                <br/>
                             	<?php if ($tenues > 0){ if($personne['conf_indicateur9Accueil'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Stock des tenues
                             	<br/>
                             	<?php if ($tenues > 0){ if($personne['conf_indicateur10Accueil'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Non retour de tenues
@@ -230,6 +233,8 @@ if ($_SESSION['annuaire_lecture']==0)
                                 <?php if ($desinfections > 0 AND $data['notifications']==1){ if($data['notif_vehicules_desinfections'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Désinfections véhicules
                                 <br/>
                                 <?php if ($vehicules > 0 AND $data['notifications']==1){ if($data['notif_vehicules_ct'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Contrôles techniques véhicules
+                                <br/>
+                                <?php if ($health > 0 AND $data['notifications']==1){ if($data['notif_vehicules_health'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Maintenance régulière véhicules
                                 <br/>
                                 <?php if ($tenues > 0 AND $data['notifications']==1){ if($data['notif_tenues_stock'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Stock des tenues
                                 <br/>
@@ -282,8 +287,16 @@ if ($_SESSION['annuaire_lecture']==0)
 				                <input type="text" name="agenda_vehicules_assurance" value="<?=$data['agenda_vehicules_assurance']?>" class="form-control my-colorpicker1" disabled>
 				            </div>
 				            <div class="form-group">
-				                <label>Véhicules taches de maintenance</label>
+				                <label>Véhicules taches de maintenance ponctuelle</label>
 				                <input type="text" name="agenda_vehicules_maintenance" value="<?=$data['agenda_vehicules_maintenance']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>Véhicules taches de maintenance régulière faite</label>
+				                <input type="text" name="agenda_healthF" value="<?=$data['agenda_healthF']?>" class="form-control my-colorpicker1" disabled>
+				            </div>
+				            <div class="form-group">
+				                <label>Véhicules taches de maintenance régulière à faire</label>
+				                <input type="text" name="agenda_healthAF" value="<?=$data['agenda_healthAF']?>" class="form-control my-colorpicker1" disabled>
 				            </div>
 				            <div class="form-group">
 				                <label>Vehicules désinfections faites</label>
@@ -441,6 +454,13 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <td><?php if($personne['desinfections_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                 </tr>
                                 <tr>
+                                    <td>Taches de maintenance</td>
+                                    <td><?php if($personne['vehiculeHealth_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['vehiculeHealth_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['vehiculeHealth_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['vehiculeHealth_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                </tr>
+                                <tr>
                                     <th>TENUES</th>
                                     <th></th>
                                     <th></th>
@@ -525,6 +545,13 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <td><?php if($personne['typesDesinfections_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                 </tr>
                                 <tr>
+                                    <td>Types de taches de maintenance</td>
+                                    <td><?php if($personne['vehiculeHealthType_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['vehiculeHealthType_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['vehiculeHealthType_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['vehiculeHealthType_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                </tr>
+                                <tr>
                                     <td>Carburants</td>
                                     <td><?php if($personne['carburants_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['carburants_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
@@ -546,6 +573,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <th>Lecture</th>
                                     <th>Ajout Modification</th>
                                     <th>Valider</th>
+                                    <th>Seuil max de validation</th>
                                     <th>Valider à la place de</th>
                                     <th>Etre en charge</th>
                                     <th>Abandonner Supprimer</th>
@@ -555,6 +583,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <td><?php if($personne['commande_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['commande_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['commande_valider'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['commande_valider_seuil'] > 0) { echo $personne['commande_valider_seuil'].' €'; } ?></td>
                                     <td><?php if($personne['commande_valider_delegate'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['commande_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['commande_abandonner'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
@@ -563,6 +592,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <td>Centres de coûts</td>
                                     <td><?php if($personne['cout_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['cout_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td><?php if($personne['cout_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>

@@ -194,6 +194,13 @@ if ($_SESSION['profils_lecture']==0 OR $_SESSION['annuaire_lecture']==0)
                             <td><?php foreach($users as $user){if($user['desinfections_suppression']){echo $user['identifiant'].'<br/>';}} ?></td>
                         </tr>
                         <tr>
+                            <td>Taches de maintenance</td>
+                            <td><?php foreach($users as $user){if($user['vehiculeHealth_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['vehiculeHealth_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['vehiculeHealth_modification']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['vehiculeHealth_suppression']){echo $user['identifiant'].'<br/>';}} ?></td>
+                        </tr>
+                        <tr>
                             <th>TENUES</th>
                             <th></th>
                             <th></th>
@@ -278,6 +285,13 @@ if ($_SESSION['profils_lecture']==0 OR $_SESSION['annuaire_lecture']==0)
                             <td><?php foreach($users as $user){if($user['typesDesinfections_suppression']){echo $user['identifiant'].'<br/>';}} ?></td>
                         </tr>
                         <tr>
+                            <td>Types de taches de maintenance</td>
+                            <td><?php foreach($users as $user){if($user['vehiculeHealthType_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['vehiculeHealthType_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['vehiculeHealthType_modification']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['vehiculeHealthType_suppression']){echo $user['identifiant'].'<br/>';}} ?></td>
+                        </tr>
+                        <tr>
                             <td>Carburants</td>
                             <td><?php foreach($users as $user){if($user['carburants_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['carburants_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>
@@ -302,6 +316,7 @@ if ($_SESSION['profils_lecture']==0 OR $_SESSION['annuaire_lecture']==0)
                             <th>Lecture</th>
                             <th>Ajout/Modification</th>
                             <th>Valider</th>
+                            <th>Seuil max de validation</th>
                             <th>Valider à la place de</th>
                             <th>Etre en charge</th>
                             <th>Abandonner/Supprimer</th>
@@ -311,6 +326,7 @@ if ($_SESSION['profils_lecture']==0 OR $_SESSION['annuaire_lecture']==0)
                             <td><?php foreach($users as $user){if($user['commande_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['commande_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['commande_valider']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['commande_valider_seuil']>0){echo $user['identifiant'].' ('.$user['commande_valider_seuil'].'€)<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['commande_valider_delegate']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['commande_etreEnCharge']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['commande_abandonner']){echo $user['identifiant'].'<br/>';}} ?></td>
@@ -319,6 +335,7 @@ if ($_SESSION['profils_lecture']==0 OR $_SESSION['annuaire_lecture']==0)
                             <td>Centres de coûts</td>
                             <td><?php foreach($users as $user){if($user['cout_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['cout_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td><?php foreach($users as $user){if($user['cout_etreEnCharge']){echo $user['identifiant'].'<br/>';}} ?></td>

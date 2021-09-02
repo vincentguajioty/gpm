@@ -27,7 +27,7 @@ if ($data['idIP'] == "")
 
         $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE dateEchec < :dateEchec;');
         $query->execute(array(
-            'dateEchec' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - 1 days'))
+            'dateEchec' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - '.$VERROUILLAGE_IP_TEMPS.' days'))
         ));
 	    
 	    $query = $db->prepare('SELECT COUNT(*) as nb FROM VERROUILLAGE_IP_TEMP WHERE adresseIP= :adresseIP;');
@@ -36,12 +36,13 @@ if ($data['idIP'] == "")
 		));
 		$data = $query->fetch();
 		
-		if ($data['nb'] > 1)
+		if ($data['nb'] > $VERROUILLAGE_IP_OCCURANCES-2)
 		{
-			$query = $db->prepare('INSERT INTO VERROUILLAGE_IP(adresseIPverr, dateVerr)VALUES(:adresseIPverr, :dateVerr);');
+			$query = $db->prepare('INSERT INTO VERROUILLAGE_IP(adresseIPverr, dateVerr, commentaire)VALUES(:adresseIPverr, :dateVerr, :commentaire);');
 		    $query->execute(array(
 		        'dateVerr' => date('Y-m-d H:i:s'),
-		        'adresseIPverr' => $_SERVER['REMOTE_ADDR']
+		        'adresseIPverr' => $_SERVER['REMOTE_ADDR'],
+		        'commentaire' => 'Erreur d\'authentification pour ' . $_POST['identifiant'],
 		    ));
 			
 			writeInLogs("Verouillage définitif de l\'adresse IP suite à la tentative d'authentification avec ".$_POST['identifiant'], '2', NULL);
@@ -53,10 +54,11 @@ if ($data['idIP'] == "")
 		}
 		else
         {
-            $query = $db->prepare('INSERT INTO VERROUILLAGE_IP_TEMP(adresseIP, dateEchec)VALUES(:adresseIP, :dateEchec);');
+            $query = $db->prepare('INSERT INTO VERROUILLAGE_IP_TEMP(adresseIP, dateEchec, commentaire)VALUES(:adresseIP, :dateEchec, :commentaire);');
             $query->execute(array(
                 'dateEchec' => date('Y-m-d H:i:s'),
-                'adresseIP' => $_SERVER['REMOTE_ADDR']
+                'adresseIP' => $_SERVER['REMOTE_ADDR'],
+                'commentaire' => 'Erreur d\'authentification pour ' . $_POST['identifiant'],
             ));
 
             writeInLogs("Verouillage temporaire de l\'adresse IP suite à la tentative d'authentification avec ".$_POST['identifiant'], '2', NULL);
@@ -72,7 +74,7 @@ if ($data['idIP'] == "")
         ));
         $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE dateEchec < :dateEchec;');
         $query->execute(array(
-            'dateEchec' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - 1 days'))
+            'dateEchec' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - '.$VERROUILLAGE_IP_TEMPS.' days'))
         ));
 
         $query = $db->prepare('DELETE FROM RESETPASSWORD WHERE idPersonne = :idPersonne;');
@@ -146,6 +148,7 @@ if ($data['idIP'] == "")
 		$_SESSION['commande_lecture']                = $data['commande_lecture'];
 		$_SESSION['commande_ajout']                  = $data['commande_ajout'];
 		$_SESSION['commande_valider']                = $data['commande_valider'];
+		$_SESSION['commande_valider_seuil']          = $data['commande_valider_seuil'];
 		$_SESSION['commande_valider_delegate']       = $data['commande_valider_delegate'];
 		$_SESSION['commande_etreEnCharge']           = $data['commande_etreEnCharge'];
 		$_SESSION['commande_abandonner']             = $data['commande_abandonner'];
@@ -216,6 +219,14 @@ if ($data['idIP'] == "")
 		$_SESSION['carburants_ajout']                = $data['carburants_ajout'];
 		$_SESSION['carburants_modification']         = $data['carburants_modification'];
 		$_SESSION['carburants_suppression']          = $data['carburants_suppression'];
+		$_SESSION['vehiculeHealthType_lecture']      = $data['vehiculeHealthType_lecture'];
+		$_SESSION['vehiculeHealthType_ajout']        = $data['vehiculeHealthType_ajout'];
+		$_SESSION['vehiculeHealthType_modification'] = $data['vehiculeHealthType_modification'];
+		$_SESSION['vehiculeHealthType_suppression']  = $data['vehiculeHealthType_suppression'];
+		$_SESSION['vehiculeHealth_lecture']          = $data['vehiculeHealth_lecture'];
+		$_SESSION['vehiculeHealth_ajout']            = $data['vehiculeHealth_ajout'];
+		$_SESSION['vehiculeHealth_modification']     = $data['vehiculeHealth_modification'];
+		$_SESSION['vehiculeHealth_suppression']      = $data['vehiculeHealth_suppression'];
 		
 		$_SESSION['tableRowPerso']                   = $data['tableRowPerso'];
         
@@ -231,6 +242,7 @@ if ($data['idIP'] == "")
 		$_SESSION['conf_indicateur9Accueil']         = $data['conf_indicateur9Accueil'];
 		$_SESSION['conf_indicateur10Accueil']        = $data['conf_indicateur10Accueil'];
 		$_SESSION['conf_indicateur11Accueil']        = $data['conf_indicateur11Accueil'];
+		$_SESSION['conf_indicateur12Accueil']        = $data['conf_indicateur12Accueil'];
 		
 		$_SESSION['agenda_lots_peremption']              = $data['agenda_lots_peremption'];
 		$_SESSION['agenda_reserves_peremption']          = $data['agenda_reserves_peremption'];
@@ -247,6 +259,8 @@ if ($data['idIP'] == "")
 		$_SESSION['agenda_reserves_inventaireF']         = $data['agenda_reserves_inventaireF'];
 		$_SESSION['agenda_tenues_tenues']                = $data['agenda_tenues_tenues'];
 		$_SESSION['agenda_tenues_toDoList']              = $data['agenda_tenues_toDoList'];
+		$_SESSION['agenda_healthF']                      = $data['agenda_healthF'];
+		$_SESSION['agenda_healthAF']                     = $data['agenda_healthAF'];
 	    
 		$_SESSION['layout'] = $data['layout'];
 	    

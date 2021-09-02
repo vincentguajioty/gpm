@@ -310,6 +310,23 @@ include('logCheck.php');
 						                                            }
 						                                        }
 						                                        ?>">Désinfections</span>
+						                                    <span class="badge bg-<?php
+						                                        if($data['alerteMaintenance'] == Null)
+						                                        {
+						                                            echo "grey";
+						                                        }
+						                                        else
+						                                        {
+						                                            if($data['alerteMaintenance'] == 0)
+						                                            {
+						                                                echo "green";
+						                                            }
+						                                            else
+						                                            {
+						                                                echo "red";
+						                                            }
+						                                        }
+						                                        ?>">Maintenance</span>
 						                                </td>
 						                                <td><?php echo $data['libelleEtat']; ?> (<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>)</td>
 						                                <td>
@@ -338,6 +355,7 @@ include('logCheck.php');
 		                    		$reserves = $_SESSION['reserve_lecture'];
 		                    		$vehicules = $_SESSION['vehicules_lecture'];
 		                    		$desinfections = $_SESSION['desinfections_lecture'];
+		                    		$health = $_SESSION['vehiculeHealth_lecture'];
 		                    		$commandes = $_SESSION['commande_lecture'];
 		                    		$tenues = $_SESSION['tenues_lecture'];
 		
@@ -524,6 +542,58 @@ include('logCheck.php');
 			                                ];
 				                        }
 			                        }
+			                        
+			                        if ($health)
+			                        {
+				                        $query = $db->query('
+				                        	SELECT
+		                                        *
+		                                    FROM
+		                                        VEHICULES_HEALTH d
+		                                        LEFT OUTER JOIN VEHICULES v ON d.idVehicule = v.idVehicule
+		                                    WHERE
+		                                        v.affichageSyntheseHealth = 1
+				                        ;');
+				                        while ($data = $query->fetch())
+				                        {
+				                        	$events[] = [
+			                                    'date'     => date_format(date_create($data['dateHealth']), 'Y-m-d'),
+			                                    'title'    => 'Maintenance faite',
+			                                    'subTitle' => $data['libelleVehicule'],
+			                                    'color'    => $_SESSION['agenda_healthF'],
+			                                    'url'      => 'indexModalCalendrier.php?case=vehiculesMaintenanceFaite&id='.$data['idVehiculeHealth'],
+			                                ];
+				                        }
+			                        }
+
+			                        if ($health)
+			                        {
+				                        $query = $db->query('
+		                                    SELECT
+		                                        a.*,
+		                                        v.libelleVehicule,
+		                                        t.libelleHealthType,
+		                                        MAX(cal.dateHealth) as dateHealth,
+		                                        DATE_ADD(MAX(cal.dateHealth) , INTERVAL a.frequenceHealth DAY) as nextHealth
+		                                    FROM
+		                                        VEHICULES_HEALTH_ALERTES a
+		                                        LEFT OUTER JOIN VEHICULES v ON a.idVehicule=v.idVehicule
+		                                        LEFT OUTER JOIN VEHICULES_HEALTH_TYPES t ON a.idHealthType = t.idHealthType
+		                                        LEFT OUTER JOIN (SELECT c.*, h.dateHealth, h.idVehicule FROM VEHICULES_HEALTH_CHECKS c LEFT OUTER JOIN VEHICULES_HEALTH h ON c.idVehiculeHealth = h.idVehiculeHealth)cal ON a.idHealthType = cal.idHealthType AND cal.idVehicule = a.idVehicule
+		                                    GROUP BY
+		                                        a. idHealthAlerte
+		                                ;');
+		                                while ($data = $query->fetch())
+		                                {
+		                                    $events[] = [
+		                                        'date'     => date_format(date_create($data['nextHealth']), 'Y-m-d'),
+		                                        'title'    => $data['libelleVehicule'],
+		                                        'subTitle' => $data['libelleHealthType'],
+		                                        'color'    => $_SESSION['agenda_healthAF'],
+		                                        'url'      => 'indexModalCalendrier.php?case=vehiculesMaintenanceAFaire&id='.$data['idHealthAlerte'],
+		                                    ];
+		                                }
+			                        }
 		
 			                        if ($reserves)
 			                        {
@@ -602,7 +672,7 @@ include('logCheck.php');
 					<?php if($_SESSION['conf_indicateur1Accueil']==1){ ?>
 						<li>
 							<?php
-								$query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (peremptionNotification < CURRENT_DATE OR peremptionNotification = CURRENT_DATE) AND idEtat = 1;');
+								$query = $db->query('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (peremptionNotification < CURRENT_DATE OR peremptionNotification = CURRENT_DATE OR peremption < CURRENT_DATE OR peremption = CURRENT_DATE) AND idEtat = 1;');
 			                	$data = $query->fetch();
 							?>
 							<?php
@@ -718,7 +788,7 @@ include('logCheck.php');
 					<?php if($_SESSION['conf_indicateur5Accueil']==1){ ?>
 						<li>
 							<?php
-								$query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE peremptionNotificationReserve < CURRENT_DATE OR peremptionNotificationReserve = CURRENT_DATE;');
+								$query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE peremptionNotificationReserve < CURRENT_DATE OR peremptionNotificationReserve = CURRENT_DATE OR peremptionReserve < CURRENT_DATE OR peremptionReserve = CURRENT_DATE;');
 			                	$data = $query->fetch();
 							?>
 							<?php
@@ -856,6 +926,35 @@ include('logCheck.php');
 									}
 								?>
 								<h3 class="timeline-header no-border">Désinfections de véhicules: <?= $data['nb'] ?></h3>
+							</div>
+						</li>
+					<?php } ?>
+
+					<?php if($_SESSION['conf_indicateur12Accueil']==1){ ?>
+						<li>
+							<?php
+								$query = $db->query('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND alerteMaintenance = 1;');
+			                	$data = $query->fetch();
+							?>
+							<?php
+								if ($data['nb']>0)
+								{
+									echo '<i class="fa bg-red"></i>';
+									echo '<i class="fa fa-warning bg-red faa-flash animated"></i>';
+								}
+								else
+								{
+									echo '<i class="fa fa-check bg-green"></i>';
+								}
+							?>
+							<div class="timeline-item">
+								<?php
+									if ($data['nb']>0)
+									{
+										echo '<span class="time"><a data-toggle="modal" data-target="#modalAccueilAlerteHealth">Voir le détail</a></span>';
+									}
+								?>
+								<h3 class="timeline-header no-border">Maintenances régulières de véhicules: <?= $data['nb'] ?></h3>
 							</div>
 						</li>
 					<?php } ?>
@@ -1129,7 +1228,7 @@ include('logCheck.php');
             </div>
             <div class="modal-body">
                 <?php
-                $query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (peremptionNotification < CURRENT_DATE OR peremptionNotification = CURRENT_DATE) AND idEtat = 1;');
+                $query = $db->query('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (peremptionNotification < CURRENT_DATE OR peremptionNotification = CURRENT_DATE OR peremption < CURRENT_DATE OR peremption = CURRENT_DATE) AND idEtat = 1;');
                 ?>
                 <ul>
                     <?php
@@ -1231,7 +1330,7 @@ include('logCheck.php');
             </div>
             <div class="modal-body">
                 <?php
-                $query = $db->query('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR e ON m.idConteneur=e.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE peremptionNotificationReserve < CURRENT_DATE OR peremptionNotificationReserve = CURRENT_DATE;');
+                $query = $db->query('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR e ON m.idConteneur=e.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE peremptionNotificationReserve < CURRENT_DATE OR peremptionNotificationReserve = CURRENT_DATE OR peremptionReserve < CURRENT_DATE OR peremptionReserve = CURRENT_DATE;');
                 ?>
                 <ul>
                     <?php
@@ -1336,6 +1435,32 @@ include('logCheck.php');
             <div class="modal-body">
                 <?php
                 $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND alerteDesinfection = 1;');
+                ?>
+                <ul>
+                    <?php
+                    while($data=$query->fetch())
+                    {
+                        echo '<li>' . $data['libelleVehicule'] . '</li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+                <?php if ($_SESSION['vehicules_lecture']==1){ ?><a href="vehicules.php"><button type="button" class="btn btn-default pull-right">Accéder aux véhicules</button></a><? } ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-danger" id="modalAccueilAlerteHealth">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alertes des maintenance régulière des véhicules</h4>
+            </div>
+            <div class="modal-body">
+                <?php
+                $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND alerteMaintenance = 1;');
                 ?>
                 <ul>
                     <?php

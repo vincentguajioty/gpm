@@ -21,7 +21,9 @@ require_once 'config/bdd.php';
 			agenda_reserves_inventaireAF        = :agenda_reserves_inventaireAF,
 			agenda_reserves_inventaireF         = :agenda_reserves_inventaireF,
 			agenda_tenues_tenues                = :agenda_tenues_tenues,
-			agenda_tenues_toDoList              = :agenda_tenues_toDoList
+			agenda_tenues_toDoList              = :agenda_tenues_toDoList,
+			agenda_healthF                      = :agenda_healthF,
+			agenda_healthAF                     = :agenda_healthAF
     	WHERE
     		idPersonne = :idPersonne ;');
     $query->execute(array(
@@ -41,6 +43,8 @@ require_once 'config/bdd.php';
 		'agenda_reserves_inventaireF'         => $_POST['agenda_reserves_inventaireF'],
 		'agenda_tenues_tenues'                => $_POST['agenda_tenues_tenues'],
 		'agenda_tenues_toDoList'              => $_POST['agenda_tenues_toDoList'],
+		'agenda_healthF'                      => $_POST['agenda_healthF'],
+        'agenda_healthAF'                     => $_POST['agenda_healthAF'],
 		
     ));
 
@@ -73,6 +77,8 @@ switch($query->errorCode())
 		$_SESSION['agenda_reserves_inventaireF']         = $data['agenda_reserves_inventaireF'];
 		$_SESSION['agenda_tenues_tenues']                = $data['agenda_tenues_tenues'];
 		$_SESSION['agenda_tenues_toDoList']              = $data['agenda_tenues_toDoList'];
+		$_SESSION['agenda_healthF']                      = $data['agenda_healthF'];
+		$_SESSION['agenda_healthAF']                     = $data['agenda_healthAF'];
         
         break;
 

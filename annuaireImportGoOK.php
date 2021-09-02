@@ -37,6 +37,7 @@ else
 				notif_vehicules_revisions     = 1,
 				notif_vehicules_desinfections = 1,
 				notif_vehicules_ct            = 1,
+				notif_vehicules_health        = 1,
 				notif_tenues_stock            = 1,
 				notif_tenues_retours          = 1,
 				conf_indicateur1Accueil       = 1,
@@ -50,6 +51,7 @@ else
 				conf_indicateur9Accueil       = 1,
 				conf_indicateur10Accueil      = 1,
 				conf_indicateur11Accueil      = 1,
+				conf_indicateur12Accueil      = 1,
 				conf_accueilRefresh           = 120,
 				tableRowPerso                 = 25,
 				agenda_lots_peremption              = "#dd4b39",
@@ -67,6 +69,8 @@ else
 				agenda_reserves_inventaireF         = "#3c8dbc",
 				agenda_tenues_tenues                = "#00a65a",
 				agenda_tenues_toDoList              = "#3c8db",
+				agenda_healthF                      = "#f39c12",
+				agenda_healthAF                     = "#f39c12",
 				layout                              = "fixed"
 			;');
 	    $query2->execute(array(
@@ -86,6 +90,11 @@ else
 				
 				$query2 = $db->query('SELECT MAX(idPersonne) as idPersonne FROM PERSONNE_REFERENTE;');
 	            $data2 = $query2->fetch();
+	            
+	            $notifications_abonnements = $db->prepare('INSERT INTO NOTIFICATIONS_ABONNEMENTS SET idPersonne = :idPersonne, idCondition = 1;');
+	            $notifications_abonnements->execute(array(
+	            	'idPersonne' => $data2['idPersonne'],
+	            ));
 	
 	            if (!empty($_POST['idProfil'])) {
 	                $insertSQL = 'INSERT INTO PROFILS_PERSONNES (idProfil, idPersonne) VALUES';

@@ -32,7 +32,7 @@ if ($data['idIP'] == "")
 
         $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE dateEchec < :dateEchec;');
         $query->execute(array(
-            'dateEchec' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - 1 days'))
+            'dateEchec' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - '.$VERROUILLAGE_IP_TEMPS.' days'))
         ));
 	    
 	    $query = $db->prepare('SELECT COUNT(*) as nb FROM VERROUILLAGE_IP_TEMP WHERE adresseIP= :adresseIP;');
@@ -41,12 +41,13 @@ if ($data['idIP'] == "")
 		));
 		$data = $query->fetch();
 		
-		if ($data['nb'] > 1)
+		if ($data['nb'] > $VERROUILLAGE_IP_OCCURANCES-2)
 		{
-			$query = $db->prepare('INSERT INTO VERROUILLAGE_IP(adresseIPverr, dateVerr)VALUES(:adresseIPverr, :dateVerr);');
+			$query = $db->prepare('INSERT INTO VERROUILLAGE_IP(adresseIPverr, dateVerr, commentaire)VALUES(:adresseIPverr, :dateVerr, :commentaire);');
 		    $query->execute(array(
 		        'dateVerr' => date('Y-m-d H:i:s'),
-		        'adresseIPverr' => $_SERVER['REMOTE_ADDR']
+		        'adresseIPverr' => $_SERVER['REMOTE_ADDR'],
+		        'commentaire' => 'Erreur de reset de mot de passe pour l\'identifiant '.$_POST['identifiant'],
 		    ));
 			
 		    writeInLogs("Verouillage définitif de l\'adresse IP suite à la tentative de reset de mot de passe avec ".$_POST['identifiant'], '2', NULL);
@@ -58,10 +59,11 @@ if ($data['idIP'] == "")
 		}
 		else
         {
-            $query = $db->prepare('INSERT INTO VERROUILLAGE_IP_TEMP(adresseIP, dateEchec)VALUES(:adresseIP, :dateEchec);');
+            $query = $db->prepare('INSERT INTO VERROUILLAGE_IP_TEMP(adresseIP, dateEchec, commentaire)VALUES(:adresseIP, :dateEchec, :commentaire);');
             $query->execute(array(
                 'dateEchec' => date('Y-m-d H:i:s'),
-                'adresseIP' => $_SERVER['REMOTE_ADDR']
+                'adresseIP' => $_SERVER['REMOTE_ADDR'],
+                'commentaire' => 'Erreur de reset de mot de passe pour l\'identifiant '.$_POST['identifiant'],
             ));
 
             writeInLogs("Verouillage temporaire de l\'adresse IP suite à la tentative de reset de mot de passe avec ".$_POST['identifiant'], '2', NULL);
@@ -77,7 +79,7 @@ if ($data['idIP'] == "")
         ));
         $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE dateEchec < :dateEchec;');
         $query->execute(array(
-            'dateEchec' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - 1 days'))
+            'dateEchec' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - '.$VERROUILLAGE_IP_TEMPS.' days'))
         ));
         $query = $db->prepare('DELETE FROM RESETPASSWORD WHERE idPersonne = :idPersonne;');
         $query->execute(array(

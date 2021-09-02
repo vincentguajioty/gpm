@@ -11,7 +11,7 @@ else
 {
 
     writeInLogs("Action massive 12 lancée", '1', NULL);
-    $query = $db->query('UPDATE MATERIEL_ELEMENT SET peremption = Null, peremptionNotification = Null;');
+    $query = $db->query('UPDATE MATERIEL_ELEMENT SET peremption = Null;');
     writeInLogs("Action massive 12 terminée", '1', NULL);
 
     $_SESSION['returnMessage'] = 'Requète lancée et terminée';

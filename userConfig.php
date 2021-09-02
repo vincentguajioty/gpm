@@ -14,6 +14,7 @@ require_once 'config/bdd.php';
 	$_POST['conf_indicateur9Accueil']       = ($_POST['conf_indicateur9Accueil']       == 1) ? 1 : 0;
 	$_POST['conf_indicateur10Accueil']      = ($_POST['conf_indicateur10Accueil']      == 1) ? 1 : 0;
 	$_POST['conf_indicateur11Accueil']      = ($_POST['conf_indicateur11Accueil']      == 1) ? 1 : 0;
+	$_POST['conf_indicateur12Accueil']      = ($_POST['conf_indicateur12Accueil']      == 1) ? 1 : 0;
 	
 	$_POST['notif_lots_manquants']          = ($_POST['notif_lots_manquants']          == 1) ? 1 : 0;
 	$_POST['notif_lots_peremptions']        = ($_POST['notif_lots_peremptions']        == 1) ? 1 : 0;
@@ -26,6 +27,7 @@ require_once 'config/bdd.php';
 	$_POST['notif_vehicules_revisions']     = ($_POST['notif_vehicules_revisions']     == 1) ? 1 : 0;
 	$_POST['notif_vehicules_desinfections'] = ($_POST['notif_vehicules_desinfections'] == 1) ? 1 : 0;
 	$_POST['notif_vehicules_ct']            = ($_POST['notif_vehicules_ct']            == 1) ? 1 : 0;
+	$_POST['notif_vehicules_health']        = ($_POST['notif_vehicules_health']        == 1) ? 1 : 0;
 	$_POST['notif_tenues_stock']            = ($_POST['notif_tenues_stock']            == 1) ? 1 : 0;
 	$_POST['notif_tenues_retours']          = ($_POST['notif_tenues_retours']          == 1) ? 1 : 0;
     
@@ -44,6 +46,7 @@ require_once 'config/bdd.php';
     		conf_indicateur9Accueil       = :conf_indicateur9Accueil,
     		conf_indicateur10Accueil      = :conf_indicateur10Accueil,
     		conf_indicateur11Accueil      = :conf_indicateur11Accueil,
+    		conf_indicateur12Accueil      = :conf_indicateur12Accueil,
     		conf_accueilRefresh           = :conf_accueilRefresh,
     		notif_lots_manquants          = :notif_lots_manquants,
     		notif_lots_peremptions        = :notif_lots_peremptions,
@@ -56,6 +59,7 @@ require_once 'config/bdd.php';
     		notif_vehicules_revisions     = :notif_vehicules_revisions,
     		notif_vehicules_desinfections = :notif_vehicules_desinfections,
     		notif_vehicules_ct            = :notif_vehicules_ct,
+    		notif_vehicules_health        = :notif_vehicules_health,
     		notif_tenues_stock            = :notif_tenues_stock,
     		notif_tenues_retours          = :notif_tenues_retours,
     		tableRowPerso                 = :tableRowPerso,
@@ -75,6 +79,7 @@ require_once 'config/bdd.php';
 		'conf_indicateur9Accueil'       => $_POST['conf_indicateur9Accueil'],
 		'conf_indicateur10Accueil'      => $_POST['conf_indicateur10Accueil'],
 		'conf_indicateur11Accueil'      => $_POST['conf_indicateur11Accueil'],
+		'conf_indicateur12Accueil'      => $_POST['conf_indicateur12Accueil'],
 		'conf_accueilRefresh'           => $_POST['conf_accueilRefresh'],
 		'notif_lots_manquants'          => $_POST['notif_lots_manquants'],
 		'notif_lots_peremptions'        => $_POST['notif_lots_peremptions'],
@@ -87,6 +92,7 @@ require_once 'config/bdd.php';
 		'notif_vehicules_revisions'     => $_POST['notif_vehicules_revisions'],
 		'notif_vehicules_desinfections' => $_POST['notif_vehicules_desinfections'],
 		'notif_vehicules_ct'            => $_POST['notif_vehicules_ct'],
+		'notif_vehicules_health'        => $_POST['notif_vehicules_health'],
 		'notif_tenues_stock'            => $_POST['notif_tenues_stock'],
 		'notif_tenues_retours'          => $_POST['notif_tenues_retours'],
 		'tableRowPerso'                 => $_POST['tableRowPerso'],
@@ -123,9 +129,25 @@ switch($query->errorCode())
 		$_SESSION['conf_indicateur9Accueil']  = $data['conf_indicateur9Accueil'];
 		$_SESSION['conf_indicateur10Accueil'] = $data['conf_indicateur10Accueil'];
 		$_SESSION['conf_indicateur11Accueil'] = $data['conf_indicateur11Accueil'];
+		$_SESSION['conf_indicateur12Accueil'] = $data['conf_indicateur12Accueil'];
 		$_SESSION['conf_accueilRefresh']      = $data['conf_accueilRefresh'];
 
 		$_SESSION['layout']                   = $data['layout'];
+		
+		$queryDelete = $db->prepare('DELETE FROM NOTIFICATIONS_ABONNEMENTS WHERE idPersonne = :idPersonne');
+	    $queryDelete->execute([
+	        ':idPersonne' => $_SESSION['idPersonne']
+	    ]);
+	    if (!empty($_POST['idCondition'])) {
+	        $insertSQL = 'INSERT INTO NOTIFICATIONS_ABONNEMENTS (idCondition, idPersonne) VALUES';
+	        foreach ($_POST['idCondition'] as $idCondition) {
+	            $insertSQL .= ' ('. (int)$idCondition.', '. (int)$_SESSION['idPersonne'] .'),';
+	        }
+	
+	        $insertSQL = substr($insertSQL, 0, -1);
+	
+	        $db->query($insertSQL);
+	    }
         
         break;
 

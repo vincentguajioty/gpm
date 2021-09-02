@@ -104,7 +104,6 @@ if ($_SESSION['lots_modification']==0)
             	                                <?php if($lot['idTypeLot'] != Null){echo '<th>Requis par le référentiel</th>' ;} ?>
             	                                <th>Quantité</th>
             	                                <th>Péremption</th>
-            	                                <th>Notification de Péremption</th>
             	                            </tr>
             	                            </thead>
             	                            <tbody>
@@ -134,7 +133,6 @@ if ($_SESSION['lots_modification']==0)
                 	                                    <?php if($lot['idTypeLot'] != Null){echo '<td>'.$materiel['quantiteReferentiel'].'</td>' ;} ?>
                 	                                    <td><input type="text" class="form-control" required value="<?php echo $materiel['quantite']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $materiel['idSac']; ?>][<?php echo $materiel['idEmplacement']; ?>][<?php echo $materiel['idElement']; ?>][qtt]"></td>
                 	                                    <td><input type="text" class="input-datepicker form-control" value="<?php echo $materiel['peremption']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $materiel['idSac']; ?>][<?php echo $materiel['idEmplacement']; ?>][<?php echo $materiel['idElement']; ?>][per]" <?php if ($materiel['peremption'] != Null) echo 'required';?>></td>
-                	                                    <td><input type="text" class="input-datepicker form-control" value="<?php echo $materiel['peremptionNotification']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $materiel['idSac']; ?>][<?php echo $materiel['idEmplacement']; ?>][<?php echo $materiel['idElement']; ?>][perNot]" <?php if ($materiel['peremptionNotification'] != Null) echo 'required';?>></td>
                 	                                </tr>
                 	                            <?php
                 	                            }

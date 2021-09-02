@@ -10,11 +10,11 @@ require_once('logCheck.php');
 <?php
 /*
 ATTENTION: modification d'un profil necessite à mettre à jour:
-- formulaire des profils
 - vue DB VIEW_HABILITATIONS
-- profilsRecap.php et profilsRecapPersonnes.php
+- formulaire des profils
 - scripts Add et Update
 - script duplicate profils
+- profilsRecap.php et profilsRecapPersonnes.php
 - page de visualisation des droits depuis la page annuaireContenu.php
 - box de visualisation de droits dans user.php
 - rechargement dynamique des droits dans loginReloadHabilitation.php
@@ -220,6 +220,13 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <td><input <?php if(isset($_GET['id']) AND $data['desinfections_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="desinfections_suppression"></td>
                             </tr>
                             <tr>
+                                <td>Taches de maintenance</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehiculeHealth_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehiculeHealth_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehiculeHealth_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehiculeHealth_ajout"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehiculeHealth_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehiculeHealth_modification"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehiculeHealth_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehiculeHealth_suppression"></td>
+                            </tr>
+                            <tr>
                                 <th>TENUES</th>
                                 <th></th>
                                 <th></th>
@@ -304,6 +311,13 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <td><input <?php if(isset($_GET['id']) AND $data['typesDesinfections_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesDesinfections_suppression"></td>
                             </tr>
                             <tr>
+                                <td>Types de taches de maintenance</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehiculeHealthType_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehiculeHealthType_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehiculeHealthType_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehiculeHealthType_ajout"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehiculeHealthType_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehiculeHealthType_modification"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['vehiculeHealthType_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehiculeHealthType_suppression"></td>
+                            </tr>
+                            <tr>
                                 <td>Carburants</td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['carburants_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="carburants_lecture"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['carburants_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="carburants_ajout"></td>
@@ -324,6 +338,7 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <th>Lecture</th>
                                 <th>Ajout/Modification</th>
                                 <th>Valider</th>
+                                <th>Seuil max de validation</th>
                                 <th>Valider à la place de</th>
                                 <th>Etre en charge</th>
                                 <th>Abandonner/Supprimer</th>
@@ -333,6 +348,7 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_lecture"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_ajout"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_valider'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_valider"></td>
+                                <td><input type="number" min="1" class="form-control" value="<?php if(isset($data['commande_valider_seuil']) AND ($data['commande_valider_seuil']>0)){ echo $data['commande_valider_seuil'];} ?>" name="commande_valider_seuil"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_valider_delegate'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_valider_delegate"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_etreEnCharge'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_etreEnCharge"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_abandonner'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_abandonner"></td>
@@ -341,6 +357,7 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <td>Centres de coûts</td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['cout_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_lecture"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['cout_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_ajout"></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['cout_etreEnCharge'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_etreEnCharge"></td>

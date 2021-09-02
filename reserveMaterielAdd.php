@@ -15,7 +15,7 @@ else
     $_POST['idFournisseur'] = ($_POST['idFournisseur'] == Null) ? Null : $_POST['idFournisseur'];
 	$_POST['idConteneur'] = ($_POST['idConteneur'] == Null) ? Null : $_POST['idConteneur'];
 	$_POST['peremptionReserve'] = ($_POST['peremptionReserve'] == Null) ? Null : $_POST['peremptionReserve'];
-	$_POST['peremptionNotificationReserve'] = ($_POST['peremptionNotificationReserve'] == Null) ? Null : $_POST['peremptionNotificationReserve'];
+	$_POST['peremptionReserveAnticipation'] = ($_POST['peremptionReserveAnticipation'] == Null) ? Null : $_POST['peremptionReserveAnticipation'];
 
     $query = $db->prepare('
         INSERT INTO
@@ -27,7 +27,7 @@ else
             quantiteReserve               = :quantiteReserve,
             quantiteAlerteReserve         = :quantiteAlerteReserve,
             peremptionReserve             = :peremptionReserve,
-            peremptionNotificationReserve = :peremptionNotificationReserve,
+            peremptionReserveAnticipation = :peremptionReserveAnticipation,
             commentairesReserveElement    = :commentairesReserveElement
         ;');
     $query->execute(array(
@@ -37,7 +37,7 @@ else
         'quantiteReserve'               => $_POST['quantiteReserve'],
         'quantiteAlerteReserve'         => $_POST['quantiteAlerteReserve'],
         'peremptionReserve'             => $_POST['peremptionReserve'],
-        'peremptionNotificationReserve' => $_POST['peremptionNotificationReserve'],
+        'peremptionReserveAnticipation' => $_POST['peremptionReserveAnticipation'],
         'commentairesReserveElement'    => $_POST['commentairesReserveElement']
     ));
 
@@ -61,6 +61,7 @@ else
             $_SESSION['returnType'] = '2';
     }
 
+    updatePeremptionsAnticipations();
 
     echo "<script>window.location = document.referrer;</script>";
 }

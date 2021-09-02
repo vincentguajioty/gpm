@@ -109,6 +109,7 @@ if ($_SESSION['cout_lecture']==0)
                             <li><a href="#cmd" data-toggle="tab">Commandes à intégrer</a></li>
                             <li><a href="#cmdKO" data-toggle="tab">Commandes refusées</a></li>
                             <li><a href="#pj" data-toggle="tab">Pièces jointes</a></li>
+                            <li><a href="#export" data-toggle="tab">Exports</a></li>
                         </ul>
                         <div class="tab-content">
 
@@ -387,6 +388,10 @@ if ($_SESSION['cout_lecture']==0)
                                     $query2->closeCursor(); ?>
 
                                 </table>
+                            </div>
+
+                            <div class="tab-pane" id="export">
+                                <a href="centreCoutsExport.php?id=<?=$_GET['id']?>" class="btn btn-xs btn-success"><i class="fa fa-download"></i> Télécharger un export CSV des opérations enregistrées</a>
                             </div>
 
                         </div>

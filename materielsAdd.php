@@ -15,7 +15,7 @@ else
     $_POST['nomFournisseur'] = ($_POST['nomFournisseur'] == Null) ? Null : $_POST['nomFournisseur'];
 	$_POST['libelleEmplacement'] = ($_POST['libelleEmplacement'] == Null) ? Null : $_POST['libelleEmplacement'];
 	$_POST['peremption'] = ($_POST['peremption'] == Null) ? Null : $_POST['peremption'];
-	$_POST['peremptionNotification'] = ($_POST['peremptionNotification'] == Null) ? Null : $_POST['peremptionNotification'];
+	$_POST['peremptionAnticipation'] = ($_POST['peremptionAnticipation'] == Null) ? Null : $_POST['peremptionAnticipation'];
     $_POST['idMaterielsEtat'] = ($_POST['idMaterielsEtat'] == Null) ? Null : $_POST['idMaterielsEtat'];
 
     $query = $db->prepare('
@@ -28,7 +28,7 @@ else
             quantite               = :quantite,
             quantiteAlerte         = :quantiteAlerte,
             peremption             = :peremption,
-            peremptionNotification = :peremptionNotification,
+            peremptionAnticipation = :peremptionAnticipation,
             commentairesElement    = :commentairesElement,
             idMaterielsEtat        = :idMaterielsEtat
         ;');
@@ -39,7 +39,7 @@ else
         'quantite'               => $_POST['quantite'],
         'quantiteAlerte'         => $_POST['quantiteAlerte'],
         'peremption'             => $_POST['peremption'],
-        'peremptionNotification' => $_POST['peremptionNotification'],
+        'peremptionAnticipation' => $_POST['peremptionAnticipation'],
         'commentairesElement'    => $_POST['commentairesElement'],
         'idMaterielsEtat'        => $_POST['idMaterielsEtat']
     ));
@@ -63,7 +63,7 @@ else
             $_SESSION['returnMessage'] = "Erreur inconnue lors l'ajout du matériel.";
             $_SESSION['returnType'] = '2';
     }
-
+    updatePeremptionsAnticipations();
 	checkAllConf();
     echo "<script>window.location = document.referrer;</script>";
 }

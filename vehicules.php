@@ -138,6 +138,23 @@ if ($_SESSION['vehicules_lecture']==0)
                                             }
                                         }
                                         ?>">Désinfections</span>
+                                    <span class="badge bg-<?php
+                                        if($data['alerteMaintenance'] == Null)
+                                        {
+                                            echo "grey";
+                                        }
+                                        else
+                                        {
+                                            if($data['alerteMaintenance'] == 0)
+                                            {
+                                                echo "green";
+                                            }
+                                            else
+                                            {
+                                                echo "red";
+                                            }
+                                        }
+                                        ?>">Maintenance</span>
                                 </td>
                                 <td><?php echo $data['libelleEtat']; ?> (<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>)</td>
                                 <td>

@@ -46,15 +46,19 @@ if($_SESSION['sac_lecture']==1 OR $_SESSION['sac_ajout']==1 OR $_SESSION['sac_mo
                                 $query2->closeCursor(); ?>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Taille:</label>
-                            <input type="text" class="form-control" value="<?= isset($data['taille']) ? $data['taille']: ''?>"
-                                   name="taille">
-                        </div>
-                        <div class="form-group">
-                            <label>Couleur:</label>
-                            <input type="text" class="form-control" value="<?= isset($data['couleur']) ? $data['couleur']: ''?>"
-                                   name="couleur">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Taille:</label>
+                                    <input type="text" class="form-control" value="<?= isset($data['taille']) ? $data['taille']: ''?>" name="taille">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Couleur:</label>
+                                    <input type="text" class="form-control" value="<?= isset($data['couleur']) ? $data['couleur']: ''?>" name="couleur">
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Fournisseur: </label>

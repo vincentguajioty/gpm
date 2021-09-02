@@ -194,6 +194,13 @@ if ($_SESSION['profils_lecture']==0)
                             <td><?php foreach($profils as $profil){if($profil['desinfections_suppression']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                         </tr>
                         <tr>
+                            <td>Taches de maintenance</td>
+                            <td><?php foreach($profils as $profil){if($profil['vehiculeHealth_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['vehiculeHealth_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['vehiculeHealth_modification']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['vehiculeHealth_suppression']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                        </tr>
+                        <tr>
                             <th>TENUES</th>
                             <th></th>
                             <th></th>
@@ -278,6 +285,13 @@ if ($_SESSION['profils_lecture']==0)
                             <td><?php foreach($profils as $profil){if($profil['typesDesinfections_suppression']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                         </tr>
                         <tr>
+                            <td>Types de taches de maintenance</td>
+                            <td><?php foreach($profils as $profil){if($profil['vehiculeHealthType_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['vehiculeHealthType_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['vehiculeHealthType_modification']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['vehiculeHealthType_suppression']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                        </tr>
+                        <tr>
                             <td>Carburants</td>
                             <td><?php foreach($profils as $profil){if($profil['carburants_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['carburants_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
@@ -302,6 +316,7 @@ if ($_SESSION['profils_lecture']==0)
                             <th>Lecture</th>
                             <th>Ajout/Modification</th>
                             <th>Valider</th>
+                            <th>Seuil max de validation</th>
                             <th>Valider à la place de</th>
                             <th>Etre en charge</th>
                             <th>Abandonner/Supprimer</th>
@@ -311,6 +326,7 @@ if ($_SESSION['profils_lecture']==0)
                             <td><?php foreach($profils as $profil){if($profil['commande_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['commande_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['commande_valider']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['commande_valider_seuil']>0){echo $profil['libelleProfil'].' ('.$profil['commande_valider_seuil'].'€)<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['commande_valider_delegate']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['commande_etreEnCharge']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['commande_abandonner']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
@@ -319,6 +335,7 @@ if ($_SESSION['profils_lecture']==0)
                             <td>Centres de coûts</td>
                             <td><?php foreach($profils as $profil){if($profil['cout_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['cout_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td><?php foreach($profils as $profil){if($profil['cout_etreEnCharge']){echo $profil['libelleProfil'].'<br/>';}} ?></td>

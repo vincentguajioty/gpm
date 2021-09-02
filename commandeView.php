@@ -81,7 +81,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                    <div class="col-md-6">
 	                                        <div class="form-group">
 	                                            <label>Fournisseur: </label>
-	                                            <?php if($data['siteWebFournisseur'] != Null AND $data['siteWebFournisseur'] != ''){ ?><a href="<?=$data['siteWebFournisseur']?>"><label class="pull-right"><i class="fa fa-internet-explorer"></i></label></a><?php } ?>
+	                                            <?php if($data['siteWebFournisseur'] != Null AND $data['siteWebFournisseur'] != ''){ ?><a href="<?=$data['siteWebFournisseur']?>" title="Aller sur le site du fournisseur" target="_blank"><label class="pull-right"><i class="fa fa-internet-explorer"></i></label></a><?php } ?>
 	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>2) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idFournisseur">
 	                                                <option value="">--- Non-spécifié - Obligatoire pour valider la commande ---</option>
 	                                                <?php
@@ -371,7 +371,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                <div class="box-footer">
 	                                    <?php if (($data['idEtat']<7) AND ($_SESSION['commande_abandonner']==1)){ ?><a href="commandesGo8.php?id=<?=$_GET['id']?>" class="btn btn-danger spinnerAttenteClick" onclick="return confirm('Etes-vous sûr de vouloir abandonner la commande (action irreversible) ?');">Abandon de la commande</a> <?php } ?>
 	                                    <?php if ($_SESSION['commande_abandonner']==1){ ?><a href="modalDeleteConfirm.php?case=commandesDelete&id=<?=$_GET['id']?>" class="btn btn-danger modal-form">Suppression de la commande</a><?php } ?>
-	                                    <?php if (($data['idEtat']==1 OR ($data['idEtat']==2 AND (cmdEstValideur($_SESSION['idPersonne'], $_GET['id']) OR $_SESSION['commande_valider_delegate']))) AND (($_SESSION['commande_ajout']==1) OR ($_SESSION['commande_etreEnCharge']==1))) { ?><button type="submit" class="btn btn-warning pull-right">Modifier</button> <?php } ?>
+	                                    <?php if (($data['idEtat']==1 OR ($data['idEtat']==2 AND (cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])==1 OR $_SESSION['commande_valider_delegate']))) AND (($_SESSION['commande_ajout']==1) OR ($_SESSION['commande_etreEnCharge']==1))) { ?><button type="submit" class="btn btn-warning pull-right">Modifier</button> <?php } ?>
 	                                </div>
 	                            </form>
 	                        </div>
@@ -533,6 +533,16 @@ if ($_SESSION['commande_lecture']==0)
 									                </div>
 			                                	</div>
 		                                <?php } ?>
+		                                <?php
+	                                		if($data['idEtat'] == 2 AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id']) == -1)
+	                                		{
+		                                	?>
+			                                	<div class="col-md-12">
+			                                		<div class="alert alert-warning">
+									                    <i class="icon fa fa-warning"></i> Votre profil ne vous permet pas de valider une commande d'un montant suppérieur à <?= $_SESSION['commande_valider_seuil'] ?> €.
+									                </div>
+			                                	</div>
+		                                <?php } ?>
 	                                    <div class="col-md-4">
 	                                        <div class="form-group" id="dateDemandeValidation">
 	                                            <label>Date de demande:</label>
@@ -576,14 +586,14 @@ if ($_SESSION['commande_lecture']==0)
 	                                </div>
 	                                <div class="form-group">
 	                                    <label>Remarques:</label>
-	                                    <textarea <?php if(($data['idEtat']>2) OR ((($_SESSION['commande_valider']==0) OR cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])==0) AND ($_SESSION['commande_valider_delegate']==0))){echo 'disabled';}?> class="form-control" rows="3" name="remarquesValidation" required><?php echo $data['remarquesValidation']; ?></textarea>
+	                                    <textarea <?php if(($data['idEtat']>2) OR ((($_SESSION['commande_valider']==0) OR cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])!=1) AND ($_SESSION['commande_valider_delegate']==0))){echo 'disabled';}?> class="form-control" rows="3" name="remarquesValidation" required><?php echo $data['remarquesValidation']; ?></textarea>
 	                                </div>
 	                                <div class="box-footer">
-	                                    <?php if (($data['idEtat']==2) AND ($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])){ ?><button name="button" value="nok" type="submit" class="btn btn-danger pull-left">Refuser</button> <?php } ?>
-	                                    <?php if (($data['idEtat']==2) AND ($_SESSION['commande_valider_delegate']==1) AND !(cmdEstValideur($_SESSION['idPersonne'], $_GET['id']))){ ?><button name="button" value="nokdelegate" type="submit" class="btn btn-danger pull-left">Refuser en tant que délégué</button> <?php } ?>
+	                                    <?php if (($data['idEtat']==2) AND ($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])==1){ ?><button name="button" value="nok" type="submit" class="btn btn-danger pull-left">Refuser</button> <?php } ?>
+	                                    <?php if (($data['idEtat']==2) AND ($_SESSION['commande_valider_delegate']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])!=1){ ?><button name="button" value="nokdelegate" type="submit" class="btn btn-danger pull-left">Refuser en tant que délégué</button> <?php } ?>
 	                                    
-	                                    <?php if (($data['idEtat']==2) AND ($data['idFournisseur']!=Null) AND ($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])) { ?><button name="button" value="ok" type="submit" class="btn btn-success pull-right">Valider</button> <?php } ?>
-	                                    <?php if (($data['idEtat']==2) AND ($data['idFournisseur']!=Null) AND ($_SESSION['commande_valider_delegate']==1) AND !(cmdEstValideur($_SESSION['idPersonne'], $_GET['id']))) { ?><button name="button" value="okdelegate" type="submit" class="btn btn-success pull-right">Valider en tant que délégué</button> <?php } ?>
+	                                    <?php if (($data['idEtat']==2) AND ($data['idFournisseur']!=Null) AND ($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])==1) { ?><button name="button" value="ok" type="submit" class="btn btn-success pull-right">Valider</button> <?php } ?>
+	                                    <?php if (($data['idEtat']==2) AND ($data['idFournisseur']!=Null) AND ($_SESSION['commande_valider_delegate']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])!=1) { ?><button name="button" value="okdelegate" type="submit" class="btn btn-success pull-right">Valider en tant que délégué</button> <?php } ?>
 	                                </div>
 	                            </form>
 	                        </div>
@@ -709,7 +719,7 @@ if ($_SESSION['commande_lecture']==0)
 			                        <?php if (($data['idEtat']==1) AND(($_SESSION['commande_ajout']==1)OR($_SESSION['commande_etreEnCharge']==1))) { ?><a href="commandesGo2.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">Soumettre à validation</a> <?php } ?>
 			                        <?php if ($data['idEtat']==5 AND cmdEstAffectee($_SESSION['idPersonne'], $_GET['id'])) { ?><a href="commandesGo7.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">Cloturer la commande</a> <?php } ?>
 			                        <?php if ($data['idEtat']==6 AND cmdEstAffectee($_SESSION['idPersonne'], $_GET['id'])) { ?><a href="commandesGo5.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">SAV terminé > Commande OK</a> <?php } ?>
-			                        <?php if ((cmdEstAffectee($_SESSION['idPersonne'], $_GET['id']) OR cmdEstValideur($_SESSION['idPersonne'], $_GET['id']) OR cmdEstObservateur($_SESSION['idPersonne'], $_GET['id']) OR cmdEstDemandeur($_SESSION['idPersonne'], $_GET['id'])) AND ($data['idEtat']<7)){ ?>
+			                        <?php if ((cmdEstAffectee($_SESSION['idPersonne'], $_GET['id']) OR cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])==1 OR cmdEstObservateur($_SESSION['idPersonne'], $_GET['id']) OR cmdEstDemandeur($_SESSION['idPersonne'], $_GET['id'])) AND ($data['idEtat']<7)){ ?>
 						            	<a href="commandesNotesForm.php?id=<?=$_GET['id']?>" class="btn btn-success modal-form"><i class="fa fa-plus"></i> Note</a>
 					                <?php } ?>
 			                    </div>

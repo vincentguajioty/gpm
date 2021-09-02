@@ -181,45 +181,86 @@ if ($_SESSION['vehicules_lecture']==0)
                                         ?>"><?= $data['dateNextCT'] ?></span></td>
                                 </tr>
                                 <?php
-                                	$desinfections = $db->prepare('
-                                		SELECT
-                                			a.*,
-                                			t.libelleVehiculesDesinfectionsType,
-                                			MAX(v.dateDesinfection) as dateDesinfection
-                                		FROM
-                                			VEHICULES_DESINFECTIONS_ALERTES a
-                                			LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON a.idVehiculesDesinfectionsType=t.idVehiculesDesinfectionsType
-                                			LEFT OUTER JOIN (SELECT * FROM VEHICULES_DESINFECTIONS WHERE idVehicule = :idVehicule) v ON a.idVehiculesDesinfectionsType = v.idVehiculesDesinfectionsType
-                                		WHERE
-                                			a.idVehicule = :idVehicule
-                                		GROUP BY
-                                			a.idDesinfectionsAlerte
-                                	;');
-                                	$desinfections->execute(array('idVehicule'=>$_GET['id']));
-                                	while($desinfection = $desinfections->fetch())
-                                	{?>
-                                		<tr>
-		                                    <td>Prochaine désinfection <?=$desinfection['libelleVehiculesDesinfectionsType']?></td>
-		                                    <td><?php
-		                                    	if($desinfection['dateDesinfection'] == Null)
-		                                    	{
-		                                    		echo '<span class="badge bg-red">Aucune désinfection enregistrée</span>';
-		                                    	}
-		                                    	else
-		                                    	{
-		                                    		$nextDesinf = date('Y-m-d', strtotime($desinfection['dateDesinfection']. ' + '.$desinfection['frequenceDesinfection'].' days'));
-		                                    		if($nextDesinf <= date('Y-m-d'))
-		                                    		{
-		                                    			echo '<span class="badge bg-red">'.$nextDesinf.'</span>';
-		                                    		}
-		                                    		else
-		                                    		{
-		                                    			echo '<span class="badge bg-green">'.$nextDesinf.'</span>';
-		                                    		}
-		                                    	}
-		                                    ?></td>
-		                                </tr>
-                                	<?php }
+                                    $desinfections = $db->prepare('
+                                        SELECT
+                                            a.*,
+                                            t.libelleVehiculesDesinfectionsType,
+                                            MAX(v.dateDesinfection) as dateDesinfection
+                                        FROM
+                                            VEHICULES_DESINFECTIONS_ALERTES a
+                                            LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON a.idVehiculesDesinfectionsType=t.idVehiculesDesinfectionsType
+                                            LEFT OUTER JOIN (SELECT * FROM VEHICULES_DESINFECTIONS WHERE idVehicule = :idVehicule) v ON a.idVehiculesDesinfectionsType = v.idVehiculesDesinfectionsType
+                                        WHERE
+                                            a.idVehicule = :idVehicule
+                                        GROUP BY
+                                            a.idDesinfectionsAlerte
+                                    ;');
+                                    $desinfections->execute(array('idVehicule'=>$_GET['id']));
+                                    while($desinfection = $desinfections->fetch())
+                                    {?>
+                                        <tr>
+                                            <td>Prochaine désinfection <?=$desinfection['libelleVehiculesDesinfectionsType']?></td>
+                                            <td><?php
+                                                if($desinfection['dateDesinfection'] == Null)
+                                                {
+                                                    echo '<span class="badge bg-red">Aucune désinfection enregistrée</span>';
+                                                }
+                                                else
+                                                {
+                                                    $nextDesinf = date('Y-m-d', strtotime($desinfection['dateDesinfection']. ' + '.$desinfection['frequenceDesinfection'].' days'));
+                                                    if($nextDesinf <= date('Y-m-d'))
+                                                    {
+                                                        echo '<span class="badge bg-red">'.$nextDesinf.'</span>';
+                                                    }
+                                                    else
+                                                    {
+                                                        echo '<span class="badge bg-green">'.$nextDesinf.'</span>';
+                                                    }
+                                                }
+                                            ?></td>
+                                        </tr>
+                                    <?php }
+                                ?>
+                                <?php
+                                    $maintenances = $db->prepare('
+                                        SELECT
+                                            a.*,
+                                            t.libelleHealthType,
+                                            MAX(v.dateHealth) as dateHealth
+                                        FROM
+                                            VEHICULES_HEALTH_ALERTES a
+                                            LEFT OUTER JOIN VEHICULES_HEALTH_TYPES t ON a.idHealthType=t.idHealthType
+                                            LEFT OUTER JOIN (SELECT c.*, h.dateHealth FROM VEHICULES_HEALTH_CHECKS c  LEFT OUTER JOIN VEHICULES_HEALTH h ON h.idVehiculeHealth = c.idVehiculeHealth WHERE idVehicule = :idVehicule) v ON a.idHealthType = v.idHealthType
+                                        WHERE
+                                            a.idVehicule = :idVehicule
+                                        GROUP BY
+                                            a.idHealthAlerte
+                                    ;');
+                                    $maintenances->execute(array('idVehicule'=>$_GET['id']));
+                                    while($maintenance = $maintenances->fetch())
+                                    {?>
+                                        <tr>
+                                            <td>Prochaine maintenance <?=$maintenance['libelleHealthType']?></td>
+                                            <td><?php
+                                                if($maintenance['dateHealth'] == Null)
+                                                {
+                                                    echo '<span class="badge bg-red">Aucune maintenance enregistrée</span>';
+                                                }
+                                                else
+                                                {
+                                                    $nextMaint = date('Y-m-d', strtotime($maintenance['dateHealth']. ' + '.$maintenance['frequenceHealth'].' days'));
+                                                    if($nextMaint <= date('Y-m-d'))
+                                                    {
+                                                        echo '<span class="badge bg-red">'.$nextMaint.'</span>';
+                                                    }
+                                                    else
+                                                    {
+                                                        echo '<span class="badge bg-green">'.$nextMaint.'</span>';
+                                                    }
+                                                }
+                                            ?></td>
+                                        </tr>
+                                    <?php }
                                 ?>
                                 <tr>
                                     <td>Equipements embarqués</td>
@@ -251,6 +292,7 @@ if ($_SESSION['vehicules_lecture']==0)
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#maintenance" data-toggle="tab">Maintenance ponctuelle</a></li>
+                            <?php if($_SESSION['vehiculeHealth_lecture']){ ?><li><a href="#health" data-toggle="tab">Maintenance régulière</a></li><?php } ?>
                             <li><a href="#km" data-toggle="tab">Relevés kilométriques</a></li>
                             <?php if($_SESSION['desinfections_lecture']){ ?><li><a href="#desinfections" data-toggle="tab">Désinfections</a></li><?php } ?>
 							<li><a href="#lots" data-toggle="tab">Lots opérationnels affetés</a></li>
@@ -290,6 +332,52 @@ if ($_SESSION['vehicules_lecture']==0)
                                     
                                 </table>
                             </div>
+                            
+                            <?php if($_SESSION['vehiculeHealth_lecture']){ ?>
+                                <div class="tab-pane" id="health">
+                                    <table class="table table-hover">
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Taches réalisées</th>
+                                            <th>Intervenant</th>
+                                            <th>
+                                                <?php if($_SESSION['vehiculeHealth_ajout']==1){ ?><a href="vehiculesHealthForm.php?idVehicule=<?=$_GET['id']?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a><?php } ?>
+                                                <?php if($_SESSION['vehiculeHealth_ajout']==1 AND $_SESSION['vehiculeHealth_modification']==1){ ?><a href="vehiculesHealthAlertes.php?idVehicule=<?=$_GET['id']?>" class="btn btn-xs btn-info modal-form" title="Ajouter"><i class="fa fa-bell-o"></i> Gestion des notifications</a><?php } ?>
+                                            </th>
+                                        </tr>
+                                        <?php
+                                        $query2 = $db->prepare('SELECT * FROM VEHICULES_HEALTH d LEFT OUTER JOIN PERSONNE_REFERENTE p ON d.idPersonne = p.idPersonne WHERE idVehicule = :idVehicule ORDER BY dateHealth DESC;');
+                                        $query2->execute(array('idVehicule' => $_GET['id']));
+                                        while ($data2 = $query2->fetch())
+                                        {
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $data2['dateHealth'];?></td>
+                                                <td><?php
+                                                    $taches = $db->prepare('SELECT * FROM VEHICULES_HEALTH_CHECKS hc LEFT OUTER JOIN VEHICULES_HEALTH_TYPES t on hc.idHealthType = t.idHealthType WHERE idVehiculeHealth = :idVehiculeHealth');
+                                                    $taches->execute(array('idVehiculeHealth'=>$data2['idVehiculeHealth']));
+                                                    while($tache = $taches->fetch())
+                                                    {
+                                                        echo $tache['libelleHealthType'].'<br/>';
+                                                    }
+                                                ?></td>
+                                                <td><?php echo $data2['identifiant'];?></td>
+                                                <td>
+                                                    <?php if($_SESSION['vehiculeHealth_modification']==1){ ?>
+                                                        <a href="vehiculesHealthForm.php?id=<?=$data2['idVehiculeHealth']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
+                                                    <?php }?>
+                                                    <?php if ($_SESSION['vehiculeHealth_suppression']==1) {?>
+                                                        <a href="modalDeleteConfirm.php?case=vehiculesHealthDelete&id=<?=$data2['idVehiculeHealth']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
+                                                    <?php }?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $query2->closeCursor(); ?>
+                                        
+                                    </table>
+                                </div>
+                            <?php } ?>
 							
 							<div class="tab-pane" id="km">
 								<table class="table table-hover">

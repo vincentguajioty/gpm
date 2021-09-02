@@ -325,7 +325,7 @@ require_once 'config/bdd.php';
             ?>
             
             <?php
-            if ($_SESSION['vehicules_lecture']==1 OR $_SESSION['desinfections_lecture']==1)
+            if ($_SESSION['vehicules_lecture']==1 OR $_SESSION['desinfections_lecture']==1 OR $_SESSION['vehiculeHealth_lecture']==1)
             {
                 ?>
                 <li <?php
@@ -361,6 +361,15 @@ require_once 'config/bdd.php';
                             }
                             ?>
                             ><a href="desinfections.php"><i class="fa fa-recycle"></i> <span>Suivi des désinfections</span></a></li>
+                        <?php } ?>
+                        <?php if ($_SESSION['vehiculeHealth_lecture']==1){ ?>
+                            <li <?php
+                            if ($_SESSION['page'] == 1003)
+                            {
+                                echo 'class="active"';
+                            }
+                            ?>
+                            ><a href="vehiculesHealth.php"><i class="fa fa-wrench"></i> <span>Suivi des maintenances</span></a></li>
                         <?php } ?>
                     </ul>
                 </li>
@@ -516,23 +525,14 @@ require_once 'config/bdd.php';
 	                        ?>
 	                        ><a href="fournisseurs.php"><i class="fa fa-shopping-cart"></i> <span>Fournisseurs</span></a></li>
 	                    <?php } ?>
-	                    <?php if ($_SESSION['vehicules_types_lecture']==1){ ?>
+	                    <?php if ($_SESSION['vehicules_types_lecture']==1 OR $_SESSION['typesDesinfections_lecture']==1 OR $_SESSION['vehiculeHealthType_lecture']==1){ ?>
 	                        <li <?php
 	                        if ($_SESSION['page'] == 306)
 	                        {
 	                            echo 'class="active"';
 	                        }
 	                        ?>
-	                        ><a href="vehiculesTypes.php"><i class="fa fa-ambulance"></i> <span>Types de véhicules</span></a></li>
-	                    <?php } ?>
-	                    <?php if ($_SESSION['typesDesinfections_lecture']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 307)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="vehiculesTypesDesinfections.php"><i class="fa fa-recycle"></i> <span>Types de désinfections</span></a></li>
+	                        ><a href="vehiculesTypes.php"><i class="fa fa-ambulance"></i> <span>Types liés aux véhicules</span></a></li>
 	                    <?php } ?>
 	                    <?php if ($_SESSION['carburants_lecture']==1){ ?>
 	                        <li <?php

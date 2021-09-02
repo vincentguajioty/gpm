@@ -162,9 +162,7 @@ switch ($_GET['case']) {
         break;
         
     case 'vehiculesDesinfectionFaite':
-        $url = "vehiculesContenu.php?id=".$_GET['id'];
-        $urlName = "Accéder au véhicule";
-        $query = $db->prepare('SELECT libelleVehicule, immatriculation, libelleVehiculesDesinfectionsType, dateDesinfection, identifiant FROM VEHICULES_DESINFECTIONS d LEFT OUTER JOIN VEHICULES v ON d.idVehicule = v.idVehicule LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON d.idVehiculesDesinfectionsType = t.idVehiculesDesinfectionsType LEFT OUTER JOIN PERSONNE_REFERENTE p ON d.idExecutant = p.idPersonne WHERE idVehiculesDesinfection = :id;');
+        $query = $db->prepare('SELECT libelleVehicule, immatriculation, libelleVehiculesDesinfectionsType, dateDesinfection, identifiant, v.idVehicule FROM VEHICULES_DESINFECTIONS d LEFT OUTER JOIN VEHICULES v ON d.idVehicule = v.idVehicule LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON d.idVehiculesDesinfectionsType = t.idVehiculesDesinfectionsType LEFT OUTER JOIN PERSONNE_REFERENTE p ON d.idExecutant = p.idPersonne WHERE idVehiculesDesinfection = :id;');
         $query->execute(array('id'=>$_GET['id']));
         $data = $query->fetch();
 
@@ -177,6 +175,8 @@ switch ($_GET['case']) {
                 <li>Faite par: " . $data['identifiant'] . "</li>
             </ul>
         ";
+        $url = "vehiculesContenu.php?id=".$data['idVehicule'];
+        $urlName = "Accéder au véhicule";
         break;
         
     case 'vehiculesDesinfectionAFaire':
@@ -215,6 +215,47 @@ switch ($_GET['case']) {
         ";
         $url = "vehiculesContenu.php?id=".$data['idVehicule'];
         $urlName = "Accéder au véhicule";
+        break;
+
+    case 'vehiculesMaintenanceFaite':
+        $query = $db->prepare('SELECT * FROM VEHICULES_HEALTH h LEFT OUTER JOIN VEHICULES v ON h.idVehicule = v.idVehicule LEFT OUTER JOIN PERSONNE_REFERENTE p ON h.idPersonne = p.idPersonne WHERE idVehiculeHealth = :id;');
+        $query->execute(array('id'=>$_GET['id']));
+        $data = $query->fetch();
+
+        $contenu = "
+            <ul>
+                <li>Véhicule: " . $data['libelleVehicule'] . "</li>
+                <li>Immatriculation: " . $data['immatriculation'] . "</li>
+                <li>Type de maintenance: ";
+                $query2 = $db->prepare('SELECT * FROM VEHICULES_HEALTH_CHECKS c LEFT OUTER JOIN VEHICULES_HEALTH_TYPES t ON c.idHealthType = t.idHealthType WHERE c.idVehiculeHealth = :id');
+                $query2->execute(array('id'=>$_GET['id']));
+                while($tache=$query2->fetch())
+                {
+                    $contenu .= $tache['libelleHealthType'].' ; ';
+                }
+        $contenu .= "</li>
+                <li>Faite le: " . $data['dateHealth'] . "</li>
+                <li>Faite par: " . $data['identifiant'] . "</li>
+            </ul>
+        ";
+        $urlName = "Accéder au véhicule";
+        $url = "vehiculesContenu.php?id=".$data['idVehicule'];
+        break;
+
+    case 'vehiculesMaintenanceAFaire':
+        $query = $db->prepare('SELECT * FROM VEHICULES_HEALTH_ALERTES a LEFT OUTER JOIN VEHICULES v ON a.idVehicule=v.idVehicule LEFT OUTER JOIN VEHICULES_HEALTH_TYPES t ON a.idHealthType = t.idHealthType WHERE idHealthAlerte = :id;');
+        $query->execute(array('id'=>$_GET['id']));
+        $data = $query->fetch();
+
+        $contenu = "
+            <ul>
+                <li>Véhicule: " . $data['libelleVehicule'] . "</li>
+                <li>Immatriculation: " . $data['immatriculation'] . "</li>
+                <li>Type de maintenance: " . $data['libelleHealthType'] . "</li>
+            </ul>
+        ";
+        $urlName = "Accéder au véhicule";
+        $url = "vehiculesContenu.php?id=".$data['idVehicule'];
         break;
 
     case 'inventaireReserve':

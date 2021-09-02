@@ -122,7 +122,7 @@ else
                                                 quantite               = :quantite,
                                                 quantiteAlerte         = :quantiteAlerte,
                                                 peremption             = :peremption,
-                                                peremptionNotification = :peremptionNotification,
+                                                peremptionAnticipation = :peremptionAnticipation,
                                                 commentairesElement    = :commentairesElement,
                                                 idMaterielsEtat        = :idMaterielsEtat
                                             ;');
@@ -133,7 +133,7 @@ else
                                             'quantite'               => $materiel['quantite'],
                                             'quantiteAlerte'         => $materiel['quantiteAlerte'],
                                             'peremption'             => $materiel['peremption'],
-                                            'peremptionNotification' => $materiel['peremptionNotification'],
+                                            'peremptionAnticipation' => $materiel['peremptionAnticipation'],
                                             'commentairesElement'    => $materiel['commentairesElement'],
                                             'idMaterielsEtat'        => $materiel['idMaterielsEtat']
 									    ));

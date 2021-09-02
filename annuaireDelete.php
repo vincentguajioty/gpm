@@ -96,6 +96,11 @@ else
     $query->execute(array(
         'idExecutant' => $_GET['id']
     ));
+
+    $query = $db->prepare('UPDATE VEHICULES_HEALTH SET idPersonne = Null WHERE idPersonne = :idPersonne ;');
+    $query->execute(array(
+        'idPersonne' => $_GET['id']
+    ));
     
     $query = $db->prepare('UPDATE CENTRE_COUTS_OPERATIONS SET idPersonne = Null WHERE idPersonne = :idPersonne ;');
     $query->execute(array(
@@ -123,6 +128,11 @@ else
     ]);
 
     $query = $db->prepare('DELETE FROM PROFILS_PERSONNES WHERE idPersonne = :idPersonne');
+    $query->execute([
+        ':idPersonne' => $_GET['id']
+    ]);
+    
+    $query = $db->prepare('DELETE FROM NOTIFICATIONS_ABONNEMENTS WHERE idPersonne = :idPersonne');
     $query->execute([
         ':idPersonne' => $_GET['id']
     ]);

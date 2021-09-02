@@ -11,24 +11,35 @@ if ($_SESSION['materiel_modification']==0)
 }
 else
 {
-
-    $_POST['libelleMateriel'] = ($_POST['libelleMateriel'] == Null) ? Null : $_POST['libelleMateriel'];
     $_POST['nomFournisseur'] = ($_POST['nomFournisseur'] == Null) ? Null : $_POST['nomFournisseur'];
 	$_POST['libelleEmplacement'] = ($_POST['libelleEmplacement'] == Null) ? Null : $_POST['libelleEmplacement'];
 	$_POST['peremption'] = ($_POST['peremption'] == Null) ? Null : $_POST['peremption'];
-	$_POST['peremptionNotification'] = ($_POST['peremptionNotification'] == Null) ? Null : $_POST['peremptionNotification'];
+	$_POST['peremptionAnticipation'] = ($_POST['peremptionAnticipation'] == Null) ? Null : $_POST['peremptionAnticipation'];
     $_POST['idMaterielsEtat'] = ($_POST['idMaterielsEtat'] == Null) ? Null : $_POST['idMaterielsEtat'];
 
-    $query = $db->prepare('UPDATE MATERIEL_ELEMENT SET idMaterielCatalogue = :idMaterielCatalogue, idEmplacement = :idEmplacement, idFournisseur = :idFournisseur, quantite = :quantite, quantiteAlerte = :quantiteAlerte, peremption = :peremption, peremptionNotification = :peremptionNotification, commentairesElement = :commentairesElement, idMaterielsEtat = :idMaterielsEtat WHERE idElement = :idElement;');
+    $query = $db->prepare('
+    	UPDATE
+    		MATERIEL_ELEMENT
+    	SET
+    		idEmplacement = :idEmplacement,
+    		idFournisseur = :idFournisseur,
+    		quantite = :quantite,
+    		quantiteAlerte = :quantiteAlerte,
+    		peremption = :peremption,
+    		peremptionAnticipation = :peremptionAnticipation,
+    		commentairesElement = :commentairesElement,
+    		idMaterielsEtat = :idMaterielsEtat
+    	WHERE
+    		idElement = :idElement
+    ;');
     $query->execute(array(
         'idElement' => $_GET['id'],
-        'idMaterielCatalogue' => $_POST['libelleMateriel'],
         'idEmplacement' => $_POST['libelleEmplacement'],
         'idFournisseur' => $_POST['nomFournisseur'],
         'quantite' => $_POST['quantite'],
         'quantiteAlerte' => $_POST['quantiteAlerte'],
         'peremption' => $_POST['peremption'],
-        'peremptionNotification' => $_POST['peremptionNotification'],
+        'peremptionAnticipation' => $_POST['peremptionAnticipation'],
         'commentairesElement' => $_POST['commentairesElement'],
         'idMaterielsEtat' => $_POST['idMaterielsEtat']
     ));
@@ -52,7 +63,7 @@ else
             $_SESSION['returnMessage'] = "Erreur inconnue lors la modification du matériel.";
             $_SESSION['returnType'] = '2';
     }
-	
+	updatePeremptionsAnticipations();
 	checkAllConf();
     echo "<script>window.location = document.referrer;</script>";
 }

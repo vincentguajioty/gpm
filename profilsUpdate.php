@@ -63,6 +63,7 @@ else
     $_POST['commande_lecture']                = ($_POST['commande_lecture']                == 1) ? 1 : 0;
     $_POST['commande_ajout']                  = ($_POST['commande_ajout']                  == 1) ? 1 : 0;
     $_POST['commande_valider']                = ($_POST['commande_valider']                == 1) ? 1 : 0;
+    $_POST['commande_valider_seuil']          = ($_POST['commande_valider_seuil']          == Null) ? Null : $_POST['commande_valider_seuil'];
     $_POST['commande_valider_delegate']       = ($_POST['commande_valider_delegate']       == 1) ? 1 : 0;
     $_POST['commande_etreEnCharge']           = ($_POST['commande_etreEnCharge']           == 1) ? 1 : 0;
     $_POST['commande_abandonner']             = ($_POST['commande_abandonner']             == 1) ? 1 : 0;
@@ -133,6 +134,14 @@ else
     $_POST['carburants_ajout']                = ($_POST['carburants_ajout']                == 1) ? 1 : 0;
     $_POST['carburants_modification']         = ($_POST['carburants_modification']         == 1) ? 1 : 0;
     $_POST['carburants_suppression']          = ($_POST['carburants_suppression']          == 1) ? 1 : 0;
+    $_POST['vehiculeHealthType_lecture']      = ($_POST['vehiculeHealthType_lecture']      == 1) ? 1 : 0;
+    $_POST['vehiculeHealthType_ajout']        = ($_POST['vehiculeHealthType_ajout']        == 1) ? 1 : 0;
+    $_POST['vehiculeHealthType_modification'] = ($_POST['vehiculeHealthType_modification'] == 1) ? 1 : 0;
+    $_POST['vehiculeHealthType_suppression']  = ($_POST['vehiculeHealthType_suppression']  == 1) ? 1 : 0;
+    $_POST['vehiculeHealth_lecture']          = ($_POST['vehiculeHealth_lecture']          == 1) ? 1 : 0;
+    $_POST['vehiculeHealth_ajout']            = ($_POST['vehiculeHealth_ajout']            == 1) ? 1 : 0;
+    $_POST['vehiculeHealth_modification']     = ($_POST['vehiculeHealth_modification']     == 1) ? 1 : 0;
+    $_POST['vehiculeHealth_suppression']      = ($_POST['vehiculeHealth_suppression']      == 1) ? 1 : 0;
 
     $query = $db->prepare('
         UPDATE
@@ -192,6 +201,7 @@ else
             commande_lecture                = :commande_lecture,
             commande_ajout                  = :commande_ajout,
             commande_valider                = :commande_valider,
+            commande_valider_seuil          = :commande_valider_seuil,
             commande_valider_delegate       = :commande_valider_delegate,
             commande_etreEnCharge           = :commande_etreEnCharge,
             commande_abandonner             = :commande_abandonner,
@@ -261,7 +271,15 @@ else
             carburants_lecture              = :carburants_lecture,
             carburants_ajout                = :carburants_ajout,
             carburants_modification         = :carburants_modification,
-            carburants_suppression          = :carburants_suppression
+            carburants_suppression          = :carburants_suppression,
+            vehiculeHealthType_lecture      = :vehiculeHealthType_lecture,
+            vehiculeHealthType_ajout        = :vehiculeHealthType_ajout,
+            vehiculeHealthType_modification = :vehiculeHealthType_modification,
+            vehiculeHealthType_suppression  = :vehiculeHealthType_suppression,
+            vehiculeHealth_lecture          = :vehiculeHealth_lecture,
+            vehiculeHealth_ajout            = :vehiculeHealth_ajout,
+            vehiculeHealth_modification     = :vehiculeHealth_modification,
+            vehiculeHealth_suppression      = :vehiculeHealth_suppression
         WHERE
             idProfil                     = :idProfil
         ;');
@@ -321,6 +339,7 @@ else
         'commande_lecture'                => $_POST['commande_lecture'],
         'commande_ajout'                  => $_POST['commande_ajout'],
         'commande_valider'                => $_POST['commande_valider'],
+        'commande_valider_seuil'          => $_POST['commande_valider_seuil'],
         'commande_valider_delegate'       => $_POST['commande_valider_delegate'],
         'commande_etreEnCharge'           => $_POST['commande_etreEnCharge'],
         'commande_abandonner'             => $_POST['commande_abandonner'],
@@ -391,6 +410,14 @@ else
         'carburants_ajout'                => $_POST['carburants_ajout'],
         'carburants_modification'         => $_POST['carburants_modification'],
         'carburants_suppression'          => $_POST['carburants_suppression'],
+        'vehiculeHealthType_lecture'      => $_POST['vehiculeHealthType_lecture'],
+        'vehiculeHealthType_ajout'        => $_POST['vehiculeHealthType_ajout'],
+        'vehiculeHealthType_modification' => $_POST['vehiculeHealthType_modification'],
+        'vehiculeHealthType_suppression'  => $_POST['vehiculeHealthType_suppression'],
+        'vehiculeHealth_lecture'          => $_POST['vehiculeHealth_lecture'],
+        'vehiculeHealth_ajout'            => $_POST['vehiculeHealth_ajout'],
+        'vehiculeHealth_modification'     => $_POST['vehiculeHealth_modification'],
+        'vehiculeHealth_suppression'      => $_POST['vehiculeHealth_suppression'],
     ));
 
     switch($query->errorCode())

@@ -10,7 +10,7 @@ require_once('logCheck.php');
     if ($_SESSION['catalogue_lecture']==0)
         echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 ?>
-<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed fixed">
+<body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -48,6 +48,8 @@ require_once('logCheck.php');
                                 <th class="all">Libelle</th>
                                 <th class="not-mobile">Catégorie</th>
                                 <th class="not-mobile">Fournisseur de prédilection</th>
+                                <th class="not-mobile">Anticipation péremption lots</th>
+                                <th class="not-mobile">Anticipation péremption réserve</th>
                                 <th class="not-mobile">Commentaires</th>
                                 <th class="not-mobile">Actions</th>
                             </tr>
@@ -59,9 +61,11 @@ require_once('logCheck.php');
                         {?>
                             <tr>
                                 <td><?php echo $data['idMaterielCatalogue']; ?></td>
-                                <td><?php echo $data['libelleMateriel']; ?></td>
+                                <td><?php echo $data['libelleMateriel']; ?> <?php if($data['sterilite']){echo '<span class="badge bg-blue">STERILE</span>';} ?></td>
                                 <td><?php echo $data['libelleCategorie']; ?></td>
                                 <td><?php echo $data['nomFournisseur']; ?></td>
+                                <td><?php echo $data['peremptionAnticipationOpe']; ?></td>
+                                <td><?php echo $data['peremptionAnticipationRes']; ?></td>
                                 <td><?php echo $data['commentairesMateriel']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['catalogue_modification']==1) {?>

@@ -47,28 +47,48 @@ if($_SESSION['catalogue_lecture']==1 OR $_SESSION['catalogue_ajout']==1 OR $_SES
                                 $query->closeCursor(); ?>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Taille:</label>
-                            <input type="text" class="form-control" placeholder="5cmx5cm, L, Adulte, Pédiatrique" value="<?= isset($data['taille']) ? $data['taille'] : '' ?>" name="taille">
-                        </div>
-                        <div class="form-group">
-                            <label>Stérilité:</label>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="sterilite" id="optionsRadios1" value="option1" <?php if (isset($data['sterilite']) AND $data['sterilite']==0) echo 'checked' ?>>
-                                    Matériel non-stérile
-                                </label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Taille:</label>
+                                    <input type="text" class="form-control" placeholder="5cmx5cm, L, Adulte, Pédiatrique" value="<?= isset($data['taille']) ? $data['taille'] : '' ?>" name="taille">
+                                </div>
                             </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="sterilite" id="optionsRadios2" value="option2" <?php if (isset($data['sterilite']) AND $data['sterilite']==1) echo 'checked' ?>>
-                                    Matériel stérile
-                                </label>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Conditionnement:</label>
+                                    <input type="text" class="form-control" placeholder="3 compresses par sachet ..." value="<?= isset($data['conditionnementMultiple']) ? $data['conditionnementMultiple'] : '' ?>" name="conditionnementMultiple">
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Conditionnement:</label>
-                            <input type="text" class="form-control" placeholder="3 compresses par sachet ..." value="<?= isset($data['conditionnementMultiple']) ? $data['conditionnementMultiple'] : '' ?>" name="conditionnementMultiple">
+                            <label>Stérilité et généralisation des anticipations de péremption:</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="sterilite" id="optionsRadios2" value="option2" <?php if (isset($data['sterilite']) AND $data['sterilite']==1) echo 'checked' ?>>
+                                            Matériel stérile
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Lots (jours):</label>
+                                        <input type="number" min="1" class="form-control" value="<?= isset($data['peremptionAnticipationOpe']) ? $data['peremptionAnticipationOpe'] : '' ?>" name="peremptionAnticipationOpe">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Réserves (jours):</label>
+                                        <input type="number" min="1" class="form-control" value="<?= isset($data['peremptionAnticipationRes']) ? $data['peremptionAnticipationRes'] : '' ?>" name="peremptionAnticipationRes">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="sterilite" id="optionsRadios1" value="option1" <?php if (isset($data['sterilite']) AND $data['sterilite']==0) echo 'checked' ?>>
+                                            Matériel non-stérile
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Fournisseur de prédilection: </label>

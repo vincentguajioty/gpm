@@ -13,7 +13,7 @@ if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
     <?php
 	    if (isset($_GET['id']))
 		{
-		    $query = $db->prepare('SELECT * FROM RESERVES_MATERIEL WHERE idReserveElement=:idReserveElement;');
+		    $query = $db->prepare('SELECT * FROM RESERVES_MATERIEL r LEFT OUTER JOIN MATERIEL_CATALOGUE c ON r.idMaterielCatalogue = c.idMaterielCatalogue WHERE idReserveElement=:idReserveElement;');
 		    $query->execute(array('idReserveElement' => $_GET['id']));
 		    $data = $query->fetch();
 		    $query->closeCursor();
@@ -31,7 +31,8 @@ if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Référence du catalogue: <small style="color:grey;">Requis</small></label>
-                            <select class="form-control select2" style="width: 100%;" name="idMaterielCatalogue">
+                            <select class="form-control select2" style="width: 100%;" name="idMaterielCatalogue" <?php if(isset($_GET['id'])){echo 'disabled';}else{echo 'required';} ?>>
+                                <option value=""></option>
                                 <?php
                                 $query2 = $db->query('SELECT * FROM MATERIEL_CATALOGUE ORDER BY libelleMateriel;');
                                 while ($data2 = $query2->fetch())
@@ -91,15 +92,29 @@ if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
                                 <input class="input-datepicker form-control" name="peremptionReserve" value="<?= isset($data['peremptionReserve']) ? $data['peremptionReserve'] : '' ?>">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Anticipation de la notification:</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input class="input-datepicker form-control" name="peremptionNotificationReserve" value="<?= isset($data['peremptionNotificationReserve']) ? $data['peremptionNotificationReserve'] : '' ?>">
-                            </div>
-                        </div>
+                        <div class="row">
+                        	<div class="col-md-6">
+	                        	<div class="form-group">
+		                            <label>Anticipation de la notification (jours):</label>
+                                    <?php if ($data['peremptionAnticipationRes'] != Null){?>
+                                        <input type="text" class="form-control"  value="<?= $data['peremptionAnticipationRes'] ?> (piloté par le catalogue)" disabled>
+                                    <?php } else { ?>
+                                       <input type="number" min="0" class="form-control"  value="<?= isset($data['peremptionReserveAnticipation']) ? $data['peremptionReserveAnticipation'] : '' ?>" name="peremptionReserveAnticipation">
+                                    <?php } ?>
+		                        </div>
+		                    </div>
+                        	<div class="col-md-6">
+		                        <div class="form-group">
+		                            <label>Date de la notification:</label>
+		                            <div class="input-group">
+		                                <div class="input-group-addon">
+		                                    <i class="fa fa-calendar"></i>
+		                                </div>
+		                                <input class="input-datepicker form-control" name="peremptionNotificationReserve" value="<?= isset($data['peremptionNotificationReserve']) ? $data['peremptionNotificationReserve'] : '' ?>" disabled>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
 
                         <div class="form-group">
                             <label>Commentaires</label>

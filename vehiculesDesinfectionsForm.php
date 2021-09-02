@@ -35,7 +35,7 @@ if($_SESSION['desinfections_lecture']==1 OR $_SESSION['desinfections_ajout']==1 
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="text" class="input-datepicker form-control" name="dateDesinfection" value="<?php echo $data['dateDesinfection']; ?>" required>
+                                <input type="text" class="input-datepicker form-control" name="dateDesinfection" value="<?= (isset($_GET['id']) ? $data['dateDesinfection'] : date('Y-m-d')) ?>" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -57,6 +57,7 @@ if($_SESSION['desinfections_lecture']==1 OR $_SESSION['desinfections_ajout']==1 
                         <div class="form-group">
                             <label>Executant <small style="color:grey;"> Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="idExecutant" required>
+                                <option value=""></option>
                                 <?php
                                 if(isset($_GET['id']))
                                 {

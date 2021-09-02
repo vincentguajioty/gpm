@@ -22,6 +22,7 @@ $_SESSION['conf_indicateur8Accueil']  = $data['conf_indicateur8Accueil'];
 $_SESSION['conf_indicateur9Accueil']  = $data['conf_indicateur9Accueil'];
 $_SESSION['conf_indicateur10Accueil'] = $data['conf_indicateur10Accueil'];
 $_SESSION['conf_indicateur11Accueil'] = $data['conf_indicateur11Accueil'];
+$_SESSION['conf_indicateur12Accueil'] = $data['conf_indicateur12Accueil'];
 
 
 $query = $db->prepare('SELECT * FROM VIEW_HABILITATIONS WHERE idPersonne = :idPersonne;');
@@ -82,6 +83,7 @@ $_SESSION['verrouIP']                        = $data['verrouIP'];
 $_SESSION['commande_lecture']                = $data['commande_lecture'];
 $_SESSION['commande_ajout']                  = $data['commande_ajout'];
 $_SESSION['commande_valider']                = $data['commande_valider'];
+$_SESSION['commande_valider_seuil']          = $data['commande_valider_seuil'];
 $_SESSION['commande_valider_delegate']       = $data['commande_valider_delegate'];
 $_SESSION['commande_etreEnCharge']           = $data['commande_etreEnCharge'];
 $_SESSION['commande_abandonner']             = $data['commande_abandonner'];
@@ -152,6 +154,14 @@ $_SESSION['carburants_lecture']              = $data['carburants_lecture'];
 $_SESSION['carburants_ajout']                = $data['carburants_ajout'];
 $_SESSION['carburants_modification']         = $data['carburants_modification'];
 $_SESSION['carburants_suppression']          = $data['carburants_suppression'];
+$_SESSION['vehiculeHealthType_lecture']      = $data['vehiculeHealthType_lecture'];
+$_SESSION['vehiculeHealthType_ajout']        = $data['vehiculeHealthType_ajout'];
+$_SESSION['vehiculeHealthType_modification'] = $data['vehiculeHealthType_modification'];
+$_SESSION['vehiculeHealthType_suppression']  = $data['vehiculeHealthType_suppression'];
+$_SESSION['vehiculeHealth_lecture']          = $data['vehiculeHealth_lecture'];
+$_SESSION['vehiculeHealth_ajout']            = $data['vehiculeHealth_ajout'];
+$_SESSION['vehiculeHealth_modification']     = $data['vehiculeHealth_modification'];
+$_SESSION['vehiculeHealth_suppression']      = $data['vehiculeHealth_suppression'];
 
 majIndicateursPersonne($_SESSION['idPersonne'],0);
 majNotificationsPersonne($_SESSION['idPersonne'],0);

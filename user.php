@@ -13,7 +13,6 @@ require_once('logCheck.php');
     <?php include('navbar.php'); ?>
     <?php require_once('config/config.php'); ?>
 
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
 	        <!-- Content Header (Page header) -->
@@ -203,6 +202,13 @@ require_once('logCheck.php');
 			                        <td><?php if($_SESSION['desinfections_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                    </tr>
 			                    <tr>
+			                        <td>Taches de maintenance</td>
+			                        <td><?php if($_SESSION['vehiculeHealth_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vehiculeHealth_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vehiculeHealth_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vehiculeHealth_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
 			                        <th>TENUES</th>
 			                        <th></th>
 			                        <th></th>
@@ -287,6 +293,13 @@ require_once('logCheck.php');
 			                        <td><?php if($_SESSION['typesDesinfections_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                    </tr>
 			                    <tr>
+			                        <td>Types de taches de maintenance</td>
+			                        <td><?php if($_SESSION['vehiculeHealthType_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vehiculeHealthType_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vehiculeHealthType_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['vehiculeHealthType_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
 			                        <td>Carburants</td>
 			                        <td><?php if($_SESSION['carburants_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                        <td><?php if($_SESSION['carburants_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
@@ -308,6 +321,7 @@ require_once('logCheck.php');
 			                        <th>Lecture</th>
 			                        <th>Ajout Modification</th>
 			                        <th>Valider</th>
+			                        <th>Seuil max de validation</th>
 			                        <th>Valider à la place de</th>
 			                        <th>Etre en charge</th>
 			                        <th>Abandonner Supprimer</th>
@@ -317,6 +331,7 @@ require_once('logCheck.php');
 			                        <td><?php if($_SESSION['commande_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                        <td><?php if($_SESSION['commande_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                        <td><?php if($_SESSION['commande_valider'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['commande_valider_seuil'] > 0) { echo $_SESSION['commande_valider_seuil'].' €'; } ?></td>
 			                        <td><?php if($_SESSION['commande_valider_delegate'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                        <td><?php if($_SESSION['commande_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                        <td><?php if($_SESSION['commande_abandonner'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
@@ -455,7 +470,7 @@ require_once('logCheck.php');
 		                        </div>
 		                        <div class="form-group">
 		                            <label>Nombre de ligne par défaut dans les tableaux:</label>
-			                        <select class="form-control select2" style="width: 100%;" name="tableRowPerso">
+			                        <select class="form-control" style="width: 100%;" name="tableRowPerso">
 			                            <option value="10" <?php if($_SESSION['tableRowPerso']==10){echo 'selected';} ?>>10</option>
 			                            <option value="25" <?php if($_SESSION['tableRowPerso']==25){echo 'selected';} ?>>25</option>
 			                            <option value="50" <?php if($_SESSION['tableRowPerso']==50){echo 'selected';} ?>>50</option>
@@ -466,7 +481,7 @@ require_once('logCheck.php');
 		                        </div>
 		                        <div class="form-group">
 		                            <label>Bandeau vertical de navigation:</label>
-			                        <select class="form-control select2" style="width: 100%;" name="layout">
+			                        <select class="form-control" style="width: 100%;" name="layout">
 			                            <option value="fixed" <?php if($_SESSION['layout']=="fixed"){echo 'selected';} ?>>Déployé</option>
 			                            <option value="sidebar-collapse" <?php if($_SESSION['layout']=="sidebar-collapse"){echo 'selected';} ?>>Réduit</option>
 			                        </select>
@@ -476,6 +491,7 @@ require_once('logCheck.php');
 		                        		$lots = $_SESSION['lots_lecture'] OR $_SESSION['sac_lecture'] OR $_SESSION['sac2_lecture'] OR $_SESSION['materiel_lecture'];
 		                        		$reserves = $_SESSION['reserve_lecture'];
 		                        		$vehicules = $_SESSION['vehicules_lecture'];
+		                        		$health = $_SESSION['vehiculeHealth_lecture'];
 		                        		$desinfections = $_SESSION['desinfections_lecture'];
 		                        		$tenues = $_SESSION['tenues_lecture'] OR $_SESSION['tenuesCatalogue_lecture'];
 		                        	?>
@@ -512,6 +528,9 @@ require_once('logCheck.php');
 	                                </div>
 	                                <div class="checkbox">
 	                                	<label><input <?php if($_SESSION['conf_indicateur11Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur11Accueil" <?php if ($desinfections == 0){echo 'disabled';} ?>> Désinfections des véhicules</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($_SESSION['conf_indicateur12Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur12Accueil" <?php if ($health == 0){echo 'disabled';} ?>> Maintenance régulière des véhicules</label>
 	                                </div>
 	                                <div class="checkbox">
 	                                	<label><input <?php if($_SESSION['conf_indicateur9Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur9Accueil" <?php if ($tenues == 0){echo 'disabled';} ?>> Stock des tenues</label>
@@ -567,11 +586,42 @@ require_once('logCheck.php');
 	                                	<label><input <?php if($data['notif_vehicules_ct'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_ct" <?php if ($vehicules == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Contrôles techniques véhicules</label>
 	                                </div>
 	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_vehicules_health'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_health" <?php if ($health == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Maintenance régulière des véhicules</label>
+	                                </div>
+	                                <div class="checkbox">
 	                                	<label><input <?php if($data['notif_tenues_stock'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_tenues_stock" <?php if ($tenues == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Stock des tenues</label>
 	                                </div>
 	                                <div class="checkbox">
 	                                	<label><input <?php if($data['notif_tenues_retours'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_tenues_retours" <?php if ($tenues == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Non retour de tenues</label>
 	                                </div>
+	                                <div class="form-group">
+                                        <label>Jours de réception des notifications: </label>
+                                        <select class="form-control select2" style="width: 100%;" name="idCondition[]" multiple>
+                                            <?php
+                                                $query2 = $db->prepare('
+                                                	SELECT
+                                                		c.*,
+                                                		a.idPersonne
+                                                	FROM
+                                                		NOTIFICATIONS_CONDITIONS c
+                                                		LEFT OUTER JOIN (SELECT * FROM NOTIFICATIONS_ABONNEMENTS WHERE idPersonne = :idPersonne) a ON c.idCondition = a.idCondition
+                                                	;');
+								                $query2->execute(array('idPersonne' => $_SESSION['idPersonne']));
+				
+				                                while ($data2 = $query2->fetch())
+				                                {
+				                                    
+				                                    echo '<option value=' . $data2['idCondition'];
+				
+									                if (isset($data2['idPersonne']) AND $data2['idPersonne']==$_SESSION['idPersonne'])
+									                {
+									                    echo " selected ";
+									                }
+									                echo '>' . $data2['libelleCondition'] . '</option>';
+				                                }
+                                           ?>
+                                        </select>
+                                    </div>
 		                        </div>
 		                        <div class="box-footer">
 		                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
@@ -619,8 +669,16 @@ require_once('logCheck.php');
 					                <input type="text" name="agenda_vehicules_assurance" value="<?=$_SESSION['agenda_vehicules_assurance']?>" class="form-control my-colorpicker1">
 					            </div>
 					            <div class="form-group">
-					                <label>Véhicules taches de maintenance</label>
+					                <label>Véhicules taches de maintenance ponctuelle</label>
 					                <input type="text" name="agenda_vehicules_maintenance" value="<?=$_SESSION['agenda_vehicules_maintenance']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>Véhicules taches de maintenance régulière faite</label>
+					                <input type="text" name="agenda_healthF" value="<?=$_SESSION['agenda_healthF']?>" class="form-control my-colorpicker1">
+					            </div>
+					            <div class="form-group">
+					                <label>Véhicules taches de maintenance régulière à faire</label>
+					                <input type="text" name="agenda_healthAF" value="<?=$_SESSION['agenda_healthAF']?>" class="form-control my-colorpicker1">
 					            </div>
 					            <div class="form-group">
 					                <label>Vehicules désinfections faites</label>

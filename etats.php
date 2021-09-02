@@ -10,7 +10,7 @@ require_once('logCheck.php');
     if ($_SESSION['etats_lecture']==0)
         echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 ?>
-<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed fixed">
+<body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -34,12 +34,12 @@ require_once('logCheck.php');
         <section class="content">
             <?php include('confirmationBox.php'); ?>
             <div class="box">
-                <?php if ($_SESSION['etats_ajout']==1) {?>
-                	<div class="box-header">
-                        <h3 class="box-title">Etats des lots</h3>
-                        <h3 class="box-title pull-right"><a href="etatsLotsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un état de lots</a></h3>
-                	</div>
-                <?php } ?>
+            	<div class="box-header">
+                    <h3 class="box-title">Etats des lots</h3>
+                    <?php if ($_SESSION['etats_ajout']==1) {?>
+                    	<h3 class="box-title pull-right"><a href="etatsLotsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un état de lots</a></h3>
+                	<?php } ?>
+            	</div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table class="table table-hover">
@@ -78,12 +78,12 @@ require_once('logCheck.php');
             </div>
 
             <div class="box">
-                <?php if ($_SESSION['etats_ajout']==1) {?>
-                    <div class="box-header">
-                        <h3 class="box-title">Etats des matériels</h3>
-                        <h3 class="box-title pull-right"><a href="etatsMaterielsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un état de matériels</a></h3>
-                    </div>
-                <?php } ?>
+                <div class="box-header">
+                    <h3 class="box-title">Etats des matériels</h3>
+                    <?php if ($_SESSION['etats_ajout']==1) {?>
+                    	<h3 class="box-title pull-right"><a href="etatsMaterielsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un état de matériels</a></h3>
+                    <?php } ?>
+                </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table class="table table-hover">
@@ -122,12 +122,12 @@ require_once('logCheck.php');
             </div>
 
             <div class="box">
-                <?php if ($_SESSION['etats_ajout']==1) {?>
-                    <div class="box-header">
-                        <h3 class="box-title">Etats des véhicules</h3>
-                        <h3 class="box-title pull-right"><a href="etatsVehiculesForm.php" class="btn btn-sm btn-success modal-form">Ajouter un état de véhicules</a></h3>
-                    </div>
-                <?php } ?>
+                <div class="box-header">
+                    <h3 class="box-title">Etats des véhicules</h3>
+                    <?php if ($_SESSION['etats_ajout']==1) {?>
+                    	<h3 class="box-title pull-right"><a href="etatsVehiculesForm.php" class="btn btn-sm btn-success modal-form">Ajouter un état de véhicules</a></h3>
+                    <?php } ?>
+                </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table class="table table-hover">

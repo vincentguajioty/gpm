@@ -66,11 +66,11 @@ if ($_SESSION['typesLots_lecture']==0)
                                     {
                                         if ($lot['alerteConfRef']==0)
                                         {
-                                            ?><span class="badge bg-green"><?php echo $lot['libelleLot']; ?></span><?php
+                                            ?><span class="badge bg-green"><?php echo $lot['libelleLot']; ?></span> <?php
                                         }
                                         else
                                         {
-                                            ?><span class="badge bg-red"><?php echo $lot['libelleLot']; ?></span><?php
+                                            ?><span class="badge bg-red"><?php echo $lot['libelleLot']; ?></span> <?php
                                         }
                                     }
                                     ?>

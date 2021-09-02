@@ -75,6 +75,7 @@ else
 			commande_lecture                = :commande_lecture,
 			commande_ajout                  = :commande_ajout,
 			commande_valider                = :commande_valider,
+			commande_valider_seuil          = :commande_valider_seuil,
 			commande_valider_delegate       = :commande_valider_delegate,
 			commande_etreEnCharge           = :commande_etreEnCharge,
 			commande_abandonner             = :commande_abandonner,
@@ -144,7 +145,15 @@ else
 			carburants_lecture              = :carburants_lecture,
 			carburants_ajout                = :carburants_ajout,
 			carburants_modification         = :carburants_modification,
-			carburants_suppression          = :carburants_suppression
+			carburants_suppression          = :carburants_suppression,
+			vehiculeHealthType_lecture      = :vehiculeHealthType_lecture,
+			vehiculeHealthType_ajout        = :vehiculeHealthType_ajout,
+			vehiculeHealthType_modification = :vehiculeHealthType_modification,
+			vehiculeHealthType_suppression  = :vehiculeHealthType_suppression,
+			vehiculeHealth_lecture          = :vehiculeHealth_lecture,
+			vehiculeHealth_ajout            = :vehiculeHealth_ajout,
+			vehiculeHealth_modification     = :vehiculeHealth_modification,
+			vehiculeHealth_suppression      = :vehiculeHealth_suppression
 	;');
     $query->execute(array(
 		'libelleProfil'                   => $data['libelleProfil'] . ' - Copie',
@@ -201,6 +210,7 @@ else
 		'commande_lecture'                => $data['commande_lecture'],
 		'commande_ajout'                  => $data['commande_ajout'],
 		'commande_valider'                => $data['commande_valider'],
+		'commande_valider_seuil'          => $data['commande_valider_seuil'],
 		'commande_valider_delegate'       => $data['commande_valider_delegate'],
 		'commande_etreEnCharge'           => $data['commande_etreEnCharge'],
 		'commande_abandonner'             => $data['commande_abandonner'],
@@ -271,6 +281,14 @@ else
 		'carburants_ajout'                => $data['carburants_ajout'],
 		'carburants_modification'         => $data['carburants_modification'],
 		'carburants_suppression'          => $data['carburants_suppression'],
+		'vehiculeHealthType_lecture'      => $data['vehiculeHealthType_lecture'],
+		'vehiculeHealthType_ajout'        => $data['vehiculeHealthType_ajout'],
+		'vehiculeHealthType_modification' => $data['vehiculeHealthType_modification'],
+		'vehiculeHealthType_suppression'  => $data['vehiculeHealthType_suppression'],
+		'vehiculeHealth_lecture'          => $data['vehiculeHealth_lecture'],
+		'vehiculeHealth_ajout'            => $data['vehiculeHealth_ajout'],
+		'vehiculeHealth_modification'     => $data['vehiculeHealth_modification'],
+		'vehiculeHealth_suppression'      => $data['vehiculeHealth_suppression'],
 ));
 
     switch($query->errorCode())

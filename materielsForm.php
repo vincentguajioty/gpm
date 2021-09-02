@@ -31,7 +31,8 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Référence du catalogue: <small style="color:grey;">Requis</small></label>
-                            <select class="form-control select2" style="width: 100%;" name="libelleMateriel">
+                            <select class="form-control select2" style="width: 100%;" name="libelleMateriel" <?php if(isset($_GET['id'])){echo 'disabled';}else{echo 'required';} ?>>
+                                <option value=""></option>
                                 <?php
                                 $query2 = $db->query('SELECT c.*, f.nomFournisseur FROM MATERIEL_CATALOGUE c LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur ORDER BY libelleMateriel;');
                                 while ($data2 = $query2->fetch())
@@ -73,14 +74,19 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                                 $query2->closeCursor(); ?>
                             </select>
                         </div>
-
-                        <div class="form-group">
-                            <label>Quantité: <small style="color:grey;">Requis</small></label>
-                            <input type="text" class="form-control"  value="<?= isset($data['quantite']) ? $data['quantite'] : '' ?>" name="quantite" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Quantité d'Alerte: <small style="color:grey;">Requis</small></label>
-                            <input type="text" class="form-control"  value="<?= isset($data['quantiteAlerte']) ? $data['quantiteAlerte'] : '' ?>" name="quantiteAlerte" required>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Quantité: <small style="color:grey;">Requis</small></label>
+                                    <input type="text" class="form-control"  value="<?= isset($data['quantite']) ? $data['quantite'] : '' ?>" name="quantite" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Quantité d'Alerte: <small style="color:grey;">Requis</small></label>
+                                    <input type="text" class="form-control"  value="<?= isset($data['quantiteAlerte']) ? $data['quantiteAlerte'] : '' ?>" name="quantiteAlerte" required>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -92,14 +98,28 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                                 <input class="input-datepicker form-control" name="peremption" value="<?= isset($data['peremption']) ? $data['peremption'] : '' ?>">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Anticipation de la notification:</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input class="input-datepicker form-control" name="peremptionNotification" value="<?= isset($data['peremptionNotification']) ? $data['peremptionNotification'] : '' ?>">
-                            </div>
+                        <div class="row">
+                        	<div class="col-md-6">
+	                        	<div class="form-group">
+		                            <label>Anticipation de la notification (jours):</label>
+                                    <?php if ($data['peremptionAnticipationOpe'] != Null){?>
+                                        <input type="text" class="form-control"  value="<?= $data['peremptionAnticipationOpe'] ?> (piloté par le catalogue)" disabled>
+                                    <?php } else { ?>
+                                        <input type="number" min="0" class="form-control"  value="<?= isset($data['peremptionAnticipation']) ? $data['peremptionAnticipation'] : '' ?>" name="peremptionAnticipation">
+                                    <?php } ?>
+		                        </div>
+		                    </div>
+                        	<div class="col-md-6">
+		                        <div class="form-group">
+		                            <label>Date de la notification:</label>
+		                            <div class="input-group">
+		                                <div class="input-group-addon">
+		                                    <i class="fa fa-calendar"></i>
+		                                </div>
+		                                <input class="input-datepicker form-control" name="peremptionNotification" value="<?= isset($data['peremptionNotification']) ? $data['peremptionNotification'] : '' ?>" disabled>
+		                            </div>
+		                        </div>
+		                    </div>
                         </div>
                         <div class="form-group">
                             <label>Etat: <small style="color:grey;">Requis</small></label>

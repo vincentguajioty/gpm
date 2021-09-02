@@ -46,63 +46,75 @@ if($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots
                                 $query2->closeCursor(); ?>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Etat: <small style="color:grey;">Requis</small></label>
-                            <select class="form-control select2" style="width: 100%;" name="idLotsEtat">
-                                <?php
-                                $query2 = $db->query('SELECT * FROM LOTS_ETATS ORDER BY libelleLotsEtat;');
-                                while ($data2 = $query2->fetch())
-                                {
-                                    ?>
-                                    <option value ="<?php echo $data2['idLotsEtat']; ?>" <?php if (isset($data['idLotsEtat']) AND ($data2['idLotsEtat'] == $data['idLotsEtat'])) { echo 'selected'; } ?> ><?php echo $data2['libelleLotsEtat']; ?></option>
-                                    <?php
-                                }
-                                $query2->closeCursor(); ?>
-                            </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Etat: <small style="color:grey;">Requis</small></label>
+                                    <select class="form-control select2" style="width: 100%;" name="idLotsEtat">
+                                        <?php
+                                        $query2 = $db->query('SELECT * FROM LOTS_ETATS ORDER BY libelleLotsEtat;');
+                                        while ($data2 = $query2->fetch())
+                                        {
+                                            ?>
+                                            <option value ="<?php echo $data2['idLotsEtat']; ?>" <?php if (isset($data['idLotsEtat']) AND ($data2['idLotsEtat'] == $data['idLotsEtat'])) { echo 'selected'; } ?> ><?php echo $data2['libelleLotsEtat']; ?></option>
+                                            <?php
+                                        }
+                                        $query2->closeCursor(); ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Notifications: <small style="color:grey;">Requis</small></label>
+                                    <select class="form-control select2" style="width: 100%;" name="libelleEtat">
+                                        <?php
+                                        $query2 = $db->query('SELECT * FROM ETATS ORDER BY libelleEtat;');
+                                        while ($data2 = $query2->fetch())
+                                        {
+                                            ?>
+                                            <option value ="<?php echo $data2['idEtat']; ?>" <?php if (isset($data['idEtat']) AND ($data2['idEtat'] == $data['idEtat'])) { echo 'selected'; } ?> ><?php echo $data2['libelleEtat']; ?></option>
+                                            <?php
+                                        }
+                                        $query2->closeCursor(); ?>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Notifications: <small style="color:grey;">Requis</small></label>
-                            <select class="form-control select2" style="width: 100%;" name="libelleEtat">
-                                <?php
-                                $query2 = $db->query('SELECT * FROM ETATS ORDER BY libelleEtat;');
-                                while ($data2 = $query2->fetch())
-                                {
-                                    ?>
-                                    <option value ="<?php echo $data2['idEtat']; ?>" <?php if (isset($data['idEtat']) AND ($data2['idEtat'] == $data['idEtat'])) { echo 'selected'; } ?> ><?php echo $data2['libelleEtat']; ?></option>
-                                    <?php
-                                }
-                                $query2->closeCursor(); ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Lieu de stockage:</label>
-                            <select class="form-control select2" style="width: 100%;" name="libelleLieu">
-                                <option value="">--- Pas de Lieux ---</option>
-                                <?php
-                                $query2 = $db->query('SELECT * FROM LIEUX ORDER BY libelleLieu;');
-                                while ($data2 = $query2->fetch())
-                                {
-                                    ?>
-                                    <option value ="<?php echo $data2['idLieu']; ?>" <?php if (isset($data['idLieu']) AND ($data2['idLieu'] == $data['idLieu'])) { echo 'selected'; } ?> ><?php echo $data2['libelleLieu']; ?></option>
-                                    <?php
-                                }
-                                $query2->closeCursor(); ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Affecté à un véhicule:</label>
-                            <select class="form-control select2" style="width: 100%;" name="idVehicule">
-                                <option value="">--- Pas affecté ---</option>
-                                <?php
-                                $query2 = $db->query('SELECT * FROM VEHICULES ORDER BY libelleVehicule;');
-                                while ($data2 = $query2->fetch())
-                                {
-                                    ?>
-                                    <option value ="<?php echo $data2['idVehicule']; ?>" <?php if (isset($data['idVehicule']) AND ($data2['idVehicule'] == $data['idVehicule'])) { echo 'selected'; } ?> ><?php echo $data2['libelleVehicule']; ?></option>
-                                    <?php
-                                }
-                                $query2->closeCursor(); ?>
-                            </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Lieu de stockage:</label>
+                                    <select class="form-control select2" style="width: 100%;" name="libelleLieu">
+                                        <option value="">--- Pas de Lieux ---</option>
+                                        <?php
+                                        $query2 = $db->query('SELECT * FROM LIEUX ORDER BY libelleLieu;');
+                                        while ($data2 = $query2->fetch())
+                                        {
+                                            ?>
+                                            <option value ="<?php echo $data2['idLieu']; ?>" <?php if (isset($data['idLieu']) AND ($data2['idLieu'] == $data['idLieu'])) { echo 'selected'; } ?> ><?php echo $data2['libelleLieu']; ?></option>
+                                            <?php
+                                        }
+                                        $query2->closeCursor(); ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Affecté à un véhicule:</label>
+                                    <select class="form-control select2" style="width: 100%;" name="idVehicule">
+                                        <option value="">--- Pas affecté ---</option>
+                                        <?php
+                                        $query2 = $db->query('SELECT * FROM VEHICULES ORDER BY libelleVehicule;');
+                                        while ($data2 = $query2->fetch())
+                                        {
+                                            ?>
+                                            <option value ="<?php echo $data2['idVehicule']; ?>" <?php if (isset($data['idVehicule']) AND ($data2['idVehicule'] == $data['idVehicule'])) { echo 'selected'; } ?> ><?php echo $data2['libelleVehicule']; ?></option>
+                                            <?php
+                                        }
+                                        $query2->closeCursor(); ?>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Personne référente</label>
@@ -119,20 +131,25 @@ if($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots
                                 $query2->closeCursor(); ?>
                             </select>
                         </div>
-
-                        <div class="form-group">
-                            <label>Date du dernier inventaire: <small style="color:grey;">Requis</small></label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Date du dernier inventaire: <small style="color:grey;">Requis</small></label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input class="input-datepicker form-control" name="dateDernierInventaire" value="<?= isset($data['dateDernierInventaire']) ? $data['dateDernierInventaire'] : '' ?>" required>
+                                    </div>
+                                    <!-- /.input group -->
                                 </div>
-                                <input class="input-datepicker form-control" name="dateDernierInventaire" value="<?= isset($data['dateDernierInventaire']) ? $data['dateDernierInventaire'] : '' ?>" required>
                             </div>
-                            <!-- /.input group -->
-                        </div>
-                        <div class="form-group">
-                            <label>Fréquence inventaire (jours): <small style="color:grey;">Requis</small></label>
-                            <input type="number" class="form-control" value="<?= isset($data['frequenceInventaire']) ? $data['frequenceInventaire'] : '' ?>" name="frequenceInventaire" required>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Fréquence inventaire (jours): <small style="color:grey;">Requis</small></label>
+                                    <input type="number" class="form-control" value="<?= isset($data['frequenceInventaire']) ? $data['frequenceInventaire'] : '' ?>" name="frequenceInventaire" required>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- textarea -->

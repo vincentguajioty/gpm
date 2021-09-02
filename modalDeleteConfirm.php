@@ -15,7 +15,7 @@ switch ($_GET['case']) {
             <li>Les messages publics postés par la personne n'auront plus d'auteur.</li>
             <li>les inventaires réalisés par la personne n'auront plus d'auteur.</li>
             <li>Les équipements radio gérés par cette personne ne seront plus affectés.</li>
-            <li>Les véhicules gérés par cette personne ne seront plus affectés (véhicules, taches de maintenance, relevés kilométriques, désinfections).</li>
+            <li>Les véhicules gérés par cette personne ne seront plus affectés (véhicules, taches de maintenance, relevés kilométriques, désinfections, maintenances régulières).</li>
             <li>Les taches réalisées de la TODOLIST de cet utilisateur seront supprimées.</li>
             <li>Les taches que cet utilisateur n'a pas encore réalisée seront gardées mais non-affectées.</li>
             <li>Les taches que cet utilisateur a donné à d'autres utilisateurs seront maintenues.</li>
@@ -156,6 +156,7 @@ switch ($_GET['case']) {
             <li>Les taches de maitenance liées à ce véhicules seront supprimées.</li>
             <li>Les relevés kilométriques liés à ce véhicule seront supprimés.</li>
             <li>Les taches de désinfections liées à ce véhicule seront supprimées.</li>
+            <li>Les taches de maintenance régulières liées à ce véhicule seront supprimées.</li>
         ";
     break;
 
@@ -320,6 +321,27 @@ switch ($_GET['case']) {
         $lien = "vhfEquipementsAccessoiresDelete.php?id=".$_GET['id'];
         $contenu = "
             <li>Aucun impact collatéral</li>
+        ";
+    break;
+
+    case 'vehiculesTypesMaintenanceDelete':
+        $lien = "vehiculesTypesMaintenanceDelete.php?id=".$_GET['id'];
+        $contenu = "
+            <li>Les tâches de maintenance rattachées à ce type seront supprimées.</li>
+        ";
+    break;
+
+    case 'vehiculesHealthDelete':
+        $lien = "vehiculesHealthDelete.php?id=".$_GET['id'];
+        $contenu = "
+            <li>Le détail de cette maintenance sera supprimé.</li>
+        ";
+    break;
+    
+    case 'appliConfAESDrop':
+    	$lien = "appliConfAESDrop.php";
+        $contenu = "
+            <li>Toutes les données chiffrées fournisseurs seront perdues.</li>
         ";
     break;
 

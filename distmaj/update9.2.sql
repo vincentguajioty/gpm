@@ -181,7 +181,7 @@ UPDATE VEHICULES SET alerteDesinfection = 0;
 ALTER TABLE PERSONNE_REFERENTE ADD conf_indicateur11Accueil BOOLEAN AFTER conf_indicateur10Accueil;
 ALTER TABLE PERSONNE_REFERENTE ADD notif_vehicules_desinfections BOOLEAN AFTER notif_vehicules_revisions;
 
-UPDATE PERSONNE_REFERENTE SET conf_indicateur11Accueil = 0, notif_vehicules_desinfections = 0;
+UPDATE PERSONNE_REFERENTE SET conf_indicateur11Accueil = 1, notif_vehicules_desinfections = 1;
 
 ALTER TABLE CONFIG DROP notifications_commandes_demandeur_creation;
 ALTER TABLE CONFIG DROP notifications_commandes_valideur_creation;
