@@ -10,7 +10,7 @@ require_once('logCheck.php');
 if ($_SESSION['lots_lecture']==0)
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 ?>
-<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
+<body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -77,7 +77,6 @@ if ($_SESSION['lots_lecture']==0)
                                 <td><?= $data['libelleLotsEtat'] ?></td>
                                 <td>
                                     <?php
-                                    //echo $data['libelleTypeLot'];
                                     if ($data['libelleTypeLot'] == Null)
                                     {
                                         ?><span class="badge bg-orange">NA</span><?php

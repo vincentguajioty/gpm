@@ -10,7 +10,7 @@ require_once('logCheck.php');
 if ($_SESSION['typesDesinfections_lecture']==0)
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 ?>
-<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
+<body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -46,6 +46,7 @@ if ($_SESSION['typesDesinfections_lecture']==0)
                             <tr>
                                 <th style="width: 10px">#</th>
                                 <th>Libellé</th>
+                                <th>Affiché sur l'écran de synthèse</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -57,6 +58,7 @@ if ($_SESSION['typesDesinfections_lecture']==0)
                             <tr>
                                 <td><?php echo $data['idVehiculesDesinfectionsType']; ?></td>
                                 <td><?php echo $data['libelleVehiculesDesinfectionsType']; ?></td>
+                                <td><?php if($data['affichageSynthese'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                 <td>
                                     <?php if ($_SESSION['typesDesinfections_modification']==1) {?>
                                         <a href="vehiculesTypesDesinfectionsForm.php?id=<?=$data['idVehiculesDesinfectionsType']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>

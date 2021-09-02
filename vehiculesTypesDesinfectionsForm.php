@@ -33,6 +33,15 @@ if($_SESSION['typesDesinfections_lecture']==1 OR $_SESSION['typesDesinfections_a
                             <label>Libellé: <small style="color:grey;"> Requis</small></label>
                             <input type="text" class="form-control" value="<?= isset($data['libelleVehiculesDesinfectionsType']) ? $data['libelleVehiculesDesinfectionsType'] : ''?>" name="libelleVehiculesDesinfectionsType" required>
                         </div>
+                        <div class="form-group">
+				            <label>Synthèse:</label>
+				            </br>
+				            <div class="checkbox">
+				                <label>
+				                    <input type="checkbox" value="1" name="affichageSynthese" <?php if (isset($_GET['id']) AND ($data['affichageSynthese']==1)) {echo 'checked';} ?>> Affichage sur l'écran de synthèse
+								</label>
+							</div>
+				        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>

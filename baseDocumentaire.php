@@ -3,9 +3,10 @@
 <?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
+$_SESSION['page'] = 507;
 require_once('logCheck.php');
 ?>
-<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
+<body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>

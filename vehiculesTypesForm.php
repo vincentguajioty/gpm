@@ -33,7 +33,7 @@ if($_SESSION['vehicules_types_lecture']==1 OR $_SESSION['vehicules_types_ajout']
                             <label>Libellé: <small style="color:grey;"> Requis</small></label>
                             <input type="text" class="form-control" value="<?= isset($data['libelleType']) ? $data['libelleType'] : ''?>" name="libelleType" required>
                         </div>
-                    </div>
+				    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
                         <button type="submit" class="btn btn-primary pull-right"><?= isset($_GET['id']) ? 'Modifier' : 'Ajouter'?></button>

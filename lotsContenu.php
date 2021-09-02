@@ -10,7 +10,7 @@ require_once('logCheck.php');
 if ($_SESSION['lots_lecture']==0)
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 ?>
-<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
+<body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -389,12 +389,12 @@ if ($_SESSION['lots_lecture']==0)
                                     <table id="tri1" class="table table-bordered table-hover">
                                         <thead>
                                         <tr>
-                                            <th>Matériel</th>
-                                            <th>Stérilité requise</th>
-                                            <th>Quantité requise par le référentiel</th>
-                                            <th>Quantité présente dans le lot</th>
-                                            <th>Péremption dans le lot</th>
-                                            <th>Analyse de conformité</th>
+                                            <th class="all">Matériel</th>
+                                            <th class="not-mobile">Stérilité requise</th>
+                                            <th class="not-mobile">Quantité requise par le référentiel</th>
+                                            <th class="not-mobile">Quantité présente dans le lot</th>
+                                            <th class="not-mobile">Péremption dans le lot</th>
+                                            <th class="all">Analyse de conformité</th>
                                         </tr>
                                         </thead>
                                         <tbody>

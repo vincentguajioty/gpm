@@ -10,7 +10,7 @@ require_once('logCheck.php');
 if ($_SESSION['typesLots_lecture']==0)
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 ?>
-<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
+<body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -46,6 +46,7 @@ if ($_SESSION['typesLots_lecture']==0)
                             <tr>
                                 <th style="width: 10px">#</th>
                                 <th>Libelle</th>
+                                <th>Lots liés</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -57,6 +58,23 @@ if ($_SESSION['typesLots_lecture']==0)
                             <tr <?php if ($_SESSION['typesLots_lecture']==1) {?>data-href="referentielsContenu.php?id=<?=$data['idTypeLot']?>"<?php }?>>
                                 <td><?php echo $data['idTypeLot']; ?></td>
                                 <td><?php echo $data['libelleTypeLot']; ?></td>
+                                <td>
+                                    <?php
+                                    $lots = $db->prepare('SELECT * FROM LOTS_LOTS WHERE idTypeLot = :idTypeLot ORDER BY libelleLot ASC');
+                                    $lots->execute(array('idTypeLot'=>$data['idTypeLot']));
+                                    while($lot = $lots->fetch())
+                                    {
+                                        if ($lot['alerteConfRef']==0)
+                                        {
+                                            ?><span class="badge bg-green"><?php echo $lot['libelleLot']; ?></span><?php
+                                        }
+                                        else
+                                        {
+                                            ?><span class="badge bg-red"><?php echo $lot['libelleLot']; ?></span><?php
+                                        }
+                                    }
+                                    ?>
+                                </td>
                                 <td>
                                     <?php if ($_SESSION['typesLots_lecture']==1) {?>
                                         <a href="referentielsContenu.php?id=<?=$data['idTypeLot']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>

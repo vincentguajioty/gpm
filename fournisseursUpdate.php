@@ -11,6 +11,8 @@ if ($_SESSION['fournisseurs_modification']==0)
 }
 else {
 
+    $_POST['siteWebFournisseur'] = ($_POST['siteWebFournisseur'] == Null) ? Null : $_POST['siteWebFournisseur'];
+    
     $query = $db->prepare('
         UPDATE
             FOURNISSEURS
@@ -18,7 +20,8 @@ else {
             nomFournisseur       = :nomFournisseur,
             adresseFournisseur   = :adresseFournisseur,
             telephoneFournisseur = :telephoneFournisseur,
-            mailFournisseur      = :mailFournisseur
+            mailFournisseur      = :mailFournisseur,
+            siteWebFournisseur   = :siteWebFournisseur
         WHERE
             idFournisseur = :idFournisseur
         ;');
@@ -27,7 +30,8 @@ else {
         'nomFournisseur'       => $_POST['nomFournisseur'],
         'adresseFournisseur'   => $_POST['adresseFournisseur'],
         'telephoneFournisseur' => $_POST['telephoneFournisseur'],
-        'mailFournisseur'      => $_POST['mailFournisseur']
+        'mailFournisseur'      => $_POST['mailFournisseur'],
+        'siteWebFournisseur'   => $_POST['siteWebFournisseur'],
     ));
 
     switch($query->errorCode())

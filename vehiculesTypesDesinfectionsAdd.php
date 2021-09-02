@@ -12,9 +12,12 @@ if ($_SESSION['typesDesinfections_ajout']==0)
 else
 {
 
-    $query = $db->prepare('INSERT INTO VEHICULES_DESINFECTIONS_TYPES SET libelleVehiculesDesinfectionsType = :libelleVehiculesDesinfectionsType;');
+    $_POST['affichageSynthese'] = ($_POST['affichageSynthese'] == 1) ? 1 : 0;
+    
+    $query = $db->prepare('INSERT INTO VEHICULES_DESINFECTIONS_TYPES SET libelleVehiculesDesinfectionsType = :libelleVehiculesDesinfectionsType, affichageSynthese = :affichageSynthese;');
     $query->execute(array(
-        'libelleVehiculesDesinfectionsType' => $_POST['libelleVehiculesDesinfectionsType']
+        'libelleVehiculesDesinfectionsType' => $_POST['libelleVehiculesDesinfectionsType'],
+        'affichageSynthese' => $_POST['affichageSynthese']
     ));
 
     switch($query->errorCode())

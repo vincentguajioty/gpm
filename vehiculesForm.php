@@ -292,6 +292,14 @@ if($_SESSION['vehicules_lecture']==1 OR $_SESSION['vehicules_ajout']==1 OR $_SES
                         		</div>
                         	</div>
                         </div>
+                        <div class="form-group">
+                        	<label>Synthèses:</label>
+                        	<div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="1" name="affichageSyntheseDesinfections" <?php if (isset($_GET['id']) AND ($data['affichageSyntheseDesinfections']==1)) {echo 'checked';} ?>> Afficher dans les synthèse des désinfections
+								</label>
+							</div>
+                        </div>
 						<div class="form-group">
                             <label>Nombre de cônes:</label>
                             <input type="number" class="form-control" value="<?= isset($data['nbCones']) ? $data['nbCones'] : ''?>" name="nbCones">

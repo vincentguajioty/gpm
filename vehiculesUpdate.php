@@ -35,6 +35,8 @@ else
     $_POST['priseAlimentation220'] = ($_POST['priseAlimentation220'] == Null) ? Null : $_POST['priseAlimentation220'];
     $_POST['idVehiculesEtat'] = ($_POST['idVehiculesEtat'] == Null) ? Null : $_POST['idVehiculesEtat'];
 
+	$_POST['affichageSyntheseDesinfections'] = ($_POST['affichageSyntheseDesinfections'] == 1) ? 1 : 0;
+
     $query = $db->prepare('
         UPDATE
             VEHICULES
@@ -66,7 +68,8 @@ else
             priseAlimentation220 = :priseAlimentation220,
             remarquesVehicule    = :remarquesVehicule,
             idVehiculesEtat      = :idVehiculesEtat,
-            idCarburant          = :idCarburant
+            idCarburant          = :idCarburant,
+            affichageSyntheseDesinfections = :affichageSyntheseDesinfections
         WHERE
             idVehicule           = :idVehicule
         ;');
@@ -99,7 +102,8 @@ else
         'remarquesVehicule'    => $_POST['remarquesVehicule'],
         'idVehiculesEtat'      => $_POST['idVehiculesEtat'],
         'idCarburant'          => $_POST['idCarburant'],
-        'idVehicule'           => $_GET['id']
+        'idVehicule'           => $_GET['id'],
+        'affichageSyntheseDesinfections' => $_POST['affichageSyntheseDesinfections'],
     ));
 
     switch($query->errorCode())

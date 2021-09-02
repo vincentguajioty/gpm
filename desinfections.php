@@ -10,7 +10,7 @@ require_once('logCheck.php');
 if ($_SESSION['desinfections_lecture']==0)
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 ?>
-<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
+<body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -50,7 +50,7 @@ if ($_SESSION['desinfections_lecture']==0)
 		                                <th style="width: 10px">#</th>
 		                                <th>Véhicule</th>
 		                                <?php
-		                                	$desinfections = $db->query('SELECT * FROM VEHICULES_DESINFECTIONS_TYPES ORDER BY libelleVehiculesDesinfectionsType');
+		                                	$desinfections = $db->query('SELECT * FROM VEHICULES_DESINFECTIONS_TYPES WHERE affichageSynthese = 1 ORDER BY libelleVehiculesDesinfectionsType');
 		                                	while($desinfection = $desinfections->fetch())
 		                                	{
 		                                		echo '<th>'.$desinfection['libelleVehiculesDesinfectionsType'].'</th>';
@@ -61,7 +61,7 @@ if ($_SESSION['desinfections_lecture']==0)
 		                        </thead>
 		                        <tbody>
 		                        <?php
-		                        $query = $db->query('SELECT * FROM VEHICULES ORDER BY libelleVehicule;');
+		                        $query = $db->query('SELECT * FROM VEHICULES WHERE affichageSyntheseDesinfections = 1 ORDER BY libelleVehicule;');
 		                        while ($data = $query->fetch())
 		                        {?>
 		                            <tr>
@@ -77,6 +77,8 @@ if ($_SESSION['desinfections_lecture']==0)
 		                                			VEHICULES_DESINFECTIONS_TYPES t
 		                                			LEFT OUTER JOIN (SELECT * FROM VEHICULES_DESINFECTIONS_ALERTES WHERE idVehicule = :idVehicule)veh ON t.idVehiculesDesinfectionsType = veh.idVehiculesDesinfectionsType
 		                                			LEFT OUTER JOIN (SELECT * FROM VEHICULES_DESINFECTIONS WHERE idVehicule = :idVehicule)cal ON t.idVehiculesDesinfectionsType = cal.idVehiculesDesinfectionsType
+		                                		WHERE
+		                                			t.affichageSynthese = 1
 		                                		GROUP BY
 		                                			t.idVehiculesDesinfectionsType
 		                                		ORDER BY
@@ -151,6 +153,11 @@ if ($_SESSION['desinfections_lecture']==0)
                                     FROM
                                         VEHICULES_DESINFECTIONS d
                                         LEFT OUTER JOIN VEHICULES v ON d.idVehicule = v.idVehicule
+                                        LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON d.idVehiculesDesinfectionsType = t.idVehiculesDesinfectionsType
+                                    WHERE
+                                    	v.affichageSyntheseDesinfections = 1
+                                    	AND
+                                    	t.affichageSynthese = 1
 		                        ;');
 		                        while ($data = $query->fetch())
 		                        {
@@ -223,6 +230,10 @@ if ($_SESSION['desinfections_lecture']==0)
 		                        		LEFT OUTER JOIN VEHICULES v ON d.idVehicule = v.idVehicule
 		                        	WHERE
 		                        		dateDesinfection > NOW() - INTERVAL 3 MONTH
+		                        		AND
+		                        		t.affichageSynthese = 1
+		                        		AND
+		                        		v.affichageSyntheseDesinfections = 1
 		                        	ORDER BY
 		                        		dateDesinfection DESC;');
 		                        while ($data = $query->fetch())

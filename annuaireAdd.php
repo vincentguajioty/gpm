@@ -63,7 +63,8 @@ else
 			agenda_reserves_inventaireAF        = "#3c8dbc",
 			agenda_reserves_inventaireF         = "#3c8dbc",
 			agenda_tenues_tenues                = "#00a65a",
-			agenda_tenues_toDoList              = "#3c8db"
+			agenda_tenues_toDoList              = "#3c8db",
+			layout                              = "fixed"
         ;');
     $query->execute(array(
         'identifiant'    => $_POST['identifiant'],

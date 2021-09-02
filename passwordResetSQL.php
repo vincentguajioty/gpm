@@ -111,9 +111,10 @@ if ($data['idIP'] == "")
 	    $lienKill = $URLSITE."/passwordResetKill.php?idReset=".$resetSession['idReset']."&token=".$token;
 
 	    $sujet = "[" . $APPNAME . "] Réinitialisation de votre mot de passe.";
-	    $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Vous venez de faire une demande de réinitialisation de mot de passe oublié.<br/><br/>Si cette demande provient bien de vous, cliquez sur le lien ci-dessous pour réinitialiser votre mot de passe:<br/>".$lienReset."<br/><br/>Si cette demande vous semble fauduleuse, cliquez sur le lien ci-dessous pour la neutraliser:<br/>".$lienKill;
+	    $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Vous venez de faire une demande de réinitialisation de mot de passe oublié.<br/><br/>Si cette demande provient bien de vous, cliquez sur le lien ci-dessous pour réinitialiser votre mot de passe:<br/>".$lienReset."<br/><br/>Si cette demande vous semble frauduleuse, cliquez sur le lien ci-dessous pour la neutraliser:<br/>".$lienKill;
         $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
         $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+
         if(sendmail($_POST['mailPersonne'], $sujet, 2, $message))
         {
 		    writeInLogs("Mail de réinitialisation de mot de passe envoyé à " . $_POST['mailPersonne'] . " pour le compte référence ".$data['idPersonne'], '1', NULL);

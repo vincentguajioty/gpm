@@ -2,7 +2,7 @@
 
 require_once 'bdd.php';
 
-$VERSIONCHECK = '9.7';
+$VERSIONCHECK = '9.8';
 
 $query = $db->query('SELECT * FROM CONFIG;');
 $data = $query->fetch();

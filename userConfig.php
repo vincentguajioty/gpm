@@ -58,7 +58,8 @@ require_once 'config/bdd.php';
     		notif_vehicules_ct            = :notif_vehicules_ct,
     		notif_tenues_stock            = :notif_tenues_stock,
     		notif_tenues_retours          = :notif_tenues_retours,
-    		tableRowPerso                 = :tableRowPerso
+    		tableRowPerso                 = :tableRowPerso,
+    		layout                        = :layout
     	WHERE
     		idPersonne = :idPersonne ;');
     $query->execute(array(
@@ -88,7 +89,8 @@ require_once 'config/bdd.php';
 		'notif_vehicules_ct'            => $_POST['notif_vehicules_ct'],
 		'notif_tenues_stock'            => $_POST['notif_tenues_stock'],
 		'notif_tenues_retours'          => $_POST['notif_tenues_retours'],
-		'tableRowPerso'                 => $_POST['tableRowPerso']
+		'tableRowPerso'                 => $_POST['tableRowPerso'],
+		'layout'                        => $_POST['layout'],
     ));
 
     $_SESSION['tableRowPerso'] = $_POST['tableRowPerso'];
@@ -122,6 +124,8 @@ switch($query->errorCode())
 		$_SESSION['conf_indicateur10Accueil'] = $data['conf_indicateur10Accueil'];
 		$_SESSION['conf_indicateur11Accueil'] = $data['conf_indicateur11Accueil'];
 		$_SESSION['conf_accueilRefresh']      = $data['conf_accueilRefresh'];
+
+		$_SESSION['layout']                   = $data['layout'];
         
         break;
 

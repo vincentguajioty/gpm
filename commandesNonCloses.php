@@ -10,7 +10,7 @@ require_once('logCheck.php');
 if ($_SESSION['commande_lecture']==0)
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 ?>
-<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
+<body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -41,10 +41,10 @@ if ($_SESSION['commande_lecture']==0)
                         <thead>
                         <tr>
                             <th class="all" style="width: 10px">#</th>
-                            <th class="all">Date de création</th>
+                            <th class="not-mobile">Date de création</th>
                             <th class="all">Nom</th>
-                            <th class="all">Fournisseur</th>
-                            <th class="all">TTC</th>
+                            <th class="not-mobile">Fournisseur</th>
+                            <th class="not-mobile">TTC</th>
                             <th class="not-mobile">Référence fournisseur</th>
                             <th class="not-mobile">Etat</th>
                             <th class="not-mobile">Etat centre de cout</th>

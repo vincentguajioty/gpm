@@ -12,7 +12,7 @@ if ($_SESSION['commande_lecture']==0)
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 ?>
 
-<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
+<body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -20,7 +20,7 @@ if ($_SESSION['commande_lecture']==0)
     <?php require_once 'documentsGetIcone.php'; ?>
 
     <?php
-    $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat WHERE idCommande=:idCommande;');
+    $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE idCommande=:idCommande;');
     $query->execute(array('idCommande' => $_GET['id']));
     $data = $query->fetch();
     ?>
@@ -81,6 +81,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                    <div class="col-md-6">
 	                                        <div class="form-group">
 	                                            <label>Fournisseur: </label>
+	                                            <?php if($data['siteWebFournisseur'] != Null AND $data['siteWebFournisseur'] != ''){ ?><a href="<?=$data['siteWebFournisseur']?>"><label class="pull-right"><i class="fa fa-internet-explorer"></i></label></a><?php } ?>
 	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>2) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idFournisseur">
 	                                                <option value="">--- Non-spécifié - Obligatoire pour valider la commande ---</option>
 	                                                <?php
@@ -94,6 +95,26 @@ if ($_SESSION['commande_lecture']==0)
 	                                                $query2->closeCursor(); ?>
 	                                            </select>
 	                                        </div>
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                        <div class="form-group">
+	                                            <label>Etat: </label>
+	                                            <select disabled class="form-control" name="idEtat">
+	                                                <?php
+	                                                $query2 = $db->query('SELECT * FROM COMMANDES_ETATS;');
+	                                                while ($data2 = $query2->fetch())
+	                                                {
+	                                                    ?>
+	                                                    <option value="<?php echo $data2['idEtat']; ?>" <?php if ($data['idEtat'] == $data2['idEtat']) { echo 'selected'; } ?> ><?php echo $data2['idEtat'].' - '.$data2['libelleEtat']; ?></option>
+	                                                    <?php
+	                                                }
+	                                                $query2->closeCursor(); ?>
+	                                            </select>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="row">
+	                                    <div class="col-md-6">
 	                                        <div class="form-group">
 	                                            <label>Demandeur: </label>
 	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>2) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idDemandeur[]" multiple>
@@ -185,49 +206,9 @@ if ($_SESSION['commande_lecture']==0)
 	                                                $query2->closeCursor(); ?>
 	                                            </select>
 	                                        </div>
-	                                        <div class="form-group">
-	                                            <label>Centre de cout: </label>
-	                                            <label class="pull-right"><?= cmdEtatCentreCouts($_GET['id']); ?></label>
-	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>2) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idCentreDeCout">
-	                                                <option value="">--- Non-spécifié ---</option>
-	                                                <?php
-	                                                $query2 = $db->query('SELECT * FROM CENTRE_COUTS;');
-	                                                while ($data2 = $query2->fetch())
-	                                                {
-	                                                    ?>
-	                                                    <option value="<?php echo $data2['idCentreDeCout']; ?>" <?php if ($data['idCentreDeCout'] == $data2['idCentreDeCout']) { echo 'selected'; } ?>><?php echo $data2['libelleCentreDecout']; ?></option>
-	                                                    <?php
-	                                                }
-	                                                $query2->closeCursor(); ?>
-	                                            </select>
-	                                        </div>
-	                                        <div class="form-group" id="dateCreation">
-	                                            <label>Date de création:</label>
-	                                            <div class="input-group">
-	                                                <div class="input-group-addon">
-	                                                    <i class="fa fa-calendar"></i>
-	                                                </div>
-	                                                <input disabled type="text" class="input-datepicker form-control" name="dateCreation" value="<?php echo $data['dateCreation']; ?>">
-	                                            </div>
-	                                        </div>
 	                                    </div>
-	
 	                                    <div class="col-md-6">
-	                                        <div class="form-group">
-	                                            <label>Etat: </label>
-	                                            <select disabled class="form-control" name="idEtat">
-	                                                <?php
-	                                                $query2 = $db->query('SELECT * FROM COMMANDES_ETATS;');
-	                                                while ($data2 = $query2->fetch())
-	                                                {
-	                                                    ?>
-	                                                    <option value="<?php echo $data2['idEtat']; ?>" <?php if ($data['idEtat'] == $data2['idEtat']) { echo 'selected'; } ?> ><?php echo $data2['idEtat'].' - '.$data2['libelleEtat']; ?></option>
-	                                                    <?php
-	                                                }
-	                                                $query2->closeCursor(); ?>
-	                                            </select>
-	                                        </div>
-	                                        <div class="form-group">
+	                                    	<div class="form-group">
 	                                            <label>Affectation: </label>
 	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>2) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idAffectee[]" multiple>
 	                                                <?php
@@ -320,7 +301,29 @@ if ($_SESSION['commande_lecture']==0)
 	                                                
 	                                            </select>
 	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="row">
+	                                    <div class="col-md-6">
 	                                        <div class="form-group">
+	                                            <label>Centre de cout: </label>
+	                                            <label class="pull-right"><?= cmdEtatCentreCouts($_GET['id']); ?></label>
+	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>2) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idCentreDeCout">
+	                                                <option value="">--- Non-spécifié ---</option>
+	                                                <?php
+	                                                $query2 = $db->query('SELECT * FROM CENTRE_COUTS;');
+	                                                while ($data2 = $query2->fetch())
+	                                                {
+	                                                    ?>
+	                                                    <option value="<?php echo $data2['idCentreDeCout']; ?>" <?php if ($data['idCentreDeCout'] == $data2['idCentreDeCout']) { echo 'selected'; } ?>><?php echo $data2['libelleCentreDecout']; ?></option>
+	                                                    <?php
+	                                                }
+	                                                $query2->closeCursor(); ?>
+	                                            </select>
+	                                        </div>
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                    	<div class="form-group">
 	                                            <label>Lieu de livraison: </label>
 	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>2) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idLieuLivraison">
 	                                                <option value="">--- Non-spécifié ---</option>
@@ -335,6 +338,21 @@ if ($_SESSION['commande_lecture']==0)
 	                                                $query2->closeCursor(); ?>
 	                                            </select>
 	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="row">
+	                                    <div class="col-md-6">
+	                                        <div class="form-group" id="dateCreation">
+	                                            <label>Date de création:</label>
+	                                            <div class="input-group">
+	                                                <div class="input-group-addon">
+	                                                    <i class="fa fa-calendar"></i>
+	                                                </div>
+	                                                <input disabled type="text" class="input-datepicker form-control" name="dateCreation" value="<?php echo $data['dateCreation']; ?>">
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <div class="col-md-6">
 	                                        <div class="form-group" id="dateCloture">
 	                                            <label>Date de clôture:</label>
 	                                            <div class="input-group">
@@ -561,11 +579,11 @@ if ($_SESSION['commande_lecture']==0)
 	                                    <textarea <?php if(($data['idEtat']>2) OR ((($_SESSION['commande_valider']==0) OR cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])==0) AND ($_SESSION['commande_valider_delegate']==0))){echo 'disabled';}?> class="form-control" rows="3" name="remarquesValidation" required><?php echo $data['remarquesValidation']; ?></textarea>
 	                                </div>
 	                                <div class="box-footer">
-	                                    <?php if (($data['idEtat']==2) AND ($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])){ ?><button name="button" value="nok" type="submit" class="btn btn-danger pull-left">Refuser la commande</button> <?php } ?>
-	                                    <?php if (($data['idEtat']==2) AND ($_SESSION['commande_valider_delegate']==1) AND !(cmdEstValideur($_SESSION['idPersonne'], $_GET['id']))){ ?><button name="button" value="nokdelegate" type="submit" class="btn btn-danger pull-left">Refuser la commande en tant que valideur délégué</button> <?php } ?>
+	                                    <?php if (($data['idEtat']==2) AND ($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])){ ?><button name="button" value="nok" type="submit" class="btn btn-danger pull-left">Refuser</button> <?php } ?>
+	                                    <?php if (($data['idEtat']==2) AND ($_SESSION['commande_valider_delegate']==1) AND !(cmdEstValideur($_SESSION['idPersonne'], $_GET['id']))){ ?><button name="button" value="nokdelegate" type="submit" class="btn btn-danger pull-left">Refuser en tant que délégué</button> <?php } ?>
 	                                    
-	                                    <?php if (($data['idEtat']==2) AND ($data['idFournisseur']!=Null) AND ($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])) { ?><button name="button" value="ok" type="submit" class="btn btn-success pull-right">Valider la commande</button> <?php } ?>
-	                                    <?php if (($data['idEtat']==2) AND ($data['idFournisseur']!=Null) AND ($_SESSION['commande_valider_delegate']==1) AND !(cmdEstValideur($_SESSION['idPersonne'], $_GET['id']))) { ?><button name="button" value="okdelegate" type="submit" class="btn btn-success pull-right">Valider la commande en tant que valideur délégué</button> <?php } ?>
+	                                    <?php if (($data['idEtat']==2) AND ($data['idFournisseur']!=Null) AND ($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])) { ?><button name="button" value="ok" type="submit" class="btn btn-success pull-right">Valider</button> <?php } ?>
+	                                    <?php if (($data['idEtat']==2) AND ($data['idFournisseur']!=Null) AND ($_SESSION['commande_valider_delegate']==1) AND !(cmdEstValideur($_SESSION['idPersonne'], $_GET['id']))) { ?><button name="button" value="okdelegate" type="submit" class="btn btn-success pull-right">Valider en tant que délégué</button> <?php } ?>
 	                                </div>
 	                            </form>
 	                        </div>

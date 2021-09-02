@@ -10,7 +10,7 @@ require_once('logCheck.php');
 if ($_SESSION['fournisseurs_lecture']==0)
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 ?>
-<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
+<body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -46,6 +46,8 @@ if ($_SESSION['fournisseurs_lecture']==0)
                             <tr>
                                 <th style="width: 10px">#</th>
                                 <th>Nom</th>
+                                <th>Site Web</th>
+                                <th>Téléphone</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -57,7 +59,13 @@ if ($_SESSION['fournisseurs_lecture']==0)
                             <tr>
                                 <td><?php echo $data['idFournisseur']; ?></td>
                                 <td><?php echo $data['nomFournisseur']; ?></td>
+                                <td><?php echo $data['siteWebFournisseur']; ?></td>
+                                <td><?php echo $data['telephoneFournisseur']; ?></td>
                                 <td>
+                                    <?php
+                                        if($data['siteWebFournisseur'] != Null AND $data['siteWebFournisseur'] != ''){?>
+                                            <a href="<?=$data['siteWebFournisseur']?>" class="btn btn-xs btn-info" title="Aller sur le site du fournisseur" target="_blank"><i class="fa fa-internet-explorer"></i></a>
+                                    <?php } ?>
                                     <?php if ($_SESSION['lieux_modification']==1) {?>
                                         <a href="fournisseursForm.php?id=<?=$data['idFournisseur']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>

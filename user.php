@@ -7,7 +7,7 @@ require_once('logCheck.php');
 
 ?>
 <?php include('header.php'); require_once('config/config.php'); ?>
-<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
+<body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -462,6 +462,13 @@ require_once('logCheck.php');
 			                            <option value="75" <?php if($_SESSION['tableRowPerso']==75){echo 'selected';} ?>>75</option>
 			                            <option value="100" <?php if($_SESSION['tableRowPerso']==100){echo 'selected';} ?>>100</option>
 			                            <option value="-1" <?php if($_SESSION['tableRowPerso']==-1){echo 'selected';} ?>>Tous</option>
+			                        </select>
+		                        </div>
+		                        <div class="form-group">
+		                            <label>Bandeau vertical de navigation:</label>
+			                        <select class="form-control select2" style="width: 100%;" name="layout">
+			                            <option value="fixed" <?php if($_SESSION['layout']=="fixed"){echo 'selected';} ?>>Déployé</option>
+			                            <option value="sidebar-collapse" <?php if($_SESSION['layout']=="sidebar-collapse"){echo 'selected';} ?>>Réduit</option>
 			                        </select>
 		                        </div>
 		                        <div class="form-group">

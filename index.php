@@ -10,7 +10,7 @@ include('logCheck.php');
 ?>
 <?php include('header.php'); require_once('config/config.php'); ?>
 <meta http-equiv="refresh" content="<?= $_SESSION['conf_accueilRefresh'] ?>"; url="mapage.php" />
-<body class="hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed">
+<body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
@@ -927,6 +927,60 @@ include('logCheck.php');
 				<br/>
         	</div>
 
+			<?php if ($_SESSION['commande_valider']==1){ ?>	
+				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+					<div class="box box-success">
+						<div class="box-header">
+							<i class="fa fa-shopping-cart"></i>
+							<h3 class="box-title">Validations en attente</h3>
+					    </div>
+					    <!-- /.box-header -->
+						<div class="box-body">
+							<table class="table table-bordered">
+		                        <thead>
+		                        <tr>
+		                            <th style="width: 10px">#</th>
+		                            <th>Nom</th>
+		                            <th>TTC</th>
+		                            <th>Actions</th>
+		                        </tr>
+		                        </thead>
+		                        <tbody>
+		                        <?php
+		                        $query = $db->prepare('SELECT c.idCommande, c.nomCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat FROM COMMANDES_VALIDEURS j LEFT OUTER JOIN COMMANDES c ON j.idCommande = c.idCommande LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE (idValideur = :idPersonne) AND (c.idEtat = 2);');
+		                        $query->execute(array(
+		                            'idPersonne' => $_SESSION['idPersonne']
+		                        ));
+		                        while ($data = $query->fetch())
+		                        {?>
+		                            <tr <?php if ($_SESSION['commande_lecture']==1) {?>data-href="commandeView.php?id=<?=$data['idCommande']?>"<?php }?>>
+		                                <td><?php echo $data['idCommande']; ?></td>
+		                                <td><?php echo $data['nomCommande']; ?></td>
+		                                <td>
+		                                	<?php
+			                                	$query2 = $db->prepare('SELECT IFNULL(SUM(prixProduitTTC*quantiteCommande),0) AS total FROM COMMANDES_MATERIEL c LEFT OUTER JOIN MATERIEL_CATALOGUE m ON c.idMaterielCatalogue = m.idMaterielCatalogue WHERE idCommande = :idCommande;');
+												$query2->execute(array('idCommande' => $data['idCommande']));
+												$total = $query2->fetch();
+												echo floor($total['total']*100)/100; echo ' €';
+		                                	?>
+		                                </td>
+		                                <td>
+		                                    <?php if ($_SESSION['commande_lecture']==1) {?>
+		                                    	<a href="commandeView.php?id=<?=$data['idCommande']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
+		                                	<?php } ?>
+		                                </td>
+		                            </tr>
+		                            <?php
+		                        }
+		                        $query->closeCursor(); ?>
+		                        </tbody>
+		                    </table>
+						</div>
+					    <!-- /.box-body -->
+					</div>
+				</div>
+			<?php } ?>
+				
         	<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 			    <div class="box box-success">
 					<div class="box-header">

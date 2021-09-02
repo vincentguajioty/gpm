@@ -184,6 +184,8 @@ else
 	$_SESSION['agenda_tenues_tenues']                = $data['agenda_tenues_tenues'];
 	$_SESSION['agenda_tenues_toDoList']              = $data['agenda_tenues_toDoList'];
 
+	$_SESSION['layout'] = $data['layout'];
+
 	$_SESSION['derniereConnexion']               = $data['derniereConnexion'];
 
 	$_SESSION['LAST_ACTIVITY']                   = time();

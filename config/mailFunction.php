@@ -1,6 +1,8 @@
 <?php
 session_start();
+require_once 'bdd.php';
 require_once 'config.php';
+
 
 $RETOURLIGNE = "\r\n";
 
@@ -11,9 +13,11 @@ function sendMail($adresseDest, $sujet, $niveau, $contenu)
     global $MAILCOPY;
     global $RETOURLIGNE;
 
+    $replyTo = ($_SESSION['mailPersonne'] != '') ? $_SESSION['mailPersonne'] : $MAILSERVER;
+
     $boundary = "-----=".md5(rand());
     $header = "From: \"" . $APPNAME . "\"<" . $MAILSERVER . ">".$RETOURLIGNE;
-    $header.= "Reply-to: ".$MAILSERVER.$RETOURLIGNE;
+    $header.= "Reply-to: ".$replyTo.$RETOURLIGNE;
     $header.= "MIME-Version: 1.0".$RETOURLIGNE;
     
     if($MAILCOPY == 1)

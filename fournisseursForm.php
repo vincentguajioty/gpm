@@ -46,6 +46,10 @@ if($_SESSION['fournisseurs_lecture']==1 OR $_SESSION['fournisseurs_ajout']==1 OR
                             <label>eMail:</label>
                             <input type="email" class="form-control" placeholder="Entrez l'eMail du fournisseur" value="<?= isset($data['mailFournisseur']) ? $data['mailFournisseur'] : '' ?>" name="mailFournisseur">
                         </div>
+                        <div class="form-group">
+                            <label>Site Web:</label>
+                            <input type="text" class="form-control" placeholder="Entrez l'adresse internet du site du fournisseur" value="<?= isset($data['siteWebFournisseur']) ? $data['siteWebFournisseur'] : '' ?>" name="siteWebFournisseur">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>

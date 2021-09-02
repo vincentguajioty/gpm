@@ -9,6 +9,16 @@ require_once 'config/bdd.php';
     <section class="sidebar">
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
+            <form action="navbarSearch.php" method="POST" class="sidebar-form">
+		    	<div class="input-group">
+					<input type="text" name="search" class="form-control" placeholder="Chercher..." required>
+						<span class="input-group-btn">
+							<button type="submit" name="seach" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+						</button>
+					</span>
+				</div>
+		    </form>
+
             <li <?php
             if ($_SESSION['page'] == 000)
             {
@@ -662,15 +672,22 @@ require_once 'config/bdd.php';
                             echo 'class="active"';
                         }
                         ?>
-                        ><a href="actionsMassives.php"><i class="fa fa-minus-circle"></i> <span>Actions massives en base</span></a></li>
+                        ><a href="actionsMassives.php"><i class="fa fa-minus-circle"></i> <span>Actions massives</span></a></li>
                     <?php } ?>
+                    <li <?php
+                    if ($_SESSION['page'] == 507)
+                    {
+                        echo 'class="active"';
+                    }
+                    ?>
+                    ><a href="baseDocumentaire.php"><i class="fa fa-database"></i> <span>Documents</span></a></li>
                     <li <?php
                     if ($_SESSION['page'] == 503)
                     {
                         echo 'class="active"';
                     }
                     ?>
-                    ><a href="https://gpm.guajioty.fr" target="_blank"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
+                    ><a href="https://gpm.guajioty.fr" target="_blank"><i class="fa fa-book"></i> <span>Manuel et aide</span></a></li>
                     <li <?php
                     if ($_SESSION['page'] == 502)
                     {

@@ -35,6 +35,8 @@ else
     $_POST['nbCones'] = ($_POST['nbCones'] == Null) ? Null : $_POST['nbCones'];
     $_POST['priseAlimentation220'] = ($_POST['priseAlimentation220'] == Null) ? Null : $_POST['priseAlimentation220'];
     $_POST['idVehiculesEtat'] = ($_POST['idVehiculesEtat'] == Null) ? Null : $_POST['idVehiculesEtat'];
+    
+    $_POST['affichageSyntheseDesinfections'] = ($_POST['affichageSyntheseDesinfections'] == 1) ? 1 : 0;
 
     $query = $db->prepare('
         INSERT INTO
@@ -67,7 +69,8 @@ else
             priseAlimentation220 = :priseAlimentation220,
             remarquesVehicule    = :remarquesVehicule,
             idVehiculesEtat      = :idVehiculesEtat,
-            idCarburant          = :idCarburant
+            idCarburant          = :idCarburant,
+            affichageSyntheseDesinfections = :affichageSyntheseDesinfections
         ;');
     $query->execute(array(
         'libelleVehicule'      => $_POST['libelleVehicule'],
@@ -98,6 +101,7 @@ else
         'remarquesVehicule'    => $_POST['remarquesVehicule'],
         'idVehiculesEtat'      => $_POST['idVehiculesEtat'],
         'idCarburant'          => $_POST['idCarburant'],
+        'affichageSyntheseDesinfections' => $_POST['affichageSyntheseDesinfections'],
     ));
 
     switch($query->errorCode())

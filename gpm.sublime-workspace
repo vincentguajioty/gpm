@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"site",
+				"siteWebFournisseur\t(update9.8.sql)"
+			],
+			[
 				"VHF_",
 				"VHF_ACCESSOIRES\t(update9.7.sql)"
 			],
@@ -157,9 +161,51 @@
 	},
 	"file_history":
 	[
+		"//192.168.100.248/web_recette/carriere/emploisDetails.php",
+		"//192.168.100.248/web_recette/gpm/vehiculesContenu.php",
+		"//192.168.100.248/web_recette/gpm/config/mailFunction.php",
+		"//192.168.100.248/web_recette/gpm/logs/20190827.log",
+		"//192.168.100.248/web_recette/gpm/profilsAdd.php",
+		"//192.168.100.248/web_recette/gpm/passwordReset.php",
+		"//192.168.100.248/web_recette/gpm/passwordResetSQL.php",
+		"//192.168.100.248/web_recette/gpm/passwordResetOK.php",
+		"//192.168.100.248/web_recette/gpm/user.php",
+		"//192.168.100.248/web_recette/gpm/userConfig.php",
+		"//192.168.100.248/web_recette/gpm/loginDelegateBack.php",
+		"//192.168.100.248/web_recette/gpm/loginDelegate.php",
+		"//192.168.100.248/web_recette/gpm/loginSQL.php",
+		"//192.168.100.248/web_recette/gpm/annuaireAdd.php",
+		"//192.168.100.248/web_recette/gpm/annuaireImportGoOK.php",
 		"//192.168.100.248/web_recette/gpm/index.php",
-		"//192.168.100.248/web/gpmunass69/logs/20190820.log",
+		"//192.168.100.248/web_recette/gpm/distmaj/update9.8.sql",
+		"//192.168.100.248/web_recette/gpm/referentiels.php",
+		"//192.168.100.248/web_recette/gpm/navbar.php",
+		"//192.168.100.248/web_recette/gpm/lots.php",
 		"//192.168.100.248/web/majDist/gpmTimeLine.php",
+		"//192.168.100.248/web_recette/gpm/navbarSearch.php",
+		"//192.168.100.248/web_recette/gpm/vehicules.php",
+		"//192.168.100.248/web_recette/gpm/vhfPlans.php",
+		"//192.168.100.248/web_recette/gpm/vhfEquipements.php",
+		"//192.168.100.248/web_recette/gpm/vhfCanaux.php",
+		"//192.168.100.248/web_recette/gpm/commandeView.php",
+		"//192.168.100.248/web_recette/gpm/commandesToutes.php",
+		"//192.168.100.248/web_recette/gpm/reserveMateriel.php",
+		"//192.168.100.248/web_recette/gpm/reserveConteneurs.php",
+		"//192.168.100.248/web/majDist/gpmMAJ.php",
+		"//192.168.100.248/web_recette/gpm/emplacements.php",
+		"//192.168.100.248/web_recette/gpm/sacs.php",
+		"//192.168.100.248/web_recette/gpm/commandesValidations.php",
+		"//192.168.100.248/web_recette/gpm/plugins/datatables/dataTables.bootstrap.css",
+		"//192.168.100.248/web_recette/gpm/commandesSuivi.php",
+		"//192.168.100.248/web_recette/gpm/commandesTraiter.php",
+		"//192.168.100.248/web_recette/gpm/commandesNonCloses.php",
+		"//192.168.100.248/web_recette/gpm/lotsContenu.php",
+		"//192.168.100.248/web_recette/gpm/plugins/datatables/extensions/Responsive/css/dataTables.responsive.css",
+		"//192.168.100.248/web_recette/gpm/scripts.php",
+		"//192.168.100.248/web_recette/gpm/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js",
+		"//192.168.100.248/web_recette/gpm/baseDocumentaire.php",
+		"//192.168.100.248/web_recette/gpm/bandeausup.php",
+		"//192.168.100.248/web/gpmunass69/logs/20190820.log",
 		"//192.168.100.248/web_recette/gpm/distmaj/update9.7.sql",
 		"//192.168.100.248/web_recette/gpm/vhfEquipementsAccessoiresForm.php",
 		"//192.168.100.248/web_recette/gpm/modalDeleteConfirm.php",
@@ -168,11 +214,8 @@
 		"//192.168.100.248/web_recette/gpm/vhfEquipementsAccessoiresAdd.php",
 		"//192.168.100.248/web_recette/gpm/vhfEquipementsAccessoiresDelete.php",
 		"//192.168.100.248/web_recette/gpm/vhfEquipementsDelete.php",
-		"//192.168.100.248/web_recette/gpm/lots.php",
 		"//192.168.100.248/web_recette/gpm/vhfEquipementsForm.php",
-		"//192.168.100.248/web_recette/gpm/lotsContenu.php",
 		"//192.168.100.248/web_recette/gpm/desinfections.php",
-		"//192.168.100.248/web_recette/gpm/vehiculesContenu.php",
 		"//192.168.100.248/web_recette/gpm/vehiculesDesinfectionsForm.php",
 		"//192.168.100.248/web_recette/gpm/vehiculesReleveForm.php",
 		"//192.168.100.248/web_recette/gpm/vehiculesMaintenanceForm.php",
@@ -188,7 +231,6 @@
 		"//192.168.100.248/web_recette/gpm/referentielsContenuUpdate.php",
 		"//192.168.100.248/web_recette/gpm/logs/20190815.log",
 		"//192.168.100.248/web_recette/gpm/lotsInventaireNewAdd.php",
-		"//192.168.100.248/web_recette/gpm/commandeView.php",
 		"//192.168.100.248/web_recette/gpm/referentielsAdd.php",
 		"//192.168.100.248/web_recette/gpm/profilsForm.php",
 		"//192.168.100.248/web_recette/gpm/profilsRecapPersonnes.php",
@@ -200,17 +242,11 @@
 		"//192.168.100.248/web_recette/gpm/vehiculesCarburantsUpdate.php",
 		"//192.168.100.248/web_recette/gpm/vehiculesCarburantsAdd.php",
 		"//192.168.100.248/web_recette/gpm/vehiculesTypesUpdate.php",
-		"//192.168.100.248/web_recette/gpm/navbar.php",
 		"//192.168.100.248/web_recette/gpm/vehiculesTypes.php",
 		"//192.168.100.248/web_recette/gpm/annuaireContenu.php",
-		"//192.168.100.248/web_recette/gpm/user.php",
 		"//192.168.100.248/web_recette/gpm/userReloadHabilitation.php",
 		"//192.168.100.248/web_recette/gpm/loginReloadHabilitation.php",
-		"//192.168.100.248/web_recette/gpm/loginSQL.php",
-		"//192.168.100.248/web_recette/gpm/loginDelegate.php",
-		"//192.168.100.248/web_recette/gpm/loginDelegateBack.php",
 		"//192.168.100.248/web_recette/gpm/profilsUpdate.php",
-		"//192.168.100.248/web_recette/gpm/profilsAdd.php",
 		"//192.168.100.248/web_recette/gpm/profilsDupliquer.php",
 		"//192.168.100.248/web_recette/gpm/profilsRecap.php",
 		"/V/gpm/annuaireContenu.php",
@@ -252,39 +288,7 @@
 		"/V/gpm/commandesForm.php",
 		"/V/gpm/confirmationBox.php",
 		"/V/gpm/vehiculesDesinfectionsAlertes.php",
-		"/V/gpm/user.php",
-		"/V/gpm/config/bdd.php",
-		"/V/gpm/config/config.php",
-		"/V/gpm/config/notifications.php",
-		"/V/gpm/userConfig.php",
-		"/V/gpm/profilsSetMail.php",
-		"/V/gpm/annuaireSetMail.php",
-		"/V/gpm/annuaireImportGoOK.php",
-		"/V/gpm/annuaireAdd.php",
-		"/V/gpm/userReloadHabilitation.php",
-		"/V/gpm/profilsSetDashboard.php",
-		"/V/gpm/loginSQL.php",
-		"/V/gpm/loginReloadHabilitation.php",
-		"/V/gpm/loginDelegateBack.php",
-		"/V/gpm/loginDelegate.php",
-		"/V/gpm/annuaireSetDashboard.php",
-		"/V/gpm/tenuesAffectations.php",
-		"/V/gpm/logs/20190502.log",
-		"/V/gpm/vehiculesDesinfectionsUpdate.php",
-		"/V/gpm/vehiculesDesinfectionsAdd.php",
-		"/V/gpm/vehiculesDesinfectionsAlertesUpdate.php",
-		"/V/gpm/vehiculesDesinfectionsDelete.php",
-		"/V/gpm/vehiculesUpdate.php",
-		"/V/gpm/vehiculesTypesDesinfectionsAdd.php",
-		"/V/gpm/vehiculesTypesDesinfectionsDelete.php",
-		"/V/gpm/vehiculesTypesDesinfectionsUpdate.php",
-		"/V/gpm/config/cron.php",
-		"/V/gpm/vehiculesAdd.php",
-		"/V/gpm/logs/20190501.log",
-		"/V/gpm/lotsInventaireNew.php",
-		"/V/gpm/desinfections.php",
-		"/V/gpm/vehiculesDelete.php",
-		"/V/gpm/annuaireDelete.php"
+		"/V/gpm/user.php"
 	],
 	"find":
 	{
@@ -296,6 +300,10 @@
 		"where_history":
 		[
 			"*.php",
+			"*.css",
+			"*.php",
+			"*.js",
+			"*.php",
 			"*.sql",
 			"*.php"
 		]
@@ -305,6 +313,24 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"fournisseu",
+			"blank",
+			"target",
+			"libelleCategorie",
+			"mailFournisseur",
+			"<body class=\"hold-transition skin-<?php echo $SITECOLOR; ?> sidebar-mini fixed\">",
+			"25",
+			"10",
+			" class=\"not-mobile\"",
+			"class=\"all\"",
+			"class=\"all\" ",
+			"contenu",
+			"$_POST['seach']",
+			"table",
+			"td:",
+			"center",
+			"not-",
+			"not-mobile",
 			"idVhfEquipement",
 			"break;",
 			"idVhfEtat",
@@ -414,25 +440,7 @@
 			"idVehiculesType",
 			"nomFournisseur",
 			"vehicules_types_suppression",
-			"vehicules_types_modification",
-			"vehicules_types_ajout",
-			"vehicules_types_lecture",
-			"commande_valider_delegate",
-			"commande_abandonner",
-			"`",
-			", ",
-			"delegation",
-			"actionsMassives",
-			"notifications",
-			"etats_suppression",
-			"VEHICULES",
-			"vehicules_suppression",
-			"vehicules_modification",
-			"vehicules_ajout",
-			"vehicules_lecture",
-			"logs_lecture",
-			"actionsMassives",
-			"salaires"
+			"vehicules_types_modification"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -495,12 +503,196 @@
 		"selected_items":
 		[
 			[
+				"commandeVi",
+				"commandeView.php"
+			],
+			[
+				"vehiculesCon",
+				"vehiculesContenu.php"
+			],
+			[
+				"four",
+				"fournisseurs.php"
+			],
+			[
+				"fournsi",
+				"fournisseursUpdate.php"
+			],
+			[
+				"fourniss",
+				"fournisseursAdd.php"
+			],
+			[
+				"fournis",
+				"fournisseursForm.php"
+			],
+			[
+				"profilsAdd",
+				"profilsAdd.php"
+			],
+			[
+				"mailfun",
+				"config\\mailFunction.php"
+			],
+			[
+				"passwordResetOK.php",
+				"passwordResetOK.php"
+			],
+			[
+				"passwordResetSQL.php",
+				"passwordResetSQL.php"
+			],
+			[
+				"reset",
+				"passwordReset.php"
+			],
+			[
+				"message",
+				"messagesMailsSend.php"
+			],
+			[
+				"usercon",
+				"userConfig.php"
+			],
+			[
+				"user",
+				"user.php"
+			],
+			[
+				"loginsql",
+				"loginSQL.php"
+			],
+			[
 				"index",
 				"index.php"
 			],
 			[
+				"navbar",
+				"navbar.php"
+			],
+			[
+				"lots.php",
+				"lots.php"
+			],
+			[
+				"referentiels",
+				"referentiels.php"
+			],
+			[
+				"vehicules",
+				"vehicules.php"
+			],
+			[
+				"vhfEq",
+				"vhfEquipements.php"
+			],
+			[
+				"vhf p",
+				"vhfPlans.php"
+			],
+			[
+				"vhfCan",
+				"vhfCanaux.php"
+			],
+			[
+				"commandeVie",
+				"commandeView.php"
+			],
+			[
+				"commandestou",
+				"commandesToutes.php"
+			],
+			[
+				"reserveM",
+				"reserveMateriel.php"
+			],
+			[
+				"reserve",
+				"reserveConteneurs.php"
+			],
+			[
+				"nav",
+				"navbarSearch.php"
+			],
+			[
+				"config",
+				"config\\config.php"
+			],
+			[
+				"matei",
+				"materiels.php"
+			],
+			[
+				"empla",
+				"emplacements.php"
+			],
+			[
+				"sacs",
+				"sacs.php"
+			],
+			[
+				"commandesval",
+				"commandesValidations.php"
+			],
+			[
+				"inde",
+				"index.php"
+			],
+			[
+				"commandevie",
+				"commandeView.php"
+			],
+			[
+				"suivi",
+				"commandesSuivi.php"
+			],
+			[
+				"traiter",
+				"commandesTraiter.php"
+			],
+			[
+				"validation",
+				"commandesValidations.php"
+			],
+			[
+				"nonclose",
+				"commandesNonCloses.php"
+			],
+			[
+				"commandest",
+				"commandesToutes.php"
+			],
+			[
+				"lotsCon.php",
+				"lotsContenu.php"
+			],
+			[
+				"",
+				"plugins\\datatables\\extensions\\Responsive\\js\\dataTables.responsive.min.js"
+			],
+			[
+				"dataTables.responsive.min.js",
+				"plugins\\datatables\\extensions\\Responsive\\js\\dataTables.responsive.min.js"
+			],
+			[
 				"scripts",
 				"scripts.php"
+			],
+			[
+				"scri",
+				"scripts.php"
+			],
+			[
+				"commandesTou.php",
+				"commandesToutes.php"
+			],
+			[
+				"base",
+				"baseDocumentaire.php"
+			],
+			[
+				"bandea",
+				"bandeausup.php"
 			],
 			[
 				"accessoiresfo",
@@ -513,10 +705,6 @@
 			[
 				"modal",
 				"modalDeleteConfirm.php"
-			],
-			[
-				"lots.php",
-				"lots.php"
 			],
 			[
 				"equipementConte",
@@ -563,10 +751,6 @@
 				"vehiculesContenu.php"
 			],
 			[
-				"config",
-				"config\\config.php"
-			],
-			[
 				"install",
 				"distmaj\\INSTALLFROMSCRATCH.php"
 			],
@@ -603,10 +787,6 @@
 				"lotsInventaireNewAdd.php"
 			],
 			[
-				"commandevie",
-				"commandeView.php"
-			],
-			[
 				"referent",
 				"referentielsAdd.php"
 			],
@@ -637,10 +817,6 @@
 			[
 				"types",
 				"vehiculesTypes.php"
-			],
-			[
-				"nav",
-				"navbar.php"
 			],
 			[
 				"loginDelegateBack.php",
@@ -735,14 +911,6 @@
 				"fournisseursDelete.php"
 			],
 			[
-				"vehiculesCon",
-				"vehiculesContenu.php"
-			],
-			[
-				"navbar",
-				"navbar.php"
-			],
-			[
 				"appliCon",
 				"appliConf.php"
 			],
@@ -769,10 +937,6 @@
 			[
 				"commandesForm",
 				"commandesForm.php"
-			],
-			[
-				"user",
-				"user.php"
 			],
 			[
 				"confir",
@@ -823,10 +987,6 @@
 				"vehiculesAdd.php"
 			],
 			[
-				"vehicules",
-				"vehiculesContenu.php"
-			],
-			[
 				"vehi",
 				"vehicules.php"
 			],
@@ -853,150 +1013,6 @@
 			[
 				"vehicu",
 				"vehiculesDelete.php"
-			],
-			[
-				"desinf",
-				"desinfections.php"
-			],
-			[
-				"annuaire",
-				"annuaireDelete.php"
-			],
-			[
-				"rele",
-				"vehiculesReleveForm.php"
-			],
-			[
-				"vehiculesCont",
-				"vehiculesContenu.php"
-			],
-			[
-				"typesDelete",
-				"vehiculesTypesDelete.php"
-			],
-			[
-				"modalDeleteConfirm",
-				"modalDeleteConfirm.php"
-			],
-			[
-				"typesUpda",
-				"vehiculesTypesUpdate.php"
-			],
-			[
-				"typesadd",
-				"vehiculesTypesAdd.php"
-			],
-			[
-				"typesForm",
-				"vehiculesTypesForm.php"
-			],
-			[
-				"vehiculesdes",
-				"vehiculesTypesDesinfections.php"
-			],
-			[
-				"fourni",
-				"fournisseurs.php"
-			],
-			[
-				"loginsql",
-				"loginSQL.php"
-			],
-			[
-				"loginDelegateBack",
-				"loginDelegateBack.php"
-			],
-			[
-				"loginDelegate",
-				"loginDelegate.php"
-			],
-			[
-				"loginSQL",
-				"loginSQL.php"
-			],
-			[
-				"userReloadHabilitation",
-				"userReloadHabilitation.php"
-			],
-			[
-				"loginReloadHabilitation",
-				"loginReloadHabilitation.php"
-			],
-			[
-				"annuaireContenu",
-				"annuaireContenu.php"
-			],
-			[
-				"profi",
-				"profilsUpdate.php"
-			],
-			[
-				"profilsAdd",
-				"profilsAdd.php"
-			],
-			[
-				"logind",
-				"loginDelegateBack.php"
-			],
-			[
-				"loginde",
-				"loginDelegate.php"
-			],
-			[
-				"login",
-				"loginSQL.php"
-			],
-			[
-				"userreload",
-				"userReloadHabilitation.php"
-			],
-			[
-				"user.",
-				"user.php"
-			],
-			[
-				"prof",
-				"profilsAdd.php"
-			],
-			[
-				"indexModalCalendrier",
-				"indexModalCalendrier.php"
-			],
-			[
-				"ordonn",
-				"ordonnanceDetails.php"
-			],
-			[
-				"docForm",
-				"ordonnanceDocForm.php"
-			],
-			[
-				"consul",
-				"consultationDetails.php"
-			],
-			[
-				"acl",
-				"config\\acl.php"
-			],
-			[
-				"up",
-				"distmaj\\update1.0.sql"
-			],
-			[
-				"settings",
-				"settings.php"
-			],
-			[
-				"jquery.flot",
-				"plugins\\flot-charts\\jquery.flot.js"
-			],
-			[
-				"consu",
-				"consultationForm.php"
-			],
-			[
-				"inde",
-				"index.php"
 			]
 		],
 		"width": 0.0

@@ -12,9 +12,12 @@ if ($_SESSION['typesDesinfections_modification']==0)
 else
 {
 
-    $query = $db->prepare('UPDATE VEHICULES_DESINFECTIONS_TYPES SET libelleVehiculesDesinfectionsType = :libelleVehiculesDesinfectionsType WHERE idVehiculesDesinfectionsType = :idVehiculesDesinfectionsType;');
+	$_POST['affichageSynthese'] = ($_POST['affichageSynthese'] == 1) ? 1 : 0;
+	
+    $query = $db->prepare('UPDATE VEHICULES_DESINFECTIONS_TYPES SET libelleVehiculesDesinfectionsType = :libelleVehiculesDesinfectionsType, affichageSynthese = :affichageSynthese WHERE idVehiculesDesinfectionsType = :idVehiculesDesinfectionsType;');
     $query->execute(array(
         'libelleVehiculesDesinfectionsType' => $_POST['libelleVehiculesDesinfectionsType'],
+        'affichageSynthese' => $_POST['affichageSynthese'],
         'idVehiculesDesinfectionsType' => $_GET['id']
     ));
 
