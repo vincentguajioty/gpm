@@ -14,12 +14,13 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
 - vue DB VIEW_HABILITATIONS
 - scripts Add et Update
 - script duplicate profils
-- modal de visualisation des droits depuis la page annuaire.php
+- page de visualisation des droits depuis la page annuaireContenu.php
 - box de visualisation de droits dans user.php
 - rechargement dynamique des droits dans loginReloadHabilitation.php
 - rechargement dynamique des droits dans userReloadHabilitation.php
-- chargement initial des doits dans loginSQL.php
-- box de visualisation des droits depuis la page annuaireContenu.php
+- chargement initial des droits dans loginSQL.php
+- chargement des droits avec délégation dans loginDelegate.php
+- chargement des droits en retour de délégation dans loginDelegateBack.php
 */
 ?>
 
@@ -91,6 +92,11 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" value="1" name="maintenance" <?php if (isset($_GET['id']) AND ($data['maintenance']==1)) {echo 'checked';} ?>> Se connecter même en mode maintenance
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="1" name="delegation" <?php if (isset($_GET['id']) AND ($data['delegation']==1)) {echo 'checked';} ?>> Se connecter entant qu'autre utilisateur
                                 </label>
                             </div>
                             <div class="checkbox">

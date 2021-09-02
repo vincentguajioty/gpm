@@ -195,7 +195,7 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification de la commande " . $_GET['id'], '3');
+            writeInLogs("Action de validation sur la commande " . $_GET['id'], '3');
             break;
 
         default:

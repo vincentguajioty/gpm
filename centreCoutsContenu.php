@@ -350,7 +350,7 @@ if ($_SESSION['cout_lecture']==0)
                                         <th>Type de document</th>
                                         <th>Date de chargement</th>
                                         <th>Format</th>
-                                        <th><?php if($_SESSION['cout_ajout']==1){ ?><a href="centreCoutsDocForm.php?idCentreDeCout=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a><?php } ?></th>
+                                        <th><?php if(centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['id'])==1){ ?><a href="centreCoutsDocForm.php?idCentreDeCout=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a><?php } ?></th>
                                     </tr>
                                     <?php
                                     $query2 = $db->prepare('SELECT * FROM DOCUMENTS_CENTRE_COUTS c LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument WHERE idCentreDeCout = :idCentreDeCout ORDER BY nomDocCouts ASC ;');
@@ -373,7 +373,7 @@ if ($_SESSION['cout_lecture']==0)
                                                 <?php if($_SESSION['cout_lecture']==1){ ?>
                                                     <a href="centreCoutsDocDL.php?idDoc=<?=$data2['idDocCouts']?>" class="btn btn-xs btn-success" title="Télécharger"><i class="fa fa-download"></i></a>
                                                 <?php }?>
-                                                <?php if($_SESSION['cout_ajout']==1){ ?>
+                                                <?php if(centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['id'])==1){ ?>
                                                     <a href="centreCoutsDocDelete.php?idDoc=<?=$data2['idDocCouts']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');" title="Supprimer"><i class="fa fa-minus"></i></a>
                                                 <?php }?>
                                             </td>

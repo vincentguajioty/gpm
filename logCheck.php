@@ -26,7 +26,6 @@ if ((strpos($_SERVER['HTTP_REFERER'], "lotsInventaireNew.php") == false) AND (st
     echo "<script type='text/javascript'>document.location.replace('logout.php');</script>";
     exit;
 }
-        
 
 if (checkIP($_SERVER['REMOTE_ADDR'])==1)
 {

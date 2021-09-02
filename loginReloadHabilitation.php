@@ -138,6 +138,7 @@ $_SESSION['etats_modification'] = $data['etats_modification'];
 $_SESSION['etats_suppression'] = $data['etats_suppression'];
 $_SESSION['notifications'] = $data['notifications'];
 $_SESSION['actionsMassives'] = $data['actionsMassives'];
+$_SESSION['delegation'] = $data['delegation'];
 
 majIndicateursPersonne($_SESSION['idPersonne'],0);
 majNotificationsPersonne($_SESSION['idPersonne'],0);

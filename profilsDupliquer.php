@@ -128,7 +128,8 @@ else
 		etats_modification,
 		etats_suppression,
 		notifications,
-		actionsMassives)
+		actionsMassives,
+		delegation)
 	VALUES (
 		:libelleProfil,
 		:descriptifProfil,
@@ -240,7 +241,8 @@ else
 		:etats_modification,
 		:etats_suppression,
 		:notifications,
-		:actionsMassives
+		:actionsMassives,
+		:delegation
 	);');
     $query->execute(array(
         'libelleProfil'  =>  $data['libelleProfil'] . ' - Copie',
@@ -353,7 +355,8 @@ else
 		'etats_modification' => $data['etats_modification'],
 		'etats_suppression' => $data['etats_suppression'],
 		'notifications' => $data['notifications'],
-		'actionsMassives' => $data['actionsMassives']
+		'actionsMassives' => $data['actionsMassives'],
+		'delegation' => $data['delegation']
 ));
 
     switch($query->errorCode())

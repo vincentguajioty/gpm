@@ -46,6 +46,7 @@ if ($_SESSION['commande_lecture']==0)
                             <th class="all">Fournisseur</th>
                             <th class="not-mobile">Référence fournisseur</th>
                             <th class="not-mobile">Etat</th>
+                            <th class="not-mobile">Etat centre de cout</th>
                             <th class="not-mobile">Demandeur</th>
                             <th class="not-mobile">Gerant</th>
                             <th class="not-mobile">Actions</th>
@@ -94,8 +95,27 @@ if ($_SESSION['commande_lecture']==0)
                                             break;
                                     }
                                     ?>"><?php echo $data['libelleEtat']; ?></span></td>
-                                <td><?php echo $data['demandeur']; ?></td>
-                                <td><?php echo $data['affectee']; ?></td>
+                                <td><?= cmdEtatCentreCouts($data['idCommande']); ?></td>
+                                <td>
+                                	<?php
+                                		$query2 = $db->prepare('SELECT * FROM COMMANDES_DEMANDEURS c JOIN PERSONNE_REFERENTE p ON c.idDemandeur = p.idPersonne WHERE idCommande = :idCommande');
+                                		$query2->execute(array('idCommande'=>$data['idCommande']));
+                                		while($data2 = $query2->fetch())
+                                		{
+                                			echo $data2['prenomPersonne'].' '.$data2['nomPersonne'].'<br/>';
+                                		}
+                                	?>
+                                </td>
+                                <td>
+	                                <?php
+	                            		$query2 = $db->prepare('SELECT * FROM COMMANDES_AFFECTEES c JOIN PERSONNE_REFERENTE p ON c.idAffectee = p.idPersonne WHERE idCommande = :idCommande');
+	                            		$query2->execute(array('idCommande'=>$data['idCommande']));
+	                            		while($data2 = $query2->fetch())
+	                            		{
+	                            			echo $data2['prenomPersonne'].' '.$data2['nomPersonne'].'<br/>';
+	                            		}
+	                            	?>
+                                </td>
                                 <td>
                                     <?php if ($_SESSION['commande_lecture']==1) {?>
                                     	<a href="commandeView.php?id=<?=$data['idCommande']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>

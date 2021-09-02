@@ -4,7 +4,13 @@ require_once('logCheck.php');
 require_once 'config/bdd.php';
 require_once 'config/config.php';
 
-if ($_SESSION['cout_ajout']==0)
+$query = $db->prepare('SELECT * FROM DOCUMENTS_CENTRE_COUTS WHERE idDocCouts = :idDocCouts;');
+$query->execute(array(
+    'idDocCouts' => $_GET['idDoc']
+));
+$data = $query->fetch();
+
+if (centreCoutsEstCharge($_SESSION['idPersonne'],$data['idCentreDeCout'])==0)
 {
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
     exit;

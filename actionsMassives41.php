@@ -45,17 +45,6 @@ else
 	        'idLot' => $lot['idLot']
 	    ));
 
-	    $query = $db->prepare('SELECT * FROM LOTS_LOTS WHERE idLot = :idLot;');
-	    $query->execute(array(
-	        'idLot' => $lot['idLot']
-	    ));
-	    $data = $query->fetch();
-
-	    $query = $db->prepare('UPDATE MATERIEL_SAC SET idLot = Null WHERE idLot = :idLot;');
-	    $query->execute(array(
-	        'idLot' => $lot['idLot']
-	    ));
-
 	    $query = $db->prepare('DELETE FROM LOTS_LOTS WHERE idLot = :idLot;');
 	    $query->execute(array(
 	        'idLot' => $lot['idLot']

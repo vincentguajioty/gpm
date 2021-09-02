@@ -214,6 +214,7 @@ if ($data['idIP'] == "")
 		$_SESSION['etats_suppression'] = $data['etats_suppression'];
 		$_SESSION['notifications'] = $data['notifications'];
 		$_SESSION['actionsMassives'] = $data['actionsMassives'];
+		$_SESSION['delegation'] = $data['delegation'];
 		
 		$_SESSION['tableRowPerso'] = $data['tableRowPerso'];
         
@@ -233,11 +234,16 @@ if ($data['idIP'] == "")
 	    
 	    $_SESSION['LAST_ACTIVITY'] = time();
 	    
+	    $_SESSION['DELEGATION_ACTIVE'] = 0;
+	    $_SESSION['LOGS_DELEGATION_PREFIXE'] = '';
+	    
 	    $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET derniereConnexion = CURRENT_TIMESTAMP WHERE idPersonne = :idPersonne;');
 		$query->execute(array(
 		    'idPersonne' => $_SESSION['idPersonne']
 		));
-	
+		
+		sleep(1);
+		
 	    if ((password_verify($_POST['identifiant'], $data['motDePasse'])))
 	    {
 	        $_SESSION['connexion_connexion'] = "0";

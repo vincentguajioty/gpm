@@ -45,6 +45,7 @@ if ($_SESSION['commande_lecture']==0)
                             <th class="all">Fournisseur</th>
                             <th class="not-mobile">Référence fournisseur</th>
                             <th class="not-mobile">Etat</th>
+                            <th class="not-mobile">Etat centre de cout</th>
                             <th class="not-mobile">Demandeur</th>
                             <th class="not-mobile">Gerant</th>
                             <th class="not-mobile">Actions</th>
@@ -88,6 +89,7 @@ if ($_SESSION['commande_lecture']==0)
                                             break;
                                     }
                                     ?>"><?php echo $data['libelleEtat']; ?></span></td>
+                                <td><?= cmdEtatCentreCouts($data['idCommande']); ?></td>
                                 <td>
                                 	<?php
                                 		$query2 = $db->prepare('SELECT * FROM COMMANDES_DEMANDEURS c JOIN PERSONNE_REFERENTE p ON c.idDemandeur = p.idPersonne WHERE idCommande = :idCommande');

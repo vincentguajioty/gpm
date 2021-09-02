@@ -98,6 +98,8 @@ require_once('logCheck.php');
 				                    </br>
 				                    <?php if($_SESSION['annuaire_mdp'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Réinitialiser les mots de passe des autres utilisateurs
 				                    </br>
+				                    <?php if($_SESSION['delegation'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Se connecter entant qu'autre utilisateur
+				                    </br>
 				                    <?php if($_SESSION['maintenance'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Se connecter même en mode maitenance
 				                    </br>
 				                    <?php if($_SESSION['verrouIP'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Gérer les adresses IP bloquées
@@ -394,27 +396,33 @@ require_once('logCheck.php');
 			                </div>
 			                <!-- /.box-header -->
 			                <div class="box-body">
-			                    <form role="form" action="userPWD.php" method="POST">
-			                        <!-- text input -->
-			                        <div class="form-group">
-			                            <label>Mon mot de passe Actuel:</label>
-			                            <input type="password" class="form-control" placeholder="*****"
-			                                   name="old" required>
-			                        </div>
-			                        <div class="form-group">
-			                            <label>Nouveau mot de passe:</label>
-			                            <input type="password" class="form-control" placeholder="*****"
-			                                   name="new1" required>
-			                        </div>
-			                        <div class="form-group">
-			                            <label>Saisir à nouveau le nouveau mot de passe:</label>
-			                            <input type="password" class="form-control" placeholder="*****"
-			                                   name="new2" required>
-			                        </div>
-			                        <div class="box-footer">
-			                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
-			                        </div>
-			                    </form>
+			                	<?php
+			                		if ($_SESSION['DELEGATION_ACTIVE']==0)
+			                		{ ?>
+				                    <form role="form" action="userPWD.php" method="POST">
+				                        <!-- text input -->
+				                        <div class="form-group">
+				                            <label>Mon mot de passe Actuel:</label>
+				                            <input type="password" class="form-control" placeholder="*****"
+				                                   name="old" required>
+				                        </div>
+				                        <div class="form-group">
+				                            <label>Nouveau mot de passe:</label>
+				                            <input type="password" class="form-control" placeholder="*****"
+				                                   name="new1" required>
+				                        </div>
+				                        <div class="form-group">
+				                            <label>Saisir à nouveau le nouveau mot de passe:</label>
+				                            <input type="password" class="form-control" placeholder="*****"
+				                                   name="new2" required>
+				                        </div>
+				                        <div class="box-footer">
+				                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
+				                        </div>
+				                    </form>
+				                <?php } else { ?>
+				                	<center>La modification du mot de passe est désactivée en mode délégation.</center>
+				                <?php } ?>
 			                </div>
 			            </div>
 			        </div>

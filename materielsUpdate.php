@@ -36,19 +36,19 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification du materiel " . $_POST['libelleMateriel'], '3');
+            writeInLogs("Modification du materiel " . $_GET['id'], '3');
             $_SESSION['returnMessage'] = 'Matériel modifié avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         case '23000':
-            writeInLogs("Doublon détecté lors de la modification du matériel " . $_POST['libelleMateriel'], '5');
+            writeInLogs("Doublon détecté lors de la modification du matériel " . $_GET['id'], '5');
             $_SESSION['returnMessage'] = 'Un matériel existe déjà dans cet emplacement. Au lieu d\'ajouter à nouveau le matériel, veuillez changer sa quantité.';
             $_SESSION['returnType'] = '2';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification du matériel " . $_POST['libelleMateriel'], '5');
+            writeInLogs("Erreur inconnue lors de la modification du matériel " . $_GET['id'], '5');
             $_SESSION['returnMessage'] = "Erreur inconnue lors la modification du matériel.";
             $_SESSION['returnType'] = '2';
     }

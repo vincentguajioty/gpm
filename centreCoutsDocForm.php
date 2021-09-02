@@ -5,7 +5,7 @@ session_start();
 require_once('logCheck.php');
 require_once 'config/bdd.php';
 
-if($_SESSION['cout_ajout']==1)
+if(centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['idCentreDeCout'])==1)
 {?>
     <div class="modal fade" id="modalCoutsDocAdd">
         <div class="modal-dialog">

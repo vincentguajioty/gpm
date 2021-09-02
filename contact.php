@@ -96,12 +96,13 @@ require_once('logCheck.php');
                                         <option>Référentiels</option>
                                         <option>Commandes</option>
                                         <option>Réserve</option>
-                                        <option>Transferts de matériel les autres modules</option>
+                                        <option>Transferts de matériel</option>
                                         <option>Véhicules</option>
                                         <option>Transmissions</option>
                                         <option>Tenues</option>
                                         <option>Annuaire</option>
                                         <option>Profils</option>
+                                        <option>Délégations</option>
                                         <option>Base documentaire</option>
                                         <option>ToDoList</option>
                                         <option>Messages généraux</option>

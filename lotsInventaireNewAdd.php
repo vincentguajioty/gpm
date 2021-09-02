@@ -23,7 +23,7 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout de l'inventaire pour le lot", '2');
+            writeInLogs("Ajout de l'inventaire pour le lot ".$_GET['id'], '2');
             $_SESSION['returnMessage'] = 'Inventaire ajouté avec succès.';
             $_SESSION['returnType'] = '1';
 
@@ -126,7 +126,7 @@ else
         break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout de l'inventaire", '5');
+            writeInLogs("Erreur inconnue lors de l'ajout de l'inventaire ".$_GET['id'], '5');
             $_SESSION['returnMessage'] = "Erreur inconnue lors l'ajout de l'inventaire.";
             $_SESSION['returnType'] = '2';
     }

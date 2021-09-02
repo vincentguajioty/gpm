@@ -4,7 +4,7 @@ require_once('logCheck.php');
 require_once 'config/bdd.php';
 require_once 'config/config.php';
 
-if ($_SESSION['cout_ajout']==0)
+if (centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['idCentreDeCout'])==0)
 {
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
     exit;

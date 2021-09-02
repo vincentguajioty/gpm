@@ -146,6 +146,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                        </div>
 	                                        <div class="form-group">
 	                                            <label>Centre de cout: </label>
+	                                            <label class="pull-right"><?= cmdEtatCentreCouts($_GET['id']); ?></label>
 	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idCentreDeCout">
 	                                                <option></option>
 	                                                <?php

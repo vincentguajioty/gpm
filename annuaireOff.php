@@ -24,7 +24,7 @@ if ($_SESSION['annuaire_lecture']==0)
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Gestion des utilisateurs (avec droit de connexion)
+                Gestion des utilisateurs sans droit de connexion
             </h1>
             <ol class="breadcrumb">
                 <li><a href="index.php"><i class="fa fa-home"></i>Accueil</a></li>
@@ -37,12 +37,8 @@ if ($_SESSION['annuaire_lecture']==0)
             <?php include('confirmationBox.php'); ?>
 
             <div class="box">
-                <div class="box-header">
-                	<?php if ($_SESSION['annuaire_ajout']==1) {?>
-	                    <h3 class="box-title"><a href="annuaireForm.php" class="btn btn-sm btn-success modal-form">Ajouter un utilisateur</a></h3>
-	                    <h3 class="box-title"><a href="annuaireImport.php" class="btn btn-sm btn-success">Import d'utilisateurs</a></h3>
-	            	<?php } ?>
-	            	<h3 class="box-title pull-right"><a href="annuaireOff.php" class="btn btn-sm btn-default">Voir les utilisateurs sans droits de connexion</a></h3>
+	            <div class="box-header">
+	            	<h3 class="box-title pull-right"><a href="annuaire.php" class="btn btn-sm btn-default">Retour</a></h3>
 	            </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -60,7 +56,7 @@ if ($_SESSION['annuaire_lecture']==0)
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query('SELECT p.* FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS v ON p.idPersonne=v.idPersonne WHERE connexion_connexion = 1 ORDER BY identifiant;');
+                        $query = $db->query('SELECT p.* FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS v ON p.idPersonne=v.idPersonne WHERE connexion_connexion Is Null OR connexion_connexion = 0 ORDER BY identifiant;');
                         while ($data = $query->fetch())
                         {?>
                             <tr>

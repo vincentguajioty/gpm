@@ -40,7 +40,7 @@ function writeInLogs($contentEVT, $levelEVT)
         'adresseIP' => $_SERVER['REMOTE_ADDR'],
         'utilisateurEvt' => $_SESSION['identifiant'],
         'idLogLevel' => $levelEVT,
-        'detailEvt' => $contentEVT
+        'detailEvt' => $_SESSION['LOGS_DELEGATION_PREFIXE'].$contentEVT
     ));
 }
 
@@ -412,6 +412,42 @@ function tdlEstExecutant ($idPersonne, $idTache)
     {
         return 0;
     }
+}
+function cmdEtatCentreCouts ($idCommande)
+{
+	global $db;
+	$query = $db->prepare('SELECT * FROM COMMANDES WHERE idCommande = :idCommande;');
+	$query -> execute(array('idCommande' => $idCommande));
+	$commande = $query->fetch();
+	
+	if($commande['idEtat']==1 OR $commande['idEtat']==8 OR $commande['idCentreDeCout']==Null OR $commande['idCentreDeCout']=='')
+	{
+		return '<span class="badge bg-grey">N/A</span>';
+	}
+	
+	if($commande['idEtat']<4)
+	{
+		return '<span class="badge bg-grey">Intégration non-disponible</span>';
+	}
+	
+	if($commande['integreCentreCouts']==0)
+	{
+		return '<span class="badge bg-orange">En attente d\'intégration</span>';
+	}
+	
+	$query = $db->prepare('SELECT COUNT(*) as nb FROM CENTRE_COUTS_OPERATIONS WHERE idCommande = :idCommande;');
+	$query -> execute(array('idCommande' => $idCommande));
+	$operations = $query->fetch();
+	$operations = $operations['nb'];
+	
+	if($operations>0)
+	{
+		return '<span class="badge bg-green">Intégrée</span>';
+	}
+	else
+	{
+		return '<span class="badge bg-red">Intégration refusée</span>';
+	}
 }
 
 ?>

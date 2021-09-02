@@ -62,6 +62,10 @@ if ($_SESSION['annuaire_lecture']==0)
                             <?php if ($_SESSION['annuaire_mdp']==1) {?>
                                 <a href="annuaireRAZ.php?id=<?=$_GET['id']?>" class="btn btn-info spinnerAttenteClick" onclick="return confirm('Etes-vous sûr de vouloir réinitialiser ce mot de passe (le nouveau mot de passe prendra la valeur de l\'identifiant) ?');" title="Réinitialiser le mot de passe"><i class="fa fa-lock"></i> Réinitialiser le mot de passe de l'utilisateur</a>
                             <?php }?>
+                            
+                            <?php if ($_SESSION['delegation']==1 AND $_SESSION['DELEGATION_ACTIVE']==0 AND $_SESSION['idPersonne']!=$_GET['id']) {?>
+                                <a href="loginDelegate.php?idDelegate=<?=$_GET['id']?>" class="btn btn-warning spinnerAttenteClick" title="Se connecter entant que"><i class="fa fa-user"></i> Se connecter entant que (délégation)</a>
+                            <?php }?>
 
                             <?php if ($_SESSION['annuaire_suppression']==1) {?>
                                 <a href="modalDeleteConfirm.php?case=annuaireDelete&id=<?=$_GET['id']?>" class="btn spinnerAttenteClick btn-danger modal-form pull-right" title="Supprimer"><i class="fa fa-trash"></i> Supprimer l'utilisateur</a>
@@ -248,6 +252,8 @@ if ($_SESSION['annuaire_lecture']==0)
                                 <?php if($personne['appli_conf'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Modifier la configuration générale de <?php echo $APPNAME;?>
                                 </br>
                                 <?php if($personne['annuaire_mdp'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Réinitialiser les mots de passe des autres utilisateurs
+                                </br>
+                                <?php if($personne['delegation'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Se connecter entant qu'autre utilisateur
                                 </br>
                                 <?php if($personne['maintenance'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?> Se connecter même en mode maitenance
                                 </br>

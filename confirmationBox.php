@@ -1,4 +1,12 @@
 <?php
+
+if($_SESSION['DELEGATION_ACTIVE']==1)
+{
+    echo '<div class="alert alert-info">';
+    echo '<center>Session en délégation - '.$_SESSION['identifiant_OLD'].' connecté en tant que '.$_SESSION['identifiant'].'</center>';
+    echo '</div>';
+}
+
 if ($_SESSION['returnMessage'])
 {
     if ($_SESSION['returnType'] == 1)
