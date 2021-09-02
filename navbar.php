@@ -631,6 +631,15 @@ require_once 'config/bdd.php';
                         ?>
                         ><a href="appliConf.php"><i class="fa fa-wrench"></i> <span>Configuration générale</span></a></li>
                     <?php } ?>
+                    <?php if ($_SESSION['actionsMassives']==1){ ?>
+                        <li <?php
+                        if ($_SESSION['page'] == 506)
+                        {
+                            echo 'class="active"';
+                        }
+                        ?>
+                        ><a href="actionsMassives.php"><i class="fa fa-minus-circle"></i> <span>Actions massives en base</span></a></li>
+                    <?php } ?>
                     <?php if ($_SESSION['logs_lecture']==1){ ?>
                         <li <?php
                         if ($_SESSION['page'] == 501)

@@ -28,7 +28,7 @@ if ($nbDest > 0)
 	$data = $query->fetch();
 	$nbManquantReserve = $data['nb'];
 	
-	$query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE peremptionReserve < CURRENT_DATE OR peremptionReserve = CURRENT_DATE;');
+	$query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE peremptionNotificationReserve < CURRENT_DATE OR peremptionNotificationReserve = CURRENT_DATE;');
 	$data = $query->fetch();
 	$nbPerimeReserve = $data['nb'];
 	

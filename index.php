@@ -498,7 +498,7 @@ include('logCheck.php');
 					<?php if($_SESSION['conf_indicateur5Accueil']==1){ ?>
 						<li>
 							<?php
-								$query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE peremptionReserve < CURRENT_DATE OR peremptionReserve = CURRENT_DATE;');
+								$query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE peremptionNotificationReserve < CURRENT_DATE OR peremptionNotificationReserve = CURRENT_DATE;');
 			                	$data = $query->fetch();
 							?>
 							<?php

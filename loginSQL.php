@@ -213,6 +213,7 @@ if ($data['idIP'] == "")
 		$_SESSION['etats_modification'] = $data['etats_modification'];
 		$_SESSION['etats_suppression'] = $data['etats_suppression'];
 		$_SESSION['notifications'] = $data['notifications'];
+		$_SESSION['actionsMassives'] = $data['actionsMassives'];
 		
 		$_SESSION['tableRowPerso'] = $data['tableRowPerso'];
         
