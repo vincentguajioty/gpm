@@ -33,7 +33,7 @@ require_once 'config/config.php';
                         <div class="box-header with-border">
                             <i class="fa fa-clock-o"></i>
 
-                            <h3 class="box-title">Evolution de GPM</h3>
+                            <h3 class="box-title">Développements et mises à jour de GPM</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">

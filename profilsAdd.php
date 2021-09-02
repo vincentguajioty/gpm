@@ -64,6 +64,7 @@ else
     $commande_lecture = ($_POST['commande_lecture'] ==1) ? 1 : 0;
     $commande_ajout = ($_POST['commande_ajout'] ==1) ? 1 : 0;
     $commande_valider = ($_POST['commande_valider'] ==1) ? 1 : 0;
+    $commande_valider_delegate = ($_POST['commande_valider_delegate'] ==1) ? 1 : 0;
     $commande_etreEnCharge = ($_POST['commande_etreEnCharge'] ==1) ? 1 : 0;
     $commande_abandonner = ($_POST['commande_abandonner'] ==1) ? 1 : 0;
     $cout_lecture = ($_POST['cout_lecture'] ==1) ? 1 : 0;
@@ -178,6 +179,7 @@ else
 		commande_lecture,
 		commande_ajout,
 		commande_valider,
+		commande_valider_delegate,
 		commande_etreEnCharge,
 		commande_abandonner,
 		cout_lecture,
@@ -291,6 +293,7 @@ else
 		:commande_lecture,
 		:commande_ajout,
 		:commande_valider,
+		:commande_valider_delegate,
 		:commande_etreEnCharge,
 		:commande_abandonner,
 		:cout_lecture,
@@ -405,6 +408,7 @@ else
         'commande_lecture' => $commande_lecture,
 	    'commande_ajout' => $commande_ajout,
 	    'commande_valider' => $commande_valider,
+	    'commande_valider_delegate' => $commande_valider_delegate,
 	    'commande_etreEnCharge' => $commande_etreEnCharge,
 	    'commande_abandonner' => $commande_abandonner,
 	    'cout_lecture' => $cout_lecture,

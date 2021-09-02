@@ -84,6 +84,11 @@ if ($data['idIP'] == "")
             'dateEchec' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - 1 days'))
         ));
 
+        $query = $db->prepare('DELETE FROM RESETPASSWORD WHERE idPersonne = :idPersonne;');
+        $query->execute(array(
+            'idPersonne' => $data['idPersonne']
+        ));
+
         if($MAINTENANCE==1 AND $data['maintenance']==0)
         {
         	$query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
@@ -158,6 +163,7 @@ if ($data['idIP'] == "")
 	    $_SESSION['commande_lecture'] = $data['commande_lecture'];
 	    $_SESSION['commande_ajout'] = $data['commande_ajout'];
 	    $_SESSION['commande_valider'] = $data['commande_valider'];
+	    $_SESSION['commande_valider_delegate'] = $data['commande_valider_delegate'];
 	    $_SESSION['commande_etreEnCharge'] = $data['commande_etreEnCharge'];
 	    $_SESSION['commande_abandonner'] = $data['commande_abandonner'];
 	    $_SESSION['cout_lecture'] = $data['cout_lecture'];

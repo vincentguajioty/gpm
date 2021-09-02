@@ -289,7 +289,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                </div>
 	                                <div class="box-footer">
 	                                    <?php if (($data['idEtat']<7) AND ($_SESSION['commande_abandonner']==1)){ ?><a href="commandesGo8.php?id=<?=$_GET['id']?>" class="btn btn-danger spinnerAttenteClick" onclick="return confirm('Etes-vous sûr de vouloir abandonner la commande (action irreversible) ?');">Abandon de la commande</a> <?php } ?>
-	                                    <?php if ($_SESSION['commande_abandonner']==1){ ?><a href="modalDeleteConfirm.php?case=commandesDelete&id=<?=$_GET['id']?>" class="btn btn-danger modal-form">Supression de la commande</a><?php } ?>
+	                                    <?php if ($_SESSION['commande_abandonner']==1){ ?><a href="modalDeleteConfirm.php?case=commandesDelete&id=<?=$_GET['id']?>" class="btn btn-danger modal-form">Suppression de la commande</a><?php } ?>
 	                                    <?php if (($data['idEtat']==1) AND (($_SESSION['commande_ajout']==1) OR ($_SESSION['commande_etreEnCharge']==1))) { ?><button type="submit" class="btn btn-warning pull-right">Modifier</button> <?php } ?>
 	                                </div>
 	                            </form>
@@ -466,11 +466,14 @@ if ($_SESSION['commande_lecture']==0)
 	                                </div>
 	                                <div class="form-group">
 	                                    <label>Remarques:</label>
-	                                    <textarea <?php if(($data['idEtat']>2) OR ($_SESSION['commande_valider']==0) OR cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])==0){echo 'disabled';}?> class="form-control" rows="3" name="remarquesValidation" required><?php echo $data['remarquesValidation']; ?></textarea>
+	                                    <textarea <?php if(($data['idEtat']>2) OR ((($_SESSION['commande_valider']==0) OR cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])==0) AND ($_SESSION['commande_valider_delegate']==0))){echo 'disabled';}?> class="form-control" rows="3" name="remarquesValidation" required><?php echo $data['remarquesValidation']; ?></textarea>
 	                                </div>
 	                                <div class="box-footer">
 	                                    <?php if (($data['idEtat']==2) AND ($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])){ ?><button name="button" value="nok" type="submit" class="btn btn-danger pull-left">Refuser la commande</button> <?php } ?>
+	                                    <?php if (($data['idEtat']==2) AND ($_SESSION['commande_valider_delegate']==1) AND !(cmdEstValideur($_SESSION['idPersonne'], $_GET['id']))){ ?><button name="button" value="nokdelegate" type="submit" class="btn btn-danger pull-left">Refuser la commande en tant que valideur délégué</button> <?php } ?>
+	                                    
 	                                    <?php if (($data['idEtat']==2) AND ($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])) { ?><button name="button" value="ok" type="submit" class="btn btn-success pull-right">Valider la commande</button> <?php } ?>
+	                                    <?php if (($data['idEtat']==2) AND ($_SESSION['commande_valider_delegate']==1) AND !(cmdEstValideur($_SESSION['idPersonne'], $_GET['id']))) { ?><button name="button" value="okdelegate" type="submit" class="btn btn-success pull-right">Valider la commande en tant que valideur délégué</button> <?php } ?>
 	                                </div>
 	                            </form>
 	                        </div>

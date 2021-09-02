@@ -16,7 +16,7 @@ else
     $query->execute(array(
         'idLot' => $_GET['id'],
         'dateInventaire' => $_POST['dateInventaire'],
-        'idPersonne' => $_POST['identifiant'],
+        'idPersonne' => $_SESSION['idPersonne'],
         'commentairesInventaire' => $_POST['commentairesInventaire']
     ));
 

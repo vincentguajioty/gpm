@@ -11,4 +11,7 @@ $query->execute(array(
 //Analyse complète des lots
 checkAllConf();
 
+//Suppression de toutes les demandes de réinitialisation de mot de passe non-effectuées
+$query = $db->query('TRUNCATE TABLE RESETPASSWORD;');
+
 ?>

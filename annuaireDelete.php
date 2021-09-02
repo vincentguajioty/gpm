@@ -118,6 +118,11 @@ else
         ':idPersonne' => $_GET['id']
     ]);
 
+    $query = $db->prepare('DELETE FROM RESETPASSWORD WHERE idPersonne = :idPersonne;');
+    $query->execute(array(
+        'idPersonne' => $_GET['id']
+    ));
+
     $query = $db->prepare('DELETE FROM PERSONNE_REFERENTE WHERE idPersonne = :idPersonne;');
     $query->execute(array(
         'idPersonne' => $_GET['id']

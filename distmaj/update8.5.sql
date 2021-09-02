@@ -1,3 +1,6 @@
+ALTER TABLE PROFILS ADD commande_valider_delegate BOOLEAN;
+UPDATE PROFILS SET commande_valider_delegate = 0;
+
 DROP VIEW IF EXISTS VIEW_HABILITATIONS;
 
 CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
@@ -118,7 +121,19 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		PERSONNE_REFERENTE p
 ;
 
+ALTER TABLE CONFIG ADD resetPassword BOOLEAN;
+UPDATE CONFIG SET resetPassword = 0;
 
--- Anonymisation de la base
+CREATE TABLE RESETPASSWORD(
+	idReset INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	idPersonne INT,
+	dateDemande DATETIME,
+	tokenReset TEXT,
+	dateValidite DATETIME,
+	CONSTRAINT fk_reset_personne
+		FOREIGN KEY (idPersonne)
+		REFERENCES PERSONNE_REFERENTE(idPersonne));
 
-UPDATE PERSONNE_REFERENTE SET mailPersonne = '';
+UPDATE CONFIG set version = '8.5';
+
+INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt) VALUES(CURRENT_TIMESTAMP, 'local', 'sysAdmin', 2, 'Mise à jour vers la version 8.5.');

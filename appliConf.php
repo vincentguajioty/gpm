@@ -33,6 +33,7 @@ if ($_SESSION['appli_conf']==0)
 
         <!-- Main content -->
         <section class="content">
+            <?php include('confirmationBox.php'); ?>
             <!-- general form elements disabled -->
             <div class="box box-info">
                 <!-- /.box-header -->
@@ -81,6 +82,11 @@ if ($_SESSION['appli_conf']==0)
 	                        <label>Mot de sécurité sur les confirmations de suppression: <small style="color:grey;">Requis</small></label>
 	                        <input type="text" class="form-control" name="confirmationSuppression" value="<?= $data['confirmationSuppression'] ?>" required>
 	                    </div>
+                        <div class="form-group">
+                            <label>Mots de passe oubliés:</label>
+                            <br/>
+                            <input type="checkbox" value="1" name="resetPassword" <?php if($data['resetPassword']==1){echo "checked";}?>> Les utilisateurs peuvent réinitialiser leur mot de passe oublié par mail.
+                        </div>
                         <div class="box-footer">
                             <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
                             <button type="submit" class="btn btn-info pull-right">Modifier</button>

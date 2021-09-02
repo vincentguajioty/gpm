@@ -447,6 +447,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <th>Lecture</th>
                                     <th>Ajout Modification</th>
                                     <th>Valider</th>
+                                    <th>Valider à la place de</th>
                                     <th>Etre en charge</th>
                                     <th>Abandonner Supprimer</th>
                                 </tr>
@@ -455,6 +456,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <td><?php if($personne['commande_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['commande_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['commande_valider'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['commande_valider_delegate'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['commande_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['commande_abandonner'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                 </tr>
@@ -462,6 +464,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <td>Centres de coûts</td>
                                     <td><?php if($personne['cout_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['cout_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td></td>
                                     <td></td>
                                     <td><?php if($personne['cout_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['cout_supprimer'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>

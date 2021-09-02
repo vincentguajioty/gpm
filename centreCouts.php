@@ -92,7 +92,7 @@ if ($_SESSION['cout_lecture']==0)
                                 </td>
                                 <td>
                                     <?php
-                                        $query2 = $db->prepare('SELECT COUNT(*) as nb FROM COMMANDES c LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat WHERE idCentreDeCout = :idCentreDeCout AND integreCentreCouts = 0 AND c.idEtat > 3;');
+                                        $query2 = $db->prepare('SELECT COUNT(*) as nb FROM COMMANDES c LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat WHERE idCentreDeCout = :idCentreDeCout AND integreCentreCouts = 0 AND c.idEtat > 3 AND c.idEtat < 8;');
                                         $query2->execute(array('idCentreDeCout'=>$data['idCentreDeCout']));
                                         $nb = $query2->fetch();
                                         $nb = $nb['nb'];

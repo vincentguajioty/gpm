@@ -12,8 +12,9 @@ if ($_SESSION['appli_conf']==0)
 else
 {
 	$_POST['mailcopy'] = ($_POST['mailcopy'] ==1) ? 1 : 0;
+    $_POST['resetPassword'] = ($_POST['resetPassword'] ==1) ? 1 : 0;
 	
-    $query = $db->prepare('UPDATE CONFIG SET appname = :appname, sitecolor = :sitecolor, urlsite = :urlsite, mailserver = :mailserver, logouttemp = :logouttemp, mailcopy = :mailcopy, confirmationSuppression = :confirmationSuppression;');
+    $query = $db->prepare('UPDATE CONFIG SET appname = :appname, sitecolor = :sitecolor, urlsite = :urlsite, mailserver = :mailserver, logouttemp = :logouttemp, mailcopy = :mailcopy, confirmationSuppression = :confirmationSuppression, resetPassword = :resetPassword;');
     $query->execute(array(
         'appname' => $_POST['appname'],
         'sitecolor' => $_POST['sitecolor'],
@@ -21,6 +22,7 @@ else
         'mailserver' => $_POST['mailserver'],
         'logouttemp' => $_POST['logouttemp'],
         'mailcopy' => $_POST['mailcopy'],
+        'resetPassword' => $_POST['resetPassword'],
     	'confirmationSuppression' => $_POST['confirmationSuppression']
     ));
 
@@ -30,6 +32,10 @@ else
             writeInLogs("Modification de la configuration du site par " . $_SESSION['identifiant'], '3');
             $_SESSION['returnMessage'] = 'Configuration modifiée avec succès.';
             $_SESSION['returnType'] = '1';
+            if($_POST['resetPassword']==0)
+            {
+                $truncate = $db->query('TRUNCATE TABLE RESETPASSWORD;');
+            }
             break;
 			
         default:
@@ -38,6 +44,6 @@ else
     }
 
 
-    echo "<script>javascript:history.go(-2);</script>";
+    echo "<script type='text/javascript'>document.location.replace('appliConf.php');</script>";
 }
 ?>

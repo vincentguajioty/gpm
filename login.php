@@ -64,6 +64,13 @@ require_once 'verrouIPcheck.php';
                     <!-- /.col -->
                 </div>
             </form>
+            <?php
+            if ($RESETPASSWORD == 1)
+            { ?>
+                <br/>
+                <div class="pull-right"><a href="passwordReset.php">Mot de passe oublié</a></div>
+                <br/>
+            <?php } ?>
         </div>
     <?php }
     else
