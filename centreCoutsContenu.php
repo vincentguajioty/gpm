@@ -39,6 +39,41 @@ if ($_SESSION['cout_lecture']==0)
                 $previsions = $previsions + ($data3['prixProduitTTC']*$data3['quantiteCommande']);
             }
         }
+        
+		if($data['dateFermeture'] == Null)
+		{
+			if($data['dateOuverture'] <= date('Y-m-d'))
+			{
+				$couleur = 'green';
+				$text = 'Ouvert';
+			}
+			else
+			{
+				$couleur = 'blue';
+				$text = 'Futur';
+			}
+		}
+		else
+		{
+			if($data['dateFermeture'] < date('Y-m-d'))
+			{
+				$couleur = 'grey';
+				$text = 'Clos';
+			}
+			else
+			{
+				if($data['dateOuverture'] <= date('Y-m-d'))
+    			{
+    				$couleur = 'green';
+					$text = 'Ouvert';
+    			}
+    			else
+    			{
+    				$couleur = 'blue';
+					$text = 'Futur';
+    			}
+			}
+		}
     ?>
 
 
@@ -63,6 +98,24 @@ if ($_SESSION['cout_lecture']==0)
 
                 <div class="col-md-3">
                     <div class="row">
+                    	<div class="col-md-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-<?=$couleur?>"><i class="fa fa-calendar"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text"><?=$data['dateOuverture']?> <i class="fa  fa-arrow-right"></i> <?=$data['dateFermeture']?></span>
+                                    <span class="info-box-number">
+                                    	<?=$text?>
+                                    	<br/>
+                                    	<?php
+                                    		if($text=='Clos' AND $enCours>0 AND centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['id'])==1)
+                                    		{ ?>
+                                    			<a href="centreCoutsOperationsSolderForm.php?idCentreDeCout=<?=$_GET['id']?>" class="btn btn-sm btn-warning modal-form"><i class="fa fa-battery-quarter"></i> Solder ce centre de couts</a>
+                                    		<?php }
+                                    	?>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="info-box">
                                 <span class="info-box-icon bg-aqua"><i class="fa fa-user"></i></span>
@@ -174,12 +227,51 @@ if ($_SESSION['cout_lecture']==0)
                             <?php if(centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['id'])==1){ ?>
                                 <div class="tab-pane" id="manuel">
                                 
+                                    <?php
+                                    	if($text == 'Clos')
+                                    	{ ?>
+                                    		<div class="col-md-12">
+		                                		<div class="alert alert-warning">
+								                    <i class="icon fa fa-warning"></i> Ce centre de coût est clos. Aucune action ne devrait y être menée !
+								                </div>
+		                                	</div>
+                                    	<?php }
+                                    	if($text == 'Futur')
+                                    	{ ?>
+                                    		<div class="col-md-12">
+		                                		<div class="alert alert-warning">
+								                    <i class="icon fa fa-warning"></i> Ce centre de coût n'est pas encore ouvert. Aucune action ne devrait y être menée !
+								                </div>
+		                                	</div>
+                                    	<?php }
+                                    ?>
+                                    
                                     <a href="centreCoutsOperationsForm.php?idCentreDeCout=<?=$_GET['id']?>" class="btn btn-xs btn-success modal-form" title="Ajout"><i class="fa fa-plus"></i> Ajouter une opération manuellement</a>
                                 
                                 </div>                          
                             <?php } ?>
 
                             <div class="tab-pane" id="cmd">
+                                
+                                <?php
+                                    	if($text == 'Clos')
+                                    	{ ?>
+                                    		<div class="col-md-12">
+		                                		<div class="alert alert-warning">
+								                    <i class="icon fa fa-warning"></i> Ce centre de coût est clos. Aucune action ne devrait y être menée !
+								                </div>
+		                                	</div>
+                                    	<?php }
+                                    	if($text == 'Futur')
+                                    	{ ?>
+                                    		<div class="col-md-12">
+		                                		<div class="alert alert-warning">
+								                    <i class="icon fa fa-warning"></i> Ce centre de coût n'est pas encore ouvert. Aucune action ne devrait y être menée !
+								                </div>
+		                                	</div>
+                                    	<?php }
+                                    ?>
+                                
                                 <table class="table table-hover">
                                     <tr>
                                         <th>#</th>

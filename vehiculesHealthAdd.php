@@ -15,6 +15,8 @@ else
 	$_GET['idVehicule'] = ($_GET['idVehicule'] == Null) ? Null : $_GET['idVehicule'];
     $_POST['idPersonne'] = ($_POST['idPersonne'] == Null) ? Null : $_POST['idPersonne'];
 	$_POST['dateHealth'] = ($_POST['dateHealth'] == Null) ? Null : $_POST['dateHealth'];
+	$_POST['releveKilometrique'] = ($_POST['releveKilometrique'] == Null) ? Null : $_POST['releveKilometrique'];
+	
 	
     $query = $db->prepare('
         INSERT INTO
@@ -22,12 +24,14 @@ else
         SET
             idVehicule = :idVehicule,
             dateHealth = :dateHealth,
-            idPersonne = :idPersonne
+            idPersonne = :idPersonne,
+            releveKilometrique = :releveKilometrique
         ;');
     $query->execute(array(
         'idVehicule' => $_GET['idVehicule'],
         'dateHealth' => $_POST['dateHealth'],
         'idPersonne' => $_POST['idPersonne'],
+        'releveKilometrique' => $_POST['releveKilometrique'],
     ));
 
     switch($query->errorCode())

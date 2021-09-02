@@ -14,13 +14,15 @@ else
 	
     $_POST['idPersonne'] = ($_POST['idPersonne'] == Null) ? Null : $_POST['idPersonne'];
 	$_POST['dateHealth'] = ($_POST['dateHealth'] == Null) ? Null : $_POST['dateHealth'];
+	$_POST['releveKilometrique'] = ($_POST['releveKilometrique'] == Null) ? Null : $_POST['releveKilometrique'];
 	
     $query = $db->prepare('
         UPDATE
             VEHICULES_HEALTH
         SET
             dateHealth = :dateHealth,
-            idPersonne = :idPersonne
+            idPersonne = :idPersonne,
+            releveKilometrique = :releveKilometrique
         WHERE
             idVehiculeHealth = :idVehiculeHealth
         ;');
@@ -28,6 +30,7 @@ else
         'idVehiculeHealth' => $_GET['id'],
         'dateHealth' => $_POST['dateHealth'],
         'idPersonne' => $_POST['idPersonne'],
+        'releveKilometrique' => $_POST['releveKilometrique'],
     ));
 
     switch($query->errorCode())

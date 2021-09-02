@@ -4,7 +4,7 @@ session_start();
 function createDB()
 {
     //---------------------- BASE DE DONNEES ----------------------
-    $SERVEURDB = 'x.x.x.x:xxxx'; //adresse IP du serveur entre simple cote, ex: $SERVEUR = '192.169.1.5';
+    $SERVEURDB = 'x.x.x.x'; //adresse IP du serveur entre simple cote, ex: $SERVEUR = '192.169.1.5';
     $DBNAME = 'GPM'; //nom de la base de données, ex: $DB = 'GPM';
     $CHARSET = 'utf8'; //type d'interclassement, utf8 étant recommandé, ex: $CHARSET = 'utf8';
     $USER = 'xxx'; //nom d'utilisateur d'accès à la base de données, ex: $USER = 'utilisateur';
@@ -104,6 +104,13 @@ function writeInLogs($contentEVT, $levelEVT, $userSpecifique)
             }
         }
     }
+}
+
+function randomColor()
+{
+	$rand = array('#111111','#dd4b39','#f39c12','#00c0ef','#0073b7','#3c8dbc','#00a65a','#001f3f','#39cccc','#3d9970','#01ff70','#ff851b','#f012be','#605ca8','#d81b60','#000000','#d33724','#db8b0b','#00a7d0','#005384','#357ca5','#008d4c','#001a35','#30bbbb','#368763','#00e765','#ff7701','#db0ead','#555299','#ca195a','#606c84');
+	$color = $rand[rand(0,34)];
+	return $color;
 }
 
 function updatePeremptionsAnticipations()

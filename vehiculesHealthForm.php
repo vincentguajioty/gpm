@@ -68,15 +68,25 @@ if($_SESSION['vehiculeHealth_lecture']==1 OR $_SESSION['vehiculeHealth_ajout']==
                 </div>
                 <form role="form" action="<?= isset($_GET['id']) ? 'vehiculesHealthUpdate.php?id='.$_GET['id'] : 'vehiculesHealthAdd.php?idVehicule='.$_GET['idVehicule']?>" method="POST">
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>Date <small style="color:grey;"> Requis</small></label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input type="text" class="input-datepicker form-control" name="dateHealth" value="<?= (isset($_GET['id']) ? $data['dateHealth'] : date('Y-m-d')) ?>" required>
-                            </div>
-                        </div>
+                    	<div class=row>
+                    		<div class="col-md-6">
+		                        <div class="form-group">
+		                            <label>Date <small style="color:grey;"> Requis</small></label>
+		                            <div class="input-group">
+		                                <div class="input-group-addon">
+		                                    <i class="fa fa-calendar"></i>
+		                                </div>
+		                                <input type="text" class="input-datepicker form-control" name="dateHealth" value="<?= (isset($_GET['id']) ? $data['dateHealth'] : date('Y-m-d')) ?>" required>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <div class="col-md-6">
+		                    	<div class="form-group">
+		                            <label>Relevé kilométrique</label>
+		                            <input type="number" min="0" class="form-control" value="<?php echo $data['releveKilometrique']; ?>" name="releveKilometrique">
+		                        </div>
+		                    </div>
+		                </div>
                         <div class="form-group">
                             <label>Executant <small style="color:grey;"> Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="idPersonne" required>

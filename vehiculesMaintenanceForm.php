@@ -65,13 +65,23 @@ if($_SESSION['vehicules_lecture']==1 OR $_SESSION['vehicules_modification']==1)
                                 $query2->closeCursor();?>
                             </select>
                         </div>
-                        <div class="form-group">
-							<label>Date <small style="color:grey;"> Requis</small></label>
-							<div class="input-group">
-								<div class="input-group-addon">
-									<i class="fa fa-calendar"></i>
+                        <div class="row">
+                        	<div class="col-md-6">
+		                        <div class="form-group">
+									<label>Date <small style="color:grey;"> Requis</small></label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</div>
+										<input type="text" class="input-datepicker form-control" name="dateMaintenance" value="<?= (isset($_GET['id']) ? $data['dateMaintenance'] : date('Y-m-d')) ?>" required>
+									</div>
 								</div>
-								<input type="text" class="input-datetimepicker form-control" name="dateMaintenance" value="<?php echo $data['dateMaintenance']; ?>" required>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+		                            <label>Relevé kilométrique</label>
+		                            <input type="number" min="0" class="form-control" value="<?php echo $data['releveKilometrique']; ?>" name="releveKilometrique">
+		                        </div>
 							</div>
 						</div>
                         <div class="form-group">

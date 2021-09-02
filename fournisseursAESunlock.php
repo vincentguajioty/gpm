@@ -3,7 +3,7 @@ session_start();
 require_once('logCheck.php');
 require_once 'config/bdd.php';
 
-if ($_SESSION['fournisseurs_lecture']==0 OR $_SESSION['appli_conf']==0)
+if ($_SESSION['fournisseurs_lecture']==0)
 {
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 }

@@ -310,15 +310,91 @@ if ($_SESSION['commande_lecture']==0)
 	                                            <label class="pull-right"><?= cmdEtatCentreCouts($_GET['id']); ?></label>
 	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>2) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idCentreDeCout">
 	                                                <option value="">--- Non-spécifié ---</option>
-	                                                <?php
-	                                                $query2 = $db->query('SELECT * FROM CENTRE_COUTS;');
-	                                                while ($data2 = $query2->fetch())
-	                                                {
-	                                                    ?>
-	                                                    <option value="<?php echo $data2['idCentreDeCout']; ?>" <?php if ($data['idCentreDeCout'] == $data2['idCentreDeCout']) { echo 'selected'; } ?>><?php echo $data2['libelleCentreDecout']; ?></option>
-	                                                    <?php
-	                                                }
-	                                                $query2->closeCursor(); ?>
+	                                                <optgroup label="Ouverts">
+	                                                	<?php
+		                                                $query2 = $db->query('
+		                                                	SELECT
+															    *
+															FROM
+															    CENTRE_COUTS
+															WHERE
+															    (
+															    	dateFermeture IS NULL
+															    	AND dateOuverture <= CURRENT_DATE
+															    )
+															    OR
+															    (
+															    	dateFermeture >= CURRENT_DATE
+															    	AND
+															    	dateOuverture <= CURRENT_DATE
+															    )
+															    OR
+															    (
+															    	dateOuverture IS NULL
+															    	AND dateFermeture IS NULL
+															    )
+															ORDER BY
+																libelleCentreDecout
+		                                                ');
+		                                                while ($data2 = $query2->fetch())
+		                                                {
+		                                                    ?>
+		                                                    <option value="<?php echo $data2['idCentreDeCout']; ?>" <?php if ($data['idCentreDeCout'] == $data2['idCentreDeCout']) { echo 'selected'; } ?>><?php echo $data2['libelleCentreDecout']; ?></option>
+		                                                    <?php
+		                                                }
+		                                                $query2->closeCursor(); ?>
+	                                                </optgroup>
+	                                                
+	                                                <optgroup label="Ouverture future">
+	                                                	<?php
+		                                                $query2 = $db->query('
+		                                                	SELECT
+															    *
+															FROM
+															    CENTRE_COUTS
+															WHERE
+															    (
+															    	dateFermeture IS NULL
+															    	AND dateOuverture > CURRENT_DATE
+															    )
+															    OR
+															    (
+															    	dateFermeture >= CURRENT_DATE
+															    	AND
+															    	dateOuverture > CURRENT_DATE
+															    )
+															ORDER BY
+																libelleCentreDecout
+		                                                ');
+		                                                while ($data2 = $query2->fetch())
+		                                                {
+		                                                    ?>
+		                                                    <option value="<?php echo $data2['idCentreDeCout']; ?>" <?php if ($data['idCentreDeCout'] == $data2['idCentreDeCout']) { echo 'selected'; } ?>><?php echo $data2['libelleCentreDecout']; ?></option>
+		                                                    <?php
+		                                                }
+		                                                $query2->closeCursor(); ?>
+	                                                </optgroup>
+	                                                
+	                                                <optgroup label="Fermés">
+	                                                	<?php
+		                                                $query2 = $db->query('
+		                                                	SELECT
+															    *
+															FROM
+															    CENTRE_COUTS
+															WHERE
+															    dateFermeture < CURRENT_DATE
+															ORDER BY
+																libelleCentreDecout
+		                                                ');
+		                                                while ($data2 = $query2->fetch())
+		                                                {
+		                                                    ?>
+		                                                    <option value="<?php echo $data2['idCentreDeCout']; ?>" <?php if ($data['idCentreDeCout'] == $data2['idCentreDeCout']) { echo 'selected'; } ?>><?php echo $data2['libelleCentreDecout']; ?></option>
+		                                                    <?php
+		                                                }
+		                                                $query2->closeCursor(); ?>
+	                                                </optgroup>
 	                                            </select>
 	                                        </div>
 	                                    </div>
@@ -635,7 +711,7 @@ if ($_SESSION['commande_lecture']==0)
 				                                <input <?php if(($data['idEtat']>3) OR ($_SESSION['commande_etreEnCharge']==0) OR cmdEstAffectee($_SESSION['idPersonne'], $_GET['id'])==0){echo 'disabled';}?> type="text" class="form-control" name="numCommandeFournisseur" value="<?php echo $data['numCommandeFournisseur']; ?>">
 				                            </div>
 	                                        <div class="form-group" id="dateLivraisonPrevue">
-	                                            <label>Date prévue de livraison:</label>
+	                                            <label>Date prévue de livraison finale:</label>
 	                                            <div class="input-group">
 	                                                <div class="input-group-addon">
 	                                                    <i class="fa fa-calendar"></i>
@@ -657,7 +733,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                <div class="row">
 	                                    <div class="col-md-4">
 	                                        <div class="form-group" id="dateLivraisonPrevue">
-	                                            <label>Date prévue de livraison:</label>
+	                                            <label>Date prévue de livraison finale:</label>
 	                                            <div class="input-group">
 	                                                <div class="input-group-addon">
 	                                                    <i class="fa fa-calendar"></i>
@@ -685,7 +761,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                    </div>
 	                                    <div class="col-md-4">
 	                                        <div class="form-group" id="dateLivraisoneffective">
-	                                            <label>Date de livraison effective:</label>
+	                                            <label>Date de livraison finale effective:</label>
 	                                            <div class="input-group">
 	                                                <div class="input-group-addon">
 	                                                    <i class="fa fa-calendar"></i>

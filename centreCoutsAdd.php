@@ -11,17 +11,23 @@ if ($_SESSION['cout_ajout']==0)
 }
 else
 {    
-
+	$_POST['dateOuverture'] = ($_POST['dateOuverture'] == Null) ? Null : $_POST['dateOuverture'];
+	$_POST['dateFermeture'] = ($_POST['dateFermeture'] == Null) ? Null : $_POST['dateFermeture'];
+	
     $query = $db->prepare('
         INSERT INTO
             CENTRE_COUTS
         SET
             libelleCentreDecout    = :libelleCentreDecout,
-            commentairesCentreCout = :commentairesCentreCout
+            commentairesCentreCout = :commentairesCentreCout,
+            dateOuverture          = :dateOuverture,
+			dateFermeture          = :dateFermeture
         ;');
     $query->execute(array(
         'libelleCentreDecout'    => $_POST['libelleCentreDecout'],
-        'commentairesCentreCout' => $_POST['commentairesCentreCout']
+        'commentairesCentreCout' => $_POST['commentairesCentreCout'],
+        'dateOuverture'          => $_POST['dateOuverture'],
+		'dateFermeture'          => $_POST['dateFermeture'],
     ));
 
     switch($query->errorCode())

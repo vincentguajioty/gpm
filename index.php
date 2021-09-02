@@ -1046,7 +1046,7 @@ include('logCheck.php');
 		                        </thead>
 		                        <tbody>
 		                        <?php
-		                        $query = $db->prepare('SELECT c.idCommande, c.nomCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat FROM COMMANDES_VALIDEURS j LEFT OUTER JOIN COMMANDES c ON j.idCommande = c.idCommande LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE (idValideur = :idPersonne) AND (c.idEtat = 2);');
+		                        $query = $db->prepare('SELECT c.idCommande, c.nomCommande, c.dateCreation, f.idFournisseur, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat FROM COMMANDES_VALIDEURS j LEFT OUTER JOIN COMMANDES c ON j.idCommande = c.idCommande LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE (idValideur = :idPersonne) AND (c.idEtat = 2);');
 		                        $query->execute(array(
 		                            'idPersonne' => $_SESSION['idPersonne']
 		                        ));
@@ -1064,7 +1064,19 @@ include('logCheck.php');
 		                                	?>
 		                                </td>
 		                                <td>
-		                                    <?php if ($_SESSION['commande_lecture']==1) {?>
+											<?php if (($data['idFournisseur']!=Null) AND ($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])==1) { ?>
+												<a href="commandesGo13Index.php?id=<?=$data['idCommande']?>&action=v" class="btn btn-xs btn-success" title="Valider"><i class="fa fa-check"></i></a>
+											<?php } ?>
+											<?php if (($data['idFournisseur']!=Null) AND ($_SESSION['commande_valider_delegate']==1) AND cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])!=1) { ?>
+												<a href="commandesGo13Index.php?id=<?=$data['idCommande']?>&action=vd" class="btn btn-xs btn-success" title="Valider en délégation"><i class="fa fa-check"></i><i class="fa fa-warning"></i></a>
+											<?php } ?>
+											<?php if (($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])==1){ ?>
+		                                		<a href="commandesGo13Index.php?id=<?=$data['idCommande']?>&action=r" class="btn btn-xs btn-danger" title="Refuser"><i class="fa fa-close"></i></a>
+		                                	<?php } ?>
+											<?php if (($_SESSION['commande_valider_delegate']==1) AND cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])!=1){ ?>
+												<a href="commandesGo13Index.php?id=<?=$data['idCommande']?>&action=rd" class="btn btn-xs btn-danger" title="Refuser en délégation"><i class="fa fa-close"></i><i class="fa fa-warning"></i></a>
+											<?php } ?>
+											<?php if ($_SESSION['commande_lecture']==1) {?>
 		                                    	<a href="commandeView.php?id=<?=$data['idCommande']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
 		                                	<?php } ?>
 		                                </td>

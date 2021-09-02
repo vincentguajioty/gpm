@@ -41,11 +41,13 @@ if ($_SESSION['cout_lecture']==0)
                 <?php } ?>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table id="tri2" class="table table-bordered table-hover">
+                    <table id="tri3" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th class="all" style="width: 10px">#</th>
                                 <th class="all">Libelle</th>
+                                <th class="not-mobile">Etat d'ouverture</th>
+                                <th class="not-mobile">Dates</th>
                                 <th class="not-mobile">Responsable</th>
                                 <th class="not-mobile">Solde actuel</th>
                                 <th class="not-mobile">Commandes à intégrer</th>
@@ -60,6 +62,40 @@ if ($_SESSION['cout_lecture']==0)
                             <tr>
                                 <td><?php echo $data['idCentreDeCout']; ?></td>
                                 <td><?php echo $data['libelleCentreDecout']; ?></td>
+                                <td>
+                                	<?php
+                                		if($data['dateFermeture'] == Null)
+                                		{
+                                			if($data['dateOuverture'] <= date('Y-m-d'))
+                                			{
+                                				echo '<span class="badge bg-green">1 - Ouvert</span>';
+                                			}
+                                			else
+                                			{
+                                				echo '<span class="badge bg-blue">2 - Futur</span>';
+                                			}
+                                		}
+                                		else
+                                		{
+                                			if($data['dateFermeture'] < date('Y-m-d'))
+                                			{
+                                				echo '<span class="badge bg-gray">3 - Clos</span>';
+                                			}
+                                			else
+                                			{
+                                				if($data['dateOuverture'] <= date('Y-m-d'))
+	                                			{
+	                                				echo '<span class="badge bg-green">1 - Ouvert</span>';
+	                                			}
+	                                			else
+	                                			{
+	                                				echo '<span class="badge bg-blue">2 - Futur</span>';
+	                                			}
+                                			}
+                                		}
+                                	?>
+                                </td>
+                                <td><?=$data['dateOuverture']?> <i class="fa  fa-arrow-right"></i> <?=$data['dateFermeture']?></td>
                                 <td>
                                 	<?php
                                 		$query2 = $db->prepare('SELECT p.* FROM CENTRE_COUTS_PERSONNES cc LEFT OUTER JOIN PERSONNE_REFERENTE p ON cc.idPersonne = p.idPersonne WHERE cc.idCentreDeCout = :idCentreDeCout');

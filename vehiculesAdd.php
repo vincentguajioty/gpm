@@ -72,7 +72,8 @@ else
             idVehiculesEtat                = :idVehiculesEtat,
             idCarburant                    = :idCarburant,
             affichageSyntheseDesinfections = :affichageSyntheseDesinfections,
-            affichageSyntheseHealth        = :affichageSyntheseHealth
+            affichageSyntheseHealth        = :affichageSyntheseHealth,
+            couleurGraph                   = :couleurGraph
         ;');
     $query->execute(array(
         'libelleVehicule'                => $_POST['libelleVehicule'],
@@ -105,6 +106,7 @@ else
         'idCarburant'                    => $_POST['idCarburant'],
         'affichageSyntheseDesinfections' => $_POST['affichageSyntheseDesinfections'],
         'affichageSyntheseHealth'        => $_POST['affichageSyntheseHealth'],
+        'couleurGraph'                   => randomColor(),
     ));
 
     switch($query->errorCode())

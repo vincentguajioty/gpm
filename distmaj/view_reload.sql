@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS VIEW_VEHICULES_KM;
 DROP VIEW IF EXISTS VIEW_HABILITATIONS;
 DROP VIEW IF EXISTS VIEW_DOCUMENTS_COMMANDES;
 DROP VIEW IF EXISTS VIEW_DOCUMENTS_CENTRE_COUTS;
@@ -214,6 +215,14 @@ CREATE OR REPLACE VIEW VIEW_DOCUMENTS_VHF AS
 		LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument
 	ORDER BY
 		nomDocVHF ASC
+;
+
+CREATE OR REPLACE VIEW VIEW_VEHICULES_KM AS
+	(SELECT idReleve, idVehicule, dateReleve, releveKilometrique, idPersonne FROM VEHICULES_RELEVES)
+	UNION
+	(SELECT NULL as idReleve, idVehicule, dateMaintenance as dateReleve, releveKilometrique, idExecutant as idPersonne  FROM VEHICULES_MAINTENANCE WHERE releveKilometrique IS NOT NULL)
+	UNION
+	(SELECT NULL as idReleve, idVehicule, dateHealth as dateReleve, releveKilometrique, idPersonne  FROM VEHICULES_HEALTH WHERE releveKilometrique IS NOT NULL)
 ;
 
 

@@ -85,7 +85,7 @@ if ($_SESSION['vehicules_lecture']==0)
                                     <td>Dernier relevé kilométrique</td>
                                     <td>
                                     	<?php
-                                    		$kilometrages = $db->prepare('SELECT * FROM VEHICULES_RELEVES WHERE idVehicule = :idVehicule ORDER BY dateReleve DESC;');
+                                    		$kilometrages = $db->prepare('SELECT * FROM VIEW_VEHICULES_KM WHERE idVehicule = :idVehicule ORDER BY dateReleve DESC;');
                                     		$kilometrages->execute(array('idVehicule'=>$_GET['id']));
                                     		$kilometrage = $kilometrages->fetch();
                                     		if(!(isset($kilometrage['releveKilometrique'])) OR $kilometrage['releveKilometrique'] == Null)
@@ -388,7 +388,7 @@ if ($_SESSION['vehicules_lecture']==0)
                                         <th><?php if($_SESSION['vehicules_modification']==1){ ?><a href="vehiculesReleveForm.php?idVehicule=<?=$_GET['id']?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a><?php } ?></th>
                                     </tr>
                                     <?php
-                                    $query2 = $db->prepare('SELECT * FROM VEHICULES_RELEVES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne WHERE idVehicule = :idVehicule ORDER BY dateReleve DESC;');
+                                    $query2 = $db->prepare('SELECT * FROM VIEW_VEHICULES_KM m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne WHERE idVehicule = :idVehicule ORDER BY dateReleve DESC;');
                                     $query2->execute(array('idVehicule' => $_GET['id']));
                                     while ($data2 = $query2->fetch())
                                     {
@@ -398,12 +398,20 @@ if ($_SESSION['vehicules_lecture']==0)
                                             <td><?php echo $data2['releveKilometrique'];?> km</td>
                                             <td><?php echo $data2['identifiant'];?></td>
                                             <td>
-                                                <?php if($_SESSION['vehicules_lecture']==1){ ?>
-                                                    <a href="vehiculesReleveForm.php?idVehicule=<?=$_GET['id']?>&id=<?=$data2['idReleve']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
-                                                <?php }?>
-                                                <?php if ($_SESSION['vehicules_suppression']==1) {?>
-			                                        <a href="modalDeleteConfirm.php?case=vehiculesReleveDelete&id=<?=$data2['idReleve']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
-			                                    <?php }?>
+                                            	<?php
+                                            		if ($data2['idReleve'] != Null)
+                                            		{ ?>
+		                                                <?php if($_SESSION['vehicules_lecture']==1){ ?>
+		                                                    <a href="vehiculesReleveForm.php?idVehicule=<?=$_GET['id']?>&id=<?=$data2['idReleve']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
+		                                                <?php }?>
+		                                                <?php if ($_SESSION['vehicules_suppression']==1) {?>
+					                                        <a href="modalDeleteConfirm.php?case=vehiculesReleveDelete&id=<?=$data2['idReleve']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
+					                                    <?php }?>
+					                                <?php
+                                            		}else{
+                                            		?>
+                                            			<i class="fa fa-wrench"></i> Maintenance
+                                            	<?php } ?>
                                             </td>
                                         </tr>
                                         <?php
@@ -528,7 +536,7 @@ if ($_SESSION['vehicules_lecture']==0)
                     <!-- /.widget-user -->
                 </div>
                 <?php
-                    $nb = $db->prepare('SELECT COUNT(*) as nb FROM VEHICULES_RELEVES WHERE idVehicule = :idVehicule;');
+                    $nb = $db->prepare('SELECT COUNT(*) as nb FROM VIEW_VEHICULES_KM WHERE idVehicule = :idVehicule;');
                     $nb->execute(array(
                         'idVehicule' => $_GET['id']));
                     $nb=$nb->fetch();
@@ -569,7 +577,7 @@ if ($_SESSION['vehicules_lecture']==0)
         "use strict";
         
         <?php
-            $releves = $db->prepare("SELECT dateReleve, releveKilometrique FROM VEHICULES_RELEVES WHERE dateReleve IS NOT Null AND idVehicule = :idVehicule ORDER BY dateReleve DESC;");
+            $releves = $db->prepare("SELECT dateReleve, releveKilometrique FROM VIEW_VEHICULES_KM WHERE dateReleve IS NOT Null AND idVehicule = :idVehicule ORDER BY dateReleve DESC;");
             $releves->execute(array('idVehicule'=>$_GET['id']));
         ?>
         

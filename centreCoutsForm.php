@@ -65,6 +65,30 @@ if($_SESSION['cout_ajout']==1)
                                 $query2->closeCursor(); ?>
                             </select>
                         </div>
+                        <div class="row">
+                        	<div class="col-md-6">
+                        		<div class="form-group">
+                                    <label>Date d'ouverture:</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input class="input-datepicker form-control" name="dateOuverture" value="<?= isset($data['dateOuverture']) ? $data['dateOuverture'] : '' ?>">
+                                    </div>
+                                </div>
+                        	</div>
+                        	<div class="col-md-6">
+                        		<div class="form-group">
+                                    <label>Date de fermeture:</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input class="input-datepicker form-control" name="dateFermeture" value="<?= isset($data['dateFermeture']) ? $data['dateFermeture'] : '' ?>">
+                                    </div>
+                                </div>
+                        	</div>
+                        </div>
                         <div class="form-group">
                             <label>Remarques</label>
                             <textarea class="form-control" rows="3" name="commentairesCentreCout"><?= isset($data['commentairesCentreCout']) ? $data['commentairesCentreCout'] : '' ?></textarea>

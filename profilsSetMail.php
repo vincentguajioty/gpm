@@ -31,6 +31,7 @@ else {
                 notif_vehicules_revisions     = 1,
                 notif_vehicules_desinfections = 1,
                 notif_vehicules_ct            = 1,
+                notif_vehicules_health        = 1,
                 notif_tenues_stock            = 1,
                 notif_tenues_retours          = 1
             WHERE

@@ -374,6 +374,15 @@ require_once 'config/bdd.php';
                             ?>
                             ><a href="vehiculesHealth.php"><i class="fa fa-wrench"></i> <span>Suivi des maintenances</span></a></li>
                         <?php } ?>
+                        <?php if ($_SESSION['vehicules_lecture']==1){ ?>
+                            <li <?php
+                            if ($_SESSION['page'] == 1004)
+                            {
+                                echo 'class="active"';
+                            }
+                            ?>
+                            ><a href="vehiculesSyntheseKM.php?dateInf=<?=date('Y-m-d',strtotime(date('Y-m-d').' -1 year'))?>&dateSup=<?=date('Y-m-d')?>"><i class="fa fa-line-chart"></i> <span>Graphiques kilométriques</span></a></li>
+                        <?php } ?>
                     </ul>
                 </li>
                 <?php

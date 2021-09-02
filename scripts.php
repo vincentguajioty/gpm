@@ -142,6 +142,24 @@
                 [ '10', '25', '50', '75', '100', 'Tous' ]
             ],
         	responsive: true});
+        $("#tri3").DataTable({
+        	"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"},
+        	"order": [[ 2, 'asc']],
+        	"pageLength": <?= $_SESSION['tableRowPerso'] ?>,
+        	lengthMenu: [
+                [ 10, 25, 50, 75, 100, -1 ],
+                [ '10', '25', '50', '75', '100', 'Tous' ]
+            ],
+        	responsive: true});
+        $("#tri3R").DataTable({
+        	"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"},
+        	"order": [[ 2, 'desc']],
+        	"pageLength": <?= $_SESSION['tableRowPerso'] ?>,
+        	lengthMenu: [
+                [ 10, 25, 50, 75, 100, -1 ],
+                [ '10', '25', '50', '75', '100', 'Tous' ]
+            ],
+        	responsive: true});
 
         $('#tri0F').DataTable( {
             initComplete: function () {

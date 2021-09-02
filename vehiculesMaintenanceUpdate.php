@@ -1,8 +1,6 @@
 <?php
 session_start();
 require_once('logCheck.php');
-?>
-<?php
 require_once 'config/bdd.php';
 
 if ($_SESSION['vehicules_modification']==0)
@@ -15,6 +13,7 @@ else
 	$_POST['idExecutant'] = ($_POST['idExecutant'] == Null) ? Null : $_POST['idExecutant'];
 	$_POST['dateMaintenance'] = ($_POST['dateMaintenance'] == Null) ? Null : $_POST['dateMaintenance'];
 	$_POST['idTypeMaintenance'] = ($_POST['idTypeMaintenance'] == Null) ? Null : $_POST['idTypeMaintenance'];
+	$_POST['releveKilometrique'] = ($_POST['releveKilometrique'] == Null) ? Null : $_POST['releveKilometrique'];
 	
     $query = $db->prepare('
         UPDATE
@@ -23,7 +22,8 @@ else
             idExecutant        = :idExecutant,
             dateMaintenance    = :dateMaintenance,
             idTypeMaintenance  = :idTypeMaintenance,
-            detailsMaintenance = :detailsMaintenance
+            detailsMaintenance = :detailsMaintenance,
+            releveKilometrique = :releveKilometrique
         WHERE
             idMaintenance      = :idMaintenance
         ;');
@@ -32,7 +32,8 @@ else
         'idExecutant'        => $_POST['idExecutant'],
         'dateMaintenance'    => $_POST['dateMaintenance'],
         'idTypeMaintenance'  => $_POST['idTypeMaintenance'],
-        'detailsMaintenance' => $_POST['detailsMaintenance']
+        'detailsMaintenance' => $_POST['detailsMaintenance'],
+        'releveKilometrique' => $_POST['releveKilometrique'],
     ));
 
     switch($query->errorCode())

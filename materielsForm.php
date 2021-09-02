@@ -84,7 +84,7 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Quantité d'Alerte: <small style="color:grey;">Requis</small></label>
-                                    <input type="text" class="form-control"  value="<?= isset($data['quantiteAlerte']) ? $data['quantiteAlerte'] : '' ?>" name="quantiteAlerte" required>
+                                    <input type="text" class="form-control"  value="<?= isset($data['quantiteAlerte']) ? $data['quantiteAlerte'] : '0' ?>" name="quantiteAlerte" required>
                                 </div>
                             </div>
                         </div>
