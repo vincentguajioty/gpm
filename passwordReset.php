@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <?php
-include('header.php');
+include('headerCaptcha.php');
 require_once 'config/config.php';
 require_once 'verrouIPcheck.php';
 ?>
@@ -33,6 +33,7 @@ if ($RESETPASSWORD == 0)
                 </div>
                 <div class="form-group has-feedback">
                     <input type="email" class="form-control" placeholder="Adresse mail" name="mailPersonne" required>
+                    <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" >
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 </div>
                 <div class="row">
@@ -76,5 +77,17 @@ if ($RESETPASSWORD == 0)
         });
     });
 </script>
+<?php
+	if($RECAPTCHA_ENABLE)
+	{ ?>
+		<script>
+			grecaptcha.ready(function() {
+	    		grecaptcha.execute('<?= $RECAPTCHA_SITEKEY ?>', {action: 'pwdReset'}).then(function(token) {
+	    			document.getElementById('g-recaptcha-response').value=token;
+	    		});
+			});
+		</script>
+	<?php }
+?>
 </body>
 </html>

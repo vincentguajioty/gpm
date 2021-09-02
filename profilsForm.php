@@ -334,6 +334,26 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                         </table>
                         <table class="table table-bordered">
                             <tr>
+                                <th>ALERTES BENEVOLES</th>
+                                <th>Lecture</th>
+                                <th>Etre en charge</th>
+                                <th>Affecter à un tier</th>
+                            </tr>
+                            <tr>
+                                <td>Lots</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['alertesBenevolesLots_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="alertesBenevolesLots_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['alertesBenevolesLots_affectation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="alertesBenevolesLots_affectation"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['alertesBenevolesLots_affectationTier'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="alertesBenevolesLots_affectationTier"></td>
+                            </tr>
+                            <tr>
+                                <td>Véhicules</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['alertesBenevolesVehicules_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="alertesBenevolesVehicules_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['alertesBenevolesVehicules_affectation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="alertesBenevolesVehicules_affectation"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['alertesBenevolesVehicules_affectationTier'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="alertesBenevolesVehicules_affectationTier"></td>
+                            </tr>
+                        </table>
+                        <table class="table table-bordered">
+                            <tr>
                                 <th>COMMANDES</th>
                                 <th>Lecture</th>
                                 <th>Ajout/Modification</th>

@@ -52,6 +52,7 @@ if ($_SESSION['vehicules_lecture']==0)
                                 <th class="not-mobile">Immatriculation</th>
                                 <th class="not-mobile">Marque/Modele</th>
                                 <th class="not-mobile">Contrôles</th>
+                                <?php if($_SESSION['alertesBenevolesVehicules_lecture']){ ?><th class="not-mobile">Alertes Bénévoles</th><?php } ?>
                                 <th class="not-mobile">Notifications</th>
                                 <th class="not-mobile">Actions</th>
                             </tr>
@@ -156,6 +157,32 @@ if ($_SESSION['vehicules_lecture']==0)
                                         }
                                         ?>">Maintenance</span>
                                 </td>
+                                <?php if($_SESSION['alertesBenevolesVehicules_lecture']){ ?>
+                                	<td>
+                                		<?php
+	                                        $query2 = $db->prepare('SELECT COUNT(*) as nb FROM VEHICULES_ALERTES WHERE idVehicule = :idVehicule AND idVehiculesAlertesEtat = 1;');
+	                                        $query2->execute(array(
+	                                            'idVehicule' => $data['idVehicule']
+	                                        ));
+	                                        $data2 = $query2->fetch();
+	                                        if($data2['nb']>0)
+	                                        {
+	                                            ?><span class="badge bg-red"><?= $data2['nb'] ?></span><?php
+	                                        }
+	                                    ?>
+	                                    <?php
+	                                        $query2 = $db->prepare('SELECT COUNT(*) as nb FROM VEHICULES_ALERTES WHERE idVehicule = :idVehicule AND (idVehiculesAlertesEtat = 2 OR idVehiculesAlertesEtat = 3);');
+	                                        $query2->execute(array(
+	                                            'idVehicule' => $data['idVehicule']
+	                                        ));
+	                                        $data2 = $query2->fetch();
+	                                        if($data2['nb']>0)
+	                                        {
+	                                            ?><span class="badge bg-blue"><?= $data2['nb'] ?></span><?php
+	                                        }
+	                                    ?>
+                                	</td>
+                                <?php } ?>
                                 <td><?php echo $data['libelleEtat']; ?> (<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>)</td>
                                 <td>
                                     <?php if ($_SESSION['vehicules_lecture']==1) {?>

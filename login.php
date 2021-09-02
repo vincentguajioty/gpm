@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <?php
-include('header.php');
+include('headerCaptcha.php');
 require_once 'config/config.php';
 require_once 'verrouIPcheck.php';
 
@@ -12,7 +12,16 @@ if ($_SESSION['connexion_connexion'] == 1)
 }
 ?>
 <body class="hold-transition login-page">
-<div class="login-box">
+	<?php
+	if($ALERTES_BENEVOLES_LOTS OR $ALERTES_BENEVOLES_VEHICULES)
+	{
+		echo '<div class="login-boxdouble">';
+	}
+	else
+	{
+		echo '<div class="login-box">';
+	}
+	?>
     <div class="login-logo">
         <b><?php echo $APPNAME;?></b>
     </div>
@@ -49,9 +58,15 @@ if ($_SESSION['connexion_connexion'] == 1)
 
     <?php
     if (checkIP($_SERVER['REMOTE_ADDR'])==0)
-    { ?>
+    {
+    	if($ALERTES_BENEVOLES_LOTS OR $ALERTES_BENEVOLES_VEHICULES)
+    	{
+    		echo '<div class="row">';
+    		echo '<div class="col-md-6">';
+    	}
+    	?>
         <div class="login-box-body">
-            <p class="login-box-msg">Saisissez vos identifiants pour accéder à l'outil</p>
+            <p class="login-box-msg"><b>Espace sécurisé</b></p>
 
             <form action="loginSQL.php" method="post">
                 <div class="form-group has-feedback">
@@ -60,6 +75,7 @@ if ($_SESSION['connexion_connexion'] == 1)
                 </div>
                 <div class="form-group has-feedback">
                     <input type="password" class="form-control" placeholder="Mot de passe" name="motDePasse">
+                    <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" >
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
                 <div class="row">
@@ -78,6 +94,26 @@ if ($_SESSION['connexion_connexion'] == 1)
                 <br/>
             <?php } ?>
         </div>
+
+        <?php
+        if($ALERTES_BENEVOLES_LOTS OR $ALERTES_BENEVOLES_VEHICULES)
+    	{
+    		echo '</div>';
+    		echo '<div class="col-md-6">';
+    		?>
+
+    		<div class="login-box-body">
+	            <p class="login-box-msg"><b>Espace public</b></p>
+	            <p class="login-box-msg">Je fais partie de la structure mais ne suis pas membre de l'équipe logistique. J'ai rencontré un incident avec un élément du parc matériel et je souhaite le signaler.</p>
+	            <p class="login-box-msg"><a href="alerteBenevole.php" class="btn btn-primary btn-block btn-flat">Déclarer un incident</a></p>
+	        </div>
+
+    		<?php
+    		echo '</div>';
+    		echo '</div>';
+    	}
+    	?>
+
     <?php }
     else
     { ?>
@@ -112,5 +148,17 @@ if ($_SESSION['connexion_connexion'] == 1)
         });
     });
 </script>
+<?php
+	if($RECAPTCHA_ENABLE)
+	{ ?>
+		<script>
+			grecaptcha.ready(function() {
+	    		grecaptcha.execute('<?= $RECAPTCHA_SITEKEY ?>', {action: 'loginPage'}).then(function(token) {
+	    			document.getElementById('g-recaptcha-response').value=token;
+	    		});
+			});
+		</script>
+	<?php }
+?>
 </body>
 </html>

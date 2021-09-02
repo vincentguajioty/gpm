@@ -86,6 +86,11 @@ else
     $query->execute(array(
         'idVehicule' => $_GET['id']
     ));
+
+    $query = $db->prepare('DELETE FROM VEHICULES_ALERTES WHERE idVehicule = :idVehicule;');
+    $query->execute(array(
+        'idVehicule' => $_GET['id']
+    ));
 	
     $query = $db->prepare('DELETE FROM VEHICULES WHERE idVehicule = :idVehicule;');
     $query->execute(array(

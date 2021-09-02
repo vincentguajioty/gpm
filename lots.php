@@ -51,6 +51,7 @@ if ($_SESSION['lots_lecture']==0)
                                 <th class="not-mobile">Référent</th>
                                 <th class="not-mobile">Quantité Matériel</th>
                                 <th class="not-mobile">Prochain Inventaire</th>
+                                <?php if($_SESSION['alertesBenevolesLots_lecture']){ ?><th class="not-mobile">Alertes Bénévoles</th><?php } ?>
                                 <th class="not-mobile">Notifications</th>
                                 <th class="not-mobile">Actions</th>
                             </tr>
@@ -183,6 +184,32 @@ if ($_SESSION['lots_lecture']==0)
                                     }
                                     ?>
                                 </td>
+                                <?php if($_SESSION['alertesBenevolesLots_lecture']){ ?>
+                                	<td>
+                                		<?php
+	                                        $query2 = $db->prepare('SELECT COUNT(*) as nb FROM LOTS_ALERTES WHERE idLot = :idLot AND idLotsAlertesEtat = 1;');
+	                                        $query2->execute(array(
+	                                            'idLot' => $data['idLot']
+	                                        ));
+	                                        $data2 = $query2->fetch();
+	                                        if($data2['nb']>0)
+	                                        {
+	                                            ?><span class="badge bg-red"><?= $data2['nb'] ?></span><?php
+	                                        }
+	                                    ?>
+	                                    <?php
+	                                        $query2 = $db->prepare('SELECT COUNT(*) as nb FROM LOTS_ALERTES WHERE idLot = :idLot AND (idLotsAlertesEtat = 2 OR idLotsAlertesEtat = 3);');
+	                                        $query2->execute(array(
+	                                            'idLot' => $data['idLot']
+	                                        ));
+	                                        $data2 = $query2->fetch();
+	                                        if($data2['nb']>0)
+	                                        {
+	                                            ?><span class="badge bg-blue"><?= $data2['nb'] ?></span><?php
+	                                        }
+	                                    ?>
+                                	</td>
+                                <?php } ?>
                                 <td><?php echo $data['libelleEtat']; ?> (<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>)</td>
                                 <td>
                                     <?php if ($_SESSION['lots_lecture']==1) {?>

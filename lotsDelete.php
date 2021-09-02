@@ -46,6 +46,11 @@ else
         'idLot' => $_GET['id']
     ));
 
+    $query = $db->prepare('DELETE FROM ALERTES_BENEVOLES_LOTS WHERE idLot = :idLot;');
+    $query->execute(array(
+        'idLot' => $_GET['id']
+    ));
+
     $query = $db->prepare('DELETE FROM LOTS_LOTS WHERE idLot = :idLot;');
     $query->execute(array(
         'idLot' => $_GET['id']

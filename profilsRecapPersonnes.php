@@ -309,6 +309,30 @@ if ($_SESSION['profils_lecture']==0 OR $_SESSION['annuaire_lecture']==0)
                 </div>
             </div>
             <div class="box box-success">
+                <div class="box-body">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>ALERTES BENEVOLES</th>
+                            <th>Lecture</th>
+                            <th>Etre en charge</th>
+                            <th>Affecter à un tier</th>
+                        </tr>
+                        <tr>
+                            <td>Lots</td>
+                            <td><?php foreach($users as $user){if($user['alertesBenevolesLots_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['alertesBenevolesLots_affectation']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['alertesBenevolesLots_affectationTier']){echo $user['identifiant'].'<br/>';}} ?></td>
+                        </tr>
+                        <tr>
+                            <td>Véhicules</td>
+                            <td><?php foreach($users as $user){if($user['alertesBenevolesVehicules_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['alertesBenevolesVehicules_affectation']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['alertesBenevolesVehicules_affectationTier']){echo $user['identifiant'].'<br/>';}} ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="box box-success">
             	<div class="box-body">
                     <table class="table table-bordered">
                         <tr>

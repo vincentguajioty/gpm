@@ -345,6 +345,144 @@ include('logCheck.php');
 					    } ?>
 					
 					
+					<?php
+						if ($_SESSION['alertesBenevolesLots_lecture'])
+						{
+							$count = $db->prepare('
+								SELECT
+									COUNT(*) AS nb
+								FROM
+									LOTS_ALERTES a
+								WHERE
+									a.idLotsAlertesEtat = 1
+	                                OR
+	                                	(a.idLotsAlertesEtat = 2 AND idTraitant = :idPersonne)
+	                                OR
+	                                	(a.idLotsAlertesEtat = 3 AND idTraitant = :idPersonne)
+	                            ;');
+	                        $count->execute(array('idPersonne' => $_SESSION['idPersonne']));
+				            $count = $count->fetch();
+				            if($count['nb']>0)
+				            {
+								?>
+								<div class="col-md-12">
+						            <div class="box box-success">
+						                <div class="box-header with-border">
+						                    <i class="fa fa-comment"></i>
+						
+						                    <h3 class="box-title">Alertes bénévoles sur les lots (nouvelles ou qui me sont affectées)</h3>
+						                </div>
+						
+						                <!-- /.box-header -->
+						                <div class="box-body">
+						                	<table class="table table-bordered">
+						                        <tr>
+						                            <th>Bénévole</th>
+						                            <th>Lot</th>
+						                            <th>Message</th>
+						                        </tr>
+						                        <?php
+						                        $query = $db->prepare('
+						                        	SELECT
+														*
+													FROM
+														LOTS_ALERTES a
+														LEFT OUTER JOIN LOTS_LOTS l ON a.idLot = l.idLot
+													WHERE
+														a.idLotsAlertesEtat = 1
+						                                OR
+						                                	(a.idLotsAlertesEtat = 2 AND idTraitant = :idPersonne)
+						                                OR
+						                                	(a.idLotsAlertesEtat = 3 AND idTraitant = :idPersonne)
+						                            ;');
+						                        $query->execute(array('idPersonne' => $_SESSION['idPersonne']));
+						                        while ($data = $query->fetch())
+						                        {?>
+						                            <tr>
+						                                <td><?php echo $data['nomDeclarant']; ?></td>
+						                                <td><?php echo $data['libelleLot']; ?></td>
+						                                <td><?= nl2br($data['messageAlerteLot']) ?></td>
+						                            </tr>
+						                            <?php
+						                        }
+						                        $query->closeCursor(); ?>
+						                    </table>
+						                </div>
+						            </div>
+						        </div>
+						        <?php
+						    }
+					    } ?>
+					    
+					<?php
+						if ($_SESSION['alertesBenevolesVehicules_lecture'])
+						{
+							$count = $db->prepare('
+								SELECT
+									COUNT(*) AS nb
+								FROM
+									VEHICULES_ALERTES a
+								WHERE
+									a.idVehiculesAlertesEtat = 1
+	                                OR
+	                                	(a.idVehiculesAlertesEtat = 2 AND idTraitant = :idPersonne)
+	                                OR
+	                                	(a.idVehiculesAlertesEtat = 3 AND idTraitant = :idPersonne)
+	                            ;');
+	                        $count->execute(array('idPersonne' => $_SESSION['idPersonne']));
+				            $count = $count->fetch();
+				            if($count['nb']>0)
+				            {
+								?>
+								<div class="col-md-12">
+						            <div class="box box-success">
+						                <div class="box-header with-border">
+						                    <i class="fa fa-comment"></i>
+						
+						                    <h3 class="box-title">Alertes bénévoles sur les véhicules (nouvelles ou qui me sont affectées)</h3>
+						                </div>
+						
+						                <!-- /.box-header -->
+						                <div class="box-body">
+						                	<table class="table table-bordered">
+						                        <tr>
+						                            <th>Bénévole</th>
+						                            <th>Véhicule</th>
+						                            <th>Message</th>
+						                        </tr>
+						                        <?php
+						                        $query = $db->prepare('
+						                        	SELECT
+														*
+													FROM
+														VEHICULES_ALERTES a
+														LEFT OUTER JOIN VEHICULES v ON a.idVehicule = v.idVehicule
+													WHERE
+														a.idVehiculesAlertesEtat = 1
+						                                OR
+						                                	(a.idVehiculesAlertesEtat = 2 AND idTraitant = :idPersonne)
+						                                OR
+						                                	(a.idVehiculesAlertesEtat = 3 AND idTraitant = :idPersonne)
+						                            ;');
+						                        $query->execute(array('idPersonne' => $_SESSION['idPersonne']));
+						                        while ($data = $query->fetch())
+						                        {?>
+						                            <tr>
+						                                <td><?php echo $data['nomDeclarant']; ?></td>
+						                                <td><?php echo $data['libelleVehicule']; ?></td>
+						                                <td><?= nl2br($data['messageAlerteVehicule']) ?></td>
+						                            </tr>
+						                            <?php
+						                        }
+						                        $query->closeCursor(); ?>
+						                    </table>
+						                </div>
+						            </div>
+						        </div>
+						        <?php
+						    }
+					    } ?>
+					
 			        <div class="col-md-12">
 			            <div class="box box-success">
 			            	<div class="box-body">

@@ -569,6 +569,27 @@ if ($_SESSION['annuaire_lecture']==0)
                             <br/>
                             <table class="table table-bordered">
                                 <tr>
+                                    <th>ALERTES BENEVOLES</th>
+                                    <th>Lecture</th>
+                                    <th>Etre en charge</th>
+                                    <th>Affecter à un tier</th>
+                                </tr>
+                                <tr>
+                                    <td>Lots</td>
+                                    <td><?php if($personne['alertesBenevolesLots_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['alertesBenevolesLots_affectation'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['alertesBenevolesLots_affectationTier'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Véhicules</td>
+                                    <td><?php if($personne['alertesBenevolesVehicules_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['alertesBenevolesVehicules_affectation'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['alertesBenevolesVehicules_affectationTier'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                </tr>
+                            </table>
+                            <br/>
+                            <table class="table table-bordered">
+                                <tr>
                                     <th>COMMANDES</th>
                                     <th>Lecture</th>
                                     <th>Ajout Modification</th>

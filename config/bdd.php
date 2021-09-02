@@ -106,6 +106,15 @@ function writeInLogs($contentEVT, $levelEVT, $userSpecifique)
     }
 }
 
+function getCaptcha($secretKey)
+{
+	global $RECAPTCHA_SECRETKEY;
+	
+	$response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$RECAPTCHA_SECRETKEY."&response={$secretKey}");
+	$return = json_decode($response);
+	return $return;
+}
+
 function randomColor()
 {
 	$rand = array('#111111','#dd4b39','#f39c12','#00c0ef','#0073b7','#3c8dbc','#00a65a','#001f3f','#39cccc','#3d9970','#01ff70','#ff851b','#f012be','#605ca8','#d81b60','#000000','#d33724','#db8b0b','#00a7d0','#005384','#357ca5','#008d4c','#001a35','#30bbbb','#368763','#00e765','#ff7701','#db0ead','#555299','#ca195a','#606c84');

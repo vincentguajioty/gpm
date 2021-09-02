@@ -315,6 +315,27 @@ require_once('logCheck.php');
 			                    </tr>
 			                </table>
 			                <br/>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>ALERTES BENEVOLES</th>
+                                    <th>Lecture</th>
+                                    <th>Etre en charge</th>
+                                    <th>Affecter à un tier</th>
+                                </tr>
+                                <tr>
+                                    <td>Lots</td>
+                                    <td><?php if($_SESSION['alertesBenevolesLots_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($_SESSION['alertesBenevolesLots_affectation'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($_SESSION['alertesBenevolesLots_affectationTier'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Véhicules</td>
+                                    <td><?php if($_SESSION['alertesBenevolesVehicules_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($_SESSION['alertesBenevolesVehicules_affectation'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($_SESSION['alertesBenevolesVehicules_affectationTier'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                </tr>
+                            </table>
+                            <br/>
 			                <table class="table table-bordered">
 			                    <tr>
 			                        <th>COMMANDES</th>

@@ -54,6 +54,6 @@ else {
             $_SESSION['returnType'] = '2';
     }
 
-    echo "<script type='text/javascript'>document.location.replace('fournisseurs.php');</script>";
+    echo "<script>window.location = document.referrer;</script>";
 }
 ?>

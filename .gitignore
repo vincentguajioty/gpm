@@ -1,1 +1,8 @@
 /logs/*.log
+/documents/centresCouts
+/documents/commandes
+/documents/vehicules
+/documents/vhfCanaux
+/documents/vhfEquipements
+/documents/vhfPlans
+gpm.sublime*

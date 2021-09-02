@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <?php
-include('header.php');
+include('headerCaptcha.php');
 require_once 'config/config.php';
 require_once 'verrouIPcheck.php';
 ?>
@@ -107,6 +107,7 @@ if ($RESETPASSWORD == 0)
                         </div>
                         <div class="form-group has-feedback">
                             <input type="password" class="form-control" placeholder="Validation du nouveau mot de passe" name="new2">
+                            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" >
                             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                         </div>
                         <div class="row">
@@ -152,5 +153,17 @@ if ($RESETPASSWORD == 0)
         });
     });
 </script>
+<?php
+	if($RECAPTCHA_ENABLE)
+	{ ?>
+		<script>
+			grecaptcha.ready(function() {
+	    		grecaptcha.execute('<?= $RECAPTCHA_SITEKEY ?>', {action: 'pwdResetNew'}).then(function(token) {
+	    			document.getElementById('g-recaptcha-response').value=token;
+	    		});
+			});
+		</script>
+	<?php }
+?>
 </body>
 </html>

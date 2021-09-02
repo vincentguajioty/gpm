@@ -10,6 +10,21 @@ if ($RESETPASSWORD == 0)
     exit;
 }           
 
+if($RECAPTCHA_ENABLE)
+{
+	$reCaptchaReturn = getCaptcha($_POST['g-recaptcha-response']);
+	
+	if($reCaptchaReturn->success == true AND $reCaptchaReturn->score > $RECAPTCHA_SCOREMIN)
+	{
+		writeInLogs("Google reCaptcha V3 - Soumission du formulaire autorisée", '1', NULL);
+	}
+	else
+	{
+		writeInLogs("Google reCaptcha V3 - Soumission du formulaire bloquée avec un score de ".$reCaptchaReturn->score, '2', NULL);
+		echo "<script type='text/javascript'>document.location.replace('alerteBenevoleFailure.php');</script>";
+		exit;
+	}
+}
 
 $reset = $db->prepare('SELECT * FROM RESETPASSWORD WHERE idReset = :idReset;');
 $reset->execute(array('idReset'=>$_GET['idReset']));

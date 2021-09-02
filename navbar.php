@@ -83,6 +83,15 @@ require_once 'config/bdd.php';
 	                        ?>
 	                        ><a href="materiels.php"><i class="fa fa-stethoscope"></i> <span>Matériel</span></a></li>
 	                    <?php } ?>
+	                    <?php if ($_SESSION['alertesBenevolesLots_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 105)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="lotsAlerteBenevoleSynthese.php"><i class="fa fa-comment"></i> <span>Alertes des bénévoles</span></a></li>
+	                    <?php } ?>
 	                </ul>
 	            </li>
 	        <?php
@@ -382,6 +391,15 @@ require_once 'config/bdd.php';
                             ?>
                             ><a href="vehiculesSyntheseKM.php?dateInf=<?=date('Y-m-d',strtotime(date('Y-m-d').' -1 year'))?>&dateSup=<?=date('Y-m-d')?>"><i class="fa fa-line-chart"></i> <span>Graphiques kilométriques</span></a></li>
                         <?php } ?>
+                        <?php if ($_SESSION['alertesBenevolesLots_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 1005)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="vehiculesAlerteBenevoleSynthese.php"><i class="fa fa-comment"></i> <span>Alertes des bénévoles</span></a></li>
+	                    <?php } ?>
                     </ul>
                 </li>
                 <?php

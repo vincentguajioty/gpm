@@ -3243,6 +3243,11 @@ table.text-center th {
   width: 360px;
   margin: 7% auto;
 }
+.login-boxdouble,
+.register-boxdouble {
+  width: 700px;
+  margin: 7% auto;
+}
 @media (max-width: 768px) {
   .login-box,
   .register-box {

@@ -309,6 +309,30 @@ if ($_SESSION['profils_lecture']==0)
                 </div>
             </div>
             <div class="box box-success">
+                <div class="box-body">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>ALERTES BENEVOLES</th>
+                            <th>Lecture</th>
+                            <th>Etre en charge</th>
+                            <th>Affecter à un tier</th>
+                        </tr>
+                        <tr>
+                            <td>Lots</td>
+                            <td><?php foreach($profils as $profil){if($profil['alertesBenevolesLots_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['alertesBenevolesLots_affectation']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['alertesBenevolesLots_affectationTier']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                        </tr>
+                        <tr>
+                            <td>Véhicules</td>
+                            <td><?php foreach($profils as $profil){if($profil['alertesBenevolesVehicules_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['alertesBenevolesVehicules_affectation']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['alertesBenevolesVehicules_affectationTier']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="box box-success">
             	<div class="box-body">
                     <table class="table table-bordered">
                         <tr>

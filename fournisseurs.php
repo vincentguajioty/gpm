@@ -81,13 +81,16 @@ if ($_SESSION['fournisseurs_lecture']==0)
                                 </td>
                                 <?php if(isset($_SESSION['aesFour'])){echo '<td>'.$data['aesFournisseurDecode'].'</td>';} ?>
                                 <td>
-                                    <?php if ($_SESSION['lieux_modification']==1) {?>
+                                    <?php if ($_SESSION['fournisseurs_lecture']==1) {?>
+                                        <a href="fournisseursContenu.php?id=<?=$data['idFournisseur']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
+                                    <?php }?>
+                                    <?php if ($_SESSION['fournisseurs_modification']==1) {?>
                                         <a href="fournisseursForm.php?id=<?=$data['idFournisseur']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if (isset($_SESSION['aesFour'])) {?>
                                     	<a href="fournisseursAESForm.php?id=<?=$data['idFournisseur']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i> <i class="fa fa-lock"></i></a>
                                     <?php }?>
-                                    <?php if ($_SESSION['lieux_suppression']==1) {?>
+                                    <?php if ($_SESSION['fournisseurs_suppression']==1) {?>
                                         <a href="modalDeleteConfirm.php?case=fournisseursDelete&id=<?=$data['idFournisseur']?>" class="btn btn-xs btn-danger modal-form" title="Suppimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>

@@ -93,6 +93,7 @@ switch ($_GET['case']) {
         $lien = "lotsDelete.php?id=".$_GET['id'];
         $contenu = "
             <li>Tous les inventaires rattachés à ce lot seront supprimés.</li>
+            <li>Toutes les alertes bénévoles ouvertes rattachées à ce lot seront supprimées.</li>
             <li>Tous les sacs composant ce lots ne seront plus rattachés à aucun lot.</li>
         ";
     break;
@@ -157,6 +158,7 @@ switch ($_GET['case']) {
             <li>Les relevés kilométriques liés à ce véhicule seront supprimés.</li>
             <li>Les taches de désinfections liées à ce véhicule seront supprimées.</li>
             <li>Les taches de maintenance régulières liées à ce véhicule seront supprimées.</li>
+            <li>Les alertes bénévoles liées à ce véhicules seront supprimées.</li>
         ";
     break;
 

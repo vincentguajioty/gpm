@@ -40,10 +40,12 @@ if ($_SESSION['appli_conf']==0)
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#general" data-toggle="tab"><i class="fa fa-wrench"></i> Générale</a></li>
                     <li><a href="#ip" data-toggle="tab"><i class="fa fa-shield"></i> Verrouillage IP</a></li>
+                    <li><a href="#captcha" data-toggle="tab"><i class="fa fa-user-secret"></i> reCaptcha V3</a></li>
                     <li><a href="#aes" data-toggle="tab"><i class="fa fa-shopping-cart"></i> Cryptage AES</a></li>
                     <li><a href="#sel" data-toggle="tab"><i class="fa fa-barcode"></i> Sels utilisateurs</a></li>
                     <li><a href="#notifCMD" data-toggle="tab"><i class="fa fa-envelope"></i> Notifications commandes</a></li>
                     <li><a href="#notifVEH" data-toggle="tab"><i class="fa fa-ambulance"></i> Véhicules</a></li>
+                    <li><a href="#alertesBen" data-toggle="tab"><i class="fa fa-comment"></i> Alertes bénévoles</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="active tab-pane" id="general">
@@ -94,7 +96,7 @@ if ($_SESSION['appli_conf']==0)
                             <div class="form-group">
                                 <label>Mots de passe oubliés:</label>
                                 <br/>
-                                <input type="checkbox" value="1" name="resetPassword" <?php if($data['resetPassword']==1){echo "checked";}?>> Les utilisateurs peuvent réinitialiser leur mot de passe oublié par mail.
+                                <input type="checkbox" value="1" name="resetPassword" <?php if($data['resetPassword']==1){echo "checked";}?>> Les utilisateurs peuvent réinitialiser leur mot de passe oublié par mail. <?php if($RECAPTCHA_ENABLE != 1){ echo '<b>Afin de garantir une meilleure sécurité de la plateforme, il est recommandé d\'activer la fonctionnalité reCaptcha.</b>';}?>
                             </div>
                             <div class="box-footer">
                                 <a data-toggle="modal" class="btn btn-sm btn-danger" <?php if ($MAINTENANCE==0){echo 'data-target="#activateSorryPage"';}else{echo 'disabled';} ?>>Activer le mode maintenance</a>
@@ -103,8 +105,16 @@ if ($_SESSION['appli_conf']==0)
                             </div>
                         </form>
                     </div>
-
+                    
                     <div class="tab-pane" id="ip">
+                        <?php
+							if($RECAPTCHA_ENABLE != 1)
+							{
+	                			echo '<div class="alert alert-warning">';
+	                            echo '<i class="icon fa fa-warning"></i> Afin de garantir une meilleure sécurité de la plateforme, il est recommandé d\'activer la fonctionnalité reCaptcha.';
+	                            echo '</div>';
+							}
+                        ?>
                         <form role="form" action="appliConfUpdateVerrIP.php" method="POST">
                             <div class="row">
                                 <div class="col-md-6">
@@ -117,6 +127,39 @@ if ($_SESSION['appli_conf']==0)
                                     <div class="form-group">
                                         <label>En Y jours:</label>
                                         <input type="number" min="1" class="form-control" value="<?=$data['verrouillage_ip_temps']?>" name="verrouillage_ip_temps" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-info pull-right">Modifier</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane" id="captcha">
+                        <form role="form" action="appliConfUpdateCaptcha.php" method="POST">
+                            <div class="form-group">
+                                <label>Activation:</label>
+                                <br/>
+                                <input type="checkbox" value="1" name="reCaptcha_enable" <?php if($data['reCaptcha_enable']==1){echo "checked";}?>> Activation du contrôle par reCaptcha V3 sur la page d'authentification, sur le module de réinitialisation du mot de passe, sur le module d'alerte bénévoles
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Site Key:</label>
+                                        <input type="text" class="form-control" value="<?=$data['reCaptcha_siteKey']?>" name="reCaptcha_siteKey">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Secret Key:</label>
+                                        <input type="text"class="form-control" value="<?=$data['reCaptcha_secretKey']?>" name="reCaptcha_secretKey">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Score minimum:</label>
+                                        <input type="number" min="0" max="1" step="0.1" class="form-control" value="<?=$data['reCaptcha_scoreMin']?>" name="reCaptcha_scoreMin">
                                     </div>
                                 </div>
                             </div>
@@ -310,6 +353,32 @@ if ($_SESSION['appli_conf']==0)
                             <div class="form-group">
                                 <label>Jours d'anticipation des péremptions d'assurance:</label>
                                 <input type="number" min="0" class="form-control" value="<?=$data['vehicules_assurance_delais_notif']?>" name="vehicules_assurance_delais_notif" required>
+                            </div>
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-info pull-right">Modifier</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane" id="alertesBen">
+						<?php
+							if($RECAPTCHA_ENABLE != 1)
+							{
+	                			echo '<div class="alert alert-warning">';
+	                            echo '<i class="icon fa fa-warning"></i> Attention, l\'ouverture de cette fonctionnalité sans avoir activé reCaptcha expose la plateforme à attaques par robot.';
+	                            echo '</div>';
+							}
+                        ?>
+                        <form role="form" action="appliConfUpdateAlertesBen.php" method="POST">
+                            <div class="form-group">
+                                <label>Lots:</label>
+                                <br/>
+                                <input type="checkbox" value="1" name="alertes_benevoles_lots" <?php if($data['alertes_benevoles_lots']==1){echo "checked";}?>> Les utilisateurs non-authentifiés peuvent remonter des alertes sur les lots opérationnels.
+                            </div>
+                            <div class="form-group">
+                                <label>Véhicules:</label>
+                                <br/>
+                                <input type="checkbox" value="1" name="alertes_benevoles_vehicules" <?php if($data['alertes_benevoles_vehicules']==1){echo "checked";}?>> Les utilisateurs non-authentifiés peuvent remonter des alertes sur les véchicules.
                             </div>
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-info pull-right">Modifier</button>

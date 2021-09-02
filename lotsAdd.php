@@ -13,11 +13,11 @@ else
 {
 
     $_POST['libelleTypeLot'] = ($_POST['libelleTypeLot'] == Null) ? Null : $_POST['libelleTypeLot'];
-	$_POST['libelleEtat'] = ($_POST['libelleEtat'] == Null) ? Null : $_POST['libelleEtat'];
-	$_POST['libelleLieu'] = ($_POST['libelleLieu'] == Null) ? Null : $_POST['libelleLieu'];
-	$_POST['identifiant'] = ($_POST['identifiant'] == Null) ? Null : $_POST['identifiant'];
-	$_POST['idVehicule'] = ($_POST['idVehicule'] == Null) ? Null : $_POST['idVehicule'];
-    $_POST['idLotsEtat'] = ($_POST['idLotsEtat'] == Null) ? Null : $_POST['idLotsEtat'];
+	$_POST['libelleEtat']    = ($_POST['libelleEtat'] == Null) ? Null : $_POST['libelleEtat'];
+	$_POST['libelleLieu']    = ($_POST['libelleLieu'] == Null) ? Null : $_POST['libelleLieu'];
+	$_POST['identifiant']    = ($_POST['identifiant'] == Null) ? Null : $_POST['identifiant'];
+	$_POST['idVehicule']     = ($_POST['idVehicule'] == Null) ? Null : $_POST['idVehicule'];
+    $_POST['idLotsEtat']     = ($_POST['idLotsEtat'] == Null) ? Null : $_POST['idLotsEtat'];
 
     $query = $db->prepare('
         INSERT INTO
