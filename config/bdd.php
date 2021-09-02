@@ -450,4 +450,21 @@ function cmdEtatCentreCouts ($idCommande)
 	}
 }
 
+function getTDLdateColor ($idTache)
+{
+	global $db;
+	
+	$tache = $db->prepare('SELECT * FROM TODOLIST WHERE idTache = :idTache;');
+	$tache->execute(array('idTache'=>$idTache));
+	$tache = $tache->fetch();
+	
+	if(date("Y-m-d", strtotime($tache['dateExecution'])) == date("Y-m-d"))
+	return 'warning';
+	
+	if(date("Y-m-d", strtotime($tache['dateExecution'])) < date("Y-m-d"))
+	return 'danger';
+	
+	return 'success';
+}
+
 ?>

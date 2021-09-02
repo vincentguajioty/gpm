@@ -2,7 +2,7 @@
 
 require_once 'bdd.php';
 
-$VERSIONCHECK = '8.5';
+$VERSIONCHECK = '8.6';
 
 $query = $db->query('SELECT * FROM CONFIG;');
 $data = $query->fetch();
@@ -17,5 +17,7 @@ $LOGOUTTEMP = $data['logouttemp'];
 $MAINTENANCE = $data['maintenance'];
 $CONFSUPPRESSION = $data['confirmationSuppression'];
 $RESETPASSWORD = $data['resetPassword'];
+
+$XSS_SECURITY = array("script", "<", ">", "/");
 
 ?>

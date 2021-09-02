@@ -14,7 +14,8 @@ if ($_SESSION['todolist_modification']==0 AND (tdlEstExecutant($_SESSION['idPers
 else
 {
     $query = $db->prepare('UPDATE TODOLIST SET 
-                                                realisee = 0
+                                                realisee = 0,
+                                                dateCloture = Null
                                             WHERE
                                                 idTache = :idTache
                                             ;'

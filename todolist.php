@@ -61,7 +61,7 @@ if ($_SESSION['todolist_lecture']==0)
 	                                                    <!-- todo text -->
 	                                                    <span class="text"><?= $data2['titre'] ?></span>
 	                                                    <!-- Emphasis label -->
-	                                                    <small class="label label-<?= $data2['couleurPriorite'] ?>"><?= $data2['libellePriorite'] ?></small><small class="label label-success"><?= $data2['dateExecution'] ?></small>
+	                                                    <small class="label label-<?= $data2['couleurPriorite'] ?>"><?= $data2['libellePriorite'] ?></small><small class="label label-<?= getTDLdateColor($data2['idTache']) ?>"><?= $data2['dateExecution'] ?></small>
 	                                                    <!-- General tools such as edit or delete-->
 	                                                    <div class="tools">
 	                                                        <a href="todolistForm.php?id=<?= $data2['idTache'] ?>" class="modal-form"><i class="fa fa-edit"></i></a>

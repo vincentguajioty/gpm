@@ -42,9 +42,19 @@ if (isset($_GET['id']))
                                 $query2->closeCursor(); ?>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Créée le:</label>
-                            <input disabled type="text" class="input-datetimepicker form-control" name="dateCreation" value="<?php echo $data['dateCreation']; ?>">
+                        <div class="row">
+                        	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+		                        <div class="form-group">
+		                            <label>Créée le:</label>
+		                            <input disabled type="text" class="input-datetimepicker form-control" name="dateCreation" value="<?php echo $data['dateCreation']; ?>">
+		                        </div>
+		                    </div>
+		                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+		                        <div class="form-group">
+		                            <label>Clôturée le:</label>
+		                            <input disabled type="text" class="input-datetimepicker form-control" name="dateCloture" value="<?php echo $data['dateCloture']; ?>">
+		                        </div>
+		                    </div>
                         </div>
 	                    <div class="form-group">
 	                        <label>Affectée à:</label>

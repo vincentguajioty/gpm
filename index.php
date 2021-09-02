@@ -188,7 +188,7 @@ include('logCheck.php');
 												<!-- todo text -->
 												<span class="text"><?= $data['titre'] ?></span>
 												<!-- Emphasis label -->
-												<small class="label label-<?= $data['couleurPriorite'] ?>"><?= $data['libellePriorite'] ?></small><small class="label label-success"><?= $data['dateExecution'] ?></small>
+												<small class="label label-<?= $data['couleurPriorite'] ?>"><?= $data['libellePriorite'] ?></small><small class="label label-<?= getTDLdateColor($data['idTache']) ?>"><?= $data['dateExecution'] ?></small>
 												<!-- General tools such as edit or delete-->
 												<div class="tools">
 													<a href="todolistForm.php?id=<?= $data['idTache'] ?>" class="modal-form"><i class="fa fa-edit"></i></a>

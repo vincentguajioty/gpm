@@ -3,6 +3,9 @@ session_start();
 require_once 'config/bdd.php';
 require_once 'config/config.php';
 
+$_POST['identifiant'] = str_replace($XSS_SECURITY, "", $_POST['identifiant']);
+$_POST['motDePasse'] = str_replace($XSS_SECURITY, "", $_POST['motDePasse']);
+
 $query = $db->prepare('SELECT * FROM VERROUILLAGE_IP WHERE adresseIPverr= :adresseIPverr;');
 $query->execute(array(
     'adresseIPverr' => $_SERVER['REMOTE_ADDR']
