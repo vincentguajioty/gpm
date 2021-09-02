@@ -4,9 +4,11 @@ require_once 'bdd.php';
 require_once 'config.php';
 require_once 'mailFunction.php';
 
+writeInLogs("Début du traitement automatiques des alertes par mail.", '1', NULL);
+
 checkAllConf();
 
-$query = $db->query('SELECT COUNT(*) as nb FROM PERSONNE_REFERENTE WHERE notif_lots_manquants = 1 OR notif_lots_peremptions = 1 OR notif_lots_inventaires = 1 OR notif_lots_conformites = 1 OR notif_reserves_manquants = 1 OR notif_reserves_peremptions = 1 OR notif_reserves_inventaires = 1 OR notif_vehicules_assurances = 1 OR notif_vehicules_revisions = 1 OR notif_vehicules_ct = 1 OR notif_tenues_stock = 1 OR notif_tenues_retours = 1;');
+$query = $db->query('SELECT COUNT(*) as nb FROM PERSONNE_REFERENTE WHERE notif_lots_manquants = 1 OR notif_lots_peremptions = 1 OR notif_lots_inventaires = 1 OR notif_lots_conformites = 1 OR notif_reserves_manquants = 1 OR notif_reserves_peremptions = 1 OR notif_reserves_inventaires = 1 OR notif_vehicules_assurances = 1 OR notif_vehicules_revisions = 1 OR notif_vehicules_ct = 1 OR notif_vehicules_desinfections = 1 OR notif_tenues_stock = 1 OR notif_tenues_retours = 1;');
 $data = $query->fetch();
 $nbDest = $data['nb'];
 
@@ -43,6 +45,10 @@ if ($nbDest > 0)
 	$query = $db->query('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND ((dateNextCT IS NOT NULL) AND ((dateNextCT < CURRENT_DATE) OR (dateNextCT = CURRENT_DATE)));');
 	$data = $query->fetch();
 	$nbCT = $data['nb'];
+
+	$query = $db->query('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND alerteDesinfection = 1;');
+	$data = $query->fetch();
+	$nbDesinfections = $data['nb'];
 	
 	$query = $db->query('SELECT COUNT(*) as nb FROM LOTS_LOTS WHERE idEtat = 1 AND (frequenceInventaire IS NOT NULL) AND ((DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) < CURRENT_DATE) OR (DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) = CURRENT_DATE));');
 	$data = $query->fetch();
@@ -60,8 +66,22 @@ if ($nbDest > 0)
 	$data = $query->fetch();
 	$nbRetoursTenues = $data['nb'];
 
-    $nbAlertes = $nbManquant + $nbPerime + $nbLotsNOK + $nbManquantReserve + $nbPerimeReserve + $nbAssurance + $nbRevisions + $nbInventaires + $nbInventairesReserve + $nbCT + $nbManquantTenues + $nbRetoursTenues;
+    $nbAlertes = $nbManquant + $nbPerime + $nbLotsNOK + $nbManquantReserve + $nbPerimeReserve + $nbAssurance + $nbRevisions + $nbInventaires + $nbInventairesReserve + $nbCT + $nbDesinfections + $nbManquantTenues + $nbRetoursTenues;
 
+    writeInLogs($nbManquant." alertes détectées sur la requete nbManquant (éléments en quantité insuffisante dans les lots).", '1', NULL);
+    writeInLogs($nbPerime." alertes détectées sur la requete nbPerime (éléments périmés dans les lots).", '1', NULL);
+    writeInLogs($nbLotsNOK." alertes détectées sur la requete nbLotsNOK (conformité des lots).", '1', NULL);
+    writeInLogs($nbManquantReserve." alertes détectées sur la requete nbManquantReserve (éléments en quantité insuffisante dans la réserve).", '1', NULL);
+    writeInLogs($nbPerimeReserve." alertes détectées sur la requete nbPerimeReserve (éléments périmés dans la réserve).", '1', NULL);
+    writeInLogs($nbAssurance." alertes détectées sur la requete nbAssurance (péremption des assurances).", '1', NULL);
+    writeInLogs($nbRevisions." alertes détectées sur la requete nbRevisions (révisions à faire).", '1', NULL);
+    writeInLogs($nbInventaires." alertes détectées sur la requete nbInventaires (inventaires des lots).", '1', NULL);
+    writeInLogs($nbInventairesReserve." alertes détectées sur la requete nbInventairesReserve (inventaires de la réserve).", '1', NULL);
+    writeInLogs($nbCT." alertes détectées sur la requete nbCT (controles techniques).", '1', NULL);
+    writeInLogs($nbDesinfections." alertes détectées sur la requete nbDesinfections (désinfections des véhicules).", '1', NULL);
+    writeInLogs($nbManquantTenues." alertes détectées sur la requete nbManquantTenues (éléments de tenue en quantité insuffisante dans les stocks).", '1', NULL);
+    writeInLogs($nbRetoursTenues." alertes détectées sur la requete nbRetoursTenues (éléments de tenue non-rendus).", '1', NULL);
+    
     writeInLogs($nbAlertes." alertes détectées par le système de notifications journalières.", '1', NULL);
 
     if ($nbAlertes == 0)
@@ -69,6 +89,8 @@ if ($nbDest > 0)
         writeInLogs("Pas de notification journalière à envoyer.", '1', NULL);
         exit;
     }
+
+    
 
 
     if ($nbPerime > 0)
@@ -180,6 +202,17 @@ if ($nbDest > 0)
 	    }
 	    $message_CT = $message_CT."</ul><br/><br/>";
 	}
+
+	if ($nbDesinfections > 0)
+	{
+	    $message_Desinfection = $message_Desinfection . "Véhicules à désinfecter:<br/><ul>";
+	    $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND alerteDesinfection = 1;');
+	    while($data = $query->fetch())
+	    {
+	        $message_Desinfection = $message_Desinfection . "<li>".$data['libelleVehicule'] . "</li>";
+	    }
+	    $message_Desinfection = $message_Desinfection."</ul><br/><br/>";
+	}
 	
 	if ($nbManquantTenues > 0)
 	{
@@ -207,7 +240,7 @@ if ($nbDest > 0)
 
 
 
-    $query = $db->query('SELECT * FROM PERSONNE_REFERENTE WHERE notif_lots_manquants = 1 OR notif_lots_peremptions = 1 OR notif_lots_inventaires = 1 OR notif_lots_conformites = 1 OR notif_reserves_manquants = 1 OR notif_reserves_peremptions = 1 OR notif_reserves_inventaires = 1 OR notif_vehicules_assurances = 1 OR notif_vehicules_revisions = 1 OR notif_vehicules_ct = 1 OR notif_tenues_stock = 1 OR notif_tenues_retours = 1;');
+    $query = $db->query('SELECT * FROM PERSONNE_REFERENTE WHERE notif_lots_manquants = 1 OR notif_lots_peremptions = 1 OR notif_lots_inventaires = 1 OR notif_lots_conformites = 1 OR notif_reserves_manquants = 1 OR notif_reserves_peremptions = 1 OR notif_reserves_inventaires = 1 OR notif_vehicules_assurances = 1 OR notif_vehicules_revisions = 1 OR notif_vehicules_ct = 1 OR notif_vehicules_desinfections = 1 OR notif_tenues_stock = 1 OR notif_tenues_retours = 1;');
 	while($data = $query->fetch())
 	{
 		$nbAlertes = 0;
@@ -220,6 +253,7 @@ if ($nbDest > 0)
 		$nbAlertes += ($data['notif_vehicules_assurances'] == 1) ? $nbAssurance : 0;
 		$nbAlertes += ($data['notif_vehicules_revisions'] == 1) ? $nbRevisions : 0;
 		$nbAlertes += ($data['notif_vehicules_ct'] == 1) ? $nbCT : 0;
+		$nbAlertes += ($data['notif_vehicules_desinfections'] == 1) ? $nbDesinfections : 0;
 		$nbAlertes += ($data['notif_reserves_inventaires'] == 1) ? $nbInventairesReserve : 0;
 		$nbAlertes += ($data['notif_tenues_stock'] == 1) ? $nbManquantTenues : 0;
 		$nbAlertes += ($data['notif_tenues_retours'] == 1) ? $nbRetoursTenues : 0;
@@ -279,6 +313,10 @@ if ($nbDest > 0)
 		    {
 		    	$message_html .= $message_CT;
 		    }
+		    if(($data['notif_vehicules_desinfections']) AND ($nbDesinfections>0))
+		    {
+		    	$message_html .= $message_Desinfection;
+		    }
 		    if(($data['notif_tenues_stock']) AND ($nbManquantTenues>0))
 		    {
 		    	$message_html .= $message_TenuesManquantes;
@@ -312,5 +350,11 @@ if ($nbDest > 0)
 		
 	}
 }
+else
+{
+	writeInLogs("Aucun destinataire potentiel d'alertes par email, abandon du process d'alerte.", '1', NULL);
+}
+
+writeInLogs("Fin du traitement automatiques des alertes par mail.", '1', NULL);
 
 ?>

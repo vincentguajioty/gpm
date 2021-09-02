@@ -1,5 +1,16 @@
-DROP VIEW IF EXISTS VIEW_HABILITATIONS;
+ALTER TABLE PROFILS ADD desinfections_lecture BOOLEAN;
+ALTER TABLE PROFILS ADD desinfections_ajout BOOLEAN;
+ALTER TABLE PROFILS ADD desinfections_modification BOOLEAN;
+ALTER TABLE PROFILS ADD desinfections_suppression BOOLEAN;
+UPDATE PROFILS SET desinfections_lecture = 0, desinfections_ajout = 0, desinfections_modification = 0, desinfections_suppression = 0;
 
+ALTER TABLE PROFILS ADD typesDesinfections_lecture BOOLEAN;
+ALTER TABLE PROFILS ADD typesDesinfections_ajout BOOLEAN;
+ALTER TABLE PROFILS ADD typesDesinfections_modification BOOLEAN;
+ALTER TABLE PROFILS ADD typesDesinfections_suppression BOOLEAN;
+UPDATE PROFILS SET typesDesinfections_lecture = 0, typesDesinfections_ajout = 0, typesDesinfections_modification = 0, typesDesinfections_suppression = 0;
+
+DROP VIEW IF EXISTS VIEW_HABILITATIONS;
 CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 	SELECT
 		p.idPersonne,
@@ -125,7 +136,56 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		PERSONNE_REFERENTE p
 ;
 
+CREATE TABLE VEHICULES_DESINFECTIONS_TYPES(
+	idVehiculesDesinfectionsType INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	libelleVehiculesDesinfectionsType VARCHAR(100)
+);
+INSERT INTO VEHICULES_DESINFECTIONS_TYPES SET libelleVehiculesDesinfectionsType = 'Désinfection rapide';
+INSERT INTO VEHICULES_DESINFECTIONS_TYPES SET libelleVehiculesDesinfectionsType = 'Désinfection complète';
+INSERT INTO VEHICULES_DESINFECTIONS_TYPES SET libelleVehiculesDesinfectionsType = 'Fumigation';
 
--- Anonymisation de la base
+CREATE TABLE VEHICULES_DESINFECTIONS(
+	idVehiculesDesinfection INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	idVehiculesDesinfectionsType INT,
+	idVehicule INT,
+	dateDesinfection DATE,
+	idExecutant INT,
+	remarquesDesinfection TEXT,
+	CONSTRAINT fk_vehiculesDesinf_types
+		FOREIGN KEY (idVehiculesDesinfectionsType)
+		REFERENCES VEHICULES_DESINFECTIONS_TYPES(idVehiculesDesinfectionsType),
+	CONSTRAINT fk_vehiculesDesinf_vehicule
+		FOREIGN KEY (idVehicule)
+		REFERENCES VEHICULES(idVehicule),
+	CONSTRAINT fk_vehiculesDesinf_personne
+		FOREIGN KEY (idExecutant)
+		REFERENCES PERSONNE_REFERENTE(idPersonne)
+);
 
-UPDATE PERSONNE_REFERENTE SET mailPersonne = '';
+CREATE TABLE VEHICULES_DESINFECTIONS_ALERTES(
+	idDesinfectionsAlerte INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	idVehicule INT,
+	idVehiculesDesinfectionsType INT,
+	frequenceDesinfection INT,
+	CONSTRAINT fk_vehiculesDesinfAlertes_types
+		FOREIGN KEY (idVehiculesDesinfectionsType)
+		REFERENCES VEHICULES_DESINFECTIONS_TYPES(idVehiculesDesinfectionsType),
+	CONSTRAINT fk_vehiculesDesinfAlertes_vehicule
+		FOREIGN KEY (idVehicule)
+		REFERENCES VEHICULES(idVehicule)
+);
+
+ALTER TABLE VEHICULES ADD alerteDesinfection BOOLEAN;
+UPDATE VEHICULES SET alerteDesinfection = 0;
+
+ALTER TABLE PERSONNE_REFERENTE ADD conf_indicateur11Accueil BOOLEAN AFTER conf_indicateur10Accueil;
+ALTER TABLE PERSONNE_REFERENTE ADD notif_vehicules_desinfections BOOLEAN AFTER notif_vehicules_revisions;
+
+UPDATE PERSONNE_REFERENTE SET conf_indicateur11Accueil = 0, notif_vehicules_desinfections = 0;
+
+ALTER TABLE CONFIG DROP notifications_commandes_demandeur_creation;
+ALTER TABLE CONFIG DROP notifications_commandes_valideur_creation;
+ALTER TABLE CONFIG DROP notifications_commandes_affectee_creation;
+ALTER TABLE CONFIG DROP notifications_commandes_observateur_creation;
+
+UPDATE CONFIG set version = '9.2';

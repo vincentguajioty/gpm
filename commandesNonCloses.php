@@ -41,7 +41,7 @@ if ($_SESSION['commande_lecture']==0)
                         <thead>
                         <tr>
                             <th class="all" style="width: 10px">#</th>
-                            <th class="all">dateCreation</th>
+                            <th class="all">Date de création</th>
                             <th class="all">Fournisseur</th>
                             <th class="not-mobile">Référence fournisseur</th>
                             <th class="not-mobile">Etat</th>

@@ -11,7 +11,6 @@ if ($_SESSION['appli_conf']==0)
 }
 else
 {
-    $_POST['notifications_commandes_demandeur_creation']        = ($_POST['notifications_commandes_demandeur_creation']        == 1) ? 1 : 0;
     $_POST['notifications_commandes_demandeur_validation']      = ($_POST['notifications_commandes_demandeur_validation']      == 1) ? 1 : 0;
     $_POST['notifications_commandes_demandeur_validationOK']    = ($_POST['notifications_commandes_demandeur_validationOK']    == 1) ? 1 : 0;
     $_POST['notifications_commandes_demandeur_validationNOK']   = ($_POST['notifications_commandes_demandeur_validationNOK']   == 1) ? 1 : 0;
@@ -21,7 +20,6 @@ else
     $_POST['notifications_commandes_demandeur_savOK']           = ($_POST['notifications_commandes_demandeur_savOK']           == 1) ? 1 : 0;
     $_POST['notifications_commandes_demandeur_cloture']         = ($_POST['notifications_commandes_demandeur_cloture']         == 1) ? 1 : 0;
     $_POST['notifications_commandes_demandeur_abandon']         = ($_POST['notifications_commandes_demandeur_abandon']         == 1) ? 1 : 0;
-    $_POST['notifications_commandes_valideur_creation']         = ($_POST['notifications_commandes_valideur_creation']         == 1) ? 1 : 0;
     $_POST['notifications_commandes_valideur_validation']       = ($_POST['notifications_commandes_valideur_validation']       == 1) ? 1 : 0;
     $_POST['notifications_commandes_valideur_validationOK']     = ($_POST['notifications_commandes_valideur_validationOK']     == 1) ? 1 : 0;
     $_POST['notifications_commandes_valideur_validationNOK']    = ($_POST['notifications_commandes_valideur_validationNOK']    == 1) ? 1 : 0;
@@ -31,7 +29,6 @@ else
     $_POST['notifications_commandes_valideur_savOK']            = ($_POST['notifications_commandes_valideur_savOK']            == 1) ? 1 : 0;
     $_POST['notifications_commandes_valideur_cloture']          = ($_POST['notifications_commandes_valideur_cloture']          == 1) ? 1 : 0;
     $_POST['notifications_commandes_valideur_abandon']          = ($_POST['notifications_commandes_valideur_abandon']          == 1) ? 1 : 0;
-    $_POST['notifications_commandes_affectee_creation']         = ($_POST['notifications_commandes_affectee_creation']         == 1) ? 1 : 0;
     $_POST['notifications_commandes_affectee_validation']       = ($_POST['notifications_commandes_affectee_validation']       == 1) ? 1 : 0;
     $_POST['notifications_commandes_affectee_validationOK']     = ($_POST['notifications_commandes_affectee_validationOK']     == 1) ? 1 : 0;
     $_POST['notifications_commandes_affectee_validationNOK']    = ($_POST['notifications_commandes_affectee_validationNOK']    == 1) ? 1 : 0;
@@ -41,7 +38,6 @@ else
     $_POST['notifications_commandes_affectee_savOK']            = ($_POST['notifications_commandes_affectee_savOK']            == 1) ? 1 : 0;
     $_POST['notifications_commandes_affectee_cloture']          = ($_POST['notifications_commandes_affectee_cloture']          == 1) ? 1 : 0;
     $_POST['notifications_commandes_affectee_abandon']          = ($_POST['notifications_commandes_affectee_abandon']          == 1) ? 1 : 0;
-    $_POST['notifications_commandes_observateur_creation']      = ($_POST['notifications_commandes_observateur_creation']      == 1) ? 1 : 0;
     $_POST['notifications_commandes_observateur_validation']    = ($_POST['notifications_commandes_observateur_validation']    == 1) ? 1 : 0;
     $_POST['notifications_commandes_observateur_validationOK']  = ($_POST['notifications_commandes_observateur_validationOK']  == 1) ? 1 : 0;
     $_POST['notifications_commandes_observateur_validationNOK'] = ($_POST['notifications_commandes_observateur_validationNOK'] == 1) ? 1 : 0;
@@ -56,7 +52,6 @@ else
         UPDATE
             CONFIG
         SET 
-            notifications_commandes_demandeur_creation        = :notifications_commandes_demandeur_creation ,
             notifications_commandes_demandeur_validation      = :notifications_commandes_demandeur_validation ,
             notifications_commandes_demandeur_validationOK    = :notifications_commandes_demandeur_validationOK ,
             notifications_commandes_demandeur_validationNOK   = :notifications_commandes_demandeur_validationNOK ,
@@ -66,7 +61,6 @@ else
             notifications_commandes_demandeur_savOK           = :notifications_commandes_demandeur_savOK ,
             notifications_commandes_demandeur_cloture         = :notifications_commandes_demandeur_cloture ,
             notifications_commandes_demandeur_abandon         = :notifications_commandes_demandeur_abandon ,
-            notifications_commandes_valideur_creation         = :notifications_commandes_valideur_creation ,
             notifications_commandes_valideur_validation       = :notifications_commandes_valideur_validation ,
             notifications_commandes_valideur_validationOK     = :notifications_commandes_valideur_validationOK ,
             notifications_commandes_valideur_validationNOK    = :notifications_commandes_valideur_validationNOK ,
@@ -76,7 +70,6 @@ else
             notifications_commandes_valideur_savOK            = :notifications_commandes_valideur_savOK ,
             notifications_commandes_valideur_cloture          = :notifications_commandes_valideur_cloture ,
             notifications_commandes_valideur_abandon          = :notifications_commandes_valideur_abandon ,
-            notifications_commandes_affectee_creation         = :notifications_commandes_affectee_creation ,
             notifications_commandes_affectee_validation       = :notifications_commandes_affectee_validation ,
             notifications_commandes_affectee_validationOK     = :notifications_commandes_affectee_validationOK ,
             notifications_commandes_affectee_validationNOK    = :notifications_commandes_affectee_validationNOK ,
@@ -86,7 +79,6 @@ else
             notifications_commandes_affectee_savOK            = :notifications_commandes_affectee_savOK ,
             notifications_commandes_affectee_cloture          = :notifications_commandes_affectee_cloture ,
             notifications_commandes_affectee_abandon          = :notifications_commandes_affectee_abandon ,
-            notifications_commandes_observateur_creation      = :notifications_commandes_observateur_creation ,
             notifications_commandes_observateur_validation    = :notifications_commandes_observateur_validation ,
             notifications_commandes_observateur_validationOK  = :notifications_commandes_observateur_validationOK ,
             notifications_commandes_observateur_validationNOK = :notifications_commandes_observateur_validationNOK ,
@@ -98,7 +90,6 @@ else
             notifications_commandes_observateur_abandon       = :notifications_commandes_observateur_abandon
     ;');
     $query->execute(array(
-        'notifications_commandes_demandeur_creation'        => $_POST['notifications_commandes_demandeur_creation'],
         'notifications_commandes_demandeur_validation'      => $_POST['notifications_commandes_demandeur_validation'],
         'notifications_commandes_demandeur_validationOK'    => $_POST['notifications_commandes_demandeur_validationOK'],
         'notifications_commandes_demandeur_validationNOK'   => $_POST['notifications_commandes_demandeur_validationNOK'],
@@ -108,7 +99,6 @@ else
         'notifications_commandes_demandeur_savOK'           => $_POST['notifications_commandes_demandeur_savOK'],
         'notifications_commandes_demandeur_cloture'         => $_POST['notifications_commandes_demandeur_cloture'],
         'notifications_commandes_demandeur_abandon'         => $_POST['notifications_commandes_demandeur_abandon'],
-        'notifications_commandes_valideur_creation'         => $_POST['notifications_commandes_valideur_creation'],
         'notifications_commandes_valideur_validation'       => $_POST['notifications_commandes_valideur_validation'],
         'notifications_commandes_valideur_validationOK'     => $_POST['notifications_commandes_valideur_validationOK'],
         'notifications_commandes_valideur_validationNOK'    => $_POST['notifications_commandes_valideur_validationNOK'],
@@ -118,7 +108,6 @@ else
         'notifications_commandes_valideur_savOK'            => $_POST['notifications_commandes_valideur_savOK'],
         'notifications_commandes_valideur_cloture'          => $_POST['notifications_commandes_valideur_cloture'],
         'notifications_commandes_valideur_abandon'          => $_POST['notifications_commandes_valideur_abandon'],
-        'notifications_commandes_affectee_creation'         => $_POST['notifications_commandes_affectee_creation'],
         'notifications_commandes_affectee_validation'       => $_POST['notifications_commandes_affectee_validation'],
         'notifications_commandes_affectee_validationOK'     => $_POST['notifications_commandes_affectee_validationOK'],
         'notifications_commandes_affectee_validationNOK'    => $_POST['notifications_commandes_affectee_validationNOK'],
@@ -128,7 +117,6 @@ else
         'notifications_commandes_affectee_savOK'            => $_POST['notifications_commandes_affectee_savOK'],
         'notifications_commandes_affectee_cloture'          => $_POST['notifications_commandes_affectee_cloture'],
         'notifications_commandes_affectee_abandon'          => $_POST['notifications_commandes_affectee_abandon'],
-        'notifications_commandes_observateur_creation'      => $_POST['notifications_commandes_observateur_creation'],
         'notifications_commandes_observateur_validation'    => $_POST['notifications_commandes_observateur_validation'],
         'notifications_commandes_observateur_validationOK'  => $_POST['notifications_commandes_observateur_validationOK'],
         'notifications_commandes_observateur_validationNOK' => $_POST['notifications_commandes_observateur_validationNOK'],

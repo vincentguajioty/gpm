@@ -113,7 +113,6 @@ else
             $_SESSION['returnType'] = '2';
     }
 
-
     echo "<script>window.location = document.referrer;</script>";
 }
 ?>

@@ -117,16 +117,106 @@ if ($_SESSION['vehicules_lecture']==0)
                                 </tr>
 								<tr>
                                     <td>Expiration d'assurance</td>
-                                    <td><?= $data['assuranceExpiration'] ?></td>
+                                    <td><span class="badge bg-<?php
+                                        if($data['assuranceExpiration']==date('Y-m-d'))
+                                        {
+                                            echo "orange";
+                                        }
+                                        else
+                                        {
+                                            if($data['assuranceExpiration']>date('Y-m-d'))
+                                            {
+                                                echo "green";
+                                            }
+                                            else
+                                            {
+                                                echo "red";
+                                            }
+                                        }
+                                        ?>"><?= $data['assuranceExpiration'] ?></span></td>
                                 </tr>
 								<tr>
                                     <td>Prochaine révision</td>
-                                    <td><?= $data['dateNextRevision'] ?></td>
+                                    <td><span class="badge bg-<?php
+                                            if($data['dateNextRevision']==date('Y-m-d'))
+                                            {
+                                                echo "orange";
+                                            }
+                                            else
+                                            {
+                                                if($data['dateNextRevision']>date('Y-m-d'))
+                                                {
+                                                    echo "green";
+                                                }
+                                                else
+                                                {
+                                                    echo "red";
+                                                }
+                                            }
+                                        ?>"><?= $data['dateNextRevision'] ?></span>
+                                    </td>
                                 </tr>
 								<tr>
                                     <td>Prochain contrôle technique</td>
-                                    <td><?= $data['dateNextCT'] ?></td>
+                                    <td><span class="badge bg-<?php
+                                        if($data['dateNextCT']==date('Y-m-d'))
+                                        {
+                                            echo "orange";
+                                        }
+                                        else
+                                        {
+                                            if($data['dateNextCT']>date('Y-m-d'))
+                                            {
+                                                echo "green";
+                                            }
+                                            else
+                                            {
+                                                echo "red";
+                                            }
+                                        }
+                                        ?>"><?= $data['dateNextCT'] ?></span></td>
                                 </tr>
+                                <?php
+                                	$desinfections = $db->prepare('
+                                		SELECT
+                                			a.*,
+                                			t.libelleVehiculesDesinfectionsType,
+                                			MAX(v.dateDesinfection) as dateDesinfection
+                                		FROM
+                                			VEHICULES_DESINFECTIONS_ALERTES a
+                                			LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON a.idVehiculesDesinfectionsType=t.idVehiculesDesinfectionsType
+                                			LEFT OUTER JOIN (SELECT * FROM VEHICULES_DESINFECTIONS WHERE idVehicule = :idVehicule) v ON a.idVehiculesDesinfectionsType = v.idVehiculesDesinfectionsType
+                                		WHERE
+                                			a.idVehicule = :idVehicule
+                                		GROUP BY
+                                			a.idDesinfectionsAlerte
+                                	;');
+                                	$desinfections->execute(array('idVehicule'=>$_GET['id']));
+                                	while($desinfection = $desinfections->fetch())
+                                	{?>
+                                		<tr>
+		                                    <td>Prochaine désinfection <?=$desinfection['libelleVehiculesDesinfectionsType']?></td>
+		                                    <td><?php
+		                                    	if($desinfection['dateDesinfection'] == Null)
+		                                    	{
+		                                    		echo '<span class="badge bg-red">Aucune désinfection enregistrée</span>';
+		                                    	}
+		                                    	else
+		                                    	{
+		                                    		$nextDesinf = date('Y-m-d', strtotime($desinfection['dateDesinfection']. ' + '.$desinfection['frequenceDesinfection'].' days'));
+		                                    		if($nextDesinf <= date('Y-m-d'))
+		                                    		{
+		                                    			echo '<span class="badge bg-red">'.$nextDesinf.'</span>';
+		                                    		}
+		                                    		else
+		                                    		{
+		                                    			echo '<span class="badge bg-green">'.$nextDesinf.'</span>';
+		                                    		}
+		                                    	}
+		                                    ?></td>
+		                                </tr>
+                                	<?php }
+                                ?>
                                 <tr>
                                     <td>Equipements embarqués</td>
                                     <td>
@@ -158,6 +248,7 @@ if ($_SESSION['vehicules_lecture']==0)
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#maintenance" data-toggle="tab">Taches de maintenance</a></li>
                             <li><a href="#km" data-toggle="tab">Relevés kilométriques</a></li>
+                            <?php if($_SESSION['desinfections_lecture']){ ?><li><a href="#desinfections" data-toggle="tab">Désinfections</a></li><?php } ?>
 							<li><a href="#lots" data-toggle="tab">Lots opérationnels affetés</a></li>
                             <li><a href="#pj" data-toggle="tab">Pièces jointes</a></li>
                         </ul>
@@ -228,7 +319,46 @@ if ($_SESSION['vehicules_lecture']==0)
                                     $query2->closeCursor(); ?>
                                     
                                 </table>
-							</div>							
+							</div>
+							
+							<?php if($_SESSION['desinfections_lecture']){ ?>
+								<div class="tab-pane" id="desinfections">
+									<table class="table table-hover">
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Type de désinfection</th>
+                                            <th>Intervenant</th>
+                                            <th>
+                                                <?php if($_SESSION['desinfections_ajout']==1){ ?><a href="vehiculesDesinfectionsForm.php?idVehicule=<?=$_GET['id']?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a><?php } ?>
+                                                <?php if($_SESSION['desinfections_ajout']==1 AND $_SESSION['desinfections_modification']==1){ ?><a href="vehiculesDesinfectionsAlertes.php?idVehicule=<?=$_GET['id']?>" class="btn btn-xs btn-info modal-form" title="Ajouter"><i class="fa fa-bell-o"></i> Gestion des notifications</a><?php } ?>
+                                            </th>
+                                        </tr>
+                                        <?php
+                                        $query2 = $db->prepare('SELECT * FROM VEHICULES_DESINFECTIONS d LEFT OUTER JOIN PERSONNE_REFERENTE p ON d.idExecutant = p.idPersonne LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON d.idVehiculesDesinfectionsType = t.idVehiculesDesinfectionsType WHERE idVehicule = :idVehicule ORDER BY dateDesinfection DESC;');
+                                        $query2->execute(array('idVehicule' => $_GET['id']));
+                                        while ($data2 = $query2->fetch())
+                                        {
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $data2['dateDesinfection'];?></td>
+                                                <td><?php echo $data2['libelleVehiculesDesinfectionsType'];?></td>
+                                                <td><?php echo $data2['identifiant'];?></td>
+                                                <td>
+                                                    <?php if($_SESSION['desinfections_modification']==1){ ?>
+                                                        <a href="vehiculesDesinfectionsForm.php?id=<?=$data2['idVehiculesDesinfection']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
+                                                    <?php }?>
+                                                    <?php if ($_SESSION['desinfections_suppression']==1) {?>
+                                                        <a href="modalDeleteConfirm.php?case=vehiculesDesinfectionsDelete&id=<?=$data2['idVehiculesDesinfection']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
+                                                    <?php }?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $query2->closeCursor(); ?>
+                                        
+                                    </table>
+								</div>
+							<?php } ?>
 							
 							<div class="tab-pane" id="lots">
 								<table class="table table-hover">
@@ -238,14 +368,14 @@ if ($_SESSION['vehicules_lecture']==0)
                                         <th></th>
                                     </tr>
                                     <?php
-                                    $query2 = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN ETATS e ON l.idEtat = e.idEtat WHERE idVehicule = :idVehicule ORDER BY libelleLot ASC;');
+                                    $query2 = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN ETATS e ON l.idEtat = e.idEtat LEFT OUTER JOIN LOTS_ETATS le ON l.idLotsEtat = le.idLotsEtat WHERE idVehicule = :idVehicule ORDER BY libelleLot ASC;');
                                     $query2->execute(array('idVehicule' => $_GET['id']));
                                     while ($data2 = $query2->fetch())
                                     {
                                         ?>
                                         <tr>
                                             <td><?php echo $data2['libelleLot'];?></td>
-                                            <td><?php echo $data2['libelleEtat'];?></td>
+                                            <td><?php echo $data2['libelleLotsEtat'];?></td>
                                             <td>
                                                 <?php if($_SESSION['lots_lecture']==1){ ?>
                                                     <a href="lotsContenu.php?id=<?=$data2['idLot']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
@@ -305,6 +435,26 @@ if ($_SESSION['vehicules_lecture']==0)
                     </div>
                     <!-- /.widget-user -->
                 </div>
+                <?php
+                    $nb = $db->prepare('SELECT COUNT(*) as nb FROM VEHICULES_RELEVES WHERE idVehicule = :idVehicule;');
+                    $nb->execute(array(
+                        'idVehicule' => $_GET['id']));
+                    $nb=$nb->fetch();
+                    $nb = $nb['nb'];
+                    if($nb > 1)
+                    {
+                ?>
+                    <div class="col-md-8">
+                        <div class="box box-success">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Evolution kilométrique</h3>
+                            </div>
+                            <div class="box-body chart-responsive">
+                                <div class="chart" id="line-chart" style="height: 300px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
 
             </div>
         </section>
@@ -321,6 +471,36 @@ if ($_SESSION['vehicules_lecture']==0)
 <!-- ./wrapper -->
 
 <?php include('scripts.php'); ?>
+
+<script>
+    $(function () {
+        "use strict";
+        
+        <?php
+            $releves = $db->prepare("SELECT dateReleve, releveKilometrique FROM VEHICULES_RELEVES WHERE dateReleve IS NOT Null AND idVehicule = :idVehicule ORDER BY dateReleve DESC;");
+            $releves->execute(array('idVehicule'=>$_GET['id']));
+        ?>
+        
+        var line = new Morris.Line({
+          element: 'line-chart',
+          resize: true,
+          data: [
+            <?php
+                while($releve = $releves->fetch())
+                {
+                    echo "{x: '".$releve['dateReleve']."', releve: ".$releve['releveKilometrique']."},";
+                }
+            ?>
+          ],
+          xkey: 'x',
+          ykeys: ['releve'],
+          labels: ['Relevé Kilométrique'],
+          lineColors: ['#f39c12'],
+          hideHover: 'auto'
+        });
+  });
+</script>
+
 </body>
 </html>
 

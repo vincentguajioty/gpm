@@ -212,6 +212,13 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <td><input <?php if(isset($_GET['id']) AND $data['vehicules_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_suppression"></td>
                             </tr>
                             <tr>
+                                <td>Désinfections</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['desinfections_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="desinfections_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['desinfections_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="desinfections_ajout"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['desinfections_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="desinfections_modification"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['desinfections_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="desinfections_suppression"></td>
+                            </tr>
+                            <tr>
                                 <th>TENUES</th>
                                 <th></th>
                                 <th></th>
@@ -287,6 +294,13 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <td><input <?php if(isset($_GET['id']) AND $data['vehicules_types_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_types_ajout"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['vehicules_types_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_types_modification"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['vehicules_types_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="vehicules_types_suppression"></td>
+                            </tr>
+                            <tr>
+                                <td>Types de désinfections</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['typesDesinfections_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesDesinfections_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['typesDesinfections_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesDesinfections_ajout"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['typesDesinfections_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesDesinfections_modification"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['typesDesinfections_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesDesinfections_suppression"></td>
                             </tr>
                             <tr>
                                 <td>Etats</td>

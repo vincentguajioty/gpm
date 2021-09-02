@@ -175,13 +175,6 @@ if ($_SESSION['appli_conf']==0)
                                 <th>Observateur</th>
                             </tr>
                             <tr>
-                                <td>La commande est créée</td>
-                                <td><input <?php if($data['notifications_commandes_demandeur_creation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_demandeur_creation"></td>
-                                <td><input <?php if($data['notifications_commandes_valideur_creation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_valideur_creation"></td>
-                                <td><input <?php if($data['notifications_commandes_affectee_creation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_affectee_creation"></td>
-                                <td><input <?php if($data['notifications_commandes_observateur_creation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_observateur_creation"></td>
-                            </tr>
-                            <tr>
                                 <td>La demande de validation est faite</td>
                                 <td><input <?php if($data['notifications_commandes_demandeur_validation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_demandeur_validation"></td>
                                 <td><input <?php if($data['notifications_commandes_valideur_validation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_valideur_validation"></td>

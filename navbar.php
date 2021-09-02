@@ -143,9 +143,6 @@ require_once 'config/bdd.php';
 	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
 	                </a>
 	                <ul class="treeview-menu">
-	                    <?php if ($_SESSION['commande_ajout']==1){ ?>
-	                        <li><a href="commandesForm.php"><i class="fa fa-plus"></i> <span>Nouvelle commande</span></a></li>
-	                    <?php } ?>
 	                    <?php if ($_SESSION['commande_lecture']==1){ ?>
 	                        <li <?php
 	                        if ($_SESSION['page'] == 601)
@@ -508,6 +505,15 @@ require_once 'config/bdd.php';
 	                        }
 	                        ?>
 	                        ><a href="vehiculesTypes.php"><i class="fa fa-ambulance"></i> <span>Types de véhicules</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['typesDesinfections_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 307)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="vehiculesTypesDesinfections.php"><i class="fa fa-recycle"></i> <span>Types de désinfections</span></a></li>
 	                    <?php } ?>
 	                    <?php if ($_SESSION['etats_lecture']==1){ ?>
 	                        <li <?php

@@ -212,6 +212,7 @@ include('logCheck.php');
 		                    		$lots = $_SESSION['lots_lecture'] OR $_SESSION['sac_lecture'] OR $_SESSION['sac2_lecture'] OR $_SESSION['materiel_lecture'];
 		                    		$reserves = $_SESSION['reserve_lecture'];
 		                    		$vehicules = $_SESSION['vehicules_lecture'];
+		                    		$desinfections = $_SESSION['desinfections_lecture'];
 		                    		$commandes = $_SESSION['commande_lecture'];
 		                    		$tenues = $_SESSION['tenues_lecture'];
 		
@@ -252,7 +253,18 @@ include('logCheck.php');
 		    	                        {
 		    	                        	$events[] = [
 		                                        'date'     => date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +'.$data['frequenceInventaire'].' day')),
-		                                        'title'    => 'Inventaire',
+		                                        'title'    => 'Inventaire à faire',
+		                                        'subTitle' => $data['libelleLot'],
+		                                        'color'    => '#00c0ef',
+		                                        'url'      => 'indexModalCalendrier.php?case=inventaireLot&id='.$data['idLot'],
+		                                    ];
+		    	                        }
+		    	                        $query = $db->query('SELECT * FROM INVENTAIRES i LEFT OUTER JOIN LOTS_LOTS l ON i.idLot = l.idLot WHERE idEtat = 1;');
+		    	                        while ($data = $query->fetch())
+		    	                        {
+		    	                        	$events[] = [
+		                                        'date'     => $data['dateInventaire'],
+		                                        'title'    => 'Inventaire fait',
 		                                        'subTitle' => $data['libelleLot'],
 		                                        'color'    => '#00c0ef',
 		                                        'url'      => 'indexModalCalendrier.php?case=inventaireLot&id='.$data['idLot'],
@@ -319,6 +331,70 @@ include('logCheck.php');
 			                                ];
 				                        }
 			                        }
+
+			                        if ($vehicules)
+			                        {
+				                        $query = $db->query('SELECT * FROM VEHICULES_MAINTENANCE m LEFT OUTER JOIN VEHICULES v on m.idVehicule = v.idVehicule WHERE idEtat = 1;');
+				                        while ($data = $query->fetch())
+				                        {
+				                        	$events[] = [
+			                                    'date'     => date_format(date_create($data['dateMaintenance']), 'Y-m-d'),
+			                                    'title'    => 'Maintenance de',
+			                                    'subTitle' => $data['libelleVehicule'],
+			                                    'color'    => '#f39c12',
+			                                    'url'      => 'indexModalCalendrier.php?case=vehiculesMaintenance&id='.$data['idMaintenance'],
+			                                ];
+				                        }
+			                        }
+			                        
+			                        if ($desinfections)
+			                        {
+				                        $query = $db->query('
+				                        	SELECT
+	                                            *
+	                                        FROM
+	                                            VEHICULES_DESINFECTIONS d
+	                                            LEFT OUTER JOIN VEHICULES v ON d.idVehicule = v.idVehicule
+				                        ;');
+				                        while ($data = $query->fetch())
+				                        {
+				                        	$events[] = [
+			                                    'date'     => date_format(date_create($data['dateDesinfection']), 'Y-m-d'),
+			                                    'title'    => 'Désinfection faite',
+			                                    'subTitle' => $data['libelleVehicule'],
+			                                    'color'    => '#f39c12',
+			                                    'url'      => 'indexModalCalendrier.php?case=vehiculesDesinfectionFaite&id='.$data['idVehiculesDesinfection'],
+			                                ];
+				                        }
+			                        }
+			                        
+			                        if ($desinfections)
+			                        {
+				                        $query = $db->query('
+				                        	SELECT
+	                                            a.*,
+	                                            vv.libelleVehicule,
+	                                            t.libelleVehiculesDesinfectionsType,
+	                                            MAX(v.dateDesinfection) as dateDesinfection
+	                                        FROM
+	                                            VEHICULES_DESINFECTIONS_ALERTES a
+	                                            LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON a.idVehiculesDesinfectionsType=t.idVehiculesDesinfectionsType
+	                                            LEFT OUTER JOIN VEHICULES_DESINFECTIONS v ON a.idVehiculesDesinfectionsType = v.idVehiculesDesinfectionsType AND a.idVehicule=v.idVehicule
+	                                            LEFT OUTER JOIN VEHICULES vv ON a.idVehicule = vv.idVehicule
+	                                        GROUP BY
+	                                            a.idDesinfectionsAlerte
+				                        ;');
+				                        while ($data = $query->fetch())
+				                        {
+				                        	$events[] = [
+			                                    'date'     => date('Y-m-d', strtotime($data['dateDesinfection']. ' + '.$data['frequenceDesinfection'].' days')),
+			                                    'title'    => 'Désinfection à faire',
+			                                    'subTitle' => $data['libelleVehicule'],
+			                                    'color'    => '#f39c12',
+			                                    'url'      => 'indexModalCalendrier.php?case=vehiculesDesinfectionAFaire&id='.$data['idDesinfectionsAlerte'],
+			                                ];
+				                        }
+			                        }
 		
 			                        if ($reserves)
 			                        {
@@ -327,7 +403,18 @@ include('logCheck.php');
 				                        {
 				                        	$events[] = [
 			                                    'date'     => date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +'.$data['frequenceInventaire'].' day')),
-			                                    'title'    => 'Inventaire',
+			                                    'title'    => 'Inventaire à faire',
+			                                    'subTitle' => $data['libelleConteneur'],
+			                                    'color'    => '#3c8dbc',
+			                                    'url'      => 'indexModalCalendrier.php?case=inventaireReserve&id='.$data['idConteneur'],
+			                                ];
+				                        }
+				                        $query = $db->query('SELECT * FROM RESERVES_INVENTAIRES i LEFT OUTER JOIN RESERVES_CONTENEUR c ON i.idConteneur = c.idConteneur;');
+				                        while ($data = $query->fetch())
+				                        {
+				                        	$events[] = [
+			                                    'date'     => $data['dateInventaire'],
+			                                    'title'    => 'Inventaire fait',
 			                                    'subTitle' => $data['libelleConteneur'],
 			                                    'color'    => '#3c8dbc',
 			                                    'url'      => 'indexModalCalendrier.php?case=inventaireReserve&id='.$data['idConteneur'],
@@ -607,6 +694,35 @@ include('logCheck.php');
 									}
 								?>
 								<h3 class="timeline-header no-border">Révisions et CT: <?= $data['nb'] ?></h3>
+							</div>
+						</li>
+					<?php } ?>
+
+					<?php if($_SESSION['conf_indicateur11Accueil']==1){ ?>
+						<li>
+							<?php
+								$query = $db->query('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND alerteDesinfection = 1;');
+			                	$data = $query->fetch();
+							?>
+							<?php
+								if ($data['nb']>0)
+								{
+									echo '<i class="fa bg-red"></i>';
+									echo '<i class="fa fa-warning bg-red faa-flash animated"></i>';
+								}
+								else
+								{
+									echo '<i class="fa fa-check bg-green"></i>';
+								}
+							?>
+							<div class="timeline-item">
+								<?php
+									if ($data['nb']>0)
+									{
+										echo '<span class="time"><a data-toggle="modal" data-target="#modalAccueilAlerteDesinfections">Voir le détail</a></span>';
+									}
+								?>
+								<h3 class="timeline-header no-border">Désinfections de véhicules: <?= $data['nb'] ?></h3>
 							</div>
 						</li>
 					<?php } ?>
@@ -910,7 +1026,7 @@ include('logCheck.php');
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
-                <?php if ($_SESSION['reserve_lecture']==1){ ?><a href="vehicules.php"><button type="button" class="btn btn-default pull-right">Accéder aux véhicules</button></a><? } ?>
+                <?php if ($_SESSION['vehicules_lecture']==1){ ?><a href="vehicules.php"><button type="button" class="btn btn-default pull-right">Accéder aux véhicules</button></a><? } ?>
             </div>
         </div>
     </div>
@@ -936,7 +1052,33 @@ include('logCheck.php');
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
-                <?php if ($_SESSION['reserve_lecture']==1){ ?><a href="vehicules.php"><button type="button" class="btn btn-default pull-right">Accéder aux véhicules</button></a><? } ?>
+                <?php if ($_SESSION['vehicules_lecture']==1){ ?><a href="vehicules.php"><button type="button" class="btn btn-default pull-right">Accéder aux véhicules</button></a><? } ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-danger" id="modalAccueilAlerteDesinfections">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alertes des désinfections des véhicules</h4>
+            </div>
+            <div class="modal-body">
+                <?php
+                $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND alerteDesinfection = 1;');
+                ?>
+                <ul>
+                    <?php
+                    while($data=$query->fetch())
+                    {
+                        echo '<li>' . $data['libelleVehicule'] . '</li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+                <?php if ($_SESSION['vehicules_lecture']==1){ ?><a href="vehicules.php"><button type="button" class="btn btn-default pull-right">Accéder aux véhicules</button></a><? } ?>
             </div>
         </div>
     </div>
@@ -962,7 +1104,7 @@ include('logCheck.php');
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
-                <?php if ($_SESSION['reserve_lecture']==1){ ?><a href="vehicules.php"><button type="button" class="btn btn-default pull-right">Accéder aux véhicules</button></a><? } ?>
+                <?php if ($_SESSION['tenues_lecture']==1){ ?><a href="tenuesCatalogue.php"><button type="button" class="btn btn-default pull-right">Accéder aux tenues</button></a><? } ?>
             </div>
         </div>
     </div>
@@ -988,7 +1130,7 @@ include('logCheck.php');
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
-                <?php if ($_SESSION['reserve_lecture']==1){ ?><a href="vehicules.php"><button type="button" class="btn btn-default pull-right">Accéder aux véhicules</button></a><? } ?>
+                <?php if ($_SESSION['tenues_lecture']==1){ ?><a href="tenuesAffectations.php"><button type="button" class="btn btn-default pull-right">Accéder aux affectations</button></a><? } ?>
             </div>
         </div>
     </div>

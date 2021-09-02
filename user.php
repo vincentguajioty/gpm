@@ -199,6 +199,13 @@ require_once('logCheck.php');
 				                        <td><?php if($_SESSION['vehicules_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 				                    </tr>
 				                    <tr>
+				                        <td>Désinfections</td>
+				                        <td><?php if($_SESSION['desinfections_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['desinfections_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['desinfections_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['desinfections_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                    </tr>
+				                    <tr>
 				                        <th>TENUES</th>
 				                        <th></th>
 				                        <th></th>
@@ -274,6 +281,13 @@ require_once('logCheck.php');
 				                        <td><?php if($_SESSION['vehicules_types_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 				                        <td><?php if($_SESSION['vehicules_types_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 				                        <td><?php if($_SESSION['vehicules_types_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                    </tr>
+				                    <tr>
+				                        <td>Types de désinfections</td>
+				                        <td><?php if($_SESSION['typesDesinfections_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['typesDesinfections_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['typesDesinfections_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+				                        <td><?php if($_SESSION['typesDesinfections_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 				                    </tr>
 				                    <tr>
 				                        <td>Etats</td>
@@ -455,6 +469,7 @@ require_once('logCheck.php');
 			                        		$lots = $_SESSION['lots_lecture'] OR $_SESSION['sac_lecture'] OR $_SESSION['sac2_lecture'] OR $_SESSION['materiel_lecture'];
 			                        		$reserves = $_SESSION['reserve_lecture'];
 			                        		$vehicules = $_SESSION['vehicules_lecture'];
+			                        		$desinfections = $_SESSION['desinfections_lecture'];
 			                        		$tenues = $_SESSION['tenues_lecture'] OR $_SESSION['tenuesCatalogue_lecture'];
 			                        	?>
 			                            <label>Présence des indicateurs sur la page d'accueil:</label><br/>
@@ -487,6 +502,9 @@ require_once('logCheck.php');
 		                                </div>
 		                                <div class="checkbox">
 		                                	<label><input <?php if($_SESSION['conf_indicateur8Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur8Accueil" <?php if ($vehicules == 0){echo 'disabled';} ?>> Contrôles techniques et révisions véhicules</label>
+		                                </div>
+		                                <div class="checkbox">
+		                                	<label><input <?php if($_SESSION['conf_indicateur11Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur11Accueil" <?php if ($desinfections == 0){echo 'disabled';} ?>> Désinfections des véhicules</label>
 		                                </div>
 		                                <div class="checkbox">
 		                                	<label><input <?php if($_SESSION['conf_indicateur9Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur9Accueil" <?php if ($tenues == 0){echo 'disabled';} ?>> Stock des tenues</label>
@@ -534,6 +552,9 @@ require_once('logCheck.php');
 		                                </div>
 		                                <div class="checkbox">
 		                                	<label><input <?php if($data['notif_vehicules_revisions'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_revisions" <?php if ($vehicules == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Révisions véhicules</label>
+		                                </div>
+		                                <div class="checkbox">
+		                                	<label><input <?php if($data['notif_vehicules_desinfections'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_desinfections" <?php if ($desinfections == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Désinfections véhicules</label>
 		                                </div>
 		                                <div class="checkbox">
 		                                	<label><input <?php if($data['notif_vehicules_ct'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_ct" <?php if ($vehicules == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Contrôles techniques véhicules</label>

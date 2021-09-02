@@ -2,7 +2,7 @@
 
 require_once 'bdd.php';
 
-$VERSIONCHECK = '9.1';
+$VERSIONCHECK = '9.2';
 
 $query = $db->query('SELECT * FROM CONFIG;');
 $data = $query->fetch();
@@ -20,7 +20,7 @@ $RESETPASSWORD   = $data['resetPassword'];
 $SELPRE          = $data['selPre'];
 $SELPOST         = $data['selPost'];
 
-$DEBUG           = 1;
+$DEBUG           = 0;
 
 $XSS_SECURITY    = array("script", "<", ">", "/");
 

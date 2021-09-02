@@ -4,6 +4,12 @@
 include('header.php');
 require_once 'config/config.php';
 require_once 'verrouIPcheck.php';
+
+if ($_SESSION['connexion_connexion'] == 1)
+{
+    echo "<script type='text/javascript'>document.location.replace('index.php');</script>";
+    exit;
+}
 ?>
 <body class="hold-transition login-page">
 <div class="login-box">

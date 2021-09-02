@@ -37,7 +37,7 @@ if ($_SESSION['commande_lecture']==0)
             <div class="box">
                 <?php if ($_SESSION['commande_ajout']==1) {?>
                 	<div class="box-header">
-	                    <h3 class="box-title"><a href="commandesForm.php" class="btn btn-sm btn-success">Nouvelle commande</a></h3>
+	                    <h3 class="box-title"><a href="commandesAdd.php" class="btn btn-sm btn-success">Nouvelle commande</a></h3>
 	            	</div>
 	            <?php } ?>
                 <!-- /.box-header -->
@@ -46,7 +46,7 @@ if ($_SESSION['commande_lecture']==0)
                         <thead>
                         <tr>
                             <th class="all" style="width: 10px">#</th>
-                            <th class="all">dateCreation</th>
+                            <th class="all">Date de création</th>
                             <th class="all">Fournisseur</th>
                             <th class="not-mobile">Référence fournisseur</th>
                             <th class="not-mobile">Etat</th>

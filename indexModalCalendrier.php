@@ -129,6 +129,73 @@ switch ($_GET['case']) {
         ";
         break;
 
+    case 'vehiculesMaintenance':
+        $query = $db->prepare('SELECT libelleVehicule, immatriculation, libelleTypeMaintenance, identifiant, detailsMaintenance FROM VEHICULES_MAINTENANCE m LEFT OUTER JOIN VEHICULES v ON m.idVehicule = v.idVehicule LEFT OUTER JOIN VEHICULES_MAINTENANCE_TYPES t ON m.idTypeMaintenance = t.idTypeMaintenance LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idExecutant = p.idPersonne WHERE m.idMaintenance = :id;');
+        $query->execute(array('id'=>$_GET['id']));
+        $data = $query->fetch();
+
+        $contenu = "
+            <ul>
+                <li>Véhicule: " . $data['libelleVehicule'] . "</li>
+                <li>Immatriculation: " . $data['immatriculation'] . "</li>
+                <li>Type de maintenance: " . $data['libelleTypeMaintenance'] . "</li>
+                <li>Faite par: " . $data['identifiant'] . "</li>
+                <li>Détails: " . $data['detailsMaintenance'] . "</li>
+            </ul>
+        ";
+        break;
+        
+    case 'vehiculesDesinfectionFaite':
+        $query = $db->prepare('SELECT libelleVehicule, immatriculation, libelleVehiculesDesinfectionsType, dateDesinfection, identifiant FROM VEHICULES_DESINFECTIONS d LEFT OUTER JOIN VEHICULES v ON d.idVehicule = v.idVehicule LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON d.idVehiculesDesinfectionsType = t.idVehiculesDesinfectionsType LEFT OUTER JOIN PERSONNE_REFERENTE p ON d.idExecutant = p.idPersonne WHERE idVehiculesDesinfection = :id;');
+        $query->execute(array('id'=>$_GET['id']));
+        $data = $query->fetch();
+
+        $contenu = "
+            <ul>
+                <li>Véhicule: " . $data['libelleVehicule'] . "</li>
+                <li>Immatriculation: " . $data['immatriculation'] . "</li>
+                <li>Type de désinfection: " . $data['libelleVehiculesDesinfectionsType'] . "</li>
+                <li>Faite le: " . $data['dateDesinfection'] . "</li>
+                <li>Faite par: " . $data['identifiant'] . "</li>
+            </ul>
+        ";
+        break;
+        
+    case 'vehiculesDesinfectionAFaire':
+        $query = $db->prepare('
+        	SELECT
+                a.*,
+                vv.libelleVehicule,
+                vv.immatriculation,
+                t.libelleVehiculesDesinfectionsType,
+                MAX(v.dateDesinfection) as dateDesinfection,
+                p.identifiant
+            FROM
+                VEHICULES_DESINFECTIONS_ALERTES a
+                LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON a.idVehiculesDesinfectionsType=t.idVehiculesDesinfectionsType
+                LEFT OUTER JOIN VEHICULES_DESINFECTIONS v ON a.idVehiculesDesinfectionsType = v.idVehiculesDesinfectionsType AND a.idVehicule=v.idVehicule
+                LEFT OUTER JOIN VEHICULES vv ON a.idVehicule = vv.idVehicule
+                LEFT OUTER JOIN PERSONNE_REFERENTE p ON v.idExecutant = p.idPersonne
+            WHERE
+            	a.idDesinfectionsAlerte = :id
+            GROUP BY
+                a.idDesinfectionsAlerte
+        ;');
+        $query->execute(array('id'=>$_GET['id']));
+        $data = $query->fetch();
+
+        $contenu = "
+            <ul>
+                <li>Véhicule: " . $data['libelleVehicule'] . "</li>
+                <li>Immatriculation: " . $data['immatriculation'] . "</li>
+                <li>Type de désinfection: " . $data['libelleVehiculesDesinfectionsType'] . "</li>
+                <li>Faite dernièrement le: " . $data['dateDesinfection'] . "</li>
+                <li>Faite dernièrement par: " . $data['identifiant'] . "</li>
+                <li>Prochaine désinfection à faire le: " . date('Y-m-d', strtotime($data['dateDesinfection']. ' + '.$data['frequenceDesinfection'].' days')) . "</li>
+            </ul>
+        ";
+        break;
+
     case 'inventaireReserve':
         $query = $db->prepare('SELECT * FROM RESERVES_CONTENEUR WHERE idConteneur = :id;');
         $query->execute(array('id'=>$_GET['id']));

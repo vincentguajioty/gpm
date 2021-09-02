@@ -171,6 +171,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                     $lots = $personne['lots_lecture'] OR $personne['sac_lecture'] OR $personne['sac2_lecture'] OR $personne['materiel_lecture'];
                                     $reserves = $personne['reserve_lecture'];
                                     $vehicules = $personne['vehicules_lecture'];
+                                    $desinfections = $personne['desinfections_lecture'];
                                     $tenues = $personne['tenues_lecture'] OR $personne['tenuesCatalogue_lecture'];
                                 ?>
                                 <label>Présence des indicateurs sur la page d'accueil:</label><br/>
@@ -189,7 +190,9 @@ if ($_SESSION['annuaire_lecture']==0)
                             	<br/>
                             	<?php if ($vehicules > 0){ if($personne['conf_indicateur7Accueil'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Assurances véhicules
                             	<br/>
-                            	<?php if ($vehicules > 0){ if($personne['conf_indicateur8Accueil'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Contrôles techniques et révisions véhicules
+                                <?php if ($vehicules > 0){ if($personne['conf_indicateur8Accueil'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Contrôles techniques et révisions véhicules
+                                <br/>
+                                <?php if ($desinfections > 0){ if($personne['conf_indicateur11Accueil'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Désinfections véhicules
                             	<br/>
                             	<?php if ($tenues > 0){ if($personne['conf_indicateur9Accueil'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Stock des tenues
                             	<br/>
@@ -219,6 +222,8 @@ if ($_SESSION['annuaire_lecture']==0)
                                 <?php if ($vehicules > 0 AND $data['notifications']==1){ if($data['notif_vehicules_assurances'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Assurances véhicules
                                 <br/>
                                 <?php if ($vehicules > 0 AND $data['notifications']==1){ if($data['notif_vehicules_revisions'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Révisions véhicules
+                                <br/>
+                                <?php if ($desinfections > 0 AND $data['notifications']==1){ if($data['notif_vehicules_desinfections'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Désinfections véhicules
                                 <br/>
                                 <?php if ($vehicules > 0 AND $data['notifications']==1){ if($data['notif_vehicules_ct'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Contrôles techniques véhicules
                                 <br/>
@@ -354,6 +359,13 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <td><?php if($personne['vehicules_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                 </tr>
                                 <tr>
+                                    <td>Désinfections</td>
+                                    <td><?php if($personne['desinfections_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['desinfections_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['desinfections_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['desinfections_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                </tr>
+                                <tr>
                                     <th>TENUES</th>
                                     <th></th>
                                     <th></th>
@@ -429,6 +441,13 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <td><?php if($personne['vehicules_types_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['vehicules_types_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['vehicules_types_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Types de désinfections</td>
+                                    <td><?php if($personne['typesDesinfections_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['typesDesinfections_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['typesDesinfections_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['typesDesinfections_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                 </tr>
                                 <tr>
                                     <td>Etats</td>
