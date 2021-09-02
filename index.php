@@ -556,7 +556,7 @@ include('logCheck.php');
 			                        
 			                        if ($tenues)
 			                        {
-				                        $query = $db->query('SELECT * FROM TENUES_AFFECTATION ta JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne WHERE dateRetour < CURRENT_DATE OR dateRetour = CURRENT_DATE;');
+				                        $query = $db->query('SELECT * FROM TENUES_AFFECTATION ta JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne;');
 				                        while ($data = $query->fetch())
 				                        {
 				                        	$events[] = [
@@ -569,21 +569,18 @@ include('logCheck.php');
 				                        }
 			                        }
 
-			                        if ($tenues)
+		                         	$query = $db->prepare('SELECT * FROM TODOLIST_PERSONNES tp LEFT OUTER JOIN TODOLIST t ON tp.idTache=t.idTache WHERE idExecutant = :idExecutant AND realisee=0;');
+		                         	$query->execute(array('idExecutant'=>$_SESSION['idPersonne']));
+			                        while ($data = $query->fetch())
 			                        {
-			                         	$query = $db->prepare('SELECT * FROM TODOLIST_PERSONNES tp LEFT OUTER JOIN TODOLIST t ON tp.idTache=t.idTache WHERE idExecutant = :idExecutant AND realisee=0;');
-			                         	$query->execute(array('idExecutant'=>$_SESSION['idPersonne']));
-				                        while ($data = $query->fetch())
-				                        {
-				                        	$events[] = [
-			                                    'date'     => date_format(date_create($data['dateExecution']), 'Y-m-d'),
-			                                    'title'    => 'ToDoList',
-			                                    'subTitle' => $data['titre'],
-			                                    'color'    => $_SESSION['agenda_tenues_toDoList'],
-			                                    'url'      => 'todolistForm.php?id='.$data['idTache'],
-			                                ];
-				                        }
-				                    }
+			                        	$events[] = [
+		                                    'date'     => date_format(date_create($data['dateExecution']), 'Y-m-d'),
+		                                    'title'    => 'ToDoList',
+		                                    'subTitle' => $data['titre'],
+		                                    'color'    => $_SESSION['agenda_tenues_toDoList'],
+		                                    'url'      => 'todolistForm.php?id='.$data['idTache'],
+		                                ];
+			                        }
 			                        
 		            			?>
 		                        <div id="calendar"></div>

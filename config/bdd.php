@@ -508,6 +508,40 @@ function majNotificationsProfil($idProfil)
     }
 }
 
+function majValideursPersonne($idPersonne, $enableLog)
+{
+    global $db;
+
+    $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE p JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE p.idPersonne = :idPersonne;');
+    $query -> execute(array('idPersonne' => $idPersonne));
+    $data = $query->fetch();
+    
+    if($data['commande_valider'] != 1)
+    {
+    	$query = $db->prepare('DELETE FROM COMMANDES_VALIDEURS_DEFAULT WHERE idPersonne = :idPersonne;');
+    	$query -> execute(array('idPersonne' => $idPersonne));
+    }
+    
+    if ($enableLog == 1)
+    {
+        writeInLogs("Nettoyage de la personne " . $idPersonne." des valideurs par défaut des commandes", '1', NULL);
+    }
+}
+
+function majValideursProfil($idProfil)
+{
+    global $db;
+    $query = $db->prepare('SELECT idPersonne FROM PROFILS_PERSONNES WHERE idProfil = :idProfil;');
+    $query -> execute(array('idProfil' => $idProfil));
+
+    writeInLogs("Nettoyage des valideurs par défaut des commandes pour le profil " . $idProfil, '1', NULL);
+
+    while ($data = $query->fetch())
+    {
+        majValideursPersonne($data['idPersonne'], 0);
+    }
+}
+
 function cmdEstAffectee ($idPersonne, $idCommande)
 {
     global $db;

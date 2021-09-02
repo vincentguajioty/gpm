@@ -113,7 +113,7 @@ if($_SESSION['commande_lecture']==1)
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label>Prix HT:</label>
+                                <label>Unitaire HT:</label>
                                 <input type="number" step="0.01" class="form-control" name="prixProduitHT" value="<?= isset($data['prixProduitHT']) ? $data['prixProduitHT'] : '' ?>">
                             </div>
                         </div>
@@ -125,7 +125,7 @@ if($_SESSION['commande_lecture']==1)
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label>Prix TTC: <small style="color:grey;">Requis</small></label>
+                                <label>Unitaire TTC: <small style="color:grey;">Requis</small></label>
                                 <input type="number" step="0.01" class="form-control" name="prixProduitTTC" required value="<?= isset($data['prixProduitTTC']) ? $data['prixProduitTTC'] : '' ?>">
                             </div>
                         </div>

@@ -338,6 +338,13 @@ switch($data['version'])
         break;
 
     case '9.5':
+        writeInLogs("Début de l'installation de la mise à jour 9.6", '1', NULL);
+        $query = $db->query(file_get_contents ("update9.6.sql"));
+        writeInLogs("Fin de l'installation de la mise à jour 9.6", '1', NULL);
+        echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
+        break;
+
+    case '9.6':
         writeInLogs("Fin des mises à jour", '1', NULL);
         echo "<script type='text/javascript'>document.location.replace('INSTALLFINISH.php');</script>";
         break;

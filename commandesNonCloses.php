@@ -44,6 +44,7 @@ if ($_SESSION['commande_lecture']==0)
                             <th class="all">Date de création</th>
                             <th class="all">Nom</th>
                             <th class="all">Fournisseur</th>
+                            <th class="all">TTC</th>
                             <th class="not-mobile">Référence fournisseur</th>
                             <th class="not-mobile">Etat</th>
                             <th class="not-mobile">Etat centre de cout</th>
@@ -62,6 +63,14 @@ if ($_SESSION['commande_lecture']==0)
                                 <td><?php echo $data['dateCreation']; ?></td>
                                 <td><?php echo $data['nomCommande']; ?></td>
                                 <td><?php echo $data['nomFournisseur']; ?></td>
+                                <td>
+                                	<?php
+	                                	$query2 = $db->prepare('SELECT IFNULL(SUM(prixProduitTTC*quantiteCommande),0) AS total FROM COMMANDES_MATERIEL c LEFT OUTER JOIN MATERIEL_CATALOGUE m ON c.idMaterielCatalogue = m.idMaterielCatalogue WHERE idCommande = :idCommande;');
+										$query2->execute(array('idCommande' => $data['idCommande']));
+										$total = $query2->fetch();
+										echo floor($total['total']*100)/100; echo ' €';
+                                	?>
+                                </td>
                                 <td><?php echo $data['numCommandeFournisseur']; ?></td>
                                 <td><span class="badge bg-<?php
                                     switch ($data['idEtat']) {

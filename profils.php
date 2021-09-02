@@ -36,7 +36,8 @@ if ($_SESSION['profils_lecture']==0)
             <div class="box">
             	<div class="box-header">
                     <?php if ($_SESSION['profils_ajout']==1) {?><h3 class="box-title"><a href="profilsForm.php" class="btn btn-sm btn-success">Ajouter un profil</a></h3> <h3 class="box-title"><a href="profilsFormDupliquer.php" class="btn btn-sm btn-success modal-form">Dupliquer un profil existant</a></h3><?php } ?>
-                    <h3 class="box-title pull-right"><a href="profilsRecap.php" class="btn btn-sm btn-default">Tableau des habilitations</a></h3>
+                    <?php if ($_SESSION['profils_lecture']==1) {?><h3 class="box-title pull-right"><a href="profilsRecap.php" class="btn btn-sm btn-default">Vue transverse des profils</a></h3><?php } ?>
+                    <?php if ($_SESSION['annuaire_lecture']==1) {?><h3 class="box-title pull-right"><a href="profilsRecapPersonnes.php" class="btn btn-sm btn-default">Vue transverse des utilisateurs</a></h3><?php } ?>
             	</div>
                 <!-- /.box-header -->
                 <div class="box-body">

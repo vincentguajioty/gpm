@@ -31,12 +31,12 @@ if ($_SESSION['commande_lecture']==0)
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                COMMANDE <?php echo $_GET['id'].' - '.$data['libelleEtat']; if($data['nomCommande']!='' AND $data['nomCommande']!=Null){echo ' - '.$data['nomCommande'];}?>
+                <?php if($data['idEtat']<3){echo 'DEMANDE D\'ACHAT';}else{echo 'COMMANDE';} echo ' '.$_GET['id'].' - '.$data['libelleEtat']; if($data['nomCommande']!='' AND $data['nomCommande']!=Null){echo ' - '.$data['nomCommande'];}?>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="index.php"><i class="fa fa-home"></i>Accueil</a></li>
                 <li><a href="commandesToutes.php">Commandes</a></li>
-                <li class="active">Commande <?php echo $_GET['id']; ?></li>
+                <li class="active"><?php if($data['idEtat']<3){echo 'DEMANDE D\'ACHAT';}else{echo 'COMMANDE';} echo ' '.$_GET['id']; ?></li>
             </ol>
         </section>
 
@@ -111,8 +111,7 @@ if ($_SESSION['commande_lecture']==0)
 		                                                	WHERE
 		                                                		commande_lecture = 1
 		                                                	ORDER BY
-		                                                		nomPersonne,
-		                                                		prenomPersonne;');
+		                                                		identifiant;');
 										                $query2->execute(array('idCommande' => $_GET['id']));
 						
 						                                while ($data2 = $query2->fetch())
@@ -157,8 +156,7 @@ if ($_SESSION['commande_lecture']==0)
 		                                                	WHERE
 		                                                		commande_lecture = 1
 		                                                	ORDER BY
-		                                                		nomPersonne,
-		                                                		prenomPersonne;');
+		                                                		identifiant;');
 										                $query2->execute(array('idCommande' => $_GET['id']));
 						
 						                                while ($data2 = $query2->fetch())
@@ -191,7 +189,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                            <label>Centre de cout: </label>
 	                                            <label class="pull-right"><?= cmdEtatCentreCouts($_GET['id']); ?></label>
 	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>2) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idCentreDeCout">
-	                                                <option></option>
+	                                                <option value="">--- Non-spécifié ---</option>
 	                                                <?php
 	                                                $query2 = $db->query('SELECT * FROM CENTRE_COUTS;');
 	                                                while ($data2 = $query2->fetch())
@@ -246,8 +244,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                                			commande_lecture = 1
 	                                                			AND commande_etreEnCharge = 1
 	                                                		ORDER BY
-	                                                			nomPersonne,
-	                                                			prenomPersonne;');
+	                                                			identifiant;');
 										                $query2->execute(array('idCommande' => $_GET['id']));
 						
 						                                while ($data2 = $query2->fetch())
@@ -293,7 +290,7 @@ if ($_SESSION['commande_lecture']==0)
 		                                                		commande_lecture = 1
 		                                                		AND commande_valider = 1
 		                                                	ORDER BY
-		                                                		nomPersonne, prenomPersonne;');
+		                                                		identifiant;');
 										                $query2->execute(array('idCommande' => $_GET['id']));
 						
 						                                while ($data2 = $query2->fetch())
@@ -326,7 +323,7 @@ if ($_SESSION['commande_lecture']==0)
 	                                        <div class="form-group">
 	                                            <label>Lieu de livraison: </label>
 	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>2) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idLieuLivraison">
-	                                                <option></option>
+	                                                <option value="">--- Non-spécifié ---</option>
 	                                                <?php
 	                                                $query2 = $db->query('SELECT * FROM LIEUX;');
 	                                                while ($data2 = $query2->fetch())
@@ -685,29 +682,21 @@ if ($_SESSION['commande_lecture']==0)
 	                    </div>
 	                </div>
 	                
-	                <?php if ((cmdEstAffectee($_SESSION['idPersonne'], $_GET['id']) OR cmdEstValideur($_SESSION['idPersonne'], $_GET['id']) OR cmdEstObservateur($_SESSION['idPersonne'], $_GET['id']) OR cmdEstDemandeur($_SESSION['idPersonne'], $_GET['id'])) AND ($data['idEtat']<7)){ ?>
-	                <div class="box box-warning">
-	                	<div class="box-body">
-	                		<form role="form" action="commandesNotesAdd.php?id=<?=$_GET['id']?>" method="POST">
-	                                <div class="form-group">
-	                                    <label>Note:</label>
-	                                    <textarea class="form-control" rows="3" name="notes"></textarea>
-	                                </div>
-	                                <div class="box-footer">
-	                                    <button type="submit" class="btn btn-success pull-right">Ajouter</button>
-	                                </div>
-	                            </form>
-	                	</div>
-	                </div>
-	                 <?php } ?>
-	                 
-	                <div class="box box-warning">
-	                    <div class="box-body">
-	                        <?php if (($data['idEtat']==1) AND(($_SESSION['commande_ajout']==1)OR($_SESSION['commande_etreEnCharge']==1))) { ?><a href="commandesGo2.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">Soumettre à validation</a> <?php } ?>
-	                        <?php if ($data['idEtat']==5 AND cmdEstAffectee($_SESSION['idPersonne'], $_GET['id'])) { ?><a href="commandesGo7.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">Cloturer la commande</a> <?php } ?>
-	                        <?php if ($data['idEtat']==6 AND cmdEstAffectee($_SESSION['idPersonne'], $_GET['id'])) { ?><a href="commandesGo5.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">SAV terminé > Commande OK</a> <?php } ?>
-	                    </div>
-	                </div>
+	                <?php
+	                	if($data['idEtat']!=7 AND $data['idEtat']!=8)
+	                	{
+	                	?>
+			                <div class="box box-warning">
+			                    <div class="box-body">
+			                        <?php if (($data['idEtat']==1) AND(($_SESSION['commande_ajout']==1)OR($_SESSION['commande_etreEnCharge']==1))) { ?><a href="commandesGo2.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">Soumettre à validation</a> <?php } ?>
+			                        <?php if ($data['idEtat']==5 AND cmdEstAffectee($_SESSION['idPersonne'], $_GET['id'])) { ?><a href="commandesGo7.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">Cloturer la commande</a> <?php } ?>
+			                        <?php if ($data['idEtat']==6 AND cmdEstAffectee($_SESSION['idPersonne'], $_GET['id'])) { ?><a href="commandesGo5.php?id=<?=$_GET['id']?>" class="btn btn-info pull-right spinnerAttenteClick">SAV terminé > Commande OK</a> <?php } ?>
+			                        <?php if ((cmdEstAffectee($_SESSION['idPersonne'], $_GET['id']) OR cmdEstValideur($_SESSION['idPersonne'], $_GET['id']) OR cmdEstObservateur($_SESSION['idPersonne'], $_GET['id']) OR cmdEstDemandeur($_SESSION['idPersonne'], $_GET['id'])) AND ($data['idEtat']<7)){ ?>
+						            	<a href="commandesNotesForm.php?id=<?=$_GET['id']?>" class="btn btn-success modal-form"><i class="fa fa-plus"></i> Note</a>
+					                <?php } ?>
+			                    </div>
+			                </div>
+			        <?php } ?>
 	            </div>
 	
 	

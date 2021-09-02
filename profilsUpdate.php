@@ -403,6 +403,7 @@ else
 
     majIndicateursProfil($_GET['id']);
     majNotificationsProfil($_GET['id']);
+    majValideursProfil($_GET['id']);
 
     echo "<script type='text/javascript'>document.location.replace('profils.php');</script>";
 }

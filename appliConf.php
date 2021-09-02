@@ -250,6 +250,63 @@ if ($_SESSION['appli_conf']==0)
         
         <section class="content-header">
             <h1>
+                Valideurs ajoutés par défaut lors de la création d'une commande
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="box box-info">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form role="form" action="appliConfUpdateValideurs.php" method="POST">
+                        <?php
+                        $query = $db->query('SELECT * FROM COMMANDES_VALIDEURS_DEFAULT;');
+                        ?>
+                        
+						<select class="form-control select2" style="width: 100%;" name="idPersonne[]" multiple>
+                            <?php
+                                $query2 = $db->query('
+                                	SELECT
+                                		p.idPersonne,
+                                		p.identifiant,
+                                		v.idPersonne as selectionnee
+                                	FROM
+                                		PERSONNE_REFERENTE p
+                                		LEFT OUTER JOIN COMMANDES_VALIDEURS_DEFAULT v ON p.idPersonne = v.idPersonne
+                                		LEFT OUTER JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne
+                                	WHERE
+                                		commande_lecture = 1
+                                		AND commande_valider = 1
+                                	ORDER BY
+                                		identifiant;');
+                                while ($data2 = $query2->fetch())
+                                {
+                                    
+                                    echo '<option value=' . $data2['idPersonne'];
+
+					                if (isset($data2['selectionnee']) AND $data2['selectionnee'] != Null)
+					                {
+					                    echo " selected ";
+					                }
+					                echo '>' . $data2['identifiant'] . '</option>';
+                                }
+                            
+                            ?>
+                        </select>
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-body -->
+
+            </div>
+
+        </section>
+        
+        <section class="content-header">
+            <h1>
                 Délais de notification des véhicules
             </h1>
         </section>

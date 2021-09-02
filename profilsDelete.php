@@ -36,8 +36,10 @@ else
         ':idProfil' => $_GET['id']
     ]);
     while ($data2 = $query2->fetch())
-    {
+    {        
         majIndicateursPersonne($data2['idPersonne'],1);
+    	majNotificationsPersonne($data2['idPersonne'],1);
+    	majValideursPersonne($data2['idPersonne'],1);
     }
 
     $query = $db->prepare('DELETE FROM PROFILS WHERE idProfil = :idProfil;');

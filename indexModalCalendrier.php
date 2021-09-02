@@ -7,6 +7,8 @@ require_once 'config/bdd.php';
 
 switch ($_GET['case']) {
     case 'premptionLot':
+        $url = "materiels.php";
+        $urlName = "Accéder aux matériels";
         $query = $db->prepare('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE idElement = :id;');
         $query->execute(array('id'=>$_GET['id']));
         $data = $query->fetch();
@@ -24,6 +26,8 @@ switch ($_GET['case']) {
         break;
 
     case 'premptionReserve':
+        $url = "reserveMateriel.php";
+        $urlName = "Accéder aux reserves";
         $query = $db->prepare('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur=c.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue WHERE idReserveElement = :id;');
         $query->execute(array('id'=>$_GET['id']));
         $data = $query->fetch();
@@ -41,6 +45,8 @@ switch ($_GET['case']) {
         break;
 
     case 'inventaireLot':
+        $url = "lotsContenu.php?id=".$_GET['id'];
+        $urlName = "Accéder au lot";
         $query = $db->prepare('SELECT * FROM LOTS_LOTS WHERE idLot = :id;');
         $query->execute(array('id'=>$_GET['id']));
         $data = $query->fetch();
@@ -55,6 +61,8 @@ switch ($_GET['case']) {
         break;
 
     case 'commandes':
+        $url = "commandeView.php?id=".$_GET['id'];
+        $urlName = "Accéder à la commande";
         $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur LEFT OUTER JOIN LIEUX l ON c.idLieuLivraison = l.idLieu WHERE idCommande = :id;');
         $query->execute(array('id'=>$_GET['id']));
         $data = $query->fetch();
@@ -82,6 +90,8 @@ switch ($_GET['case']) {
         break;
 
     case 'vehiculesRev':
+        $url = "vehiculesContenu.php?id=".$_GET['id'];
+        $urlName = "Accéder au véhicule";
         $query = $db->prepare('SELECT * FROM VEHICULES WHERE idVehicule = :id;');
         $query->execute(array('id'=>$_GET['id']));
         $data = $query->fetch();
@@ -98,6 +108,8 @@ switch ($_GET['case']) {
         break;
 
     case 'vehiculesCT':
+        $url = "vehiculesContenu.php?id=".$_GET['id'];
+        $urlName = "Accéder au véhicule";
         $query = $db->prepare('SELECT * FROM VEHICULES WHERE idVehicule = :id;');
         $query->execute(array('id'=>$_GET['id']));
         $data = $query->fetch();
@@ -114,6 +126,8 @@ switch ($_GET['case']) {
         break;
 
     case 'vehiculesAssu':
+        $url = "vehiculesContenu.php?id=".$_GET['id'];
+        $urlName = "Accéder au véhicule";
         $query = $db->prepare('SELECT * FROM VEHICULES WHERE idVehicule = :id;');
         $query->execute(array('id'=>$_GET['id']));
         $data = $query->fetch();
@@ -130,6 +144,8 @@ switch ($_GET['case']) {
         break;
 
     case 'vehiculesMaintenance':
+        $url = "vehiculesContenu.php?id=".$_GET['id'];
+        $urlName = "Accéder au véhicule";
         $query = $db->prepare('SELECT libelleVehicule, immatriculation, libelleTypeMaintenance, identifiant, detailsMaintenance FROM VEHICULES_MAINTENANCE m LEFT OUTER JOIN VEHICULES v ON m.idVehicule = v.idVehicule LEFT OUTER JOIN VEHICULES_MAINTENANCE_TYPES t ON m.idTypeMaintenance = t.idTypeMaintenance LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idExecutant = p.idPersonne WHERE m.idMaintenance = :id;');
         $query->execute(array('id'=>$_GET['id']));
         $data = $query->fetch();
@@ -146,6 +162,8 @@ switch ($_GET['case']) {
         break;
         
     case 'vehiculesDesinfectionFaite':
+        $url = "vehiculesContenu.php?id=".$_GET['id'];
+        $urlName = "Accéder au véhicule";
         $query = $db->prepare('SELECT libelleVehicule, immatriculation, libelleVehiculesDesinfectionsType, dateDesinfection, identifiant FROM VEHICULES_DESINFECTIONS d LEFT OUTER JOIN VEHICULES v ON d.idVehicule = v.idVehicule LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON d.idVehiculesDesinfectionsType = t.idVehiculesDesinfectionsType LEFT OUTER JOIN PERSONNE_REFERENTE p ON d.idExecutant = p.idPersonne WHERE idVehiculesDesinfection = :id;');
         $query->execute(array('id'=>$_GET['id']));
         $data = $query->fetch();
@@ -166,6 +184,7 @@ switch ($_GET['case']) {
         	SELECT
                 a.*,
                 vv.libelleVehicule,
+                vv.idVehicule,
                 vv.immatriculation,
                 t.libelleVehiculesDesinfectionsType,
                 MAX(v.dateDesinfection) as dateDesinfection,
@@ -194,9 +213,13 @@ switch ($_GET['case']) {
                 <li>Prochaine désinfection à faire le: " . date('Y-m-d', strtotime($data['dateDesinfection']. ' + '.$data['frequenceDesinfection'].' days')) . "</li>
             </ul>
         ";
+        $url = "vehiculesContenu.php?id=".$data['idVehicule'];
+        $urlName = "Accéder au véhicule";
         break;
 
     case 'inventaireReserve':
+    	$url = "reserveConteneurContenu.php?id=".$_GET['id'];
+        $urlName = "Accéder à la reserve";
         $query = $db->prepare('SELECT * FROM RESERVES_CONTENEUR WHERE idConteneur = :id;');
         $query->execute(array('id'=>$_GET['id']));
         $data = $query->fetch();
@@ -211,6 +234,8 @@ switch ($_GET['case']) {
         break;
         
     case 'tenuesRecup':
+        $url = "tenuesAffectations.php";
+        $urlName = "Accéder à l'affectation";
         $query = $db->prepare('SELECT * FROM TENUES_AFFECTATION ta JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne WHERE idTenue = :id');
         $query->execute(array('id'=>$_GET['id']));
         $data = $query->fetch();
@@ -244,6 +269,7 @@ switch ($_GET['case']) {
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
+                <a href="<?=$url?>" class="btn btn-default"><?=$urlName?></a>
             </div>
         </div>
     </div>

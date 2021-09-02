@@ -32,6 +32,7 @@ else {
 
     majIndicateursProfil($_GET['idProfil']);
     majNotificationsProfil($_GET['idProfil']);
+    majValideursProfil($_GET['idProfil']);
 
     echo "<script>window.location = document.referrer;</script>";
 }
