@@ -16,14 +16,14 @@ else
         INSERT INTO
             MESSAGES
         SET
-            idPersonne   = :idPersonne,
-            titreMessage = :titreMessage,
-            corpsMessage = :corpsMessage
+            idPersonne    = :idPersonne,
+            corpsMessage  = :corpsMessage,
+            idMessageType = :idMessageType
         ;');
     $query->execute(array(
-        'idPersonne'   => $_SESSION['idPersonne'],
-        'titreMessage' => $_POST['titreMessage'],
-        'corpsMessage' => $_POST['corpsMessage']
+        'idPersonne'    => $_SESSION['idPersonne'],
+        'corpsMessage'  => $_POST['corpsMessage'],
+        'idMessageType' => $_POST['idMessageType'],
     ));
 
     switch($query->errorCode())

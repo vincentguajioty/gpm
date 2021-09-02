@@ -16,14 +16,23 @@ if($_SESSION['messages_ajout']==1)
                 <form role="form" action="messagesAdd.php" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                                    <label>Titre: <small style="color:grey;">Requis</small></label>
-                                    <input type="text" class="form-control" placeholder="Titre du message" name="titreMessage" required>
-                                </div>
-                                <!-- textarea -->
-                                <div class="form-group">
-                                    <label>Message:</label>
-                                    <textarea class="form-control" rows="3" placeholder="Corps du message" name="corpsMessage"></textarea>
-                                </div>
+                            <label>Type de message: </label>
+                            <select class="form-control select2" style="width: 100%;" name="idMessageType">
+                                <?php
+                                $query2 = $db->query('SELECT * FROM MESSAGES_TYPES;');
+                                while ($data2 = $query2->fetch())
+                                {
+                                    ?>
+                                    <option value ="<?php echo $data2['idMessageType']; ?>" <?php if (isset($data['idMessageType']) AND ($data2['idMessageType'] == $data['idMessageType'])) { echo 'selected'; } ?> ><?php echo $data2['libelleMessageType']; ?></option>
+                                    <?php
+                                }
+                                $query2->closeCursor(); ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Message:</label>
+                            <textarea class="form-control" rows="3" placeholder="Corps du message" name="corpsMessage" required></textarea>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>

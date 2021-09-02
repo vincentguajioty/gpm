@@ -45,7 +45,6 @@ if ($_SESSION['messages_ajout']==0 AND $_SESSION['messages_suppression']==0)
                         <tr>
                             <th style="width: 10px">#</th>
                             <th>Rédacteur</th>
-                            <th>Titre</th>
                             <th>Message</th>
                             <th>Actions</th>
                         </tr>
@@ -59,7 +58,6 @@ if ($_SESSION['messages_ajout']==0 AND $_SESSION['messages_suppression']==0)
                             <tr>
                                 <td><?php echo $data['idMessage']; ?></td>
                                 <td><?php echo $data['identifiant']; ?></td>
-                                <td><?php echo $data['titreMessage']; ?></td>
                                 <td><?php echo $data['corpsMessage']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['messages_suppression']==1) {?>

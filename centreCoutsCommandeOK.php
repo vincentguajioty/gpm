@@ -11,7 +11,7 @@ if (centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['idCentreDeCout'])==0)
 }
 else
 {
-    $query = $db->prepare('SELECT * FROM COMMANDES WHERE idCommande = :idCommande');
+    $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE idCommande = :idCommande');
     $query->execute(array('idCommande' => $_GET['idCommande']));
     $commande = $query->fetch();
 
@@ -27,20 +27,22 @@ else
         INSERT INTO
             CENTRE_COUTS_OPERATIONS
         SET
-            dateOperation    = :dateOperation,
-            libelleOperation = :libelleOperation,
-            idCentreDeCout   = :idCentreDeCout,
-            montantSortant   = :montantSortant,
-            idCommande       = :idCommande,
-            idPersonne       = :idPersonne
+            dateOperation           = :dateOperation,
+            libelleOperation        = :libelleOperation,
+            idCentreDeCout          = :idCentreDeCout,
+            montantSortant          = :montantSortant,
+            idCommande              = :idCommande,
+            detailsMoyenTransaction = :detailsMoyenTransaction,
+            idPersonne              = :idPersonne
         ;');
     $query->execute(array(
-        'dateOperation'    => date('Y-m-d H:i:s'),
-        'libelleOperation' => 'Commande '.$_GET['idCommande'],
-        'idCentreDeCout'   => $_GET['idCentreDeCout'],
-        'montantSortant'   => $totalCMD,
-        'idPersonne'       => $_SESSION['idPersonne'],
-        'idCommande'       => $_GET['idCommande']
+        'dateOperation'           => date('Y-m-d H:i:s'),
+        'libelleOperation'        => 'Commande '.$_GET['idCommande'].' ('.$commande['nomFournisseur'].')',
+        'idCentreDeCout'          => $_GET['idCentreDeCout'],
+        'montantSortant'          => $totalCMD,
+        'idPersonne'              => $_SESSION['idPersonne'],
+        'idCommande'              => $_GET['idCommande'],
+        'detailsMoyenTransaction' => $commande['nomCommande'],
     ));
 
     switch($query->errorCode())

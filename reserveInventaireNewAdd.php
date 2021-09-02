@@ -150,6 +150,6 @@ else
             $_SESSION['returnType'] = '2';
     }
 
-    echo "<script>javascript:history.go(-2);</script>";
+    echo "<script type='text/javascript'>document.location.replace('reserveConteneurContenu.php?id=".$_GET['id']."');</script>";
 }
 ?>

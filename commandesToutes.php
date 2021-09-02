@@ -47,6 +47,7 @@ if ($_SESSION['commande_lecture']==0)
                         <tr>
                             <th class="all" style="width: 10px">#</th>
                             <th class="all">Date de création</th>
+                            <th class="all">Nom</th>
                             <th class="all">Fournisseur</th>
                             <th class="not-mobile">Référence fournisseur</th>
                             <th class="not-mobile">Etat</th>
@@ -58,12 +59,13 @@ if ($_SESSION['commande_lecture']==0)
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query('SELECT c.idCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat FROM COMMANDES c LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur;');
+                        $query = $db->query('SELECT c.idCommande, c.nomCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat FROM COMMANDES c LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur;');
                         while ($data = $query->fetch())
                         {?>
                             <tr <?php if ($_SESSION['commande_lecture']==1) {?>data-href="commandeView.php?id=<?=$data['idCommande']?>"<?php }?>>
                                 <td><?php echo $data['idCommande']; ?></td>
                                 <td><?php echo $data['dateCreation']; ?></td>
+                                <td><?php echo $data['nomCommande']; ?></td>
                                 <td><?php echo $data['nomFournisseur']; ?></td>
                                 <td><?php echo $data['numCommandeFournisseur']; ?></td>
                                 <td><span class="badge bg-<?php

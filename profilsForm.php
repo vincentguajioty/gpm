@@ -411,7 +411,6 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
 		                    </tr>
 		                </table>
                         <div class="box-footer">
-                            <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
                             <button type="submit" class="btn btn-info pull-right"><?= isset($_GET['id']) ? 'Modifier' : 'Ajouter'?></button>
                         </div>
                     </form>

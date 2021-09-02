@@ -17,6 +17,7 @@ else
     $_POST['assuranceExpiration'] = ($_POST['assuranceExpiration'] == Null) ? Null : $_POST['assuranceExpiration'];
     
     $_POST['idLieu'] = ($_POST['idLieu'] == Null) ? Null : $_POST['idLieu'];
+    $_POST['idCarburant'] = ($_POST['idCarburant'] == Null) ? Null : $_POST['idCarburant'];
     $_POST['nbPlaces'] = ($_POST['nbPlaces'] == Null) ? Null : $_POST['nbPlaces'];
     $_POST['idVehiculesType'] = ($_POST['idVehiculesType'] == Null) ? Null : $_POST['idVehiculesType'];
     $_POST['idEtat'] = ($_POST['idEtat'] == Null) ? Null : $_POST['idEtat'];
@@ -64,7 +65,8 @@ else
             nbCones              = :nbCones,
             priseAlimentation220 = :priseAlimentation220,
             remarquesVehicule    = :remarquesVehicule,
-            idVehiculesEtat      = :idVehiculesEtat
+            idVehiculesEtat      = :idVehiculesEtat,
+            idCarburant          = :idCarburant
         WHERE
             idVehicule           = :idVehicule
         ;');
@@ -96,6 +98,7 @@ else
         'priseAlimentation220' => $_POST['priseAlimentation220'],
         'remarquesVehicule'    => $_POST['remarquesVehicule'],
         'idVehiculesEtat'      => $_POST['idVehiculesEtat'],
+        'idCarburant'          => $_POST['idCarburant'],
         'idVehicule'           => $_GET['id']
     ));
 

@@ -43,6 +43,17 @@ include('logCheck.php');
         <?php include('confirmationBox.php'); ?>
         <div class="row">
         	
+        	<div class="col-lg-12">
+				<?php
+					$messages = $db->query('SELECT m.*, p.identifiant, t.iconMessageType, t.couleurMessageType FROM MESSAGES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne LEFT OUTER JOIN MESSAGES_TYPES t ON m.idMessageType = t.idMessageType;');
+					while($message = $messages->fetch())
+					{ ?>
+						<div class="alert <?=$message['couleurMessageType']?> alert-dismissible">
+					    	<i class="icon fa <?=$message['iconMessageType']?>"></i> <b>Message de <?=$message['identifiant']?> :</b> <?=$message['corpsMessage']?>
+					    </div>
+					<?php }
+				?>
+		    </div>
         	
         	<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 		
@@ -314,81 +325,6 @@ include('logCheck.php');
 				            </div>
 				        </div>
 					<?php } ?>
-				    
-				    
-			        <div class="col-md-6">
-			            <div class="box box-success">
-			
-			                <div class="box-header with-border">
-			                    <i class="fa fa-bullhorn"></i>
-			                    <h3 class="box-title">Messages généraux</h3>
-			                    <div class="box-tools pull-right">
-			                    	<?php if ($_SESSION['messages_ajout']==1) {?><a href="messagesForm.php" class="btn btn-sm modal-form" title="Ajouter un message"><i class="fa fa-plus"></i></a><?php } ?>
-			                    </div>
-			                </div>
-			
-			                <!-- /.box-header -->
-			                <div class="box-body">
-			                    <?php
-			                    $query = $db->query('SELECT COUNT(*) as nb FROM MESSAGES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne;');
-			                    $data = $query->fetch();
-			
-			                    if ($data['nb'] == 0)
-			                    {
-			                        echo '<center>Aucun message à afficher.</center>';
-			                    }
-			                    else
-			                    {
-			                        $query = $db->query('SELECT * FROM MESSAGES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne;');
-			                        while ($data = $query->fetch())
-			                        {
-			                            echo '<div class="callout callout-default">';
-			                            echo '<h4>' . $data['titreMessage'] . '<small> '. $data['prenomPersonne'] . '</small></h4>';
-			                            echo '<p>' . $data['corpsMessage'] . '</p>';
-			                            echo '</div>';
-			                        }
-			                    }
-			                    ?>
-			
-			                </div>
-			            </div>
-			            <!-- /.box-body -->
-			        </div>
-			        
-			        <div class="col-md-6">
-					    <div class="box box-success">
-							<div class="box-header">
-								<i class="fa fa-check-square-o"></i>
-								<h3 class="box-title">To Do List</h3>
-								<div class="box-tools pull-right">
-			                    	<?php if ($_SESSION['todolist_perso']==1) {?><a href="todolistForm.php?idCreateur=<?= $_SESSION['idPersonne'] ?>&idExecutant=<?= $_SESSION['idPersonne'] ?>" class="btn btn-sm modal-form" title="Ajouter un tache"><i class="fa fa-plus"></i></a><?php } ?>
-			                    </div>
-						    </div>
-						    <!-- /.box-header -->
-							<div class="box-body">
-								<ul class="todo-list">
-									<?php
-										$query = $db->prepare('SELECT * FROM TODOLIST_PERSONNES tp JOIN TODOLIST tdl ON tp.idTache = tdl.idTache LEFT OUTER JOIN TODOLIST_PRIORITES prio ON tdl.idTDLpriorite = prio.idTDLpriorite WHERE idExecutant = :idExecutant AND realisee = 0');
-										$query->execute(array('idExecutant'=>$_SESSION['idPersonne']));
-										while ($data = $query->fetch())
-										{ ?>
-											<li>
-												<!-- todo text -->
-												<span class="text"><?= $data['titre'] ?></span>
-												<!-- Emphasis label -->
-												<small class="label label-<?= $data['couleurPriorite'] ?>"><?= $data['libellePriorite'] ?></small><small class="label label-<?= getTDLdateColor($data['idTache']) ?>"><?= $data['dateExecution'] ?></small>
-												<!-- General tools such as edit or delete-->
-												<div class="tools">
-													<a href="todolistForm.php?id=<?= $data['idTache'] ?>" class="modal-form"><i class="fa fa-edit"></i></a>
-												</div>
-											</li>
-										<?php }
-									?>
-								</ul>
-							</div>
-						    <!-- /.box-body -->
-						</div>
-					</div>
 					
 					
 			        <div class="col-md-12">
@@ -990,7 +926,42 @@ include('logCheck.php');
 						<i class="fa fa-sliders bg-gray"></i>
 		            </li>
 				</ul>
+				<br/>
         	</div>
+        	<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+			    <div class="box box-success">
+					<div class="box-header">
+						<i class="fa fa-check-square-o"></i>
+						<h3 class="box-title">To Do List</h3>
+						<div class="box-tools pull-right">
+	                    	<?php if ($_SESSION['todolist_perso']==1) {?><a href="todolistForm.php?idCreateur=<?= $_SESSION['idPersonne'] ?>&idExecutant=<?= $_SESSION['idPersonne'] ?>" class="btn btn-sm modal-form" title="Ajouter un tache"><i class="fa fa-plus"></i></a><?php } ?>
+	                    </div>
+				    </div>
+				    <!-- /.box-header -->
+					<div class="box-body">
+						<ul class="todo-list">
+							<?php
+								$query = $db->prepare('SELECT * FROM TODOLIST_PERSONNES tp JOIN TODOLIST tdl ON tp.idTache = tdl.idTache LEFT OUTER JOIN TODOLIST_PRIORITES prio ON tdl.idTDLpriorite = prio.idTDLpriorite WHERE idExecutant = :idExecutant AND realisee = 0');
+								$query->execute(array('idExecutant'=>$_SESSION['idPersonne']));
+								while ($data = $query->fetch())
+								{ ?>
+									<li>
+										<!-- todo text -->
+										<span class="text"><?= $data['titre'] ?></span>
+										<!-- Emphasis label -->
+										<small class="label label-<?= $data['couleurPriorite'] ?>"><?= $data['libellePriorite'] ?></small><small class="label label-<?= getTDLdateColor($data['idTache']) ?>"><?= $data['dateExecution'] ?></small>
+										<!-- General tools such as edit or delete-->
+										<div class="tools">
+											<a href="todolistForm.php?id=<?= $data['idTache'] ?>" class="modal-form"><i class="fa fa-edit"></i></a>
+										</div>
+									</li>
+								<?php }
+							?>
+						</ul>
+					</div>
+				    <!-- /.box-body -->
+				</div>
+			</div>
     	</div>
     </section>
     <!-- /.content -->

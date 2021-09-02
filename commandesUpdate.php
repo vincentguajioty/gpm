@@ -21,6 +21,7 @@ else
         UPDATE
             COMMANDES
         SET
+            nomCommande        = :nomCommande,
             idCentreDeCout     = :idCentreDeCout,
             idFournisseur      = :idFournisseur,
             idLieuLivraison    = :idLieuLivraison,
@@ -30,6 +31,7 @@ else
         ;');
     $query->execute(array(
         'idCommande'         => $_GET['id'],
+        'nomCommande'        => $_POST['nomCommande'],
         'idCentreDeCout'     => $_POST['idCentreDeCout'],
         'idFournisseur'      => $_POST['idFournisseur'],
         'idLieuLivraison'    => $_POST['idLieuLivraison'],
@@ -109,7 +111,7 @@ else
         $db->query($insertSQL);
     }
 
-    echo "<script>javascript:history.go(-1);</script>";
+    echo "<script>window.location = document.referrer;</script>";
 
 }
 ?>

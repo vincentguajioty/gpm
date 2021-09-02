@@ -43,6 +43,7 @@ if ($_SESSION['commande_lecture']==0)
                         <tr>
                             <th class="all" style="width: 10px">#</th>
                             <th class="all">Date de création</th>
+                            <th class="all">Nom</th>
                             <th class="all">Fournisseur</th>
                             <th class="not-mobile">Référence fournisseur</th>
                             <th class="not-mobile">Etat</th>
@@ -54,9 +55,9 @@ if ($_SESSION['commande_lecture']==0)
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->prepare('SELECT c.idCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat FROM COMMANDES_AFFECTEES j LEFT OUTER JOIN COMMANDES c ON j.idCommande = c.idCommande LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE (idAffectee = :idPersonne) AND (c.idEtat = 4 OR c.idEtat = 5 OR c.idEtat = 6)
+                        $query = $db->prepare('SELECT c.idCommande, c.nomCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat FROM COMMANDES_AFFECTEES j LEFT OUTER JOIN COMMANDES c ON j.idCommande = c.idCommande LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE (idAffectee = :idPersonne) AND (c.idEtat = 4 OR c.idEtat = 5 OR c.idEtat = 6)
                         UNION
-                        SELECT c.idCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat FROM COMMANDES_OBSERVATEURS j LEFT OUTER JOIN COMMANDES c ON j.idCommande = c.idCommande LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE (idObservateur = :idPersonne) AND (c.idEtat = 4 OR c.idEtat = 5 OR c.idEtat = 6);');
+                        SELECT c.idCommande, c.nomCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat FROM COMMANDES_OBSERVATEURS j LEFT OUTER JOIN COMMANDES c ON j.idCommande = c.idCommande LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE (idObservateur = :idPersonne) AND (c.idEtat = 4 OR c.idEtat = 5 OR c.idEtat = 6);');
                         $query->execute(array(
                             'idPersonne' => $_SESSION['idPersonne']
                         ));
@@ -65,6 +66,7 @@ if ($_SESSION['commande_lecture']==0)
                             <tr <?php if ($_SESSION['commande_lecture']==1) {?>data-href="commandeView.php?id=<?=$data['idCommande']?>"<?php }?>>
                                 <td><?php echo $data['idCommande']; ?></td>
                                 <td><?php echo $data['dateCreation']; ?></td>
+                                <td><?php echo $data['nomCommande']; ?></td>
                                 <td><?php echo $data['nomFournisseur']; ?></td>
                                 <td><?php echo $data['numCommandeFournisseur']; ?></td>
                                 <td><span class="badge bg-<?php

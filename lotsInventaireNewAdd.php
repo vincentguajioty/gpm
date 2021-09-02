@@ -149,6 +149,6 @@ else
 
 	checkOneConf($_GET['id']);
 
-    echo "<script>javascript:history.go(-2);</script>";
+    echo "<script type='text/javascript'>document.location.replace('lotsContenu.php?id=".$_GET['id']."');</script>";
 }
 ?>

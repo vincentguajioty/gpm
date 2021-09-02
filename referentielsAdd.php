@@ -31,14 +31,14 @@ else
             writeInLogs("Doublon détecté lors de l'ajout du référentiel " . $_POST['libelleTypeLot'], '2', NULL);
             $_SESSION['returnMessage'] = "Un référentiel existe déjà avec le même libellé. Merci de changer le libellé";
             $_SESSION['returnType'] = '2';
-            echo "<script>javascript:history.go(-2);</script>";
+            echo "<script>window.location = document.referrer;</script>";
             break;
 
         default:
             writeInLogs("Erreur inconnue lors de l'ajout du référentiel " . $_POST['libelleTypeLot'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de l'ajout du référentiel.";
             $_SESSION['returnType'] = '2';
-            echo "<script>javascript:history.go(-2);</script>";
+            echo "<script>window.location = document.referrer;</script>";
     }
   
 }

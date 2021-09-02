@@ -329,8 +329,15 @@ switch($data['version'])
         writeInLogs("Fin de l'installation de la mise à jour 9.4", '1', NULL);
         echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
         break;
-
+        
     case '9.4':
+        writeInLogs("Début de l'installation de la mise à jour 9.5", '1', NULL);
+        $query = $db->query(file_get_contents ("update9.5.sql"));
+        writeInLogs("Fin de l'installation de la mise à jour 9.5", '1', NULL);
+        echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
+        break;
+
+    case '9.5':
         writeInLogs("Fin des mises à jour", '1', NULL);
         echo "<script type='text/javascript'>document.location.replace('INSTALLFINISH.php');</script>";
         break;

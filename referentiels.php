@@ -36,7 +36,7 @@ if ($_SESSION['typesLots_lecture']==0)
             <div class="box">
                 <?php if ($_SESSION['typesLots_ajout']==1) {?>
                 	<div class="box-header">
-                        <h3 class="box-title"><a href="referentielsForm.php?id=0" class="btn btn-sm btn-success">Ajouter un référentiel</a></h3>
+                        <h3 class="box-title"><a href="referentielsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un référentiel</a></h3>
                 	</div>
                 <?php } ?>
                 <!-- /.box-header -->
@@ -62,7 +62,7 @@ if ($_SESSION['typesLots_lecture']==0)
                                         <a href="referentielsContenu.php?id=<?=$data['idTypeLot']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['typesLots_modification']==1) {?>
-                                        <a href="referentielsForm.php?id=<?=$data['idTypeLot']?>" class="btn btn-xs btn-warning" title="Modifier"><i class="fa fa-pencil"></i></a>
+                                        <a href="referentielsForm.php?id=<?=$data['idTypeLot']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
                                     <?php if ($_SESSION['typesLots_suppression']==1) {?>
                                         <a href="modalDeleteConfirm.php?case=referentielsDelete&id=<?=$data['idTypeLot']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>

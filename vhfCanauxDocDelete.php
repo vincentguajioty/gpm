@@ -26,6 +26,6 @@ else {
     writeInLogs("Suppression d'une pièce jointe référence " . $data['nomDocCanalVHF'] . " au canal " . $data['idVhfCanal'], '1', NULL);
 
 
-    echo "<script>javascript:history.go(-1);</script>";
+    echo "<script>window.location = document.referrer;</script>";
 }
 ?>

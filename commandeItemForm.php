@@ -33,7 +33,7 @@ if($_SESSION['commande_lecture']==1)
                 <form role="form" action="<?= (isset($_GET['idElement'])) ? 'commandeItemUpdate.php?idCommande='.$_GET['idCommande'].'&idElement='.$_GET['idElement'] : 'commandeItemAdd.php?idCommande='.$_GET['idCommande'] ?>" method="POST">
                     <div class="modal-body">
                     <div class="form-group">
-                        <label>Matériel classé par fournisseur: <small style="color:grey;">Requis</small></label>
+                        <label>Matériel (classé par fournisseur): <small style="color:grey;">Requis</small></label>
                         <select <?= (isset($_GET['idElement'])) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idMaterielCatalogue">
                             <optgroup label="Autres">
                                 <option value="-1">Frais de port</option>

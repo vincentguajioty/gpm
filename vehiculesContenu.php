@@ -18,7 +18,7 @@ if ($_SESSION['vehicules_lecture']==0)
     <?php require_once 'documentsGetIcone.php'; ?>
 
     <?php
-    $query = $db->prepare('SELECT * FROM VEHICULES v LEFT OUTER JOIN ETATS e ON v.idEtat = e.idEtat LEFT OUTER JOIN PERSONNE_REFERENTE p ON v.idResponsable = p.idPersonne LEFT OUTER JOIN VEHICULES_TYPES t ON v.idVehiculesType = t.idVehiculesType LEFT OUTER JOIN LIEUX l ON v.idLieu = l.idLieu WHERE idVehicule = :idVehicule;');
+    $query = $db->prepare('SELECT * FROM VEHICULES v LEFT OUTER JOIN ETATS e ON v.idEtat = e.idEtat LEFT OUTER JOIN PERSONNE_REFERENTE p ON v.idResponsable = p.idPersonne LEFT OUTER JOIN VEHICULES_TYPES t ON v.idVehiculesType = t.idVehiculesType LEFT OUTER JOIN LIEUX l ON v.idLieu = l.idLieu LEFT OUTER JOIN CARBURANTS c ON v.idCarburant = c.idCarburant WHERE idVehicule = :idVehicule;');
     $query->execute(array(
         'idVehicule' => $_GET['id']));
     $data=$query->fetch();
@@ -60,6 +60,10 @@ if ($_SESSION['vehicules_lecture']==0)
                                 <tr>
                                     <td>Marque/modele</td>
                                     <td><?= $data['marqueModele'] ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Carburant</td>
+                                    <td><?= $data['libelleCarburant'] ?></td>
                                 </tr>
                                 <tr>
                                     <td>Immatriculation</td>

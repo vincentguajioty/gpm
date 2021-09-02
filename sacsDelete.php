@@ -51,6 +51,6 @@ else
     
     checkAllConf();
 
-    echo "<script>javascript:history.go(-1);</script>";
+    echo "<script>window.location = document.referrer;</script>";
 }
 ?>

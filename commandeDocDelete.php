@@ -27,6 +27,6 @@ else {
     addCommandeComment($data['idCommande'], $_SESSION['identifiant'] . " supprime la pièce jointe " . $data['nomDocCommande'], "11");
 
 
-    echo "<script>javascript:history.go(-1);</script>";
+    echo "<script>window.location = document.referrer;</script>";
 }
 ?>

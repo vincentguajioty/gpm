@@ -403,6 +403,6 @@ else
     majIndicateursProfil($data['idProfil']);
     majNotificationsProfil($data['idProfil']);
 
-    echo "<script>javascript:history.go(-2);</script>";
+    echo "<script type='text/javascript'>document.location.replace('profils.php');</script>";
 }
 ?>

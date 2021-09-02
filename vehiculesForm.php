@@ -150,14 +150,35 @@ if($_SESSION['vehicules_lecture']==1 OR $_SESSION['vehicules_ajout']==1 OR $_SES
 		                        </div>
 		                    </div>
 		                </div>
-						<div class="form-group">
-							<label>Date d'achat:</label>
-                            <div class="input-group">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input class="input-datepicker form-control" name="dateAchat" value="<?= isset($data['dateAchat']) ? $data['dateAchat'] : '' ?>">
-                            </div>
+		                <div class="row">
+		                	<div class="col-lg-6 col-xs-12">
+		                		<div class="form-group">
+		                            <label>Carburant</label>
+		                            <select class="form-control select2" style="width: 100%;" name="idCarburant">
+		                                <option value="">--- Non-Spécifié ---</option>
+		                                <?php
+		                                $query2 = $db->query('SELECT * FROM CARBURANTS ORDER BY libelleCarburant;');
+		                                while ($data2 = $query2->fetch())
+		                                {
+		                                    ?>
+		                                    <option value ="<?php echo $data2['idCarburant']; ?>" <?php if (isset($data['idCarburant']) AND ($data2['idCarburant'] == $data['idCarburant'])) { echo 'selected'; } ?> ><?php echo $data2['libelleCarburant']; ?></option>
+		                                    <?php
+		                                }
+		                                $query2->closeCursor(); ?>
+		                            </select>
+		                        </div>
+		                	</div>
+                    		<div class="col-lg-6 col-xs-12">
+								<div class="form-group">
+									<label>Date d'achat:</label>
+		                            <div class="input-group">
+		                                <div class="input-group-addon">
+		                                    <i class="fa fa-calendar"></i>
+		                                </div>
+		                                <input class="input-datepicker form-control" name="dateAchat" value="<?= isset($data['dateAchat']) ? $data['dateAchat'] : '' ?>">
+		                            </div>
+								</div>
+							</div>
 						</div>
 						<div class="form-group">
                             <label>Référence Assurance:</label>

@@ -46,7 +46,7 @@ else
             writeInLogs("Erreur inconnue lors de la création de la commande.", '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la création de la commande.";
             $_SESSION['returnType'] = '2';
-            echo "<script>javascript:history.go(-2);</script>";
+            echo "<script>window.location = document.referrer;</script>";
     }
 
     

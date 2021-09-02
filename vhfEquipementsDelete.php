@@ -59,6 +59,6 @@ else
             $_SESSION['returnType'] = '2';
     }
 
-    echo "<script>javascript:history.go(-1);</script>";
+    echo "<script>window.location = document.referrer;</script>";
 }
 ?>

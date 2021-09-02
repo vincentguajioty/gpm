@@ -183,6 +183,7 @@ if ($_SESSION['cout_lecture']==0)
                                     <tr>
                                         <th>#</th>
                                         <th>Date de création</th>
+                                        <th>Nom</th>
                                         <th>Montant</th>
                                         <th>Etat</th>
                                         <th>Gerant</th>
@@ -204,6 +205,7 @@ if ($_SESSION['cout_lecture']==0)
                                             <tr>
                                                 <td><?= $data2['idCommande'] ?></td>
                                                 <td><?= $data2['dateCreation'] ?></td>
+                                                <td><?= $data2['nomCommande'] ?></td>
                                                 <td><?= $totalCMD ?> €</td>
                                                 <td>
                                                     <span class="badge bg-<?php
@@ -266,6 +268,7 @@ if ($_SESSION['cout_lecture']==0)
                                     <tr>
                                         <th>#</th>
                                         <th>Date de création</th>
+                                        <th>Nom</th>
                                         <th>Montant</th>
                                         <th>Etat</th>
                                         <th>Gerant</th>
@@ -287,6 +290,7 @@ if ($_SESSION['cout_lecture']==0)
                                             <tr>
                                                 <td><?= $data2['idCommande'] ?></td>
                                                 <td><?= $data2['dateCreation'] ?></td>
+                                                <td><?= $data2['nomCommande'] ?></td>
                                                 <td><?= $totalCMD ?> €</td>
                                                 <td>
                                                     <span class="badge bg-<?php
