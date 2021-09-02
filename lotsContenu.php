@@ -116,15 +116,33 @@ if ($_SESSION['lots_lecture']==0)
                         </div>
                         <div class="box-footer no-padding">
                             <ul class="nav nav-stacked">
-                                <li><a>Référentiel <span class="pull-right"><?php echo $data['libelleTypeLot']; ?></span></a></li>
-                                <li><a>Nombre de sacs <span class="pull-right"><?php echo $data2['nb']; ?></span></a></li>
-                                <li><a>Nombre d'emplacements <span class="pull-right"><?php echo $data3['nb']; ?></span></a></li>
-                                <li><a>Quantite de matériel <span class="pull-right"><?php echo $data4['nb']; ?></span></a></li>
-                                <li><a>Personne responsable <span class="pull-right"><?php echo $data['identifiant']; ?></span></a></li>
-                                <li><a>Lieu <span class="pull-right"><?php echo $data['libelleLieu']; ?></span></a></li>
-                                <li><a>Véhicule <span class="pull-right"><?php echo $data['libelleVehicule']; ?></span></a></li>
-                                <li><a>Dernier inventaire <span class="pull-right"><?php echo $data['dateDernierInventaire']; ?></span></a></li>
-                                <li><a>Fréquence d'inventaire <span class="pull-right"><?php echo $data['frequenceInventaire']; ?></span></a></li>
+                                <li>
+                                    <a>Référentiel <span class="pull-right"><?php echo $data['libelleTypeLot']; ?></span></a>
+                                </li>
+                                <li>
+                                    <a>Nombre de sacs <span class="pull-right"><?php echo $data2['nb']; ?></span></a>
+                                </li>
+                                <li>
+                                    <a>Nombre d'emplacements <span class="pull-right"><?php echo $data3['nb']; ?></span></a>
+                                </li>
+                                <li>
+                                    <a>Quantite de matériel <span class="pull-right"><?php echo $data4['nb']; ?></span></a>
+                                </li>
+                                <li>
+                                    <a <?php if($_SESSION['annuaire_lecture'] AND isset($data['idPersonne'])){echo 'href="annuaireContenu.php?id='.$data['idPersonne'].'"';} ?>>Personne responsable <span class="pull-right"><?php echo $data['identifiant']; ?></span></a>
+                                </li>
+                                <li>
+                                    <a>Lieu <span class="pull-right"><?php echo $data['libelleLieu']; ?></span></a>
+                                </li>
+                                <li>
+                                    <a <?php if($_SESSION['vehicules_lecture'] AND isset($data['idVehicule'])){echo 'href="vehiculesContenu.php?id='.$data['idVehicule'].'"';} ?>>Véhicule <span class="pull-right"><?php echo $data['libelleVehicule']; ?></span></a>
+                                </li>
+                                <li>
+                                    <a>Dernier inventaire <span class="pull-right"><?php echo $data['dateDernierInventaire']; ?></span></a>
+                                </li>
+                                <li>
+                                    <a>Fréquence d'inventaire <span class="pull-right"><?php echo $data['frequenceInventaire']; ?></span></a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -157,7 +175,7 @@ if ($_SESSION['lots_lecture']==0)
                                             }
                                         }
                                         ?></a></li>
-                                <li><a>Elements périmés<?php
+                                <li><a <?php if ($data5['nb']>0){echo 'data-toggle="modal" data-target="#modalLotAlertePeremption"';}?>>Elements périmés<?php
                                         if ($data5['nb']>0)
                                         {
                                             echo '<span class="pull-right badge bg-red">' . $data5['nb'] .'</span>';
@@ -167,7 +185,7 @@ if ($_SESSION['lots_lecture']==0)
                                             echo '<span class="pull-right badge bg-green">' . $data5['nb'] .'</span>';
                                         }
                                         ?></a></li>
-                                <li><a>Matériel manquant<?php
+                                <li><a <?php if ($data6['nb']>0){echo 'data-toggle="modal" data-target="#modalLotAlerteQuantité"';}?>>Matériel manquant<?php
                                         if ($data6['nb']>0)
                                         {
                                             echo '<span class="pull-right badge bg-red">' . $data6['nb'] .'</span>';
@@ -534,6 +552,60 @@ if ($_SESSION['lots_lecture']==0)
 
 <?php include('scripts.php'); ?>
 </body>
+
+<div class="modal fade modal-danger" id="modalLotAlertePeremption">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alertes de péremption</h4>
+            </div>
+            <div class="modal-body">
+                <?php
+                $query = $db->prepare('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (peremptionNotification < CURRENT_DATE OR peremptionNotification = CURRENT_DATE OR peremption < CURRENT_DATE OR peremption = CURRENT_DATE) AND idLot = :idLot;');
+                $query->execute(array('idLot'=>$_GET['id']));
+                ?>
+                <ul>
+                    <?php
+                    while($data=$query->fetch())
+                    {
+                        echo '<li>' . $data['libelleMateriel'] . '</li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-danger" id="modalLotAlerteQuantité">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alertes de quantité</h4>
+            </div>
+            <div class="modal-body">
+                <?php
+                $query = $db->prepare('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE (quantite < quantiteAlerte OR quantite = quantiteAlerte) AND idLot = :idLot;');
+                $query->execute(array('idLot'=>$_GET['id']));
+                ?>
+                <ul>
+                    <?php
+                    while($data=$query->fetch())
+                    {
+                        echo '<li>' . $data['libelleMateriel'] . '</li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </html>
 
 

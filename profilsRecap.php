@@ -278,6 +278,13 @@ if ($_SESSION['profils_lecture']==0)
                             <td><?php foreach($profils as $profil){if($profil['typesDesinfections_suppression']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                         </tr>
                         <tr>
+                            <td>Carburants</td>
+                            <td><?php foreach($profils as $profil){if($profil['carburants_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['carburants_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['carburants_modification']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['carburants_suppression']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                        </tr>
+                        <tr>
                             <td>Etats</td>
                             <td><?php foreach($profils as $profil){if($profil['etats_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['etats_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>

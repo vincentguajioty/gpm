@@ -278,6 +278,13 @@ if ($_SESSION['profils_lecture']==0 OR $_SESSION['annuaire_lecture']==0)
                             <td><?php foreach($users as $user){if($user['typesDesinfections_suppression']){echo $user['identifiant'].'<br/>';}} ?></td>
                         </tr>
                         <tr>
+                            <td>Carburants</td>
+                            <td><?php foreach($users as $user){if($user['carburants_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['carburants_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['carburants_modification']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['carburants_suppression']){echo $user['identifiant'].'<br/>';}} ?></td>
+                        </tr>
+                        <tr>
                             <td>Etats</td>
                             <td><?php foreach($users as $user){if($user['etats_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['etats_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>

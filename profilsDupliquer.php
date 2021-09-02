@@ -140,7 +140,11 @@ else
 			typesDesinfections_lecture      = :typesDesinfections_lecture,
 			typesDesinfections_ajout        = :typesDesinfections_ajout,
 			typesDesinfections_modification = :typesDesinfections_modification,
-			typesDesinfections_suppression  = :typesDesinfections_suppression
+			typesDesinfections_suppression  = :typesDesinfections_suppression,
+			carburants_lecture              = :carburants_lecture,
+			carburants_ajout                = :carburants_ajout,
+			carburants_modification         = :carburants_modification,
+			carburants_suppression          = :carburants_suppression
 	;');
     $query->execute(array(
 		'libelleProfil'                   => $data['libelleProfil'] . ' - Copie',
@@ -263,6 +267,10 @@ else
 		'typesDesinfections_ajout'        => $data['typesDesinfections_ajout'],
 		'typesDesinfections_modification' => $data['typesDesinfections_modification'],
 		'typesDesinfections_suppression'  => $data['typesDesinfections_suppression'],
+		'carburants_lecture'              => $data['carburants_lecture'],
+		'carburants_ajout'                => $data['carburants_ajout'],
+		'carburants_modification'         => $data['carburants_modification'],
+		'carburants_suppression'          => $data['carburants_suppression'],
 ));
 
     switch($query->errorCode())

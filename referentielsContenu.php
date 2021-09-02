@@ -46,7 +46,7 @@ if ($_SESSION['typesLots_lecture']==0)
                     <div class="box-header">
                         <h3 class="box-title">Contenu du référentiel</h3>
                         <div class="box-tools pull-right">
-	                    	<?php if ($_SESSION['typesLots_modification']==1) {?><a href="referentielsContenuForm.php?id=<?= $_GET['id'] ?>" class="btn btn-success btn-sm modal-form">Ajouter un élément</a><?php } ?>
+	                    	<?php if ($_SESSION['typesLots_modification']==1) {?><a href="referentielsContenuForm.php?id=<?= $_GET['id'] ?>" class="btn btn-warning btn-sm">Modifier le référentiel</a><?php } ?>
 	                    </div>
                     </div>
                     <!-- /.box-header -->
@@ -60,7 +60,6 @@ if ($_SESSION['typesLots_lecture']==0)
                                 <th>Obligation</th>
                                 <th>Catérogie</th>
                                 <th>Commentaires</th>
-                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -87,11 +86,6 @@ if ($_SESSION['typesLots_lecture']==0)
                                         ?></td>
                                     <td><?php echo $data['libelleCategorie']; ?></td>
                                     <td><?php echo $data['commentairesReferentiel']; ?></td>
-                                    <td>
-                                        <?php if ($_SESSION['typesLots_modification']==1) {?>
-                                            <a href="modalDeleteConfirm.php?case=referentielsDeleteItem&idLot=<?=$_GET['id']?>&idMateriel=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
-                                        <?php }?>
-                                    </td>
                                 </tr>
                                 <?php
                             }

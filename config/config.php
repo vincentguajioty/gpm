@@ -2,7 +2,7 @@
 
 require_once 'bdd.php';
 
-$VERSIONCHECK = '9.6';
+$VERSIONCHECK = '9.7';
 
 $query = $db->query('SELECT * FROM CONFIG;');
 $data = $query->fetch();
@@ -23,8 +23,6 @@ $SELPOST         = $data['selPost'];
 $VEHICULES_CT_DELAIS_NOTIF = $data['vehicules_ct_delais_notif'];
 $VEHICULES_REVISION_DELAIS_NOTIF = $data['vehicules_revision_delais_notif'];
 $VEHICULES_ASSURANCE_DELAIS_NOTIF = $data['vehicules_assurance_delais_notif'];
-
-$DEBUG           = 0;
 
 $XSS_SECURITY    = array("script", "<", ">", "/");
 

@@ -12,7 +12,7 @@ require_once('logCheck.php');
 ATTENTION: modification d'un profil necessite à mettre à jour:
 - formulaire des profils
 - vue DB VIEW_HABILITATIONS
-- profilsRecap.php
+- profilsRecap.php et profilsRecapPersonnes.php
 - scripts Add et Update
 - script duplicate profils
 - page de visualisation des droits depuis la page annuaireContenu.php
@@ -302,6 +302,13 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <td><input <?php if(isset($_GET['id']) AND $data['typesDesinfections_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesDesinfections_ajout"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['typesDesinfections_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesDesinfections_modification"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['typesDesinfections_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesDesinfections_suppression"></td>
+                            </tr>
+                            <tr>
+                                <td>Carburants</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['carburants_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="carburants_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['carburants_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="carburants_ajout"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['carburants_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="carburants_modification"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['carburants_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="carburants_suppression"></td>
                             </tr>
                             <tr>
                                 <td>Etats</td>

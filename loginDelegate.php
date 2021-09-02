@@ -157,6 +157,10 @@ else
 	$_SESSION['typesDesinfections_ajout']        = $data['typesDesinfections_ajout'];
 	$_SESSION['typesDesinfections_modification'] = $data['typesDesinfections_modification'];
 	$_SESSION['typesDesinfections_suppression']  = $data['typesDesinfections_suppression'];
+	$_SESSION['carburants_lecture']              = $data['carburants_lecture'];
+	$_SESSION['carburants_ajout']                = $data['carburants_ajout'];
+	$_SESSION['carburants_modification']         = $data['carburants_modification'];
+	$_SESSION['carburants_suppression']          = $data['carburants_suppression'];
 
 	$_SESSION['tableRowPerso']                   = $data['tableRowPerso'];
 

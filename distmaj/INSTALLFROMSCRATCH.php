@@ -35,7 +35,7 @@
                         <input type="checkbox" value="1" name="bkup" required> Je confirme que ma base de données est vide.
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" value="1" name="rollback" required> Je confirme que GPM peut créer ses table dessus.
+                        <input type="checkbox" value="1" name="rollback" required> Je confirme que GPM peut créer ses tables dessus.
                     </div>
                     <div class="form-group">
                         <input type="checkbox" value="1" name="temps" required> J'ai compris qu'une fois que j'aurais appuyé sur "Installer", les opérations vont prendre un certain temps à être menées sur la base et qu'il ne faut en aucun cas que je ne touche à quoi que ce soit.

@@ -4,7 +4,7 @@ session_start();
 function createDB()
 {
     //---------------------- BASE DE DONNEES ----------------------
-    $SERVEURDB = 'x.x.x.x:xxxx'; //adresse IP du serveur entre simple cote, ex: $SERVEUR = '192.169.1.5';
+    $SERVEURDB = 'x.x.x.'; //adresse IP du serveur entre simple cote, ex: $SERVEUR = '192.169.1.5';
     $DBNAME = 'GPM'; //nom de la base de données, ex: $DB = 'GPM';
     $CHARSET = 'utf8'; //type d'interclassement, utf8 étant recommandé, ex: $CHARSET = 'utf8';
     $USER = 'xxx'; //nom d'utilisateur d'accès à la base de données, ex: $USER = 'utilisateur';
@@ -17,7 +17,7 @@ function createDB()
         $query->execute(array(
             'table_schema' => $DBNAME));
         $data = $query->fetch();
-        if ($data['nb'] == 0) {
+        if ($data['nb'] == 0 AND (strpos($_SERVER['HTTP_REFERER'], "INSTALLFROMSCRATCH.php") == false)) {
             echo "<script type='text/javascript'>document.location.replace('distmaj/INSTALLFROMSCRATCH.php');</script>";
         }
 
@@ -33,14 +33,6 @@ $db = createDB();
 
 function writeInLogs($contentEVT, $levelEVT, $userSpecifique)
 {
-    require_once('config.php');
-    global $DEBUG;
-
-    if($levelEVT == 4 AND $DEBUG == 0)
-    {
-        exit;
-    }
-
     switch($levelEVT)
     {
         case '1':

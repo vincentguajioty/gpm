@@ -28,7 +28,7 @@ else
 
         default:
             writeInLogs("Erreur inconnue lors de la modification du type de véhicule " . $_POST['libelleType'], '3', NULL);
-            $_SESSION['returnMessage'] = 'Erreur inconnue lors la modification du type..';
+            $_SESSION['returnMessage'] = 'Erreur inconnue lors la modification du type.';
             $_SESSION['returnType'] = '2';
     }
 

@@ -312,11 +312,8 @@
     $(function () {
         //Initialize Select2 Elements
         $(".select2").select2();
-//        listenSelect('select[name="emplacementLot"]', 'select[name="libelleSac"]');
         $('select[name="libelleSac"]').children('option').prop('disabled', true);
 
-//        listenSelect('select[name="materielLot"]', 'select[name="materielSac"]');
-//        listenSelect('select[name="materielSac"]', 'select[name="libelleEmplacement"]');
         $('select[name="materielSac"], select[name="libelleEmplacement"]').children('option').prop('disabled', true);
     });
 </script>

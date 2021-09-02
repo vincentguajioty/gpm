@@ -315,7 +315,7 @@ require_once 'config/bdd.php';
             ?>
             
             <?php
-            if ($_SESSION['vehicules_lecture']==1)
+            if ($_SESSION['vehicules_lecture']==1 OR $_SESSION['desinfections_lecture']==1)
             {
                 ?>
                 <li <?php
@@ -342,6 +342,15 @@ require_once 'config/bdd.php';
                             }
                             ?>
                             ><a href="vehicules.php"><i class="fa fa-ambulance"></i> <span>Véhicules</span></a></li>
+                        <?php } ?>
+                        <?php if ($_SESSION['desinfections_lecture']==1){ ?>
+                            <li <?php
+                            if ($_SESSION['page'] == 1002)
+                            {
+                                echo 'class="active"';
+                            }
+                            ?>
+                            ><a href="desinfections.php"><i class="fa fa-recycle"></i> <span>Suivi des désinfections</span></a></li>
                         <?php } ?>
                     </ul>
                 </li>
@@ -514,6 +523,15 @@ require_once 'config/bdd.php';
 	                        }
 	                        ?>
 	                        ><a href="vehiculesTypesDesinfections.php"><i class="fa fa-recycle"></i> <span>Types de désinfections</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['carburants_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 308)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="vehiculesCarburants.php"><i class="fa fa-ambulance"></i> <span>Carburants</span></a></li>
 	                    <?php } ?>
 	                    <?php if ($_SESSION['etats_lecture']==1){ ?>
 	                        <li <?php

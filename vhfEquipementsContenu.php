@@ -103,6 +103,7 @@ if ($_SESSION['vhf_equipement_lecture']==0)
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#canaux" data-toggle="tab">Plan de fréquence</a></li>
+                            <li><a href="#accessoires" data-toggle="tab">Accessoires</a></li>
                             <li><a href="#pj" data-toggle="tab">Pièces jointes</a></li>
                         </ul>
                         <div class="tab-content">
@@ -135,7 +136,51 @@ if ($_SESSION['vhf_equipement_lecture']==0)
                                     $query2->closeCursor(); ?>
                                 </table>
                             </div>
+                            
+                            <div class="tab-pane" id="accessoires">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Libellé</th>
+                                        <th>Type</th>
+                                        <th>Marque/Modèle</th>
+                                        <th></th>
+                                    </tr>
+                                    <?php
+                                    $query2 = $db->prepare('SELECT * FROM VHF_ACCESSOIRES a LEFT OUTER JOIN VHF_ACCESSOIRES_TYPES t ON a.idVhfAccessoireType = t.idVhfAccessoireType WHERE idVhfEquipement = :idVhfEquipement ORDER BY libelleVhfAccessoire ASC ;');
+                                    $query2->execute(array('idVhfEquipement' => $_GET['id']));
+                                    while ($data2 = $query2->fetch())
+                                    {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $data2['idVhfAccessoire'];?></td>
+                                            <td><?php echo $data2['libelleVhfAccessoire'];?></td>
+                                            <td><?php echo $data2['libelleVhfAccessoireType'];?></td>
+                                            <td><?php echo $data2['marqueModeleVhfAccessoire'];?></td>
+                                            <td>
+                                                <?php if ($_SESSION['vhf_equipement_modification']==1) {?>
+                                                    <a href="vhfEquipementsAccessoiresForm.php?id=<?=$data2['idVhfAccessoire']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
+                                                <?php }?>
+                                                <?php if($_SESSION['vhf_equipement_suppression']==1){ ?>
+                                                    <a href="modalDeleteConfirm.php?case=vhfEquipementsAccessoiresDelete&id=<?=$data2['idVhfAccessoire']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
+                                                <?php }?>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
 
+                                    <?php if($_SESSION['vhf_equipement_modification']==1){ ?>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><a href="vhfEquipementsAccessoiresForm.php?idVhfEquipement=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a></td>
+                                        <tr>
+                                    <?php }?>
+                                </table>
+                            </div>
 
                             <div class="tab-pane" id="pj">
                                 <table class="table table-hover">

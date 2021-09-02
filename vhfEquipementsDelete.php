@@ -13,7 +13,7 @@ if(strtoupper($_POST['confirmation']) <> strtoupper($CONFSUPPRESSION))
     exit;
 }
 
-if ($_SESSION['vhf_plan_suppression']==0)
+if ($_SESSION['vhf_equipement_suppression']==0)
 {
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 }
@@ -38,6 +38,11 @@ else
             'idDocVHF' => $data2['idDocVHF']
         ));
     }
+
+    $query = $db->prepare('DELETE FROM VHF_ACCESSOIRES WHERE idVhfEquipement = :idVhfEquipement;');
+    $query->execute(array(
+        'idVhfEquipement' => $_GET['id']
+    ));
 
     $query = $db->prepare('DELETE FROM VHF_EQUIPEMENTS WHERE idVhfEquipement = :idVhfEquipement;');
     $query->execute(array(

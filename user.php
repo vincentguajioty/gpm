@@ -287,6 +287,13 @@ require_once('logCheck.php');
 			                        <td><?php if($_SESSION['typesDesinfections_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                    </tr>
 			                    <tr>
+			                        <td>Carburants</td>
+			                        <td><?php if($_SESSION['carburants_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['carburants_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['carburants_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['carburants_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
 			                        <td>Etats</td>
 			                        <td><?php if($_SESSION['etats_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                        <td><?php if($_SESSION['etats_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>

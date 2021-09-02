@@ -250,7 +250,7 @@ if ($_SESSION['vehicules_lecture']==0)
                     <!-- Widget: user widget style 1 -->
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#maintenance" data-toggle="tab">Taches de maintenance</a></li>
+                            <li class="active"><a href="#maintenance" data-toggle="tab">Maintenance ponctuelle</a></li>
                             <li><a href="#km" data-toggle="tab">Relevés kilométriques</a></li>
                             <?php if($_SESSION['desinfections_lecture']){ ?><li><a href="#desinfections" data-toggle="tab">Désinfections</a></li><?php } ?>
 							<li><a href="#lots" data-toggle="tab">Lots opérationnels affetés</a></li>

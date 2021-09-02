@@ -57,13 +57,19 @@ if($_SESSION['desinfections_lecture']==1 OR $_SESSION['desinfections_ajout']==1 
                         <div class="form-group">
                             <label>Executant <small style="color:grey;"> Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="idExecutant" required>
-                                <option></option>
                                 <?php
-                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE desinfections_modification = 1;');
+                                if(isset($_GET['id']))
+                                {
+                                    $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
+                                }
+                                else
+                                {
+                                    $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE desinfections_modification = 1;');
+                                }
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>
-                                    <option value="<?php echo $data2['idPersonne']; ?>" <?php if (isset($data['idExecutant']) AND ($data2['idPersonne'] == $data['idExecutant'])) { echo 'selected'; } ?> ><?php echo $data2['identifiant']; ?></option>
+                                    <option value="<?php echo $data2['idPersonne']; ?>" <?php if (isset($data['idExecutant']) AND ($data2['idPersonne'] == $data['idExecutant'])) { echo 'selected'; } if(!(isset($_GET['id']))AND$data2['idPersonne']==$_SESSION['idPersonne']){echo 'selected';} ?> ><?php echo $data2['identifiant']; ?></option>
                                     <?php
                                 }
                                 $query->closeCursor();

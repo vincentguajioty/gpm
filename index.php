@@ -41,290 +41,291 @@ include('logCheck.php');
     		}
     	?>
         <?php include('confirmationBox.php'); ?>
-        <div class="row">
-        	
-        	<div class="col-lg-12">
-				<?php
-					$messages = $db->query('SELECT m.*, p.identifiant, t.iconMessageType, t.couleurMessageType FROM MESSAGES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne LEFT OUTER JOIN MESSAGES_TYPES t ON m.idMessageType = t.idMessageType;');
-					while($message = $messages->fetch())
-					{ ?>
-						<div class="alert <?=$message['couleurMessageType']?> alert-dismissible">
-					    	<i class="icon fa <?=$message['iconMessageType']?>"></i> <b>Message de <?=$message['identifiant']?> :</b> <?=$message['corpsMessage']?>
-					    </div>
-					<?php }
-				?>
-		    </div>
-        	
+        <div class="row">			
         	<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
 		
 				<div class="row">	
 					<?php
 						if ($_SESSION['lots_lecture'] OR $_SESSION['lots_ajout'] OR $_SESSION['lots_modification'] OR $_SESSION['lots_suppression'] OR $_SESSION['sac_lecture'] OR $_SESSION['sac_ajout'] OR $_SESSION['sac_modification'] OR $_SESSION['sac_suppression'] OR $_SESSION['sac2_lecture'] OR $_SESSION['sac2_ajout'] OR $_SESSION['sac2_modification'] OR $_SESSION['sac2_suppression'] OR $_SESSION['materiel_lecture'] OR $_SESSION['materiel_ajout'] OR $_SESSION['materiel_modification'] OR $_SESSION['materiel_suppression'])
 						{
-					?>
-				        <div class="col-md-12">
-				            <div class="box box-success">
-				                <div class="box-header with-border">
-				                    <i class="fa fa-medkit"></i>
-				
-				                    <h3 class="box-title">Lots dont j'ai la charge</h3>
-				                </div>
-				
-				                <!-- /.box-header -->
-				                <div class="box-body">
-				                    <table class="table table-bordered">
-				                        <tr>
-				                            <th>Libelle</th>
-				                            <th>Référentiel</th>
-				                            <th>Matériels</th>
-				                            <th>Inventaire</th>
-				                            <th>Notifications</th>
-				                            <th></th>
-				                        </tr>
-				                        <?php
-				                        $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN ETATS s on l.idEtat = s.idEtat LEFT OUTER JOIN LIEUX e ON l.idLieu = e.idLieu LEFT OUTER JOIN PERSONNE_REFERENTE p on l.idPersonne = p.idPersonne WHERE l.idPersonne = :idPersonne ORDER BY libelleLot ASC;');
-				                        $query->execute(array('idPersonne' => $_SESSION['idPersonne']));
-				                        while ($data = $query->fetch())
-				                        {
-				                            ?>
-				                            <tr <?php if ($_SESSION['lots_lecture']==1) {?>data-href="lotsContenu.php?id=<?=$data['idLot']?>"<?php }?>>
-				                                <td><?php echo $data['libelleLot']; ?></td>
-				                                <td>
-					                                <?php
-				                                    if ($data['libelleTypeLot'] == Null)
-				                                    {
-				                                        ?><span class="badge bg-orange">NA</span><?php
-				                                    }
-				                                    else
-				                                    {
-				                                        if ($data['alerteConfRef']==0)
-				                                        {
-				                                            ?><span class="badge bg-green"><?php echo $data['libelleTypeLot']; ?></span><?php
-				                                        }
-				                                        else
-				                                        {
-				                                            ?><span class="badge bg-red"><?php echo $data['libelleTypeLot']; ?></span><?php
-				                                        }
-				                                    }
-				                                    ?>
-				                                </td>
-				                                <td>
-				                                    <?php
-				                                        $query2 = $db->prepare('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_EMPLACEMENT p ON e.idEmplacement=p.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON p.idSac=s.idSac
-				                                            WHERE idLot = :idLot AND
-				                                            (
-				                                                quantite > quantiteAlerte AND
-				                                                (
-				                                                    peremptionNotification > CURRENT_DATE
-				                                                    OR
-				                                                    peremptionNotification IS NULL
-				                                                )
-				                                            );');
-				                                        $query2->execute(array(
-				                                            'idLot' => $data['idLot']
-				                                        ));
-				                                        $data2 = $query2->fetch();
-				                                        if($data2['nb']>0)
-				                                        {
-				                                            ?><span class="badge bg-green"><?= $data2['nb'] ?></span><?php
-				                                        }
-				                                    ?>
-				                                    <?php
-				                                    $query2 = $db->prepare('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_EMPLACEMENT p ON e.idEmplacement=p.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON p.idSac=s.idSac
-				                                            WHERE idLot = :idLot AND
-				                                            (
-				                                                (
-				                                                    quantite = quantiteAlerte
-				                                                    AND
-				                                                    peremptionNotification = CURRENT_DATE
-				                                                )
-				                                                OR
-				                                                (
-				                                                    quantite = quantiteAlerte
-				                                                    AND
-				                                                    (
-				                                                        peremptionNotification > CURRENT_DATE
-				                                                        OR
-				                                                        peremptionNotification IS NULL
-				                                                    )
-				                                                )
-				                                                OR
-				                                                (
-				                                                    quantite > quantiteAlerte
-				                                                    AND
-				                                                    peremptionNotification = CURRENT_DATE
-				                                                )
-				                                            );');
-				                                    $query2->execute(array(
-				                                        'idLot' => $data['idLot']
-				                                    ));
-				                                    $data2 = $query2->fetch();
-				                                    if($data2['nb']>0)
-				                                    {
-				                                        ?><span class="badge bg-orange"><?= $data2['nb'] ?></span><?php
-				                                    }
-				                                    ?>
-				                                    <?php
-				                                    $query2 = $db->prepare('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_EMPLACEMENT p ON e.idEmplacement=p.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON p.idSac=s.idSac
-				                                            WHERE idLot = :idLot AND
-				                                            (
-				                                                quantite < quantiteAlerte OR
-				                                                peremptionNotification < CURRENT_DATE
-				                                            );');
-				                                    $query2->execute(array(
-				                                        'idLot' => $data['idLot']
-				                                    ));
-				                                    $data2 = $query2->fetch();
-				                                    if($data2['nb']>0)
-				                                    {
-				                                        ?><span class="badge bg-red"><?= $data2['nb'] ?></span><?php
-				                                    }
-				                                    ?>
-				                                </td>
-				                                <td><?php
-				                                    if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) < date('Y-m-d'))
-				                                    {
-				                                        ?><span class="badge bg-red"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
-				                                    }
-				                                    else if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) == date('Y-m-d'))
-				                                    {
-				                                        ?><span class="badge bg-orange"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
-				                                    }
-				                                    else
-				                                    {
-				                                        ?><span class="badge bg-green"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
-				                                    }
-				                                    ?>
-				                                </td>
-				                                <td><?php echo $data['libelleEtat']; ?> (<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>)</td>
-				                                <td>
-					                                <?php if ($_SESSION['lots_lecture']==1) {?>
-				                                        <a href="lotsContenu.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
-				                                    <?php }?>
-				                                </td>
-				                            </tr>
-				                            <?php
-				                        }
-				                        $query->closeCursor(); ?>
-				                    </table>
-				                </div>
-				            </div>
-				        </div>
-				    <?php } ?>
+							$count = $db->prepare('SELECT COUNT(*) AS nb FROM LOTS_LOTS l WHERE l.idPersonne = :idPersonne;');
+				            $count->execute(array('idPersonne' => $_SESSION['idPersonne']));
+				            $count = $count->fetch();
+				            if($count['nb'] > 0)
+				            {
+								?>
+						        <div class="col-md-12">
+						            <div class="box box-success">
+						                <div class="box-header with-border">
+						                    <i class="fa fa-medkit"></i>
+						
+						                    <h3 class="box-title">Lots dont j'ai la charge</h3>
+						                </div>
+						
+						                <!-- /.box-header -->
+						                <div class="box-body">
+						                    <table class="table table-bordered">
+						                        <tr>
+						                            <th>Libelle</th>
+						                            <th>Référentiel</th>
+						                            <th>Matériels</th>
+						                            <th>Inventaire</th>
+						                            <th>Notifications</th>
+						                            <th></th>
+						                        </tr>
+						                        <?php
+						                        $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN ETATS s on l.idEtat = s.idEtat LEFT OUTER JOIN LIEUX e ON l.idLieu = e.idLieu LEFT OUTER JOIN PERSONNE_REFERENTE p on l.idPersonne = p.idPersonne WHERE l.idPersonne = :idPersonne ORDER BY libelleLot ASC;');
+						                        $query->execute(array('idPersonne' => $_SESSION['idPersonne']));
+						                        while ($data = $query->fetch())
+						                        {
+						                            ?>
+						                            <tr <?php if ($_SESSION['lots_lecture']==1) {?>data-href="lotsContenu.php?id=<?=$data['idLot']?>"<?php }?>>
+						                                <td><?php echo $data['libelleLot']; ?></td>
+						                                <td>
+							                                <?php
+						                                    if ($data['libelleTypeLot'] == Null)
+						                                    {
+						                                        ?><span class="badge bg-orange">NA</span><?php
+						                                    }
+						                                    else
+						                                    {
+						                                        if ($data['alerteConfRef']==0)
+						                                        {
+						                                            ?><span class="badge bg-green"><?php echo $data['libelleTypeLot']; ?></span><?php
+						                                        }
+						                                        else
+						                                        {
+						                                            ?><span class="badge bg-red"><?php echo $data['libelleTypeLot']; ?></span><?php
+						                                        }
+						                                    }
+						                                    ?>
+						                                </td>
+						                                <td>
+						                                    <?php
+						                                        $query2 = $db->prepare('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_EMPLACEMENT p ON e.idEmplacement=p.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON p.idSac=s.idSac
+						                                            WHERE idLot = :idLot AND
+						                                            (
+						                                                quantite > quantiteAlerte AND
+						                                                (
+						                                                    peremptionNotification > CURRENT_DATE
+						                                                    OR
+						                                                    peremptionNotification IS NULL
+						                                                )
+						                                            );');
+						                                        $query2->execute(array(
+						                                            'idLot' => $data['idLot']
+						                                        ));
+						                                        $data2 = $query2->fetch();
+						                                        if($data2['nb']>0)
+						                                        {
+						                                            ?><span class="badge bg-green"><?= $data2['nb'] ?></span><?php
+						                                        }
+						                                    ?>
+						                                    <?php
+						                                    $query2 = $db->prepare('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_EMPLACEMENT p ON e.idEmplacement=p.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON p.idSac=s.idSac
+						                                            WHERE idLot = :idLot AND
+						                                            (
+						                                                (
+						                                                    quantite = quantiteAlerte
+						                                                    AND
+						                                                    peremptionNotification = CURRENT_DATE
+						                                                )
+						                                                OR
+						                                                (
+						                                                    quantite = quantiteAlerte
+						                                                    AND
+						                                                    (
+						                                                        peremptionNotification > CURRENT_DATE
+						                                                        OR
+						                                                        peremptionNotification IS NULL
+						                                                    )
+						                                                )
+						                                                OR
+						                                                (
+						                                                    quantite > quantiteAlerte
+						                                                    AND
+						                                                    peremptionNotification = CURRENT_DATE
+						                                                )
+						                                            );');
+						                                    $query2->execute(array(
+						                                        'idLot' => $data['idLot']
+						                                    ));
+						                                    $data2 = $query2->fetch();
+						                                    if($data2['nb']>0)
+						                                    {
+						                                        ?><span class="badge bg-orange"><?= $data2['nb'] ?></span><?php
+						                                    }
+						                                    ?>
+						                                    <?php
+						                                    $query2 = $db->prepare('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_EMPLACEMENT p ON e.idEmplacement=p.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON p.idSac=s.idSac
+						                                            WHERE idLot = :idLot AND
+						                                            (
+						                                                quantite < quantiteAlerte OR
+						                                                peremptionNotification < CURRENT_DATE
+						                                            );');
+						                                    $query2->execute(array(
+						                                        'idLot' => $data['idLot']
+						                                    ));
+						                                    $data2 = $query2->fetch();
+						                                    if($data2['nb']>0)
+						                                    {
+						                                        ?><span class="badge bg-red"><?= $data2['nb'] ?></span><?php
+						                                    }
+						                                    ?>
+						                                </td>
+						                                <td><?php
+						                                    if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) < date('Y-m-d'))
+						                                    {
+						                                        ?><span class="badge bg-red"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+						                                    }
+						                                    else if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) == date('Y-m-d'))
+						                                    {
+						                                        ?><span class="badge bg-orange"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+						                                    }
+						                                    else
+						                                    {
+						                                        ?><span class="badge bg-green"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+						                                    }
+						                                    ?>
+						                                </td>
+						                                <td><?php echo $data['libelleEtat']; ?> (<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>)</td>
+						                                <td>
+							                                <?php if ($_SESSION['lots_lecture']==1) {?>
+						                                        <a href="lotsContenu.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
+						                                    <?php }?>
+						                                </td>
+						                            </tr>
+						                            <?php
+						                        }
+						                        $query->closeCursor(); ?>
+						                    </table>
+						                </div>
+						            </div>
+						        </div>
+						        <?php
+						    }
+				        } ?>
 				    
 				    <?php
 						if ($_SESSION['vehicules_lecture'] OR $_SESSION['vehicules_ajout'] OR $_SESSION['vehicules_modification'] OR $_SESSION['vehicules_suppression'])
 						{
-					?>
-						<div class="col-md-12">
-				            <div class="box box-success">
-				                <div class="box-header with-border">
-				                    <i class="fa fa-ambulance"></i>
-				
-				                    <h3 class="box-title">Véhicules dont j'ai la charge</h3>
-				                </div>
-				
-				                <!-- /.box-header -->
-				                <div class="box-body">
-				                	<table class="table table-bordered">
-				                        <tr>
-				                            <th>Libelle</th>
-				                            <th>Etat</th>
-				                            <th>Contrôles</th>
-				                            <th>Notifications</th>
-				                            <th></th>
-				                        </tr>
-				                        <?php
-				                        $query = $db->prepare('SELECT * FROM VEHICULES v LEFT OUTER JOIN ETATS e ON v.idEtat = e.idEtat LEFT OUTER JOIN VEHICULES_TYPES t ON v.idVehiculesType = t.idVehiculesType LEFT OUTER JOIN VEHICULES_ETATS ve ON v.idVehiculesEtat = ve.idVehiculesEtat LEFT OUTER JOIN PERSONNE_REFERENTE p ON v.idResponsable = p.idPersonne WHERE v.idResponsable = :idPersonne;');
-				                        $query->execute(array('idPersonne' => $_SESSION['idPersonne']));
-				                        while ($data = $query->fetch())
-				                        {?>
-				                            <tr>
-				                                <td><?php echo $data['libelleVehicule']; ?></td>
-				                                <td><?php echo $data['libelleVehiculesEtat']; ?></td>
-				                                <td>
-				                                    <span class="badge bg-<?php
-				                                        if($data['dateNextRevision']<date('Y-m-d'))
-				                                        {
-				                                            echo "red";
-				                                        }
-				                                        else
-				                                        {
-				                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextRevision'] . ' - '.$VEHICULES_REVISION_DELAIS_NOTIF.' days')))
-				                                            {
-				                                                echo "orange";
-				                                            }
-				                                            else
-				                                            {
-				                                                echo "green";
-				                                            }
-				                                        }
-				                                        ?>">Révision</span>
-				                                    <span class="badge bg-<?php
-				                                        if($data['dateNextCT']<date('Y-m-d'))
-				                                        {
-				                                            echo "red";
-				                                        }
-				                                        else
-				                                        {
-				                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextCT'] . ' - '.$VEHICULES_CT_DELAIS_NOTIF.' days')))
-				                                            {
-				                                                echo "orange";
-				                                            }
-				                                            else
-				                                            {
-				                                                echo "green";
-				                                            }
-				                                        }
-				                                        ?>">CT</span>
-				                                    <span class="badge bg-<?php
-				                                        if($data['assuranceExpiration']<date('Y-m-d'))
-				                                        {
-				                                            echo "red";
-				                                        }
-				                                        else
-				                                        {
-				                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['assuranceExpiration'] . ' - '.$VEHICULES_ASSURANCE_DELAIS_NOTIF.' days')))
-				                                            {
-				                                                echo "orange";
-				                                            }
-				                                            else
-				                                            {
-				                                                echo "green";
-				                                            }
-				                                        }
-				                                        ?>">Assurance</span>
-				                                    <span class="badge bg-<?php
-				                                        if($data['alerteDesinfection'] == Null)
-				                                        {
-				                                            echo "grey";
-				                                        }
-				                                        else
-				                                        {
-				                                            if($data['alerteDesinfection'] == 0)
-				                                            {
-				                                                echo "green";
-				                                            }
-				                                            else
-				                                            {
-				                                                echo "red";
-				                                            }
-				                                        }
-				                                        ?>">Désinfections</span>
-				                                </td>
-				                                <td><?php echo $data['libelleEtat']; ?> (<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>)</td>
-				                                <td>
-				                                    <a href="vehiculesContenu.php?id=<?=$data['idVehicule']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
-				                                </td>
-				                            </tr>
-				                            <?php
-				                        }
-				                        $query->closeCursor(); ?>
-				                    </table>
-				                </div>
-				            </div>
-				        </div>
-					<?php } ?>
+							$count = $db->prepare('SELECT COUNT(*) AS nb FROM VEHICULES v WHERE v.idResponsable = :idPersonne;');
+				            $count->execute(array('idPersonne' => $_SESSION['idPersonne']));
+				            $count = $count->fetch();
+				            if($count['nb']>0)
+				            {
+								?>
+								<div class="col-md-12">
+						            <div class="box box-success">
+						                <div class="box-header with-border">
+						                    <i class="fa fa-ambulance"></i>
+						
+						                    <h3 class="box-title">Véhicules dont j'ai la charge</h3>
+						                </div>
+						
+						                <!-- /.box-header -->
+						                <div class="box-body">
+						                	<table class="table table-bordered">
+						                        <tr>
+						                            <th>Libelle</th>
+						                            <th>Etat</th>
+						                            <th>Contrôles</th>
+						                            <th>Notifications</th>
+						                            <th></th>
+						                        </tr>
+						                        <?php
+						                        $query = $db->prepare('SELECT * FROM VEHICULES v LEFT OUTER JOIN ETATS e ON v.idEtat = e.idEtat LEFT OUTER JOIN VEHICULES_TYPES t ON v.idVehiculesType = t.idVehiculesType LEFT OUTER JOIN VEHICULES_ETATS ve ON v.idVehiculesEtat = ve.idVehiculesEtat LEFT OUTER JOIN PERSONNE_REFERENTE p ON v.idResponsable = p.idPersonne WHERE v.idResponsable = :idPersonne;');
+						                        $query->execute(array('idPersonne' => $_SESSION['idPersonne']));
+						                        while ($data = $query->fetch())
+						                        {?>
+						                            <tr>
+						                                <td><?php echo $data['libelleVehicule']; ?></td>
+						                                <td><?php echo $data['libelleVehiculesEtat']; ?></td>
+						                                <td>
+						                                    <span class="badge bg-<?php
+						                                        if($data['dateNextRevision']<date('Y-m-d'))
+						                                        {
+						                                            echo "red";
+						                                        }
+						                                        else
+						                                        {
+						                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextRevision'] . ' - '.$VEHICULES_REVISION_DELAIS_NOTIF.' days')))
+						                                            {
+						                                                echo "orange";
+						                                            }
+						                                            else
+						                                            {
+						                                                echo "green";
+						                                            }
+						                                        }
+						                                        ?>">Révision</span>
+						                                    <span class="badge bg-<?php
+						                                        if($data['dateNextCT']<date('Y-m-d'))
+						                                        {
+						                                            echo "red";
+						                                        }
+						                                        else
+						                                        {
+						                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextCT'] . ' - '.$VEHICULES_CT_DELAIS_NOTIF.' days')))
+						                                            {
+						                                                echo "orange";
+						                                            }
+						                                            else
+						                                            {
+						                                                echo "green";
+						                                            }
+						                                        }
+						                                        ?>">CT</span>
+						                                    <span class="badge bg-<?php
+						                                        if($data['assuranceExpiration']<date('Y-m-d'))
+						                                        {
+						                                            echo "red";
+						                                        }
+						                                        else
+						                                        {
+						                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['assuranceExpiration'] . ' - '.$VEHICULES_ASSURANCE_DELAIS_NOTIF.' days')))
+						                                            {
+						                                                echo "orange";
+						                                            }
+						                                            else
+						                                            {
+						                                                echo "green";
+						                                            }
+						                                        }
+						                                        ?>">Assurance</span>
+						                                    <span class="badge bg-<?php
+						                                        if($data['alerteDesinfection'] == Null)
+						                                        {
+						                                            echo "grey";
+						                                        }
+						                                        else
+						                                        {
+						                                            if($data['alerteDesinfection'] == 0)
+						                                            {
+						                                                echo "green";
+						                                            }
+						                                            else
+						                                            {
+						                                                echo "red";
+						                                            }
+						                                        }
+						                                        ?>">Désinfections</span>
+						                                </td>
+						                                <td><?php echo $data['libelleEtat']; ?> (<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>)</td>
+						                                <td>
+						                                    <a href="vehiculesContenu.php?id=<?=$data['idVehicule']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
+						                                </td>
+						                            </tr>
+						                            <?php
+						                        }
+						                        $query->closeCursor(); ?>
+						                    </table>
+						                </div>
+						            </div>
+						        </div>
+						        <?php
+						    }
+					    } ?>
 					
 					
 			        <div class="col-md-12">
@@ -925,6 +926,7 @@ include('logCheck.php');
 				</ul>
 				<br/>
         	</div>
+
         	<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 			    <div class="box box-success">
 					<div class="box-header">
@@ -959,6 +961,53 @@ include('logCheck.php');
 				    <!-- /.box-body -->
 				</div>
 			</div>
+
+			<div class="col-lg-12">
+				<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            		<div class="row">
+            			<div class="col-lg-2">
+            			</div>
+            			<div class="col-lg-8">
+	                		<div class="carousel-inner">
+	                			<?php
+									$messages = $db->query('SELECT COUNT(idMessage) as nb FROM MESSAGES;');
+									$messages = $messages->fetch();
+									if($messages['nb']>0)
+									{
+										$active = 'active';
+										$messages = $db->query('SELECT m.*, p.identifiant, t.iconMessageType, t.couleurMessageType FROM MESSAGES m LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne LEFT OUTER JOIN MESSAGES_TYPES t ON m.idMessageType = t.idMessageType;');
+										while($message = $messages->fetch())
+										{ ?>
+											<div class="item <?=$active?>">
+												<div class="alert <?=$message['couleurMessageType']?> alert-dismissible">
+											    	<i class="icon fa <?=$message['iconMessageType']?>"></i> <b>Message de <?=$message['identifiant']?> :</b> <?=$message['corpsMessage']?>
+											    </div>
+											</div>
+											<?php
+											if($active=='active'){$active='';}
+										}
+									}
+									else
+									{ ?>
+										<div class="item active">
+											<center>Aucun message</center>
+										</div>
+									<?php }
+								?>
+	                		</div>
+	                	</div>
+	                	<div class="col-lg-2">
+	                	</div>
+                	</div>
+            		<a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+              			<span class="fa fa-angle-left"></span>
+            		</a>
+            		<a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+              			<span class="fa fa-angle-right"></span>
+            		</a>
+		    	</div>
+		    	<br/>
+		    </div>
     	</div>
     </section>
     <!-- /.content -->

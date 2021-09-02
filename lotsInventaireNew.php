@@ -100,6 +100,8 @@ if ($_SESSION['lots_modification']==0)
             	                            <tr>
             	                                <th style="width: 10px">#</th>
             	                                <th>Libelle du matériel</th>
+            	                                <th>Stock d'alerte</th>
+            	                                <?php if($lot['idTypeLot'] != Null){echo '<th>Requis par le référentiel</th>' ;} ?>
             	                                <th>Quantité</th>
             	                                <th>Péremption</th>
             	                                <th>Notification de Péremption</th>
@@ -107,15 +109,29 @@ if ($_SESSION['lots_modification']==0)
             	                            </thead>
             	                            <tbody>
                 	                            <?php
-                	                            $materiels = $db->prepare('SELECT * FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE m.idEmplacement = :idEmplacement ORDER BY libelleMateriel;');
+                	                            $materiels = $db->prepare('
+                	                            	SELECT
+                	                            		*
+                	                            	FROM
+                	                            		MATERIEL_ELEMENT m
+                	                            		LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement
+                	                            		LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                	                            		LEFT OUTER JOIN (SELECT * FROM REFERENTIELS WHERE idTypeLot = :idTypeLot)ref ON m.idMaterielCatalogue = ref.idMaterielCatalogue
+                	                            	WHERE
+                	                            		m.idEmplacement = :idEmplacement
+                	                            	ORDER BY
+                	                            		libelleMateriel;');
                 	                            $materiels->execute(array(
-                	                                'idEmplacement' => $emplacement['idEmplacement']
+                	                                'idEmplacement' => $emplacement['idEmplacement'],
+                	                                'idTypeLot'     => $lot['idTypeLot'],
                 	                            ));
                 	                            while ($materiel = $materiels->fetch()) { ?>
                 	
                 	                                <tr>
                 	                                    <td><?php echo $materiel['idElement']; ?></td>
                 	                                    <td><?php echo $materiel['libelleMateriel']; ?></td>
+                	                                    <td><?php echo $materiel['quantiteAlerte']; ?></td>
+                	                                    <?php if($lot['idTypeLot'] != Null){echo '<td>'.$materiel['quantiteReferentiel'].'</td>' ;} ?>
                 	                                    <td><input type="text" class="form-control" required value="<?php echo $materiel['quantite']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $materiel['idSac']; ?>][<?php echo $materiel['idEmplacement']; ?>][<?php echo $materiel['idElement']; ?>][qtt]"></td>
                 	                                    <td><input type="text" class="input-datepicker form-control" value="<?php echo $materiel['peremption']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $materiel['idSac']; ?>][<?php echo $materiel['idEmplacement']; ?>][<?php echo $materiel['idElement']; ?>][per]" <?php if ($materiel['peremption'] != Null) echo 'required';?>></td>
                 	                                    <td><input type="text" class="input-datepicker form-control" value="<?php echo $materiel['peremptionNotification']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $materiel['idSac']; ?>][<?php echo $materiel['idEmplacement']; ?>][<?php echo $materiel['idElement']; ?>][perNot]" <?php if ($materiel['peremptionNotification'] != Null) echo 'required';?>></td>

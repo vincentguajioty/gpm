@@ -1,10 +1,8 @@
-DROP VIEW IF EXISTS VIEW_HABILITATIONS;
-DROP VIEW IF EXISTS VIEW_DOCUMENTS_COMMANDES;
-DROP VIEW IF EXISTS VIEW_DOCUMENTS_CENTRE_COUTS;
-DROP VIEW IF EXISTS VIEW_DOCUMENTS_VEHICULES;
-DROP VIEW IF EXISTS VIEW_DOCUMENTS_CANAL_VHF;
-DROP VIEW IF EXISTS VIEW_DOCUMENTS_PLAN_VHF;
-DROP VIEW IF EXISTS VIEW_DOCUMENTS_VHF;
+ALTER TABLE PROFILS ADD carburants_lecture BOOLEAN;
+ALTER TABLE PROFILS ADD carburants_ajout BOOLEAN;
+ALTER TABLE PROFILS ADD carburants_modification BOOLEAN;
+ALTER TABLE PROFILS ADD carburants_suppression BOOLEAN;
+UPDATE PROFILS SET carburants_lecture = 0, carburants_ajout = 0, carburants_modification = 0, carburants_suppression = 0;
 
 CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 	SELECT
@@ -142,73 +140,36 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		PERSONNE_REFERENTE p
 ;
 
-CREATE OR REPLACE VIEW VIEW_DOCUMENTS_COMMANDES AS
-	SELECT
-		c.*,
-		t.libelleTypeDocument
-	FROM
-		DOCUMENTS_COMMANDES c
-		LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument
-	ORDER BY
-		nomDocCommande ASC
-;
+CREATE TABLE VHF_ACCESSOIRES_TYPES(
+	idVhfAccessoireType INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	libelleVhfAccessoireType TEXT
+);
 
-CREATE OR REPLACE VIEW VIEW_DOCUMENTS_CENTRE_COUTS AS
-	SELECT
-		c.*,
-		t.libelleTypeDocument
-	FROM
-		DOCUMENTS_CENTRE_COUTS c
-		LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument
-	ORDER BY
-		nomDocCouts ASC
-;
+INSERT INTO VHF_ACCESSOIRES_TYPES SET libelleVhfAccessoireType='Batterie';
+INSERT INTO VHF_ACCESSOIRES_TYPES SET libelleVhfAccessoireType='Chargeur complémentaire 230V';
+INSERT INTO VHF_ACCESSOIRES_TYPES SET libelleVhfAccessoireType='Chargeur complémentaire 12V';
+INSERT INTO VHF_ACCESSOIRES_TYPES SET libelleVhfAccessoireType='Chargeur complémentaire 24V';
+INSERT INTO VHF_ACCESSOIRES_TYPES SET libelleVhfAccessoireType='Micro déporté';
+INSERT INTO VHF_ACCESSOIRES_TYPES SET libelleVhfAccessoireType='Casque';
+INSERT INTO VHF_ACCESSOIRES_TYPES SET libelleVhfAccessoireType='Oreillette';
+INSERT INTO VHF_ACCESSOIRES_TYPES SET libelleVhfAccessoireType='Antenne';
+INSERT INTO VHF_ACCESSOIRES_TYPES SET libelleVhfAccessoireType='Micro de bureau';
+INSERT INTO VHF_ACCESSOIRES_TYPES SET libelleVhfAccessoireType='Alimentation de bureau';
 
-CREATE OR REPLACE VIEW VIEW_DOCUMENTS_VEHICULES AS
-	SELECT
-		c.*,
-		t.libelleTypeDocument
-	FROM
-		DOCUMENTS_VEHICULES c
-		LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument
-	ORDER BY
-		nomDocVehicule ASC
-;
+CREATE TABLE VHF_ACCESSOIRES(
+	idVhfAccessoire INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	libelleVhfAccessoire TEXT,
+	marqueModeleVhfAccessoire TEXT,
+	idVhfAccessoireType INT,
+	idVhfEquipement INT,
+	SnVhfAccessoire VARCHAR(100),
+	remarquesVhfAccessoire TEXT,
+	CONSTRAINT fk_vhfaccessoires_vhf
+		FOREIGN KEY (idVhfEquipement)
+		REFERENCES VHF_EQUIPEMENTS(idVhfEquipement),
+	CONSTRAINT fk_vhfaccessoires_type
+		FOREIGN KEY (idVhfAccessoireType)
+		REFERENCES VHF_ACCESSOIRES_TYPES(idVhfAccessoireType)
+);
 
-CREATE OR REPLACE VIEW VIEW_DOCUMENTS_CANAL_VHF AS
-	SELECT
-		c.*,
-		t.libelleTypeDocument
-	FROM
-		DOCUMENTS_CANAL_VHF c
-		LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument
-	ORDER BY
-		nomDocCanalVHF ASC
-;
-
-CREATE OR REPLACE VIEW VIEW_DOCUMENTS_PLAN_VHF AS
-	SELECT
-		c.*,
-		t.libelleTypeDocument
-	FROM
-		DOCUMENTS_PLAN_VHF c
-		LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument
-	ORDER BY
-		nomDocPlanVHF ASC
-;
-
-CREATE OR REPLACE VIEW VIEW_DOCUMENTS_VHF AS
-	SELECT
-		c.*,
-		t.libelleTypeDocument
-	FROM
-		DOCUMENTS_VHF c
-		LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument
-	ORDER BY
-		nomDocVHF ASC
-;
-
-
--- Anonymisation de la base
-
-UPDATE PERSONNE_REFERENTE SET mailPersonne = '';
+UPDATE CONFIG set version = '9.7';

@@ -129,6 +129,10 @@ else
 	$_POST['typesDesinfections_ajout']        = ($_POST['typesDesinfections_ajout']        == 1) ? 1 : 0;
 	$_POST['typesDesinfections_modification'] = ($_POST['typesDesinfections_modification'] == 1) ? 1 : 0;
 	$_POST['typesDesinfections_suppression']  = ($_POST['typesDesinfections_suppression']  == 1) ? 1 : 0;
+	$_POST['carburants_lecture']              = ($_POST['carburants_lecture']              == 1) ? 1 : 0;
+	$_POST['carburants_ajout']                = ($_POST['carburants_ajout']                == 1) ? 1 : 0;
+	$_POST['carburants_modification']         = ($_POST['carburants_modification']         == 1) ? 1 : 0;
+	$_POST['carburants_suppression']          = ($_POST['carburants_suppression']          == 1) ? 1 : 0;
 
 	$query = $db->prepare('
 		INSERT INTO
@@ -253,7 +257,11 @@ else
 			typesDesinfections_lecture      = :typesDesinfections_lecture,
 			typesDesinfections_ajout        = :typesDesinfections_ajout,
 			typesDesinfections_modification = :typesDesinfections_modification,
-			typesDesinfections_suppression  = :typesDesinfections_suppression
+			typesDesinfections_suppression  = :typesDesinfections_suppression,
+			carburants_lecture              = :carburants_lecture,
+			carburants_ajout                = :carburants_ajout,
+			carburants_modification         = :carburants_modification,
+			carburants_suppression          = :carburants_suppression
 		;');
     $query->execute(array(
 		'libelleProfil'                   => $_POST['libelleProfil'],
@@ -376,6 +384,10 @@ else
 		'typesDesinfections_ajout'        => $_POST['typesDesinfections_ajout'],
 		'typesDesinfections_modification' => $_POST['typesDesinfections_modification'],
 		'typesDesinfections_suppression'  => $_POST['typesDesinfections_suppression'],
+		'carburants_lecture'              => $_POST['carburants_lecture'],
+		'carburants_ajout'                => $_POST['carburants_ajout'],
+		'carburants_modification'         => $_POST['carburants_modification'],
+		'carburants_suppression'          => $_POST['carburants_suppression'],
 ));
 
     switch($query->errorCode())
