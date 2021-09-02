@@ -339,7 +339,7 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <th>Ajout/Modification</th>
                                 <th>Valider</th>
                                 <th>Seuil max de validation</th>
-                                <th>Valider à la place de</th>
+                                <th>Valider à la place de (sans seuil)</th>
                                 <th>Etre en charge</th>
                                 <th>Abandonner/Supprimer</th>
                             </tr>

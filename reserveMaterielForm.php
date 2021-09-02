@@ -73,14 +73,19 @@ if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
                                 $query2->closeCursor(); ?>
                             </select>
                         </div>
-
-                        <div class="form-group">
-                            <label>Quantité: <small style="color:grey;">Requis</small></label>
-                            <input type="text" class="form-control"  value="<?= isset($data['quantiteReserve']) ? $data['quantiteReserve'] : '' ?>" name="quantiteReserve" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Quantité d'Alerte: <small style="color:grey;">Requis</small></label>
-                            <input type="text" class="form-control"  value="<?= isset($data['quantiteAlerteReserve']) ? $data['quantiteAlerteReserve'] : '' ?>" name="quantiteAlerteReserve" required>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Quantité: <small style="color:grey;">Requis</small></label>
+                                    <input type="text" class="form-control"  value="<?= isset($data['quantiteReserve']) ? $data['quantiteReserve'] : '' ?>" name="quantiteReserve" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Quantité d'Alerte: <small style="color:grey;">Requis</small></label>
+                                    <input type="text" class="form-control"  value="<?= isset($data['quantiteAlerteReserve']) ? $data['quantiteAlerteReserve'] : '' ?>" name="quantiteAlerteReserve" required>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">

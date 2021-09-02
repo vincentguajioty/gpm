@@ -144,9 +144,8 @@ switch ($_GET['case']) {
         break;
 
     case 'vehiculesMaintenance':
-        $url = "vehiculesContenu.php?id=".$_GET['id'];
         $urlName = "Accéder au véhicule";
-        $query = $db->prepare('SELECT libelleVehicule, immatriculation, libelleTypeMaintenance, identifiant, detailsMaintenance FROM VEHICULES_MAINTENANCE m LEFT OUTER JOIN VEHICULES v ON m.idVehicule = v.idVehicule LEFT OUTER JOIN VEHICULES_MAINTENANCE_TYPES t ON m.idTypeMaintenance = t.idTypeMaintenance LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idExecutant = p.idPersonne WHERE m.idMaintenance = :id;');
+        $query = $db->prepare('SELECT m.idVehicule, libelleVehicule, immatriculation, libelleTypeMaintenance, identifiant, detailsMaintenance FROM VEHICULES_MAINTENANCE m LEFT OUTER JOIN VEHICULES v ON m.idVehicule = v.idVehicule LEFT OUTER JOIN VEHICULES_MAINTENANCE_TYPES t ON m.idTypeMaintenance = t.idTypeMaintenance LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idExecutant = p.idPersonne WHERE m.idMaintenance = :id;');
         $query->execute(array('id'=>$_GET['id']));
         $data = $query->fetch();
 
@@ -159,6 +158,7 @@ switch ($_GET['case']) {
                 <li>Détails: " . $data['detailsMaintenance'] . "</li>
             </ul>
         ";
+        $url = "vehiculesContenu.php?id=".$data['idVehicule'];
         break;
         
     case 'vehiculesDesinfectionFaite':

@@ -217,10 +217,9 @@ else
     }
     if ($_POST['button'] == 'nok')
     {
-        $query = $db->prepare('UPDATE COMMANDES SET idEtat = 1, remarquesValidation = :remarquesValidation, dateValidation = CURRENT_TIMESTAMP WHERE idCommande = :idCommande;');
+        $query = $db->prepare('UPDATE COMMANDES SET idEtat = 1 WHERE idCommande = :idCommande;');
         $query->execute(array(
             'idCommande' => $_GET['id'],
-            'remarquesValidation' => $_POST['remarquesValidation']
         ));
         switch($query->errorCode())
         {
@@ -317,10 +316,9 @@ else
     }
     if ($_POST['button'] == 'nokdelegate')
     {
-        $query = $db->prepare('UPDATE COMMANDES SET idEtat = 1, remarquesValidation = :remarquesValidation, dateValidation = CURRENT_TIMESTAMP WHERE idCommande = :idCommande;');
+        $query = $db->prepare('UPDATE COMMANDES SET idEtat = 1 WHERE idCommande = :idCommande;');
         $query->execute(array(
             'idCommande' => $_GET['id'],
-            'remarquesValidation' => '('.$_SESSION['identifiant'].') '.$_POST['remarquesValidation']
         ));
         switch($query->errorCode())
         {
@@ -416,7 +414,7 @@ else
         }
     }
 
-    echo "<script type='text/javascript'>document.location.replace('commandesToutes.php');</script>";
+    echo "<script type='text/javascript'>document.location.replace('commandesNonCloses.php');</script>";
 
 }
 ?>

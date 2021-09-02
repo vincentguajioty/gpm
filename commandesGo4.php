@@ -144,7 +144,7 @@ else
         }
     }
 
-    echo "<script type='text/javascript'>document.location.replace('commandesToutes.php');</script>";
+    echo "<script type='text/javascript'>document.location.replace('commandesNonCloses.php');</script>";
 
 }
 ?>

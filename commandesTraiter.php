@@ -26,7 +26,7 @@ if ($_SESSION['commande_lecture']==0)
             </h1>
             <ol class="breadcrumb">
                 <li><a href="index.php"><i class="fa fa-home"></i>Accueil</a></li>
-                <li><a href="commandesToutes.php">Commandes</a></li>
+                <li><a href="commandesNonCloses.php">Commandes</a></li>
                 <li class="active">Commandes à traiter</li>
             </ol>
         </section>

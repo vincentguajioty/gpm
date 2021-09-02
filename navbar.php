@@ -153,14 +153,8 @@ require_once 'config/bdd.php';
 	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
 	                </a>
 	                <ul class="treeview-menu">
-	                    <?php if ($_SESSION['commande_lecture']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 601)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="commandesToutes.php"><i class="fa fa-reorder"></i> <span>Toutes les commandes</span></a></li>
+	                    <?php if ($_SESSION['commande_ajout']==1){ ?>
+	                        <li><a href="commandesAdd.php"><i class="fa fa-plus"></i> <span>Nouvelle demande d'achat</span></a></li>
 	                    <?php } ?>
 	                    <?php if ($_SESSION['commande_lecture']==1){ ?>
 	                        <?php
@@ -211,6 +205,15 @@ require_once 'config/bdd.php';
 	                        }
 	                        ?>
 	                        ><a href="commandesSuivi.php"><i class="fa fa-truck"></i> <span>Je dois suivre</span></a></li>
+	                    <?php } ?>
+	                    <?php if ($_SESSION['commande_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 601)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="commandesToutes.php"><i class="fa fa-reorder"></i> <span>Toutes les commandes</span></a></li>
 	                    <?php } ?>
 	                    <?php if ($_SESSION['cout_lecture']==1){ ?>
 	                        <li <?php

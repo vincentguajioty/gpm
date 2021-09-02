@@ -35,11 +35,6 @@ if ($_SESSION['commande_lecture']==0)
             <?php include('confirmationBox.php'); ?>
 
             <div class="box">
-                <?php if ($_SESSION['commande_ajout']==1) {?>
-                	<div class="box-header">
-	                    <h3 class="box-title"><a href="commandesAdd.php" class="btn btn-sm btn-success">Nouvelle demande d'achat</a></h3>
-	            	</div>
-	            <?php } ?>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="tri2R" class="table table-bordered table-hover" >

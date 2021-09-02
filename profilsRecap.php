@@ -317,7 +317,7 @@ if ($_SESSION['profils_lecture']==0)
                             <th>Ajout/Modification</th>
                             <th>Valider</th>
                             <th>Seuil max de validation</th>
-                            <th>Valider à la place de</th>
+                            <th>Valider à la place de (sans seuil)</th>
                             <th>Etre en charge</th>
                             <th>Abandonner/Supprimer</th>
                         </tr>

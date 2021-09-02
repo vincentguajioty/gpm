@@ -17,7 +17,7 @@ else
     $query = $db->query('SELECT * FROM CONFIG;');
     $config = $query -> fetch();
 
-    $query = $db->prepare('UPDATE COMMANDES SET idEtat = 2, dateDemandeValidation = CURRENT_TIMESTAMP, dateValidation = Null WHERE idCommande = :idCommande;');
+    $query = $db->prepare('UPDATE COMMANDES SET idEtat = 2, dateDemandeValidation = CURRENT_TIMESTAMP, dateValidation = Null, remarquesValidation = Null WHERE idCommande = :idCommande;');
     $query->execute(array(
         'idCommande' => $_GET['id']
     ));
@@ -119,7 +119,7 @@ else
     }
 
 
-    echo "<script type='text/javascript'>document.location.replace('commandesToutes.php');</script>";
+    echo "<script type='text/javascript'>document.location.replace('commandesNonCloses.php');</script>";
 
 }
 ?>
