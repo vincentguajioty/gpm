@@ -33,17 +33,24 @@ if($_SESSION['cout_ajout']==1)
                             <input type="text" class="form-control" name="libelleCentreDecout" required value="<?= isset($data['libelleCentreDecout']) ? $data['libelleCentreDecout'] : '' ?>">
                         </div>
                         <div class="form-group">
-                            <label>Personne référente</label>
-                            <select class="form-control select2" style="width: 100%;" name="idResponsable">
-                                <option value="">--- Aucun Référent ---</option>
+                            <label>Personnes responsables: </label>
+                            <select class="form-control select2" style="width: 100%;" name="idPersonne[]" multiple>
                                 <?php
-                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE cout_etreEnCharge=1 ORDER BY identifiant;');
+                                $query2 = $db->prepare('SELECT ao.*, aop.idCentreDeCout FROM PERSONNE_REFERENTE ao JOIN VIEW_HABILITATIONS h ON ao.idPersonne = h.idPersonne LEFT JOIN CENTRE_COUTS_PERSONNES aop ON (ao.idPersonne = aop.idPersonne AND aop.idCentreDeCout = :idCentreDeCout) WHERE cout_etreEnCharge = 1 ORDER BY nomPersonne, prenomPersonne;');
+				                $query2->execute(array('idCentreDeCout' => $_GET['id']));
+
                                 while ($data2 = $query2->fetch())
                                 {
-                                    ?>
-                                    <option value="<?php echo $data2['idPersonne']; ?>" <?php if (isset($data['idResponsable']) AND ($data2['idPersonne'] == $data['idResponsable'])){echo 'selected'; }?>><?php echo $data2['identifiant']; ?></option>
-                                    <?php
+                                    
+                                    echo '<option value=' . $data2['idPersonne'];
+
+					                if (isset($data2['idCentreDeCout']) AND $data2['idCentreDeCout'])
+					                {
+					                    echo " selected ";
+					                }
+					                echo '>' . $data2['identifiant'] . '</option>';
                                 }
+                                
                                 $query2->closeCursor(); ?>
                             </select>
                         </div>

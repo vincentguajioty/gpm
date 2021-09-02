@@ -11,13 +11,26 @@ if ($_SESSION['cout_ajout']==0)
 }
 else
 {    
-    $_POST['idResponsable'] = ($_POST['idResponsable'] == Null) ? Null : $_POST['idResponsable'];
+	
+	$queryDelete = $db->prepare('DELETE FROM CENTRE_COUTS_PERSONNES WHERE idCentreDeCout = :idCentreDeCout');
+    $queryDelete->execute([
+        ':idCentreDeCout' => $_GET['id']
+    ]);
+    if (!empty($_POST['idPersonne'])) {
+        $insertSQL = 'INSERT INTO CENTRE_COUTS_PERSONNES (idPersonne, idCentreDeCout) VALUES';
+        foreach ($_POST['idPersonne'] as $idPersonne) {
+            $insertSQL .= ' ('. (int)$idPersonne.', '. (int)$_GET['id'] .'),';
+        }
 
-    $query = $db->prepare('UPDATE CENTRE_COUTS SET libelleCentreDecout = :libelleCentreDecout, idResponsable = :idResponsable, commentairesCentreCout = :commentairesCentreCout WHERE idCentreDeCout = :idCentreDeCout;');
+        $insertSQL = substr($insertSQL, 0, -1);
+
+        $db->query($insertSQL);
+    }
+	
+    $query = $db->prepare('UPDATE CENTRE_COUTS SET libelleCentreDecout = :libelleCentreDecout, commentairesCentreCout = :commentairesCentreCout WHERE idCentreDeCout = :idCentreDeCout;');
     $query->execute(array(
         'idCentreDeCout' => $_GET['id'],
 		'libelleCentreDecout' => $_POST['libelleCentreDecout'],
-        'idResponsable' => $_POST['idResponsable'],
         'commentairesCentreCout' => $_POST['commentairesCentreCout']
     ));
 

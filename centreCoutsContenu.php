@@ -18,7 +18,7 @@ if ($_SESSION['cout_lecture']==0)
     <?php require_once 'documentsGetIcone.php'; ?>
 
     <?php
-        $query = $db->prepare('SELECT * FROM CENTRE_COUTS c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idResponsable = p.idPersonne WHERE idCentreDeCout = :idCentreDeCout');
+        $query = $db->prepare('SELECT * FROM CENTRE_COUTS WHERE idCentreDeCout = :idCentreDeCout');
         $query->execute(array('idCentreDeCout' => $_GET['id']));
         $data = $query->fetch();
 
@@ -67,7 +67,16 @@ if ($_SESSION['cout_lecture']==0)
                             <div class="info-box">
                                 <span class="info-box-icon bg-aqua"><i class="fa fa-user"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text"><?= $data['identifiant'] ?></span>
+                                    <span class="info-box-text">
+                                    	<?php
+                                    		$query2 = $db->prepare('SELECT p.* FROM CENTRE_COUTS_PERSONNES cc LEFT OUTER JOIN PERSONNE_REFERENTE p ON cc.idPersonne = p.idPersonne WHERE cc.idCentreDeCout = :idCentreDeCout;');
+        									$query2->execute(array('idCentreDeCout'=>$_GET['id']));
+        									while($data2 = $query2->fetch())
+        									{
+        										echo $data2['identifiant'].'<br/>';
+        									}
+                                    	?>
+                                    </span>
                                 </div>
                             </div>
                         </div>

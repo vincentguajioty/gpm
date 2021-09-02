@@ -384,11 +384,11 @@ function cmdEstDemandeur ($idPersonne, $idCommande)
 function centreCoutsEstCharge ($idPersonne, $idCentreDeCout)
 {
     global $db;
-    $query = $db->prepare('SELECT c.idResponsable FROM CENTRE_COUTS c LEFT OUTER JOIN VIEW_HABILITATIONS v ON c.idResponsable = v.idPersonne WHERE c.idCentreDeCout = :idCentreDeCout AND v.cout_etreEnCharge=1;');
+    $query = $db->prepare('SELECT c.idPersonne FROM CENTRE_COUTS_PERSONNES c LEFT OUTER JOIN VIEW_HABILITATIONS v ON c.idPersonne = v.idPersonne WHERE c.idCentreDeCout = :idCentreDeCout AND v.cout_etreEnCharge=1;');
     $query -> execute(array('idCentreDeCout' => $idCentreDeCout));
     $data = $query->fetchAll();
     
-    if(in_array($idPersonne, array_column($data, 'idResponsable')))
+    if(in_array($idPersonne, array_column($data, 'idPersonne')))
     {
         return 1;
     }

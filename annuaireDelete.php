@@ -31,9 +31,9 @@ else
         'idPersonne' => $_GET['id']
     ));
     
-    $query = $db->prepare('UPDATE CENTRE_COUTS SET idResponsable = Null WHERE idResponsable = :idResponsable ;');
+    $query = $db->prepare('DELETE FROM CENTRE_COUTS_PERSONNES WHERE idPersonne = :idPersonne ;');
     $query->execute(array(
-        'idResponsable' => $_GET['id']
+        'idPersonne' => $_GET['id']
     ));
     
     $query = $db->prepare('DELETE FROM COMMANDES_AFFECTEES WHERE idAffectee = :idPersonne;');

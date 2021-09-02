@@ -174,8 +174,23 @@ switch($data['version'])
         $query = $db->query(file_get_contents ("update8.0.sql"));
         echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
         break;
-
+        
     case '8.0':
+        $query = $db->query(file_get_contents ("update8.1.1.sql"));
+        $centres = $db->query('SELECT * FROM CENTRE_COUTS WHERE idResponsable IS NOT NULL;');
+        while($centre = $centres->fetch())
+        {
+        	$addSQL = $db->prepare('INSERT INTO CENTRE_COUTS_PERSONNES SET idCentreDeCout = :idCentreDeCout, idPersonne = :idPersonne;');
+        	$addSQL->execute(array(
+        		'idCentreDeCout' => $centre['idCentreDeCout'],
+        		'idPersonne' => $centre['idResponsable']
+        	));
+        }
+        $query = $db->query(file_get_contents ("update8.1.2.sql"));
+        echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
+        break;
+
+    case '8.1':
         echo "<script type='text/javascript'>document.location.replace('INSTALLFINISH.php');</script>";
         break;
 

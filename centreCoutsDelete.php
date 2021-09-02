@@ -13,12 +13,17 @@ if(strtoupper($_POST['confirmation']) <> strtoupper($CONFSUPPRESSION))
     exit;
 }
 
-if ($_SESSION['cout_suppression']==0)
+if ($_SESSION['cout_supprimer']==0)
 {
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
 }
 else
 {
+    $query = $db->prepare('DELETE FROM CENTRE_COUTS_PERSONNES WHERE idCentreDeCout = :idCentreDeCout ;');
+    $query->execute(array(
+        'idCentreDeCout' => $_GET['id']
+    ));
+    
     $query = $db->prepare('SELECT * FROM CENTRE_COUTS WHERE idCentreDeCout = :idCentreDeCout;');
     $query->execute(array(
         'idCentreDeCout' => $_GET['id']

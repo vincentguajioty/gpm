@@ -11,19 +11,31 @@ if ($_SESSION['cout_ajout']==0)
 }
 else
 {    
-    $_POST['idResponsable'] = ($_POST['idResponsable'] == Null) ? Null : $_POST['idResponsable'];
 
-    $query = $db->prepare('INSERT INTO CENTRE_COUTS(libelleCentreDecout, idResponsable, commentairesCentreCout) VALUES(:libelleCentreDecout, :idResponsable, :commentairesCentreCout);');
+    $query = $db->prepare('INSERT INTO CENTRE_COUTS(libelleCentreDecout, commentairesCentreCout) VALUES(:libelleCentreDecout, :commentairesCentreCout);');
     $query->execute(array(
         'libelleCentreDecout' => $_POST['libelleCentreDecout'],
-        'idResponsable' => $_POST['idResponsable'],
         'commentairesCentreCout' => $_POST['commentairesCentreCout']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout du centre de couts " . $_POST['libelleCentreDecout'], '2');
+            $query = $db->query('SELECT MAX(idCentreDeCout) as idCentreDeCout FROM CENTRE_COUTS;');
+            $data = $query ->fetch();
+            
+	        if (!empty($_POST['idPersonne'])) {
+		        $insertSQL = 'INSERT INTO CENTRE_COUTS_PERSONNES (idPersonne, idCentreDeCout) VALUES';
+		        foreach ($_POST['idPersonne'] as $idPersonne) {
+		            $insertSQL .= ' ('. (int)$idPersonne.', '. (int)$data['idCentreDeCout'] .'),';
+		        }
+		
+		        $insertSQL = substr($insertSQL, 0, -1);
+		
+		        $db->query($insertSQL);
+		    }
+		    
+		    writeInLogs("Ajout du centre de couts " . $_POST['libelleCentreDecout'], '2');
             $_SESSION['returnMessage'] = 'Centre de couts ajouté avec succès.';
             $_SESSION['returnType'] = '1';
             break;

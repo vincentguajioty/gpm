@@ -54,13 +54,22 @@ if ($_SESSION['cout_lecture']==0)
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query('SELECT * FROM CENTRE_COUTS c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idResponsable = p.idPersonne;');
+                        $query = $db->query('SELECT * FROM CENTRE_COUTS;');
                         while ($data = $query->fetch())
                         {?>
                             <tr>
                                 <td><?php echo $data['idCentreDeCout']; ?></td>
                                 <td><?php echo $data['libelleCentreDecout']; ?></td>
-                                <td><?php echo $data['identifiant']; ?></td>
+                                <td>
+                                	<?php
+                                		$query2 = $db->prepare('SELECT p.* FROM CENTRE_COUTS_PERSONNES cc LEFT OUTER JOIN PERSONNE_REFERENTE p ON cc.idPersonne = p.idPersonne WHERE cc.idCentreDeCout = :idCentreDeCout');
+                                		$query2->execute(array('idCentreDeCout'=>$data['idCentreDeCout']));
+                                		while($data2 = $query2->fetch())
+                                		{
+                                			echo $data2['identifiant'].'<br/>';
+                                		}
+                                	?>
+                                </td>
                                 <td>
                                 	<?php
                                 		$query2 = $db->prepare('SELECT COALESCE(SUM(montantEntrant),0)-COALESCE(SUM(montantSortant),0) as total FROM CENTRE_COUTS_OPERATIONS WHERE idCentreDeCout = :idCentreDeCout');
