@@ -43,7 +43,6 @@ if ($_SESSION['appli_conf']==0)
                     <li><a href="#aes" data-toggle="tab"><i class="fa fa-shopping-cart"></i> Cryptage AES</a></li>
                     <li><a href="#sel" data-toggle="tab"><i class="fa fa-barcode"></i> Sels utilisateurs</a></li>
                     <li><a href="#notifCMD" data-toggle="tab"><i class="fa fa-envelope"></i> Notifications commandes</a></li>
-                    <li><a href="#validCMD" data-toggle="tab"><i class="fa fa-check"></i> Validations commandes</a></li>
                     <li><a href="#notifVEH" data-toggle="tab"><i class="fa fa-ambulance"></i> Véhicules</a></li>
                 </ul>
                 <div class="tab-content">
@@ -292,48 +291,6 @@ if ($_SESSION['appli_conf']==0)
 
                             </table>
 
-                            <div class="box-footer">
-                                <button type="submit" class="btn btn-info pull-right">Modifier</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="tab-pane" id="validCMD">
-                        <form role="form" action="appliConfUpdateValideurs.php" method="POST">
-                            <?php
-                            $query = $db->query('SELECT * FROM COMMANDES_VALIDEURS_DEFAULT;');
-                            ?>
-                            
-                            <select class="form-control select2" style="width: 100%;" name="idPersonne[]" multiple>
-                                <?php
-                                    $query2 = $db->query('
-                                        SELECT
-                                            p.idPersonne,
-                                            p.identifiant,
-                                            v.idPersonne as selectionnee
-                                        FROM
-                                            PERSONNE_REFERENTE p
-                                            LEFT OUTER JOIN COMMANDES_VALIDEURS_DEFAULT v ON p.idPersonne = v.idPersonne
-                                            LEFT OUTER JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne
-                                        WHERE
-                                            commande_lecture = 1
-                                            AND commande_valider = 1
-                                        ORDER BY
-                                            identifiant;');
-                                    while ($data2 = $query2->fetch())
-                                    {
-                                        
-                                        echo '<option value=' . $data2['idPersonne'];
-
-                                        if (isset($data2['selectionnee']) AND $data2['selectionnee'] != Null)
-                                        {
-                                            echo " selected ";
-                                        }
-                                        echo '>' . $data2['identifiant'] . '</option>';
-                                    }
-                                
-                                ?>
-                            </select>
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-info pull-right">Modifier</button>
                             </div>

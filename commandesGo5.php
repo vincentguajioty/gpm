@@ -30,7 +30,13 @@ else
     {
         case '00000':
             writeInLogs("Cloture du SAV de la commande " . $_GET['id'], '1', NULL);
+            
             addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " clôture le SAV. La commande n'a plus qu'à être clôturée.", "25");
+
+            sendMailCmdStage($_GET['id'],17);
+            sendMailCmdStage($_GET['id'],18);
+            sendMailCmdStage($_GET['id'],19);
+            sendMailCmdStage($_GET['id'],20);
             break;
 
         default:
@@ -40,84 +46,7 @@ else
 
     }
 
-    $sujet = "[" . $APPNAME . "] SAV de la commande " .$_GET['id']. " clos.";
-
-    if($config['notifications_commandes_demandeur_savOK']==1)
-    {
-        $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_DEMANDEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idDemandeur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
-        $query->execute(array('idCommande'=>$_GET['id']));
-        while($data = $query->fetch())
-        {
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes le demandeur vient de terminer son traitement SAV.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
-            {
-                writeInLogs("Mail d'information de clôture SAV envoyé au demandeur pour la commande " . $_GET['id'], '1', NULL);
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail d'information de clôture SAV au demandeur pour la commande " . $_GET['id'], '3', NULL);
-            }
-        }
-    }
-    if($config['notifications_commandes_valideur_savOK']==1)
-    {
-        $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_VALIDEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idValideur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
-        $query->execute(array('idCommande'=>$_GET['id']));
-        while($data = $query->fetch())
-        {
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> La commande " . $_GET['id'] . " dont vous êtes le valideur vient de terminer son traitement SAV.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
-            {
-                writeInLogs("Mail d'information de clôture SAV envoyé au valideur pour la commande " . $_GET['id'], '1', NULL);
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail d'information de clôture SAV au valideur pour la commande " . $_GET['id'], '3', NULL);
-            }
-        }
-    }
-    if($config['notifications_commandes_affectee_savOK']==1)
-    {
-        $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_AFFECTEES ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idAffectee = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
-        $query->execute(array('idCommande'=>$_GET['id']));
-        while($data = $query->fetch())
-        {
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " qui vous est affectée vient de terminer son traitement SAV.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
-            {
-                writeInLogs("Mail d'information de clôture SAV envoyé au gérant pour la commande " . $_GET['id'], '1', NULL);
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail de passage de clôture SAV au gérant pour la commande " . $_GET['id'], '3', NULL);
-            }
-        }
-    }
-    if($config['notifications_commandes_observateur_savOK']==1)
-    {
-        $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_OBSERVATEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idObservateur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
-        $query->execute(array('idCommande'=>$_GET['id']));
-        while($data = $query->fetch())
-        {
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes l'observateur vient de terminer son traitement SAV.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
-            {
-                writeInLogs("Mail d'information de clôture SAV envoyé à l'observateur pour la commande " . $_GET['id'], '1', NULL);
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail de passage de clôture SAV à l'observateur pour la commande " . $_GET['id'], '3', NULL);
-            }
-        }
-    }
+    
 
     echo "<script type='text/javascript'>document.location.replace('commandesNonCloses.php');</script>";
 

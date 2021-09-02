@@ -134,7 +134,7 @@ require_once 'config/bdd.php';
 			?>
             
             <?php
-			if ($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSION['commande_valider']==1 OR $_SESSION['commande_etreEnCharge']==1 OR $_SESSION['commande_abandonner']==1 OR $_SESSION['cout_lecture']==1)
+			if ($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSION['commande_etreEnCharge']==1 OR $_SESSION['commande_abandonner']==1 OR $_SESSION['cout_lecture']==1)
 			{
 			?>
 	            <li <?php
@@ -172,22 +172,21 @@ require_once 'config/bdd.php';
 	                        ?>
 	                        ><a href="commandesNonCloses.php"><i class="fa fa-spinner"></i> <span>Non closes</span><?php if ($data['nb']>0) { ?><span class="pull-right-container"><small class="label pull-right bg-blue"><?php echo $data['nb'];?></small></span> <?php } ?></a></li>
 	                    <?php } ?>
-	                    <?php if ($_SESSION['commande_valider']==1){ ?>
-	                        <?php
-	                        $query = $db->prepare('SELECT COUNT(*) as nb FROM COMMANDES_VALIDEURS v JOIN COMMANDES c ON v.idCommande = c.idCommande WHERE idValideur = :idPersonne AND idEtat = 2;');
-	                        $query->execute(array(
-	                            'idPersonne' => $_SESSION['idPersonne']
-	                        ));
-	                        $data = $query -> fetch();
-	                        ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 602)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="commandesValidations.php"><i class="fa fa-map-signs"></i> <span>Je dois valider</span><?php if ($data['nb']>0) { ?><span class="pull-right-container"><small class="label pull-right bg-red"><?php echo $data['nb'];?></small></span> <?php } ?></a></li>
-	                    <?php } ?>
+                        <?php
+                        $query = $db->query('SELECT c.idCommande FROM COMMANDES c WHERE c.idEtat = 2;');
+                        $nb=0;
+                        while($data = $query->fetch())
+                        {
+                        	if(cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])==1){$nb+=1;}
+                        }
+                        ?>
+                        <li <?php
+                        if ($_SESSION['page'] == 602)
+                        {
+                            echo 'class="active"';
+                        }
+                        ?>
+                        ><a href="commandesValidations.php"><i class="fa fa-map-signs"></i> <span>Je dois valider</span><?php if ($nb>0) { ?><span class="pull-right-container"><small class="label pull-right bg-yellow"><?=$nb?></small></span> <?php } ?></a></li>
 	                    <?php if ($_SESSION['commande_etreEnCharge']==1){ ?>
 	                        <li <?php
 	                        if ($_SESSION['page'] == 603)

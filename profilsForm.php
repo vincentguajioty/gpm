@@ -337,9 +337,7 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <th>COMMANDES</th>
                                 <th>Lecture</th>
                                 <th>Ajout/Modification</th>
-                                <th>Valider</th>
-                                <th>Seuil max de validation</th>
-                                <th>Valider à la place de (sans seuil)</th>
+                                <th>Valideur universel</th>
                                 <th>Etre en charge</th>
                                 <th>Abandonner/Supprimer</th>
                             </tr>
@@ -347,8 +345,6 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <td>Commandes</td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_lecture"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_ajout"></td>
-                                <td><input <?php if(isset($_GET['id']) AND $data['commande_valider'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_valider"></td>
-                                <td><input type="number" min="1" class="form-control" value="<?php if(isset($data['commande_valider_seuil']) AND ($data['commande_valider_seuil']>0)){ echo $data['commande_valider_seuil'];} ?>" name="commande_valider_seuil"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_valider_delegate'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_valider_delegate"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_etreEnCharge'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_etreEnCharge"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_abandonner'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_abandonner"></td>
@@ -357,8 +353,6 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <td>Centres de coûts</td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['cout_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_lecture"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['cout_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_ajout"></td>
-                                <td></td>
-                                <td></td>
                                 <td></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['cout_etreEnCharge'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_etreEnCharge"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['cout_supprimer'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_supprimer"></td>

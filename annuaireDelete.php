@@ -36,15 +36,7 @@ else
         'idPersonne' => $_GET['id']
     ));
     
-    $query = $db->prepare('DELETE FROM COMMANDES_VALIDEURS_DEFAULT WHERE idPersonne = :idPersonne;');
-    $query->execute(array(
-        'idPersonne' => $_GET['id']
-    ));
     $query = $db->prepare('DELETE FROM COMMANDES_AFFECTEES WHERE idAffectee = :idPersonne;');
-    $query->execute(array(
-        'idPersonne' => $_GET['id']
-    ));
-    $query = $db->prepare('DELETE FROM COMMANDES_VALIDEURS WHERE idValideur = :idPersonne;');
     $query->execute(array(
         'idPersonne' => $_GET['id']
     ));

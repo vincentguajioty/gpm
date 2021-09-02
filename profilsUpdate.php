@@ -62,8 +62,6 @@ else
     $_POST['verrouIP']                        = ($_POST['verrouIP']                        == 1) ? 1 : 0;
     $_POST['commande_lecture']                = ($_POST['commande_lecture']                == 1) ? 1 : 0;
     $_POST['commande_ajout']                  = ($_POST['commande_ajout']                  == 1) ? 1 : 0;
-    $_POST['commande_valider']                = ($_POST['commande_valider']                == 1) ? 1 : 0;
-    $_POST['commande_valider_seuil']          = ($_POST['commande_valider_seuil']          == Null) ? Null : $_POST['commande_valider_seuil'];
     $_POST['commande_valider_delegate']       = ($_POST['commande_valider_delegate']       == 1) ? 1 : 0;
     $_POST['commande_etreEnCharge']           = ($_POST['commande_etreEnCharge']           == 1) ? 1 : 0;
     $_POST['commande_abandonner']             = ($_POST['commande_abandonner']             == 1) ? 1 : 0;
@@ -200,8 +198,6 @@ else
             verrouIP                        = :verrouIP,
             commande_lecture                = :commande_lecture,
             commande_ajout                  = :commande_ajout,
-            commande_valider                = :commande_valider,
-            commande_valider_seuil          = :commande_valider_seuil,
             commande_valider_delegate       = :commande_valider_delegate,
             commande_etreEnCharge           = :commande_etreEnCharge,
             commande_abandonner             = :commande_abandonner,
@@ -338,8 +334,6 @@ else
         'verrouIP'                        => $_POST['verrouIP'],
         'commande_lecture'                => $_POST['commande_lecture'],
         'commande_ajout'                  => $_POST['commande_ajout'],
-        'commande_valider'                => $_POST['commande_valider'],
-        'commande_valider_seuil'          => $_POST['commande_valider_seuil'],
         'commande_valider_delegate'       => $_POST['commande_valider_delegate'],
         'commande_etreEnCharge'           => $_POST['commande_etreEnCharge'],
         'commande_abandonner'             => $_POST['commande_abandonner'],
@@ -442,7 +436,7 @@ else
 
     majIndicateursProfil($_GET['id']);
     majNotificationsProfil($_GET['id']);
-    majValideursProfil($_GET['id']);
+    majValideursPersonne(1);
 
     echo "<script type='text/javascript'>document.location.replace('profils.php');</script>";
 }

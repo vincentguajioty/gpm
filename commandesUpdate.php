@@ -68,20 +68,6 @@ else
 
         $db->query($insertSQL);
     }
-    $queryDelete = $db->prepare('DELETE FROM COMMANDES_VALIDEURS WHERE idCommande = :idCommande');
-    $queryDelete->execute([
-        ':idCommande' => $_GET['id']
-    ]);
-    if (!empty($_POST['idValideur'])) {
-        $insertSQL = 'INSERT INTO COMMANDES_VALIDEURS (idValideur, idCommande) VALUES';
-        foreach ($_POST['idValideur'] as $idValideur) {
-            $insertSQL .= ' ('. (int)$idValideur.', '. (int)$_GET['id'] .'),';
-        }
-
-        $insertSQL = substr($insertSQL, 0, -1);
-
-        $db->query($insertSQL);
-    }
     $queryDelete = $db->prepare('DELETE FROM COMMANDES_OBSERVATEURS WHERE idCommande = :idCommande');
     $queryDelete->execute([
         ':idCommande' => $_GET['id']

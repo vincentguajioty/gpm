@@ -228,7 +228,7 @@ if($_SESSION['profils_lecture']==1)
                             <th>COMMANDES</th>
                             <th>Lecture</th>
                             <th>Ajout Modification</th>
-                            <th>Valider</th>
+                            <th>Valideur universel</th>
                             <th>Etre en charge</th>
                             <th>Abandonner Supprimer</th>
                         </tr>
@@ -236,7 +236,7 @@ if($_SESSION['profils_lecture']==1)
                             <td>Commandes</td>
                             <td><?php if($data['commande_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                             <td><?php if($data['commande_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-                            <td><?php if($data['commande_valider'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                            <td><?php if($data['commande_valider_delegate'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                             <td><?php if($data['commande_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                             <td><?php if($data['commande_abandonner'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                         </tr>

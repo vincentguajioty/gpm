@@ -25,7 +25,6 @@ if ($_SESSION['commande_lecture']==0)
     $data = $query->fetch();
     ?>
 
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -57,7 +56,208 @@ if ($_SESSION['commande_lecture']==0)
             	<?php }
             ?>
 			<div class="row">
-	            <div class="col-md-8">
+	            <div class="col-md-3">
+	                <ul class="timeline">
+			            <li class="time-label"><span class="bg-blue">Processus</span></li>
+			            <li>
+							<?php
+								switch($data['idEtat'])
+								{
+									case 1:
+										echo '<i class="fa fa-spinner fa-spin bg-blue"></i>';
+									break;
+
+									case 8:
+										echo '<i class="fa fa-close bg-red"></i>';
+									break;
+
+									default:
+										echo '<i class="fa fa-check bg-green"></i>';
+								}
+							?>
+							<div class="timeline-item"><h3 class="timeline-header no-border">Création de la commande</h3></div>
+			            </li>
+			            <li>
+							<?php
+								switch($data['idEtat'])
+								{
+									case 2:
+										echo '<i class="fa fa-spinner fa-spin bg-blue"></i>';
+									break;
+
+									case 1:
+										echo '<i class="fa fa-hourglass-half bg-gray"></i>';
+									break;
+
+									case 8:
+										echo '<i class="fa fa-close bg-red"></i>';
+									break;
+
+									default:
+										echo '<i class="fa fa-check bg-green"></i>';
+								}
+							?>
+							<div class="timeline-item"><h3 class="timeline-header no-border"><?php if($data['idEtat']>=3){echo 'Validée';}else{echo 'En attente de validation';}?></h3></div>
+			            </li>
+			            <li>
+							<?php
+								switch($data['idEtat'])
+								{
+									case 3:
+										echo '<i class="fa fa-spinner fa-spin bg-blue"></i>';
+									break;
+
+									case 1:
+									case 2:
+										echo '<i class="fa fa-hourglass-half bg-gray"></i>';
+									break;
+
+									case 8:
+										echo '<i class="fa fa-close bg-red"></i>';
+									break;
+
+									default:
+										echo '<i class="fa fa-check bg-green"></i>';
+								}
+							?>
+							<div class="timeline-item"><h3 class="timeline-header no-border"><?php if($data['idEtat']>=4){echo 'Passée chez le fournisseur';}else{echo 'Doit être passée chez le fournisseur';}?></h3></div>
+			            </li>
+			            <li>
+							<?php
+								switch($data['idEtat'])
+								{
+									case 4:
+										echo '<i class="fa fa-spinner fa-spin bg-blue"></i>';
+									break;
+
+									case 1:
+									case 2:
+									case 3:
+									case 4:
+										echo '<i class="fa fa-hourglass-half bg-gray"></i>';
+									break;
+
+									case 6:
+									case 8:
+										echo '<i class="fa fa-close bg-red"></i>';
+									break;
+
+									default:
+										echo '<i class="fa fa-check bg-green"></i>';
+								}
+							?>
+							<div class="timeline-item"><h3 class="timeline-header no-border"><?php if($data['idEtat']>=5){echo 'Livrée';}else{echo 'En attente de livraison';}?></h3></div>
+			            </li>
+			            <?php
+			            	if($data['savHistorique']==1)
+			            	{ ?>
+					            <li>
+									<?php
+										switch($data['idEtat'])
+										{
+											case 6:
+												echo '<i class="fa fa-spinner fa-spin bg-blue"></i>';
+											break;
+
+											case 1:
+											case 2:
+											case 3:
+											case 4:
+												echo '<i class="fa fa-hourglass-half bg-gray"></i>';
+											break;
+
+											case 8:
+												echo '<i class="fa fa-close bg-red"></i>';
+											break;
+
+											default:
+												echo '<i class="fa fa-check bg-green"></i>';
+										}
+									?>
+									<div class="timeline-item"><h3 class="timeline-header no-border"><?php if($data['idEtat']==6){echo 'SAV en cours';}else{echo 'SAV terminé';}?></h3></h3></div>
+					            </li>
+					        <?php } ?>
+			            <li>
+							<?php
+								switch($data['idEtat'])
+								{
+									case 5:
+										echo '<i class="fa fa-spinner fa-spin bg-blue"></i>';
+									break;
+
+									case 1:
+									case 2:
+									case 3:
+									case 4:
+									case 5:
+									case 6:
+										echo '<i class="fa fa-hourglass-half bg-gray"></i>';
+									break;
+
+									case 8:
+										echo '<i class="fa fa-close bg-red"></i>';
+									break;
+
+									default:
+										echo '<i class="fa fa-check bg-green"></i>';
+								}
+							?>
+							<div class="timeline-item"><h3 class="timeline-header no-border">Intégration dans le stock</h3></div>
+			            </li>
+			            <li>
+							<?php
+								switch($data['idEtat'])
+								{
+									case 1:
+									case 2:
+									case 3:
+									case 4:
+									case 5:
+									case 6:
+										echo '<i class="fa fa-hourglass-half bg-gray"></i>';
+									break;
+
+									case 8:
+										echo '<i class="fa fa-close bg-red"></i>';
+									break;
+
+									default:
+										echo '<i class="fa fa-check bg-green"></i>';
+								}
+							?>
+							<div class="timeline-item"><h3 class="timeline-header no-border">Commande clôturée</h3></div>
+			            </li>
+			            <?php
+			            	if($data['idEtat']!=7)
+			            	{ ?>
+				            <li>
+								<?php
+									switch($data['idEtat'])
+									{
+										case 1:
+										case 2:
+										case 3:
+										case 4:
+										case 5:
+										case 6:
+										case 7:
+											echo '<i class="fa fa-hourglass-half bg-gray"></i>';
+										break;
+
+										default:
+											echo '<i class="fa fa-check bg-green"></i>';
+									}
+								?>
+								<div class="timeline-item"><h3 class="timeline-header no-border">Commande abandonnée</h3></div>
+				            </li>
+				        	<?php } ?>
+			            <li>
+			              <i class="fa fa-clock-o bg-gray"></i>
+			            </li>
+			          </ul>
+	            </div>
+
+	            <div class="col-md-9">
 	                <div class="nav-tabs-custom">
 	                    <ul class="nav nav-tabs">
 	                        <li class="active"><a href="#general" data-toggle="tab">Informations générales</a></li>
@@ -66,6 +266,7 @@ if ($_SESSION['commande_lecture']==0)
 	                        <?php if ($data['idEtat']>1) { ?><li><a href="#validation" data-toggle="tab">Validation</a></li> <?php } ?>
 	                        <?php if ($data['idEtat']>2) { ?><li><a href="#fournisseur" data-toggle="tab">Passage de la commande</a></li> <?php } ?>
 	                        <?php if ($data['idEtat']>3) { ?><li><a href="#livraison" data-toggle="tab">Livraison</a></li> <?php } ?>
+	                        <li class="pull-right"><a href="#timeline" data-toggle="tab">Historique</a></li>
 	                    </ul>
 	                    <div class="tab-content">
 	
@@ -255,50 +456,23 @@ if ($_SESSION['commande_lecture']==0)
 	                                            </select>
 	                                        </div>
 	                                        <div class="form-group">
-	                                            <label>Validation de la demande de commande par: </label>
-	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>2) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idValideur[]" multiple>
+	                                            <label>Valideurs potentiels de la demande:</label>
+	                                            <select class="form-control select2" style="width: 100%;" disabled name="idValideur[]" multiple>
 	                                                <?php
-	                                                if($data['idEtat']<3)
-	                                                {
-		                                                $query2 = $db->prepare('
-		                                                	SELECT
-		                                                		ao.*,
-		                                                		(SELECT idCommande FROM COMMANDES_VALIDEURS aop WHERE ao.idPersonne = aop.idValideur AND aop.idCommande = :idCommande) as idCommande
-		                                                	FROM
-		                                                		PERSONNE_REFERENTE ao
-		                                                		JOIN VIEW_HABILITATIONS h ON ao.idPersonne = h.idPersonne
-		                                                	WHERE
-		                                                		commande_lecture = 1
-		                                                		AND commande_valider = 1
-		                                                	ORDER BY
-		                                                		identifiant;');
-										                $query2->execute(array('idCommande' => $_GET['id']));
-						
-						                                while ($data2 = $query2->fetch())
-						                                {
-						                                    
-						                                    echo '<option value=' . $data2['idPersonne'];
-						
-											                if (isset($data2['idCommande']) AND $data2['idCommande'])
-											                {
-											                    echo " selected ";
-											                }
-											                echo '>' . $data2['identifiant'] . '</option>';
-						                                }
-	                                                }
-	                                                else
-	                                                {
-	                                                	$query2 = $db->prepare('SELECT * FROM COMMANDES_VALIDEURS o JOIN PERSONNE_REFERENTE p ON o.idValideur = p.idPersonne WHERE idCommande = :idCommande;');
-	                                                	$query2->execute(array('idCommande' => $_GET['id']));
-	                                                	while($data2 = $query2->fetch())
+	                                                	if($data['idCentreDeCout'] != Null)
 	                                                	{
-	                                                	?>
-	                                                		<option value="<?php echo $data2['idPersonne']; ?>" selected ><?php echo $data2['identifiant']; ?></option>
-	                                                	<?php
+	                                                		$query2 = $db->prepare('SELECT c.idPersonne, p.identifiant FROM CENTRE_COUTS_PERSONNES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idPersonne = p.idPersonne WHERE c.idCentreDeCout = :idCentreDeCout;');
+	                                                		$query2->execute(array('idCentreDeCout'=>$data['idCentreDeCout']));
+	                                                		while($data2 = $query2->fetch())
+	                                                		{
+	                                                			echo $data2['idPersonne'];
+	                                                			if(cmdEstValideur($data2['idPersonne'], $_GET['id'])==1)
+	                                                			{
+	                                                			?>
+	                                                			<option selected ><?php echo $data2['identifiant']; ?></option>
+	                                                		<?php }}
 	                                                	}
-	                                                }
-	                                                $query2->closeCursor(); ?>
-	                                                
+	                                                ?>
 	                                            </select>
 	                                        </div>
 	                                    </div>
@@ -529,6 +703,7 @@ if ($_SESSION['commande_lecture']==0)
 					            </div>
 	                        </div>
 	                        
+
 	                        <div class="tab-pane" id="pj">
 	                            <div class="box-body table-responsive no-padding">
                                     <table class="table table-hover">
@@ -615,7 +790,7 @@ if ($_SESSION['commande_lecture']==0)
 		                                	?>
 			                                	<div class="col-md-12">
 			                                		<div class="alert alert-warning">
-									                    <i class="icon fa fa-warning"></i> Votre profil ne vous permet pas de valider une commande d'un montant suppérieur à <?= $_SESSION['commande_valider_seuil'] ?> €.
+									                    <i class="icon fa fa-warning"></i> Votre profil ne vous permet pas de valider cette commande (seuil du centre de cout atteint, montant de la commande suppérieur à votre seuil, centre de cout clôs, ...).
 									                </div>
 			                                	</div>
 		                                <?php } ?>
@@ -633,18 +808,22 @@ if ($_SESSION['commande_lecture']==0)
 	                                    </div>
 	                                    <div class="col-md-4">
 	                                        <div class="form-group">
-	                                            <label>Valideur: </label>
-	                                            <select class="form-control select2" style="width: 100%;" <?php if(($data['idEtat']>1) OR (($_SESSION['commande_ajout']==0) AND ($_SESSION['commande_etreEnCharge']==0))){echo 'disabled';}?> name="idValideur[]" multiple>
+	                                            <label>Valideurs potentiels: </label>
+	                                            <select class="form-control select2" style="width: 100%;" disabled name="idValideur[]" multiple>
 	                                                <?php
-                                                	$query2 = $db->prepare('SELECT * FROM COMMANDES_VALIDEURS o JOIN PERSONNE_REFERENTE p ON o.idValideur = p.idPersonne WHERE idCommande = :idCommande;');
-                                                	$query2->execute(array('idCommande' => $_GET['id']));
-                                                	while($data2 = $query2->fetch())
-                                                	{?>
-                                                		<option value="<?php echo $data2['idPersonne']; ?>" selected ><?php echo $data2['identifiant']; ?></option>
-                                                	<?php }
-	                                                
-	                                                $query2->closeCursor(); ?>
-	                                                
+	                                                	if($data['idCentreDeCout'] != Null)
+	                                                	{
+	                                                		$query2 = $db->prepare('SELECT c.idPersonne, p.identifiant FROM CENTRE_COUTS_PERSONNES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idPersonne = p.idPersonne WHERE c.idCentreDeCout = :idCentreDeCout;');
+	                                                		$query2->execute(array('idCentreDeCout'=>$data['idCentreDeCout']));
+	                                                		while($data2 = $query2->fetch())
+	                                                		{
+	                                                			if(cmdEstValideur($data2['idPersonne'], $_GET['id'])==1)
+	                                                			{
+	                                                			?>
+	                                                			<option selected ><?php echo $data2['identifiant']; ?></option>
+	                                                		<?php }}
+	                                                	}
+	                                                ?>
 	                                            </select>
 	                                        </div>
 	                                    </div>
@@ -662,13 +841,13 @@ if ($_SESSION['commande_lecture']==0)
 	                                </div>
 	                                <div class="form-group">
 	                                    <label>Remarques:</label>
-	                                    <textarea <?php if(($data['idEtat']>2) OR ((($_SESSION['commande_valider']==0) OR cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])!=1) AND ($_SESSION['commande_valider_delegate']==0))){echo 'disabled';}?> class="form-control" rows="3" name="remarquesValidation" required><?php echo $data['remarquesValidation']; ?></textarea>
+	                                    <textarea <?php if(($data['idEtat']>2) OR ((cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])!=1) AND ($_SESSION['commande_valider_delegate']==0))){echo 'disabled';}?> class="form-control" rows="3" name="remarquesValidation" required><?php echo $data['remarquesValidation']; ?></textarea>
 	                                </div>
 	                                <div class="box-footer">
-	                                    <?php if (($data['idEtat']==2) AND ($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])==1){ ?><button name="button" value="nok" type="submit" class="btn btn-danger pull-left">Refuser</button> <?php } ?>
+	                                    <?php if (($data['idEtat']==2) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])==1){ ?><button name="button" value="nok" type="submit" class="btn btn-danger pull-left">Refuser</button> <?php } ?>
 	                                    <?php if (($data['idEtat']==2) AND ($_SESSION['commande_valider_delegate']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])!=1){ ?><button name="button" value="nokdelegate" type="submit" class="btn btn-danger pull-left">Refuser en tant que délégué</button> <?php } ?>
 	                                    
-	                                    <?php if (($data['idEtat']==2) AND ($data['idFournisseur']!=Null) AND ($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])==1) { ?><button name="button" value="ok" type="submit" class="btn btn-success pull-right">Valider</button> <?php } ?>
+	                                    <?php if (($data['idEtat']==2) AND ($data['idFournisseur']!=Null) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])==1) { ?><button name="button" value="ok" type="submit" class="btn btn-success pull-right">Valider</button> <?php } ?>
 	                                    <?php if (($data['idEtat']==2) AND ($data['idFournisseur']!=Null) AND ($_SESSION['commande_valider_delegate']==1) AND cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])!=1) { ?><button name="button" value="okdelegate" type="submit" class="btn btn-success pull-right">Valider en tant que délégué</button> <?php } ?>
 	                                </div>
 	                            </form>
@@ -781,6 +960,36 @@ if ($_SESSION['commande_lecture']==0)
 	                                </div>
 	                            </form>
 	                        </div>
+
+
+	                        <div class="tab-pane" id="timeline">
+	                            <div class="box-body table-responsive no-padding">
+					             	<ul class="timeline">
+							            <li class="time-label">
+							                  <span class="bg-blue">
+							                    Historique
+							                  </span>
+							            </li>
+							            <?php
+							                    $query2 = $db->prepare('SELECT * FROM COMMANDES_TIMELINE c LEFT OUTER JOIN COMMANDES_TIMELINE_ICON i ON c.idComIcon = i.idComIcon WHERE idCommande=:idCommande ORDER BY dateEvtCommande DESC;');
+							                    $query2->execute(array('idCommande' => $_GET['id']));
+							                    while($data2 = $query2->fetch())
+							                    { ?>
+							                    	<li>
+										              <i class="fa <?php echo $data2['iconFontAsw'];?> bg-<?php echo $data2['iconColor'];?>"></i>
+										              <div class="timeline-item">
+										                <span class="time"><i class="fa fa-clock-o"></i> <?php echo $data2['dateEvtCommande'];?></span>
+										                <h3 class="timeline-header no-border"><?php echo $data2['detailsEvtCommande'];?></h3>
+										              </div>
+										            </li>
+							                    <?php }
+							             ?>
+							            <li>
+							              <i class="fa fa-clock-o bg-gray"></i>
+							            </li>
+							        </ul>
+					            </div>
+	                        </div>
 	
 	
 	                    </div>
@@ -801,37 +1010,8 @@ if ($_SESSION['commande_lecture']==0)
 			                    </div>
 			                </div>
 			        <?php } ?>
-	            </div>
-	
-	
-	            <div class="col-md-4">
-	                <ul class="timeline">
-			            <li class="time-label">
-			                  <span class="bg-blue">
-			                    Historique
-			                  </span>
-			            </li>
-			            <?php
-			                    $query = $db->prepare('SELECT * FROM COMMANDES_TIMELINE c LEFT OUTER JOIN COMMANDES_TIMELINE_ICON i ON c.idComIcon = i.idComIcon WHERE idCommande=:idCommande ORDER BY dateEvtCommande DESC;');
-			                    $query->execute(array('idCommande' => $_GET['id']));
-			                    while($data = $query->fetch())
-			                    { ?>
-			                    	<li>
-						              <i class="fa <?php echo $data['iconFontAsw'];?> bg-<?php echo $data['iconColor'];?>"></i>
-						              <div class="timeline-item">
-						                <span class="time"><i class="fa fa-clock-o"></i> <?php echo $data['dateEvtCommande'];?></span>
-						                <h3 class="timeline-header no-border"><?php echo $data['detailsEvtCommande'];?></h3>
-						              </div>
-						            </li>
-			                    <?php }
-			             ?>
-			            <li>
-			              <i class="fa fa-clock-o bg-gray"></i>
-			            </li>
-			          </ul>
-	            </div>
-	            
-	            </div>
+	            </div>	            
+	        </div>
 
         </section>
         <!-- /.content -->

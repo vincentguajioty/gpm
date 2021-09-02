@@ -32,14 +32,21 @@ if ($_SESSION['cout_lecture']==0)
         $previsions = 0;
         while($commande = $query2->fetch())
         {
-            $query3 = $db->prepare('SELECT * FROM COMMANDES_MATERIEL c WHERE idCommande = :idCommande;');
-            $query3->execute(array('idCommande' => $commande['idCommande']));
-            while ($data3 = $query3->fetch())
-            {
-                $previsions = $previsions + ($data3['prixProduitTTC']*$data3['quantiteCommande']);
-            }
+            $previsions += cmdTotal($commande['idCommande']);
         }
-        
+
+        $query2 = $db->prepare('SELECT idCommande FROM COMMANDES WHERE idCentreDeCout = :idCentreDeCout AND integreCentreCouts = 0 AND idEtat != 8 AND idEtat != 1 AND idEtat != 2;');
+        $query2->execute(array('idCentreDeCout'=>$_GET['id']));
+        $validees = 0;
+        while($commande = $query2->fetch())
+        {
+            $validees += cmdTotal($commande['idCommande']);
+        }
+
+        $query2 = $db->prepare('SELECT COUNT(*) as nb FROM COMMANDES c LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat WHERE idCentreDeCout = :idCentreDeCout AND integreCentreCouts = 0 AND c.idEtat > 3 AND c.idEtat < 8;');
+        $query2->execute(array('idCentreDeCout'=>$_GET['id']));
+        $nbIntergrationAttente = $query2->fetch();
+
 		if($data['dateFermeture'] == Null)
 		{
 			if($data['dateOuverture'] <= date('Y-m-d'))
@@ -118,23 +125,6 @@ if ($_SESSION['cout_lecture']==0)
                         </div>
                         <div class="col-md-12">
                             <div class="info-box">
-                                <span class="info-box-icon bg-aqua"><i class="fa fa-user"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">
-                                    	<?php
-                                    		$query2 = $db->prepare('SELECT p.* FROM CENTRE_COUTS_PERSONNES cc LEFT OUTER JOIN PERSONNE_REFERENTE p ON cc.idPersonne = p.idPersonne WHERE cc.idCentreDeCout = :idCentreDeCout;');
-        									$query2->execute(array('idCentreDeCout'=>$_GET['id']));
-        									while($data2 = $query2->fetch())
-        									{
-        										echo $data2['identifiant'].'<br/>';
-        									}
-                                    	?>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="info-box">
                                 <span class="info-box-icon bg-<?php if($enCours==0){echo 'orange';}elseif($enCours>0){echo 'green';}else{echo 'red';} ?>"><i class="fa fa-balance-scale"></i></span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">Solde actuel</span>
@@ -144,9 +134,18 @@ if ($_SESSION['cout_lecture']==0)
                         </div>
                         <div class="col-md-12">
                             <div class="info-box">
-                                <span class="info-box-icon bg-<?php if($enCours-$previsions==0){echo 'orange';}elseif($enCours-$previsions>0){echo 'green';}else{echo 'red';} ?>"><i class="fa fa-shopping-cart"></i></span>
+                                <span class="info-box-icon bg-<?php if($enCours-$validees==0){echo 'orange';}elseif($enCours-$validees>0){echo 'green';}else{echo 'red';} ?>"><i class="fa fa-shopping-cart"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Commandes à venir</span>
+                                    <span class="info-box-text">Commandes à venir validées</span>
+                                    <span class="info-box-number"><?= $validees ?> €<br/>(Solde cible: <?= round($enCours-$validees,2) ?>€)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-<?php if($enCours-$previsions==0){echo 'orange';}elseif($enCours-$previsions>0){echo 'green';}else{echo 'red';} ?>"><i class="fa fa-cart-plus"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Potentielles commandes à venir</span>
                                     <span class="info-box-number"><?= $previsions ?> €</span>
                                 </div>
                             </div>
@@ -158,15 +157,35 @@ if ($_SESSION['cout_lecture']==0)
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#livre" data-toggle="tab">Livre de comptes</a></li>
-                            <?php if(centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['id'])==1){ ?><li><a href="#manuel" data-toggle="tab">Saisir une opération</a></li><?php } ?>
-                            <li><a href="#cmd" data-toggle="tab">Commandes à intégrer</a></li>
+                            <li><a href="#cmd" data-toggle="tab">Commandes à intégrer <?php if($nbIntergrationAttente['nb']>0){echo '<span class="badge bg-yellow">'.$nbIntergrationAttente['nb'].'</span>';} ?></a></li>
                             <li><a href="#cmdKO" data-toggle="tab">Commandes refusées</a></li>
                             <li><a href="#pj" data-toggle="tab">Pièces jointes</a></li>
+                            <?php if ($_SESSION['cout_ajout']==1) {?><li><a href="#personnes" data-toggle="tab">Gestionnaires</a></li><?php } ?>
                             <li><a href="#export" data-toggle="tab">Exports</a></li>
                         </ul>
                         <div class="tab-content">
 
                             <div class="active tab-pane" id="livre">
+                                
+                                <?php
+                                    if($text == 'Clos')
+                                    { ?>
+                                        <div class="col-md-12">
+                                            <div class="alert alert-warning">
+                                                <i class="icon fa fa-warning"></i> Ce centre de coût est clos. Aucune action ne devrait y être menée !
+                                            </div>
+                                        </div>
+                                    <?php }
+                                    if($text == 'Futur')
+                                    { ?>
+                                        <div class="col-md-12">
+                                            <div class="alert alert-warning">
+                                                <i class="icon fa fa-warning"></i> Ce centre de coût n'est pas encore ouvert. Aucune action ne devrait y être menée !
+                                            </div>
+                                        </div>
+                                    <?php }
+                                ?>
+
                                 <table id="tri2R" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
@@ -178,7 +197,7 @@ if ($_SESSION['cout_lecture']==0)
                                             <th class="not-mobile">Détails</th>
                                             <th class="not-mobile">Responsable</th>
                                             <th class="not-mobile">Commande</th>
-                                            <th class="not-mobile"></th>
+                                            <th class="not-mobile"><?php if(centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['id'])==1){ ?><a href="centreCoutsOperationsForm.php?idCentreDeCout=<?=$_GET['id']?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a><?php } ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -223,33 +242,6 @@ if ($_SESSION['cout_lecture']==0)
                                     </tbody>
                                 </table>
                             </div>
-                            
-                            <?php if(centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['id'])==1){ ?>
-                                <div class="tab-pane" id="manuel">
-                                
-                                    <?php
-                                    	if($text == 'Clos')
-                                    	{ ?>
-                                    		<div class="col-md-12">
-		                                		<div class="alert alert-warning">
-								                    <i class="icon fa fa-warning"></i> Ce centre de coût est clos. Aucune action ne devrait y être menée !
-								                </div>
-		                                	</div>
-                                    	<?php }
-                                    	if($text == 'Futur')
-                                    	{ ?>
-                                    		<div class="col-md-12">
-		                                		<div class="alert alert-warning">
-								                    <i class="icon fa fa-warning"></i> Ce centre de coût n'est pas encore ouvert. Aucune action ne devrait y être menée !
-								                </div>
-		                                	</div>
-                                    	<?php }
-                                    ?>
-                                    
-                                    <a href="centreCoutsOperationsForm.php?idCentreDeCout=<?=$_GET['id']?>" class="btn btn-xs btn-success modal-form" title="Ajout"><i class="fa fa-plus"></i> Ajouter une opération manuellement</a>
-                                
-                                </div>                          
-                            <?php } ?>
 
                             <div class="tab-pane" id="cmd">
                                 
@@ -481,6 +473,37 @@ if ($_SESSION['cout_lecture']==0)
 
                                 </table>
                             </div>
+                            
+                            <?php if ($_SESSION['cout_ajout']==1) {?>
+                                <div class="tab-pane" id="personnes">
+                                    <table class="table table-hover">
+                                    <tr>
+                                        <th>Personne</th>
+                                        <th>Seuil de validation des commandes</th>
+                                        <th>Droits étendus</th>
+                                        <th><a href="centreCoutsGerantForm.php?idCentreDeCout=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a></th>
+                                    </tr>
+                                    <?php
+                                    $query2 = $db->prepare('SELECT c.*, p.identifiant FROM CENTRE_COUTS_PERSONNES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idPersonne = p.idPersonne WHERE c.idCentreDeCout = :idCentreDeCout ORDER BY identifiant ASC;');
+                                    $query2->execute(array('idCentreDeCout' => $_GET['id']));
+                                    while ($data2 = $query2->fetch())
+                                    {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $data2['identifiant'];?><?php if(centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['id'])==0){echo ' <span class="badge bg-blue">Expiré</span>';}?></td>
+                                            <td><?php if($data2['montantMaxValidation']!=Null AND $data2['montantMaxValidation']>=0){echo $data2['montantMaxValidation'].' €';}else{echo '<span class="badge bg-yellow">Illimité</span>';}?></td>
+                                            <td><?php if($data2['depasseBudget']){echo '<span class="badge bg-yellow">Dépassement de budget autorisé</span><br/>';}?><?php if($data2['validerClos']){echo '<span class="badge bg-yellow">Opérer sur le centre clos</span>';}?></td>
+                                            <td>
+                                                <a href="centreCoutsGerantForm.php?id=<?= $data2['idGerant'] ?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
+                                                <a href="centreCoutsGerantDelete.php?id=<?=$data2['idGerant']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce gérant?');" title="Supprimer"><i class="fa fa-minus"></i></a>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    $query2->closeCursor(); ?>
+                                </table>
+                                </div>
+                            <?php } ?>
 
                             <div class="tab-pane" id="export">
                                 <a href="centreCoutsExport.php?id=<?=$_GET['id']?>" class="btn btn-xs btn-success"><i class="fa fa-download"></i> Télécharger un export CSV des opérations enregistrées</a>

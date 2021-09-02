@@ -46,29 +46,27 @@ if ($_SESSION['commande_lecture']==0)
                             <th class="all">Nom</th>
                             <th class="not-mobile">Fournisseur</th>
                             <th class="not-mobile">TTC</th>
-                            <th class="not-mobile">Référence fournisseur</th>
                             <th class="not-mobile">Etat</th>
-                            <th class="not-mobile">Etat centre de cout</th>
-                            <th class="not-mobile">Demandeur</th>
-                            <th class="not-mobile">Gerant</th>
+                            <th class="not-mobile">Centre de cout</th>
                             <th class="not-mobile">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->prepare('SELECT c.idCommande, c.nomCommande, c.dateCreation, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat FROM COMMANDES_VALIDEURS j LEFT OUTER JOIN COMMANDES c ON j.idCommande = c.idCommande LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE (idValideur = :idPersonne) AND (c.idEtat = 2);');
+                        $query = $db->prepare('SELECT c.idCommande, c.nomCommande, c.dateCreation, f.nomFournisseur, e.libelleEtat, c.idEtat FROM COMMANDES c LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE c.idEtat = 2;');
                         $query->execute(array(
                             'idPersonne' => $_SESSION['idPersonne']
                         ));
                         while ($data = $query->fetch())
-                        {?>
+                        {
+                            if(cmdEstValideur($_SESSION['idPersonne'],$data['idCommande']) == 1){
+                            ?>
                             <tr <?php if ($_SESSION['commande_lecture']==1) {?>data-href="commandeView.php?id=<?=$data['idCommande']?>"<?php }?>>
                                 <td><?php echo $data['idCommande']; ?></td>
                                 <td><?php echo $data['dateCreation']; ?></td>
                                 <td><?php echo $data['nomCommande']; ?></td>
                                 <td><?php echo $data['nomFournisseur']; ?></td>
                                 <td><?php echo cmdTotal($data['idCommande']).'€'; ?></td>
-                                <td><?php echo $data['numCommandeFournisseur']; ?></td>
                                 <td><span class="badge bg-<?php
                                     switch ($data['idEtat']) {
                                         case 1:
@@ -96,27 +94,9 @@ if ($_SESSION['commande_lecture']==0)
                                             echo "grey";
                                             break;
                                     }
-                                    ?>"><?php echo $data['libelleEtat']; ?></span></td>
-                                <td><?= cmdEtatCentreCouts($data['idCommande']); ?></td>
+                                    ?>"><?php echo $data['idEtat'].' - '.$data['libelleEtat']; ?></span></td>
                                 <td>
-                                	<?php
-                                		$query2 = $db->prepare('SELECT * FROM COMMANDES_DEMANDEURS c JOIN PERSONNE_REFERENTE p ON c.idDemandeur = p.idPersonne WHERE idCommande = :idCommande');
-                                		$query2->execute(array('idCommande'=>$data['idCommande']));
-                                		while($data2 = $query2->fetch())
-                                		{
-                                			echo $data2['identifiant'].'<br/>';
-                                		}
-                                	?>
-                                </td>
-                                <td>
-	                                <?php
-	                            		$query2 = $db->prepare('SELECT * FROM COMMANDES_AFFECTEES c JOIN PERSONNE_REFERENTE p ON c.idAffectee = p.idPersonne WHERE idCommande = :idCommande');
-	                            		$query2->execute(array('idCommande'=>$data['idCommande']));
-	                            		while($data2 = $query2->fetch())
-	                            		{
-	                            			echo $data2['identifiant'].'<br/>';
-	                            		}
-	                            	?>
+                                	<?= cmdEtatCentreCouts($data['idCommande']); ?>
                                 </td>
                                 <td>
                                     <?php if ($_SESSION['commande_lecture']==1) {?>
@@ -124,7 +104,7 @@ if ($_SESSION['commande_lecture']==0)
                                 	<?php } ?>
                                 </td>
                             </tr>
-                            <?php
+                            <?php }
                         }
                         $query->closeCursor(); ?>
                         </tbody>

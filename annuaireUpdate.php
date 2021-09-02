@@ -75,7 +75,7 @@ else {
 
     majIndicateursPersonne($_GET['id'],1);
     majNotificationsPersonne($_GET['id'],1);
-    majValideursPersonne($_GET['id'],1);
+    majValideursPersonne(1);
 
     echo "<script>window.location = document.referrer;</script>";
 }

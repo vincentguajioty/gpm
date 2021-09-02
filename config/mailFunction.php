@@ -46,4 +46,55 @@ function sendMail($adresseDest, $sujet, $niveau, $contenu)
     return mail($adresseDest,$sujet,$contenu,$header);
 }
 
+function sendMailCmdStage($idCommande, $idNotif)
+{
+    global $db;
+
+    $query = $db->query('SELECT * FROM CONFIG;');
+    $config = $query->fetch();
+
+    $notification = $db->prepare('SELECT * FROM COMMANDES_NOTIFICATIONS WHERE idNotif = :idNotif;');
+    $notification->execute(array('idNotif'=>$idNotif));
+    $notification = $notification->fetch();
+
+    $commande = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE idCommande = :idCommande;');
+    $commande->execute(array('idCommande'=>$idCommande));
+    $commande=$commande->fetch();
+
+    if($config[$notification['booleanConfigLibelle']]==1)
+    {
+        $notification['destinatairesQuery'] = replaceString($notification['destinatairesQuery'],array(
+            'idCommande'           => $idCommande,
+            'montantTotalCommande' => cmdTotal($idCommande),
+        ));
+        $query = $db->query($notification['destinatairesQuery']);
+        while($data = $query->fetch())
+        {
+            $sujet = replaceString($notification['sujetNotif'],array(
+                'idCommande'    => $idCommande,
+                'APPNAME'       => $config['appname'],
+                'sessionActive' => $_SESSION['identifiant'],
+                'nomCommande'   => $commande['nomCommande'],
+                'nomFournisseur'=> $commande['nomFournisseur'],
+
+            ));
+            $message = replaceString($notification['corpsNotif'],array(
+                'idCommande'     => $idCommande,
+                'prenomPersonne' => $data['prenomPersonne'],
+                'APPNAME'        => $config['appname'],
+            ));
+
+            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
+            {
+                writeInLogs("Notification ".$idNotif." envoyée à ".$data['mailPersonne']." pour la commande ".$idCommande, '1', NULL);
+            }
+            else
+            {
+                writeInLogs("Erreur lors de l'envoie de la notification ".$idNotif." envoyée à ".$data['mailPersonne']." pour la commande ".$idCommande, '3', NULL);
+            }
+        }
+    }
+}
+
 ?>

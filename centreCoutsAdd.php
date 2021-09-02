@@ -32,21 +32,7 @@ else
 
     switch($query->errorCode())
     {
-        case '00000':
-            $query = $db->query('SELECT MAX(idCentreDeCout) as idCentreDeCout FROM CENTRE_COUTS;');
-            $data = $query ->fetch();
-            
-	        if (!empty($_POST['idPersonne'])) {
-		        $insertSQL = 'INSERT INTO CENTRE_COUTS_PERSONNES (idPersonne, idCentreDeCout) VALUES';
-		        foreach ($_POST['idPersonne'] as $idPersonne) {
-		            $insertSQL .= ' ('. (int)$idPersonne.', '. (int)$data['idCentreDeCout'] .'),';
-		        }
-		
-		        $insertSQL = substr($insertSQL, 0, -1);
-		
-		        $db->query($insertSQL);
-		    }
-		    
+        case '00000':		    
 		    writeInLogs("Ajout du centre de couts " . $_POST['libelleCentreDecout'], '1', NULL);
             $_SESSION['returnMessage'] = 'Centre de couts ajouté avec succès.';
             $_SESSION['returnType'] = '1';

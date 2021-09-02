@@ -39,7 +39,7 @@ else
     {        
         majIndicateursPersonne($data2['idPersonne'],1);
     	majNotificationsPersonne($data2['idPersonne'],1);
-    	majValideursPersonne($data2['idPersonne'],1);
+    	majValideursPersonne(1);
     }
 
     $query = $db->prepare('DELETE FROM PROFILS WHERE idProfil = :idProfil;');

@@ -55,7 +55,13 @@ else
     {
         case '00000':
             writeInLogs("Passage de la commande " . $_GET['id']." auprès du fournisseur.", '1', NULL);
+            
             addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " a lancer la commande chez le fournisseur. La commande est désormais en attente de livraison.", "21");
+
+            sendMailCmdStage($_GET['id'],13);
+            sendMailCmdStage($_GET['id'],14);
+            sendMailCmdStage($_GET['id'],15);
+            sendMailCmdStage($_GET['id'],16);
             break;
 
         default:
@@ -65,84 +71,8 @@ else
 
     }
 
-    $sujet = "[" . $APPNAME . "] La commande " .$_GET['id']. " a été passée auprès du fournisseur.";
 
-    if($config['notifications_commandes_demandeur_passee']==1)
-    {
-        $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_DEMANDEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idDemandeur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
-        $query->execute(array('idCommande'=>$_GET['id']));
-        while($data = $query->fetch())
-        {
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes le demandeur vient d'être passée après du fournisseur.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
-            {
-                writeInLogs("Mail d'information de passage de commande fournisseur envoyé au demandeur pour la commande " . $_GET['id'], '1', NULL);
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail d'information de passage de commande fournisseur au demandeur pour la commande " . $_GET['id'], '3', NULL);
-            }
-        }
-    }
-    if($config['notifications_commandes_valideur_passee']==1)
-    {
-        $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_VALIDEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idValideur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
-        $query->execute(array('idCommande'=>$_GET['id']));
-        while($data = $query->fetch())
-        {
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> La commande " . $_GET['id'] . " dont vous êtes le valideur vient d'être passée après du fournisseur.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
-            {
-                writeInLogs("Mail d'information de passage de commande fournisseur envoyé au valideur pour la commande " . $_GET['id'], '1', NULL);
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail d'information de passage de commande fournisseur au valideur pour la commande " . $_GET['id'], '3', NULL);
-            }
-        }
-    }
-    if($config['notifications_commandes_affectee_passee']==1)
-    {
-        $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_AFFECTEES ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idAffectee = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
-        $query->execute(array('idCommande'=>$_GET['id']));
-        while($data = $query->fetch())
-        {
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " qui vous est affectée vient d'être passée après du fournisseur.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
-            {
-                writeInLogs("Mail d'information de passage de commande fournisseur envoyé au gérant pour la commande " . $_GET['id'], '1', NULL);
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail de passage de commande fournisseur au gérant pour la commande " . $_GET['id'], '3', NULL);
-            }
-        }
-    }
-    if($config['notifications_commandes_observateur_passee']==1)
-    {
-        $query = $db->prepare("SELECT mailPersonne FROM COMMANDES_OBSERVATEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idObservateur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;");
-        $query->execute(array('idCommande'=>$_GET['id']));
-        while($data = $query->fetch())
-        {
-            $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Pour information, la commande " . $_GET['id'] . " dont vous êtes l'observateur vient d'être passée après du fournisseur.";
-            $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-            $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
-            {
-                writeInLogs("Mail d'information de passage de commande fournisseur envoyé à l'observateur pour la commande " . $_GET['id'], '1', NULL);
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoi du mail de passage de commande fournisseur à l'observateur pour la commande " . $_GET['id'], '3', NULL);
-            }
-        }
-    }
+    
 
     echo "<script type='text/javascript'>document.location.replace('commandesNonCloses.php');</script>";
 

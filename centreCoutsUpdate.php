@@ -12,21 +12,6 @@ if ($_SESSION['cout_ajout']==0)
 else
 {    
 	
-	$queryDelete = $db->prepare('DELETE FROM CENTRE_COUTS_PERSONNES WHERE idCentreDeCout = :idCentreDeCout');
-    $queryDelete->execute([
-        ':idCentreDeCout' => $_GET['id']
-    ]);
-    if (!empty($_POST['idPersonne'])) {
-        $insertSQL = 'INSERT INTO CENTRE_COUTS_PERSONNES (idPersonne, idCentreDeCout) VALUES';
-        foreach ($_POST['idPersonne'] as $idPersonne) {
-            $insertSQL .= ' ('. (int)$idPersonne.', '. (int)$_GET['id'] .'),';
-        }
-
-        $insertSQL = substr($insertSQL, 0, -1);
-
-        $db->query($insertSQL);
-    }
-	
 	$_POST['dateOuverture'] = ($_POST['dateOuverture'] == Null) ? Null : $_POST['dateOuverture'];
 	$_POST['dateFermeture'] = ($_POST['dateFermeture'] == Null) ? Null : $_POST['dateFermeture'];
 	

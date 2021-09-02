@@ -48,7 +48,7 @@ if ($_SESSION['cout_lecture']==0)
                                 <th class="all">Libelle</th>
                                 <th class="not-mobile">Etat d'ouverture</th>
                                 <th class="not-mobile">Dates</th>
-                                <th class="not-mobile">Responsable</th>
+                                <th class="not-mobile">Gestionnaires</th>
                                 <th class="not-mobile">Solde actuel</th>
                                 <th class="not-mobile">Commandes à intégrer</th>
                                 <th class="not-mobile">Actions</th>

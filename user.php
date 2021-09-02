@@ -320,9 +320,7 @@ require_once('logCheck.php');
 			                        <th>COMMANDES</th>
 			                        <th>Lecture</th>
 			                        <th>Ajout Modification</th>
-			                        <th>Valider</th>
-			                        <th>Seuil max de validation</th>
-			                        <th>Valider à la place de (sans seuil)</th>
+			                        <th>Valideur universel</th>
 			                        <th>Etre en charge</th>
 			                        <th>Abandonner Supprimer</th>
 			                    </tr>
@@ -330,8 +328,6 @@ require_once('logCheck.php');
 			                        <td>Commandes</td>
 			                        <td><?php if($_SESSION['commande_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                        <td><?php if($_SESSION['commande_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-			                        <td><?php if($_SESSION['commande_valider'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-			                        <td><?php if($_SESSION['commande_valider_seuil'] > 0) { echo $_SESSION['commande_valider_seuil'].' €'; } ?></td>
 			                        <td><?php if($_SESSION['commande_valider_delegate'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                        <td><?php if($_SESSION['commande_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                        <td><?php if($_SESSION['commande_abandonner'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
@@ -340,7 +336,6 @@ require_once('logCheck.php');
 			                        <td>Centres de coûts</td>
 			                        <td><?php if($_SESSION['cout_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                        <td><?php if($_SESSION['cout_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-			                        <td></td>
 			                        <td></td>
 			                        <td><?php if($_SESSION['cout_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                        <td><?php if($_SESSION['cout_supprimer'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
@@ -420,6 +415,59 @@ require_once('logCheck.php');
 			                </table>
 			            </div>
 		            </div>
+		            <?php
+		            	if($_SESSION['cout_etreEnCharge'])
+	            		{ ?>
+				            <div class="box box-info">
+				                <div class="box-header with-border">
+				                    <h3 class="box-title">Mes habilitations sur les centres de coûts</h3>
+				                </div>
+				                <!-- /.box-header -->
+				                <div class="box-body">
+				                    <table class="table table-bordered">
+				                        <thead>
+				                            <tr>
+				                                <th>#</th>
+				                                <th>Libelle</th>
+				                                <th>Droits</th>
+				                                <th>Validation de commandes</th>
+				                                <th>Droits étendus</th>
+				                            </tr>
+				                        </thead>
+				                        <tbody>
+				                        <?php
+				                        $query = $db->prepare('SELECT * FROM CENTRE_COUTS c LEFT OUTER JOIN CENTRE_COUTS_PERSONNES p ON c.idCentreDeCout = p.idCentreDeCout WHERE p.idPersonne = :idPersonne ORDER BY libelleCentreDecout DESC');
+				                        $query->execute(array('idPersonne'=>$_SESSION['idPersonne']));
+				                        while ($data = $query->fetch())
+				                        {?>
+				                            <tr>
+				                                <td><?php echo $data['idCentreDeCout']; ?></td>
+				                                <td><?php echo $data['libelleCentreDecout']; ?></td>
+				                                <td>
+		                                            <?php
+		                                                if(centreCoutsEstCharge($_SESSION['idPersonne'],$data['idCentreDeCout'])==1)
+		                                                {
+		                                                    echo '<span class="badge bg-green">Actif</span>';
+		                                                }
+		                                                else
+		                                                {
+		                                                    echo '<span class="badge bg-yellow">Inactif</span>';
+		                                                }
+		                                            ?>
+		                                        </td>
+				                                <td><?php if($data['montantMaxValidation']!=Null AND $data['montantMaxValidation']>=0){echo $data['montantMaxValidation'].' €';}else{echo '<span class="badge bg-yellow">Illimité</span>';}?></td>
+				                                <td><?php if($data['depasseBudget']){echo '<span class="badge bg-yellow">Dépassement de budget autorisé</span><br/>';}?><?php if($data['validerClos']){echo '<span class="badge bg-yellow">Opérer sur le centre clos</span>';}?></td>
+				                            </tr>
+				                            <?php
+				                        }
+				                        $query->closeCursor(); ?>
+				                        </tbody>
+
+
+				                    </table>
+				                </div>
+				            </div>
+				    <?php } ?>
 		        </div>
 		        <div class="col-md-4 col-sm-12 col-xs-12">
 		            <div class="box box-info">
@@ -465,7 +513,7 @@ require_once('logCheck.php');
 		                <div class="box-body">
 		                	<form role="form" action="userConfig.php" method="POST">
 		                        <div class="form-group">
-		                            <label>Rafraichissement automatique de la page d'accueil (secondes) :</label>
+		                            <label>Rafraichissement auto de l'accueil (secondes) :</label>
 		                            <input type="number" min="10" class="form-control" value="<?= $_SESSION['conf_accueilRefresh'] ?>" name="conf_accueilRefresh" required>
 		                        </div>
 		                        <div class="form-group">

@@ -32,39 +32,6 @@ if($_SESSION['cout_ajout']==1)
                             <label>Libellé: <small style="color:grey;"> Requis</small></label>
                             <input type="text" class="form-control" name="libelleCentreDecout" required value="<?= isset($data['libelleCentreDecout']) ? $data['libelleCentreDecout'] : '' ?>">
                         </div>
-                        <div class="form-group">
-                            <label>Personnes responsables: </label>
-                            <select class="form-control select2" style="width: 100%;" name="idPersonne[]" multiple>
-                                <?php
-                                $query2 = $db->prepare('
-                                    SELECT
-                                        ao.*,
-                                        (SELECT idCentreDeCout FROM CENTRE_COUTS_PERSONNES aop WHERE ao.idPersonne = aop.idPersonne AND aop.idCentreDeCout = :idCentreDeCout) as idCentreDeCout
-                                    FROM
-                                        PERSONNE_REFERENTE ao
-                                        JOIN VIEW_HABILITATIONS h ON ao.idPersonne = h.idPersonne
-                                    WHERE
-                                        cout_etreEnCharge = 1
-                                    ORDER BY
-                                        nomPersonne,
-                                        prenomPersonne;');
-				                $query2->execute(array('idCentreDeCout' => $_GET['id']));
-
-                                while ($data2 = $query2->fetch())
-                                {
-                                    
-                                    echo '<option value=' . $data2['idPersonne'];
-
-					                if (isset($data2['idCentreDeCout']) AND $data2['idCentreDeCout'])
-					                {
-					                    echo " selected ";
-					                }
-					                echo '>' . $data2['identifiant'] . '</option>';
-                                }
-                                
-                                $query2->closeCursor(); ?>
-                            </select>
-                        </div>
                         <div class="row">
                         	<div class="col-md-6">
                         		<div class="form-group">

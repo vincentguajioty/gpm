@@ -572,9 +572,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <th>COMMANDES</th>
                                     <th>Lecture</th>
                                     <th>Ajout Modification</th>
-                                    <th>Valider</th>
-                                    <th>Seuil max de validation</th>
-                                    <th>Valider à la place de (sans seuil)</th>
+                                    <th>Valideur universel</th>
                                     <th>Etre en charge</th>
                                     <th>Abandonner Supprimer</th>
                                 </tr>
@@ -582,8 +580,6 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <td>Commandes</td>
                                     <td><?php if($personne['commande_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['commande_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-                                    <td><?php if($personne['commande_valider'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-                                    <td><?php if($personne['commande_valider_seuil'] > 0) { echo $personne['commande_valider_seuil'].' €'; } ?></td>
                                     <td><?php if($personne['commande_valider_delegate'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['commande_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['commande_abandonner'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
@@ -592,8 +588,6 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <td>Centres de coûts</td>
                                     <td><?php if($personne['cout_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['cout_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
-                                    <td></td>
-                                    <td></td>
                                     <td></td>
                                     <td><?php if($personne['cout_etreEnCharge'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['cout_supprimer'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
@@ -677,6 +671,59 @@ if ($_SESSION['annuaire_lecture']==0)
                         </div>
                     </div>
                 </div>
+                
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <i class="fa fa-euro"></i>
+                            <h3 class="box-title">Habilitations sur les centres de coûts</h3>
+                        </div>
+                        <div class="box-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Libelle</th>
+                                        <th>Droits</th>
+                                        <th>Validation de commandes</th>
+                                        <th>Droits étendus</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                $query2 = $db->prepare('SELECT * FROM CENTRE_COUTS c LEFT OUTER JOIN CENTRE_COUTS_PERSONNES p ON c.idCentreDeCout = p.idCentreDeCout WHERE p.idPersonne = :idPersonne ORDER BY libelleCentreDecout DESC');
+                                $query2->execute(array('idPersonne'=>$data['idPersonne']));
+                                while ($data2 = $query2->fetch())
+                                {?>
+                                    <tr>
+                                        <td><?php echo $data2['idCentreDeCout']; ?></td>
+                                        <td><?php echo $data2['libelleCentreDecout']; ?></td>
+                                        <td>
+                                            <?php
+                                                if(centreCoutsEstCharge($data['idPersonne'],$data2['idCentreDeCout'])==1)
+                                                {
+                                                    echo '<span class="badge bg-green">Actif</span>';
+                                                }
+                                                else
+                                                {
+                                                    echo '<span class="badge bg-yellow">Inactif</span>';
+                                                }
+                                            ?>
+                                        </td>
+                                        <td><?php if($data2['montantMaxValidation']!=Null AND $data2['montantMaxValidation']>=0){echo $data2['montantMaxValidation'].' €';}else{echo '<span class="badge bg-yellow">Illimité</span>';}?></td>
+                                        <td><?php if($data2['depasseBudget']){echo '<span class="badge bg-yellow">Dépassement de budget autorisé</span><br/>';}?><?php if($data2['validerClos']){echo '<span class="badge bg-yellow">Opérer sur le centre clos</span>';}?></td>
+                                    </tr>
+                                    <?php
+                                }
+                                $query->closeCursor(); ?>
+                                </tbody>
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </section>

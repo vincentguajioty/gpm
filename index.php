@@ -1026,71 +1026,71 @@ include('logCheck.php');
 				<br/>
         	</div>
 
-			<?php if ($_SESSION['commande_valider']==1){ ?>	
-				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-					<div class="box box-success">
-						<div class="box-header">
-							<i class="fa fa-shopping-cart"></i>
-							<h3 class="box-title">Validations en attente</h3>
-					    </div>
-					    <!-- /.box-header -->
-						<div class="box-body">
-							<table class="table table-bordered">
-		                        <thead>
-		                        <tr>
-		                            <th style="width: 10px">#</th>
-		                            <th>Nom</th>
-		                            <th>TTC</th>
-		                            <th>Actions</th>
-		                        </tr>
-		                        </thead>
-		                        <tbody>
-		                        <?php
-		                        $query = $db->prepare('SELECT c.idCommande, c.nomCommande, c.dateCreation, f.idFournisseur, f.nomFournisseur, c.numCommandeFournisseur, e.libelleEtat, c.idEtat FROM COMMANDES_VALIDEURS j LEFT OUTER JOIN COMMANDES c ON j.idCommande = c.idCommande LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE (idValideur = :idPersonne) AND (c.idEtat = 2);');
-		                        $query->execute(array(
-		                            'idPersonne' => $_SESSION['idPersonne']
-		                        ));
-		                        while ($data = $query->fetch())
-		                        {?>
-		                            <tr <?php if ($_SESSION['commande_lecture']==1) {?>data-href="commandeView.php?id=<?=$data['idCommande']?>"<?php }?>>
-		                                <td><?php echo $data['idCommande']; ?></td>
-		                                <td><?php echo $data['nomCommande']; ?></td>
-		                                <td>
-		                                	<?php
-			                                	$query2 = $db->prepare('SELECT IFNULL(SUM(prixProduitTTC*quantiteCommande),0) AS total FROM COMMANDES_MATERIEL c LEFT OUTER JOIN MATERIEL_CATALOGUE m ON c.idMaterielCatalogue = m.idMaterielCatalogue WHERE idCommande = :idCommande;');
-												$query2->execute(array('idCommande' => $data['idCommande']));
-												$total = $query2->fetch();
-												echo floor($total['total']*100)/100; echo ' €';
-		                                	?>
-		                                </td>
-		                                <td>
-											<?php if (($data['idFournisseur']!=Null) AND ($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])==1) { ?>
-												<a href="commandesGo13Index.php?id=<?=$data['idCommande']?>&action=v" class="btn btn-xs btn-success" title="Valider"><i class="fa fa-check"></i></a>
-											<?php } ?>
-											<?php if (($data['idFournisseur']!=Null) AND ($_SESSION['commande_valider_delegate']==1) AND cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])!=1) { ?>
-												<a href="commandesGo13Index.php?id=<?=$data['idCommande']?>&action=vd" class="btn btn-xs btn-success" title="Valider en délégation"><i class="fa fa-check"></i><i class="fa fa-warning"></i></a>
-											<?php } ?>
-											<?php if (($_SESSION['commande_valider']==1) AND cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])==1){ ?>
-		                                		<a href="commandesGo13Index.php?id=<?=$data['idCommande']?>&action=r" class="btn btn-xs btn-danger" title="Refuser"><i class="fa fa-close"></i></a>
-		                                	<?php } ?>
-											<?php if (($_SESSION['commande_valider_delegate']==1) AND cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])!=1){ ?>
-												<a href="commandesGo13Index.php?id=<?=$data['idCommande']?>&action=rd" class="btn btn-xs btn-danger" title="Refuser en délégation"><i class="fa fa-close"></i><i class="fa fa-warning"></i></a>
-											<?php } ?>
-											<?php if ($_SESSION['commande_lecture']==1) {?>
-		                                    	<a href="commandeView.php?id=<?=$data['idCommande']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
-		                                	<?php } ?>
-		                                </td>
-		                            </tr>
-		                            <?php
-		                        }
-		                        $query->closeCursor(); ?>
-		                        </tbody>
-		                    </table>
-						</div>
-					    <!-- /.box-body -->
+			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+				<div class="box box-success">
+					<div class="box-header">
+						<i class="fa fa-shopping-cart"></i>
+						<h3 class="box-title">Validations en attente</h3>
+				    </div>
+				    <!-- /.box-header -->
+					<div class="box-body">
+						<table class="table table-bordered">
+	                        <thead>
+	                        <tr>
+	                            <th style="width: 10px">#</th>
+	                            <th>Nom</th>
+	                            <th>TTC</th>
+	                            <th>Actions</th>
+	                        </tr>
+	                        </thead>
+	                        <tbody>
+	                        <?php
+	                        $query = $db->prepare('SELECT c.idCommande, c.nomCommande, c.dateCreation, f.nomFournisseur, e.libelleEtat, c.idEtat, c.idFournisseur FROM COMMANDES c LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE c.idEtat = 2;');
+	                        $query->execute(array(
+	                            'idPersonne' => $_SESSION['idPersonne']
+	                        ));
+	                        while ($data = $query->fetch())
+	                        {
+								if(cmdEstValideur($_SESSION['idPersonne'],$data['idCommande']) == 1){
+	                        	?>
+	                            <tr <?php if ($_SESSION['commande_lecture']==1) {?>data-href="commandeView.php?id=<?=$data['idCommande']?>"<?php }?>>
+	                                <td><?php echo $data['idCommande']; ?></td>
+	                                <td><?php echo $data['nomCommande']; ?></td>
+	                                <td>
+	                                	<?php
+		                                	$query2 = $db->prepare('SELECT IFNULL(SUM(prixProduitTTC*quantiteCommande),0) AS total FROM COMMANDES_MATERIEL c LEFT OUTER JOIN MATERIEL_CATALOGUE m ON c.idMaterielCatalogue = m.idMaterielCatalogue WHERE idCommande = :idCommande;');
+											$query2->execute(array('idCommande' => $data['idCommande']));
+											$total = $query2->fetch();
+											echo floor($total['total']*100)/100; echo ' €';
+	                                	?>
+	                                </td>
+	                                <td>
+										<?php if (($data['idFournisseur']!=Null) AND cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])==1) { ?>
+											<a href="commandesGo13Index.php?id=<?=$data['idCommande']?>&action=v" class="btn btn-xs btn-success" title="Valider"><i class="fa fa-check"></i></a>
+										<?php } ?>
+										<?php if (($data['idFournisseur']!=Null) AND ($_SESSION['commande_valider_delegate']==1) AND cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])!=1) { ?>
+											<a href="commandesGo13Index.php?id=<?=$data['idCommande']?>&action=vd" class="btn btn-xs btn-success" title="Valider en délégation"><i class="fa fa-check"></i><i class="fa fa-warning"></i></a>
+										<?php } ?>
+										<?php if (cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])==1){ ?>
+	                                		<a href="commandesGo13Index.php?id=<?=$data['idCommande']?>&action=r" class="btn btn-xs btn-danger" title="Refuser"><i class="fa fa-close"></i></a>
+	                                	<?php } ?>
+										<?php if (($_SESSION['commande_valider_delegate']==1) AND cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])!=1){ ?>
+											<a href="commandesGo13Index.php?id=<?=$data['idCommande']?>&action=rd" class="btn btn-xs btn-danger" title="Refuser en délégation"><i class="fa fa-close"></i><i class="fa fa-warning"></i></a>
+										<?php } ?>
+										<?php if ($_SESSION['commande_lecture']==1) {?>
+	                                    	<a href="commandeView.php?id=<?=$data['idCommande']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
+	                                	<?php } ?>
+	                                </td>
+	                            </tr>
+	                            <?php }
+	                        }
+	                        $query->closeCursor(); ?>
+	                        </tbody>
+	                    </table>
 					</div>
+				    <!-- /.box-body -->
 				</div>
-			<?php } ?>
+			</div>
 				
         	<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 			    <div class="box box-success">

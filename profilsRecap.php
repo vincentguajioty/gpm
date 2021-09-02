@@ -315,9 +315,7 @@ if ($_SESSION['profils_lecture']==0)
                             <th>COMMANDES</th>
                             <th>Lecture</th>
                             <th>Ajout/Modification</th>
-                            <th>Valider</th>
-                            <th>Seuil max de validation</th>
-                            <th>Valider à la place de (sans seuil)</th>
+                            <th>Valideur universel</th>
                             <th>Etre en charge</th>
                             <th>Abandonner/Supprimer</th>
                         </tr>
@@ -325,8 +323,6 @@ if ($_SESSION['profils_lecture']==0)
                             <td>Commandes</td>
                             <td><?php foreach($profils as $profil){if($profil['commande_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['commande_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
-                            <td><?php foreach($profils as $profil){if($profil['commande_valider']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
-                            <td><?php foreach($profils as $profil){if($profil['commande_valider_seuil']>0){echo $profil['libelleProfil'].' ('.$profil['commande_valider_seuil'].'€)<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['commande_valider_delegate']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['commande_etreEnCharge']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['commande_abandonner']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
@@ -335,8 +331,6 @@ if ($_SESSION['profils_lecture']==0)
                             <td>Centres de coûts</td>
                             <td><?php foreach($profils as $profil){if($profil['cout_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['cout_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
-                            <td></td>
-                            <td></td>
                             <td></td>
                             <td><?php foreach($profils as $profil){if($profil['cout_etreEnCharge']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['cout_supprimer']){echo $profil['libelleProfil'].'<br/>';}} ?></td>

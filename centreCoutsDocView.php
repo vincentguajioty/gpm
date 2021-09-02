@@ -10,7 +10,7 @@ $query->execute(array(
 ));
 $data = $query->fetch();
 
-if (centreCoutsEstCharge($_SESSION['idPersonne'],$data['idCentreDeCout'])==0)
+if($_SESSION['cout_lecture']==0)
 {
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
     exit;

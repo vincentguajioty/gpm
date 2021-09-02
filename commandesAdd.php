@@ -39,13 +39,6 @@ else
 
             $query = $db->prepare('INSERT INTO COMMANDES_DEMANDEURS (idDemandeur, idCommande) VALUES (:idDemandeur, :idCommande);');
             $query->execute(array('idDemandeur'=>$_SESSION['idPersonne'], 'idCommande'=>(int)$data['idCommande']));
-            
-            $query2 = $db->query('SELECT * FROM COMMANDES_VALIDEURS_DEFAULT;');
-            while($data2 = $query2->fetch())
-            {
-            	$valideurInsert = $db->prepare('INSERT INTO COMMANDES_VALIDEURS SET idCommande = :idCommande, idValideur = :idValideur;');
-            	$valideurInsert->execute(array('idValideur'=>$data2['idPersonne'], 'idCommande'=>(int)$data['idCommande']));
-            }
     
             break;
 

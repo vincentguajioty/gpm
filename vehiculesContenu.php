@@ -295,7 +295,7 @@ if ($_SESSION['vehicules_lecture']==0)
                             <?php if($_SESSION['vehiculeHealth_lecture']){ ?><li><a href="#health" data-toggle="tab">Maintenance régulière</a></li><?php } ?>
                             <li><a href="#km" data-toggle="tab">Relevés kilométriques</a></li>
                             <?php if($_SESSION['desinfections_lecture']){ ?><li><a href="#desinfections" data-toggle="tab">Désinfections</a></li><?php } ?>
-							<li><a href="#lots" data-toggle="tab">Lots opérationnels affetés</a></li>
+							<li><a href="#lots" data-toggle="tab">Lots opérationnels affectés</a></li>
                             <li><a href="#pj" data-toggle="tab">Pièces jointes</a></li>
                         </ul>
                         <div class="tab-content">

@@ -738,37 +738,15 @@ function majNotificationsProfil($idProfil)
     }
 }
 
-function majValideursPersonne($idPersonne, $enableLog)
+function majValideursPersonne($enableLog)
 {
     global $db;
 
-    $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE p JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE p.idPersonne = :idPersonne;');
-    $query -> execute(array('idPersonne' => $idPersonne));
-    $data = $query->fetch();
-    
-    if($data['commande_valider'] != 1)
-    {
-    	$query = $db->prepare('DELETE FROM COMMANDES_VALIDEURS_DEFAULT WHERE idPersonne = :idPersonne;');
-    	$query -> execute(array('idPersonne' => $idPersonne));
-    }
+    $delete = $db->query('DELETE CENTRE_COUTS_PERSONNES FROM CENTRE_COUTS_PERSONNES INNER JOIN VIEW_HABILITATIONS ON CENTRE_COUTS_PERSONNES.idPersonne = VIEW_HABILITATIONS.idPersonne WHERE VIEW_HABILITATIONS.cout_etreEnCharge = 0 OR VIEW_HABILITATIONS.cout_etreEnCharge IS NULL;');
     
     if ($enableLog == 1)
     {
-        writeInLogs("Nettoyage de la personne " . $idPersonne." des valideurs par défaut des commandes", '1', NULL);
-    }
-}
-
-function majValideursProfil($idProfil)
-{
-    global $db;
-    $query = $db->prepare('SELECT idPersonne FROM PROFILS_PERSONNES WHERE idProfil = :idProfil;');
-    $query -> execute(array('idProfil' => $idProfil));
-
-    writeInLogs("Nettoyage des valideurs par défaut des commandes pour le profil " . $idProfil, '1', NULL);
-
-    while ($data = $query->fetch())
-    {
-        majValideursPersonne($data['idPersonne'], 0);
+        writeInLogs("Nettoyage des personnes des valideurs par défaut des commandes", '1', NULL);
     }
 }
 
@@ -778,7 +756,7 @@ function cmdTotal ($idCommande)
 
     $query2 = $db->prepare('
         SELECT
-            IFNULL(SUM(prixProduitTTC*quantiteCommande),0) AS total
+            CAST(IFNULL(SUM(prixProduitTTC*quantiteCommande),0) AS DECIMAL(10,2)) AS total
         FROM
             COMMANDES_MATERIEL c
             LEFT OUTER JOIN MATERIEL_CATALOGUE m ON c.idMaterielCatalogue = m.idMaterielCatalogue 
@@ -788,7 +766,7 @@ function cmdTotal ($idCommande)
     $query2->execute(array('idCommande' => $idCommande));
     $total = $query2->fetch();
 
-    return floor($total['total']*100)/100;
+    return $total['total'];
 }
 function cmdEstAffectee ($idPersonne, $idCommande)
 {
@@ -809,45 +787,98 @@ function cmdEstAffectee ($idPersonne, $idCommande)
 function cmdEstValideur ($idPersonne, $idCommande)
 {
     global $db;
-    $query = $db->prepare('SELECT idValideur FROM COMMANDES_VALIDEURS WHERE idCommande = :idCommande;');
-    $query -> execute(array('idCommande' => $idCommande));
-    $data = $query->fetchAll();
 
-    if(in_array($idPersonne, array_column($data, 'idValideur')))
+    $cmdTotal = cmdTotal($idCommande);
+    
+    $query2 = $db->prepare('SELECT idCommande FROM COMMANDES WHERE idCentreDeCout = (SELECT idCentreDeCout FROM COMMANDES WHERE idCommande = :idCommande) AND integreCentreCouts = 0 AND idEtat != 8 AND idEtat != 1 AND idEtat != 2;');
+    $query2->execute(array('idCommande'=>$idCommande));
+    $validees = 0;
+    while($commande = $query2->fetch())
     {
-        $personne = $db->prepare('SELECT commande_valider, commande_valider_seuil FROM VIEW_HABILITATIONS WHERE idPersonne = :idPersonne;');
-        $personne->execute(array('idPersonne'=>$idPersonne));
-        $personne = $personne->fetch();
+        $validees += cmdTotal($commande['idCommande']);
+    }
+    $query = $db->prepare('SELECT COALESCE(SUM(montantEntrant),0)-COALESCE(SUM(montantSortant),0) as total FROM CENTRE_COUTS_OPERATIONS WHERE idCentreDeCout = (SELECT idCentreDeCout FROM COMMANDES WHERE idCommande = :idCommande)');
+    $query->execute(array('idCommande'=>$idCommande));
+    $data = $query->fetch();
+    $enCours = $data['total']-$validees;
 
-        if($personne['commande_valider'] == 0)
+    $query = $db->prepare('SELECT * FROM CENTRE_COUTS WHERE idCentreDeCout = (SELECT idCentreDeCout FROM COMMANDES WHERE idCommande = :idCommande)');
+    $query->execute(array('idCommande'=>$idCommande));
+    $data = $query->fetch();
+    if($data['dateFermeture'] == Null)
+    {
+        if($data['dateOuverture'] <= date('Y-m-d'))
         {
-            return 0;
+            $ouvert = 1;
         }
         else
         {
-            if(is_null($personne['commande_valider_seuil']))
+            $ouvert = 0;
+        }
+    }
+    else
+    {
+        if($data['dateFermeture'] < date('Y-m-d'))
+        {
+            $ouvert = 0;
+        }
+        else
+        {
+            if($data['dateOuverture'] <= date('Y-m-d'))
             {
+                $ouvert = 1;
+            }
+            else
+            {
+                $ouvert = 0;
+            }
+        }
+    }
+            
+
+    $query = $db->prepare('SELECT idPersonne, montantMaxValidation, depasseBudget, validerClos FROM CENTRE_COUTS_PERSONNES WHERE idCentreDeCout = (SELECT idCentreDeCout FROM COMMANDES WHERE idCommande = :idCommande) AND idPersonne = :idPersonne;');
+    $query -> execute(array('idCommande'=>$idCommande, 'idPersonne'=>$idPersonne));
+    
+    while($data = $query->fetch())
+    {
+        if($data['montantMaxValidation'] == Null)
+        {
+            if($ouvert == 0 AND $data['validerClos'] == 0)
+            {
+                return 0;
+            }
+
+            if($cmdTotal > $enCours AND $data['depasseBudget'] == 0)
+            {
+                return 0;
+            }
+
+            return 1;
+        }
+        else
+        {
+            if($data['montantMaxValidation'] > $cmdTotal)
+            {
+                if($ouvert == 0 AND $data['validerClos'] == 0)
+                {
+                    return 0;
+                }
+
+                if($cmdTotal > $enCours AND $data['depasseBudget'] == 0)
+                {
+                    return 0;
+                }
+
                 return 1;
             }
             else
             {
-                if($personne['commande_valider_seuil']>=cmdTotal($idCommande))
-                {
-                    return 1;
-                }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
         }
-
-        return 1;
     }
-    else
-    {
-        return 0;
-    }
+    
+    return 0;
 }
 function cmdEstObservateur ($idPersonne, $idCommande)
 {
@@ -884,18 +915,64 @@ function cmdEstDemandeur ($idPersonne, $idCommande)
 function centreCoutsEstCharge ($idPersonne, $idCentreDeCout)
 {
     global $db;
-    $query = $db->prepare('SELECT c.idPersonne FROM CENTRE_COUTS_PERSONNES c LEFT OUTER JOIN VIEW_HABILITATIONS v ON c.idPersonne = v.idPersonne WHERE c.idCentreDeCout = :idCentreDeCout AND v.cout_etreEnCharge=1;');
-    $query -> execute(array('idCentreDeCout' => $idCentreDeCout));
-    $data = $query->fetchAll();
-    
-    if(in_array($idPersonne, array_column($data, 'idPersonne')))
+
+    $query = $db->prepare('SELECT * FROM CENTRE_COUTS WHERE idCentreDeCout = :idCentreDeCout;');
+    $query->execute(array('idCentreDeCout'=>$idCentreDeCout));
+    $data = $query->fetch();
+    if($data['dateFermeture'] == Null)
     {
-        return 1;
+        if($data['dateOuverture'] <= date('Y-m-d'))
+        {
+            $ouvert = 1;
+        }
+        else
+        {
+            $ouvert = 0;
+        }
     }
     else
     {
-        return 0;
+        if($data['dateFermeture'] < date('Y-m-d'))
+        {
+            $ouvert = 0;
+        }
+        else
+        {
+            if($data['dateOuverture'] <= date('Y-m-d'))
+            {
+                $ouvert = 1;
+            }
+            else
+            {
+                $ouvert = 0;
+            }
+        }
     }
+
+    $query = $db->prepare('SELECT COALESCE(SUM(montantEntrant),0)-COALESCE(SUM(montantSortant),0) as total FROM CENTRE_COUTS_OPERATIONS WHERE idCentreDeCout = :idCentreDeCout');
+    $query->execute(array('idCentreDeCout'=>$idCentreDeCout));
+    $data = $query->fetch();
+    $enCours = $data['total'];
+
+    $query = $db->prepare('SELECT c.* FROM CENTRE_COUTS_PERSONNES c LEFT OUTER JOIN VIEW_HABILITATIONS v ON c.idPersonne = v.idPersonne WHERE c.idCentreDeCout = :idCentreDeCout AND v.cout_etreEnCharge=1 AND c.idPersonne = :idPersonne;');
+    $query -> execute(array('idCentreDeCout' => $idCentreDeCout, 'idPersonne' => $idPersonne));
+
+    while($data = $query->fetch())
+    {    
+        if($ouvert==0 AND $data['validerClos']==0)
+        {
+            return 0;
+        }
+
+        if($enCours<0 AND $data['depasseBudget']==0)
+        {
+            return 0;
+        }
+
+        return 1;
+    }
+
+    return 0;
 }
 function tdlEstExecutant ($idPersonne, $idTache)
 {
@@ -949,6 +1026,42 @@ function cmdEtatCentreCouts ($idCommande)
 		return '<span class="badge bg-red">Intégration refusée</span>';
 	}
 }
+function cmdEtatCentreCoutsCouleur ($idCommande)
+{
+	global $db;
+	$query = $db->prepare('SELECT * FROM COMMANDES WHERE idCommande = :idCommande;');
+	$query -> execute(array('idCommande' => $idCommande));
+	$commande = $query->fetch();
+	
+	if($commande['idEtat']==1 OR $commande['idEtat']==8 OR $commande['idCentreDeCout']==Null OR $commande['idCentreDeCout']=='')
+	{
+		return 'grey';
+	}
+	
+	if($commande['idEtat']<4)
+	{
+		return 'grey';
+	}
+	
+	if($commande['integreCentreCouts']==0)
+	{
+		return 'orange';
+	}
+	
+	$query = $db->prepare('SELECT COUNT(*) as nb FROM CENTRE_COUTS_OPERATIONS WHERE idCommande = :idCommande;');
+	$query -> execute(array('idCommande' => $idCommande));
+	$operations = $query->fetch();
+	$operations = $operations['nb'];
+	
+	if($operations>0)
+	{
+		return 'green';
+	}
+	else
+	{
+		return 'red';
+	}
+}
 
 function getTDLdateColor ($idTache)
 {
@@ -965,6 +1078,14 @@ function getTDLdateColor ($idTache)
 	return 'danger';
 	
 	return 'success';
+}
+
+function replaceString($string,$replacementArray)
+{
+    foreach ($replacementArray as $chercher => $remplacer) {
+        $string = str_replace(":".$chercher, $remplacer, $string);
+    }
+    return $string;
 }
 
 ?>

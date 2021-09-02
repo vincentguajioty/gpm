@@ -81,8 +81,6 @@ else
 	$_SESSION['verrouIP']                        = $data['verrouIP'];
 	$_SESSION['commande_lecture']                = $data['commande_lecture'];
 	$_SESSION['commande_ajout']                  = $data['commande_ajout'];
-	$_SESSION['commande_valider']                = $data['commande_valider'];
-	$_SESSION['commande_valider_seuil']          = $data['commande_valider_seuil'];
 	$_SESSION['commande_valider_delegate']       = $data['commande_valider_delegate'];
 	$_SESSION['commande_etreEnCharge']           = $data['commande_etreEnCharge'];
 	$_SESSION['commande_abandonner']             = $data['commande_abandonner'];
