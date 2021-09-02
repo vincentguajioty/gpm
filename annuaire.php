@@ -60,7 +60,7 @@ if ($_SESSION['annuaire_lecture']==0)
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query('SELECT p.* FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS v ON p.idPersonne=v.idPersonne WHERE connexion_connexion = 1 ORDER BY identifiant;');
+                        $query = $db->query('SELECT * FROM VIEW_HABILITATIONS WHERE connexion_connexion = 1 ORDER BY identifiant;');
                         while ($data = $query->fetch())
                         {?>
                             <tr>

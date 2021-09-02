@@ -129,7 +129,7 @@ if ($_SESSION['vhf_canal_lecture']==0)
                                     <th></th>
                                 </tr>
                                 <?php
-                                $query2 = $db->prepare('SELECT * FROM DOCUMENTS_CANAL_VHF c LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument WHERE idVhfCanal = :idVhfCanal ORDER BY nomDocCanalVHF ASC ;');
+                                $query2 = $db->prepare('SELECT * FROM VIEW_DOCUMENTS_CANAL_VHF WHERE idVhfCanal = :idVhfCanal ORDER BY nomDocCanalVHF ASC ;');
                                 $query2->execute(array('idVhfCanal' => $_GET['id']));
                                 while ($data2 = $query2->fetch())
                                 {

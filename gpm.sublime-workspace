@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"nb",
+				"nbErreurFou\tabc"
+			],
+			[
+				"VIE",
+				"VIEW_HABILITATIONS"
+			],
+			[
 				"commande",
 				"commande_valider_delegate"
 			],
@@ -101,18 +109,46 @@
 	},
 	"file_history":
 	[
+		"/V/gpm/annuaireContenu.php",
+		"/V/gpm/annuaireForm.php",
+		"/V/gpm/annuaireImport.php",
+		"/V/gpm/centreCoutsForm.php",
+		"/V/gpm/commandeView.php",
+		"/V/gpm/profilsForm.php",
+		"/V/gpm/todolistForm.php",
+		"/V/gpm/commandeItemForm.php",
+		"/U/majDist/gpmTimeLine.php",
+		"/V/gpm/catalogueAdd.php",
+		"/V/gpm/catalogueForm.php",
+		"/U/majDist/gpmMAJ.php",
+		"/V/gpm/vhfCanauxContenu.php",
+		"/V/gpm/vhfEquipementsContenu.php",
+		"/V/gpm/vhfPlansContenu.php",
+		"/V/gpm/centreCoutsContenu.php",
+		"/V/gpm/centreCoutsDocDelete.php",
+		"/V/gpm/index.php",
+		"/U/gpmunass69/index.php",
+		"/V/gpm/distmaj/view_reload.sql",
+		"/V/gpm/materielsForm.php",
+		"/V/gpm/materiels.php",
+		"/V/gpm/catalogue.php",
+		"/V/gpm/catalogueUpdate.php",
+		"/V/gpm/distmaj/update9.3.sql",
+		"/V/gpm/fournisseursDelete.php",
+		"/V/gpm/modalDeleteConfirm.php",
+		"/D/Temporaires/UPDATE.sql",
+		"/V/gpm/vehiculesContenu.php",
+		"/V/gpm/profilsUpdate.php",
 		"/V/gpm/distmaj/update9.2.sql",
 		"//192.168.100.248/web/majDist/gpmTimeLine.php",
 		"/V/gpm/navbar.php",
 		"/V/gpm/appliConf.php",
 		"/V/gpm/appliConfUpdateNotif.php",
-		"/V/gpm/commandeView.php",
 		"/V/gpm/commandesToutes.php",
 		"/V/gpm/commandesAdd.php",
 		"/V/gpm/commandesForm.php",
 		"/V/gpm/confirmationBox.php",
 		"/V/gpm/vehiculesDesinfectionsAlertes.php",
-		"/V/gpm/profilsUpdate.php",
 		"/V/gpm/user.php",
 		"/V/gpm/config/bdd.php",
 		"/V/gpm/config/config.php",
@@ -121,7 +157,6 @@
 		"/V/gpm/profilsSetMail.php",
 		"/V/gpm/annuaireSetMail.php",
 		"/V/gpm/annuaireImportGoOK.php",
-		"/V/gpm/annuaireContenu.php",
 		"/V/gpm/annuaireAdd.php",
 		"/V/gpm/userReloadHabilitation.php",
 		"/V/gpm/profilsSetDashboard.php",
@@ -129,7 +164,6 @@
 		"/V/gpm/loginReloadHabilitation.php",
 		"/V/gpm/loginDelegateBack.php",
 		"/V/gpm/loginDelegate.php",
-		"/V/gpm/index.php",
 		"/V/gpm/annuaireSetDashboard.php",
 		"/V/gpm/tenuesAffectations.php",
 		"/V/gpm/logs/20190502.log",
@@ -137,7 +171,6 @@
 		"/V/gpm/vehiculesDesinfectionsAdd.php",
 		"/V/gpm/vehiculesDesinfectionsAlertesUpdate.php",
 		"/V/gpm/vehiculesDesinfectionsDelete.php",
-		"/V/gpm/vehiculesContenu.php",
 		"/V/gpm/vehiculesUpdate.php",
 		"/V/gpm/vehiculesTypesDesinfectionsAdd.php",
 		"/V/gpm/vehiculesTypesDesinfectionsDelete.php",
@@ -145,15 +178,12 @@
 		"/V/gpm/config/cron.php",
 		"/V/gpm/vehiculesAdd.php",
 		"/V/gpm/logs/20190501.log",
-		"/V/gpm/profilsForm.php",
 		"/V/gpm/lotsInventaireNew.php",
 		"/V/gpm/desinfections.php",
 		"/V/gpm/vehiculesDelete.php",
-		"/V/gpm/modalDeleteConfirm.php",
 		"/V/gpm/annuaireDelete.php",
 		"/V/gpm/vehiculesDesinfectionsForm.php",
 		"/V/gpm/vehiculesReleveForm.php",
-		"/V/gpm/materielsForm.php",
 		"/V/gpm/vehiculesTypesDesinfectionsForm.php",
 		"/V/gpm/vehiculesTypesDesinfectionssAdd.php",
 		"/V/gpm/logs/20190429.log",
@@ -165,9 +195,7 @@
 		"/V/gpm/fournisseurs.php",
 		"/V/gpm/profilsDupliquer.php",
 		"/V/gpm/profilsAdd.php",
-		"/V/gpm/distmaj/view_reload.sql",
 		"/V/gpm/distmaj/update9.1.sql",
-		"/U/majDist/gpmTimeLine.php",
 		"/V/gpm/indexModalCalendrier.php",
 		"/V/sante/distmaj/update1.0.sql",
 		"/V/sante/distmaj/update1.1.sql",
@@ -211,6 +239,8 @@
 		"height": 101.0,
 		"where_history":
 		[
+			"*.php",
+			"*.sql",
 			"*.php"
 		]
 	},
@@ -219,6 +249,21 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"multiple",
+			"aop.",
+			"contenu",
+			"[Commandes]",
+			"SELECT * FROM DOCUMENTS_",
+			"documents_",
+			"SELECT",
+			"idDocCommande",
+			"formatDocCommande",
+			"centre",
+			"$data",
+			"commentairesMateriel",
+			"libelleCategorie",
+			"ADD CONSTRAINT",
+			"javascript:history.go",
 			"`",
 			"_creation",
 			"notifications_commandes_demandeur_creation",
@@ -331,22 +376,7 @@
 			"?>",
 			"formatDocPlanVHF",
 			"nomDocPlanVHF",
-			"idDocPlanVHF",
-			"DOCUMENTS_PLAN_VHF",
-			"$_POST['nomDocOrdonnance']",
-			"nomDocOrdonnance",
-			"idDocPlanVHF",
-			"urlFichierDocOrdonnance",
-			"dateDocPlanVHF",
-			"formatDocPlanVHF",
-			"nomDocPlanVHF",
-			"idVhfPlan",
-			"DOCUMENTS_PLAN_VHF",
-			"urlFichierDocPlanVHF",
-			"url",
-			"libelleMedicament",
-			"th",
-			"prescriptions"
+			"idDocPlanVHF"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -409,6 +439,54 @@
 		"selected_items":
 		[
 			[
+				"index",
+				"index.php"
+			],
+			[
+				"commandeItem",
+				"commandeItemForm.php"
+			],
+			[
+				"commandeV",
+				"commandeView.php"
+			],
+			[
+				"cata",
+				"catalogueForm.php"
+			],
+			[
+				"materiel",
+				"materiels.php"
+			],
+			[
+				"materielForm",
+				"materielsForm.php"
+			],
+			[
+				"catalogueU",
+				"catalogueUpdate.php"
+			],
+			[
+				"catalo",
+				"catalogueForm.php"
+			],
+			[
+				"modalDe",
+				"modalDeleteConfirm.php"
+			],
+			[
+				"fournisseur",
+				"fournisseursDelete.php"
+			],
+			[
+				"vehiculesCon",
+				"vehiculesContenu.php"
+			],
+			[
+				"profils",
+				"profilsUpdate.php"
+			],
+			[
 				"navbar",
 				"navbar.php"
 			],
@@ -433,10 +511,6 @@
 				"confirmationBox.php"
 			],
 			[
-				"commandeV",
-				"commandeView.php"
-			],
-			[
 				"commandesAdd",
 				"commandesAdd.php"
 			],
@@ -451,10 +525,6 @@
 			[
 				"bdd.php",
 				"config\\bdd.php"
-			],
-			[
-				"profils",
-				"profilsUpdate.php"
 			],
 			[
 				"confir",
@@ -577,10 +647,6 @@
 				"vehiculesReleveForm.php"
 			],
 			[
-				"materiel",
-				"materielsForm.php"
-			],
-			[
 				"vehiculesCont",
 				"vehiculesContenu.php"
 			],
@@ -679,10 +745,6 @@
 			[
 				"indexModalCalendrier",
 				"indexModalCalendrier.php"
-			],
-			[
-				"index",
-				"index.php"
 			],
 			[
 				"ordonn",

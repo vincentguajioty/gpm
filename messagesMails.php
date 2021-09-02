@@ -45,14 +45,26 @@ if ($_SESSION['contactMailGroupe']==0)
                                 <div class="form-group">
                                     <label>Destinataires (individuels):</label>
                                     <select class="form-control select2" style="width: 100%;" name="idPersonne[]" multiple>
-                                        <?php
-                                            $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE WHERE mailPersonne IS NOT NULL AND mailPersonne <> \'\' ORDER BY nomPersonne, prenomPersonne;');
-                                            while ($data2 = $query2->fetch())
-                                            {
-                                                echo '<option value=' . $data2['idPersonne'] . '>' . $data2['nomPersonne'] . ' ' . $data2['prenomPersonne'] . '</option>';
-                                            }
-                                            $query2->closeCursor();
-                                        ?>
+                                        <optgroup label="Utilisateurs actifs">
+	                                        <?php
+	                                            $query2 = $db->query('SELECT * FROM VIEW_HABILITATIONS WHERE connexion_connexion = 1 AND mailPersonne IS NOT NULL AND mailPersonne <> \'\' ORDER BY nomPersonne, prenomPersonne;');
+	                                            while ($data2 = $query2->fetch())
+	                                            {
+	                                                echo '<option value=' . $data2['idPersonne'] . '>' . $data2['nomPersonne'] . ' ' . $data2['prenomPersonne'] . '</option>';
+	                                            }
+	                                            $query2->closeCursor();
+	                                        ?>
+	                                    </optgroup>
+	                                    <optgroup label="Utilisateurs désactivés">
+	                                    	<?php
+	                                            $query2 = $db->query('SELECT * FROM VIEW_HABILITATIONS WHERE (connexion_connexion = 0 OR connexion_connexion IS Null) AND mailPersonne IS NOT NULL AND mailPersonne <> \'\' ORDER BY nomPersonne, prenomPersonne;');
+	                                            while ($data2 = $query2->fetch())
+	                                            {
+	                                                echo '<option value=' . $data2['idPersonne'] . '>' . $data2['nomPersonne'] . ' ' . $data2['prenomPersonne'] . '</option>';
+	                                            }
+	                                            $query2->closeCursor();
+	                                        ?>
+	                                    </optgroup>
                                     </select>
                                 </div>
                             </div>

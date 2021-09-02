@@ -6,8 +6,6 @@ require_once 'mailFunction.php';
 
 writeInLogs("Début du traitement automatiques des alertes par mail.", '1', NULL);
 
-checkAllConf();
-
 $query = $db->query('SELECT COUNT(*) as nb FROM PERSONNE_REFERENTE WHERE notif_lots_manquants = 1 OR notif_lots_peremptions = 1 OR notif_lots_inventaires = 1 OR notif_lots_conformites = 1 OR notif_reserves_manquants = 1 OR notif_reserves_peremptions = 1 OR notif_reserves_inventaires = 1 OR notif_vehicules_assurances = 1 OR notif_vehicules_revisions = 1 OR notif_vehicules_ct = 1 OR notif_vehicules_desinfections = 1 OR notif_tenues_stock = 1 OR notif_tenues_retours = 1;');
 $data = $query->fetch();
 $nbDest = $data['nb'];

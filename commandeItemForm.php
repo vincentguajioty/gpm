@@ -16,6 +16,11 @@ if($_SESSION['commande_lecture']==1)
 		    $data = $query->fetch();
 		    $query->closeCursor();
 		}
+
+        $query = $db->prepare('SELECT * FROM COMMANDES c LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur WHERE idCommande=:idCommande;');
+        $query->execute(array('idCommande' => $_GET['idCommande']));
+        $commande = $query->fetch();
+        $query->closeCursor();
     ?>
     
     
@@ -28,27 +33,77 @@ if($_SESSION['commande_lecture']==1)
                 <form role="form" action="<?= (isset($_GET['idElement'])) ? 'commandeItemUpdate.php?idCommande='.$_GET['idCommande'].'&idElement='.$_GET['idElement'] : 'commandeItemAdd.php?idCommande='.$_GET['idCommande'] ?>" method="POST">
                     <div class="modal-body">
                     <div class="form-group">
-                        <label>Matériel: <small style="color:grey;">Requis</small></label>
+                        <label>Matériel classé par fournisseur: <small style="color:grey;">Requis</small></label>
                         <select <?= (isset($_GET['idElement'])) ? 'disabled' : '' ?> class="form-control select2" style="width: 100%;" name="idMaterielCatalogue">
-                            <option value="-1">Frais de port</option>
+                            <optgroup label="Autres">
+                                <option value="-1">Frais de port</option>
+                            </optgroup>
+
+
                             <?php
-                            if(isset($_GET['idElement']))
-                            {
-                            	$query2 = $db->prepare('SELECT idMaterielCatalogue, libelleMateriel FROM MATERIEL_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue;');
-                            	$query2->execute(array('idMaterielCatalogue' => $_GET['idElement']));
+                                if($commande['idFournisseur'] == '' OR $commande['idFournisseur'] == NULL)
+                                {
+                            ?>
+                                <optgroup label="Tous fournisseurs confondus">
+                                    <?php
+                                    if(isset($_GET['idElement']))
+                                    {
+                                    	$query2 = $db->prepare('SELECT idMaterielCatalogue, libelleMateriel FROM MATERIEL_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue;');
+                                    	$query2->execute(array('idMaterielCatalogue' => $_GET['idElement']));
+                                    }
+                                    else
+                                    {
+                                    	$query2 = $db->prepare('SELECT c.idMaterielCatalogue, c.libelleMateriel FROM MATERIEL_CATALOGUE c LEFT OUTER JOIN (SELECT idMaterielCatalogue FROM COMMANDES_MATERIEL WHERE idCommande= :idCommande) o ON c.idMaterielCatalogue = o.idMaterielCatalogue WHERE o.idMaterielCatalogue IS NULL ORDER BY libelleMateriel;');
+                                    	$query2->execute(array('idCommande' => $_GET['idCommande']));
+                                    }
+                                    while ($data2 = $query2->fetch())
+                                    {
+                                        ?>
+                                        <option <?php if (isset($_GET['idElement']) AND ($_GET['idElement'] == $data2['idMaterielCatalogue'])){ echo 'selected'; }?> value="<?php echo $data2['idMaterielCatalogue']; ?>"><?php echo $data2['libelleMateriel']; ?></option>
+                                        <?php
+                                    }
+                                    $query2->closeCursor(); ?>
+                                </optgroup>
+                            <?php
                             }
                             else
-                            {
-                            	$query2 = $db->prepare('SELECT c.idMaterielCatalogue, c.libelleMateriel FROM MATERIEL_CATALOGUE c LEFT OUTER JOIN (SELECT idMaterielCatalogue FROM COMMANDES_MATERIEL WHERE idCommande= :idCommande) o ON c.idMaterielCatalogue = o.idMaterielCatalogue WHERE o.idMaterielCatalogue IS NULL ORDER BY libelleMateriel;');
-                            	$query2->execute(array('idCommande' => $_GET['idCommande']));
-                            }
-                            while ($data2 = $query2->fetch())
-                            {
-                                ?>
-                                <option <?php if (isset($_GET['idElement']) AND ($_GET['idElement'] == $data2['idMaterielCatalogue'])){ echo 'selected'; }?> value="<?php echo $data2['idMaterielCatalogue']; ?>"><?php echo $data2['libelleMateriel']; ?></option>
-                                <?php
-                            }
-                            $query2->closeCursor(); ?>
+                            { ?>
+                                <optgroup label="<?=$commande['nomFournisseur']?> (Selectionné pour cette commande)">
+                                    <?php
+                                        $query2 = $db->prepare('SELECT c.idMaterielCatalogue, c.libelleMateriel FROM MATERIEL_CATALOGUE c LEFT OUTER JOIN (SELECT idMaterielCatalogue FROM COMMANDES_MATERIEL WHERE idCommande= :idCommande) o ON c.idMaterielCatalogue = o.idMaterielCatalogue WHERE o.idMaterielCatalogue IS NULL AND c.idFournisseur = :idFournisseur ORDER BY libelleMateriel;');
+                                        $query2->execute(array('idCommande' => $_GET['idCommande'], 'idFournisseur' => $commande['idFournisseur']));
+                                        while ($data2 = $query2->fetch())
+                                        {
+                                            ?>
+                                            <option <?php if (isset($_GET['idElement']) AND ($_GET['idElement'] == $data2['idMaterielCatalogue'])){ echo 'selected'; }?> value="<?php echo $data2['idMaterielCatalogue']; ?>"><?php echo $data2['libelleMateriel']; ?></option>
+                                            <?php
+                                        }
+                                        $query2->closeCursor();
+                                    ?>
+                                </optgroup>
+                                <optgroup label="Autres fournisseurs">
+                                    <?php
+                                    if(isset($_GET['idElement']))
+                                    {
+                                        $query2 = $db->prepare('SELECT idMaterielCatalogue, libelleMateriel FROM MATERIEL_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue;');
+                                        $query2->execute(array('idMaterielCatalogue' => $_GET['idElement']));
+                                    }
+                                    else
+                                    {
+                                        $query2 = $db->prepare('SELECT c.idMaterielCatalogue, c.libelleMateriel FROM MATERIEL_CATALOGUE c LEFT OUTER JOIN (SELECT idMaterielCatalogue FROM COMMANDES_MATERIEL WHERE idCommande= :idCommande) o ON c.idMaterielCatalogue = o.idMaterielCatalogue WHERE o.idMaterielCatalogue IS NULL AND (c.idFournisseur <> :idFournisseur OR c.idFournisseur IS NULL) ORDER BY libelleMateriel;');
+                                        $query2->execute(array('idCommande' => $_GET['idCommande'], 'idFournisseur' => $commande['idFournisseur']));
+                                    }
+                                    while ($data2 = $query2->fetch())
+                                    {
+                                        ?>
+                                        <option <?php if (isset($_GET['idElement']) AND ($_GET['idElement'] == $data2['idMaterielCatalogue'])){ echo 'selected'; }?> value="<?php echo $data2['idMaterielCatalogue']; ?>"><?php echo $data2['libelleMateriel']; ?></option>
+                                        <?php
+                                    }
+                                    $query2->closeCursor(); ?>
+                                </optgroup>
+                            <?php } ?>
+
+
                         </select>
                     </div>
                     <div class="form-group">

@@ -47,19 +47,21 @@ require_once('logCheck.php');
                                 <th class="all" style="width: 10px">#</th>
                                 <th class="all">Libelle</th>
                                 <th class="not-mobile">Catégorie</th>
+                                <th class="not-mobile">Fournisseur de prédilection</th>
                                 <th class="not-mobile">Commentaires</th>
                                 <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query('SELECT * FROM MATERIEL_CATALOGUE l LEFT OUTER JOIN MATERIEL_CATEGORIES c ON l.idCategorie = c.idCategorie ORDER BY libelleMateriel;');
+                        $query = $db->query('SELECT * FROM MATERIEL_CATALOGUE l LEFT OUTER JOIN MATERIEL_CATEGORIES c ON l.idCategorie = c.idCategorie LEFT OUTER JOIN FOURNISSEURS f ON l.idFournisseur=f.idFournisseur ORDER BY libelleMateriel;');
                         while ($data = $query->fetch())
                         {?>
                             <tr>
                                 <td><?php echo $data['idMaterielCatalogue']; ?></td>
                                 <td><?php echo $data['libelleMateriel']; ?></td>
                                 <td><?php echo $data['libelleCategorie']; ?></td>
+                                <td><?php echo $data['nomFournisseur']; ?></td>
                                 <td><?php echo $data['commentairesMateriel']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['catalogue_modification']==1) {?>

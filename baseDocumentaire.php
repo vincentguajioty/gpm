@@ -46,7 +46,7 @@ require_once('logCheck.php');
 	                        <?php
 	                        	if($_SESSION['commande_lecture']==1)
 	                        	{
-	                        		$query = $db->query('SELECT * FROM DOCUMENTS_COMMANDES c LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument ORDER BY nomDocCommande ASC;');
+	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_COMMANDES;');
 			                        while ($data = $query->fetch())
 			                        {?>
 			                        	<tr>
@@ -70,9 +70,35 @@ require_once('logCheck.php');
 	                        	}
 	                        ?>
 	                        <?php
+	                        	if($_SESSION['cout_lecture']==1)
+	                        	{
+	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_CENTRE_COUTS;');
+			                        while ($data = $query->fetch())
+			                        {?>
+			                        	<tr>
+			                                <td>Centre de couts</td>
+			                                <td><?php echo $data['nomDocCouts']; ?></td>
+			                                <td>Centre <?php echo $data['idCentreDeCout']; ?></td>
+			                                <td><?php echo $data['libelleTypeDocument']; ?></td>
+			                                <td><i class="fa <?php echo documentsGetIcone($data['formatDocCouts']);?>"></i></td>
+			                                <td>
+                                                <?php
+                                        		if ($data['formatDocCouts'] == 'pdf' OR $data['formatDocCouts'] == 'jpg' OR $data['formatDocCouts'] == 'jpeg' OR $data['formatDocCouts'] == 'png'){?>
+                                            		<a href="centreCoutsDocView.php?idDoc=<?=$data['idDocCouts']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-eye"></i></a>
+                                                <?php } else { ?>
+                                        			<a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                                <?php }?>
+                                                <a href="centreCoutsDocDL.php?idDoc=<?=$data['idDocCouts']?>" class="btn btn-xs btn-success" title="Télécharger"><i class="fa fa-download"></i></a>
+                                            </td>
+			                            </tr>
+			                        <?php
+			                        }
+	                        	}
+	                        ?>
+	                        <?php
 	                        	if($_SESSION['vehicules_lecture']==1)
 	                        	{
-	                        		$query = $db->query('SELECT * FROM DOCUMENTS_VEHICULES c LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument ORDER BY nomDocVehicule ASC;');
+	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_VEHICULES;');
 			                        while ($data = $query->fetch())
 			                        {?>
 			                        	<tr>
@@ -98,7 +124,7 @@ require_once('logCheck.php');
 	                        <?php
 	                        	if($_SESSION['vhf_canal_lecture']==1)
 	                        	{
-	                        		$query = $db->query('SELECT * FROM DOCUMENTS_CANAL_VHF c LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument;');
+	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_CANAL_VHF;');
 			                        while ($data = $query->fetch())
 			                        {?>
 			                        	<tr>
@@ -124,7 +150,7 @@ require_once('logCheck.php');
 	                        <?php
 	                        	if($_SESSION['vhf_plan_lecture']==1)
 	                        	{
-	                        		$query = $db->query('SELECT * FROM DOCUMENTS_PLAN_VHF c LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument ORDER BY nomDocPlanVHF ASC;');
+	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_PLAN_VHF;');
 			                        while ($data = $query->fetch())
 			                        {?>
 			                        	<tr>
@@ -150,7 +176,7 @@ require_once('logCheck.php');
 	                        <?php
 	                        	if($_SESSION['vhf_equipement_lecture']==1)
 	                        	{
-	                        		$query = $db->query('SELECT * FROM DOCUMENTS_VHF c LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument;');
+	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_VHF;');
 			                        while ($data = $query->fetch())
 			                        {?>
 			                        	<tr>

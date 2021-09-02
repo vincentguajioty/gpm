@@ -1,6 +1,7 @@
 <?php
 
 require_once 'bdd.php';
+require_once 'config.php';
 
 //Analyse complète des lots
 writeInLogs("CRON - Début de la vérification de conformité de tous les lots.", '1', NULL);

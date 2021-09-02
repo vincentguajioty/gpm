@@ -62,7 +62,15 @@ if (isset($_GET['id']))
 	                            <?php
 					            if (isset($_GET['id']))
 					            {
-					                $query2 = $db->prepare('SELECT ao.*, aop.idExecutant FROM PERSONNE_REFERENTE ao LEFT JOIN TODOLIST_PERSONNES aop ON (ao.idPersonne = aop.idExecutant AND aop.idTache = :idTache) ORDER BY nomPersonne, prenomPersonne;');
+					                $query2 = $db->prepare('
+                                        SELECT
+                                            ao.*,
+                                            (SELECT idExecutant FROM TODOLIST_PERSONNES aop WHERE ao.idPersonne = aop.idExecutant AND aop.idTache = :idTache) as idExecutant
+                                        FROM
+                                            PERSONNE_REFERENTE ao
+                                        ORDER BY
+                                            nomPersonne,
+                                            prenomPersonne;');
 					                $query2->execute(array('idTache' => $_GET['id']));
 					            }
 					            else

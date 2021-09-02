@@ -94,7 +94,19 @@ if ($_SESSION['commande_lecture']==0)
 	                                                <?php
 	                                                if($data['idEtat']<3)
 	                                                {
-		                                                $query2 = $db->prepare('SELECT ao.*, aop.idCommande FROM PERSONNE_REFERENTE ao JOIN VIEW_HABILITATIONS h ON ao.idPersonne = h.idPersonne LEFT JOIN COMMANDES_DEMANDEURS aop ON (ao.idPersonne = aop.idDemandeur AND aop.idCommande = :idCommande) WHERE commande_lecture = 1 ORDER BY nomPersonne, prenomPersonne;');
+		                                                $query2 = $db->prepare('
+		                                                	SELECT
+		                                                		ao.*,
+		                                                		(SELECT idCommande FROM COMMANDES_DEMANDEURS aop WHERE ao.idPersonne = aop.idDemandeur AND aop.idCommande = :idCommande) as idCommande
+		                                                	FROM
+		                                                		PERSONNE_REFERENTE ao
+		                                                		JOIN VIEW_HABILITATIONS h ON ao.idPersonne = h.idPersonne
+		                                                		
+		                                                	WHERE
+		                                                		commande_lecture = 1
+		                                                	ORDER BY
+		                                                		nomPersonne,
+		                                                		prenomPersonne;');
 										                $query2->execute(array('idCommande' => $_GET['id']));
 						
 						                                while ($data2 = $query2->fetch())
@@ -129,7 +141,18 @@ if ($_SESSION['commande_lecture']==0)
 	                                                <?php
 	                                                if($data['idEtat']<3)
 	                                                {
-		                                                $query2 = $db->prepare('SELECT ao.*, aop.idCommande FROM PERSONNE_REFERENTE ao JOIN VIEW_HABILITATIONS h ON ao.idPersonne = h.idPersonne LEFT JOIN COMMANDES_OBSERVATEURS aop ON (ao.idPersonne = aop.idObservateur AND aop.idCommande = :idCommande) WHERE commande_lecture = 1 ORDER BY nomPersonne, prenomPersonne;');
+		                                                $query2 = $db->prepare('
+		                                                	SELECT
+		                                                		ao.*,
+		                                                		(SELECT idCommande FROM COMMANDES_OBSERVATEURS aop WHERE ao.idPersonne = aop.idObservateur AND aop.idCommande = :idCommande) as idCommande
+		                                                	FROM
+		                                                		PERSONNE_REFERENTE ao
+		                                                		JOIN VIEW_HABILITATIONS h ON ao.idPersonne = h.idPersonne
+		                                                	WHERE
+		                                                		commande_lecture = 1
+		                                                	ORDER BY
+		                                                		nomPersonne,
+		                                                		prenomPersonne;');
 										                $query2->execute(array('idCommande' => $_GET['id']));
 						
 						                                while ($data2 = $query2->fetch())
@@ -206,7 +229,19 @@ if ($_SESSION['commande_lecture']==0)
 	                                                <?php
 	                                                if($data['idEtat']<3)
 	                                                {
-		                                                $query2 = $db->prepare('SELECT ao.*, aop.idCommande FROM PERSONNE_REFERENTE ao JOIN VIEW_HABILITATIONS h ON ao.idPersonne = h.idPersonne LEFT JOIN COMMANDES_AFFECTEES aop ON (ao.idPersonne = aop.idAffectee AND aop.idCommande = :idCommande) WHERE commande_lecture = 1 AND commande_etreEnCharge = 1 ORDER BY nomPersonne, prenomPersonne;');
+		                                                $query2 = $db->prepare('
+		                                                	SELECT
+		                                                		ao.*,
+		                                                		(SELECT idCommande FROM COMMANDES_AFFECTEES aop WHERE ao.idPersonne = aop.idAffectee AND aop.idCommande = :idCommande) as idCommande
+	                                                		FROM
+	                                                			PERSONNE_REFERENTE ao
+	                                                			JOIN VIEW_HABILITATIONS h ON ao.idPersonne = h.idPersonne
+	                                                		WHERE
+	                                                			commande_lecture = 1
+	                                                			AND commande_etreEnCharge = 1
+	                                                		ORDER BY
+	                                                			nomPersonne,
+	                                                			prenomPersonne;');
 										                $query2->execute(array('idCommande' => $_GET['id']));
 						
 						                                while ($data2 = $query2->fetch())
@@ -241,7 +276,18 @@ if ($_SESSION['commande_lecture']==0)
 	                                                <?php
 	                                                if($data['idEtat']<3)
 	                                                {
-		                                                $query2 = $db->prepare('SELECT ao.*, aop.idCommande FROM PERSONNE_REFERENTE ao JOIN VIEW_HABILITATIONS h ON ao.idPersonne = h.idPersonne LEFT JOIN COMMANDES_VALIDEURS aop ON (ao.idPersonne = aop.idValideur AND aop.idCommande = :idCommande) WHERE commande_lecture = 1 AND commande_valider = 1 ORDER BY nomPersonne, prenomPersonne;');
+		                                                $query2 = $db->prepare('
+		                                                	SELECT
+		                                                		ao.*,
+		                                                		(SELECT idCommande FROM COMMANDES_VALIDEURS aop WHERE ao.idPersonne = aop.idValideur AND aop.idCommande = :idCommande) as idCommande
+		                                                	FROM
+		                                                		PERSONNE_REFERENTE ao
+		                                                		JOIN VIEW_HABILITATIONS h ON ao.idPersonne = h.idPersonne
+		                                                	WHERE
+		                                                		commande_lecture = 1
+		                                                		AND commande_valider = 1
+		                                                	ORDER BY
+		                                                		nomPersonne, prenomPersonne;');
 										                $query2->execute(array('idCommande' => $_GET['id']));
 						
 						                                while ($data2 = $query2->fetch())
@@ -329,7 +375,13 @@ if ($_SESSION['commande_lecture']==0)
                                         {
                                             ?>
                                             	<tr>
-								                  <td><?php echo $data2['libelleMateriel'];?></td>
+								                  <td><?php
+								                  	echo $data2['libelleMateriel'];
+								                  	if($data2['idFournisseur'] != NULL AND $data2['idFournisseur'] != $data['idFournisseur'])
+								                  	{
+								                  		echo ' <i class="fa fa-warning" title="Cet article n\'est pas habituellement acheté chez ce fournisseur."></i>';
+								                  	}
+								                  ?></td>
 								                  <td><?php echo $data2['referenceProduitFournisseur'];?></td>
 								                  <td><?php echo $data2['prixProduitTTC'];?> €</td>
 								                  <td><?php echo $data2['quantiteCommande'];?></td>
@@ -391,7 +443,7 @@ if ($_SESSION['commande_lecture']==0)
                                             <th></th>
                                         </tr>
                                         <?php
-                                        $query2 = $db->prepare('SELECT * FROM DOCUMENTS_COMMANDES c LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument WHERE idCommande = :idCommande ORDER BY nomDocCommande ASC ;');
+                                        $query2 = $db->prepare('SELECT * FROM VIEW_DOCUMENTS_COMMANDES WHERE idCommande = :idCommande ORDER BY nomDocCommande ASC ;');
                                         $query2->execute(array('idCommande' => $_GET['id']));
                                         while ($data2 = $query2->fetch())
                                         {
@@ -437,6 +489,29 @@ if ($_SESSION['commande_lecture']==0)
 	                        <div class="tab-pane" id="validation">
 	                            <form role="form" class="spinnerAttenteSubmit" action="commandesGo13.php?id=<?=$_GET['id']?>" method="POST">
 	                                <div class="row">
+	                                	<?php
+	                                		$query = $db->prepare('SELECT COUNT(*) as nb FROM COMMANDES_MATERIEL cm LEFT OUTER JOIN COMMANDES c ON cm.idCommande = c.idCommande LEFT OUTER JOIN MATERIEL_CATALOGUE mc ON cm.idMaterielCatalogue = mc.idMaterielCatalogue WHERE cm.idCommande = :idCommande AND mc.idFournisseur IS NOT NULL AND mc.idFournisseur <> c.idFournisseur;');
+	                                		$query->execute(array('idCommande'=>$_GET['id']));
+	                                		$nbErreurFou = $query->fetch();
+	                                		if($data['idEtat'] == 2 AND $nbErreurFou['nb']>0)
+	                                		{
+		                                	?>
+			                                	<div class="col-md-12">
+			                                		<div class="alert alert-warning">
+									                    <i class="icon fa fa-warning"></i> Attention cette commande contient des articles habituellement commandés chez d'autres fournisseurs.
+									                </div>
+			                                	</div>
+		                                <?php } ?>
+		                                <?php
+	                                		if($data['idEtat'] == 2 AND $data['idFournisseur'] == Null)
+	                                		{
+		                                	?>
+			                                	<div class="col-md-12">
+			                                		<div class="alert alert-warning">
+									                    <i class="icon fa fa-warning"></i> Aucun fournisseur renseigné pour cette commande.
+									                </div>
+			                                	</div>
+		                                <?php } ?>
 	                                    <div class="col-md-4">
 	                                        <div class="form-group" id="dateDemandeValidation">
 	                                            <label>Date de demande:</label>

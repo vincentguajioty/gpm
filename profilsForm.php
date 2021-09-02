@@ -434,7 +434,15 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
 		                            <select class="form-control select2" style="width: 100%;" name="idPersonne[]" multiple>
 		                                <?php
 							            
-							            $query2 = $db->prepare('SELECT ao.*, aop.idProfil FROM PERSONNE_REFERENTE ao LEFT JOIN PROFILS_PERSONNES aop ON (ao.idPersonne = aop.idPersonne AND aop.idProfil = :idProfil) ORDER BY nomPersonne, prenomPersonne;');
+							            $query2 = $db->prepare('
+                                            SELECT
+                                                ao.*,
+                                                (SELECT idProfil FROM PROFILS_PERSONNES aop WHERE ao.idPersonne = aop.idPersonne AND aop.idProfil = :idProfil) as idProfil
+                                            FROM
+                                                PERSONNE_REFERENTE ao
+                                            ORDER BY
+                                                nomPersonne,
+                                                prenomPersonne;');
 							            $query2->execute(array('idProfil' => $_GET['id']));
 		
 		                                while ($data2 = $query2->fetch())

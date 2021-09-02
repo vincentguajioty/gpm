@@ -88,7 +88,14 @@ if ($_SESSION['annuaire_ajout']==0)
 					                                <?php
 										            if (isset($_GET['id']))
 										            {
-										                $query2 = $db->prepare('SELECT ao.*, aop.idPersonne FROM PROFILS ao LEFT JOIN PROFILS_PERSONNES aop ON (ao.idProfil = aop.idProfil AND aop.idPersonne = :idPersonne) ORDER BY libelleProfil;');
+										                $query2 = $db->prepare('
+										                	SELECT
+				                                                ao.*,
+				                                                (SELECT idPersonne FROM PROFILS_PERSONNES aop WHERE ao.idProfil = aop.idProfil AND aop.idPersonne = :idPersonne) as idPersonne
+				                                            FROM
+				                                                PROFILS ao
+				                                            ORDER BY
+				                                                libelleProfil;');
 										                $query2->execute(array('idPersonne' => $_GET['id']));
 										            }
 										            else

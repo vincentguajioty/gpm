@@ -71,6 +71,21 @@ if($_SESSION['catalogue_lecture']==1 OR $_SESSION['catalogue_ajout']==1 OR $_SES
                             <input type="text" class="form-control" placeholder="3 compresses par sachet ..." value="<?= isset($data['conditionnementMultiple']) ? $data['conditionnementMultiple'] : '' ?>" name="conditionnementMultiple">
                         </div>
                         <div class="form-group">
+                            <label>Fournisseur de prédilection: </label>
+                            <select class="form-control select2" style="width: 100%;" name="idFournisseur">
+                                <option value="">--- Aucun fournisseur ---</option>
+                                <?php
+                                $query = $db->query('SELECT * FROM FOURNISSEURS ORDER BY nomFournisseur;');
+                                while ($data2 = $query->fetch())
+                                {
+                                    ?>
+                                    <option value="<?php echo $data2['idFournisseur']; ?>" <?php if (isset ($data['idFournisseur']) AND $data2['idFournisseur'] == $data['idFournisseur']) { echo 'selected'; } ?> ><?php echo $data2['nomFournisseur']; ?></option>
+                                    <?php
+                                }
+                                $query->closeCursor(); ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label>Commentaires</label>
                             <textarea class="form-control" rows="3" placeholder="Spécifiez d'autres détails" name="commentairesMateriel"><?= isset($data['commentairesMateriel']) ? $data['commentairesMateriel'] : '' ?></textarea>
                         </div>

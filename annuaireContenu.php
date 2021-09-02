@@ -110,15 +110,15 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <label>Profil d'habilitation: </label>
                                     <select class="form-control select2" style="width: 100%;" name="idProfil[]" multiple <?php if($_SESSION['profils_modification']==0){ echo 'disabled'; } ?>>
                                         <?php
-                                        if (isset($_GET['id']))
-                                        {
-                                            $query2 = $db->prepare('SELECT ao.*, aop.idPersonne FROM PROFILS ao LEFT JOIN PROFILS_PERSONNES aop ON (ao.idProfil = aop.idProfil AND aop.idPersonne = :idPersonne) ORDER BY libelleProfil;');
-                                            $query2->execute(array('idPersonne' => $_GET['id']));
-                                        }
-                                        else
-                                        {
-                                            $query2 = $db->query('SELECT * FROM PROFILS ORDER BY libelleProfil;');
-                                        }
+                                        $query2 = $db->prepare('
+                                            SELECT
+                                                ao.*,
+                                                (SELECT idPersonne FROM PROFILS_PERSONNES aop WHERE ao.idProfil = aop.idProfil AND aop.idPersonne = :idPersonne) as idPersonne
+                                            FROM
+                                                PROFILS ao
+                                            ORDER BY
+                                                libelleProfil;');
+                                        $query2->execute(array('idPersonne' => $_GET['id']));
 
                                         while ($data2 = $query2->fetch())
                                         {
@@ -133,6 +133,10 @@ if ($_SESSION['annuaire_lecture']==0)
                                         }
                                         $query2->closeCursor();?>
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Dernière Connexion:</label>
+                                    <input type="text" class="form-control" value="<?= isset($personne['derniereConnexion']) ? $personne['derniereConnexion'] : 'Aucune connexion'?>" disabled>
                                 </div>
                             </div>
                             <?php if ($_SESSION['annuaire_modification']==1) {?>

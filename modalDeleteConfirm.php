@@ -67,6 +67,7 @@ switch ($_GET['case']) {
         $contenu = "
             <li>Tous les sacs fournis par ce fournisseurs se verront sans fournisseur.</li>
             <li>Tous les matériels (lots et réserves) fournis par ce fournisseurs se verront sans fournisseur.</li>
+            <li>Toutes les entrées catalogue indiquant ce fournisseur comme fournisseur de prédilection n'auront plus de fournisseur.</li>
             <li>Toutes les commandes rattachées à ce fournisseurs se verront sans fournisseur.</li>
             <li>Les éléments de tenus fournis par ce fournisseur se verront sans fournisseur.</li>
         ";

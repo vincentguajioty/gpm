@@ -33,11 +33,11 @@ if($_SESSION['materiel_lecture']==1 OR $_SESSION['materiel_ajout']==1 OR $_SESSI
                             <label>Référence du catalogue: <small style="color:grey;">Requis</small></label>
                             <select class="form-control select2" style="width: 100%;" name="libelleMateriel">
                                 <?php
-                                $query2 = $db->query('SELECT * FROM MATERIEL_CATALOGUE ORDER BY libelleMateriel;');
+                                $query2 = $db->query('SELECT c.*, f.nomFournisseur FROM MATERIEL_CATALOGUE c LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur ORDER BY libelleMateriel;');
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>
-                                    <option value="<?php echo $data2['idMaterielCatalogue']; ?>"<?php if (isset($data['idMaterielCatalogue']) AND ($data2['idMaterielCatalogue'] == $data['idMaterielCatalogue'])) { echo 'selected'; } ?> ><?php echo $data2['libelleMateriel']; ?></option>
+                                    <option value="<?php echo $data2['idMaterielCatalogue']; ?>"<?php if (isset($data['idMaterielCatalogue']) AND ($data2['idMaterielCatalogue'] == $data['idMaterielCatalogue'])) { echo 'selected'; } ?> ><?php echo $data2['libelleMateriel']; if($data2['idFournisseur']!=Null){echo ' (Fournisseur conseillé: '.$data2['nomFournisseur'].')';} ?></option>
                                     <?php
                                 }
                                 $query2->closeCursor(); ?>
