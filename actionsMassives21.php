@@ -14,7 +14,7 @@ else
 
     $codeSQL = $query->errorCode();
 
-    writeInLogs("Action massive 21 - Code MySQL retourné: ".$codeSQL, '4');
+    writeInLogs("Action massive 21 - Code MySQL retourné: ".$codeSQL, '1', NULL);
     $_SESSION['returnMessage'] = 'Requète lancée et terminée avec le code '.$codeSQL;
     $_SESSION['returnType'] = '1';
 

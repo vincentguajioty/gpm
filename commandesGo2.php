@@ -25,14 +25,14 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification de la commande " . $_GET['id'], '3');
+            writeInLogs("Modification de la commande " . $_GET['id'], '1', NULL);
             addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " envoie la demande de validation.", "14");
             $_SESSION['returnMessage'] = 'Demande de validation enregistrée.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification de la commande.", '5');
+            writeInLogs("Erreur inconnue lors de la modification de la commande.", '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la demande de validation.";
             $_SESSION['returnType'] = '2';
 
@@ -51,11 +51,11 @@ else
             $message = $RETOURLIGNE.$message.$RETOURLIGNE;
             if(sendmail($data['mailPersonne'], $sujet, 2, $message))
             {
-                writeInLogs("Mail d'information de demande de validation envoyé au demandeur pour la commande " . $_GET['id'], '2');
+                writeInLogs("Mail d'information de demande de validation envoyé au demandeur pour la commande " . $_GET['id'], '1', NULL);
             }
             else
             {
-                writeInLogs("Erreur lors de l'envoi du mail d'information de demande de validation au demandeur pour la commande " . $_GET['id'], '5');
+                writeInLogs("Erreur lors de l'envoi du mail d'information de demande de validation au demandeur pour la commande " . $_GET['id'], '3', NULL);
             }
         }
     }
@@ -71,11 +71,11 @@ else
             $message = $RETOURLIGNE.$message.$RETOURLIGNE;
             if(sendmail($data['mailPersonne'], $sujet, 2, $message))
             {
-                writeInLogs("Mail de demande de validation envoyé au valideur pour la commande " . $_GET['id'], '2');
+                writeInLogs("Mail de demande de validation envoyé au valideur pour la commande " . $_GET['id'], '1', NULL);
             }
             else
             {
-                writeInLogs("Erreur lors de l'envoi du mail de demande de validation au valideur pour la commande " . $_GET['id'], '5');
+                writeInLogs("Erreur lors de l'envoi du mail de demande de validation au valideur pour la commande " . $_GET['id'], '3', NULL);
             }
         }
     }
@@ -90,11 +90,11 @@ else
             $message = $RETOURLIGNE.$message.$RETOURLIGNE;
             if(sendmail($data['mailPersonne'], $sujet, 2, $message))
             {
-                writeInLogs("Mail d'information de demande de validation envoyé au gérant pour la commande " . $_GET['id'], '2');
+                writeInLogs("Mail d'information de demande de validation envoyé au gérant pour la commande " . $_GET['id'], '1', NULL);
             }
             else
             {
-                writeInLogs("Erreur lors de l'envoi du mail d'information de demande de validation au gérant pour la commande " . $_GET['id'], '5');
+                writeInLogs("Erreur lors de l'envoi du mail d'information de demande de validation au gérant pour la commande " . $_GET['id'], '3', NULL);
             }
         }
     }
@@ -109,11 +109,11 @@ else
             $message = $RETOURLIGNE.$message.$RETOURLIGNE;
             if(sendmail($data['mailPersonne'], $sujet, 2, $message))
             {
-                writeInLogs("Mail d'information de demande de validation envoyé à l'observateur pour la commande " . $_GET['id'], '2');
+                writeInLogs("Mail d'information de demande de validation envoyé à l'observateur pour la commande " . $_GET['id'], '1', NULL);
             }
             else
             {
-                writeInLogs("Erreur lors de l'envoi du mail d'information de demande de validation à l'observateur pour la commande " . $_GET['id'], '5');
+                writeInLogs("Erreur lors de l'envoi du mail d'information de demande de validation à l'observateur pour la commande " . $_GET['id'], '3', NULL);
             }
         }
     }

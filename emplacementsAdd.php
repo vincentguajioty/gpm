@@ -14,28 +14,34 @@ else
     $_POST['libelleSac'] = ($_POST['libelleSac'] == Null) ? Null : $_POST['libelleSac'];
 
 
-    $query = $db->prepare('INSERT INTO MATERIEL_EMPLACEMENT(libelleEmplacement, idSac) VALUES(:libelleEmplacement, :idSac);');
+    $query = $db->prepare('
+        INSERT INTO
+            MATERIEL_EMPLACEMENT
+        SET
+            libelleEmplacement = :libelleEmplacement,
+            idSac              = :idSac
+        ;');
     $query->execute(array(
         'libelleEmplacement' => $_POST['libelleEmplacement'],
-        'idSac' => $_POST['libelleSac']
+        'idSac'              => $_POST['libelleSac']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout de l'emplacement " . $_POST['libelleEmplacement'], '2');
+            writeInLogs("Ajout de l'emplacement " . $_POST['libelleEmplacement'], '1', NULL);
             $_SESSION['returnMessage'] = 'Emplacement ajouté avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         case '23000':
-            writeInLogs("Doublon détecté lors de l'ajout de l'emplacement " . $_POST['libelleEmplacement'], '5');
+            writeInLogs("Doublon détecté lors de l'ajout de l'emplacement " . $_POST['libelleEmplacement'], '2', NULL);
             $_SESSION['returnMessage'] = 'Un emplacement existe déjà avec le même libellé. Merci de changer le libellé.';
             $_SESSION['returnType'] = '2';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout de l'emplacement " . $_POST['libelleEmplacement'], '5');
+            writeInLogs("Erreur inconnue lors de l'ajout de l'emplacement " . $_POST['libelleEmplacement'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors l'ajout de l'emplacement.";
             $_SESSION['returnType'] = '2';
     }

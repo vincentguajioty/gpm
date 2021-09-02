@@ -13,26 +13,36 @@ else
 	$_POST['stockAlerteCatalogueTenue'] = ($_POST['stockAlerteCatalogueTenue'] == Null) ? Null : $_POST['stockAlerteCatalogueTenue'];
     $_POST['idFournisseur'] = ($_POST['idFournisseur'] == Null) ? Null : $_POST['idFournisseur'];
 
-    $query = $db->prepare('INSERT INTO TENUES_CATALOGUE(libelleCatalogueTenue, tailleCatalogueTenue, serigraphieCatalogueTenue, idFournisseur, stockCatalogueTenue, stockAlerteCatalogueTenue) VALUES(:libelleCatalogueTenue, :tailleCatalogueTenue, :serigraphieCatalogueTenue, :idFournisseur, :stockCatalogueTenue, :stockAlerteCatalogueTenue);');
+    $query = $db->prepare('
+        INSERT INTO
+            TENUES_CATALOGUE
+        SET
+            libelleCatalogueTenue     = :libelleCatalogueTenue,
+            tailleCatalogueTenue      = :tailleCatalogueTenue,
+            serigraphieCatalogueTenue = :serigraphieCatalogueTenue,
+            idFournisseur             = :idFournisseur,
+            stockCatalogueTenue       = :stockCatalogueTenue,
+            stockAlerteCatalogueTenue = :stockAlerteCatalogueTenue
+        ;');
     $query->execute(array(
-        'libelleCatalogueTenue' => $_POST['libelleCatalogueTenue'],
-        'tailleCatalogueTenue' => $_POST['tailleCatalogueTenue'],
+        'libelleCatalogueTenue'     => $_POST['libelleCatalogueTenue'],
+        'tailleCatalogueTenue'      => $_POST['tailleCatalogueTenue'],
         'serigraphieCatalogueTenue' => $_POST['serigraphieCatalogueTenue'],
-        'idFournisseur' => $_POST['idFournisseur'],
-        'stockCatalogueTenue' => $_POST['stockCatalogueTenue'],
+        'idFournisseur'             => $_POST['idFournisseur'],
+        'stockCatalogueTenue'       => $_POST['stockCatalogueTenue'],
         'stockAlerteCatalogueTenue' => $_POST['stockAlerteCatalogueTenue']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout dans le catalogue des tenues de " . $_POST['libelleCatalogueTenue'], '2');
+            writeInLogs("Ajout dans le catalogue des tenues de " . $_POST['libelleCatalogueTenue'], '1', NULL);
             $_SESSION['returnMessage'] = 'Element ajouté avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout dans le catalogue des tenues de " . $_POST['libelleCatalogueTenue'], '5');
+            writeInLogs("Erreur inconnue lors de l'ajout dans le catalogue des tenues de " . $_POST['libelleCatalogueTenue'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de l'ajout de l'élément.";
             $_SESSION['returnType'] = '2';
     }

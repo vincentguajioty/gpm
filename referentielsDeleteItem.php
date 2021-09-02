@@ -40,13 +40,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification du référentiel " . $data2['libelleTypeLot'] . " avec suppression du materiel " . $data3['libelleMateriel'], '3');
+            writeInLogs("Modification du référentiel " . $data2['libelleTypeLot'] . " avec suppression du materiel " . $data3['libelleMateriel'], '1', NULL);
             $_SESSION['returnMessage'] = 'Item retiré du référentiel avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification du référentiel " . $data2['libelleTypeLot'] . " avec retrait du materiel " . $data3['libelleMateriel'], '5');
+            writeInLogs("Erreur inconnue lors de la modification du référentiel " . $data2['libelleTypeLot'] . " avec retrait du materiel " . $data3['libelleMateriel'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors du retrait de l'item.";
             $_SESSION['returnType'] = '2';
     }

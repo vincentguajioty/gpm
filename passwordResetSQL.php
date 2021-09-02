@@ -28,14 +28,7 @@ if ($data['idIP'] == "")
 	if (empty($data['idPersonne']) OR $data['idPersonne'] == "")
 	{
 	    //pas bon
-	    $query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
-	    $query->execute(array(
-	        'dateEvt' => date('Y-m-d H:i:s'),
-	        'adresseIP' => $_SERVER['REMOTE_ADDR'],
-	        'utilisateurEvt' => $_POST['identifiant'],
-	        'idLogLevel' => '5',
-	        'detailEvt' => 'Echec de la tentative de reset du mot de passe oublié.'
-	    ));
+	    writeInLogs("Echec de la tentative de reset du mot de passe oublié.", '2', $_POST['identifiant']);
 
         $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE dateEchec < :dateEchec;');
         $query->execute(array(
@@ -56,14 +49,7 @@ if ($data['idIP'] == "")
 		        'adresseIPverr' => $_SERVER['REMOTE_ADDR']
 		    ));
 			
-			$query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
-		    $query->execute(array(
-		        'dateEvt' => date('Y-m-d H:i:s'),
-		        'adresseIP' => $_SERVER['REMOTE_ADDR'],
-		        'utilisateurEvt' => $_POST['identifiant'],
-		        'idLogLevel' => '5',
-		        'detailEvt' => 'Verouillage de l\'adresse IP.'
-		    ));
+		    writeInLogs("Verouillage définitif de l\'adresse IP suite à la tentative de reset de mot de passe avec ".$_POST['identifiant'], '2', NULL);
 
             $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE adresseIP= :adresseIP;');
             $query->execute(array(
@@ -77,6 +63,8 @@ if ($data['idIP'] == "")
                 'dateEchec' => date('Y-m-d H:i:s'),
                 'adresseIP' => $_SERVER['REMOTE_ADDR']
             ));
+
+            writeInLogs("Verouillage temporaire de l\'adresse IP suite à la tentative de reset de mot de passe avec ".$_POST['identifiant'], '2', NULL);
         }
 	    
 	    echo "<script type='text/javascript'>document.location.replace('passwordResetKO.php');</script>";
@@ -96,27 +84,24 @@ if ($data['idIP'] == "")
             'idPersonne' => $data['idPersonne']
         ));
 		
-		$query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
-	    $query->execute(array(
-	        'dateEvt' => date('Y-m-d H:i:s'),
-	        'adresseIP' => $_SERVER['REMOTE_ADDR'],
-	        'utilisateurEvt' => $_POST['identifiant'],
-	        'idLogLevel' => '2',
-	        'detailEvt' => 'Génération d\'un token de réinitialisation du mot de passe'
-	    ));
+		writeInLogs("Génération d'un token de réinitialisation du mot de passe pour l'identifiant ".$_POST['identifiant'], '1', NULL);
 
 		$token = bin2hex(random_bytes(30));
 		$tokenHash = password_hash($token, PASSWORD_DEFAULT);
 
-		$query = $db->prepare('INSERT INTO RESETPASSWORD SET
-			idPersonne = :idPersonne,
-			dateDemande = :dateDemande,
-			tokenReset = :tokenReset,
-			dateValidite = :dateValidite;');
+		$query = $db->prepare('
+			INSERT INTO
+				RESETPASSWORD
+			SET
+				idPersonne   = :idPersonne,
+				dateDemande  = :dateDemande,
+				tokenReset   = :tokenReset,
+				dateValidite = :dateValidite
+			;');
 	    $query->execute(array(
-	    	'idPersonne' => $data['idPersonne'],
-			'dateDemande' => date('Y-m-d H:i:s'),
-			'tokenReset' => $tokenHash,
+			'idPersonne'   => $data['idPersonne'],
+			'dateDemande'  => date('Y-m-d H:i:s'),
+			'tokenReset'   => $tokenHash,
 			'dateValidite' => date('Y-m-d H:i:s', strtotime('+1 hour'))
 	    ));
 	    $resetSession = $db->query('SELECT MAX(idReset) as idReset FROM RESETPASSWORD;');
@@ -131,25 +116,11 @@ if ($data['idIP'] == "")
         $message = $RETOURLIGNE.$message.$RETOURLIGNE;
         if(sendmail($_POST['mailPersonne'], $sujet, 2, $message))
         {
-            $query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
-		    $query->execute(array(
-		        'dateEvt' => date('Y-m-d H:i:s'),
-		        'adresseIP' => $_SERVER['REMOTE_ADDR'],
-		        'utilisateurEvt' => $_POST['identifiant'],
-		        'idLogLevel' => '2',
-		        'detailEvt' => "Mail de réinitialisation de mot de passe envoyé à " . $_POST['mailPersonne'] . " pour le compte référence ".$data['idPersonne']
-		    ));
+		    writeInLogs("Mail de réinitialisation de mot de passe envoyé à " . $_POST['mailPersonne'] . " pour le compte référence ".$data['idPersonne'], '1', NULL);
         }
         else
         {
-            $query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
-		    $query->execute(array(
-		        'dateEvt' => date('Y-m-d H:i:s'),
-		        'adresseIP' => $_SERVER['REMOTE_ADDR'],
-		        'utilisateurEvt' => $_POST['identifiant'],
-		        'idLogLevel' => '2',
-		        'detailEvt' => "Erreur lors de l'envoi du mail de réinitialisation du mot de passe à " . $_POST['mailPersonne'] . " pour le compte référence ".$data['idPersonne']
-		    ));
+             writeInLogs("Erreur d'envoi du mail de réinitialisation de mot de passe à " . $_POST['mailPersonne'] . " pour le compte référence ".$data['idPersonne'], '3', NULL);
         }
 
 		echo "<script type='text/javascript'>document.location.replace('passwordResetOK.php');</script>";
@@ -159,14 +130,7 @@ if ($data['idIP'] == "")
 else
 {
 	 //pas bon
-	    $query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
-	    $query->execute(array(
-	        'dateEvt' => date('Y-m-d H:i:s'),
-	        'adresseIP' => $_SERVER['REMOTE_ADDR'],
-	        'utilisateurEvt' => $_POST['identifiant'],
-	        'idLogLevel' => '5',
-	        'detailEvt' => 'Reset de mot de passe oublié refusé par le filtrage IP.'
-	    ));
+	    writeInLogs("Reset de mot de passe oublié refusé par le filtrage IP avec l'identifiant ".$_POST['identifiant'], '2', NULL);
 	    echo "<script type='text/javascript'>document.location.replace('login.php');</script>";
 }
 

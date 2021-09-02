@@ -12,49 +12,42 @@ if ($_SESSION['annuaire_ajout']==0)
 else
 {
 
-    $query = $db->prepare('INSERT INTO PERSONNE_REFERENTE(
-                                                identifiant,
-                                                motDePasse,
-                                                nomPersonne,
-                                                prenomPersonne,
-                                                mailPersonne,
-                                                telPersonne,
-                                                fonction,
-                                                notif_lots_manquants,
-												notif_lots_peremptions,
-												notif_lots_inventaires,
-												notif_lots_conformites,
-												notif_reserves_manquants,
-												notif_reserves_peremptions,
-												notif_reserves_inventaires,
-												notif_vehicules_assurances,
-												notif_vehicules_revisions,
-												notif_vehicules_ct,
-												notif_tenues_stock,
-												notif_tenues_retours,
-                                                conf_indicateur1Accueil,
-                                                conf_indicateur2Accueil,
-                                                conf_indicateur3Accueil,
-                                                conf_indicateur4Accueil,
-                                                conf_indicateur5Accueil,
-                                                conf_indicateur6Accueil ,
-                                                conf_indicateur7Accueil ,
-                                                conf_indicateur8Accueil,
-                                                conf_indicateur9Accueil,
-                                                conf_indicateur10Accueil,
-                                                conf_accueilRefresh,
-                                                tableRowPerso) VALUES(:identifiant,
-                                                :motDePasse,
-                                                :nomPersonne,
-                                                :prenomPersonne,
-                                                :mailPersonne,
-                                                :telPersonne,
-                                                :fonction,
-                                                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                                                1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                                                120,
-                                                25);'
-                        );
+    $query = $db->prepare('
+        INSERT INTO
+            PERSONNE_REFERENTE
+        SET
+            identifiant                = :identifiant,
+            motDePasse                 = :motDePasse,
+            nomPersonne                = :nomPersonne,
+            prenomPersonne             = :prenomPersonne,
+            mailPersonne               = :mailPersonne,
+            telPersonne                = :telPersonne,
+            fonction                   = :fonction,
+            notif_lots_manquants       = 1,
+            notif_lots_peremptions     = 1,
+            notif_lots_inventaires     = 1,
+            notif_lots_conformites     = 1,
+            notif_reserves_manquants   = 1,
+            notif_reserves_peremptions = 1,
+            notif_reserves_inventaires = 1,
+            notif_vehicules_assurances = 1,
+            notif_vehicules_revisions  = 1,
+            notif_vehicules_ct         = 1,
+            notif_tenues_stock         = 1,
+            notif_tenues_retours       = 1,
+            conf_indicateur1Accueil    = 1,
+            conf_indicateur2Accueil    = 1,
+            conf_indicateur3Accueil    = 1,
+            conf_indicateur4Accueil    = 1,
+            conf_indicateur5Accueil    = 1,
+            conf_indicateur6Accueil    = 1 ,
+            conf_indicateur7Accueil    = 1 ,
+            conf_indicateur8Accueil    = 1,
+            conf_indicateur9Accueil    = 1,
+            conf_indicateur10Accueil   = 1,
+            conf_accueilRefresh        = 120,
+            tableRowPerso              = 25
+        ;');
     $query->execute(array(
         'identifiant'    => $_POST['identifiant'],
         'motDePasse'     => password_hash($_POST['identifiant'], PASSWORD_DEFAULT),
@@ -68,7 +61,7 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout de l'utilisateur " . $_POST['identifiant'], '2');
+            writeInLogs("Ajout de l'utilisateur " . $_POST['identifiant'], '1', NULL);
             $_SESSION['returnMessage'] = 'Utilisateur ajouté avec succès.';
             $_SESSION['returnType'] = '1';
 
@@ -96,11 +89,11 @@ else
 		        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
 		        if(sendmail($_POST['mailPersonne'], $sujet, 2, $message))
 		        {
-		            writeInLogs("Mail d'accueil envoyé à " . $_POST['identifiant'], '2');
+		            writeInLogs("Mail d'accueil envoyé à " . $_POST['identifiant'], '1', NULL);
 		        }
 		        else
 		        {
-		            writeInLogs("Erreur lors de l'envoi du mail d'accueil à " . $_POST['identifiant'], '5');
+		            writeInLogs("Erreur lors de l'envoi du mail d'accueil à " . $_POST['identifiant'], '3', NULL);
 		        }
 		    }
 		
@@ -114,14 +107,14 @@ else
         break;
 
         case '23000':
-            writeInLogs("Doublon détecté lors de l'ajout de l'utilisateur " . $_POST['identifiant'], '5');
+            writeInLogs("Doublon détecté lors de l'ajout de l'utilisateur " . $_POST['identifiant'], '2', NULL);
             $_SESSION['returnMessage'] = 'Un utilisateur existe déjà avec le même identifiant. Merci de changer l\'identifiant.';
             $_SESSION['returnType'] = '2';
             echo "<script>window.location = document.referrer;</script>";
         break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout de l'utilisateur " . $_POST['identifiant'], '5');
+            writeInLogs("Erreur inconnue lors de l'ajout de l'utilisateur " . $_POST['identifiant'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors de l\'ajout de l\'utilisateur.';
             $_SESSION['returnType'] = '2';
             echo "<script>window.location = document.referrer;</script>";

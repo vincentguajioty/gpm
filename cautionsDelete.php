@@ -28,13 +28,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression d'une caution.", '4');
+            writeInLogs("Suppression d'une caution.", '1', NULL);
             $_SESSION['returnMessage'] = 'Caution supprimée avec succès.';
             $_SESSION['returnType'] = '1';
         break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression d'une caution.", '5');
+            writeInLogs("Erreur inconnue lors de la suppression d'une caution.", '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors de la suppression de la caution.';
             $_SESSION['returnType'] = '2';
     }

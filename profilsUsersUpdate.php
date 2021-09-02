@@ -26,7 +26,7 @@ else {
         $db->query($insertSQL);
     }
 
-    writeInLogs("Modification des utilisateurs affectés au profil " . $_GET['idProfil'], '3');
+    writeInLogs("Modification des utilisateurs affectés au profil " . $_GET['idProfil'], '1', NULL);
     $_SESSION['returnMessage'] = 'Attribution de profils effectuée.';
     $_SESSION['returnType'] = '1';
 

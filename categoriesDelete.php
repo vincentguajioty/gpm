@@ -38,13 +38,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression de la catégorie " . $data['libelleCategorie'], '4');
+            writeInLogs("Suppression de la catégorie " . $data['libelleCategorie'], '1', NULL);
             $_SESSION['returnMessage'] = 'Catégorie supprimée avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression de la catégorie " . $data['libelleCategorie'], '5');
+            writeInLogs("Erreur inconnue lors de la suppression de la catégorie " . $data['libelleCategorie'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors la suppression de la catégorie.';
             $_SESSION['returnType'] = '2';
     }

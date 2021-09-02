@@ -34,13 +34,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression d'un relevé kilométrique sur le véhicule " . $data['idVehicule'], '4');
+            writeInLogs("Suppression d'un relevé kilométrique sur le véhicule " . $data['idVehicule'], '1', NULL);
             $_SESSION['returnMessage'] = 'Relevé kilométrique supprimée avec succès.';
             $_SESSION['returnType'] = '1';
         break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression d'un relevé kilométrique sur le véhicule " . $data['idVehicule'], '5');
+            writeInLogs("Erreur inconnue lors de la suppression d'un relevé kilométrique sur le véhicule " . $data['idVehicule'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors de la suppression d\'un relevé kilométrique.';
             $_SESSION['returnType'] = '2';
     }

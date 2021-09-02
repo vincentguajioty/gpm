@@ -88,7 +88,6 @@ if ($_SESSION['appli_conf']==0)
                             <input type="checkbox" value="1" name="resetPassword" <?php if($data['resetPassword']==1){echo "checked";}?>> Les utilisateurs peuvent réinitialiser leur mot de passe oublié par mail.
                         </div>
                         <div class="box-footer">
-                            <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
                             <button type="submit" class="btn btn-info pull-right">Modifier</button>
                         </div>
                     </form>
@@ -99,6 +98,56 @@ if ($_SESSION['appli_conf']==0)
 
         </section>
         <!-- /.content -->
+
+        <section class="content-header">
+            <h1>
+                Gestion des sels de mots de passe
+            </h1>
+        </section>
+
+        <section class="content">
+            <?php include('confirmationBox.php'); ?>
+            <!-- general form elements disabled -->
+            <div class="box box-warning">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <?php
+                        if($RESETPASSWORD==0)
+                        {
+                            echo '<div class="alert alert-danger">';
+                            echo '<i class="icon fa fa-warning"></i> La modification des sels de mots de passe va invalider tous les mots de passe actuels. La fonction de réinitialiation par email des mots de passe étant désactivée, les utilisateurs NE POURRONT PLUS ACCEDER A LEUR COMPTE !';
+                            echo '</div>';
+                        }
+                        else
+                        {
+                            echo '<div class="alert alert-warning">';
+                            echo '<i class="icon fa fa-warning"></i> La modification des sels de mots de passe va invalider tous les mots de passe actuels. Les utilisateurs devront passer par la fonctionnalité de réinitialisation de mot de passe par mail afin de pouvoir se reconnecter.';
+                            echo '</div>';
+                        }
+                    ?>
+                    <form role="form" action="appliConfUpdateSel.php" method="POST">
+                        <div class="form-group">
+                            <label>Sel de pré-hash:</label>
+                            <input type="text" class="form-control" value="<?=$data['selPre']?>" name="selPre">
+                        </div>
+                        <div class="form-group">
+                            <label>Sel de post-hash:</label>
+                            <input type="text" class="form-control" value="<?=$data['selPost']?>" name="selPost">
+                        </div>
+                        <div class="form-group">
+                            <label>Mot de passe de la session actuelle:</label>
+                            <input type="password" class="form-control" name="pwd">
+                        </div>
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-body -->
+
+            </div>
+
+        </section>
 
         <section class="content-header">
             <h1>
@@ -199,7 +248,6 @@ if ($_SESSION['appli_conf']==0)
                         </table>
 
                         <div class="box-footer">
-                            <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
                             <button type="submit" class="btn btn-info pull-right">Modifier</button>
                         </div>
                     </form>

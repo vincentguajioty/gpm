@@ -16,27 +16,38 @@ else
     $_POST['dateExpirationCaution'] = ($_POST['dateExpirationCaution'] == Null) ? Null : $_POST['dateExpirationCaution'];
     $_POST['detailsMoyenPaiement'] = ($_POST['detailsMoyenPaiement'] == Null) ? Null : $_POST['detailsMoyenPaiement'];
 
-    $query = $db->prepare('UPDATE CAUTIONS SET idPersonne = :idPersonne, personneNonGPM = :personneNonGPM, montantCaution = :montantCaution, dateEmissionCaution = :dateEmissionCaution, dateExpirationCaution = :dateExpirationCaution, detailsMoyenPaiement = :detailsMoyenPaiement WHERE idCaution = :idCaution;');
+    $query = $db->prepare('
+        UPDATE
+            CAUTIONS
+        SET
+            idPersonne            = :idPersonne,
+            personneNonGPM        = :personneNonGPM,
+            montantCaution        = :montantCaution,
+            dateEmissionCaution   = :dateEmissionCaution,
+            dateExpirationCaution = :dateExpirationCaution,
+            detailsMoyenPaiement  = :detailsMoyenPaiement
+        WHERE
+            idCaution = :idCaution;');
     $query->execute(array(
-        'idPersonne' => $_POST['idPersonne'],
-        'personneNonGPM' => $_POST['personneNonGPM'],
-        'montantCaution' => $_POST['montantCaution'],
-        'dateEmissionCaution' => $_POST['dateEmissionCaution'],
+        'idPersonne'            => $_POST['idPersonne'],
+        'personneNonGPM'        => $_POST['personneNonGPM'],
+        'montantCaution'        => $_POST['montantCaution'],
+        'dateEmissionCaution'   => $_POST['dateEmissionCaution'],
         'dateExpirationCaution' => $_POST['dateExpirationCaution'],
-        'detailsMoyenPaiement' => $_POST['detailsMoyenPaiement'],
-        'idCaution' => $_GET['id']
+        'detailsMoyenPaiement'  => $_POST['detailsMoyenPaiement'],
+        'idCaution'             => $_GET['id']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification d'une caution.", '3');
+            writeInLogs("Modification d'une caution.", '1', NULL);
             $_SESSION['returnMessage'] = 'Caution modifiée avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification d'une caution.", '5');
+            writeInLogs("Erreur inconnue lors de la modification d'une caution.", '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de la modification.";
             $_SESSION['returnType'] = '2';
     }

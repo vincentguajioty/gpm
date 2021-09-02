@@ -16,23 +16,32 @@ else
 	$_POST['dateMaintenance'] = ($_POST['dateMaintenance'] == Null) ? Null : $_POST['dateMaintenance'];
 	$_POST['idTypeMaintenance'] = ($_POST['idTypeMaintenance'] == Null) ? Null : $_POST['idTypeMaintenance'];
 	
-    $query = $db->prepare('INSERT INTO VEHICULES_MAINTENANCE(idVehicule, idExecutant, dateMaintenance, idTypeMaintenance, detailsMaintenance) VALUES (:idVehicule, :idExecutant, :dateMaintenance, :idTypeMaintenance, :detailsMaintenance);');
+    $query = $db->prepare('
+        INSERT INTO
+            VEHICULES_MAINTENANCE
+        SET
+            idVehicule         = :idVehicule,
+            idExecutant        = :idExecutant,
+            dateMaintenance    = :dateMaintenance,
+            idTypeMaintenance  = :idTypeMaintenance,
+            detailsMaintenance = :detailsMaintenance
+        ;');
     $query->execute(array(
-        'idVehicule' => $_GET['idVehicule'],
-		'idExecutant' => $_POST['idExecutant'],
-		'dateMaintenance' => $_POST['dateMaintenance'],
-		'idTypeMaintenance' => $_POST['idTypeMaintenance'],
-		'detailsMaintenance' => $_POST['detailsMaintenance']
+        'idVehicule'         => $_GET['idVehicule'],
+        'idExecutant'        => $_POST['idExecutant'],
+        'dateMaintenance'    => $_POST['dateMaintenance'],
+        'idTypeMaintenance'  => $_POST['idTypeMaintenance'],
+        'detailsMaintenance' => $_POST['detailsMaintenance']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout d'une maintenance pour le véhicule " . $_GET['idVehicule'], '2');
+            writeInLogs("Ajout d'une maintenance pour le véhicule " . $_GET['idVehicule'], '1', NULL);
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout de la maintenance pour le véhicule " . $_GET['idVehicule'], '5');
+            writeInLogs("Erreur inconnue lors de l'ajout de la maintenance pour le véhicule " . $_GET['idVehicule'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors l\'ajout de la tache de maintenance.';
             $_SESSION['returnType'] = '2';
     }

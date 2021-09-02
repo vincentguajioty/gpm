@@ -273,10 +273,6 @@ INSERT INTO LOGS_LEVEL(idLogLevel, libelleLevel, faIcon) VALUES(3, 'Modification
 INSERT INTO LOGS_LEVEL(idLogLevel, libelleLevel, faIcon) VALUES(4, 'Suppression', 'fa fa-trash bg-red');
 INSERT INTO LOGS_LEVEL(idLogLevel, libelleLevel, faIcon) VALUES(5, 'Erreur', 'fa fa-warning bg-black');
 
-INSERT INTO LOGS(dateEvt, adresseIP, utilisateurApollonEvt, idLogLevel, detailEvt) VALUES(CURRENT_TIMESTAMP, 'local', 'sysAdmin', 2, 'Déploiement de la base de données GPM.');
-INSERT INTO LOGS(dateEvt, adresseIP, utilisateurApollonEvt, idLogLevel, detailEvt) VALUES(CURRENT_TIMESTAMP, 'local', 'sysAdmin', 2, 'Installation de l\'interface web version 2.2.');
-INSERT INTO LOGS(dateEvt, adresseIP, utilisateurApollonEvt, idLogLevel, detailEvt) VALUES(CURRENT_TIMESTAMP, 'local', 'sysAdmin', 2, 'Création de l\'utilisateur admin et de son profil administrateur.');
-
 ALTER TABLE PROFILS ADD verrouIP BOOLEAN;
 UPDATE PROFILS SET verrouIP=0;
 

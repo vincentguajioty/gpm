@@ -15,13 +15,23 @@ else {
 
     $ext = strtolower(substr(strrchr($_FILES['urlFichierDocCommande']['name'], '.'), 1));
 
-    $query = $db->prepare('INSERT INTO DOCUMENTS_COMMANDES(idCommande, nomDocCommande, formatDocCommande, dateDocCommande, urlFichierDocCommande, idTypeDocument) VALUES(:idCommande, :nomDocCommande, :formatDocCommande, CURRENT_TIMESTAMP, :urlFichierDocCommande, :idTypeDocument);');
+    $query = $db->prepare('
+        INSERT INTO
+            DOCUMENTS_COMMANDES
+        SET
+            idCommande            = :idCommande,
+            nomDocCommande        = :nomDocCommande,
+            formatDocCommande     = :formatDocCommande,
+            dateDocCommande       = CURRENT_TIMESTAMP,
+            urlFichierDocCommande = :urlFichierDocCommande,
+            idTypeDocument        = :idTypeDocument
+    ;');
     $query->execute(array(
-        'idCommande' => $_GET['idCommande'],
+        'idCommande'            => $_GET['idCommande'],
         'urlFichierDocCommande' => Null,
-        'nomDocCommande' => $_POST['nomDocCommande'],
-        'formatDocCommande' => $ext,
-        'idTypeDocument' => $_POST['idTypeDocument']
+        'nomDocCommande'        => $_POST['nomDocCommande'],
+        'formatDocCommande'     => $ext,
+        'idTypeDocument'        => $_POST['idTypeDocument']
     ));
 
 
@@ -37,14 +47,14 @@ else {
             'idDocCommande' => $data['idDocCommande'],
             'urlFichierDocCommande' => $nom
         ));
-        writeInLogs("Ajout d'une pièce jointe référence " . $_POST['nomDocCommande'] . " à la commande " . $_GET['idCommande'], '2');
+        writeInLogs("Ajout d'une pièce jointe référence " . $_POST['nomDocCommande'] . " à la commande " . $_GET['idCommande'], '1', NULL);
         addCommandeComment($_GET['idCommande'], $_SESSION['identifiant'] . " ajoute la pièce jointe " . $_POST['nomDocCommande'], "9");
     } else {
         $query = $db->prepare('DELETE FROM DOCUMENTS_COMMANDES WHERE idDocCommande = :idDocCommande;');
         $query->execute(array(
             'idDocCommande' => $data['idDocCommande']
         ));
-        writeInLogs("Erreur inconnue lors de l'ajout d'une pièce jointe à la commande " . $_GET['idCommande'], '5');
+        writeInLogs("Erreur inconnue lors de l'ajout d'une pièce jointe à la commande " . $_GET['idCommande'], '3', NULL);
         $_SESSION['returnMessage'] = "Erreur inconnue lors du chargement du document.";
         $_SESSION['returnType'] = '2';
     }

@@ -15,19 +15,28 @@ else
     $_POST['dateAffectation'] = ($_POST['dateAffectation'] == Null) ? Null : $_POST['dateAffectation'];
     $_POST['dateRetour'] = ($_POST['dateRetour'] == Null) ? Null : $_POST['dateRetour'];
 
-    $query = $db->prepare('INSERT INTO TENUES_AFFECTATION SET idCatalogueTenue = :idCatalogueTenue, idPersonne = :idPersonne, personneNonGPM = :personneNonGPM, dateAffectation = :dateAffectation, dateRetour = :dateRetour;');
+    $query = $db->prepare('
+        INSERT INTO
+            TENUES_AFFECTATION
+        SET
+            idCatalogueTenue = :idCatalogueTenue,
+            idPersonne       = :idPersonne,
+            personneNonGPM   = :personneNonGPM,
+            dateAffectation  = :dateAffectation,
+            dateRetour       = :dateRetour
+        ;');
     $query->execute(array(
         'idCatalogueTenue' => $_POST['idCatalogueTenue'],
-        'idPersonne' => $_POST['idPersonne'],
-        'personneNonGPM' => $_POST['personneNonGPM'],
-        'dateAffectation' => $_POST['dateAffectation'],
-        'dateRetour' => $_POST['dateRetour']
+        'idPersonne'       => $_POST['idPersonne'],
+        'personneNonGPM'   => $_POST['personneNonGPM'],
+        'dateAffectation'  => $_POST['dateAffectation'],
+        'dateRetour'       => $_POST['dateRetour']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout d'une affectation de tenue.", '2');
+            writeInLogs("Ajout d'une affectation de tenue.", '1', NULL);
             $_SESSION['returnMessage'] = 'Element ajouté avec succès.';
             $_SESSION['returnType'] = '1';
             
@@ -36,7 +45,7 @@ else
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout de l'affectation.", '5');
+            writeInLogs("Erreur inconnue lors de l'ajout de l'affectation.", '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de l'affectation.";
             $_SESSION['returnType'] = '2';
     }

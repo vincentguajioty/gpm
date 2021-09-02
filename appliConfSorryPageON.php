@@ -13,7 +13,7 @@ else
 
 	$query = $db->query('UPDATE CONFIG SET maintenance = 1;');
 
-	writeInLogs("Activation de la page de maintenance.", '3');
+	writeInLogs("Activation de la page de maintenance.", '1', NULL);
 	echo "<script type='text/javascript'>document.location.replace('index.php');</script>";
 
 }

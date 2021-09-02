@@ -51,7 +51,7 @@ else
 	    ));
     }
 
-    writeInLogs("Action massive 41", '4');
+    writeInLogs("Action massive 41", '1', NULL);
     $_SESSION['returnMessage'] = 'Requète lancée et terminée';
     $_SESSION['returnType'] = '1';
 

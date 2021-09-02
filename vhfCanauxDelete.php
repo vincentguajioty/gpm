@@ -52,14 +52,14 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression du canal " . $data['chName'], '4');
+            writeInLogs("Suppression du canal " . $data['chName'], '1', NULL);
             $_SESSION['returnMessage'] = 'Canal supprimé avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression du canal " . $data['chName'], '5');
+            writeInLogs("Erreur inconnue lors de la suppression du canal " . $data['chName'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de la suppression du canal.";
             $_SESSION['returnType'] = '2';
     }

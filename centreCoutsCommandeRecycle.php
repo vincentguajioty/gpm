@@ -17,14 +17,14 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Recyclage de la commande ".$_GET['idCommande']." dans le centre de couts " . $_GET['idCentreDeCout'], '3');
+            writeInLogs("Recyclage de la commande ".$_GET['idCommande']." dans le centre de couts " . $_GET['idCentreDeCout'], '1', NULL);
             $_SESSION['returnMessage'] = 'Commande recyclée avec succès, vous pouvez à nouveau l\'integrer au centre de cout si besoin.';
             $_SESSION['returnType'] = '1';
 
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors du recyclage de la commande ".$_GET['idCommande']." dans le centre de couts " . $_GET['idCentreDeCout'], '5');
+            writeInLogs("Erreur inconnue lors du recyclage de la commande ".$_GET['idCommande']." dans le centre de couts " . $_GET['idCentreDeCout'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors du recyclage de la commande.";
             $_SESSION['returnType'] = '2';
     }

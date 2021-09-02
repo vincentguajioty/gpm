@@ -44,14 +44,7 @@ if ($RESETPASSWORD == 0)
             if (empty($reset['idReset']) OR $reset['idReset'] == "" OR  !(password_verify($_GET['token'], $reset['tokenReset'])) OR $reset['dateValidite']<date('Y-m-d H:i:s'))
             {
                 //pas bon
-                $query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
-                $query->execute(array(
-                    'dateEvt' => date('Y-m-d H:i:s'),
-                    'adresseIP' => $_SERVER['REMOTE_ADDR'],
-                    'utilisateurEvt' => 'Serveur Principal',
-                    'idLogLevel' => '5',
-                    'detailEvt' => 'Accès non-autorisé sur la page de réinitialisation de mot de passe avec l\'idReset '.$_GET['idReset'].' et le token '.$_GET['token']
-                ));
+                writeInLogs("Accès non-autorisé sur la page de réinitialisation de mot de passe avec l\'idReset ".$_GET['idReset']." et le token ".$_GET['token'], '2', NULL);
 
                 $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE dateEchec < :dateEchec;');
                 $query->execute(array(
@@ -72,14 +65,7 @@ if ($RESETPASSWORD == 0)
                         'adresseIPverr' => $_SERVER['REMOTE_ADDR']
                     ));
                     
-                    $query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
-                    $query->execute(array(
-                        'dateEvt' => date('Y-m-d H:i:s'),
-                        'adresseIP' => $_SERVER['REMOTE_ADDR'],
-                        'utilisateurEvt' => 'Serveur Principal',
-                        'idLogLevel' => '5',
-                        'detailEvt' => 'Verouillage de l\'adresse IP.'
-                    ));
+                    writeInLogs("Verouillage définitif de l\'adresse IP suite à la tentative de reset de mot de passe", '2', NULL);
 
                     $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE adresseIP= :adresseIP;');
                     $query->execute(array(
@@ -93,6 +79,8 @@ if ($RESETPASSWORD == 0)
                         'dateEchec' => date('Y-m-d H:i:s'),
                         'adresseIP' => $_SERVER['REMOTE_ADDR']
                     ));
+
+                    writeInLogs("Verouillage temporaire de l\'adresse IP suite à la tentative d'authentification avec ".$_POST['identifiant'], '2', NULL);
                 }
                 
                 echo "

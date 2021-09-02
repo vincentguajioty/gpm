@@ -33,14 +33,14 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression de l'élément de réserve " . $data['idReserveElement'], '4');
+            writeInLogs("Suppression de l'élément de réserve " . $data['idReserveElement'], '1', NULL);
             $_SESSION['returnMessage'] = 'Element de réserve supprimé avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression de l'élément de réserve " . $data['idReserveElement'], '5');
+            writeInLogs("Erreur inconnue lors de la suppression de l'élément de réserve " . $data['idReserveElement'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de la suppression de l'élément de réserve.";
             $_SESSION['returnType'] = '2';
     }

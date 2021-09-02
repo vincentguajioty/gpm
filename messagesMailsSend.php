@@ -12,11 +12,11 @@ $message = $RETOURLIGNE.$_POST['contenu'].$RETOURLIGNE;
 $sujet = "[" . $APPNAME . "] - " . $_POST['sujet'];
 if(sendmail($_SESSION['mailPersonne'], $sujet, 2, $message))
 {
-    writeInLogs("Contact des équipes par mail - Copie envoyée à l'expéditeur " . $_SESSION['mailPersonne'], '2');
+    writeInLogs("Contact des équipes par mail - Copie envoyée à l'expéditeur " . $_SESSION['mailPersonne'], '1', NULL);
 }
 else
 {
-    writeInLogs("Contact des équipes par mail - Echec de l'envoi d'une copie à l'expéditeur", '5');
+    writeInLogs("Contact des équipes par mail - Echec de l'envoi d'une copie à l'expéditeur", '3', NULL);
     $echec += 1;
 }
 
@@ -57,11 +57,11 @@ while ($data = $query->fetch())
 	$envois += 1 ;
 	if(sendmail($data['mailPersonne'], $sujet, 2, $message))
 	{
-	    writeInLogs("Contact des équipes par mail - Message envoyé à " . $data['mailPersonne'], '2');
+	    writeInLogs("Contact des équipes par mail - Message envoyé à " . $data['mailPersonne'], '1', NULL);
 	}
 	else
 	{
-	    writeInLogs("Contact des équipes par mail - Echec de l'envoi du message à " . $data['mailPersonne'], '5');
+	    writeInLogs("Contact des équipes par mail - Echec de l'envoi du message à " . $data['mailPersonne'], '3', NULL);
 	    $echec += 1;
 	}
 }

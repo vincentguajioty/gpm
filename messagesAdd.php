@@ -12,9 +12,16 @@ if ($_SESSION['messages_ajout']==0)
 else
 {
 
-    $query = $db->prepare('INSERT INTO MESSAGES(idPersonne, titreMessage, corpsMessage) VALUES(:idPersonne, :titreMessage, :corpsMessage);');
+    $query = $db->prepare('
+        INSERT INTO
+            MESSAGES
+        SET
+            idPersonne   = :idPersonne,
+            titreMessage = :titreMessage,
+            corpsMessage = :corpsMessage
+        ;');
     $query->execute(array(
-        'idPersonne' => $_SESSION['idPersonne'],
+        'idPersonne'   => $_SESSION['idPersonne'],
         'titreMessage' => $_POST['titreMessage'],
         'corpsMessage' => $_POST['corpsMessage']
     ));
@@ -22,13 +29,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout du message " . $_POST['titreMessage'], '2');
+            writeInLogs("Ajout du message " . $_POST['titreMessage'], '1', NULL);
             $_SESSION['returnMessage'] = 'Message ajouté avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout du message " . $_POST['titreMessage'], '5');
+            writeInLogs("Erreur inconnue lors de l'ajout du message " . $_POST['titreMessage'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors l'ajout du message.";
             $_SESSION['returnType'] = '2';
     }

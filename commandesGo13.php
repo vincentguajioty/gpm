@@ -37,11 +37,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation positive de commande envoyé au demandeur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation positive de commande envoyé au demandeur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation positive de commande au demandeur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation positive de commande au demandeur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -56,11 +56,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation positive de commande envoyé au valideur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation positive de commande envoyé au valideur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation positive de commande au valideur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation positive de commande au valideur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -75,11 +75,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation positive de commande envoyé au gérant pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation positive de commande envoyé au gérant pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation positive de commande au gérant pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation positive de commande au gérant pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -94,11 +94,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation positive de commande envoyé à l'observateur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation positive de commande envoyé à l'observateur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation positive de commande à l'observateur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation positive de commande à l'observateur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -125,11 +125,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation positive de commande envoyé au demandeur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation positive de commande envoyé au demandeur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation positive de commande au demandeur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation positive de commande au demandeur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -144,11 +144,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation positive de commande envoyé au valideur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation positive de commande envoyé au valideur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation positive de commande au valideur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation positive de commande au valideur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -163,11 +163,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation positive de commande envoyé au gérant pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation positive de commande envoyé au gérant pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation positive de commande au gérant pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation positive de commande au gérant pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -182,11 +182,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation positive de commande envoyé à l'observateur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation positive de commande envoyé à l'observateur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation positive de commande à l'observateur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation positive de commande à l'observateur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -213,11 +213,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation négative de commande envoyé au demandeur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation négative de commande envoyé au demandeur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation négative de commande au demandeur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation négative de commande au demandeur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -232,11 +232,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation négative de commande envoyé au valideur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation négative de commande envoyé au valideur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation négative de commande au valideur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation négative de commande au valideur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -251,11 +251,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation négative de commande envoyé au gérant pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation négative de commande envoyé au gérant pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation négative de commande au gérant pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation négative de commande au gérant pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -270,11 +270,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation négative de commande envoyé à l'observateur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation négative de commande envoyé à l'observateur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation négative de commande à l'observateur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation négative de commande à l'observateur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -301,11 +301,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation négative de commande envoyé au demandeur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation négative de commande envoyé au demandeur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation négative de commande au demandeur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation négative de commande au demandeur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -320,11 +320,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation négative de commande envoyé au valideur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation négative de commande envoyé au valideur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation négative de commande au valideur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de validation négative de commande au valideur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -339,11 +339,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation négative de commande envoyé au gérant pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation négative de commande envoyé au gérant pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation négative de commande au gérant pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation négative de commande au gérant pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -358,11 +358,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de validation négative de commande envoyé à l'observateur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de validation négative de commande envoyé à l'observateur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation négative de commande à l'observateur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de validation négative de commande à l'observateur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -371,11 +371,11 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Action de validation sur la commande " . $_GET['id'], '3');
+            writeInLogs("Action de validation sur la commande " . $_GET['id'], '1', NULL);
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification de la commande.", '5');
+            writeInLogs("Erreur inconnue lors de la modification de la commande.", '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors l'enregistrement de la validation.";
             $_SESSION['returnType'] = '2';
 

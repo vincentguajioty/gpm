@@ -39,7 +39,7 @@ else
 
     $db->query($query);
 
-    writeInLogs("Action massive 22", '4');
+    writeInLogs("Action massive 22", '1', NULL);
     $_SESSION['returnMessage'] = 'Requète lancée et terminée';
     $_SESSION['returnType'] = '1';
 

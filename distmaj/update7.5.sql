@@ -126,4 +126,3 @@ INSERT INTO MESSAGES SET
 	titreMessage='Ajout de nouvelles habilitations',
 	corpsMessage='Suite à la mise à jour du module de profils, une nouvelle habilitation liée aux notifications est apparue. Par défault, cette habilitation est activée tous les profils.';
 
-INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt) VALUES(CURRENT_TIMESTAMP, 'local', 'sysAdmin', 2, 'Mise à jour vers la version 7.5.');

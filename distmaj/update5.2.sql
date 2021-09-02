@@ -34,4 +34,3 @@ UPDATE RESERVES_CONTENEUR SET frequenceInventaire = 1;
 ALTER TABLE PERSONNE_REFERENTE ADD conf_accueilRefresh INT;
 UPDATE PERSONNE_REFERENTE SET conf_accueilRefresh = 300;
 
-INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt) VALUES(CURRENT_TIMESTAMP, 'local', 'sysAdmin', 2, 'Mise à jour vers la version 5.2.');

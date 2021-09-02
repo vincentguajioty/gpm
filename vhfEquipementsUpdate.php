@@ -18,31 +18,47 @@ else
     $_POST['idResponsable'] = ($_POST['idResponsable'] == Null) ? Null : $_POST['idResponsable'];
     $_POST['dateDerniereProg'] = ($_POST['dateDerniereProg'] == Null) ? Null : $_POST['dateDerniereProg'];
 
-    $query = $db->prepare('UPDATE VHF_EQUIPEMENTS SET vhfMarqueModele=  :vhfMarqueModele, vhfSN = :vhfSN, vhfIndicatif = :vhfIndicatif, idVhfEtat = :idVhfEtat, idVhfType = :idVhfType, idVhfTechno = :idVhfTechno, idVhfPlan=  :idVhfPlan, dateDerniereProg = :dateDerniereProg, idResponsable = :idResponsable, remarquesVhfEquipement = :remarquesVhfEquipement WHERE idVhfEquipement = :idVhfEquipement;');
+    $query = $db->prepare('
+        UPDATE
+            VHF_EQUIPEMENTS
+        SET
+            vhfMarqueModele        = :vhfMarqueModele,
+            vhfSN                  = :vhfSN,
+            vhfIndicatif           = :vhfIndicatif,
+            idVhfEtat              = :idVhfEtat,
+            idVhfType              = :idVhfType,
+            idVhfTechno            = :idVhfTechno,
+            idVhfPlan              = :idVhfPlan,
+            dateDerniereProg       = :dateDerniereProg,
+            idResponsable          = :idResponsable,
+            remarquesVhfEquipement = :remarquesVhfEquipement
+        WHERE
+            idVhfEquipement        = :idVhfEquipement
+        ;');
     $query->execute(array(
-        'vhfMarqueModele' => $_POST['vhfMarqueModele'],
-        'vhfSN' => $_POST['vhfSN'],
-        'vhfIndicatif' => $_POST['vhfIndicatif'],
-        'idVhfEtat' => $_POST['idVhfEtat'],
-        'idVhfType' => $_POST['idVhfType'],
-        'idVhfTechno' => $_POST['idVhfTechno'],
-        'idVhfPlan' => $_POST['idVhfPlan'],
-        'dateDerniereProg' => $_POST['dateDerniereProg'],
-        'idResponsable' => $_POST['idResponsable'],
+        'vhfMarqueModele'        => $_POST['vhfMarqueModele'],
+        'vhfSN'                  => $_POST['vhfSN'],
+        'vhfIndicatif'           => $_POST['vhfIndicatif'],
+        'idVhfEtat'              => $_POST['idVhfEtat'],
+        'idVhfType'              => $_POST['idVhfType'],
+        'idVhfTechno'            => $_POST['idVhfTechno'],
+        'idVhfPlan'              => $_POST['idVhfPlan'],
+        'dateDerniereProg'       => $_POST['dateDerniereProg'],
+        'idResponsable'          => $_POST['idResponsable'],
         'remarquesVhfEquipement' => $_POST['remarquesVhfEquipement'],
-        'idVhfEquipement' => $_GET['id']
+        'idVhfEquipement'        => $_GET['id']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification de l'équipement radio " . $_POST['vhfIndicatif'], '3');
+            writeInLogs("Modification de l'équipement radio " . $_POST['vhfIndicatif'], '1', NULL);
             $_SESSION['returnMessage'] = 'Equipement radio modifié avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification de l'équipement radio " . $_POST['vhfIndicatif'], '5');
+            writeInLogs("Erreur inconnue lors de la modification de l'équipement radio " . $_POST['vhfIndicatif'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de la modification de l'équipement radio.";
             $_SESSION['returnType'] = '2';
     }

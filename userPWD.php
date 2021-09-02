@@ -13,7 +13,7 @@ else
     $query->execute(array('idPersonne' => $_SESSION['idPersonne']));
     $data = $query->fetch();
 
-    if (!(password_verify($_POST['old'], $data['motDePasse'])))    //($data['motDePasse'] != $_POST['old'])
+    if (!(password_verify($SELPRE.$_POST['old'].$SELPOST, $data['motDePasse'])))
     {
         $_SESSION['returnMessage'] = 'La vérification de l\'ancien mot de passe a échoué.';
         $_SESSION['returnType'] = '2';
@@ -39,20 +39,20 @@ else
             {
                 $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET motDePasse = :motDePasse WHERE idPersonne = :idPersonne ;');
                 $query->execute(array(
-                    'motDePasse' => password_hash($_POST['new1'], PASSWORD_DEFAULT),
+                    'motDePasse' => password_hash($SELPRE.$_POST['new1'].$SELPOST, PASSWORD_DEFAULT),
                     'idPersonne' => $_SESSION['idPersonne']
                 ));
 
                 switch($query->errorCode())
                 {
                     case '00000':
-                        writeInLogs("L'utilisateur " . $_SESSION['identifiant'] . " a modifié son mot de passe.", '3');
+                        writeInLogs("L'utilisateur " . $_SESSION['identifiant'] . " a modifié son mot de passe.", '1', NULL);
                         $_SESSION['returnMessage'] = 'Mot de passe modifié avec succès.';
                         $_SESSION['returnType'] = '1';
                         break;
 
                     default:
-                        writeInLogs("Erreur inconnue lors de la tentative de modification de mot de passe de sa session par " . $_SESSION['identifiant'], '5');
+                        writeInLogs("Erreur inconnue lors de la tentative de modification de mot de passe de sa session par " . $_SESSION['identifiant'], '3', NULL);
                         $_SESSION['returnMessage'] = "Erreur inconnue lors de la modification du mot de passe.";
                         $_SESSION['returnType'] = '2';
                 }

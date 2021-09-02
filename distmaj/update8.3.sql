@@ -23,4 +23,3 @@ UPDATE TODOLIST SET idTDLpriorite = 5 WHERE priorite='5 - Optionel';
 
 ALTER TABLE TODOLIST DROP priorite;
 
-INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt) VALUES(CURRENT_TIMESTAMP, 'local', 'sysAdmin', 2, 'Mise à jour vers la version 8.3.');

@@ -60,13 +60,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression du centre de couts " . $data['libelleCentreDecout'], '4');
+            writeInLogs("Suppression du centre de couts " . $data['libelleCentreDecout'], '1', NULL);
             $_SESSION['returnMessage'] = 'Centre de couts supprimé avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression du centre de couts " . $data['libelleCentreDecout'], '5');
+            writeInLogs("Erreur inconnue lors de la suppression du centre de couts " . $data['libelleCentreDecout'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la suppression du centre de couts.";
             $_SESSION['returnType'] = '2';
     }

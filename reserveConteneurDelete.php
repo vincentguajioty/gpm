@@ -54,14 +54,14 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression du conteneur " . $data['libelleConteneur'], '4');
+            writeInLogs("Suppression du conteneur " . $data['libelleConteneur'], '1', NULL);
             $_SESSION['returnMessage'] = 'Conteneur supprimé avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression du contenueur " . $data['libelleConteneur'], '5');
+            writeInLogs("Erreur inconnue lors de la suppression du contenueur " . $data['libelleConteneur'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de la suppression du conteneur.";
             $_SESSION['returnType'] = '2';
     }

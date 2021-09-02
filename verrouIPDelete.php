@@ -34,13 +34,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Deverrouillage de l'adresse IP " . $data['adresseIPverr'], '4');
+            writeInLogs("Deverrouillage de l'adresse IP " . $data['adresseIPverr'], '1', NULL);
             $_SESSION['returnMessage'] = 'Adresse IP déverrouillée.';
             $_SESSION['returnType'] = '1';
         break;
 
         default:
-            writeInLogs("Erreur inconnue lors du déverrouillage de " . $data['identifiant'], '5');
+            writeInLogs("Erreur inconnue lors du déverrouillage de " . $data['identifiant'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors du déverouillage de l\'adresse IP.';
             $_SESSION['returnType'] = '2';
     }

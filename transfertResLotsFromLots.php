@@ -15,8 +15,8 @@ else
     
 	
 	$_SESSION['transfertIdMaterielCatalogue'] = $_GET['idMaterielCatalogue'];
-	$_SESSION['transfertIdMaterielLot'] = $_GET['idElement'];
-	$_SESSION['transfertStade'] = 2;
+	$_SESSION['transfertIdMaterielLot']       = $_GET['idElement'];
+	$_SESSION['transfertStade']               = 2;
 	
     echo "<script type='text/javascript'>document.location.replace('transfertResLots.php');</script>";
 

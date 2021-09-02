@@ -12,23 +12,31 @@ if ($_SESSION['vhf_plan_ajout']==0)
 else
 {
 
-    $query = $db->prepare('UPDATE VHF_PLAN SET libellePlan = :libellePlan, remarquesPlan = :remarquesPlan WHERE idVhfPlan = :idVhfPlan;');
+    $query = $db->prepare('
+        UPDATE
+            VHF_PLAN
+        SET
+            libellePlan   = :libellePlan,
+            remarquesPlan = :remarquesPlan
+        WHERE
+            idVhfPlan     = :idVhfPlan
+        ;');
     $query->execute(array(
-        'libellePlan' => $_POST['libellePlan'],
+        'libellePlan'   => $_POST['libellePlan'],
         'remarquesPlan' => $_POST['remarquesPlan'],
-        'idVhfPlan' => $_GET['id']
+        'idVhfPlan'     => $_GET['id']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification du plan " . $_POST['libellePlan'], '3');
+            writeInLogs("Modification du plan " . $_POST['libellePlan'], '1', NULL);
             $_SESSION['returnMessage'] = 'Plan modifié avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification du plan " . $_POST['libellePlan'], '5');
+            writeInLogs("Erreur inconnue lors de la modification du plan " . $_POST['libellePlan'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de la modification du plan.";
             $_SESSION['returnType'] = '2';
     }

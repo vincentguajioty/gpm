@@ -37,13 +37,13 @@ else {
             'idDocVHF' => $data['idDocVHF'],
             'urlFichierDocVHF' => $nom
         ));
-        writeInLogs("Ajout d'une pièce jointe référence " . $_POST['nomDocVHF'] . " à la radio " . $_GET['idVhfEquipement'], '2');
+        writeInLogs("Ajout d'une pièce jointe référence " . $_POST['nomDocVHF'] . " à la radio " . $_GET['idVhfEquipement'], '1', NULL);
     } else {
         $query = $db->prepare('DELETE FROM DOCUMENTS_VHF WHERE idDocVHF = :idDocVHF;');
         $query->execute(array(
             'idDocVHF' => $data['idDocVHF']
         ));
-        writeInLogs("Erreur inconnue lors de l'ajout d'une pièce jointe à la radio " . $_GET['idVhfEquipement'], '5');
+        writeInLogs("Erreur inconnue lors de l'ajout d'une pièce jointe à la radio " . $_GET['idVhfEquipement'], '3', NULL);
         $_SESSION['returnMessage'] = "Erreur inconnue lors du chargement du document.";
         $_SESSION['returnType'] = '2';
     }

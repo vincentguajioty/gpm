@@ -31,23 +31,81 @@ function createDB()
 
 $db = createDB();
 
-function writeInLogs($contentEVT, $levelEVT)
+function writeInLogs($contentEVT, $levelEVT, $userSpecifique)
 {
-    global $db;
-    $query = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
-    $query->execute(array(
-        'dateEvt' => date('Y-m-d H:i:s'),
-        'adresseIP' => $_SERVER['REMOTE_ADDR'],
-        'utilisateurEvt' => $_SESSION['identifiant'],
-        'idLogLevel' => $levelEVT,
-        'detailEvt' => $_SESSION['LOGS_DELEGATION_PREFIXE'].$contentEVT
-    ));
+    switch($levelEVT)
+    {
+        case '1':
+            $logsLevel = 'INFO';
+        break;
+
+        case '2':
+            $logsLevel = 'WARN';
+        break;
+
+        case '3':
+            $logsLevel = 'ERROR';
+        break;
+
+        default:
+            $logsLevel = 'UNDEFINED';
+    }
+
+    if(!isset($userSpecifique) OR $userSpecifique == Null OR $userSpecifique == '')
+    {
+        if(isset($_SESSION['identifiant']) AND $_SESSION['identifiant'] != '')
+        {
+            $userSpecifique = $_SESSION['identifiant'];
+        }
+        else
+        {
+            $userSpecifique = 'SYSTEM';
+        }
+    }
+
+    if(isset($_SERVER['REMOTE_ADDR']) AND $_SERVER['REMOTE_ADDR'] != NULL AND $_SERVER['REMOTE_ADDR'] != '')
+    {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    else
+    {
+        $ip = 'local';
+    }
+
+    $log = '['.date("Y-m-d H:i:s").']'."\t".'['.$ip.']'."\t".'['.$userSpecifique.']'."\t".'['.$logsLevel.'] '.$contentEVT.PHP_EOL;
+    if(is_dir('logs'))
+    {
+        file_put_contents('logs/'.date("Ymd").'.log', $log, FILE_APPEND);
+    }
+    else
+    {
+        if(is_dir('../logs'))
+        {
+            file_put_contents('../logs/'.date("Ymd").'.log', $log, FILE_APPEND);
+        }
+        else
+        {
+            chdir(dirname(__FILE__));
+            if(is_dir('logs'))
+            {
+                file_put_contents('logs/'.date("Ymd").'.log', $log, FILE_APPEND);
+            }
+            else
+            {
+                if(is_dir('../logs'))
+                {
+                    file_put_contents('../logs/'.date("Ymd").'.log', $log, FILE_APPEND);
+                }
+            }
+        }
+    }
 }
 
 
 function checkLotsConf($idLot)
 {
     global $db;
+    writeInLogs("Vérification de conformité du lot " . $idLot, '1', NULL);
     $errorsConf = 0;
     $query = $db->prepare('SELECT idTypeLot FROM LOTS_LOTS WHERE idLot = :idLot;');
     $query->execute(array(
@@ -100,16 +158,16 @@ function checkLotsConf($idLot)
         {
             $errorsConf = $errorsConf +1;
         }
-
-
     }
 
     if ($errorsConf>0)
     {
+        writeInLogs("Lot " . $idLot." vérifié non-conforme", '1', NULL);
         return 1;
     }
     else
     {
+        writeInLogs("Lot " . $idLot." vérifié conforme", '1', NULL);
         return 0;
     }
 }
@@ -117,6 +175,7 @@ function checkLotsConf($idLot)
 function checkAllConf()
 {
     global $db;
+    writeInLogs("Lancement de la vérification de conformité de tous les lots.", '1', NULL);
     $query = $db->query('SELECT * FROM LOTS_LOTS;');
     
     while ($data = $query->fetch())
@@ -146,6 +205,7 @@ function checkAllConf()
             ));
         }
     }
+    writeInLogs("Fin de la vérification de conformité de tous les lots.", '1', NULL);
 }
 
 
@@ -178,6 +238,7 @@ function checkOneConf($idLot)
     }
     else
     {
+        writeInLogs("Vérification de conformité du lot ".$idLot." impossible car non-rattaché à un référentiel", '2', NULL);
         $query2 = $db->prepare('UPDATE LOTS_LOTS SET alerteConfRef = Null WHERE idLot = :idLot;');
         $query2->execute(array(
             'idLot' => $data['idLot']
@@ -230,7 +291,7 @@ function majIndicateursPersonne($idPersonne, $enableLog)
 
     if ($enableLog == 1)
     {
-        writeInLogs("Revue des indicateurs d'accueil pour la personne " . $idPersonne, '3');
+        writeInLogs("Revue des indicateurs d'accueil pour la personne " . $idPersonne, '1', NULL);
     }
 }
 
@@ -240,7 +301,7 @@ function majIndicateursProfil($idProfil)
     $query = $db->prepare('SELECT idPersonne FROM PROFILS_PERSONNES WHERE idProfil = :idProfil;');
     $query -> execute(array('idProfil' => $idProfil));
 
-    writeInLogs("Revue des indicateurs d'accueil pour le profil " . $idProfil, '3');
+    writeInLogs("Revue des indicateurs d'accueil pour le profil " . $idProfil, '1', NULL);
 
     while ($data = $query->fetch())
     {
@@ -299,7 +360,7 @@ function majNotificationsPersonne($idPersonne, $enableLog)
     
     if ($enableLog == 1)
     {
-        writeInLogs("Revue des notifications pour la personne " . $idPersonne, '3');
+        writeInLogs("Revue des notifications pour la personne " . $idPersonne, '1', NULL);
     }
 }
 
@@ -309,7 +370,7 @@ function majNotificationsProfil($idProfil)
     $query = $db->prepare('SELECT idPersonne FROM PROFILS_PERSONNES WHERE idProfil = :idProfil;');
     $query -> execute(array('idProfil' => $idProfil));
 
-    writeInLogs("Revue des notifications pour le profil " . $idProfil, '3');
+    writeInLogs("Revue des notifications pour le profil " . $idProfil, '1', NULL);
 
     while ($data = $query->fetch())
     {

@@ -7,10 +7,10 @@ require_once 'config/config.php';
 function detectDelimiter($csvFile)
 {
     $delimiters = array(
-        ';' => 0,
-        ',' => 0,
+        ';'  => 0,
+        ','  => 0,
         "\t" => 0,
-        "|" => 0
+        "|"  => 0
     );
 
     $handle = fopen($csvFile, "r");
@@ -64,21 +64,18 @@ else
 			}
 			
 
-			$query = $db->prepare('INSERT INTO PERSONNE_REFERENTE_TEMP(
-		                                                identifiant,
-		                                                nomPersonne,
-		                                                prenomPersonne,
-		                                                mailPersonne,
-		                                                telPersonne,
-		                                                fonction,
-		                                                mailCreation) VALUES(:identifiant,
-		                                                :nomPersonne,
-		                                                :prenomPersonne,
-		                                                :mailPersonne,
-		                                                :telPersonne,
-		                                                :fonction,
-		                                                :mailCreation);'
-		                        );
+			$query = $db->prepare('
+				INSERT INTO
+					PERSONNE_REFERENTE_TEMP
+				SET
+		            identifiant    = :identifiant,
+		            nomPersonne    = :nomPersonne,
+		            prenomPersonne = :prenomPersonne,
+		            mailPersonne   = :mailPersonne,
+		            telPersonne    = :telPersonne,
+		            fonction       = :fonction,
+		            mailCreation   = :mailCreation
+		        ;');
 		    $query->execute(array(
 		        'identifiant'    => $data[0],
 		        'nomPersonne'    => $data[1],

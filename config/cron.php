@@ -2,16 +2,13 @@
 
 require_once 'bdd.php';
 
-//Nettoyage des logs
-$query = $db->prepare('DELETE FROM LOGS WHERE dateEvt < :dateEvt ;');
-$query->execute(array(
-    'dateEvt' => date('Y-m-d', strtotime(date('Y-m-d') . ' -' . 90 . ' days'))
-));
-
 //Analyse complète des lots
+writeInLogs("CRON - Début de la vérification de conformité de tous les lots.", '1', NULL);
 checkAllConf();
+writeInLogs("CRON - Fin de la vérification de conformité de tous les lots.", '1', NULL);
 
 //Suppression de toutes les demandes de réinitialisation de mot de passe non-effectuées
+writeInLogs("CRON - Vidage de la table de tocken de reset de mots de passe.", '1', NULL);
 $query = $db->query('TRUNCATE TABLE RESETPASSWORD;');
 
 ?>

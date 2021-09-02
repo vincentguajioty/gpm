@@ -12,9 +12,15 @@ if ($_SESSION['cout_ajout']==0)
 else
 {    
 
-    $query = $db->prepare('INSERT INTO CENTRE_COUTS(libelleCentreDecout, commentairesCentreCout) VALUES(:libelleCentreDecout, :commentairesCentreCout);');
+    $query = $db->prepare('
+        INSERT INTO
+            CENTRE_COUTS
+        SET
+            libelleCentreDecout    = :libelleCentreDecout,
+            commentairesCentreCout = :commentairesCentreCout
+        ;');
     $query->execute(array(
-        'libelleCentreDecout' => $_POST['libelleCentreDecout'],
+        'libelleCentreDecout'    => $_POST['libelleCentreDecout'],
         'commentairesCentreCout' => $_POST['commentairesCentreCout']
     ));
 
@@ -35,19 +41,19 @@ else
 		        $db->query($insertSQL);
 		    }
 		    
-		    writeInLogs("Ajout du centre de couts " . $_POST['libelleCentreDecout'], '2');
+		    writeInLogs("Ajout du centre de couts " . $_POST['libelleCentreDecout'], '1', NULL);
             $_SESSION['returnMessage'] = 'Centre de couts ajouté avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         case '23000':
-            writeInLogs("Doublon détecté lors de l'ajout du centre de couts " . $_POST['libelleCentreDecout'], '5');
+            writeInLogs("Doublon détecté lors de l'ajout du centre de couts " . $_POST['libelleCentreDecout'], '2', NULL);
             $_SESSION['returnMessage'] = 'Un centre de cout existe déjà avec le même libellé. Merci de changer le libellé.';
             $_SESSION['returnType'] = '2';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout du centre de couts " . $_POST['libelleCentreDecout'], '5');
+            writeInLogs("Erreur inconnue lors de l'ajout du centre de couts " . $_POST['libelleCentreDecout'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors l'ajout du centre de couts.";
             $_SESSION['returnType'] = '2';
     }

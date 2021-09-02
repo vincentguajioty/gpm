@@ -17,7 +17,7 @@ else
 	if (!isset($_SESSION['transfertStade']) OR !isset($_SESSION['transfertIdMaterielLot']) OR !isset($_SESSION['transfertIdMaterielCatalogue']) OR !isset($_SESSION['transfertIdReserveElement']) OR !isset($_SESSION['transfertqttTrans']))
 	{
 		echo "<script type='text/javascript'>document.location.replace('transfertReset.php');</script>";
-		writeInLogs("Erreur lors du transfert de matériel de la commande " . $_SESSION['transfertCmd'] . " vers l'élément de réserve ".$_SESSION['transfertIdMaterielCatalogue'], '5');
+		writeInLogs("Erreur lors du transfert de matériel de la commande " . $_SESSION['transfertCmd'] . " vers l'élément de réserve ".$_SESSION['transfertIdMaterielCatalogue'], '3', NULL);
 		$_SESSION['returnMessage'] = 'Erreur inconnue lors de l\'execution du transfert.';
         $_SESSION['returnType'] = '2';
 		exit;
@@ -68,7 +68,7 @@ else
 			        'idElement' => $_SESSION['transfertIdMaterielLot'],
 			        'peremption' => $reserve['peremptionReserve']
 			    ));
-			    writeInLogs("Transfert de matériel de l'élément de réserve " . $_SESSION['transfertIdMaterielCatalogue'] . " vers l'élément de lots ".$_SESSION['transfertIdMaterielLot']." avec modification de date.", '3');
+			    writeInLogs("Transfert de matériel de l'élément de réserve " . $_SESSION['transfertIdMaterielCatalogue'] . " vers l'élément de lots ".$_SESSION['transfertIdMaterielLot']." avec modification de date.", '1', NULL);
 			}
 		}
 		else
@@ -78,12 +78,12 @@ else
 		        'idElement' => $_SESSION['transfertIdMaterielLot'],
 		        'peremption' => $reserve['peremptionReserve']
 		    ));
-		    writeInLogs("Transfert de matériel de l'élément de réserve " . $_SESSION['transfertIdMaterielCatalogue'] . " vers l'élément de lots ".$_SESSION['transfertIdMaterielLot']." avec modification de date.", '3');
+		    writeInLogs("Transfert de matériel de l'élément de réserve " . $_SESSION['transfertIdMaterielCatalogue'] . " vers l'élément de lots ".$_SESSION['transfertIdMaterielLot']." avec modification de date.", '1', NULL);
 		}
 	}
 	else
 	{
-		writeInLogs("Transfert de matériel de l'élément de réserve " . $_SESSION['transfertIdMaterielCatalogue'] . " vers l'élément de lots ".$_SESSION['transfertIdMaterielLot']." sans modification de date.", '3');
+		writeInLogs("Transfert de matériel de l'élément de réserve " . $_SESSION['transfertIdMaterielCatalogue'] . " vers l'élément de lots ".$_SESSION['transfertIdMaterielLot']." sans modification de date.", '1', NULL);
 	}
 	
 	checkAllConf();

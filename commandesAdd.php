@@ -22,11 +22,22 @@ else
     $_POST['idFournisseur'] = ($_POST['idFournisseur'] == Null) ? Null : $_POST['idFournisseur'];
 
 
-    $query = $db->prepare('INSERT INTO COMMANDES(idEtat, idCentreDeCout, idFournisseur, idLieuLivraison, dateCreation, remarquesGenerales, integreCentreCouts) VALUES(1, :idCentreDeCout, :idFournisseur, :idLieuLivraison, CURRENT_TIMESTAMP, :remarquesGenerales, 0);');
+    $query = $db->prepare('
+    	INSERT INTO
+    		COMMANDES
+    	SET
+    		idEtat             = 1,
+    		idCentreDeCout     = :idCentreDeCout,
+    		idFournisseur      = :idFournisseur,
+    		idLieuLivraison    = :idLieuLivraison,
+    		dateCreation       = CURRENT_TIMESTAMP,
+    		remarquesGenerales = :remarquesGenerales,
+    		integreCentreCouts = 0
+    	;');
     $query->execute(array(
-        'idCentreDeCout' => $_POST['idCentreDeCout'],
-        'idFournisseur' => $_POST['idFournisseur'],
-        'idLieuLivraison' => $_POST['idLieuLivraison'],
+        'idCentreDeCout'     => $_POST['idCentreDeCout'],
+        'idFournisseur'      => $_POST['idFournisseur'],
+        'idLieuLivraison'    => $_POST['idLieuLivraison'],
         'remarquesGenerales' => $_POST['remarquesGenerales']
     ));
     
@@ -37,7 +48,7 @@ else
     		$data = $query ->fetch();
     		echo "<script type='text/javascript'>document.location.replace('commandeView.php?id=" . $data['idCommande'] . "');</script>";
     		
-            writeInLogs("Ajout de la commande " . $data['idCommande'], '2');
+            writeInLogs("Ajout de la commande " . $data['idCommande'], '1', NULL);
             addCommandeComment($data['idCommande'], $_SESSION['identifiant'] . " crée la commande.", "1");
             
             if (!empty($_POST['idDemandeur'])) {
@@ -95,11 +106,11 @@ else
 			        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
 			        if(sendmail($data['mailPersonne'], $sujet, 2, $message))
 			        {
-			            writeInLogs("Mail de création de commande envoyé au demandeur.", '2');
+			            writeInLogs("Mail de création de commande envoyé au demandeur.", '1', NULL);
 			        }
 			        else
 			        {
-			            writeInLogs("Erreur lors de l'envoi du mail de création de commande au demandeur.", '5');
+			            writeInLogs("Erreur lors de l'envoi du mail de création de commande au demandeur.", '3', NULL);
 			        }
 		        }
 		    }
@@ -115,11 +126,11 @@ else
 			        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
 			        if(sendmail($data['mailPersonne'], $sujet, 2, $message))
 			        {
-			            writeInLogs("Mail de création de commande envoyé au valideur.", '2');
+			            writeInLogs("Mail de création de commande envoyé au valideur.", '1', NULL);
 			        }
 			        else
 			        {
-			            writeInLogs("Erreur lors de l'envoi du mail de création de commande au valideur.", '5');
+			            writeInLogs("Erreur lors de l'envoi du mail de création de commande au valideur.", '3', NULL);
 			        }
 			    }
 	    	}
@@ -135,11 +146,11 @@ else
 			        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
 			        if(sendmail($data['mailPersonne'], $sujet, 2, $message))
 			        {
-			            writeInLogs("Mail de création de commande envoyé au gérant.", '2');
+			            writeInLogs("Mail de création de commande envoyé au gérant.", '1', NULL);
 			        }
 			        else
 			        {
-			            writeInLogs("Erreur lors de l'envoi du mail de création de commande au gérant.", '5');
+			            writeInLogs("Erreur lors de l'envoi du mail de création de commande au gérant.", '3', NULL);
 			        }
 			    }
 	   		}
@@ -155,11 +166,11 @@ else
 			        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
 			        if(sendmail($data['mailPersonne'], $sujet, 2, $message))
 			        {
-			            writeInLogs("Mail de création de commande envoyé à l'observateur.", '2');
+			            writeInLogs("Mail de création de commande envoyé à l'observateur.", '1', NULL);
 			        }
 			        else
 			        {
-			            writeInLogs("Erreur lors de l'envoi du mail de création de commande à l'observateur.", '5');
+			            writeInLogs("Erreur lors de l'envoi du mail de création de commande à l'observateur.", '3', NULL);
 			        }
 			    }
 	    	}
@@ -167,7 +178,7 @@ else
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la création de la commande.", '5');
+            writeInLogs("Erreur inconnue lors de la création de la commande.", '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la création de la commande.";
             $_SESSION['returnType'] = '2';
             echo "<script>javascript:history.go(-2);</script>";

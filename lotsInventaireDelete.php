@@ -38,13 +38,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression de l'inventaire du lot " . $data['libelleLot'] . " réalisé en date du " . $data['dateInventaire'], '4');
+            writeInLogs("Suppression de l'inventaire du lot " . $data['libelleLot'] . " réalisé en date du " . $data['dateInventaire'], '1', NULL);
             $_SESSION['returnMessage'] = 'Inventaire supprimé avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression de l'inventaire du lot " . $data['libelleLot'] . " réalisé en date du " . $data['dateInventaire'], '5');
+            writeInLogs("Erreur inconnue lors de la suppression de l'inventaire du lot " . $data['libelleLot'] . " réalisé en date du " . $data['dateInventaire'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la suppression de l'inventaire.";
             $_SESSION['returnType'] = '2';
     }

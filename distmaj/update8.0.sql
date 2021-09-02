@@ -41,4 +41,3 @@ CREATE TABLE DOCUMENTS_CENTRE_COUTS(
 		FOREIGN KEY (idCentreDeCout)
 		REFERENCES CENTRE_COUTS(idCentreDeCout));
 
-INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt) VALUES(CURRENT_TIMESTAMP, 'local', 'sysAdmin', 2, 'Mise à jour vers la version 8.0.');

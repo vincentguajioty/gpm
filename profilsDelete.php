@@ -48,14 +48,14 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression du profil " . $data['libelleProfil'], '4');
+            writeInLogs("Suppression du profil " . $data['libelleProfil'], '1', NULL);
             $_SESSION['returnMessage'] = 'Profil supprimé avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression du profil " . $data['libelleProfil'], '5');
+            writeInLogs("Erreur inconnue lors de la suppression du profil " . $data['libelleProfil'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de la suppression du profil.";
             $_SESSION['returnType'] = '2';
     }

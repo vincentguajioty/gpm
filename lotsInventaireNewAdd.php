@@ -12,18 +12,26 @@ if ($_SESSION['lots_modification']==0)
 else
 {
 
-    $query = $db->prepare('INSERT INTO INVENTAIRES(idLot, dateInventaire, idPersonne, commentairesInventaire) VALUES(:idLot, :dateInventaire, :idPersonne, :commentairesInventaire);');
+    $query = $db->prepare('
+        INSERT INTO
+            INVENTAIRES
+        SET
+            idLot                  = :idLot,
+            dateInventaire         = :dateInventaire,
+            idPersonne             = :idPersonne,
+            commentairesInventaire = :commentairesInventaire
+        ;');
     $query->execute(array(
-        'idLot' => $_GET['id'],
-        'dateInventaire' => $_POST['dateInventaire'],
-        'idPersonne' => $_SESSION['idPersonne'],
+        'idLot'                  => $_GET['id'],
+        'dateInventaire'         => $_POST['dateInventaire'],
+        'idPersonne'             => $_SESSION['idPersonne'],
         'commentairesInventaire' => $_POST['commentairesInventaire']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout de l'inventaire pour le lot ".$_GET['id'], '2');
+            writeInLogs("Ajout de l'inventaire pour le lot ".$_GET['id'], '1', NULL);
             $_SESSION['returnMessage'] = 'Inventaire ajouté avec succès.';
             $_SESSION['returnType'] = '1';
 
@@ -114,11 +122,19 @@ else
 
             foreach ($invArray as $idMaterielCatalogue => $elements)
             {
-                $query = $db->prepare('INSERT INTO INVENTAIRES_CONTENUS(idInventaire, idMaterielCatalogue, quantiteInventaire, peremptionInventaire) VALUES(:idInventaire, :idMaterielCatalogue, :quantiteInventaire, :peremptionInventaire);');
+                $query = $db->prepare('
+                    INSERT INTO
+                        INVENTAIRES_CONTENUS
+                    SET
+                        idInventaire         = :idInventaire,
+                        idMaterielCatalogue  = :idMaterielCatalogue,
+                        quantiteInventaire   = :quantiteInventaire,
+                        peremptionInventaire = :peremptionInventaire
+                    ;');
                 $query->execute(array(
-                    'idInventaire' => $data['idInventaire'],
-                    'idMaterielCatalogue' => $idMaterielCatalogue,
-                    'quantiteInventaire' => $elements['qtt'],
+                    'idInventaire'         => $data['idInventaire'],
+                    'idMaterielCatalogue'  => $idMaterielCatalogue,
+                    'quantiteInventaire'   => $elements['qtt'],
                     'peremptionInventaire' => $elements['per']
                 ));
             }
@@ -126,7 +142,7 @@ else
         break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout de l'inventaire ".$_GET['id'], '5');
+            writeInLogs("Erreur inconnue lors de l'ajout de l'inventaire ".$_GET['id'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors l'ajout de l'inventaire.";
             $_SESSION['returnType'] = '2';
     }

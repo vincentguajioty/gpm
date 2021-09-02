@@ -15,8 +15,8 @@ else
     
 	
 	$_SESSION['transfertIdReserveElement'] = $_POST['idReserveElement'];
-	$_SESSION['transfertqttTrans'] = $_POST['qttTrans'];
-	$_SESSION['transfertStade'] = 4;
+	$_SESSION['transfertqttTrans']         = $_POST['qttTrans'];
+	$_SESSION['transfertStade']            = 4;
 	
     echo "<script>window.location = document.referrer;</script>";
 

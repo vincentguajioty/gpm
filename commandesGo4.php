@@ -28,14 +28,14 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification de la commande " . $_GET['id'], '3');
+            writeInLogs("Modification de la commande " . $_GET['id'], '1', NULL);
             addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " modifie les informations de commande données par le fournisseur.", "12");
             $_SESSION['returnMessage'] = 'Informations fournisseur modifiées avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification de la commande.", '5');
+            writeInLogs("Erreur inconnue lors de la modification de la commande.", '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la modification des informations fournisseur.";
             $_SESSION['returnType'] = '2';
 
@@ -54,12 +54,12 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification de la commande " . $_GET['id'], '3');
+            writeInLogs("Modification de la commande " . $_GET['id'], '1', NULL);
             addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " a lancer la commande chez le fournisseur. La commande est désormais en attente de livraison.", "21");
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification de la commande.", '5');
+            writeInLogs("Erreur inconnue lors de la modification de la commande.", '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la modification de la commande.";
             $_SESSION['returnType'] = '2';
 
@@ -78,11 +78,11 @@ else
             $message = $RETOURLIGNE.$message.$RETOURLIGNE;
             if(sendmail($data['mailPersonne'], $sujet, 2, $message))
             {
-                writeInLogs("Mail d'information de passage de commande fournisseur envoyé au demandeur pour la commande " . $_GET['id'], '2');
+                writeInLogs("Mail d'information de passage de commande fournisseur envoyé au demandeur pour la commande " . $_GET['id'], '1', NULL);
             }
             else
             {
-                writeInLogs("Erreur lors de l'envoi du mail d'information de passage de commande fournisseur au demandeur pour la commande " . $_GET['id'], '5');
+                writeInLogs("Erreur lors de l'envoi du mail d'information de passage de commande fournisseur au demandeur pour la commande " . $_GET['id'], '3', NULL);
             }
         }
     }
@@ -97,11 +97,11 @@ else
             $message = $RETOURLIGNE.$message.$RETOURLIGNE;
             if(sendmail($data['mailPersonne'], $sujet, 2, $message))
             {
-                writeInLogs("Mail d'information de passage de commande fournisseur envoyé au valideur pour la commande " . $_GET['id'], '2');
+                writeInLogs("Mail d'information de passage de commande fournisseur envoyé au valideur pour la commande " . $_GET['id'], '1', NULL);
             }
             else
             {
-                writeInLogs("Erreur lors de l'envoi du mail d'information de passage de commande fournisseur au valideur pour la commande " . $_GET['id'], '5');
+                writeInLogs("Erreur lors de l'envoi du mail d'information de passage de commande fournisseur au valideur pour la commande " . $_GET['id'], '3', NULL);
             }
         }
     }
@@ -116,11 +116,11 @@ else
             $message = $RETOURLIGNE.$message.$RETOURLIGNE;
             if(sendmail($data['mailPersonne'], $sujet, 2, $message))
             {
-                writeInLogs("Mail d'information de passage de commande fournisseur envoyé au gérant pour la commande " . $_GET['id'], '2');
+                writeInLogs("Mail d'information de passage de commande fournisseur envoyé au gérant pour la commande " . $_GET['id'], '1', NULL);
             }
             else
             {
-                writeInLogs("Erreur lors de l'envoi du mail de passage de commande fournisseur au gérant pour la commande " . $_GET['id'], '5');
+                writeInLogs("Erreur lors de l'envoi du mail de passage de commande fournisseur au gérant pour la commande " . $_GET['id'], '3', NULL);
             }
         }
     }
@@ -135,11 +135,11 @@ else
             $message = $RETOURLIGNE.$message.$RETOURLIGNE;
             if(sendmail($data['mailPersonne'], $sujet, 2, $message))
             {
-                writeInLogs("Mail d'information de passage de commande fournisseur envoyé à l'observateur pour la commande " . $_GET['id'], '2');
+                writeInLogs("Mail d'information de passage de commande fournisseur envoyé à l'observateur pour la commande " . $_GET['id'], '1', NULL);
             }
             else
             {
-                writeInLogs("Erreur lors de l'envoi du mail de passage de commande fournisseur à l'observateur pour la commande " . $_GET['id'], '5');
+                writeInLogs("Erreur lors de l'envoi du mail de passage de commande fournisseur à l'observateur pour la commande " . $_GET['id'], '3', NULL);
             }
         }
     }

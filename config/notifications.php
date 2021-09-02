@@ -62,16 +62,11 @@ if ($nbDest > 0)
 
     $nbAlertes = $nbManquant + $nbPerime + $nbLotsNOK + $nbManquantReserve + $nbPerimeReserve + $nbAssurance + $nbRevisions + $nbInventaires + $nbInventairesReserve + $nbCT + $nbManquantTenues + $nbRetoursTenues;
 
+    writeInLogs($nbAlertes." alertes détectées par le système de notifications journalières.", '1', NULL);
+
     if ($nbAlertes == 0)
     {
-        $query2 = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
-            $query2->execute(array(
-                'dateEvt' => date('Y-m-d H:i:s'),
-                'adresseIP' => 'Serveur Principal',
-                'utilisateurEvt' => $APPNAME,
-                'idLogLevel' => '2',
-                'detailEvt' => 'Pas de notification journalière à envoyer.'
-            ));
+        writeInLogs("Pas de notification journalière à envoyer.", '1', NULL);
         exit;
     }
 
@@ -231,6 +226,7 @@ if ($nbDest > 0)
 
 		if($nbAlertes > 0)
 		{
+			writeInLogs($nbAlertes." alertes à envoyer à la personne référence ".$data['idPersonne']." sur l'adresse ".$data['mailPersonne'], '1', NULL);
 			if ($nbAlertes == 1)
 		    {
 		        $sujet = "[" . $APPNAME . "] Bilan journalier - 1 alerte en cours sur votre parc materiel";
@@ -298,30 +294,20 @@ if ($nbDest > 0)
 
 		    if(sendmail($data['mailPersonne'], $sujet, $prio, $message))
 	        {
-	            $query2 = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
-	            $query2->execute(array(
-	                'dateEvt' => date('Y-m-d H:i:s'),
-	                'adresseIP' => 'Serveur Principal',
-	                'utilisateurEvt' => $APPNAME,
-	                'idLogLevel' => '2',
-	                'detailEvt' => 'Notification journalière envoyée avec succès à ' . $data['mailPersonne']
-	            ));
+	            writeInLogs("Notification journalière envoyée avec succès à la personne référence ".$data['idPersonne']." sur l'adresse ". $data['mailPersonne'], '1', NULL);
 	        }
 	        else
 	        {
-	            $query2 = $db->prepare('INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt)VALUES(:dateEvt, :adresseIP, :utilisateurEvt, :idLogLevel, :detailEvt);');
-	            $query2->execute(array(
-	                'dateEvt' => date('Y-m-d H:i:s'),
-	                'adresseIP' => 'Serveur Principal',
-	                'utilisateurEvt' => $APPNAME,
-	                'idLogLevel' => '5',
-	                'detailEvt' => 'Echec dans la l\'envoi de la notification journalière à ' . $data['mailPersonne']
-	            ));
+	            writeInLogs("Echec de l'envoi de la notification journalière à la personne référence ".$data['idPersonne']." sur l'adresse ". $data['mailPersonne'], '1', NULL);
 	        }
 	        
 	        unset($message_html);
 	        unset($message);
 	        unset($sujet);
+		}
+		else
+		{
+			writeInLogs("Aucune alerte à envoyer à la personne référence ".$data['idPersonne']." sur l'adresse ".$data['mailPersonne']." . Pas de mail généré.", '1', NULL);
 		}
 		
 	}

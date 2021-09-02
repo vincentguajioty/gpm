@@ -38,4 +38,3 @@ ALTER TABLE PROFILS ADD reserve_cmdVersReserve BOOLEAN;
 ALTER TABLE PROFILS ADD reserve_ReserveVersLot BOOLEAN;
 UPDATE PROFILS set reserve_lecture = 0, reserve_ajout = 0, reserve_modification = 0, reserve_suppression = 0, reserve_cmdVersReserve = 0, reserve_ReserveVersLot = 0;
 
-INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt) VALUES(CURRENT_TIMESTAMP, 'local', 'sysAdmin', 2, 'Mise à jour vers la version 3.0.');

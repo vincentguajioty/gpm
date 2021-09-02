@@ -57,14 +57,24 @@ if ($_SESSION['lots_lecture']==0)
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN ETATS s on l.idEtat = s.idEtat LEFT OUTER JOIN LIEUX e ON l.idLieu = e.idLieu LEFT OUTER JOIN PERSONNE_REFERENTE p on l.idPersonne = p.idPersonne LEFT OUTER JOIN LOTS_ETATS et ON l.idLotsEtat = et.idLotsEtat;');
+                        $query = $db->query('
+                            SELECT
+                                *
+                            FROM
+                                LOTS_LOTS l
+                                LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot
+                                LEFT OUTER JOIN ETATS s on l.idEtat = s.idEtat
+                                LEFT OUTER JOIN LIEUX e ON l.idLieu = e.idLieu
+                                LEFT OUTER JOIN PERSONNE_REFERENTE p on l.idPersonne = p.idPersonne
+                                LEFT OUTER JOIN LOTS_ETATS et ON l.idLotsEtat = et.idLotsEtat
+                            ;');
                         while ($data = $query->fetch())
                         {
                             ?>
                             <tr <?php if ($_SESSION['lots_lecture']==1) {?>data-href="lotsContenu.php?id=<?=$data['idLot']?>"<?php }?>>
-                                <td><?php echo $data['idLot']; ?></td>
-                                <td><?php echo $data['libelleLot']; ?></td>
-                                <td><?php echo $data['libelleLotsEtat']; ?></td>
+                                <td><?= $data['idLot'] ?></td>
+                                <td><?= $data['libelleLot'] ?></td>
+                                <td><?= $data['libelleLotsEtat'] ?></td>
                                 <td>
                                     <?php
                                     //echo $data['libelleTypeLot'];

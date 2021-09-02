@@ -13,13 +13,15 @@ if ($_SESSION['todolist_modification']==0 AND tdlEstExecutant($_SESSION['idPerso
 }
 else
 {
-    $query = $db->prepare('UPDATE TODOLIST SET 
-                                                realisee = 1,
-                                                dateCloture = CURRENT_TIMESTAMP
-                                            WHERE
-                                                idTache = :idTache
-                                            ;'
-                        );
+    $query = $db->prepare('
+        UPDATE
+            TODOLIST
+        SET 
+            realisee    = 1,
+            dateCloture = CURRENT_TIMESTAMP
+        WHERE
+            idTache     = :idTache
+        ;');
     $query->execute(array(
         'idTache'       => $_GET['id']
     ));
@@ -27,14 +29,14 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification d'une TDL.", '3');
+            writeInLogs("Modification d'une TDL.", '1', NULL);
             $_SESSION['returnMessage'] = 'Tache modifiée avec succès.';
             $_SESSION['returnType'] = '1';       
         break;
 
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification d'une TDL.", '5');
+            writeInLogs("Erreur inconnue lors de la modification d'une TDL.", '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors de la modification de la tache.';
             $_SESSION['returnType'] = '2';
     }

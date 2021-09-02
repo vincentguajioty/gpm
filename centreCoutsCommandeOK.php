@@ -23,26 +23,30 @@ else
         $totalCMD = $totalCMD + ($data2['prixProduitTTC']*$data2['quantiteCommande']);
     }
 
-    $query = $db->prepare('INSERT INTO CENTRE_COUTS_OPERATIONS SET
-        dateOperation = :dateOperation,
-        libelleOperation = :libelleOperation,
-        idCentreDeCout = :idCentreDeCout,
-        montantSortant = :montantSortant,
-        idCommande = :idCommande,
-        idPersonne = :idPersonne;');
+    $query = $db->prepare('
+        INSERT INTO
+            CENTRE_COUTS_OPERATIONS
+        SET
+            dateOperation    = :dateOperation,
+            libelleOperation = :libelleOperation,
+            idCentreDeCout   = :idCentreDeCout,
+            montantSortant   = :montantSortant,
+            idCommande       = :idCommande,
+            idPersonne       = :idPersonne
+        ;');
     $query->execute(array(
-        'dateOperation' => date('Y-m-d H:i:s'),
+        'dateOperation'    => date('Y-m-d H:i:s'),
         'libelleOperation' => 'Commande '.$_GET['idCommande'],
-        'idCentreDeCout' => $_GET['idCentreDeCout'],
-        'montantSortant' => $totalCMD,
-        'idPersonne' => $_SESSION['idPersonne'],
-        'idCommande' => $_GET['idCommande']
+        'idCentreDeCout'   => $_GET['idCentreDeCout'],
+        'montantSortant'   => $totalCMD,
+        'idPersonne'       => $_SESSION['idPersonne'],
+        'idCommande'       => $_GET['idCommande']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Intégration de la commande ".$_GET['idCommande']." dans le centre de couts " . $_GET['idCentreDeCout'], '2');
+            writeInLogs("Intégration de la commande ".$_GET['idCommande']." dans le centre de couts " . $_GET['idCentreDeCout'], '1', NULL);
             $_SESSION['returnMessage'] = 'Commande intégrée avec succès.';
             $_SESSION['returnType'] = '1';
 
@@ -52,7 +56,7 @@ else
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'intégration de la commande ".$_GET['idCommande']." dans le centre de couts " . $_GET['idCentreDeCout'], '5');
+            writeInLogs("Erreur inconnue lors de l'intégration de la commande ".$_GET['idCommande']." dans le centre de couts " . $_GET['idCentreDeCout'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de l'intégration de la commande.";
             $_SESSION['returnType'] = '2';
     }

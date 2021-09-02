@@ -25,13 +25,13 @@ else {
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("RAZ du mot de passe de " . $data['identifiant'], '3');
+            writeInLogs("RAZ du mot de passe de " . $data['identifiant'], '1', NULL);
             $_SESSION['returnMessage'] = 'Mot de passe réinitialisé avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la réinitialisation du mot de passe de " . $data['identifiant'], '5');
+            writeInLogs("Erreur inconnue lors de la réinitialisation du mot de passe de " . $data['identifiant'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors de la réinitialisation du mot de passe.';
             $_SESSION['returnType'] = '2';
     }

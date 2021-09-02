@@ -29,7 +29,7 @@ else {
         'idDocCouts' => $_GET['idDoc']
     ));
 
-    writeInLogs("Suppression d'une pièce jointe référence " . $data['nomDocCouts'], '4');
+    writeInLogs("Suppression d'une pièce jointe référence " . $data['nomDocCouts'], '1', NULL);
 
 
     echo "<script>javascript:history.go(-1);</script>";

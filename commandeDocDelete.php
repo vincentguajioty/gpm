@@ -23,7 +23,7 @@ else {
         'idDocCommande' => $_GET['idDoc']
     ));
 
-    writeInLogs("Suppression d'une pièce jointe référence " . $data['nomDocCommande'] . " à la commande " . $data['idCommande'], '4');
+    writeInLogs("Suppression d'une pièce jointe référence " . $data['nomDocCommande'] . " à la commande " . $data['idCommande'], '1', NULL);
     addCommandeComment($data['idCommande'], $_SESSION['identifiant'] . " supprime la pièce jointe " . $data['nomDocCommande'], "11");
 
 

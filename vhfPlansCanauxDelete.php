@@ -29,13 +29,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification du plan de fréquences " . $_GET['idVhfPlan'] . " avec suppression de la fréquence " . $_GET['idVhfCanal'], '3');
+            writeInLogs("Modification du plan de fréquences " . $_GET['idVhfPlan'] . " avec suppression de la fréquence " . $_GET['idVhfCanal'], '1', NULL);
             $_SESSION['returnMessage'] = 'Fréquence retiré du plan avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification du plan de fréquences " . $_GET['idVhfPlan'] . " avec retrait de la fréquence " . $_GET['idVhfCanal'], '5');
+            writeInLogs("Erreur inconnue lors de la modification du plan de fréquences " . $_GET['idVhfPlan'] . " avec retrait de la fréquence " . $_GET['idVhfCanal'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors du retrait de la fréquence.";
             $_SESSION['returnType'] = '2';
     }

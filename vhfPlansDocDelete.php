@@ -23,7 +23,7 @@ else {
         'idDocPlanVHF' => $_GET['idDoc']
     ));
 
-    writeInLogs("Suppression d'une pièce jointe référence " . $data['nomDocPlanVHF'] . " au plan " . $data['idVhfPlan'], '4');
+    writeInLogs("Suppression d'une pièce jointe référence " . $data['nomDocPlanVHF'] . " au plan " . $data['idVhfPlan'], '1', NULL);
 
 
     echo "<script>javascript:history.go(-1);</script>";

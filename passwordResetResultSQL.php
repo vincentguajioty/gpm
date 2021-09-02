@@ -23,7 +23,7 @@ else
 {
     $query = $db->prepare('UPDATE PERSONNE_REFERENTE SET motDePasse = :motDePasse WHERE idPersonne = :idPersonne ;');
     $query->execute(array(
-        'motDePasse' => password_hash($_POST['new1'], PASSWORD_DEFAULT),
+        'motDePasse' => password_hash($SELPRE.$_POST['new1'].$SELPOST, PASSWORD_DEFAULT),
         'idPersonne' => $reset['idPersonne']
     ));
 
@@ -32,13 +32,13 @@ else
         case '00000':
             $delete = $db->prepare('DELETE FROM RESETPASSWORD WHERE idReset = :idReset;');
             $delete->execute(array('idReset'=>$_GET['idReset']));
-            writeInLogs("L'utilisateur " . $reset['idPersonne'] . " a réinitialisé son mot de passe par mail.", '3');
+            writeInLogs("L'utilisateur " . $reset['idPersonne'] . " a réinitialisé son mot de passe par mail.", '1', NULL);
             $_SESSION['returnMessage'] = 'Mot de passe modifié avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la tentative de la réinitialisation du mot de passe par mail de l'utilisateur " . $reset['idPersonne'], '5');
+            writeInLogs("Erreur inconnue lors de la tentative de la réinitialisation du mot de passe par mail de l'utilisateur " . $reset['idPersonne'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de la modification du mot de passe.";
             $_SESSION['returnType'] = '2';
     }

@@ -15,22 +15,30 @@ else
 	$_POST['idPersonne'] = ($_POST['idPersonne'] == Null) ? Null : $_POST['idPersonne'];
 	$_POST['dateReleve'] = ($_POST['dateReleve'] == Null) ? Null : $_POST['dateReleve'];
 	
-    $query = $db->prepare('INSERT INTO VEHICULES_RELEVES(idVehicule, idPersonne, dateReleve, releveKilometrique) VALUES (:idVehicule, :idPersonne, :dateReleve, :releveKilometrique);');
+    $query = $db->prepare('
+        INSERT INTO
+            VEHICULES_RELEVES
+        SET
+            idVehicule         = :idVehicule,
+            idPersonne         = :idPersonne,
+            dateReleve         = :dateReleve,
+            releveKilometrique = :releveKilometrique
+        ;');
     $query->execute(array(
-        'idVehicule' => $_GET['idVehicule'],
-		'idPersonne' => $_POST['idPersonne'],
-		'dateReleve' => $_POST['dateReleve'],
-		'releveKilometrique' => $_POST['releveKilometrique']
+        'idVehicule'         => $_GET['idVehicule'],
+        'idPersonne'         => $_POST['idPersonne'],
+        'dateReleve'         => $_POST['dateReleve'],
+        'releveKilometrique' => $_POST['releveKilometrique']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout d'un relevé kilométrique pour le véhicule " . $_GET['idVehicule'], '2');
+            writeInLogs("Ajout d'un relevé kilométrique pour le véhicule " . $_GET['idVehicule'], '1', NULL);
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout d'un relevé kilométrique pour le véhicule " . $_GET['idVehicule'], '5');
+            writeInLogs("Erreur inconnue lors de l'ajout d'un relevé kilométrique pour le véhicule " . $_GET['idVehicule'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors l\'ajout du relevé kilométrique.';
             $_SESSION['returnType'] = '2';
     }

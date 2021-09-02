@@ -35,47 +35,78 @@ else
     $_POST['priseAlimentation220'] = ($_POST['priseAlimentation220'] == Null) ? Null : $_POST['priseAlimentation220'];
     $_POST['idVehiculesEtat'] = ($_POST['idVehiculesEtat'] == Null) ? Null : $_POST['idVehiculesEtat'];
 
-    $query = $db->prepare('INSERT INTO VEHICULES(libelleVehicule, immatriculation, marqueModele, idLieu, nbPlaces, dimensions, idVehiculesType, idEtat, idResponsable, dateAchat, dateNextRevision, dateNextCT, assuranceNumero, assuranceExpiration, pneusAVhivers, pneusARhivers, climatisation, signaletiqueOrange, signaletiqueBleue, signaletique2tons, signaletique3tons, pmv, fleche, nbCones, priseAlimentation220, remarquesVehicule, idVehiculesEtat) VALUES (:libelleVehicule, :immatriculation, :marqueModele, :idLieu, :nbPlaces, :dimensions, :idVehiculesType, :idEtat, :idResponsable, :dateAchat, :dateNextRevision, :dateNextCT, :assuranceNumero, :assuranceExpiration, :pneusAVhivers, :pneusARhivers, :climatisation, :signaletiqueOrange, :signaletiqueBleue, :signaletique2tons, :signaletique3tons, :pmv, :fleche, :nbCones, :priseAlimentation220, :remarquesVehicule, :idVehiculesEtat);');
+    $query = $db->prepare('
+        INSERT INTO
+            VEHICULES
+        SET
+            libelleVehicule      = :libelleVehicule,
+            immatriculation      = :immatriculation,
+            marqueModele         = :marqueModele,
+            idLieu               = :idLieu,
+            nbPlaces             = :nbPlaces,
+            dimensions           = :dimensions,
+            idVehiculesType      = :idVehiculesType,
+            idEtat               = :idEtat,
+            idResponsable        = :idResponsable,
+            dateAchat            = :dateAchat,
+            dateNextRevision     = :dateNextRevision,
+            dateNextCT           = :dateNextCT,
+            assuranceNumero      = :assuranceNumero,
+            assuranceExpiration  = :assuranceExpiration,
+            pneusAVhivers        = :pneusAVhivers,
+            pneusARhivers        = :pneusARhivers,
+            climatisation        = :climatisation,
+            signaletiqueOrange   = :signaletiqueOrange,
+            signaletiqueBleue    = :signaletiqueBleue,
+            signaletique2tons    = :signaletique2tons,
+            signaletique3tons    = :signaletique3tons,
+            pmv                  = :pmv,
+            fleche               = :fleche,
+            nbCones              = :nbCones,
+            priseAlimentation220 = :priseAlimentation220,
+            remarquesVehicule    = :remarquesVehicule,
+            idVehiculesEtat      = :idVehiculesEtat
+        ;');
     $query->execute(array(
-        'libelleVehicule' => $_POST['libelleVehicule'],
-        'immatriculation' => $_POST['immatriculation'],
-        'marqueModele' => $_POST['marqueModele'],
-        'idLieu' => $_POST['idLieu'],
-        'nbPlaces' => $_POST['nbPlaces'],
-        'dimensions' => $_POST['dimensions'],
-        'idVehiculesType' => $_POST['idVehiculesType'],
-        'idEtat' => $_POST['idEtat'],
-        'idResponsable' => $_POST['idResponsable'],
-        'dateAchat' => $_POST['dateAchat'],
-        'dateNextRevision' => $_POST['dateNextRevision'],
-        'dateNextCT' => $_POST['dateNextCT'],
-        'assuranceNumero' => $_POST['assuranceNumero'],
-        'assuranceExpiration' => $_POST['assuranceExpiration'],
-        'pneusAVhivers' => $_POST['pneusAVhivers'],
-        'pneusARhivers' => $_POST['pneusARhivers'],
-        'climatisation' => $_POST['climatisation'],
-        'signaletiqueOrange' => $_POST['signaletiqueOrange'],
-        'signaletiqueBleue' => $_POST['signaletiqueBleue'],
-        'signaletique2tons' => $_POST['signaletique2tons'],
-        'signaletique3tons' => $_POST['signaletique3tons'],
-        'pmv' => $_POST['pmv'],
-        'fleche' => $_POST['fleche'],
-        'nbCones' => $_POST['nbCones'],
+        'libelleVehicule'      => $_POST['libelleVehicule'],
+        'immatriculation'      => $_POST['immatriculation'],
+        'marqueModele'         => $_POST['marqueModele'],
+        'idLieu'               => $_POST['idLieu'],
+        'nbPlaces'             => $_POST['nbPlaces'],
+        'dimensions'           => $_POST['dimensions'],
+        'idVehiculesType'      => $_POST['idVehiculesType'],
+        'idEtat'               => $_POST['idEtat'],
+        'idResponsable'        => $_POST['idResponsable'],
+        'dateAchat'            => $_POST['dateAchat'],
+        'dateNextRevision'     => $_POST['dateNextRevision'],
+        'dateNextCT'           => $_POST['dateNextCT'],
+        'assuranceNumero'      => $_POST['assuranceNumero'],
+        'assuranceExpiration'  => $_POST['assuranceExpiration'],
+        'pneusAVhivers'        => $_POST['pneusAVhivers'],
+        'pneusARhivers'        => $_POST['pneusARhivers'],
+        'climatisation'        => $_POST['climatisation'],
+        'signaletiqueOrange'   => $_POST['signaletiqueOrange'],
+        'signaletiqueBleue'    => $_POST['signaletiqueBleue'],
+        'signaletique2tons'    => $_POST['signaletique2tons'],
+        'signaletique3tons'    => $_POST['signaletique3tons'],
+        'pmv'                  => $_POST['pmv'],
+        'fleche'               => $_POST['fleche'],
+        'nbCones'              => $_POST['nbCones'],
         'priseAlimentation220' => $_POST['priseAlimentation220'],
-        'remarquesVehicule' => $_POST['remarquesVehicule'],
-        'idVehiculesEtat' => $_POST['idVehiculesEtat']
+        'remarquesVehicule'    => $_POST['remarquesVehicule'],
+        'idVehiculesEtat'      => $_POST['idVehiculesEtat']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout du véhicule " . $_POST['libelleVehicule'], '2');
+            writeInLogs("Ajout du véhicule " . $_POST['libelleVehicule'], '1', NULL);
             $_SESSION['returnMessage'] = 'Véhicule ajouté avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout du véhicule " . $_POST['libelleVehicule'], '5');
+            writeInLogs("Erreur inconnue lors de l'ajout du véhicule " . $_POST['libelleVehicule'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors l\'ajout du véhicule.';
             $_SESSION['returnType'] = '2';
     }

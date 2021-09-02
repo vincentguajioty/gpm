@@ -63,13 +63,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression du véhicule " . $data['libelleVehicule'], '4');
+            writeInLogs("Suppression du véhicule " . $data['libelleVehicule'], '1', NULL);
             $_SESSION['returnMessage'] = 'Véhicule supprimé avec succès.';
             $_SESSION['returnType'] = '1';
         break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression du vehicule " . $data['libelleVehicule'], '5');
+            writeInLogs("Erreur inconnue lors de la suppression du vehicule " . $data['libelleVehicule'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors de la suppression du véhicule.';
             $_SESSION['returnType'] = '2';
     }

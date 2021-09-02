@@ -42,7 +42,7 @@ if ($_SESSION['actionsMassives']==0)
             		$user = $db->prepare('SELECT * FROM PERSONNE_REFERENTE WHERE idPersonne = :idPersonne;');
             		$user->execute(array('idPersonne'=>$_SESSION['idPersonne']));
             		$user = $user->fetch();
-            		if(password_verify($_POST['mdp'], $user['motDePasse']))
+            		if(password_verify($SELPRE.$_POST['mdp'].$SELPOST, $user['motDePasse']))
             		{
             			$_SESSION['actionsMassives_authent_ok'] = 1;
             		}
@@ -145,7 +145,16 @@ if ($_SESSION['actionsMassives']==0)
             			$M32 = $M32->fetch();
             			$M32 = $M32['nb'];
             			
-            			$M33 = $db->query('SELECT COUNT(e.idElement) as nb FROM MATERIEL_SAC ms LEFT OUTER JOIN MATERIEL_EMPLACEMENT me ON ms.idSac=me.idSac LEFT OUTER JOIN MATERIEL_ELEMENT e ON me.idEmplacement = e.idEmplacement WHERE ms.idLot IS NULL;');
+            			$M33 = $db->query('
+                            SELECT
+                                COUNT(e.idElement) as nb
+                            FROM
+                                MATERIEL_SAC ms
+                                LEFT OUTER JOIN MATERIEL_EMPLACEMENT me ON ms.idSac=me.idSac
+                                LEFT OUTER JOIN MATERIEL_ELEMENT e ON me.idEmplacement = e.idEmplacement
+                            WHERE
+                                ms.idLot IS NULL
+                        ;');
             			$M33 = $M33->fetch();
             			$M33 = $M33['nb'];
             			

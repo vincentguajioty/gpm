@@ -40,13 +40,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression du catalogue des tenues: " . $data['libelleCatalogueTenue'], '4');
+            writeInLogs("Suppression du catalogue des tenues: " . $data['libelleCatalogueTenue'], '1', NULL);
             $_SESSION['returnMessage'] = 'Entrée supprimée avec succès.';
             $_SESSION['returnType'] = '1';
         break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression du catalogue des tenues: " . $data['libelleCatalogueTenue'], '5');
+            writeInLogs("Erreur inconnue lors de la suppression du catalogue des tenues: " . $data['libelleCatalogueTenue'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors de la suppression de l\'entrée.';
             $_SESSION['returnType'] = '2';
     }

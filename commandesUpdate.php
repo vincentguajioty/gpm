@@ -17,26 +17,36 @@ else
     $_POST['idFournisseur'] = ($_POST['idFournisseur'] == Null) ? Null : $_POST['idFournisseur'];
 
 
-    $query = $db->prepare('UPDATE COMMANDES SET idCentreDeCout = :idCentreDeCout, idFournisseur = :idFournisseur, idLieuLivraison = :idLieuLivraison, remarquesGenerales = :remarquesGenerales WHERE idCommande = :idCommande;');
+    $query = $db->prepare('
+        UPDATE
+            COMMANDES
+        SET
+            idCentreDeCout     = :idCentreDeCout,
+            idFournisseur      = :idFournisseur,
+            idLieuLivraison    = :idLieuLivraison,
+            remarquesGenerales = :remarquesGenerales
+        WHERE
+            idCommande = :idCommande
+        ;');
     $query->execute(array(
-        'idCommande' => $_GET['id'],
-        'idCentreDeCout' => $_POST['idCentreDeCout'],
-        'idFournisseur' => $_POST['idFournisseur'],
-        'idLieuLivraison' => $_POST['idLieuLivraison'],
+        'idCommande'         => $_GET['id'],
+        'idCentreDeCout'     => $_POST['idCentreDeCout'],
+        'idFournisseur'      => $_POST['idFournisseur'],
+        'idLieuLivraison'    => $_POST['idLieuLivraison'],
         'remarquesGenerales' => $_POST['remarquesGenerales']
     ));
     
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification de la commande " . $_GET['id'], '3');
+            writeInLogs("Modification de la commande " . $_GET['id'], '1', NULL);
             addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " modifie la commande.", "12");
             $_SESSION['returnMessage'] = 'Commande modifiée avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification de la commande.", '5');
+            writeInLogs("Erreur inconnue lors de la modification de la commande.", '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la modification de la commande.";
             $_SESSION['returnType'] = '2';
 

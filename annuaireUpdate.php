@@ -12,16 +12,18 @@ if ($_SESSION['annuaire_modification']==0)
 else {
 
 
-    $query = $db->prepare('UPDATE PERSONNE_REFERENTE
-                                        SET
-                                            identifiant    = :identifiant,
-                                            nomPersonne    = :nomPersonne,
-                                            prenomPersonne = :prenomPersonne,
-                                            mailPersonne   = :mailPersonne,
-                                            telPersonne    = :telPersonne,
-                                            fonction       = :fonction
-                                        WHERE
-                                            idPersonne     = :idPersonne ;');
+    $query = $db->prepare('
+        UPDATE
+            PERSONNE_REFERENTE
+        SET
+            identifiant    = :identifiant,
+            nomPersonne    = :nomPersonne,
+            prenomPersonne = :prenomPersonne,
+            mailPersonne   = :mailPersonne,
+            telPersonne    = :telPersonne,
+            fonction       = :fonction
+        WHERE
+            idPersonne     = :idPersonne ;');
     $query->execute(array(
         'idPersonne'     => $_GET['id'],
         'identifiant'    => $_POST['identifiant'],
@@ -35,7 +37,7 @@ else {
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification de l'utilisateur " . $_POST['identifiant'], '3');
+            writeInLogs("Modification de l'utilisateur " . $_POST['identifiant'], '1', NULL);
             $_SESSION['returnMessage'] = 'Utilisateur modifié avec succès.';
             $_SESSION['returnType'] = '1';
 
@@ -60,13 +62,13 @@ else {
             break;
 
         case '23000':
-            writeInLogs("Doublon détecté lors de la modification de l'utilisateur " . $_POST['identifiant'], '5');
+            writeInLogs("Doublon détecté lors de la modification de l'utilisateur " . $_POST['identifiant'], '2', NULL);
             $_SESSION['returnMessage'] = 'Un utilisateur existe déjà avec le même identifiant. Merci de changer l\'identifiant.';
             $_SESSION['returnType'] = '2';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modifciation de l'utilisateur " . $_POST['identifiant'], '5');
+            writeInLogs("Erreur inconnue lors de la modifciation de l'utilisateur " . $_POST['identifiant'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors de la modification de l\'utilisateur.';
             $_SESSION['returnType'] = '2';
     }

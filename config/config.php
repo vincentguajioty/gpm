@@ -2,22 +2,24 @@
 
 require_once 'bdd.php';
 
-$VERSIONCHECK = '8.6';
+$VERSIONCHECK = '9.0';
 
 $query = $db->query('SELECT * FROM CONFIG;');
 $data = $query->fetch();
 
-$SITECOLOR = $data['sitecolor'];
-$APPNAME = $data['appname'];
-$URLSITE = $data['urlsite'];
-$VERSION = $data['version'];
-$MAILSERVER = $data['mailserver'];
-$MAILCOPY = $data['mailcopy'];
-$LOGOUTTEMP = $data['logouttemp'];
-$MAINTENANCE = $data['maintenance'];
+$SITECOLOR       = $data['sitecolor'];
+$APPNAME         = $data['appname'];
+$URLSITE         = $data['urlsite'];
+$VERSION         = $data['version'];
+$MAILSERVER      = $data['mailserver'];
+$MAILCOPY        = $data['mailcopy'];
+$LOGOUTTEMP      = $data['logouttemp'];
+$MAINTENANCE     = $data['maintenance'];
 $CONFSUPPRESSION = $data['confirmationSuppression'];
-$RESETPASSWORD = $data['resetPassword'];
+$RESETPASSWORD   = $data['resetPassword'];
+$SELPRE          = $data['selPre'];
+$SELPOST         = $data['selPost'];
 
-$XSS_SECURITY = array("script", "<", ">", "/");
+$XSS_SECURITY    = array("script", "<", ">", "/");
 
 ?>

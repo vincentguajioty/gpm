@@ -54,13 +54,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression du lot " . $data['libelleLot'], '4');
+            writeInLogs("Suppression du lot " . $data['libelleLot'], '1', NULL);
             $_SESSION['returnMessage'] = 'Lot supprimé avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression du lot " . $data['libelleLot'], '5');
+            writeInLogs("Erreur inconnue lors de la suppression du lot " . $data['libelleLot'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la suppression du lot.";
             $_SESSION['returnType'] = '2';
     }

@@ -15,23 +15,31 @@ else
 {
     $_POST['idLieu'] = ($_POST['idLieu'] == Null) ? Null : $_POST['idLieu'];
 
-    $query = $db->prepare('INSERT INTO RESERVES_CONTENEUR(idLieu, libelleConteneur, dateDernierInventaire, frequenceInventaire) VALUES(:idLieu, :libelleConteneur, :dateDernierInventaire, :frequenceInventaire);');
+    $query = $db->prepare('
+        INSERT INTO
+            RESERVES_CONTENEUR
+        SET
+            idLieu                = :idLieu,
+            libelleConteneur      = :libelleConteneur,
+            dateDernierInventaire = :dateDernierInventaire,
+            frequenceInventaire   = :frequenceInventaire
+        ;');
     $query->execute(array(
-        'idLieu' => $_POST['idLieu'],
-        'libelleConteneur' => $_POST['libelleConteneur'],
+        'idLieu'                => $_POST['idLieu'],
+        'libelleConteneur'      => $_POST['libelleConteneur'],
         'dateDernierInventaire' => $_POST['dateDernierInventaire'],
-        'frequenceInventaire' => $_POST['frequenceInventaire']
+        'frequenceInventaire'   => $_POST['frequenceInventaire']
     ));
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout du conteneur de réserve " . $_POST['libelleConteneur'], '2');
+            writeInLogs("Ajout du conteneur de réserve " . $_POST['libelleConteneur'], '1', NULL);
             $_SESSION['returnMessage'] = 'Conteneur ajouté avec succès.';
             $_SESSION['returnType'] = '1';
         break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout du conteneur de réserve " . $_POST['libelleConteneur'], '5');
+            writeInLogs("Erreur inconnue lors de l'ajout du conteneur de réserve " . $_POST['libelleConteneur'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors de l\'ajout du conteneur.';
             $_SESSION['returnType'] = '2';
     }

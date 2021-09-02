@@ -46,11 +46,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de livraison de commande envoyé au demandeur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de livraison de commande envoyé au demandeur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail d'information de livraison de commande au demandeur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de livraison de commande au demandeur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -65,11 +65,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de livraison de commande envoyé au valideur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de livraison de commande envoyé au valideur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail d'information de livraison de commande au valideur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de livraison de commande au valideur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -84,11 +84,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de livraison de commande envoyé au gérant pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de livraison de commande envoyé au gérant pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail de passage de livraison de commande au gérant pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de livraison de commande au gérant pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -103,11 +103,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de livraison de commande envoyé à l'observateur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de livraison de commande envoyé à l'observateur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail de passage de livraison de commande à l'observateur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de livraison de commande à l'observateur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -135,11 +135,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé au demandeur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé au demandeur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail d'information de livraison avec ouverture de SAV de commande au demandeur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de livraison avec ouverture de SAV de commande au demandeur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -154,11 +154,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé au valideur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé au valideur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail d'information de livraison avec ouverture de SAV de commande au valideur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail d'information de livraison avec ouverture de SAV de commande au valideur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -174,11 +174,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé au gérant pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé au gérant pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail de passage de livraison avec ouverture de SAV de commande au gérant pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de livraison avec ouverture de SAV de commande au gérant pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -193,11 +193,11 @@ else
                 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
                 if(sendmail($data['mailPersonne'], $sujet, 2, $message))
                 {
-                    writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé à l'observateur pour la commande " . $_GET['id'], '2');
+                    writeInLogs("Mail d'information de livraison avec ouverture de SAV de commande envoyé à l'observateur pour la commande " . $_GET['id'], '1', NULL);
                 }
                 else
                 {
-                    writeInLogs("Erreur lors de l'envoi du mail de passage de livraison avec ouverture de SAV de commande à l'observateur pour la commande " . $_GET['id'], '5');
+                    writeInLogs("Erreur lors de l'envoi du mail de passage de livraison avec ouverture de SAV de commande à l'observateur pour la commande " . $_GET['id'], '3', NULL);
                 }
             }
         }
@@ -206,11 +206,11 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification de la commande " . $_GET['id'], '3');
+            writeInLogs("Modification de la commande " . $_GET['id'], '1', NULL);
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification de la commande.", '5');
+            writeInLogs("Erreur inconnue lors de la modification de la commande.", '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la réception de la commande.";
             $_SESSION['returnType'] = '2';
 

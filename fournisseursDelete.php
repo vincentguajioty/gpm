@@ -58,13 +58,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression du fournisseur " . $data['nomFournisseur'], '4');
+            writeInLogs("Suppression du fournisseur " . $data['nomFournisseur'], '1', NULL);
             $_SESSION['returnMessage'] = 'Fournisseur supprimé avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression du fournisseur " . $data['nomFournisseur'], '5');
+            writeInLogs("Erreur inconnue lors de la suppression du fournisseur " . $data['nomFournisseur'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la suppression du fournisseur.";
             $_SESSION['returnType'] = '2';
     }

@@ -34,13 +34,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression d'une affectation de tenue.", '4');
+            writeInLogs("Suppression d'une affectation de tenue.", '1', NULL);
             $_SESSION['returnMessage'] = 'Affectation supprimée avec succès.';
             $_SESSION['returnType'] = '1';
         break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression de l'affectation de tenue.", '5');
+            writeInLogs("Erreur inconnue lors de la suppression de l'affectation de tenue.", '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors de la suppression de l\'affectation de tenue.';
             $_SESSION['returnType'] = '2';
     }

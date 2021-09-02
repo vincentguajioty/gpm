@@ -154,4 +154,3 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		PERSONNE_REFERENTE p
 ;
 
-INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt) VALUES(CURRENT_TIMESTAMP, 'local', 'sysAdmin', 2, 'Mise à jour vers la version 6.1.');

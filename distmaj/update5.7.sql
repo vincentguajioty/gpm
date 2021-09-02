@@ -20,4 +20,3 @@ UPDATE PERSONNE_REFERENTE SET notif_lots_manquants = 1, notif_lots_peremptions =
 
 ALTER TABLE PROFILS DROP notifications;
 
-INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt) VALUES(CURRENT_TIMESTAMP, 'local', 'sysAdmin', 2, 'Mise à jour vers la version 5.7.');

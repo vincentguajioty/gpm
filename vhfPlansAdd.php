@@ -12,22 +12,28 @@ if ($_SESSION['vhf_plan_ajout']==0)
 else
 {
 
-    $query = $db->prepare('INSERT INTO VHF_PLAN(libellePlan, remarquesPlan) VALUES(:libellePlan, :remarquesPlan);');
+    $query = $db->prepare('
+        INSERT INTO
+            VHF_PLAN
+        SET
+            libellePlan   = :libellePlan,
+            remarquesPlan = :remarquesPlan
+        ;');
     $query->execute(array(
-        'libellePlan' => $_POST['libellePlan'],
+        'libellePlan'   => $_POST['libellePlan'],
         'remarquesPlan' => $_POST['remarquesPlan']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout du plan " . $_POST['libellePlan'], '2');
+            writeInLogs("Ajout du plan " . $_POST['libellePlan'], '1', NULL);
             $_SESSION['returnMessage'] = 'Plan ajouté avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout du plan " . $_POST['libellePlan'], '5');
+            writeInLogs("Erreur inconnue lors de l'ajout du plan " . $_POST['libellePlan'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de l'ajout du plan.";
             $_SESSION['returnType'] = '2';
     }

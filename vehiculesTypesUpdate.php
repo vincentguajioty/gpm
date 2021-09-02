@@ -21,13 +21,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification du type de véhicules de " . $_POST['libelleType'], '3');
+            writeInLogs("Modification du type de véhicules de " . $_POST['libelleType'], '1', NULL);
             $_SESSION['returnMessage'] = 'Type modifié avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification du type de véhicule " . $_POST['libelleType'], '5');
+            writeInLogs("Erreur inconnue lors de la modification du type de véhicule " . $_POST['libelleType'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors la modification du type..';
             $_SESSION['returnType'] = '2';
     }

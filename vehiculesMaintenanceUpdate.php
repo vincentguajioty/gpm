@@ -16,23 +16,33 @@ else
 	$_POST['dateMaintenance'] = ($_POST['dateMaintenance'] == Null) ? Null : $_POST['dateMaintenance'];
 	$_POST['idTypeMaintenance'] = ($_POST['idTypeMaintenance'] == Null) ? Null : $_POST['idTypeMaintenance'];
 	
-    $query = $db->prepare('UPDATE VEHICULES_MAINTENANCE SET idExecutant = :idExecutant, dateMaintenance = :dateMaintenance, idTypeMaintenance = :idTypeMaintenance, detailsMaintenance = :detailsMaintenance WHERE idMaintenance=  :idMaintenance;');
+    $query = $db->prepare('
+        UPDATE
+            VEHICULES_MAINTENANCE
+        SET
+            idExecutant        = :idExecutant,
+            dateMaintenance    = :dateMaintenance,
+            idTypeMaintenance  = :idTypeMaintenance,
+            detailsMaintenance = :detailsMaintenance
+        WHERE
+            idMaintenance      = :idMaintenance
+        ;');
     $query->execute(array(
-		'idMaintenance' => $_GET['id'],
-		'idExecutant' => $_POST['idExecutant'],
-		'dateMaintenance' => $_POST['dateMaintenance'],
-		'idTypeMaintenance' => $_POST['idTypeMaintenance'],
-		'detailsMaintenance' => $_POST['detailsMaintenance']
+        'idMaintenance'      => $_GET['id'],
+        'idExecutant'        => $_POST['idExecutant'],
+        'dateMaintenance'    => $_POST['dateMaintenance'],
+        'idTypeMaintenance'  => $_POST['idTypeMaintenance'],
+        'detailsMaintenance' => $_POST['detailsMaintenance']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification d'une maintenance pour le véhicule " . $_GET['idVehicule'], '3');
+            writeInLogs("Modification d'une maintenance pour le véhicule " . $_GET['idVehicule'], '1', NULL);
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification de la maintenance pour le véhicule " . $_GET['idVehicule'], '5');
+            writeInLogs("Erreur inconnue lors de la modification de la maintenance pour le véhicule " . $_GET['idVehicule'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors la modification de la tache de maintenance.';
             $_SESSION['returnType'] = '2';
     }

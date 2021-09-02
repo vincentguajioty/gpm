@@ -20,19 +20,19 @@ else {
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification du référentiel " . $_POST['libelleTypeLot'], '3');
+            writeInLogs("Modification du référentiel " . $_POST['libelleTypeLot'], '1', NULL);
             $_SESSION['returnMessage'] = 'Référentiel modifié avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         case '23000':
-            writeInLogs("Doublon détecté lors de la modification du référentiel " . $_POST['libelleTypeLot'], '5');
+            writeInLogs("Doublon détecté lors de la modification du référentiel " . $_POST['libelleTypeLot'], '2', NULL);
             $_SESSION['returnMessage'] = "Un référentiel existe déjà avec le même libellé. Merci de changer le libellé";
             $_SESSION['returnType'] = '2';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification du référentiel " . $_POST['libelleTypeLot'], '5');
+            writeInLogs("Erreur inconnue lors de la modification du référentiel " . $_POST['libelleTypeLot'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de la modification du référentiel.";
             $_SESSION['returnType'] = '2';
     }

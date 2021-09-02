@@ -64,11 +64,11 @@ if ($_SESSION['annuaire_lecture']==0)
                         while ($data = $query->fetch())
                         {?>
                             <tr>
-                                <td><?php echo $data['idPersonne']; ?></td>
-                                <td><?php echo $data['identifiant']; ?></td>
-                                <td><?php echo $data['nomPersonne']; ?></td>
-                                <td><?php echo $data['prenomPersonne']; ?></td>
-                                <td><?php echo $data['fonction']; ?></td>
+                                <td><?= $data['idPersonne'] ?></td>
+                                <td><?= $data['identifiant'] ?></td>
+                                <td><?= $data['nomPersonne'] ?></td>
+                                <td><?= $data['prenomPersonne'] ?></td>
+                                <td><?= $data['fonction'] ?></td>
                                 <td><?php
                                 	$query2 = $db->prepare('SELECT * FROM PROFILS_PERSONNES person LEFT OUTER JOIN PROFILS profil ON person.idProfil = profil.idProfil WHERE idPersonne = :idPersonne;');
                                 	$query2->execute(array('idPersonne'=>$data['idPersonne']));

@@ -14,27 +14,29 @@ else
     $_POST['dateExecution'] = ($_POST['dateExecution'] == Null) ? Null : $_POST['dateExecution'];
     $_POST['idTDLpriorite'] = ($_POST['idTDLpriorite'] == Null) ? Null : $_POST['idTDLpriorite'];
 
-    $query = $db->prepare('UPDATE TODOLIST SET 
-                                                dateExecution = :dateExecution,
-                                                titre = :titre,
-                                                details = :details,
-                                                idTDLpriorite = :idTDLpriorite
-                                            WHERE
-                                                idTache = :idTache
-                                            ;'
-                        );
+    $query = $db->prepare('
+        UPDATE
+            TODOLIST
+        SET 
+            dateExecution = :dateExecution,
+            titre         = :titre,
+            details       = :details,
+            idTDLpriorite = :idTDLpriorite
+        WHERE
+            idTache       = :idTache
+        ;');
     $query->execute(array(
         'dateExecution' => $_POST['dateExecution'],
         'titre'         => $_POST['titre'],
         'details'       => $_POST['details'],
-        'idTDLpriorite'      => $_POST['idTDLpriorite'],
+        'idTDLpriorite' => $_POST['idTDLpriorite'],
         'idTache'       => $_GET['id']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Modification d'une TDL.", '3');
+            writeInLogs("Modification d'une TDL.", '1', NULL);
             $_SESSION['returnMessage'] = 'Tache modifiée avec succès.';
             $_SESSION['returnType'] = '1';
             
@@ -56,7 +58,7 @@ else
 
 
         default:
-            writeInLogs("Erreur inconnue lors de la modification d'une TDL.", '5');
+            writeInLogs("Erreur inconnue lors de la modification d'une TDL.", '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors de la modification de la tache.';
             $_SESSION['returnType'] = '2';
     }

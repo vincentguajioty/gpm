@@ -15,36 +15,31 @@ else
     $_POST['dateExecution'] = ($_POST['dateExecution'] == Null) ? Null : $_POST['dateExecution'];
     $_POST['idTDLpriorite'] = ($_POST['idTDLpriorite'] == Null) ? Null : $_POST['idTDLpriorite'];
 
-    $query = $db->prepare('INSERT INTO TODOLIST(
-                                                idCreateur,
-                                                dateCreation,
-                                                dateExecution,
-                                                titre,
-                                                details,
-                                                idTDLpriorite,
-                                                realisee
-                                                ) VALUES(
-                                                :idCreateur,
-                                                :dateCreation,
-                                                :dateExecution,
-                                                :titre,
-                                                :details,
-                                                :idTDLpriorite,
-                                                0
-                                                );');
+    $query = $db->prepare('
+        INSERT INTO
+            TODOLIST
+        SET
+            idCreateur    = :idCreateur,
+            dateCreation  = :dateCreation,
+            dateExecution = :dateExecution,
+            titre         = :titre,
+            details       = :details,
+            idTDLpriorite = :idTDLpriorite,
+            realisee      = 0
+        ;');
     $query->execute(array(
         'idCreateur'    => $_GET['idCreateur'],
         'dateCreation'  => date('Y-m-d H:i:s'),
         'dateExecution' => $_POST['dateExecution'],
         'titre'         => $_POST['titre'],
-        'details'         => $_POST['details'],
-        'idTDLpriorite'         => $_POST['idTDLpriorite']
+        'details'       => $_POST['details'],
+        'idTDLpriorite' => $_POST['idTDLpriorite']
     ));
 
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout d'une TDL.", '2');
+            writeInLogs("Ajout d'une TDL.", '1', NULL);
             $_SESSION['returnMessage'] = 'Tache ajoutée avec succès.';
             $_SESSION['returnType'] = '1';
             
@@ -62,7 +57,7 @@ else
 
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout d'une TDL.", '5');
+            writeInLogs("Erreur inconnue lors de l'ajout d'une TDL.", '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors de l\'ajout de la tache.';
             $_SESSION['returnType'] = '2';
     }

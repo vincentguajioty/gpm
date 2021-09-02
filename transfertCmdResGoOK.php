@@ -17,7 +17,7 @@ else
 	if (!isset($_SESSION['transfertStade']) OR !isset($_SESSION['transfertCmd']) OR !isset($_SESSION['transfertIdMaterielCatalogue']) OR !isset($_SESSION['transfertQttMax']) OR !isset($_SESSION['transfertIdReserveElement']) OR !isset($_SESSION['transfertqttTrans']))
 	{
 		echo "<script type='text/javascript'>document.location.replace('transfertReset.php');</script>";
-		writeInLogs("Erreur lors du transfert de matériel de la commande " . $_SESSION['transfertCmd'] . " vers l'élément de réserve ".$_SESSION['transfertIdMaterielCatalogue'], '5');
+		writeInLogs("Erreur lors du transfert de matériel de la commande " . $_SESSION['transfertCmd'] . " vers l'élément de réserve ".$_SESSION['transfertIdMaterielCatalogue'], '3', NULL);
 		$_SESSION['returnMessage'] = 'Erreur inconnue lors de l\'execution du transfert.';
         $_SESSION['returnType'] = '2';
 		exit;
@@ -26,6 +26,7 @@ else
 	if (($_SESSION['transfertStade'])!=4)
 	{
 		echo "<script type='text/javascript'>document.location.replace('transfertReset.php');</script>";
+		writeInLogs("Erreur lors du transfert de matériel de la commande " . $_SESSION['transfertCmd'] . " vers l'élément de réserve ".$_SESSION['transfertIdMaterielCatalogue'], '3', NULL);
 		$_SESSION['returnMessage'] = 'Erreur inconnue lors de l\'execution du transfert.';
         $_SESSION['returnType'] = '2';
 		exit;
@@ -62,7 +63,7 @@ else
 			        'idReserveElement' => $_SESSION['transfertIdReserveElement'],
 			        'peremptionReserve' => $_SESSION['transfertPeremption']
 			    ));
-			    writeInLogs("Transfert de matériel de la commande " . $_SESSION['transfertCmd'] . " vers l'élément de réserve ".$_SESSION['transfertIdMaterielCatalogue']." avec modification de date.", '3');
+			    writeInLogs("Transfert de matériel de la commande " . $_SESSION['transfertCmd'] . " vers l'élément de réserve ".$_SESSION['transfertIdMaterielCatalogue']." avec modification de date.", '1', NULL);
 			}
 		}
 		else
@@ -72,12 +73,12 @@ else
 		        'idReserveElement' => $_SESSION['transfertIdReserveElement'],
 		        'peremptionReserve' => $_SESSION['transfertPeremption']
 		    ));
-		    writeInLogs("Transfert de matériel de la commande " . $_SESSION['transfertCmd'] . " vers l'élément de réserve ".$_SESSION['transfertIdMaterielCatalogue']." avec modification de date.", '3');
+		    writeInLogs("Transfert de matériel de la commande " . $_SESSION['transfertCmd'] . " vers l'élément de réserve ".$_SESSION['transfertIdMaterielCatalogue']." avec modification de date.", '1', NULL);
 		}
 	}
 	else
 	{
-		writeInLogs("Transfert de matériel de la commande " . $_SESSION['transfertCmd'] . " vers l'élément de réserve ".$_SESSION['transfertIdMaterielCatalogue']." sans modification de date.", '3');
+		writeInLogs("Transfert de matériel de la commande " . $_SESSION['transfertCmd'] . " vers l'élément de réserve ".$_SESSION['transfertIdMaterielCatalogue']." sans modification de date.", '1', NULL);
 	}
 	
 	

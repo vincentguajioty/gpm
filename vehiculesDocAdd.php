@@ -15,13 +15,23 @@ else {
 
     $ext = strtolower(substr(strrchr($_FILES['urlFichierDocVehicule']['name'], '.'), 1));
 
-    $query = $db->prepare('INSERT INTO DOCUMENTS_VEHICULES(idVehicule, nomDocVehicule, formatDocVehicule, dateDocVehicule, urlFichierDocVehicule, idTypeDocument) VALUES(:idVehicule, :nomDocVehicule, :formatDocVehicule, CURRENT_TIMESTAMP, :urlFichierDocVehicule, :idTypeDocument);');
+    $query = $db->prepare('
+        INSERT INTO
+            DOCUMENTS_VEHICULES
+        SET
+            idVehicule            = :idVehicule,
+            nomDocVehicule        = :nomDocVehicule,
+            formatDocVehicule     = :formatDocVehicule,
+            dateDocVehicule       = CURRENT_TIMESTAMP,
+            urlFichierDocVehicule = :urlFichierDocVehicule,
+            idTypeDocument        = :idTypeDocument
+        ;');
     $query->execute(array(
-        'idVehicule' => $_GET['idVehicule'],
+        'idVehicule'            => $_GET['idVehicule'],
         'urlFichierDocVehicule' => Null,
-        'nomDocVehicule' => $_POST['nomDocVehicule'],
-        'formatDocVehicule' => $ext,
-        'idTypeDocument' => $_POST['idTypeDocument']
+        'nomDocVehicule'        => $_POST['nomDocVehicule'],
+        'formatDocVehicule'     => $ext,
+        'idTypeDocument'        => $_POST['idTypeDocument']
     ));
 
 
@@ -37,13 +47,13 @@ else {
             'idDocVehicules' => $data['idDocVehicules'],
             'urlFichierDocVehicule' => $nom
         ));
-        writeInLogs("Ajout d'une pièce jointe référence " . $_POST['nomDocVehicule'] . " au véhicule " . $_GET['idVehicule'], '2');
+        writeInLogs("Ajout d'une pièce jointe référence " . $_POST['nomDocVehicule'] . " au véhicule " . $_GET['idVehicule'], '1', NULL);
     } else {
         $query = $db->prepare('DELETE FROM DOCUMENTS_VEHICULES WHERE idDocVehicules = :idDocVehicules;');
         $query->execute(array(
             'idDocVehicules' => $data['idDocVehicules']
         ));
-        writeInLogs("Erreur inconnue lors de l'ajout d'une pièce jointe au véhicule " . $_GET['idVehicule'], '5');
+        writeInLogs("Erreur inconnue lors de l'ajout d'une pièce jointe au véhicule " . $_GET['idVehicule'], '3', NULL);
         $_SESSION['returnMessage'] = "Erreur inconnue lors du chargement du document.";
         $_SESSION['returnType'] = '2';
     }

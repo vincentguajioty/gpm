@@ -15,4 +15,3 @@ INSERT INTO TODOLIST_PERSONNES(idTache, idExecutant) SELECT idTache, idExecutant
 ALTER TABLE TODOLIST DROP FOREIGN KEY fk_todolist_executant;
 ALTER TABLE TODOLIST DROP idExecutant;
 
-INSERT INTO LOGS(dateEvt, adresseIP, utilisateurEvt, idLogLevel, detailEvt) VALUES(CURRENT_TIMESTAMP, 'local', 'sysAdmin', 2, 'Mise à jour vers la version 6.2.');

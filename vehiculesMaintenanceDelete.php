@@ -34,13 +34,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression d'une maintenance sur le véhicule " . $data['idVehicule'], '4');
+            writeInLogs("Suppression d'une maintenance sur le véhicule " . $data['idVehicule'], '1', NULL);
             $_SESSION['returnMessage'] = 'Maintenance supprimée avec succès.';
             $_SESSION['returnType'] = '1';
         break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression d'une maintenance sur le véhicule " . $data['idVehicule'], '5');
+            writeInLogs("Erreur inconnue lors de la suppression d'une maintenance sur le véhicule " . $data['idVehicule'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors de la suppression de la maintenance.';
             $_SESSION['returnType'] = '2';
     }

@@ -22,28 +22,32 @@ else
     $query->execute(array('idLot' => $_POST['idLot']));
     $lotSource = $query->fetch();
 
-    $query = $db->prepare('INSERT INTO LOTS_LOTS SET
-        libelleLot = :libelleLot,
-        idTypeLot = :idTypeLot,
-        idEtat = :idEtat,
-        idLieu = :idLieu,
-        idPersonne = :idPersonne,
-        dateDernierInventaire = :dateDernierInventaire,
-        frequenceInventaire = :frequenceInventaire,
-        commentairesLots = :commentairesLots,
-        idVehicule = :idVehicule,
-        idLotsEtat = :idLotsEtat;');
+    $query = $db->prepare('
+        INSERT INTO
+            LOTS_LOTS
+        SET
+            libelleLot            = :libelleLot,
+            idTypeLot             = :idTypeLot,
+            idEtat                = :idEtat,
+            idLieu                = :idLieu,
+            idPersonne            = :idPersonne,
+            dateDernierInventaire = :dateDernierInventaire,
+            frequenceInventaire   = :frequenceInventaire,
+            commentairesLots      = :commentairesLots,
+            idVehicule            = :idVehicule,
+            idLotsEtat            = :idLotsEtat
+        ;');
     $query->execute(array(
-        'libelleLot' => $lotSource['libelleLot'].' - Copie',
-        'idTypeLot' => $lotSource['idTypeLot'],
-        'idEtat' => $lotSource['idEtat'],
-        'idLieu' => $lotSource['idLieu'],
-        'idPersonne' => $lotSource['idPersonne'],
+        'libelleLot'            => $lotSource['libelleLot'].' - Copie',
+        'idTypeLot'             => $lotSource['idTypeLot'],
+        'idEtat'                => $lotSource['idEtat'],
+        'idLieu'                => $lotSource['idLieu'],
+        'idPersonne'            => $lotSource['idPersonne'],
         'dateDernierInventaire' => $lotSource['dateDernierInventaire'],
-        'frequenceInventaire' => $lotSource['frequenceInventaire'],
-        'commentairesLots' => $lotSource['commentairesLots'],
-        'idVehicule' => $lotSource['idVehicule'],
-        'idLotsEtat' => $lotSource['idLotsEtat']
+        'frequenceInventaire'   => $lotSource['frequenceInventaire'],
+        'commentairesLots'      => $lotSource['commentairesLots'],
+        'idVehicule'            => $lotSource['idVehicule'],
+        'idLotsEtat'            => $lotSource['idLotsEtat']
     ));
 
     switch($query->errorCode())
@@ -58,16 +62,17 @@ else
             while($sac = $sacs->fetch())
             {
                 $query = $db->prepare('INSERT INTO MATERIEL_SAC SET
-                    libelleSac = :libelleSac,
-                    idLot = :idLot,
-                    taille = :taille,
-                    couleur = :couleur,
-                    idFournisseur = :idFournisseur;');
+                    libelleSac    = :libelleSac,
+                    idLot         = :idLot,
+                    taille        = :taille,
+                    couleur       = :couleur,
+                    idFournisseur = :idFournisseur
+                    ;');
                 $query->execute(array(
-                    'libelleSac' => $sac['libelleSac'],
-                    'idLot' => $idLotDuplicate,
-                    'taille' => $sac['taille'],
-                    'couleur' => $sac['couleur'],
+                    'libelleSac'    => $sac['libelleSac'],
+                    'idLot'         => $idLotDuplicate,
+                    'taille'        => $sac['taille'],
+                    'couleur'       => $sac['couleur'],
                     'idFournisseur' => $sac['idFournisseur']
                 ));
 
@@ -107,26 +112,30 @@ else
 									while($materiel = $materiels->fetch())
 									{
 
-										$query = $db->prepare('INSERT INTO MATERIEL_ELEMENT SET 
-											idMaterielCatalogue = :idMaterielCatalogue,
-											idEmplacement = :idEmplacement,
-											idFournisseur = :idFournisseur,
-											quantite = :quantite,
-											quantiteAlerte = :quantiteAlerte,
-											peremption = :peremption,
-											peremptionNotification = :peremptionNotification,
-											commentairesElement = :commentairesElement,
-											idMaterielsEtat = :idMaterielsEtat;');
+										$query = $db->prepare('
+                                            INSERT INTO
+                                                MATERIEL_ELEMENT
+                                            SET 
+                                                idMaterielCatalogue    = :idMaterielCatalogue,
+                                                idEmplacement          = :idEmplacement,
+                                                idFournisseur          = :idFournisseur,
+                                                quantite               = :quantite,
+                                                quantiteAlerte         = :quantiteAlerte,
+                                                peremption             = :peremption,
+                                                peremptionNotification = :peremptionNotification,
+                                                commentairesElement    = :commentairesElement,
+                                                idMaterielsEtat        = :idMaterielsEtat
+                                            ;');
 									    $query->execute(array(
-									        'idMaterielCatalogue' => $materiel['idMaterielCatalogue'],
-									        'idEmplacement' => $idEmplacementDuplicate,
-									        'idFournisseur' => $materiel['idFournisseur'],
-									        'quantite' => $materiel['quantite'],
-									        'quantiteAlerte' => $materiel['quantiteAlerte'],
-									        'peremption' => $materiel['peremption'],
-									        'peremptionNotification' => $materiel['peremptionNotification'],
-									        'commentairesElement' => $materiel['commentairesElement'],
-									        'idMaterielsEtat' => $materiel['idMaterielsEtat']
+                                            'idMaterielCatalogue'    => $materiel['idMaterielCatalogue'],
+                                            'idEmplacement'          => $idEmplacementDuplicate,
+                                            'idFournisseur'          => $materiel['idFournisseur'],
+                                            'quantite'               => $materiel['quantite'],
+                                            'quantiteAlerte'         => $materiel['quantiteAlerte'],
+                                            'peremption'             => $materiel['peremption'],
+                                            'peremptionNotification' => $materiel['peremptionNotification'],
+                                            'commentairesElement'    => $materiel['commentairesElement'],
+                                            'idMaterielsEtat'        => $materiel['idMaterielsEtat']
 									    ));
 
 									    switch($query->errorCode())
@@ -156,14 +165,14 @@ else
                 }
             }
 
-            writeInLogs("Lot ".$_POST['idLot']." dupliqué avec succès. Duplication en succès de ".$OKsacs." sacs, ".$OKemplacements." emplacements, ".$OKmateriels." matériels. Duplication en erreur de ".$NOKsacs." sacs, ".$NOKemplacements." emplacements, ".$NOKmateriels." matériels.", '2');
+            writeInLogs("Lot ".$_POST['idLot']." dupliqué avec succès. Duplication en succès de ".$OKsacs." sacs, ".$OKemplacements." emplacements, ".$OKmateriels." matériels. Duplication en erreur de ".$NOKsacs." sacs, ".$NOKemplacements." emplacements, ".$NOKmateriels." matériels.", '1', NULL);
             $_SESSION['returnMessage'] = "1 lot dupliqué avec succès. Duplication en succès de ".$OKsacs." sacs, ".$OKemplacements." emplacements, ".$OKmateriels." matériels. Duplication en erreur de ".$NOKsacs." sacs, ".$NOKemplacements." emplacements, ".$NOKmateriels." matériels.";
             if($NOKsacs + $NOKemplacements + $NOKmateriels == 0){$_SESSION['returnType'] = '1';}else{$_SESSION['returnType'] = '2';}
 
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la duplication du lot " . $_POST['idLot'], '5');
+            writeInLogs("Erreur inconnue lors de la duplication du lot " . $_POST['idLot'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors la duplication du lot.";
             $_SESSION['returnType'] = '2';
     }

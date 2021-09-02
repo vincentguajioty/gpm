@@ -12,7 +12,12 @@ if ($_SESSION['etats_ajout']==0)
 else
 {
 
-    $query = $db->prepare('INSERT INTO LOTS_ETATS(libelleLotsEtat) VALUES(:libelleLotsEtat);');
+    $query = $db->prepare('
+        INSERT INTO
+            LOTS_ETATS
+        SET
+            libelleLotsEtat = :libelleLotsEtat
+        ;');
     $query->execute(array(
         'libelleLotsEtat' => $_POST['libelleLotsEtat']
     ));
@@ -20,13 +25,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Ajout de l'état de lot " . $_POST['libelleLotsEtat'], '2');
+            writeInLogs("Ajout de l'état de lot " . $_POST['libelleLotsEtat'], '1', NULL);
             $_SESSION['returnMessage'] = 'Etat ajouté avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de l'ajout de l'état de lot " . $_POST['libelleLotsEtat'], '5');
+            writeInLogs("Erreur inconnue lors de l'ajout de l'état de lot " . $_POST['libelleLotsEtat'], '3', NULL);
             $_SESSION['returnMessage'] = 'Erreur inconnue lors l\'ajout de l\'état de lot.';
             $_SESSION['returnType'] = '2';
     }

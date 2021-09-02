@@ -43,13 +43,13 @@ else
     switch($query->errorCode())
     {
         case '00000':
-            writeInLogs("Suppression du référentiel " . $data['libelleTypeLot'], '4');
+            writeInLogs("Suppression du référentiel " . $data['libelleTypeLot'], '1', NULL);
             $_SESSION['returnMessage'] = 'Référentiel supprimé avec succès.';
             $_SESSION['returnType'] = '1';
             break;
 
         default:
-            writeInLogs("Erreur inconnue lors de la suppression du référentiel " . $data['libelleTypeLot'], '5');
+            writeInLogs("Erreur inconnue lors de la suppression du référentiel " . $data['libelleTypeLot'], '3', NULL);
             $_SESSION['returnMessage'] = "Erreur inconnue lors de la suppression du référentiel.";
             $_SESSION['returnType'] = '2';
     }

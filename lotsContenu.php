@@ -17,7 +17,18 @@ if ($_SESSION['lots_lecture']==0)
     <?php require_once 'config/bdd.php'; ?>
 
     <?php
-    $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LIEUX w ON l.idLieu = w.idLieu LEFT OUTER JOIN VEHICULES v ON l.idVehicule = v.idVehicule LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne LEFT OUTER JOIN LOTS_ETATS et ON l.idLotsEtat = et.idLotsEtat WHERE idLot = :idLot;');
+    $query = $db->prepare('
+        SELECT
+            *
+        FROM
+            LOTS_LOTS l
+            LEFT OUTER JOIN LIEUX w ON l.idLieu = w.idLieu
+            LEFT OUTER JOIN VEHICULES v ON l.idVehicule = v.idVehicule
+            LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot
+            LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne
+            LEFT OUTER JOIN LOTS_ETATS et ON l.idLotsEtat = et.idLotsEtat
+        WHERE
+            idLot = :idLot;');
     $query->execute(array(
         'idLot' => $_GET['id']
     ));
@@ -37,12 +48,38 @@ if ($_SESSION['lots_lecture']==0)
         'idLot' => $_GET['id']
     ));
     $data4 = $query4->fetch();
-    $query5 = $db->prepare('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE s.idLot = :idLot AND (peremption < CURRENT_DATE OR peremption = CURRENT_DATE);');
+    $query5 = $db->prepare('
+        SELECT
+            COUNT(*) as nb
+        FROM
+            MATERIEL_ELEMENT m
+            LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement
+            LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac
+            LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot
+            LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+        WHERE
+            s.idLot = :idLot
+            AND
+            (peremption < CURRENT_DATE OR peremption = CURRENT_DATE)
+        ;');
     $query5->execute(array(
         'idLot' => $_GET['id']
     ));
     $data5 = $query5->fetch();
-    $query6 = $db->prepare('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT m LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue WHERE s.idLot = :idLot AND (quantite < quantiteAlerte OR quantite = quantiteAlerte);');
+    $query6 = $db->prepare('
+        SELECT
+            COUNT(*) as nb
+        FROM
+            MATERIEL_ELEMENT m
+            LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement
+            LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac
+            LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot
+            LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+        WHERE
+            s.idLot = :idLot
+            AND
+            (quantite < quantiteAlerte OR quantite = quantiteAlerte)
+        ;');
     $query6->execute(array(
         'idLot' => $_GET['id']
     ));
