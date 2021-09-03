@@ -1,3 +1,4 @@
+/config/bdd.php
 /logs/*.log
 /documents/centresCouts
 /documents/commandes
