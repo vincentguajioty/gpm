@@ -270,11 +270,3 @@ CREATE OR REPLACE VIEW VIEW_SCAN_RESULTS_RESERVES AS
 		t.idConteneur,
 	    b.idMaterielCatalogue
 ;
-
-
--- Désactivation Recaptcha
-UPDATE CONFIG SET reCaptcha_enable = 0, reCaptcha_siteKey = Null, reCaptcha_secretKey = Null;
-
--- Anonymisation de la base
-
-UPDATE PERSONNE_REFERENTE SET mailPersonne = '';

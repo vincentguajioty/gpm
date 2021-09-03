@@ -21,9 +21,6 @@ $query = $db->query('
 			OR notif_reserves_manquants = 1
 			OR notif_reserves_peremptions = 1
 			OR notif_reserves_inventaires = 1
-			OR notif_vehicules_assurances = 1
-			OR notif_vehicules_revisions = 1
-			OR notif_vehicules_ct = 1
 			OR notif_vehicules_desinfections = 1
 			OR notif_vehicules_health = 1
 			OR notif_tenues_stock = 1
@@ -53,21 +50,6 @@ if ($nbDest > 0)
 	$query = $db->query('SELECT COUNT(*) as nb FROM RESERVES_MATERIEL WHERE peremptionNotificationReserve < CURRENT_DATE OR peremptionNotificationReserve = CURRENT_DATE;');
 	$data = $query->fetch();
 	$nbPerimeReserve = $data['nb'];
-	
-	$query = $db->prepare('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND (assuranceExpiration IS NOT NULL) AND ((DATE_SUB(assuranceExpiration, INTERVAL :delai DAY) < CURRENT_DATE) OR (DATE_SUB(assuranceExpiration, INTERVAL :delai DAY) = CURRENT_DATE));');
-	$query->execute(array('delai'=>$VEHICULES_ASSURANCE_DELAIS_NOTIF));
-	$data = $query->fetch();
-	$nbAssurance = $data['nb'];
-	
-	$query = $db->prepare('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND ((dateNextRevision IS NOT NULL) AND ((DATE_SUB(dateNextRevision, INTERVAL :delai DAY) < CURRENT_DATE) OR (DATE_SUB(dateNextRevision, INTERVAL :delai DAY) = CURRENT_DATE)));');
-	$query->execute(array('delai'=>$VEHICULES_REVISION_DELAIS_NOTIF));
-	$data = $query->fetch();
-	$nbRevisions = $data['nb'];
-
-	$query = $db->prepare('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND ((dateNextCT IS NOT NULL) AND ((DATE_SUB(dateNextCT, INTERVAL :delai DAY) < CURRENT_DATE) OR (DATE_SUB(dateNextCT, INTERVAL :delai DAY) = CURRENT_DATE)));');
-	$query->execute(array('delai'=>$VEHICULES_CT_DELAIS_NOTIF));
-	$data = $query->fetch();
-	$nbCT = $data['nb'];
 
 	$query = $db->query('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND alerteDesinfection = 1;');
 	$data = $query->fetch();
@@ -93,18 +75,15 @@ if ($nbDest > 0)
 	$data = $query->fetch();
 	$nbRetoursTenues = $data['nb'];
 
-    $nbAlertes = $nbManquant + $nbPerime + $nbLotsNOK + $nbManquantReserve + $nbPerimeReserve + $nbAssurance + $nbRevisions + $nbInventaires + $nbInventairesReserve + $nbCT + $nbDesinfections + $nbHealth + $nbManquantTenues + $nbRetoursTenues;
+    $nbAlertes = $nbManquant + $nbPerime + $nbLotsNOK + $nbManquantReserve + $nbPerimeReserve + $nbInventaires + $nbInventairesReserve + $nbDesinfections + $nbHealth + $nbManquantTenues + $nbRetoursTenues;
 
     writeInLogs($nbManquant." alertes détectées sur la requete nbManquant (éléments en quantité insuffisante dans les lots).", '1', NULL);
     writeInLogs($nbPerime." alertes détectées sur la requete nbPerime (éléments périmés dans les lots).", '1', NULL);
     writeInLogs($nbLotsNOK." alertes détectées sur la requete nbLotsNOK (conformité des lots).", '1', NULL);
     writeInLogs($nbManquantReserve." alertes détectées sur la requete nbManquantReserve (éléments en quantité insuffisante dans la réserve).", '1', NULL);
     writeInLogs($nbPerimeReserve." alertes détectées sur la requete nbPerimeReserve (éléments périmés dans la réserve).", '1', NULL);
-    writeInLogs($nbAssurance." alertes détectées sur la requete nbAssurance (péremption des assurances).", '1', NULL);
-    writeInLogs($nbRevisions." alertes détectées sur la requete nbRevisions (révisions à faire).", '1', NULL);
     writeInLogs($nbInventaires." alertes détectées sur la requete nbInventaires (inventaires des lots).", '1', NULL);
     writeInLogs($nbInventairesReserve." alertes détectées sur la requete nbInventairesReserve (inventaires de la réserve).", '1', NULL);
-    writeInLogs($nbCT." alertes détectées sur la requete nbCT (controles techniques).", '1', NULL);
     writeInLogs($nbHealth." alertes détectées sur la requete nbHealth (maintenances régulières).", '1', NULL);
     writeInLogs($nbDesinfections." alertes détectées sur la requete nbDesinfections (désinfections des véhicules).", '1', NULL);
     writeInLogs($nbManquantTenues." alertes détectées sur la requete nbManquantTenues (éléments de tenue en quantité insuffisante dans les stocks).", '1', NULL);
@@ -197,42 +176,6 @@ if ($nbDest > 0)
 	    }
 	    $message_InventaireReserve = $message_InventaireReserve."</ul><br/><br/>";
 	}
-    
-    if ($nbAssurance > 0)
-	{
-	    $message_Assurance = "Véhicules dont l'assurance est arrivée à échéance:<br/><ul>";
-	    $query = $db->prepare('SELECT * FROM VEHICULES WHERE idEtat = 1 AND (assuranceExpiration IS NOT NULL) AND ((DATE_SUB(assuranceExpiration, INTERVAL :delai DAY) < CURRENT_DATE) OR (DATE_SUB(assuranceExpiration, INTERVAL :delai DAY) = CURRENT_DATE));');
-	    $query->execute(array('delai'=>$VEHICULES_ASSURANCE_DELAIS_NOTIF));
-	    while($data = $query->fetch())
-	    {
-	        $message_Assurance = $message_Assurance . "<li>".$data['libelleVehicule'] . "</li>";
-	    }
-	    $message_Assurance = $message_Assurance."</ul><br/><br/>";
-	}
-    
-    if ($nbRevisions > 0)
-	{
-	    $message_Revisions = "Véhicules à faire passer à la révision:<br/><ul>";
-	    $query = $db->prepare('SELECT * FROM VEHICULES WHERE idEtat = 1 AND ((dateNextRevision IS NOT NULL) AND ((DATE_SUB(dateNextRevision, INTERVAL :delai DAY) < CURRENT_DATE) OR (DATE_SUB(dateNextRevision, INTERVAL :delai DAY) = CURRENT_DATE)));');
-	    $query->execute(array('delai'=>$VEHICULES_REVISION_DELAIS_NOTIF));
-	    while($data = $query->fetch())
-	    {
-	        $message_Revisions = $message_Revisions . "<li>".$data['libelleVehicule'] . "</li>";
-	    }
-	    $message_Revisions = $message_Revisions."</ul><br/><br/>";
-	}
-
-	if ($nbCT > 0)
-	{
-	    $message_CT = "Véhicules à faire passer au CT:<br/><ul>";
-	    $query = $db->prepare('SELECT * FROM VEHICULES WHERE idEtat = 1 AND ((dateNextCT IS NOT NULL) AND ((DATE_SUB(dateNextCT, INTERVAL :delai DAY) < CURRENT_DATE) OR (DATE_SUB(dateNextCT, INTERVAL :delai DAY) = CURRENT_DATE)));');
-	    $query->execute(array('delai'=>$VEHICULES_CT_DELAIS_NOTIF));
-	    while($data = $query->fetch())
-	    {
-	        $message_CT = $message_CT . "<li>".$data['libelleVehicule'] . "</li>";
-	    }
-	    $message_CT = $message_CT."</ul><br/><br/>";
-	}
 
 	if ($nbDesinfections > 0)
 	{
@@ -297,9 +240,6 @@ if ($nbDest > 0)
 	    		OR notif_reserves_manquants = 1
 	    		OR notif_reserves_peremptions = 1
 	    		OR notif_reserves_inventaires = 1
-	    		OR notif_vehicules_assurances = 1
-	    		OR notif_vehicules_revisions = 1
-	    		OR notif_vehicules_ct = 1
 	    		OR notif_vehicules_health = 1
 	    		OR notif_vehicules_desinfections = 1
 	    		OR notif_tenues_stock = 1
@@ -314,9 +254,6 @@ if ($nbDest > 0)
 		$nbAlertes += ($data['notif_lots_conformites']        == 1) ? $nbLotsNOK : 0;
 		$nbAlertes += ($data['notif_reserves_manquants']      == 1) ? $nbManquantReserve : 0;
 		$nbAlertes += ($data['notif_reserves_peremptions']    == 1) ? $nbPerimeReserve : 0;
-		$nbAlertes += ($data['notif_vehicules_assurances']    == 1) ? $nbAssurance : 0;
-		$nbAlertes += ($data['notif_vehicules_revisions']     == 1) ? $nbRevisions : 0;
-		$nbAlertes += ($data['notif_vehicules_ct']            == 1) ? $nbCT : 0;
 		$nbAlertes += ($data['notif_vehicules_desinfections'] == 1) ? $nbDesinfections : 0;
 		$nbAlertes += ($data['notif_vehicules_health']        == 1) ? $nbHealth : 0;
 		$nbAlertes += ($data['notif_reserves_inventaires']    == 1) ? $nbInventairesReserve : 0;
@@ -365,18 +302,6 @@ if ($nbDest > 0)
 		    if(($data['notif_reserves_inventaires']) AND ($nbInventairesReserve>0))
 		    {
 		    	$message_html .= $message_InventaireReserve;
-		    }
-		    if(($data['notif_vehicules_assurances']) AND ($nbAssurance>0))
-		    {
-		    	$message_html .= $message_Assurance;
-		    }
-		    if(($data['notif_vehicules_revisions']) AND ($nbRevisions>0))
-		    {
-		    	$message_html .= $message_Revisions;
-		    }
-		    if(($data['notif_vehicules_ct']) AND ($nbCT>0))
-		    {
-		    	$message_html .= $message_CT;
 		    }
 		    if(($data['notif_vehicules_desinfections']) AND ($nbDesinfections>0))
 		    {

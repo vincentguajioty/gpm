@@ -72,57 +72,6 @@ if ($_SESSION['vehicules_lecture']==0)
                                 <td><?php echo $data['marqueModele']; ?></td>
                                 <td>
                                     <span class="badge bg-<?php
-                                        if($data['dateNextRevision']<date('Y-m-d'))
-                                        {
-                                            echo "red";
-                                        }
-                                        else
-                                        {
-                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextRevision'] . ' - '.$VEHICULES_REVISION_DELAIS_NOTIF.' days')))
-                                            {
-                                                echo "orange";
-                                            }
-                                            else
-                                            {
-                                                echo "green";
-                                            }
-                                        }
-                                        ?>">Révision</span>
-                                    <span class="badge bg-<?php
-                                        if($data['dateNextCT']<date('Y-m-d'))
-                                        {
-                                            echo "red";
-                                        }
-                                        else
-                                        {
-                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextCT'] . ' - '.$VEHICULES_CT_DELAIS_NOTIF.' days')))
-                                            {
-                                                echo "orange";
-                                            }
-                                            else
-                                            {
-                                                echo "green";
-                                            }
-                                        }
-                                        ?>">CT</span>
-                                    <span class="badge bg-<?php
-                                        if($data['assuranceExpiration']<date('Y-m-d'))
-                                        {
-                                            echo "red";
-                                        }
-                                        else
-                                        {
-                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['assuranceExpiration'] . ' - '.$VEHICULES_ASSURANCE_DELAIS_NOTIF.' days')))
-                                            {
-                                                echo "orange";
-                                            }
-                                            else
-                                            {
-                                                echo "green";
-                                            }
-                                        }
-                                        ?>">Assurance</span>
-                                    <span class="badge bg-<?php
                                         if($data['alerteDesinfection'] == Null)
                                         {
                                             echo "grey";

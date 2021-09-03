@@ -123,67 +123,6 @@ if ($_SESSION['vehicules_lecture']==0)
                                     <td>Numéro d'assurance</td>
                                     <td><?= $data['assuranceNumero'] ?></td>
                                 </tr>
-								<tr>
-                                    <td>Expiration d'assurance</td>
-                                    <td><span class="badge bg-<?php
-                                        if($data['assuranceExpiration']<date('Y-m-d'))
-                                        {
-                                            echo "red";
-                                        }
-                                        else
-                                        {
-                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['assuranceExpiration'] . ' - '.$VEHICULES_ASSURANCE_DELAIS_NOTIF.' days')))
-                                            {
-                                                echo "orange";
-                                            }
-                                            else
-                                            {
-                                                echo "green";
-                                            }
-                                        }
-                                        ?>"><?= $data['assuranceExpiration'] ?></span></td>
-                                </tr>
-								<tr>
-                                    <td>Prochaine révision</td>
-                                    <td><span class="badge bg-<?php
-                                        if($data['dateNextRevision']<date('Y-m-d'))
-                                        {
-                                            echo "red";
-                                        }
-                                        else
-                                        {
-                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextRevision'] . ' - '.$VEHICULES_REVISION_DELAIS_NOTIF.' days')))
-                                            {
-                                                echo "orange";
-                                            }
-                                            else
-                                            {
-                                                echo "green";
-                                            }
-                                        }
-                                        ?>"><?= $data['dateNextRevision'] ?></span>
-                                    </td>
-                                </tr>
-								<tr>
-                                    <td>Prochain contrôle technique</td>
-                                    <td><span class="badge bg-<?php
-                                        if($data['dateNextCT']<date('Y-m-d'))
-                                        {
-                                            echo "red";
-                                        }
-                                        else
-                                        {
-                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextCT'] . ' - '.$VEHICULES_CT_DELAIS_NOTIF.' days')))
-                                            {
-                                                echo "orange";
-                                            }
-                                            else
-                                            {
-                                                echo "green";
-                                            }
-                                        }
-                                        ?>"><?= $data['dateNextCT'] ?></span></td>
-                                </tr>
                                 <?php
                                     $desinfections = $db->prepare('
                                         SELECT
@@ -244,7 +183,7 @@ if ($_SESSION['vehicules_lecture']==0)
                                     while($maintenance = $maintenances->fetch())
                                     {?>
                                         <tr>
-                                            <td>Prochaine maintenance <?=$maintenance['libelleHealthType']?></td>
+                                            <td>Prochain(e) <?=$maintenance['libelleHealthType']?></td>
                                             <td><?php
                                                 if($maintenance['dateHealth'] == Null)
                                                 {

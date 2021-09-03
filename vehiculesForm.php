@@ -192,41 +192,6 @@ if($_SESSION['vehicules_lecture']==1 OR $_SESSION['vehicules_ajout']==1 OR $_SES
                             <label>Référence Assurance:</label>
                             <input type="text" class="form-control" value="<?= isset($data['assuranceNumero']) ? $data['assuranceNumero'] : ''?>" name="assuranceNumero">
                         </div>
-                        <div class="row">
-                        	<div class="col-lg-4 col-xs-12">
-								<div class="form-group">
-									<label>Prochaine révision:</label>
-		                            <div class="input-group">
-		                                <div class="input-group-addon">
-		                                    <i class="fa fa-calendar"></i>
-		                                </div>
-		                                <input class="input-datepicker form-control" name="dateNextRevision" value="<?= isset($data['dateNextRevision']) ? $data['dateNextRevision'] : '' ?>">
-		                            </div>
-								</div>
-							</div>
-							<div class="col-lg-4 col-xs-12">
-								<div class="form-group">
-									<label>Prochain CT:</label>
-		                            <div class="input-group">
-		                                <div class="input-group-addon">
-		                                    <i class="fa fa-calendar"></i>
-		                                </div>
-		                                <input class="input-datepicker form-control" name="dateNextCT" value="<?= isset($data['dateNextCT']) ? $data['dateNextCT'] : '' ?>">
-		                            </div>
-								</div>
-							</div>
-							<div class="col-lg-4 col-xs-12">
-								<div class="form-group">
-									<label>Exp. d'assurance:</label>
-		                            <div class="input-group">
-		                                <div class="input-group-addon">
-		                                    <i class="fa fa-calendar"></i>
-		                                </div>
-		                                <input class="input-datepicker form-control" name="assuranceExpiration" value="<?= isset($data['assuranceExpiration']) ? $data['assuranceExpiration'] : '' ?>">
-		                            </div>
-								</div>
-							</div>
-						</div>
 						<div class="row">
                         	<div class="col-lg-6 col-xs-12">
 								<div class="form-group">

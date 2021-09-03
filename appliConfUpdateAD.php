@@ -17,16 +17,20 @@ else
         UPDATE
             CONFIG
         SET 
-            LDAP_DOMAIN  = :LDAP_DOMAIN,
-            LDAP_BASEDN  = :LDAP_BASEDN,
-            LDAP_ISWINAD = :LDAP_ISWINAD,
-            LDAP_SSL     = :LDAP_SSL
+            LDAP_DOMAIN   = :LDAP_DOMAIN,
+            LDAP_BASEDN   = :LDAP_BASEDN,
+            LDAP_ISWINAD  = :LDAP_ISWINAD,
+            LDAP_SSL      = :LDAP_SSL,
+            LDAP_USER     = :LDAP_USER,
+            LDAP_PASSWORD = :LDAP_PASSWORD
     ;');
     $query->execute(array(
-        'LDAP_DOMAIN'  => $_POST['LDAP_DOMAIN'],
-        'LDAP_BASEDN'  => $_POST['LDAP_BASEDN'],
-        'LDAP_ISWINAD' => $_POST['LDAP_ISWINAD'],
-        'LDAP_SSL'     => $_POST['LDAP_SSL'],
+        'LDAP_DOMAIN'   => $_POST['LDAP_DOMAIN'],
+        'LDAP_BASEDN'   => $_POST['LDAP_BASEDN'],
+        'LDAP_ISWINAD'  => $_POST['LDAP_ISWINAD'],
+        'LDAP_SSL'      => $_POST['LDAP_SSL'],
+        'LDAP_USER'     => $_POST['LDAP_USER'],
+        'LDAP_PASSWORD' => $_POST['LDAP_PASSWORD'],
     ));
 
     switch($query->errorCode())

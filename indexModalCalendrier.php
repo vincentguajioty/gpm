@@ -89,60 +89,6 @@ switch ($_GET['case']) {
         ";
         break;
 
-    case 'vehiculesRev':
-        $url = "vehiculesContenu.php?id=".$_GET['id'];
-        $urlName = "Accéder au véhicule";
-        $query = $db->prepare('SELECT * FROM VEHICULES WHERE idVehicule = :id;');
-        $query->execute(array('id'=>$_GET['id']));
-        $data = $query->fetch();
-
-        $contenu = "
-            <ul>
-                <li>Véhicule: " . $data['libelleVehicule'] . "</li>
-                <li>Immatriculation: " . $data['immatriculation'] . "</li>
-                <li>Prochaine révision avant le: " . $data['dateNextRevision'] . "</li>
-                <li>Prochain contrôle technique avant le: " . $data['dateNextCT'] . "</li>
-                <li>Expiration de l'assurance le: " . $data['assuranceExpiration'] . "</li>
-            </ul>
-        ";
-        break;
-
-    case 'vehiculesCT':
-        $url = "vehiculesContenu.php?id=".$_GET['id'];
-        $urlName = "Accéder au véhicule";
-        $query = $db->prepare('SELECT * FROM VEHICULES WHERE idVehicule = :id;');
-        $query->execute(array('id'=>$_GET['id']));
-        $data = $query->fetch();
-
-        $contenu = "
-            <ul>
-                <li>Véhicule: " . $data['libelleVehicule'] . "</li>
-                <li>Immatriculation: " . $data['immatriculation'] . "</li>
-                <li>Prochaine révision avant le: " . $data['dateNextRevision'] . "</li>
-                <li>Prochain contrôle technique avant le: " . $data['dateNextCT'] . "</li>
-                <li>Expiration de l'assurance le: " . $data['assuranceExpiration'] . "</li>
-            </ul>
-        ";
-        break;
-
-    case 'vehiculesAssu':
-        $url = "vehiculesContenu.php?id=".$_GET['id'];
-        $urlName = "Accéder au véhicule";
-        $query = $db->prepare('SELECT * FROM VEHICULES WHERE idVehicule = :id;');
-        $query->execute(array('id'=>$_GET['id']));
-        $data = $query->fetch();
-
-        $contenu = "
-            <ul>
-                <li>Véhicule: " . $data['libelleVehicule'] . "</li>
-                <li>Immatriculation: " . $data['immatriculation'] . "</li>
-                <li>Prochaine révision avant le: " . $data['dateNextRevision'] . "</li>
-                <li>Prochain contrôle technique avant le: " . $data['dateNextCT'] . "</li>
-                <li>Expiration de l'assurance le: " . $data['assuranceExpiration'] . "</li>
-            </ul>
-        ";
-        break;
-
     case 'vehiculesMaintenance':
         $urlName = "Accéder au véhicule";
         $query = $db->prepare('SELECT m.idVehicule, libelleVehicule, immatriculation, libelleTypeMaintenance, identifiant, detailsMaintenance FROM VEHICULES_MAINTENANCE m LEFT OUTER JOIN VEHICULES v ON m.idVehicule = v.idVehicule LEFT OUTER JOIN VEHICULES_MAINTENANCE_TYPES t ON m.idTypeMaintenance = t.idTypeMaintenance LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idExecutant = p.idPersonne WHERE m.idMaintenance = :id;');

@@ -5,6 +5,11 @@ require_once 'config.php';
 
 writeInLogs("CRON - Début du CRON.", '1', NULL);
 
+//Mise à jour des users AD
+writeInLogs("CRON - Début de la mise à jour des users AD.", '1', NULL);
+updateAllUsersFromAD();
+writeInLogs("CRON - Fin de la mise à jour des users AD.", '1', NULL);
+
 //Mise à jour des conditions de notifications
 writeInLogs("CRON - Début de la vérification des conditions de notification.", '1', NULL);
 notificationsConditionsMAJ();

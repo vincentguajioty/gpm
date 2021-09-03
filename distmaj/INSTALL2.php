@@ -476,6 +476,138 @@ switch($data['version'])
         break;
 
     case '13.2':
+        writeInLogs("Début de l'installation de la mise à jour 13.3", '1', NULL);
+        $query = $db->query(file_get_contents ("update13.3.1.sql"));
+
+        $revision  = $db->query('SELECT idHealthType FROM VEHICULES_HEALTH_TYPES WHERE libelleHealthType = "Révision" ORDER BY idHealthType DESC');
+        $revision  = $revision->fetch();
+        $revision  = $revision['idHealthType'];
+        $ct        = $db->query('SELECT idHealthType FROM VEHICULES_HEALTH_TYPES WHERE libelleHealthType = "CT" ORDER BY idHealthType DESC');
+        $ct        = $ct->fetch();
+        $ct        = $ct['idHealthType'];
+        $assurance = $db->query('SELECT idHealthType FROM VEHICULES_HEALTH_TYPES WHERE libelleHealthType = "Renouvellement Assurance" ORDER BY idHealthType DESC');
+        $assurance = $assurance->fetch();
+        $assurance = $assurance['idHealthType'];
+
+        $vehicules = $db->query('SELECT * FROM VEHICULES;');
+        while($vehicule = $vehicules->fetch())
+        {
+            $query = $db->prepare('INSERT INTO VEHICULES_HEALTH_ALERTES SET idHealthType = :idHealthType, idVehicule = :idVehicule, frequenceHealth = 365');
+            $query->execute(array('idHealthType'=>$revision, 'idVehicule'=>$vehicule['idVehicule']));
+            $query = $db->prepare('INSERT INTO VEHICULES_HEALTH_ALERTES SET idHealthType = :idHealthType, idVehicule = :idVehicule, frequenceHealth = 365');
+            $query->execute(array('idHealthType'=>$ct, 'idVehicule'=>$vehicule['idVehicule']));
+            $query = $db->prepare('INSERT INTO VEHICULES_HEALTH_ALERTES SET idHealthType = :idHealthType, idVehicule = :idVehicule, frequenceHealth = 365');
+            $query->execute(array('idHealthType'=>$assurance, 'idVehicule'=>$vehicule['idVehicule']));
+
+            if($vehicule['dateNextCT'] <> Null)
+            {
+                $query = $db->prepare('
+                    INSERT INTO
+                        VEHICULES_HEALTH
+                    SET
+                        idVehicule = :idVehicule,
+                        dateHealth = :dateHealth
+                    ;');
+                $query->execute(array(
+                    'idVehicule' => $vehicule['idVehicule'],
+                    'dateHealth' => date('Y-m-d', strtotime($vehicule['dateNextCT'].' -1 year')),
+                ));
+                switch($query->errorCode())
+                {
+                    case '00000':
+                        $health = $db->query('SELECT idVehiculeHealth FROM VEHICULES_HEALTH ORDER BY idVehiculeHealth DESC;');
+                        $health = $health->fetch();
+                        $insert = $db->prepare('
+                            INSERT INTO
+                                VEHICULES_HEALTH_CHECKS
+                            SET
+                                idVehiculeHealth = :idVehiculeHealth,
+                                idHealthType     = :idHealthType,
+                                remarquesCheck   = "Ajouté par le script de version"
+                            ;');
+                        $insert->execute(array(
+                            'idVehiculeHealth' => $health['idVehiculeHealth'],
+                            'idHealthType'     => $ct,
+                        ));
+                    break;
+                }
+            }
+
+            if($vehicule['dateNextRevision'] <> Null)
+            {
+                $query = $db->prepare('
+                    INSERT INTO
+                        VEHICULES_HEALTH
+                    SET
+                        idVehicule = :idVehicule,
+                        dateHealth = :dateHealth
+                    ;');
+                $query->execute(array(
+                    'idVehicule' => $vehicule['idVehicule'],
+                    'dateHealth' => date('Y-m-d', strtotime($vehicule['dateNextRevision'].' -1 year')),
+                ));
+                switch($query->errorCode())
+                {
+                    case '00000':
+                        $health = $db->query('SELECT idVehiculeHealth FROM VEHICULES_HEALTH ORDER BY idVehiculeHealth DESC;');
+                        $health = $health->fetch();
+                        $insert = $db->prepare('
+                            INSERT INTO
+                                VEHICULES_HEALTH_CHECKS
+                            SET
+                                idVehiculeHealth = :idVehiculeHealth,
+                                idHealthType     = :idHealthType,
+                                remarquesCheck   = "Ajouté par le script de version"
+                            ;');
+                        $insert->execute(array(
+                            'idVehiculeHealth' => $health['idVehiculeHealth'],
+                            'idHealthType'     => $revision,
+                        ));
+                    break;
+                }
+            }
+
+            if($vehicule['assuranceExpiration'] <> Null)
+            {
+                $query = $db->prepare('
+                    INSERT INTO
+                        VEHICULES_HEALTH
+                    SET
+                        idVehicule = :idVehicule,
+                        dateHealth = :dateHealth
+                    ;');
+                $query->execute(array(
+                    'idVehicule' => $vehicule['idVehicule'],
+                    'dateHealth' => date('Y-m-d', strtotime($vehicule['assuranceExpiration'].' -1 year')),
+                ));
+                switch($query->errorCode())
+                {
+                    case '00000':
+                        $health = $db->query('SELECT idVehiculeHealth FROM VEHICULES_HEALTH ORDER BY idVehiculeHealth DESC;');
+                        $health = $health->fetch();
+                        $insert = $db->prepare('
+                            INSERT INTO
+                                VEHICULES_HEALTH_CHECKS
+                            SET
+                                idVehiculeHealth = :idVehiculeHealth,
+                                idHealthType     = :idHealthType,
+                                remarquesCheck   = "Ajouté par le script de version"
+                            ;');
+                        $insert->execute(array(
+                            'idVehiculeHealth' => $health['idVehiculeHealth'],
+                            'idHealthType'     => $assurance,
+                        ));
+                    break;
+                }
+            }
+        }
+        checkAllMaintenance();
+        $query = $db->query(file_get_contents ("update13.3.2.sql"));
+        writeInLogs("Fin de l'installation de la mise à jour 13.3", '1', NULL);
+        echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
+        break;
+
+    case '13.3':
         writeInLogs("Fin des mises à jour", '1', NULL);
         echo "<script type='text/javascript'>document.location.replace('INSTALLFINISH.php');</script>";
         break;

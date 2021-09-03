@@ -89,7 +89,7 @@ else
             $_SESSION['returnType'] = '2';
     }
 
-    checkOneMaintenance($_GET['idVehicule']);
+    checkOneMaintenance($_GET['id']);
 
     echo "<script>window.location = document.referrer;</script>";
 }

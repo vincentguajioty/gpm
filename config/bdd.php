@@ -115,6 +115,107 @@ function getCaptcha($secretKey)
 	return $return;
 }
 
+function updateUserFromAD($idPersonne)
+{
+	global $db;
+	global $LDAP_DOMAIN;
+	global $LDAP_BASEDN;
+	global $LDAP_ISWINAD;
+	global $LDAP_SSL;
+
+	global $LDAP_USER;
+	global $LDAP_PASSWORD;
+
+	$query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE WHERE idPersonne = :idPersonne;');
+	$query->execute(array(
+	    'idPersonne' => $idPersonne
+	));
+	$data = $query->fetch();
+
+	$connect = false;
+	$ldap_username = $LDAP_USER;
+	$ldap_password = $LDAP_PASSWORD;
+	$ldap_domain = $LDAP_DOMAIN;
+	$ldap_base_dn = $LDAP_BASEDN;
+	if($LDAP_ISWINAD)
+	{ $ldap_login = $ldap_username.'@'.$ldap_domain; }
+	else
+	{ $ldap_login = "uid=".$ldap_username.",cn=users,".$ldap_base_dn; }
+	$ldap_connection = ldap_connect($ldap_domain);
+	ldap_set_option($ldap_connection, LDAP_OPT_PROTOCOL_VERSION, 3) or die('Unable to set LDAP protocol version');
+	ldap_set_option($ldap_connection, LDAP_OPT_REFERRALS, 0); // We need this for doing an LDAP search.
+	if($LDAP_SSL){ ldap_start_tls($ldap_connection); }
+
+	if (FALSE === $ldap_connection)
+	{
+		writeInLogs("Erreur LDAP", '2', NULL);
+		return false;
+		exit;
+	}
+	
+	if(TRUE === ldap_bind($ldap_connection, $ldap_login, $ldap_password))
+	{
+		if($LDAP_ISWINAD)
+		{ $results = ldap_search($ldap_connection,$ldap_base_dn,"(samaccountname=".$data['identifiant'].")",array("memberof","primarygroupid")); }
+		else
+		{ $results = ldap_search($ldap_connection,$ldap_base_dn,"(uid=".$data['identifiant'].")",array("memberof","primarygroupid")); }
+		$resultsUsers = ldap_get_entries($ldap_connection, $results);
+
+		$query = $db->prepare('DELETE FROM PROFILS_PERSONNES WHERE idPersonne = :idPersonne');
+		$query->execute(array('idPersonne'=>$idPersonne));
+
+		$query = $db->query('SELECT * FROM PROFILS;');
+		$LDAP_GROUP = $query->fetchAll();
+
+		foreach($resultsUsers as $resultsUser)
+		{
+			foreach($resultsUser['memberof'] as $group)
+			{
+				foreach($LDAP_GROUP as $authGroup)
+				{
+					if(strpos($group, $authGroup['LDAP_BINDDN']))
+					{
+						$query = $db->prepare('INSERT INTO PROFILS_PERSONNES SET idPersonne = :idPersonne, idProfil = :idProfil;');
+						$query->execute(array(
+							'idPersonne' => $idPersonne,
+							'idProfil' => $authGroup['idProfil']
+						));
+					}
+				}
+			}
+		}
+		
+		majIndicateursPersonne($idPersonne,1);
+    	majNotificationsPersonne($idPersonne,1);
+    	majValideursPersonne(1);
+
+        return true;
+	}
+	
+	return false;
+
+}
+
+function updateAllUsersFromAD()
+{
+	global $db;
+
+	$personnes = $db->query('SELECT * FROM PERSONNE_REFERENTE WHERE isActiveDirectory = 1 AND cnil_anonyme = 0;');
+	while($personne = $personnes->fetch())
+	{
+		$update = updateUserFromAD($personne['idPersonne']);
+
+		if($update)
+		{
+			writeInLogs("Mise à jour LDAP avec succès de l'utilisateur ".$personne['idPersonne'], '1', NULL);
+		}
+		else
+		{
+			writeInLogs("Mise à jour LDAP en echec de l'utilisateur ".$personne['idPersonne'], '3', NULL);
+		}
+	}
+}
+
 function checkUserPasswordLocal($identifiant, $password)
 {
 	global $db;
@@ -175,9 +276,6 @@ function checkUserPasswordAD($identifiant, $password, $idPersonne)
 		else
 		{ $results = ldap_search($ldap_connection,$ldap_base_dn,"(uid=".$ldap_username.")",array("memberof","primarygroupid")); }
 		$resultsUsers = ldap_get_entries($ldap_connection, $results);
-
-		$_SESSION['ldap_search'] = $results;
-		$_SESSION['ldap_get_entries'] = $resultsUsers;
 
 		$query = $db->prepare('DELETE FROM PROFILS_PERSONNES WHERE idPersonne = :idPersonne');
 		$query->execute(array('idPersonne'=>$idPersonne));
@@ -250,9 +348,6 @@ function checkUserExistingAD($identifiant, $password)
 		{ $results = ldap_search($ldap_connection,$ldap_base_dn,"(uid=".$ldap_username.")",array("memberof","primarygroupid")); }
 		$resultsUsers = ldap_get_entries($ldap_connection, $results);
 
-		$_SESSION['ldap_search'] = $results;
-		$_SESSION['ldap_get_entries'] = $resultsUsers;
-
 		$query = $db->prepare('
 	        INSERT INTO
 	            PERSONNE_REFERENTE
@@ -265,10 +360,7 @@ function checkUserExistingAD($identifiant, $password)
 				notif_reserves_manquants            = 1,
 				notif_reserves_peremptions          = 1,
 				notif_reserves_inventaires          = 1,
-				notif_vehicules_assurances          = 1,
-				notif_vehicules_revisions           = 1,
 				notif_vehicules_desinfections       = 1,
-				notif_vehicules_ct                  = 1,
 				notif_vehicules_health              = 1,
 				notif_tenues_stock                  = 1,
 				notif_tenues_retours                = 1,
@@ -279,9 +371,7 @@ function checkUserExistingAD($identifiant, $password)
 				conf_indicateur3Accueil             = 1,
 				conf_indicateur4Accueil             = 1,
 				conf_indicateur5Accueil             = 1,
-				conf_indicateur6Accueil             = 1 ,
-				conf_indicateur7Accueil             = 1 ,
-				conf_indicateur8Accueil             = 1,
+				conf_indicateur6Accueil             = 1,
 				conf_indicateur9Accueil             = 1,
 				conf_indicateur10Accueil            = 1,
 				conf_indicateur11Accueil            = 1,
@@ -316,6 +406,11 @@ function checkUserExistingAD($identifiant, $password)
 	    $query = $db->query('SELECT MAX(idPersonne) as idPersonne FROM PERSONNE_REFERENTE;');
         $userCreate = $query->fetch();
         $idPersonne = $userCreate['idPersonne'];
+
+        $notifications_abonnements = $db->prepare('INSERT INTO NOTIFICATIONS_ABONNEMENTS SET idPersonne = :idPersonne, idCondition = 1;');
+        $notifications_abonnements->execute(array(
+        	'idPersonne' => $idPersonne,
+        ));
 
         writeInLogs("Utilisateur ".$idPersonne." (".$identifiant.") créé automatiquement par lien AD lors de sa première connexion", '1', NULL);
 
@@ -634,8 +729,6 @@ function loadSession($idPersonne)
 	$_SESSION['conf_indicateur4Accueil']                   = $data['conf_indicateur4Accueil'];
 	$_SESSION['conf_indicateur5Accueil']                   = $data['conf_indicateur5Accueil'];
 	$_SESSION['conf_indicateur6Accueil']                   = $data['conf_indicateur6Accueil'];
-	$_SESSION['conf_indicateur7Accueil']                   = $data['conf_indicateur7Accueil'];
-	$_SESSION['conf_indicateur8Accueil']                   = $data['conf_indicateur8Accueil'];
 	$_SESSION['conf_indicateur9Accueil']                   = $data['conf_indicateur9Accueil'];
 	$_SESSION['conf_indicateur10Accueil']                  = $data['conf_indicateur10Accueil'];
 	$_SESSION['conf_indicateur11Accueil']                  = $data['conf_indicateur11Accueil'];
@@ -1161,10 +1254,6 @@ function majIndicateursPersonne($idPersonne, $enableLog)
     $conf_indicateur5Accueil = ($data['reserve_lecture']) && ($data['conf_indicateur5Accueil']);
 
     $conf_indicateur6Accueil = ($data['reserve_lecture']) && ($data['conf_indicateur6Accueil']);
-
-    $conf_indicateur7Accueil = ($data['vehicules_lecture']) && ($data['conf_indicateur7Accueil']);
-
-    $conf_indicateur8Accueil = ($data['vehicules_lecture']) && ($data['conf_indicateur8Accueil']);
     
     $conf_indicateur9Accueil = ($data['tenues_lecture'] OR $data['tenuesCatalogue_lecture']) && ($data['conf_indicateur9Accueil']);
     
@@ -1184,8 +1273,6 @@ function majIndicateursPersonne($idPersonne, $enableLog)
             conf_indicateur4Accueil  = :conf_indicateur4Accueil,
             conf_indicateur5Accueil  = :conf_indicateur5Accueil,
             conf_indicateur6Accueil  = :conf_indicateur6Accueil,
-            conf_indicateur7Accueil  = :conf_indicateur7Accueil,
-            conf_indicateur8Accueil  = :conf_indicateur8Accueil,
             conf_indicateur9Accueil  = :conf_indicateur9Accueil,
             conf_indicateur10Accueil = :conf_indicateur10Accueil,
             conf_indicateur11Accueil = :conf_indicateur11Accueil,
@@ -1201,8 +1288,6 @@ function majIndicateursPersonne($idPersonne, $enableLog)
         'conf_indicateur4Accueil'  => (int)$conf_indicateur4Accueil,
         'conf_indicateur5Accueil'  => (int)$conf_indicateur5Accueil,
         'conf_indicateur6Accueil'  => (int)$conf_indicateur6Accueil,
-        'conf_indicateur7Accueil'  => (int)$conf_indicateur7Accueil,
-        'conf_indicateur8Accueil'  => (int)$conf_indicateur8Accueil,
         'conf_indicateur9Accueil'  => (int)$conf_indicateur9Accueil,
         'conf_indicateur10Accueil' => (int)$conf_indicateur10Accueil,
         'conf_indicateur11Accueil' => (int)$conf_indicateur11Accueil,
@@ -1250,15 +1335,9 @@ function majNotificationsPersonne($idPersonne, $enableLog)
     $notif_reserves_peremptions = $data['notifications'] && ($data['reserve_lecture']) && ($data['notif_reserves_peremptions']);
     
     $notif_reserves_inventaires = $data['notifications'] && ($data['reserve_lecture']) && ($data['notif_reserves_inventaires']);
-    
-    $notif_vehicules_assurances = $data['notifications'] && ($data['vehicules_lecture']) && ($data['notif_vehicules_assurances']);
-    
-    $notif_vehicules_revisions = $data['notifications'] && ($data['vehicules_lecture']) && ($data['notif_vehicules_revisions']);
 
     $notif_vehicules_desinfections = $data['notifications'] && ($data['desinfections_lecture']) && ($data['notif_vehicules_desinfections']);
     
-    $notif_vehicules_ct = $data['notifications'] && ($data['vehicules_lecture']) && ($data['notif_vehicules_ct']);
-
     $notif_vehicules_health = $data['notifications'] && ($data['vehiculeHealth_lecture']) && ($data['notif_vehicules_health']);
     
     $notif_tenues_stock = $data['notifications'] && ($data['tenuesCatalogue_lecture']) && ($data['notif_tenues_stock']);
@@ -1280,9 +1359,6 @@ function majNotificationsPersonne($idPersonne, $enableLog)
             notif_reserves_manquants      = :notif_reserves_manquants,
             notif_reserves_peremptions    = :notif_reserves_peremptions,
             notif_reserves_inventaires    = :notif_reserves_inventaires,
-            notif_vehicules_assurances    = :notif_vehicules_assurances,
-            notif_vehicules_revisions     = :notif_vehicules_revisions,
-            notif_vehicules_ct            = :notif_vehicules_ct,
             notif_vehicules_health        = :notif_vehicules_health,
             notif_vehicules_desinfections = :notif_vehicules_desinfections,
             notif_tenues_stock            = :notif_tenues_stock,
@@ -1301,10 +1377,7 @@ function majNotificationsPersonne($idPersonne, $enableLog)
         'notif_reserves_manquants'      => (int)$notif_reserves_manquants,
         'notif_reserves_peremptions'    => (int)$notif_reserves_peremptions,
         'notif_reserves_inventaires'    => (int)$notif_reserves_inventaires,
-        'notif_vehicules_assurances'    => (int)$notif_vehicules_assurances,
-        'notif_vehicules_revisions'     => (int)$notif_vehicules_revisions,
         'notif_vehicules_desinfections' => (int)$notif_vehicules_desinfections,
-        'notif_vehicules_ct'            => (int)$notif_vehicules_ct,
         'notif_vehicules_health'        => (int)$notif_vehicules_health,
         'notif_tenues_stock'            => (int)$notif_tenues_stock,
         'notif_tenues_retours'          => (int)$notif_tenues_retours,

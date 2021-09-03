@@ -9,8 +9,6 @@ require_once 'config/bdd.php';
 	$_POST['conf_indicateur4Accueil']       = ($_POST['conf_indicateur4Accueil']       == 1) ? 1 : 0;
 	$_POST['conf_indicateur5Accueil']       = ($_POST['conf_indicateur5Accueil']       == 1) ? 1 : 0;
 	$_POST['conf_indicateur6Accueil']       = ($_POST['conf_indicateur6Accueil']       == 1) ? 1 : 0;
-	$_POST['conf_indicateur7Accueil']       = ($_POST['conf_indicateur7Accueil']       == 1) ? 1 : 0;
-	$_POST['conf_indicateur8Accueil']       = ($_POST['conf_indicateur8Accueil']       == 1) ? 1 : 0;
 	$_POST['conf_indicateur9Accueil']       = ($_POST['conf_indicateur9Accueil']       == 1) ? 1 : 0;
 	$_POST['conf_indicateur10Accueil']      = ($_POST['conf_indicateur10Accueil']      == 1) ? 1 : 0;
 	$_POST['conf_indicateur11Accueil']      = ($_POST['conf_indicateur11Accueil']      == 1) ? 1 : 0;
@@ -23,10 +21,7 @@ require_once 'config/bdd.php';
 	$_POST['notif_reserves_manquants']      = ($_POST['notif_reserves_manquants']      == 1) ? 1 : 0;
 	$_POST['notif_reserves_peremptions']    = ($_POST['notif_reserves_peremptions']    == 1) ? 1 : 0;
 	$_POST['notif_reserves_inventaires']    = ($_POST['notif_reserves_inventaires']    == 1) ? 1 : 0;
-	$_POST['notif_vehicules_assurances']    = ($_POST['notif_vehicules_assurances']    == 1) ? 1 : 0;
-	$_POST['notif_vehicules_revisions']     = ($_POST['notif_vehicules_revisions']     == 1) ? 1 : 0;
 	$_POST['notif_vehicules_desinfections'] = ($_POST['notif_vehicules_desinfections'] == 1) ? 1 : 0;
-	$_POST['notif_vehicules_ct']            = ($_POST['notif_vehicules_ct']            == 1) ? 1 : 0;
 	$_POST['notif_vehicules_health']        = ($_POST['notif_vehicules_health']        == 1) ? 1 : 0;
 	$_POST['notif_tenues_stock']            = ($_POST['notif_tenues_stock']            == 1) ? 1 : 0;
 	$_POST['notif_tenues_retours']          = ($_POST['notif_tenues_retours']          == 1) ? 1 : 0;
@@ -43,8 +38,6 @@ require_once 'config/bdd.php';
     		conf_indicateur4Accueil       = :conf_indicateur4Accueil,
     		conf_indicateur5Accueil       = :conf_indicateur5Accueil,
     		conf_indicateur6Accueil       = :conf_indicateur6Accueil,
-    		conf_indicateur7Accueil       = :conf_indicateur7Accueil,
-    		conf_indicateur8Accueil       = :conf_indicateur8Accueil,
     		conf_indicateur9Accueil       = :conf_indicateur9Accueil,
     		conf_indicateur10Accueil      = :conf_indicateur10Accueil,
     		conf_indicateur11Accueil      = :conf_indicateur11Accueil,
@@ -57,10 +50,7 @@ require_once 'config/bdd.php';
     		notif_reserves_manquants      = :notif_reserves_manquants,
     		notif_reserves_peremptions    = :notif_reserves_peremptions,
     		notif_reserves_inventaires    = :notif_reserves_inventaires,
-    		notif_vehicules_assurances    = :notif_vehicules_assurances,
-    		notif_vehicules_revisions     = :notif_vehicules_revisions,
     		notif_vehicules_desinfections = :notif_vehicules_desinfections,
-    		notif_vehicules_ct            = :notif_vehicules_ct,
     		notif_vehicules_health        = :notif_vehicules_health,
     		notif_tenues_stock            = :notif_tenues_stock,
     		notif_tenues_retours          = :notif_tenues_retours,
@@ -78,8 +68,6 @@ require_once 'config/bdd.php';
 		'conf_indicateur4Accueil'       => $_POST['conf_indicateur4Accueil'],
 		'conf_indicateur5Accueil'       => $_POST['conf_indicateur5Accueil'],
 		'conf_indicateur6Accueil'       => $_POST['conf_indicateur6Accueil'],
-		'conf_indicateur7Accueil'       => $_POST['conf_indicateur7Accueil'],
-		'conf_indicateur8Accueil'       => $_POST['conf_indicateur8Accueil'],
 		'conf_indicateur9Accueil'       => $_POST['conf_indicateur9Accueil'],
 		'conf_indicateur10Accueil'      => $_POST['conf_indicateur10Accueil'],
 		'conf_indicateur11Accueil'      => $_POST['conf_indicateur11Accueil'],
@@ -92,10 +80,7 @@ require_once 'config/bdd.php';
 		'notif_reserves_manquants'      => $_POST['notif_reserves_manquants'],
 		'notif_reserves_peremptions'    => $_POST['notif_reserves_peremptions'],
 		'notif_reserves_inventaires'    => $_POST['notif_reserves_inventaires'],
-		'notif_vehicules_assurances'    => $_POST['notif_vehicules_assurances'],
-		'notif_vehicules_revisions'     => $_POST['notif_vehicules_revisions'],
 		'notif_vehicules_desinfections' => $_POST['notif_vehicules_desinfections'],
-		'notif_vehicules_ct'            => $_POST['notif_vehicules_ct'],
 		'notif_vehicules_health'        => $_POST['notif_vehicules_health'],
 		'notif_tenues_stock'            => $_POST['notif_tenues_stock'],
 		'notif_tenues_retours'          => $_POST['notif_tenues_retours'],

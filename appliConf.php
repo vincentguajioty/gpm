@@ -45,7 +45,6 @@ if ($_SESSION['appli_conf']==0)
                     <li><a href="#aes" data-toggle="tab"><i class="fa fa-shopping-cart"></i> Cryptage AES</a></li>
                     <li><a href="#sel" data-toggle="tab"><i class="fa fa-key"></i> Sels utilisateurs</a></li>
                     <li><a href="#notifCMD" data-toggle="tab"><i class="fa fa-envelope"></i> Notifications commandes</a></li>
-                    <li><a href="#notifVEH" data-toggle="tab"><i class="fa fa-ambulance"></i> Véhicules</a></li>
                     <li><a href="#alertesBen" data-toggle="tab"><i class="fa fa-comment"></i> Alertes bénévoles</a></li>
                     <li><a href="#ad" data-toggle="tab"><i class="fa fa-link"></i> Annuaire AD/LDAP</a></li>
                 </ul>
@@ -422,27 +421,7 @@ if ($_SESSION['appli_conf']==0)
                             </div>
                         </form>
                     </div>
-
-                    <div class="tab-pane" id="notifVEH">
-                        <form role="form" action="appliConfUpdateVehicules.php" method="POST">
-                            <div class="form-group">
-                                <label>Jours d'anticipation des CT:</label>
-                                <input type="number" min="0" class="form-control" value="<?=$data['vehicules_ct_delais_notif']?>" name="vehicules_ct_delais_notif" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Jours d'anticipation des révisions:</label>
-                                <input type="number" min="0" class="form-control" value="<?=$data['vehicules_revision_delais_notif']?>" name="vehicules_revision_delais_notif" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Jours d'anticipation des péremptions d'assurance:</label>
-                                <input type="number" min="0" class="form-control" value="<?=$data['vehicules_assurance_delais_notif']?>" name="vehicules_assurance_delais_notif" required>
-                            </div>
-                            <div class="box-footer">
-                                <button type="submit" class="btn btn-info pull-right">Modifier</button>
-                            </div>
-                        </form>
-                    </div>
-
+                    
                     <div class="tab-pane" id="alertesBen">
 						<?php
 							if($RECAPTCHA_ENABLE != 1)
@@ -482,6 +461,20 @@ if ($_SESSION['appli_conf']==0)
                                     <div class="form-group">
                                         <label>Base DN:</label>
                                         <input type="text" class="form-control" value="<?=$data['LDAP_BASEDN']?>" name="LDAP_BASEDN">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Nom d'utilisateur:</label>
+                                        <input type="text" class="form-control" value="<?=$data['LDAP_USER']?>" name="LDAP_USER">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Mot de passe:</label>
+                                        <input type="password" class="form-control" value="<?=$data['LDAP_PASSWORD']?>" name="LDAP_PASSWORD">
                                     </div>
                                 </div>
                             </div>

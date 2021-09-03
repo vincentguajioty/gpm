@@ -989,57 +989,6 @@ include('logCheck.php');
                         <td><?php echo $data['marqueModele']; ?></td>
                         <td>
                             <span class="badge bg-<?php
-                                if($data['dateNextRevision']<date('Y-m-d'))
-                                {
-                                    echo "red";
-                                }
-                                else
-                                {
-                                    if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextRevision'] . ' - '.$VEHICULES_REVISION_DELAIS_NOTIF.' days')))
-                                    {
-                                        echo "orange";
-                                    }
-                                    else
-                                    {
-                                        echo "green";
-                                    }
-                                }
-                                ?>">Révision</span>
-                            <span class="badge bg-<?php
-                                if($data['dateNextCT']<date('Y-m-d'))
-                                {
-                                    echo "red";
-                                }
-                                else
-                                {
-                                    if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextCT'] . ' - '.$VEHICULES_CT_DELAIS_NOTIF.' days')))
-                                    {
-                                        echo "orange";
-                                    }
-                                    else
-                                    {
-                                        echo "green";
-                                    }
-                                }
-                                ?>">CT</span>
-                            <span class="badge bg-<?php
-                                if($data['assuranceExpiration']<date('Y-m-d'))
-                                {
-                                    echo "red";
-                                }
-                                else
-                                {
-                                    if(date('Y-m-d')>=date('Y-m-d', strtotime($data['assuranceExpiration'] . ' - '.$VEHICULES_ASSURANCE_DELAIS_NOTIF.' days')))
-                                    {
-                                        echo "orange";
-                                    }
-                                    else
-                                    {
-                                        echo "green";
-                                    }
-                                }
-                                ?>">Assurance</span>
-                            <span class="badge bg-<?php
                                 if($data['alerteDesinfection'] == Null)
                                 {
                                     echo "grey";
@@ -1056,6 +1005,23 @@ include('logCheck.php');
                                     }
                                 }
                                 ?>">Désinfections</span>
+                            <span class="badge bg-<?php
+                                                    if($data['alerteMaintenance'] == Null)
+                                                    {
+                                                        echo "grey";
+                                                    }
+                                                    else
+                                                    {
+                                                        if($data['alerteMaintenance'] == 0)
+                                                        {
+                                                            echo "green";
+                                                        }
+                                                        else
+                                                        {
+                                                            echo "red";
+                                                        }
+                                                    }
+                                                    ?>">Maintenance</span>
                         </td>
                         <td><?php echo $data['libelleEtat']; ?> (<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>)</td>
                         <td>

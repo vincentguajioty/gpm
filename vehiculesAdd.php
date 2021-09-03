@@ -13,9 +13,6 @@ else
 {
 
     $_POST['dateAchat'] = ($_POST['dateAchat'] == Null) ? Null : $_POST['dateAchat'];
-    $_POST['dateNextRevision'] = ($_POST['dateNextRevision'] == Null) ? Null : $_POST['dateNextRevision'];
-    $_POST['dateNextCT'] = ($_POST['dateNextCT'] == Null) ? Null : $_POST['dateNextCT'];
-    $_POST['assuranceExpiration'] = ($_POST['assuranceExpiration'] == Null) ? Null : $_POST['assuranceExpiration'];
     
     $_POST['idLieu'] = ($_POST['idLieu'] == Null) ? Null : $_POST['idLieu'];
     $_POST['idCarburant'] = ($_POST['idCarburant'] == Null) ? Null : $_POST['idCarburant'];
@@ -54,10 +51,7 @@ else
             idEtat                         = :idEtat,
             idResponsable                  = :idResponsable,
             dateAchat                      = :dateAchat,
-            dateNextRevision               = :dateNextRevision,
-            dateNextCT                     = :dateNextCT,
             assuranceNumero                = :assuranceNumero,
-            assuranceExpiration            = :assuranceExpiration,
             pneusAVhivers                  = :pneusAVhivers,
             pneusARhivers                  = :pneusARhivers,
             climatisation                  = :climatisation,
@@ -88,10 +82,7 @@ else
         'idEtat'                         => $_POST['idEtat'],
         'idResponsable'                  => $_POST['idResponsable'],
         'dateAchat'                      => $_POST['dateAchat'],
-        'dateNextRevision'               => $_POST['dateNextRevision'],
-        'dateNextCT'                     => $_POST['dateNextCT'],
         'assuranceNumero'                => $_POST['assuranceNumero'],
-        'assuranceExpiration'            => $_POST['assuranceExpiration'],
         'pneusAVhivers'                  => $_POST['pneusAVhivers'],
         'pneusARhivers'                  => $_POST['pneusARhivers'],
         'climatisation'                  => $_POST['climatisation'],

@@ -249,57 +249,6 @@ include('logCheck.php');
 						                                <td><?php echo $data['libelleVehiculesEtat']; ?></td>
 						                                <td>
 						                                    <span class="badge bg-<?php
-						                                        if($data['dateNextRevision']<date('Y-m-d'))
-						                                        {
-						                                            echo "red";
-						                                        }
-						                                        else
-						                                        {
-						                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextRevision'] . ' - '.$VEHICULES_REVISION_DELAIS_NOTIF.' days')))
-						                                            {
-						                                                echo "orange";
-						                                            }
-						                                            else
-						                                            {
-						                                                echo "green";
-						                                            }
-						                                        }
-						                                        ?>">Révision</span>
-						                                    <span class="badge bg-<?php
-						                                        if($data['dateNextCT']<date('Y-m-d'))
-						                                        {
-						                                            echo "red";
-						                                        }
-						                                        else
-						                                        {
-						                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['dateNextCT'] . ' - '.$VEHICULES_CT_DELAIS_NOTIF.' days')))
-						                                            {
-						                                                echo "orange";
-						                                            }
-						                                            else
-						                                            {
-						                                                echo "green";
-						                                            }
-						                                        }
-						                                        ?>">CT</span>
-						                                    <span class="badge bg-<?php
-						                                        if($data['assuranceExpiration']<date('Y-m-d'))
-						                                        {
-						                                            echo "red";
-						                                        }
-						                                        else
-						                                        {
-						                                            if(date('Y-m-d')>=date('Y-m-d', strtotime($data['assuranceExpiration'] . ' - '.$VEHICULES_ASSURANCE_DELAIS_NOTIF.' days')))
-						                                            {
-						                                                echo "orange";
-						                                            }
-						                                            else
-						                                            {
-						                                                echo "green";
-						                                            }
-						                                        }
-						                                        ?>">Assurance</span>
-						                                    <span class="badge bg-<?php
 						                                        if($data['alerteDesinfection'] == Null)
 						                                        {
 						                                            echo "grey";
@@ -577,51 +526,6 @@ include('logCheck.php');
 			                                ];
 				                        }
 				                    }
-		
-			                        if ($vehicules)
-			                        {
-				                        $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND dateNextRevision IS NOT NULL;');
-				                        while ($data = $query->fetch())
-				                        {
-				                        	$events[] = [
-			                                    'date'     => date_format(date_create($data['dateNextRevision']), 'Y-m-d'),
-			                                    'title'    => 'Révision',
-			                                    'subTitle' => $data['libelleVehicule'],
-			                                    'color'    => $_SESSION['agenda_vehicules_revision'],
-			                                    'url'      => 'indexModalCalendrier.php?case=vehiculesRev&id='.$data['idVehicule'],
-			                                ];
-				                        }
-			                        }
-		
-			                        if ($vehicules)
-			                        {
-				                        $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND dateNextCT IS NOT NULL;');
-				                        while ($data = $query->fetch())
-				                        {
-				                        	$events[] = [
-			                                    'date'     => date_format(date_create($data['dateNextCT']), 'Y-m-d'),
-			                                    'title'    => 'CT',
-			                                    'subTitle' => $data['libelleVehicule'],
-			                                    'color'    => $_SESSION['agenda_vehicules_ct'],
-			                                    'url'      => 'indexModalCalendrier.php?case=vehiculesCT&id='.$data['idVehicule'],
-			                                ];
-				                        }
-			                        }
-		
-			                        if ($vehicules)
-			                        {
-				                        $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND assuranceExpiration IS NOT NULL;');
-				                        while ($data = $query->fetch())
-				                        {
-				                        	$events[] = [
-			                                    'date'     => date_format(date_create($data['assuranceExpiration']), 'Y-m-d'),
-			                                    'title'    => 'Assurance',
-			                                    'subTitle' => $data['libelleVehicule'],
-			                                    'color'    => $_SESSION['agenda_vehicules_assurance'],
-			                                    'url'      => 'indexModalCalendrier.php?case=vehiculesAssu&id='.$data['idVehicule'],
-			                                ];
-				                        }
-			                        }
 
 			                        if ($vehicules)
 			                        {
@@ -983,64 +887,6 @@ include('logCheck.php');
 									}
 								?>
 								<h3 class="timeline-header no-border">Matériel manquant dans la réserve: <?= $data['nb'] ?></h3>
-							</div>
-						</li>
-					<?php } ?>
-					
-					<?php if($_SESSION['conf_indicateur7Accueil']==1){ ?>
-						<li>
-							<?php
-								$query = $db->query('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND (assuranceExpiration IS NOT NULL) AND ((assuranceExpiration < CURRENT_DATE) OR (assuranceExpiration = CURRENT_DATE));');
-			                	$data = $query->fetch();
-							?>
-							<?php
-								if ($data['nb']>0)
-								{
-									echo '<i class="fa bg-red"></i>';
-									echo '<i class="fa fa-warning bg-red faa-flash animated"></i>';
-								}
-								else
-								{
-									echo '<i class="fa fa-check bg-green"></i>';
-								}
-							?>
-							<div class="timeline-item">
-								<?php
-									if ($data['nb']>0)
-									{
-										echo '<span class="time"><a data-toggle="modal" data-target="#modalAccueilAlerteAssurance">Voir le détail</a></span>';
-									}
-								?>
-								<h3 class="timeline-header no-border">Assurances périmées: <?= $data['nb'] ?></h3>
-							</div>
-						</li>
-					<?php } ?>
-					
-					<?php if($_SESSION['conf_indicateur8Accueil']==1){ ?>
-						<li>
-							<?php
-								$query = $db->query('SELECT COUNT(*) as nb FROM VEHICULES WHERE idEtat = 1 AND ((dateNextRevision IS NOT NULL) AND ((dateNextRevision < CURRENT_DATE) OR (dateNextRevision = CURRENT_DATE))OR((dateNextCT IS NOT NULL) AND ((dateNextCT < CURRENT_DATE) OR (dateNextCT = CURRENT_DATE))));');
-			                	$data = $query->fetch();
-							?>
-							<?php
-								if ($data['nb']>0)
-								{
-									echo '<i class="fa bg-red"></i>';
-									echo '<i class="fa fa-warning bg-red faa-flash animated"></i>';
-								}
-								else
-								{
-									echo '<i class="fa fa-check bg-green"></i>';
-								}
-							?>
-							<div class="timeline-item">
-								<?php
-									if ($data['nb']>0)
-									{
-										echo '<span class="time"><a data-toggle="modal" data-target="#modalAccueilAlerteCT">Voir le détail</a></span>';
-									}
-								?>
-								<h3 class="timeline-header no-border">Révisions et CT: <?= $data['nb'] ?></h3>
 							</div>
 						</li>
 					<?php } ?>
@@ -1526,58 +1372,6 @@ include('logCheck.php');
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
                 <?php if ($_SESSION['reserve_lecture']==1){ ?><a href="reserveMateriel.php"><button type="button" class="btn btn-default pull-right">Accéder à la réserve</button></a><? } ?>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade modal-danger" id="modalAccueilAlerteAssurance">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Alertes de fin d'assurance</h4>
-            </div>
-            <div class="modal-body">
-                <?php
-                $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND (assuranceExpiration IS NOT NULL) AND ((assuranceExpiration < CURRENT_DATE) OR (assuranceExpiration = CURRENT_DATE));');
-                ?>
-                <ul>
-                    <?php
-                    while($data=$query->fetch())
-                    {
-                        echo '<li>' . $data['libelleVehicule'] . '</li>';
-                    }
-                    ?>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
-                <?php if ($_SESSION['vehicules_lecture']==1){ ?><a href="vehicules.php"><button type="button" class="btn btn-default pull-right">Accéder aux véhicules</button></a><? } ?>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade modal-danger" id="modalAccueilAlerteCT">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Alertes de révisions / Contrôle technique</h4>
-            </div>
-            <div class="modal-body">
-                <?php
-                $query = $db->query('SELECT * FROM VEHICULES WHERE idEtat = 1 AND ((dateNextRevision IS NOT NULL) AND ((dateNextRevision < CURRENT_DATE) OR (dateNextRevision = CURRENT_DATE))OR((dateNextCT IS NOT NULL) AND ((dateNextCT < CURRENT_DATE) OR (dateNextCT = CURRENT_DATE))));');
-                ?>
-                <ul>
-                    <?php
-                    while($data=$query->fetch())
-                    {
-                        echo '<li>' . $data['libelleVehicule'] . '</li>';
-                    }
-                    ?>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
-                <?php if ($_SESSION['vehicules_lecture']==1){ ?><a href="vehicules.php"><button type="button" class="btn btn-default pull-right">Accéder aux véhicules</button></a><? } ?>
             </div>
         </div>
     </div>

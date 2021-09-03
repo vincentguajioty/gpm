@@ -337,10 +337,6 @@ if ($_SESSION['annuaire_lecture']==0)
                             	<?php if ($reserves > 0){ if($personne['conf_indicateur5Accueil'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Matériels périmés (réserve)
                             	<br/>
                             	<?php if ($reserves > 0){ if($personne['conf_indicateur6Accueil'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Matériels manquants (réserve)
-                            	<br/>
-                            	<?php if ($vehicules > 0){ if($personne['conf_indicateur7Accueil'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Assurances véhicules
-                            	<br/>
-                                <?php if ($vehicules > 0){ if($personne['conf_indicateur8Accueil'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Contrôles techniques et révisions véhicules
                                 <br/>
                                 <?php if ($desinfections > 0){ if($personne['conf_indicateur11Accueil'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Désinfections véhicules
                             	<br/>
@@ -371,13 +367,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                 <br/>
                                 <?php if ($reserves > 0 AND $data['notifications']==1){ if($data['notif_reserves_inventaires'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Inventaires (réserve)
                                 <br/>
-                                <?php if ($vehicules > 0 AND $data['notifications']==1){ if($data['notif_vehicules_assurances'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Assurances véhicules
-                                <br/>
-                                <?php if ($vehicules > 0 AND $data['notifications']==1){ if($data['notif_vehicules_revisions'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Révisions véhicules
-                                <br/>
                                 <?php if ($desinfections > 0 AND $data['notifications']==1){ if($data['notif_vehicules_desinfections'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Désinfections véhicules
-                                <br/>
-                                <?php if ($vehicules > 0 AND $data['notifications']==1){ if($data['notif_vehicules_ct'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Contrôles techniques véhicules
                                 <br/>
                                 <?php if ($health > 0 AND $data['notifications']==1){ if($data['notif_vehicules_health'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Maintenance régulière véhicules
                                 <br/>

@@ -55,7 +55,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                 <th class="not-mobile">Prénom</th>
                                 <th class="not-mobile">Mail</th>
                                 <th class="not-mobile">Fonction</th>
-                                <th class="not-mobile">Profil</th>
+                                <th class="not-mobile">Profils <?php if ($_SESSION['annuaire_modification']){?><a href="annuaireSynchroADManuel.php" class="btn btn-xs spinnerAttenteClick" title="Synchroniser les profils AD/LDAP"><i class="fa fa-refresh"></i></a><?php } ?></th>
                                 <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>

@@ -659,12 +659,6 @@ require_once('logCheck.php');
 	                                	<label><input <?php if($_SESSION['conf_indicateur6Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur6Accueil" <?php if ($reserves == 0){echo 'disabled';} ?>> Matériels manquants (réserve)</label>
 	                                </div>
 	                                <div class="checkbox">
-	                                	<label><input <?php if($_SESSION['conf_indicateur7Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur7Accueil" <?php if ($vehicules == 0){echo 'disabled';} ?>> Assurances véhicules</label>
-	                                </div>
-	                                <div class="checkbox">
-	                                	<label><input <?php if($_SESSION['conf_indicateur8Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur8Accueil" <?php if ($vehicules == 0){echo 'disabled';} ?>> Contrôles techniques et révisions véhicules</label>
-	                                </div>
-	                                <div class="checkbox">
 	                                	<label><input <?php if($_SESSION['conf_indicateur11Accueil'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="conf_indicateur11Accueil" <?php if ($desinfections == 0){echo 'disabled';} ?>> Désinfections des véhicules</label>
 	                                </div>
 	                                <div class="checkbox">
@@ -712,16 +706,7 @@ require_once('logCheck.php');
 	                                	<label><input <?php if($data['notif_reserves_inventaires'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_reserves_inventaires" <?php if ($reserves == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Inventaires (réserve)</label>
 	                                </div>
 	                                <div class="checkbox">
-	                                	<label><input <?php if($data['notif_vehicules_assurances'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_assurances" <?php if ($vehicules == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Assurances véhicules</label>
-	                                </div>
-	                                <div class="checkbox">
-	                                	<label><input <?php if($data['notif_vehicules_revisions'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_revisions" <?php if ($vehicules == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Révisions véhicules</label>
-	                                </div>
-	                                <div class="checkbox">
 	                                	<label><input <?php if($data['notif_vehicules_desinfections'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_desinfections" <?php if ($desinfections == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Désinfections véhicules</label>
-	                                </div>
-	                                <div class="checkbox">
-	                                	<label><input <?php if($data['notif_vehicules_ct'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_ct" <?php if ($vehicules == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Contrôles techniques véhicules</label>
 	                                </div>
 	                                <div class="checkbox">
 	                                	<label><input <?php if($data['notif_vehicules_health'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_vehicules_health" <?php if ($health == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Maintenance régulière des véhicules</label>
