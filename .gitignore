@@ -1,17 +1,17 @@
 /config/bdd.php
 /logs/*.log
 
-/documents/centresCouts
+/documents/centresCouts/*
 !/documents/centresCouts/.htaccess
-/documents/commandes
+/documents/commandes/*
 !/documents/commandes/.htaccess
-/documents/vehicules
+/documents/vehicules/*
 !/documents/vehicules/.htaccess
-/documents/vhfCanaux
+/documents/vhfCanaux/*
 !/documents/vhfCanaux/.htaccess
-/documents/vhfEquipements
+/documents/vhfEquipements/*
 !/documents/vhfEquipements/.htaccess
-/documents/vhfPlans
+/documents/vhfPlans/*
 !/documents/vhfPlans/.htaccess
 
 gpm.sublime*
