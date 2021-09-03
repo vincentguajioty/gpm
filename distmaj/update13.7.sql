@@ -1,0 +1,1 @@
+UPDATE CONFIG set version = '13.7';
