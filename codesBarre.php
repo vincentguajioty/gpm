@@ -33,12 +33,13 @@ if ($_SESSION['codeBarre_lecture']==0)
         <section class="content">
             <?php include('confirmationBox.php'); ?>
             <div class="box">
-                <?php if ($_SESSION['codeBarre_ajout']==1) {?>
-	                <div class="box-header">
-						<h3 class="box-title"><a href="codesBarreFormFournisseur.php" class="btn btn-sm btn-success modal-form">Ajouter un code barre fournisseur au référentiel</a></h3>
-						<h3 class="box-title"><a href="codesBarreFormInterne.php" class="btn btn-sm btn-success modal-form">Générer un code barre interne et l'ajouter au référentiel</a></h3>
-	                </div>
-                <?php }?>
+                <div class="box-header">
+                    <?php if ($_SESSION['codeBarre_ajout']==1) {?>
+    					<h3 class="box-title"><a href="codesBarreFormFournisseur.php" class="btn btn-sm btn-success modal-form">Ajouter un code barre fournisseur au référentiel</a></h3>
+    					<h3 class="box-title"><a href="codesBarreFormInterne.php" class="btn btn-sm btn-success modal-form">Générer un code barre interne et l'ajouter au référentiel</a></h3>
+                    <?php }?>
+                    <h3 class="box-title pull-right "><a href="codesBarrePrintRef.php" class="btn btn-sm btn-success">Imprimer le référentiel des codes barre</a></h3>
+                </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="tri1" class="table table-bordered table-hover">

@@ -53,7 +53,7 @@ if ($_SESSION['lots_modification']==0)
                     <div class="box-body">
                         <div class="form-group">
                             <label>Emplacement, contenu, Emplacement, contenu, ...</label>
-                            <textarea class="form-control" rows="10" name="barcodes"></textarea>
+                            <textarea class="form-control" rows="10" name="barcodes" autofocus></textarea>
                         </div>
                     </div>
                 </div>

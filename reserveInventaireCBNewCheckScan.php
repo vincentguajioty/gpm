@@ -37,6 +37,7 @@ if ($_SESSION['reserve_modification']==0)
 
             <?php
             if(isset($_POST['barcodes']) AND $_POST['barcodes'] != '' AND $_POST['barcodes'] != Null)
+            {
                 $codes = preg_split('/\r\n|[\r\n]/', $_POST['barcodes']);
                 foreach ($codes as $idLigneSaisie => $code){
                     if ($code == '')

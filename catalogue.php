@@ -69,6 +69,7 @@ require_once('logCheck.php');
                             SELECT
                                 l.idMaterielCatalogue,
                                 l.libelleMateriel,
+                                l.sterilite,
                                 c.libelleCategorie,
                                 f.nomFournisseur,
                                 l.peremptionAnticipationOpe,

@@ -44,6 +44,8 @@ if ($_SESSION['lots_modification']==0)
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
+
+            <?php $autofocus = 1; ?>
             
             <form role="form" class="spinnerAttenteSubmit" action="lotsInventaireCBNewCheckScan.php?id=<?=$_GET['id']?>" method="POST">
                 <?php
@@ -62,10 +64,10 @@ if ($_SESSION['lots_modification']==0)
                                     $emplacements->execute(array('idSac' => $sac['idSac']));
                                     while($emplacement = $emplacements->fetch())
                                     { ?>
-                                        <div class="box box-warning collapsed-box box-solid">
+                                        <div class="box box-warning box-solid">
                                             <div class="box-header with-border">
                                                 <h3 class="box-title"><?= $emplacement['libelleEmplacement'] ?></h3>
-                                                <div class="box-tools pull-right"><button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-plus"></i></button></div>
+                                                <div class="box-tools pull-right"><button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-minus"></i></button></div>
                                             </div>
                                             <div class="box-body">
                                                 <div class="row">
@@ -86,7 +88,7 @@ if ($_SESSION['lots_modification']==0)
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Scannez ce que vous trouvez dans cet emplacement, article après article, les références doivent s'empiler ci-dessous:</label>
-                                                            <textarea class="form-control" rows="10" name="formArray[<?php echo $_GET['id']; ?>][<?php echo $sac['idSac']; ?>][<?php echo $emplacement['idEmplacement']; ?>][barcodes]"></textarea>
+                                                            <textarea class="form-control" rows="10" name="formArray[<?php echo $_GET['id']; ?>][<?php echo $sac['idSac']; ?>][<?php echo $emplacement['idEmplacement']; ?>][barcodes]" <?php if($autofocus == 1){echo "autofocus"; $autofocus = 0;} ?> ></textarea>
                                                         </div>
                                                     </div>
                                                 </div>

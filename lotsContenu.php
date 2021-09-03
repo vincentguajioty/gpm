@@ -527,16 +527,28 @@ if ($_SESSION['lots_lecture']==0)
                         </div>
                         <div class="box-body">
                             <?php if ($_SESSION['lots_modification']==1 AND $data['inventaireEnCours']==Null) {?>
-                                <a href="lotsInventaireNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-success spinnerAttenteClick"><i class="fa fa-plus"></i> Nouvel inventaire traditionnel (sans code barre)</a>
-                                <a href="lotsInventaireCBNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-success spinnerAttenteClick"><i class="fa fa-barcode"></i> Nouvel inventaire avec code barre par emplacement</a>
-                                <a href="lotsInventaireCBVNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-success spinnerAttenteClick"><i class="fa fa-barcode"></i> Nouvel inventaire avec code barre tout confondu</a>
-                                <br/><br/>
+                                <a href="lotsInventaireNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-app spinnerAttenteClick">
+                                    <i class="fa fa-hand-paper-o"></i> Inventaire manuel
+                                </a>
+                                <a href="lotsInventaireCBNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-app spinnerAttenteClick">
+                                    <i class="fa fa-barcode"></i> Inventaire scanné - Emplacement par Emplacement
+                                </a>
+                                <a href="lotsInventaireCBVNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-app spinnerAttenteClick">
+                                    <i class="fa fa-barcode"></i> Inventaire scanné - A la chaine
+                                </a>
                             <?php }?>
+
+                            <a href="lotsInventaireHelp.php?id=<?php echo $_GET['id']; ?>" class="btn btn-app spinnerAttenteClick pull-right">
+                                <i class="fa fa-book"></i> Fiche d'assistance
+                            </a>
+                            <br/><br/>
 
                             <?php if ($_SESSION['lots_modification']==1 AND $data['inventaireEnCours']==1) {?>
                                 <a data-toggle="modal" data-target="#modalSuppressionLockUnite" class="btn btn-sm btn-danger">Désactiver le verrouillage</a>
                                 <br/><br/>
                             <?php } ?>
+
+
 
                             <table id="tri2R" class="table table-bordered table-hover">
                                 <thead>
@@ -544,6 +556,7 @@ if ($_SESSION['lots_lecture']==0)
                                     <th style="width: 10px">#</th>
                                     <th>Date de l'inventaire</th>
                                     <th>Personne ayant réalisé l'inventaire</th>
+                                    <th>Commentaires</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
@@ -559,6 +572,7 @@ if ($_SESSION['lots_lecture']==0)
                                             <td><?php echo $data2['idInventaire']; ?></td>
                                             <td><?php echo $data2['dateInventaire']; ?></td>
                                             <td><?php echo $data2['identifiant']; ?></td>
+                                            <td><?php echo nl2br($data2['commentairesInventaire']); ?></td>
                                             <td>
                                                 <a href="lotsInventaireShow.php?id=<?=$data2['idInventaire']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                                 <?php if ($_SESSION['lots_modification']==1 AND $data['inventaireEnCours']==Null) {?>

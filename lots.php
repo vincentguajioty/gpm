@@ -48,7 +48,7 @@ if ($_SESSION['lots_lecture']==0)
                                 <th class="all" style="width: 10px">#</th>
                                 <th class="all">Libelle</th>
                                 <th class="not-mobile">Etat</th>
-                                <th class="not-mobile">Référentiel <a href="lotsCheckConfTotalManu.php" class="btn btn-xs spinnerAttenteClick"><i class="fa fa-refresh"></i></a></th>
+                                <th class="not-mobile">Référentiel <a href="lotsCheckConfTotalManu.php" class="btn btn-xs spinnerAttenteClick" title="Recalculer la conformité au référentiel"><i class="fa fa-refresh"></i></a></th>
                                 <th class="not-mobile">Référent</th>
                                 <th class="not-mobile">Quantité Matériel</th>
                                 <th class="not-mobile">Prochain Inventaire</th>

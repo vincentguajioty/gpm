@@ -4,6 +4,54 @@
 		"selected_items":
 		[
 			[
+				"auto",
+				"autofocus\tabc"
+			],
+			[
+				"MATER",
+				"MATERIEL_ELEMENT\t(lotsContenu.php)"
+			],
+			[
+				"MATE",
+				"MATERIEL_EMPLACEMENT\t(lotsContenu.php)"
+			],
+			[
+				"empla",
+				"emplacements\t(lotsContenu.php)"
+			],
+			[
+				"idC",
+				"idCategorie\tabc"
+			],
+			[
+				"intern",
+				"internalReference\t(codesBarre.php)"
+			],
+			[
+				"cate",
+				"categories\tabc"
+			],
+			[
+				"MATERIEL",
+				"MATERIEL_SAC\tabc"
+			],
+			[
+				"MATERI",
+				"MATERIEL_EMPLACEMENT\tabc"
+			],
+			[
+				"lib",
+				"libelleLot\t(emplacements.php)"
+			],
+			[
+				"libelle",
+				"libelleSac\t(emplacements.php)"
+			],
+			[
+				"LOT",
+				"LOTS_LOTS\t(emplacements.php)"
+			],
+			[
 				"modal",
 				"modal-form\tabc"
 			],
@@ -24,28 +72,8 @@
 				"libelleCategorie\tabc"
 			],
 			[
-				"MATE",
-				"MATERIEL_SAC\tabc"
-			],
-			[
-				"MATERIEL",
-				"MATERIEL_ELEMENT\tabc"
-			],
-			[
 				"scan",
 				"scansSuccess\tabc"
-			],
-			[
-				"idC",
-				"idMaterielCatalogue\tabc"
-			],
-			[
-				"libelle",
-				"libelleMateriel\t(update12.0.sql)"
-			],
-			[
-				"MATER",
-				"MATERIEL_CATALOGUE\t(update12.0.sql)"
 			],
 			[
 				"VIEW",
@@ -78,10 +106,6 @@
 			[
 				"LOTS",
 				"LOTSLOCK\t(config.php)"
-			],
-			[
-				"LOT",
-				"LOTSLOCK\tabc"
 			],
 			[
 				"lot",
@@ -429,13 +453,41 @@
 	},
 	"file_history":
 	[
+		"//192.168.100.248/web_recette/gpm/lotsContenu.php",
+		"//192.168.100.248/web_recette/gpm/catalogue.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireHelp.php",
+		"//192.168.100.248/web_recette/gpm/sacs.php",
+		"//192.168.100.248/web_recette/gpm/lots.php",
 		"//192.168.100.248/web_recette/gpm/reserveInventaireCBNew.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireCBNew.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireCBVNew.php",
+		"//192.168.100.248/web_recette/gpm/reserveConteneurContenu.php",
+		"//192.168.100.248/web/gpmunass69/logs/20200512.log",
+		"//192.168.100.248/web/gpmunass69/distmaj/update11.1.sql",
+		"//192.168.100.248/web/gpmvg/logs/20200512.log",
+		"//192.168.100.248/web/majDist/gpmTimeLine.php",
+		"//192.168.100.248/web/majDist/gpmMAJ.php",
+		"//192.168.100.248/web_recette/gpm/codesBarrePrintRef.php",
+		"//192.168.100.248/web_recette/gpm/emplacementsCBShow.php",
+		"//192.168.100.248/web_recette/gpm/codesBarre.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaire.php",
+		"//192.168.100.248/web_recette/gpm/codesBarreShow.php",
+		"//192.168.100.248/web_recette/gpm/distmaj/update12.1.sql",
+		"//192.168.100.248/web_recette/gpm/distmaj/INSTALL2.php",
+		"//192.168.100.248/web_recette/gpm/lotsCBShow.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireCBVNewCheckScan.php",
+		"//192.168.100.248/web_recette/gpm/sacsCBShow.php",
+		"//192.168.100.248/web_recette/gpm/lotsCBPrintForm.php",
+		"//192.168.100.248/web_recette/gpm/sacsCBPrintForm.php",
+		"//192.168.100.248/web_recette/gpm/emplacementsCBPrintForm.php",
+		"//192.168.100.248/web_recette/gpm/sacsContenu.php",
+		"//192.168.100.248/web_recette/gpm/emplacements.php",
+		"//192.168.100.248/web_recette/gpm/emplacementsContenu.php",
+		"//192.168.100.248/web_recette/gpm/codesBarrePrintForm.php",
 		"//192.168.100.248/web_recette/gpm/lotsForm.php",
 		"//192.168.100.248/web_recette/gpm/codesBarreFormInterne.php",
 		"/V/barcode/v2/barcode.php",
-		"//192.168.100.248/web_recette/gpm/codesBarreShow.php",
 		"/V/barcode/v2/barcode128.php",
-		"//192.168.100.248/web_recette/gpm/codesBarre.php",
 		"//192.168.100.248/web_recette/gpm/logCheck.php",
 		"//192.168.100.248/web_recette/gpm/reserveInventaireCBNewCheckScan.php",
 		"//192.168.100.248/web_recette/gpm/lotsInventaireCBNewCheckScan.php",
@@ -454,21 +506,15 @@
 		"//192.168.100.248/web_recette/gpm/lotsInventaireNewAdd.php",
 		"//192.168.100.248/web_recette/gpm/reserveInventaireNew.php",
 		"//192.168.100.248/web_recette/gpm/lotsInventaireNewAbort.php",
-		"//192.168.100.248/web_recette/gpm/lots.php",
 		"//192.168.100.248/web_recette/gpm/materiels.php",
 		"//192.168.100.248/web_recette/gpm/config/config.php",
 		"//192.168.100.248/web_recette/gpm/navbarSearch.php",
-		"//192.168.100.248/web_recette/gpm/sacs.php",
 		"//192.168.100.248/web_recette/gpm/transfertCmdRes.php",
-		"//192.168.100.248/web_recette/gpm/reserveConteneurContenu.php",
-		"//192.168.100.248/web_recette/gpm/lotsContenu.php",
-		"//192.168.100.248/web_recette/gpm/catalogue.php",
 		"//192.168.100.248/web_recette/gpm/transfertResLots.php",
 		"//192.168.100.248/web_recette/gpm/lotsInventaireAbortLock.php",
 		"//192.168.100.248/web_recette/gpm/index.php",
 		"//192.168.100.248/web_recette/gpm/appliConf.php",
 		"//192.168.100.248/web_recette/gpm/lotsInventaireShow.php",
-		"//192.168.100.248/web_recette/gpm/lotsInventaireCBNew.php",
 		"//192.168.100.248/web_recette/gpm/vehiculesForm.php",
 		"//192.168.100.248/web_recette/gpm/emplacementsForm.php",
 		"//192.168.100.248/web_recette/gpm/scripts.php",
@@ -477,13 +523,9 @@
 		"//192.168.100.248/web_recette/gpm/plugins/barcode/barcode123.php",
 		"//192.168.100.248/web_recette/gpm/profils.php",
 		"//192.168.100.248/web_recette/gpm/referentiels.php",
-		"//192.168.100.248/web_recette/gpm/emplacementsContenu.php",
-		"//192.168.100.248/web_recette/gpm/emplacements.php",
-		"//192.168.100.248/web_recette/gpm/sacsContenu.php",
 		"//192.168.100.248/web_recette/gpm/distmaj/update11.2.sql",
 		"//192.168.100.248/web_recette/gpm/lotsDuplicateForm.php",
 		"//192.168.100.248/web_recette/gpm/confirmationBox.php",
-		"//192.168.100.248/web/majDist/gpmTimeLine.php",
 		"//192.168.100.248/web_recette/gpm/commandeItemAdd.php",
 		"//192.168.100.248/web_recette/gpm/commandeItemUpdate.php",
 		"//192.168.100.248/web_recette/gpm/commandeItemForm.php",
@@ -500,7 +542,6 @@
 		"//192.168.100.248/web_recette/gpm/alerteBenevoleAdd.php",
 		"//192.168.100.248/web_recette/gpm/config/mailFunction.php",
 		"//192.168.100.248/web_recette/gpm/vehiculesContenu.php",
-		"//192.168.100.248/web_recette/gpm/distmaj/INSTALL2.php",
 		"//192.168.100.248/web_recette/gpm/profilsUpdate.php",
 		"//192.168.100.248/web_recette/gpm/commandesAdd.php",
 		"//192.168.100.248/web_recette/gpm/lotsAdd.php",
@@ -539,24 +580,7 @@
 		"//192.168.100.248/web_recette/gpm/vehiculesDocDelete.php",
 		"//192.168.100.248/web_recette/gpm/vehiculesUpdate.php",
 		"//192.168.100.248/web_recette/gpm/vehiculesDelete.php",
-		"//192.168.100.248/web_recette/gpm/lotsDelete.php",
-		"//192.168.100.248/web_recette/gpm/vhfPlansDocForm.php",
-		"//192.168.100.248/web_recette/gpm/vhfPlansDocAdd.php",
-		"//192.168.100.248/web_recette/gpm/bandeausup.php",
-		"//192.168.100.248/web_recette/gpm/logout.php",
-		"//192.168.100.248/web_recette/gpm/verrouIPcheck.php",
-		"//192.168.100.248/web_recette/gpm/headerContent.php",
-		"//192.168.100.248/web_recette/gpm/commandeDocDL.php",
-		"//192.168.100.248/web_recette/gpm/commandeDocView.php",
-		"//192.168.100.248/web_recette/gpm/vehiculesDocDL.php",
-		"//192.168.100.248/web_recette/gpm/documentsGetIcone.php",
-		"//192.168.100.248/web_recette/gpm/navbar.php",
-		"//192.168.100.248/web_recette/gpm/headerCaptcha.php",
-		"//192.168.100.248/web_recette/gpm/header.php",
-		"//192.168.100.248/web_recette/gpm/appliConfUpdateCaptcha.php",
-		"/V/gpm/scripts.php",
-		"/U/majDist/gpmTimeLine.php",
-		"/V/gpm/alerteBenevole.php"
+		"//192.168.100.248/web_recette/gpm/lotsDelete.php"
 	],
 	"find":
 	{
@@ -587,6 +611,18 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"fa-play",
+			"<th style=\"width: 1000px\">Code Barre</th>",
+			"vue",
+			"l1c1",
+			"thmobile",
+			"th",
+			"td",
+			"th",
+			"12.0",
+			"idSac",
+			"idEmplacement",
+			"idCode",
 			"codesBarreFormFournisseur",
 			"idInventaire",
 			"LOTS_INVENTAIRES_TEMP",
@@ -702,19 +738,7 @@
 			"depasseBudget",
 			"previsions",
 			"label",
-			"personnes",
-			"affichageSyntheseDesinfections",
-			"Climatisation",
-			"climatisation",
-			"Climatisation",
-			"climatisation",
-			"majValideursPersonne",
-			"majValideursProfil",
-			"majValideursPersonne",
-			"[Commande]",
-			"[COMMANDE]",
-			"[Commande]",
-			"sujetNotif           ="
+			"personnes"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -781,6 +805,158 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"lotscont",
+				"lotsContenu.php"
+			],
+			[
+				"catal",
+				"catalogue.php"
+			],
+			[
+				"sacs",
+				"sacs.php"
+			],
+			[
+				"lots",
+				"lots.php"
+			],
+			[
+				"reservecb",
+				"reserveInventaireCBNew.php"
+			],
+			[
+				"lotscb",
+				"lotsInventaireCBNew.php"
+			],
+			[
+				"lotscbv",
+				"lotsInventaireCBVNew.php"
+			],
+			[
+				"reservec",
+				"reserveConteneurContenu.php"
+			],
+			[
+				"codesBarrePrintRef.php",
+				"codesBarrePrintRef.php"
+			],
+			[
+				"emplacement",
+				"emplacementsCBShow.php"
+			],
+			[
+				"printRef",
+				"codesBarrePrintRef.php"
+			],
+			[
+				"lotsconte",
+				"lotsContenu.php"
+			],
+			[
+				"conteneurCon",
+				"reserveConteneurContenu.php"
+			],
+			[
+				"codesBarrePrintRef",
+				"codesBarrePrintRef.php"
+			],
+			[
+				"lotinvent",
+				"lotsInventaire.php"
+			],
+			[
+				"codeBarre",
+				"codesBarre.php"
+			],
+			[
+				"lotsInventaire.php",
+				"lotsInventaire.php"
+			],
+			[
+				"codesBarre",
+				"codesBarreShow.php"
+			],
+			[
+				"codesbarre",
+				"codesBarre.php"
+			],
+			[
+				"final",
+				"lotsInventaireCBNewFinalize.php"
+			],
+			[
+				"cbshow",
+				"lotsCBShow.php"
+			],
+			[
+				"lotsCBV",
+				"lotsInventaireCBVNewCheckScan.php"
+			],
+			[
+				"",
+				"lotsInventaireCBVNewCheckScan.php"
+			],
+			[
+				"reserveCheck",
+				"reserveInventaireCBNewCheckScan.php"
+			],
+			[
+				"lotsInventaireCBNewCheckScan.php",
+				"lotsInventaireCBNewCheckScan.php"
+			],
+			[
+				"lotsInventaireCBNew.php",
+				"lotsInventaireCBNew.php"
+			],
+			[
+				"lotsconten",
+				"lotsContenu.php"
+			],
+			[
+				"cbprint",
+				"sacsCBPrintForm.php"
+			],
+			[
+				"cbsho",
+				"sacsCBShow.php"
+			],
+			[
+				"scaconte",
+				"sacsContenu.php"
+			],
+			[
+				"scas",
+				"sacs.php"
+			],
+			[
+				"emplacementpri",
+				"emplacementsCBPrintForm.php"
+			],
+			[
+				"sacsC",
+				"sacsContenu.php"
+			],
+			[
+				"emplace",
+				"emplacements.php"
+			],
+			[
+				"show",
+				"codesBarreShow.php"
+			],
+			[
+				"print",
+				"codesBarrePrintForm.php"
+			],
+			[
+				"codebar",
+				"codesBarre.php"
+			],
+			[
+				"emplaceme",
+				"emplacements.php"
+			],
 			[
 				"codesbaFOr",
 				"codesBarreFormInterne.php"
@@ -866,10 +1042,6 @@
 				"config\\bdd.php"
 			],
 			[
-				"final",
-				"lotsInventaireCBNewFinalize.php"
-			],
-			[
 				"reserveInventaireCBNewFinalize",
 				"reserveInventaireCBNewFinalize.php"
 			],
@@ -942,10 +1114,6 @@
 				"reserveConteneurs.php"
 			],
 			[
-				"lots",
-				"lots.php"
-			],
-			[
 				"matie",
 				"materiels.php"
 			],
@@ -968,10 +1136,6 @@
 			[
 				"reserve",
 				"reserveConteneurs.php"
-			],
-			[
-				"sacs",
-				"sacs.php"
 			],
 			[
 				"config",
@@ -1130,16 +1294,8 @@
 				"emplacementsContenu.php"
 			],
 			[
-				"emplace",
-				"emplacements.php"
-			],
-			[
 				"sacsConte",
 				"sacsContenu.php"
-			],
-			[
-				"scas",
-				"sacs.php"
 			],
 			[
 				"lotsduplica",
@@ -1160,138 +1316,6 @@
 			[
 				"materiels",
 				"materiels.php"
-			],
-			[
-				"confirmationBox",
-				"confirmationBox.php"
-			],
-			[
-				"lotsInventaireNewAdd",
-				"lotsInventaireNewAdd.php"
-			],
-			[
-				"commandeItemAdd",
-				"commandeItemAdd.php"
-			],
-			[
-				"commandeItemUpdate",
-				"commandeItemUpdate.php"
-			],
-			[
-				"commandeitemfo",
-				"commandeItemForm.php"
-			],
-			[
-				"commandeView.php",
-				"commandeView.php"
-			],
-			[
-				"scripts",
-				"scripts.php"
-			],
-			[
-				"script",
-				"scripts.php"
-			],
-			[
-				"vhfEquipementsDocAdd.php",
-				"vhfEquipementsDocAdd.php"
-			],
-			[
-				"vhfEquipementsDocForm.php",
-				"vhfEquipementsDocForm.php"
-			],
-			[
-				"vhfEquipementsContenu.php",
-				"vhfEquipementsContenu.php"
-			],
-			[
-				"update11.1",
-				"distmaj\\update11.1.sql"
-			],
-			[
-				"login.php",
-				"login.php"
-			],
-			[
-				"test",
-				"test.php"
-			],
-			[
-				"alerte",
-				"alerteBenevoleAdd.php"
-			],
-			[
-				"mailfo",
-				"config\\mailFunction.php"
-			],
-			[
-				"vehiculeCo",
-				"vehiculesContenu.php"
-			],
-			[
-				"profilupdate",
-				"profilsUpdate.php"
-			],
-			[
-				"bdd.ph",
-				"config\\bdd.php"
-			],
-			[
-				"commandeadd",
-				"commandesAdd.php"
-			],
-			[
-				"lotsadd",
-				"lotsAdd.php"
-			],
-			[
-				"notifica\t",
-				"config\\notifications.php"
-			],
-			[
-				"annaireconten",
-				"annuaireContenu.php"
-			],
-			[
-				"loginsql.php",
-				"loginSQL.php"
-			],
-			[
-				"update10.0",
-				"distmaj\\update10.0.sql"
-			],
-			[
-				"update 10",
-				"distmaj\\update10.0.sql"
-			],
-			[
-				"appcon",
-				"appliConf.php"
-			],
-			[
-				"vehiculeAlerte",
-				"vehiculesAlerteBenevoleSynthese.php"
-			],
-			[
-				"lotsAlerteBene",
-				"lotsAlerteBenevoleSynthese.php"
-			],
-			[
-				"alerteBenevoleSuccess.php",
-				"alerteBenevoleSuccess.php"
-			],
-			[
-				"alerteBenevole.php",
-				"alerteBenevoleFailure.php"
-			],
-			[
-				"vehiculesAlertes",
-				"vehiculesAlerteBenevoleSynthese.php"
-			],
-			[
-				"update11.0",
-				"distmaj\\update11.0.sql"
 			]
 		],
 		"width": 0.0

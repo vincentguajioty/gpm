@@ -62,7 +62,7 @@ if ($_SESSION['reserve_modification']==0)
                                         while($materiel = $materiels->fetch())
                                         {
                                             $qtt = $materiel['quantiteAlerteReserve']+1;
-                                            echo "<li>".$materiel['libelleMateriel'].' (minimum '.$qtt.')</li>';
+                                            echo "<li>".$materiel['libelleMateriel'].'</li>';
                                         }
                                     ?>
                                 </ul>
@@ -70,7 +70,7 @@ if ($_SESSION['reserve_modification']==0)
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Scannez ce que vous trouvez dans cet emplacement, article après article, les références doivent s'empiler ci-dessous:</label>
-                                    <textarea class="form-control" rows="10" name="barcodes"></textarea>
+                                    <textarea class="form-control" rows="10" name="barcodes" autofocus></textarea>
                                 </div>
                             </div>
                         </div>

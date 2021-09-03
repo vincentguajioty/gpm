@@ -94,9 +94,6 @@ if ($_SESSION['sac_lecture']==0)
                                     <?php if ($_SESSION['sac_lecture']==1) {?>
                                         <a href="sacsContenu.php?id=<?=$data['idSac']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                     <?php }?>
-                                    <?php if ($_SESSION['sac_lecture']==1 AND $_SESSION['codeBarre_lecture']==1) {?>
-                                        <a href="sacsCBPrintForm.php?id=<?=$data['idSac']?>" class="btn btn-xs btn-success modal-form" title="Imprimer tous les codes barre emplacement de ce sac"><i class="fa fa-barcode"></i></a>
-                                    <?php }?>
                                     <?php if ($_SESSION['sac_modification']==1 AND $LOTSLOCK==0) {?>
                                         <a href="sacsForm.php?id=<?=$data['idSac']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
@@ -109,8 +106,6 @@ if ($_SESSION['sac_lecture']==0)
                         }
                         $query->closeCursor(); ?>
                         </tbody>
-
-
                     </table>
                 </div>
             </div>

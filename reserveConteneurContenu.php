@@ -230,8 +230,12 @@ if ($_SESSION['reserve_lecture']==0)
                         </div>
                         <div class="box-body">
                             <?php if ($_SESSION['reserve_modification']==1 AND $data['inventaireEnCours']==Null) {?>
-                                <a href="reserveInventaireNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-success spinnerAttenteClick"><i class="fa fa-plus"></i> Faire un nouvel inventaire</a>
-                                <a href="reserveInventaireCBNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-success spinnerAttenteClick"><i class="fa fa-barcode"></i> Faire un nouvel inventaire avec code barre</a>
+                                <a href="reserveInventaireNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-app spinnerAttenteClick">
+                                    <i class="fa fa-hand-paper-o"></i> Nouvel inventaire traditionnel
+                                </a>
+                                <a href="reserveInventaireCBNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-app spinnerAttenteClick">
+                                    <i class="fa fa-barcode"></i> Nouvel inventaire - Scanner à la chaine
+                                </a>
                                 <br/><br/>
                             <?php }?>
 
@@ -247,6 +251,7 @@ if ($_SESSION['reserve_lecture']==0)
                                     <th style="width: 10px">#</th>
                                     <th>Date de l'inventaire</th>
                                     <th>Personne ayant réalisé l'inventaire</th>
+                                    <th>Commentaires</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
@@ -262,6 +267,7 @@ if ($_SESSION['reserve_lecture']==0)
                                             <td><?php echo $data2['idReserveInventaire']; ?></td>
                                             <td><?php echo $data2['dateInventaire']; ?></td>
                                             <td><?php echo $data2['identifiant']; ?></td>
+                                            <td><?php echo nl2br($data2['commentairesInventaire']); ?></td>
                                             <td>
                                                 <a href="reserveInventaireShow.php?id=<?=$data2['idReserveInventaire']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
                                                 <?php if ($_SESSION['reserve_modification']==1 AND $data['inventaireEnCours']==Null) {?>
