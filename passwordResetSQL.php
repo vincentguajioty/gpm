@@ -26,81 +26,47 @@ if($RECAPTCHA_ENABLE)
 	}
 }
 
-$query = $db->prepare('SELECT * FROM VERROUILLAGE_IP WHERE adresseIPverr= :adresseIPverr;');
+if(isIpLock()==true)
+{
+    writeInLogs("Connexion refusée par le filtrage IP pour l'authentification avec ".$_POST['identifiant'], '2', NULL);
+    echo "<script type='text/javascript'>document.location.replace('login.php');</script>";
+    exit;
+}
+
+$query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS v ON p.idPersonne = v.idPersonne WHERE p.identifiant = :identifiant AND p.mailPersonne = :mailPersonne;');
 $query->execute(array(
-    'adresseIPverr' => $_SERVER['REMOTE_ADDR']
+    'identifiant' => $_POST['identifiant'],
+    'mailPersonne' => $_POST['mailPersonne']
 ));
 $data = $query->fetch();
 
-if ($data['idIP'] == "")
+if (empty($data['idPersonne']) OR $data['idPersonne'] == "")
 {
-	$query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS v ON p.idPersonne = v.idPersonne WHERE p.identifiant = :identifiant AND p.mailPersonne = :mailPersonne;');
-	$query->execute(array(
-	    'identifiant' => $_POST['identifiant'],
-	    'mailPersonne' => $_POST['mailPersonne']
-	));
-	$data = $query->fetch();
-	
-	if (empty($data['idPersonne']) OR $data['idPersonne'] == "")
-	{
-	    //pas bon
-	    writeInLogs("Echec de la tentative de reset du mot de passe oublié.", '2', $_POST['identifiant']);
-
-        $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE dateEchec < :dateEchec;');
-        $query->execute(array(
-            'dateEchec' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - '.$VERROUILLAGE_IP_TEMPS.' days'))
-        ));
-	    
-	    $query = $db->prepare('SELECT COUNT(*) as nb FROM VERROUILLAGE_IP_TEMP WHERE adresseIP= :adresseIP;');
-		$query->execute(array(
-		    'adresseIP' => $_SERVER['REMOTE_ADDR']
-		));
-		$data = $query->fetch();
-		
-		if ($data['nb'] > $VERROUILLAGE_IP_OCCURANCES-2)
-		{
-			$query = $db->prepare('INSERT INTO VERROUILLAGE_IP(adresseIPverr, dateVerr, commentaire)VALUES(:adresseIPverr, :dateVerr, :commentaire);');
-		    $query->execute(array(
-		        'dateVerr' => date('Y-m-d H:i:s'),
-		        'adresseIPverr' => $_SERVER['REMOTE_ADDR'],
-		        'commentaire' => 'Erreur de reset de mot de passe pour l\'identifiant '.$_POST['identifiant'],
-		    ));
-			
-		    writeInLogs("Verouillage définitif de l\'adresse IP suite à la tentative de reset de mot de passe avec ".$_POST['identifiant'], '2', NULL);
-
-            $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE adresseIP= :adresseIP;');
-            $query->execute(array(
-                'adresseIP' => $_SERVER['REMOTE_ADDR']
-            ));
-		}
-		else
-        {
-            $query = $db->prepare('INSERT INTO VERROUILLAGE_IP_TEMP(adresseIP, dateEchec, commentaire)VALUES(:adresseIP, :dateEchec, :commentaire);');
-            $query->execute(array(
-                'dateEchec' => date('Y-m-d H:i:s'),
-                'adresseIP' => $_SERVER['REMOTE_ADDR'],
-                'commentaire' => 'Erreur de reset de mot de passe pour l\'identifiant '.$_POST['identifiant'],
-            ));
-
-            writeInLogs("Verouillage temporaire de l\'adresse IP suite à la tentative de reset de mot de passe avec ".$_POST['identifiant'], '2', NULL);
-        }
-	    
-	    echo "<script type='text/javascript'>document.location.replace('passwordResetKO.php');</script>";
-	}
-	else
-	{
-        $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE adresseIP= :adresseIP;');
-        $query->execute(array(
-            'adresseIP' => $_SERVER['REMOTE_ADDR']
-        ));
-        $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE dateEchec < :dateEchec;');
-        $query->execute(array(
-            'dateEchec' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - '.$VERROUILLAGE_IP_TEMPS.' days'))
-        ));
-        $query = $db->prepare('DELETE FROM RESETPASSWORD WHERE idPersonne = :idPersonne;');
-        $query->execute(array(
-            'idPersonne' => $data['idPersonne']
-        ));
+    //pas bon
+    writeInLogs("Echec de la tentative de reset du mot de passe oublié.", '2', $_POST['identifiant']);
+    lockIpOnce($_POST['identifiant']);
+    echo "<script type='text/javascript'>document.location.replace('passwordResetKO.php');</script>";
+}
+else
+{
+    if($data['isActiveDirectory'])
+    {
+    	echo "<script type='text/javascript'>document.location.replace('passwordResetADKO.php');</script>";
+    }
+    else
+    {
+    	$query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE adresseIP= :adresseIP;');
+	    $query->execute(array(
+	        'adresseIP' => $_SERVER['REMOTE_ADDR']
+	    ));
+	    $query = $db->prepare('DELETE FROM VERROUILLAGE_IP_TEMP WHERE dateEchec < :dateEchec;');
+	    $query->execute(array(
+	        'dateEchec' => date('Y-m-d', strtotime(date('Y-m-d H:i:s') . ' - '.$VERROUILLAGE_IP_TEMPS.' days'))
+	    ));
+	    $query = $db->prepare('DELETE FROM RESETPASSWORD WHERE idPersonne = :idPersonne;');
+	    $query->execute(array(
+	        'idPersonne' => $data['idPersonne']
+	    ));
 		
 		writeInLogs("Génération d'un token de réinitialisation du mot de passe pour l'identifiant ".$_POST['identifiant'], '1', NULL);
 
@@ -130,27 +96,21 @@ if ($data['idIP'] == "")
 
 	    $sujet = "[" . $APPNAME . "] Réinitialisation de votre mot de passe.";
 	    $message = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/> Vous venez de faire une demande de réinitialisation de mot de passe oublié.<br/><br/>Si cette demande provient bien de vous, cliquez sur le lien ci-dessous pour réinitialiser votre mot de passe:<br/>".$lienReset."<br/><br/>Si cette demande vous semble frauduleuse, cliquez sur le lien ci-dessous pour la neutraliser:<br/>".$lienKill;
-        $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
-        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
+	    $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
+	    $message = $RETOURLIGNE.$message.$RETOURLIGNE;
 
-        if(sendmail($_POST['mailPersonne'], $sujet, 2, $message))
-        {
+	    if(sendmail($_POST['mailPersonne'], $sujet, 2, $message))
+	    {
 		    writeInLogs("Mail de réinitialisation de mot de passe envoyé à " . $_POST['mailPersonne'] . " pour le compte référence ".$data['idPersonne'], '1', NULL);
-        }
-        else
-        {
-             writeInLogs("Erreur d'envoi du mail de réinitialisation de mot de passe à " . $_POST['mailPersonne'] . " pour le compte référence ".$data['idPersonne'], '3', NULL);
-        }
+	    }
+	    else
+	    {
+	         writeInLogs("Erreur d'envoi du mail de réinitialisation de mot de passe à " . $_POST['mailPersonne'] . " pour le compte référence ".$data['idPersonne'], '3', NULL);
+	    }
 
 		echo "<script type='text/javascript'>document.location.replace('passwordResetOK.php');</script>";
+    }
+}
 
-	}
-}
-else
-{
-	 //pas bon
-	    writeInLogs("Reset de mot de passe oublié refusé par le filtrage IP avec l'identifiant ".$_POST['identifiant'], '2', NULL);
-	    echo "<script type='text/javascript'>document.location.replace('login.php');</script>";
-}
 
 ?>

@@ -1,13 +1,17 @@
-DROP VIEW IF EXISTS VIEW_SCAN_RESULTS_RESERVES;
-DROP VIEW IF EXISTS VIEW_SCAN_RESULTS_LOTS;
-DROP VIEW IF EXISTS VIEW_VEHICULES_KM;
-DROP VIEW IF EXISTS VIEW_HABILITATIONS;
-DROP VIEW IF EXISTS VIEW_DOCUMENTS_COMMANDES;
-DROP VIEW IF EXISTS VIEW_DOCUMENTS_CENTRE_COUTS;
-DROP VIEW IF EXISTS VIEW_DOCUMENTS_VEHICULES;
-DROP VIEW IF EXISTS VIEW_DOCUMENTS_CANAL_VHF;
-DROP VIEW IF EXISTS VIEW_DOCUMENTS_PLAN_VHF;
-DROP VIEW IF EXISTS VIEW_DOCUMENTS_VHF;
+ALTER TABLE VEHICULES ADD poidsVehicule FLOAT AFTER nbCones;
+
+ALTER TABLE PERSONNE_REFERENTE ADD disclaimerAccept DATETIME;
+ALTER TABLE PERSONNE_REFERENTE ADD cnil_anonyme BOOLEAN;
+UPDATE PERSONNE_REFERENTE SET cnil_anonyme = FALSE;
+
+ALTER TABLE CONFIG ADD mailcnil VARCHAR(50) AFTER mailserver;
+UPDATE CONFIG SET mailcnil = mailserver;
+
+ALTER TABLE CONFIG ADD cnilDisclaimer TEXT;
+UPDATE CONFIG SET cnilDisclaimer = 'Aucunes conditions générales actuellement renseignées. Cet écran vous sera représenté dès que l\'administateur aura saisi les données.';
+
+ALTER TABLE PERSONNE_REFERENTE ADD isActiveDirectory BOOLEAN;
+UPDATE PERSONNE_REFERENTE SET isActiveDirectory = FALSE;
 
 CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 	SELECT
@@ -164,117 +168,11 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 	FROM
 		PERSONNE_REFERENTE p
 ;
-CREATE OR REPLACE VIEW VIEW_DOCUMENTS_COMMANDES AS
-	SELECT
-		c.*,
-		t.libelleTypeDocument
-	FROM
-		DOCUMENTS_COMMANDES c
-		LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument
-	ORDER BY
-		nomDocCommande ASC
-;
 
-CREATE OR REPLACE VIEW VIEW_DOCUMENTS_CENTRE_COUTS AS
-	SELECT
-		c.*,
-		t.libelleTypeDocument
-	FROM
-		DOCUMENTS_CENTRE_COUTS c
-		LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument
-	ORDER BY
-		nomDocCouts ASC
-;
+ALTER TABLE CONFIG ADD LDAP_DOMAIN TEXT;
+ALTER TABLE CONFIG ADD LDAP_BASEDN TEXT;
+ALTER TABLE CONFIG ADD LDAP_ISWINAD BOOLEAN;
 
-CREATE OR REPLACE VIEW VIEW_DOCUMENTS_VEHICULES AS
-	SELECT
-		c.*,
-		t.libelleTypeDocument
-	FROM
-		DOCUMENTS_VEHICULES c
-		LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument
-	ORDER BY
-		nomDocVehicule ASC
-;
+ALTER TABLE PROFILS ADD LDAP_BINDDN TEXT AFTER libelleProfil;
 
-CREATE OR REPLACE VIEW VIEW_DOCUMENTS_CANAL_VHF AS
-	SELECT
-		c.*,
-		t.libelleTypeDocument
-	FROM
-		DOCUMENTS_CANAL_VHF c
-		LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument
-	ORDER BY
-		nomDocCanalVHF ASC
-;
-
-CREATE OR REPLACE VIEW VIEW_DOCUMENTS_PLAN_VHF AS
-	SELECT
-		c.*,
-		t.libelleTypeDocument
-	FROM
-		DOCUMENTS_PLAN_VHF c
-		LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument
-	ORDER BY
-		nomDocPlanVHF ASC
-;
-
-CREATE OR REPLACE VIEW VIEW_DOCUMENTS_VHF AS
-	SELECT
-		c.*,
-		t.libelleTypeDocument
-	FROM
-		DOCUMENTS_VHF c
-		LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument
-	ORDER BY
-		nomDocVHF ASC
-;
-
-CREATE OR REPLACE VIEW VIEW_VEHICULES_KM AS
-	(SELECT idReleve, idVehicule, dateReleve, releveKilometrique, idPersonne FROM VEHICULES_RELEVES)
-	UNION
-	(SELECT NULL as idReleve, idVehicule, dateMaintenance as dateReleve, releveKilometrique, idExecutant as idPersonne  FROM VEHICULES_MAINTENANCE WHERE releveKilometrique IS NOT NULL)
-	UNION
-	(SELECT NULL as idReleve, idVehicule, dateHealth as dateReleve, releveKilometrique, idPersonne  FROM VEHICULES_HEALTH WHERE releveKilometrique IS NOT NULL)
-;
-
-CREATE OR REPLACE VIEW VIEW_SCAN_RESULTS_LOTS AS
-	SELECT
-		t.idLot,
-		t.idEmplacement,
-	    b.idMaterielCatalogue,
-	    c.libelleMateriel,
-	    MIN(peremptionConsommable) as peremption,
-	    COUNT(t.codeBarre) as quantite
-	FROM
-		LOTS_INVENTAIRES_TEMP t
-	    LEFT OUTER JOIN CODES_BARRE b ON t.codeBarre = b.codeBarre
-	    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON b.idMaterielCatalogue = c.idMaterielCatalogue
-	GROUP BY
-		t.idEmplacement,
-	    b.idMaterielCatalogue
-;
-
-CREATE OR REPLACE VIEW VIEW_SCAN_RESULTS_RESERVES AS
-	SELECT
-		t.idConteneur,
-	    b.idMaterielCatalogue,
-	    c.libelleMateriel,
-	    MIN(peremptionConsommable) as peremption,
-	    COUNT(t.codeBarre) as quantite
-	FROM
-		RESERVES_INVENTAIRES_TEMP t
-	    LEFT OUTER JOIN CODES_BARRE b ON t.codeBarre = b.codeBarre
-	    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON b.idMaterielCatalogue = c.idMaterielCatalogue
-	GROUP BY
-		t.idConteneur,
-	    b.idMaterielCatalogue
-;
-
-
--- Désactivation Recaptcha
-UPDATE CONFIG SET reCaptcha_enable = 0, reCaptcha_siteKey = Null, reCaptcha_secretKey = Null;
-
--- Anonymisation de la base
-
-UPDATE PERSONNE_REFERENTE SET mailPersonne = '';
+UPDATE CONFIG set version = '13.0';

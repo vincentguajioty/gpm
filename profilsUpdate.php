@@ -156,6 +156,7 @@ else
             PROFILS
         SET
             libelleProfil                             = :libelleProfil,
+            LDAP_BINDDN                               = :LDAP_BINDDN,
             descriptifProfil                          = :descriptifProfil,
             connexion_connexion                       = :connexion_connexion,
             annuaire_lecture                          = :annuaire_lecture,
@@ -301,6 +302,7 @@ else
         ;');
     $query->execute(array(
         'idProfil'                                  => $_GET['id'],
+        'LDAP_BINDDN'                               => $_POST['LDAP_BINDDN'],
         'libelleProfil'                             => $_POST['libelleProfil'],
         'descriptifProfil'                          => $_POST['descriptifProfil'],
         'connexion_connexion'                       => $_POST['connexion_connexion'],

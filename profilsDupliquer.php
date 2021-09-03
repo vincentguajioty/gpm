@@ -22,6 +22,7 @@ else
     		PROFILS
     	SET
 			libelleProfil                             = :libelleProfil,
+			LDAP_BINDDN                               = :LDAP_BINDDN,
 			descriptifProfil                          = :descriptifProfil,
 			connexion_connexion                       = :connexion_connexion,
 			annuaire_lecture                          = :annuaire_lecture,
@@ -165,6 +166,7 @@ else
 	;');
     $query->execute(array(
 		'libelleProfil'                             => $data['libelleProfil'] . ' - Copie',
+		'LDAP_BINDDN'                               => $data['LDAP_BINDDN'],
 		'descriptifProfil'                          => $data['descriptifProfil'],
 		'connexion_connexion'                       => $data['connexion_connexion'],
 		'annuaire_lecture'                          => $data['annuaire_lecture'],

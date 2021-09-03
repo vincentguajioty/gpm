@@ -74,7 +74,30 @@ require_once 'config/config.php';
                             <br/><br/>
                             Adresse mail de l'administrateur de cette instance de GPM: <?php echo $MAILSERVER; ?>
                             <br/><br/>
+                            Adresse mail du référent CNIL de cette instance de GPM: <?php echo $MAILCNIL; ?>
+                            <br/><br/>
                             <a href="contact.php">Formulaire de contact du developpeur</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="box box-info">
+
+                        <div class="box-header with-border">
+                            <i class="fa fa-balance-scale"></i>
+
+                            <h3 class="box-title">Conditions générales</h3>
+                        </div>
+
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <?php
+                            	$disclaimer = $db->query('SELECT cnilDisclaimer FROM CONFIG;');
+                            	$disclaimer = $disclaimer->fetch();
+                            	$disclaimer = $disclaimer['cnilDisclaimer'];
+                            	echo nl2br($disclaimer);
+                            ?>
                         </div>
                     </div>
                 </div>

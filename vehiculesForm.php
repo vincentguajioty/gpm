@@ -61,22 +61,30 @@ if($_SESSION['vehicules_lecture']==1 OR $_SESSION['vehicules_ajout']==1 OR $_SES
 		                    </div>
                         </div>
                         <div class="row">
-                        	<div class="col-lg-4 col-xs-12">
+                        	<div class="col-lg-6 col-xs-12">
 								<div class="form-group">
 		                            <label>Marque/Modèle:</label>
 		                            <input type="text" class="form-control" value="<?= isset($data['marqueModele']) ? $data['marqueModele'] : ''?>" name="marqueModele">
 		                        </div>
 		                    </div>
-		                    <div class="col-lg-4 col-xs-12">
+		                    <div class="col-lg-6 col-xs-12">
+								<div class="form-group">
+		                            <label>Nombre de places:</label>
+		                            <input type="number" class="form-control" value="<?= isset($data['nbPlaces']) ? $data['nbPlaces'] : ''?>" name="nbPlaces">
+		                        </div>
+		                    </div>
+		                </div>
+		                <div class="row">
+		                    <div class="col-lg-6 col-xs-12">
 		                        <div class="form-group">
 		                            <label>Dimensions:</label>
 		                            <input type="text" class="form-control" value="<?= isset($data['dimensions']) ? $data['dimensions'] : ''?>" name="dimensions">
 		                        </div>
 		                    </div>
-		                    <div class="col-lg-4 col-xs-12">
-								<div class="form-group">
-		                            <label>Nombre de places:</label>
-		                            <input type="number" class="form-control" value="<?= isset($data['nbPlaces']) ? $data['nbPlaces'] : ''?>" name="nbPlaces">
+		                    <div class="col-lg-6 col-xs-12">
+		                        <div class="form-group">
+		                            <label>Poids (tonnes):</label>
+		                            <input type="number" step="0.01" min="0" class="form-control" value="<?= isset($data['poidsVehicule']) ? $data['poidsVehicule'] : ''?>" name="poidsVehicule">
 		                        </div>
 		                    </div>
 		                </div>

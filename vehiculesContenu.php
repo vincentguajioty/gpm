@@ -104,6 +104,10 @@ if ($_SESSION['vehicules_lecture']==0)
                                     <td><?= $data['nbPlaces'] ?></td>
                                 </tr>
                                 <tr>
+                                    <td>Poids (tonnes)</td>
+                                    <td><?= $data['poidsVehicule'] ?></td>
+                                </tr>
+                                <tr>
                                     <td>Dimensions</td>
                                     <td><?= $data['dimensions'] ?></td>
                                 </tr>

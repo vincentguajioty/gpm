@@ -10,7 +10,8 @@ function sendMail($adresseDest, $sujet, $niveau, $contenu)
     global $APPNAME;
     global $MAILSERVER;
     global $MAILCOPY;
-    global $RETOURLIGNE;
+    
+    $RETOURLIGNE = "\r\n";
 
     $replyTo = ($_SESSION['mailPersonne'] != '') ? $_SESSION['mailPersonne'] : $MAILSERVER;
 

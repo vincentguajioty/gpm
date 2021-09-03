@@ -32,6 +32,7 @@ else
     $_POST['pmv'] = ($_POST['pmv'] == Null) ? Null : $_POST['pmv'];
     $_POST['fleche'] = ($_POST['fleche'] == Null) ? Null : $_POST['fleche'];
     $_POST['nbCones'] = ($_POST['nbCones'] == Null) ? Null : $_POST['nbCones'];
+    $_POST['poidsVehicule'] = ($_POST['poidsVehicule'] == Null) ? Null : $_POST['poidsVehicule'];
     $_POST['priseAlimentation220'] = ($_POST['priseAlimentation220'] == Null) ? Null : $_POST['priseAlimentation220'];
     $_POST['idVehiculesEtat'] = ($_POST['idVehiculesEtat'] == Null) ? Null : $_POST['idVehiculesEtat'];
 
@@ -66,6 +67,7 @@ else
             pmv                            = :pmv,
             fleche                         = :fleche,
             nbCones                        = :nbCones,
+            poidsVehicule                  = :poidsVehicule,
             priseAlimentation220           = :priseAlimentation220,
             remarquesVehicule              = :remarquesVehicule,
             idVehiculesEtat                = :idVehiculesEtat,
@@ -100,6 +102,7 @@ else
         'pmv'                            => $_POST['pmv'],
         'fleche'                         => $_POST['fleche'],
         'nbCones'                        => $_POST['nbCones'],
+        'poidsVehicule'                  => $_POST['poidsVehicule'],
         'priseAlimentation220'           => $_POST['priseAlimentation220'],
         'remarquesVehicule'              => $_POST['remarquesVehicule'],
         'idVehiculesEtat'                => $_POST['idVehiculesEtat'],

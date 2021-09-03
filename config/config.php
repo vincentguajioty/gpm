@@ -2,7 +2,7 @@
 
 require_once 'bdd.php';
 
-$VERSIONCHECK = '12.3';
+$VERSIONCHECK = '13.0';
 
 $query = $db->query('SELECT * FROM CONFIG;');
 $data = $query->fetch();
@@ -12,6 +12,7 @@ $APPNAME         = $data['appname'];
 $URLSITE         = $data['urlsite'];
 $VERSION         = $data['version'];
 $MAILSERVER      = $data['mailserver'];
+$MAILCNIL        = $data['mailcnil'];
 $MAILCOPY        = $data['mailcopy'];
 $LOGOUTTEMP      = $data['logouttemp'];
 $MAINTENANCE     = $data['maintenance'];
@@ -38,6 +39,10 @@ $RECAPTCHA_SECRETKEY = $data['reCaptcha_secretKey'];
 $RECAPTCHA_SCOREMIN  = $data['reCaptcha_scoreMin'];
 
 $XSS_SECURITY    = array("script", "SCRIPT", "<", ">", "/");
+
+$LDAP_DOMAIN  = $data['LDAP_DOMAIN'];
+$LDAP_BASEDN  = $data['LDAP_BASEDN'];
+$LDAP_ISWINAD = $data['LDAP_ISWINAD'];
 
 if($VERSION >= 12)
 {

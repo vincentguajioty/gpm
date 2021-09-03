@@ -70,7 +70,9 @@ else
 			agenda_tenues_toDoList              = "#3c8db",
 			agenda_healthF                      = "#f39c12",
 			agenda_healthAF                     = "#f39c12",
-			layout                              = "fixed"
+			layout                              = "fixed",
+			cnil_anonyme                        = false,
+			isActiveDirectory                   = false
         ;');
     $query->execute(array(
         'identifiant'    => $_POST['identifiant'],

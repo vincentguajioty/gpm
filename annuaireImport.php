@@ -32,7 +32,7 @@ if ($_SESSION['annuaire_ajout']==0)
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Import d'utilisateurs dans <?= $APPNAME ?>
+                Import d'utilisateurs locaux dans <?= $APPNAME ?> (sans lien avec l'AD)
             </h1>
             <ol class="breadcrumb">
                 <li><a href="annuaire.php"><i class="fa fa-home"></i>Annuaire</a></li>

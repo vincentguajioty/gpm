@@ -15,6 +15,15 @@ if ($_SESSION['connexion_connexion'] == 0)
     exit;
 }
 
+if(
+	(strpos($_SERVER['PHP_SELF'], "loginCNIL.php") == false)
+	AND $_SESSION['disclaimerAccept'] == Null
+)
+{
+	echo "<script type='text/javascript'>document.location.replace('loginCNIL.php');</script>";
+    exit;
+}
+
 if ($MAINTENANCE == 1 AND $_SESSION['maintenance'] == 0)
 {
     echo "<script type='text/javascript'>document.location.replace('logout.php');</script>";

@@ -3,6 +3,8 @@
 require_once 'bdd.php';
 require_once 'config.php';
 
+writeInLogs("CRON - Début du CRON.", '1', NULL);
+
 //Mise à jour des conditions de notifications
 writeInLogs("CRON - Début de la vérification des conditions de notification.", '1', NULL);
 notificationsConditionsMAJ();
@@ -14,7 +16,7 @@ writeInLogs("CRON - Début de la mise à jour des anticipations de péremption."
 updatePeremptionsAnticipations();
 writeInLogs("CRON - Fin de la mise à jour des anticipations de péremption.", '1', NULL);
 
-//Analyse complète des lots
+//Déverrouillage des locks sur les lots et réserves
 writeInLogs("CRON - Début du déveouillage des locks d'inventaire des lots et des reserves.", '1', NULL);
 unlockLotsInventaires();
 unlockReservesInventaires();
@@ -30,7 +32,7 @@ writeInLogs("CRON - Début de la vérification des désinfections de tous les v�
 checkAllDesinfection();
 writeInLogs("CRON - Fin de la vérification des désinfections de tous les véhicules", '1', NULL);
 
-//Analyse complète des désinfections de véhicules
+//Analyse complète des maintenances de véhicules
 writeInLogs("CRON - Début de la vérification des maintenances de tous les véhicules.", '1', NULL);
 checkAllMaintenance();
 writeInLogs("CRON - Fin de la vérification des maintenances de tous les véhicules", '1', NULL);
@@ -38,5 +40,16 @@ writeInLogs("CRON - Fin de la vérification des maintenances de tous les véhicu
 //Suppression de toutes les demandes de réinitialisation de mot de passe non-effectuées
 writeInLogs("CRON - Vidage de la table de tocken de reset de mots de passe.", '1', NULL);
 $query = $db->query('TRUNCATE TABLE RESETPASSWORD;');
+
+//Alerting de l'administrateur sur les comptes qui seront dans la passe CNIL_ANONYME d'ici 6 mois
+cnilAnonymeAlerte6();
+
+//Alerting de l'administrateur sur les comptes qui seront dans la passe CNIL_ANONYME d'ici 1 mois
+cnilAnonymeAlerte1();
+
+//Anonymisation des comptes
+cnilAnonymeCron();
+
+writeInLogs("CRON - Fin du CRON.", '1', NULL);
 
 ?>

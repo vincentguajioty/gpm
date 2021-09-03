@@ -17,11 +17,7 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
 - profilsRecap.php et profilsRecapPersonnes.php
 - page de visualisation des droits depuis la page annuaireContenu.php
 - box de visualisation de droits dans user.php
-- rechargement dynamique des droits dans loginReloadHabilitation.php
-- rechargement dynamique des droits dans userReloadHabilitation.php
-- chargement initial des droits dans loginSQL.php
-- chargement des droits avec délégation dans loginDelegate.php
-- chargement des droits en retour de délégation dans loginDelegateBack.php
+- chargement des droits dans la fonction loadSession()
 */
 ?>
 
@@ -67,6 +63,10 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                         <div class="form-group">
                             <label>Libellé: <small style="color:grey;">Requis</small></label>
                             <input type="text" class="form-control" value="<?= isset($_GET['id']) ? $data['libelleProfil'] : ''?>" name="libelleProfil" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Bind DN:</label>
+                            <input type="text" class="form-control" value="<?= isset($_GET['id']) ? $data['LDAP_BINDDN'] : ''?>" name="LDAP_BINDDN">
                         </div>
                         <div class="form-group">
                             <label>Description:</label>
@@ -485,6 +485,8 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                                 (SELECT idProfil FROM PROFILS_PERSONNES aop WHERE ao.idPersonne = aop.idPersonne AND aop.idProfil = :idProfil) as idProfil
                                             FROM
                                                 PERSONNE_REFERENTE ao
+                                            WHERE
+                                            	ao.cnil_anonyme = false
                                             ORDER BY
                                                 nomPersonne,
                                                 prenomPersonne;');

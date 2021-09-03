@@ -39,8 +39,8 @@ if ($_SESSION['annuaire_lecture']==0)
             <div class="box">
                 <div class="box-header">
                 	<?php if ($_SESSION['annuaire_ajout']==1) {?>
-	                    <h3 class="box-title"><a href="annuaireForm.php" class="btn btn-sm btn-success modal-form">Ajouter un utilisateur</a></h3>
-	                    <h3 class="box-title"><a href="annuaireImport.php" class="btn btn-sm btn-success">Import d'utilisateurs</a></h3>
+	                    <h3 class="box-title"><a href="annuaireForm.php" class="btn btn-sm btn-success modal-form">Ajouter un utilisateur local</a></h3>
+	                    <h3 class="box-title"><a href="annuaireImport.php" class="btn btn-sm btn-success">Import d'utilisateurs locaux</a></h3>
 	            	<?php } ?>
 	            	<h3 class="box-title pull-right"><a href="annuaireOff.php" class="btn btn-sm btn-default">Voir les utilisateurs sans droits de connexion</a></h3>
 	            </div>
@@ -66,7 +66,7 @@ if ($_SESSION['annuaire_lecture']==0)
                         {?>
                             <tr>
                                 <td><?= $data['idPersonne'] ?></td>
-                                <td><?= $data['identifiant'] ?></td>
+                                <td><?= $data['identifiant'] ?> <?php if($data['isActiveDirectory']){echo '<span class="badge bg-blue">AD</span>';} ?></td>
                                 <td><?= $data['nomPersonne'] ?></td>
                                 <td><?= $data['prenomPersonne'] ?></td>
                                 <td><?= $data['mailPersonne'] ?></td>

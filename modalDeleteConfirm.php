@@ -13,7 +13,7 @@ switch ($_GET['case']) {
             <li>Les centres de couts gérés par cette personne ne seront plus affectés.</li>
             <li>Les commandes auquelles la personne était ratachée ne seront plus rattachées à personne (attention aux demandes de validation en attente).</li>
             <li>Les messages publics postés par la personne n'auront plus d'auteur.</li>
-            <li>les inventaires réalisés par la personne n'auront plus d'auteur.</li>
+            <li>Les inventaires réalisés par la personne n'auront plus d'auteur.</li>
             <li>Les équipements radio gérés par cette personne ne seront plus affectés.</li>
             <li>Les véhicules gérés par cette personne ne seront plus affectés (véhicules, taches de maintenance, relevés kilométriques, désinfections, maintenances régulières).</li>
             <li>Les taches réalisées de la TODOLIST de cet utilisateur seront supprimées.</li>
@@ -22,6 +22,16 @@ switch ($_GET['case']) {
             <li>Les éléments de tenue de cette personne seront supprimés.</li>
             <li>Les cautions de cette personne seront supprimées.</li>
             <li>Les opérations saisies par cette personne dans les centres de couts seront anonymisées.</li>
+        ";
+    break;
+    
+    case 'annuaireCnilAnonyme':
+        $lien = "annuaireCnilAnonyme.php?id=".$_GET['id'];
+		$contenu = "
+            <li>Le nom et le prénom de l'utilisateur seront remplacés par ANONYME.</li>
+            <li>L'identifiant de l'utilisateur sera écrasé.</li>
+            <li>Les autres informations personnelles seront supprimées.</li>
+            <li>Si l'utilisateur a à nouveau besoin de son compte, il faudra lui en recréer un.</li>
         ";
     break;
 
@@ -364,11 +374,11 @@ switch ($_GET['case']) {
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Avertissement avant suppression</h4>
+                <h4 class="modal-title">Avertissement avant action</h4>
             </div>
             <form role="form" action="<?php echo $lien; ?>" method="POST">
 	            <div class="modal-body">
-	                Cette suppression aura les impacts suivants:
+	                Cette action aura les impacts suivants:
 	                <ul>
 	                	<?php echo $contenu; ?>
 	                </ul>
@@ -379,7 +389,7 @@ switch ($_GET['case']) {
 	            </div>
 	            <div class="modal-footer">
 	                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
-	                <button type="submit" class="btn btn-default pull-right">Confirmer la suppression</button>
+	                <button type="submit" class="btn btn-default pull-right">Confirmer l'action</button>
 	            </div>
             </form>
         </div>

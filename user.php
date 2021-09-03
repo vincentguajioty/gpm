@@ -70,6 +70,7 @@ require_once('logCheck.php');
 		                            <input type="tel" class="form-control" value="<?=$_SESSION['fonction']?>"
 		                                   name="fonction">
 		                        </div>
+		                        <center><i>Pour toute information ou réclamation quant à la confidentialité des données personnelles, veuillez contacter le référent informatique de la plateforme: <?=$MAILCNIL?></i></center>
 		                        <div class="box-footer">
 		                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
 		                        </div>
@@ -506,32 +507,39 @@ require_once('logCheck.php');
 		                <!-- /.box-header -->
 		                <div class="box-body">
 		                	<?php
-		                		if ($_SESSION['DELEGATION_ACTIVE']==0)
+		                		if($_SESSION['isActiveDirectory'])
 		                		{ ?>
-			                    <form role="form" action="userPWD.php" method="POST">
-			                        <!-- text input -->
-			                        <div class="form-group">
-			                            <label>Mon mot de passe Actuel:</label>
-			                            <input type="password" class="form-control" placeholder="*****"
-			                                   name="old" required>
-			                        </div>
-			                        <div class="form-group">
-			                            <label>Nouveau mot de passe:</label>
-			                            <input type="password" class="form-control" placeholder="*****"
-			                                   name="new1" required>
-			                        </div>
-			                        <div class="form-group">
-			                            <label>Saisir à nouveau le nouveau mot de passe:</label>
-			                            <input type="password" class="form-control" placeholder="*****"
-			                                   name="new2" required>
-			                        </div>
-			                        <div class="box-footer">
-			                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
-			                        </div>
-			                    </form>
-			                <?php } else { ?>
-			                	<center>La modification du mot de passe est désactivée en mode délégation.</center>
-			                <?php } ?>
+		                			<center>Ce compte est lié à l'annuaire AD/LDAP. Le mot de passe ne peut pas être modifié ici.</center>
+		                		<?php }
+		                		else
+		                		{
+			                		if ($_SESSION['DELEGATION_ACTIVE']==0)
+			                		{ ?>
+				                    <form role="form" action="userPWD.php" method="POST">
+				                        <!-- text input -->
+				                        <div class="form-group">
+				                            <label>Mon mot de passe Actuel:</label>
+				                            <input type="password" class="form-control" placeholder="*****"
+				                                   name="old" required>
+				                        </div>
+				                        <div class="form-group">
+				                            <label>Nouveau mot de passe:</label>
+				                            <input type="password" class="form-control" placeholder="*****"
+				                                   name="new1" required>
+				                        </div>
+				                        <div class="form-group">
+				                            <label>Saisir à nouveau le nouveau mot de passe:</label>
+				                            <input type="password" class="form-control" placeholder="*****"
+				                                   name="new2" required>
+				                        </div>
+				                        <div class="box-footer">
+				                            <button type="submit" class="btn btn-info pull-right">Modifier</button>
+				                        </div>
+				                    </form>
+				                <?php } else { ?>
+				                	<center>La modification du mot de passe est désactivée en mode délégation.</center>
+				                <?php }
+				                } ?>
 		                </div>
 		            </div>
 		            <div class="box box-info">

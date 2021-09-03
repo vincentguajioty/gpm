@@ -57,7 +57,7 @@ if ($_SESSION['profils_lecture']==0)
                         {?>
                             <tr>
                                 <td><?php echo $data['idProfil']; ?></td>
-                                <td><?php echo $data['libelleProfil']; ?></td>
+                                <td><?php echo $data['libelleProfil']; ?> <?php if(!(empty($data['LDAP_BINDDN']))){echo '<span class="badge bg-blue">AD</span>';} ?></td>
                                 <td><?php echo $data['descriptifProfil']; ?></td>
                                 <td>
                                     <?php if ($_SESSION['profils_modification']==1) {?>

@@ -41,6 +41,51 @@ if ($_SESSION['annuaire_lecture']==0)
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
+            
+            <?php
+            	$anonymisation = $db->prepare('
+            		SELECT
+						vue.*,
+						DATE_ADD(vue.derniereConnexion, INTERVAL 3 YEAR) as anonymisation
+					FROM
+				    	(SELECT
+				    		p.idPersonne,
+				    		p.identifiant,
+				    		date(p.derniereConnexion) as derniereConnexion,
+				    		p.cnil_anonyme,
+				    		COUNT(pp.idProfil) as nbProfil
+				    	FROM
+				    		PERSONNE_REFERENTE p
+				    		LEFT OUTER JOIN PROFILS_PERSONNES pp ON p.idPersonne = pp.idPersonne
+				    	GROUP BY
+				    		p.idPersonne
+				    	) vue
+				    WHERE
+				    	vue.nbProfil = 0
+				    	AND
+				    	vue.cnil_anonyme = 0
+				    	AND
+				    	vue.idPersonne = :idPersonne
+            	');
+            	$anonymisation->execute(array('idPersonne'=>$_GET['id']));
+            	$anonymisation = $anonymisation->fetch();
+            	
+            	if($anonymisation['anonymisation'] != '')
+            	{ ?>
+            		<div class="alert alert-warning">
+			        	<i class="icon fa fa-warning"></i> Ce compte utilisateur n'a plus de profil attribué et ne peut plus se connecter. Il sera automatiquement anonymisé le <?= $anonymisation['anonymisation'] ?> (droit à l'oubli).
+			        </div>
+            	<?php }
+            ?>
+            
+            <?php
+            	if($personne['cnil_anonyme'])
+            	{ ?>
+            		<div class="alert alert-success">
+			        	<i class="icon fa fa-check"></i> Ce compte utilisateur a été irréversiblement anonymisé (droit à l'oubli).
+			        </div>
+            	<?php }
+            ?>
 
             <div class="row">
 
@@ -52,105 +97,199 @@ if ($_SESSION['annuaire_lecture']==0)
                         </div>
                         <div class="box-body">
                             <?php if ($_SESSION['annuaire_modification']==1) {?>
-                                <a href="annuaireSetDashboard.php?id=<?=$_GET['id']?>" class="btn btn-success spinnerAttenteClick" onclick="return confirm('Etes-vous sûr de vouloir réactiver les indicateurs sur la page d\'accueil de l\'utilisateur ?');" title="Forcer les indicateurs sur la page d'accueil"><i class="fa fa-dashboard"></i> Réactiver les indicateurs sur la page d'accueil</a>
+                                <a href="annuaireSetDashboard.php?id=<?=$_GET['id']?>" class="btn btn-success" onclick="return confirm('Etes-vous sûr de vouloir réactiver les indicateurs sur la page d\'accueil de l\'utilisateur ?');" title="Forcer les indicateurs sur la page d'accueil"><i class="fa fa-dashboard"></i> Réactiver les indicateurs sur la page d'accueil</a>
                             <?php }?>
 
                             <?php if ($_SESSION['annuaire_modification']==1) {?>
-                                <a href="annuaireSetMail.php?id=<?=$_GET['id']?>" class="btn btn-success spinnerAttenteClick" onclick="return confirm('Etes-vous sûr de vouloir réactiver les notifications pour cet utilisateur ?');" title="Forcer l'activation des notifications"><i class="fa fa-envelope"></i> Réactiver les notifications par mail</a>
+                                <a href="annuaireSetMail.php?id=<?=$_GET['id']?>" class="btn btn-success" onclick="return confirm('Etes-vous sûr de vouloir réactiver les notifications pour cet utilisateur ?');" title="Forcer l'activation des notifications"><i class="fa fa-envelope"></i> Réactiver les notifications par mail</a>
                             <?php }?>
 
                             <?php if ($_SESSION['annuaire_mdp']==1) {?>
-                                <a href="annuaireRAZdoubleFactor.php?id=<?=$_GET['id']?>" class="btn btn-info spinnerAttenteClick" onclick="return confirm('Etes-vous sûr de vouloir désactiver la double authentification pour cet utilisateur ?');" title="Désactiver le MFA"><i class="fa fa-unlock"></i> Désactiver la double authentification</a>
+                                <a href="annuaireRAZdoubleFactor.php?id=<?=$_GET['id']?>" class="btn btn-info" onclick="return confirm('Etes-vous sûr de vouloir désactiver la double authentification pour cet utilisateur ?');" title="Désactiver le MFA"><i class="fa fa-unlock"></i> Désactiver la double authentification</a>
                             <?php }?>
 
-                            <?php if ($_SESSION['annuaire_mdp']==1) {?>
-                                <a href="annuaireRAZ.php?id=<?=$_GET['id']?>" class="btn btn-info spinnerAttenteClick" onclick="return confirm('Etes-vous sûr de vouloir réinitialiser ce mot de passe (le nouveau mot de passe prendra la valeur de l\'identifiant) ce qui va également désactiver la double authentification ?');" title="Réinitialiser le mot de passe"><i class="fa fa-lock"></i> Réinitialiser le mot de passe de l'utilisateur</a>
+                            <?php if ($_SESSION['annuaire_mdp']==1 AND $personne['isActiveDirectory']==false) {?>
+                                <a href="annuaireRAZ.php?id=<?=$_GET['id']?>" class="btn btn-info" onclick="return confirm('Etes-vous sûr de vouloir réinitialiser ce mot de passe (le nouveau mot de passe prendra la valeur de l\'identifiant) ce qui va également désactiver la double authentification ?');" title="Réinitialiser le mot de passe"><i class="fa fa-lock"></i> Réinitialiser le mot de passe de l'utilisateur</a>
                             <?php }?>
                             
                             <?php if ($_SESSION['delegation']==1 AND $_SESSION['DELEGATION_ACTIVE']==0 AND $_SESSION['idPersonne']!=$_GET['id']) {?>
                                 <a href="loginDelegate.php?idDelegate=<?=$_GET['id']?>" class="btn btn-warning spinnerAttenteClick" title="Se connecter entant que"><i class="fa fa-user"></i> Se connecter entant que (délégation)</a>
                             <?php }?>
-
-                            <?php if ($_SESSION['annuaire_suppression']==1) {?>
-                                <a href="modalDeleteConfirm.php?case=annuaireDelete&id=<?=$_GET['id']?>" class="btn spinnerAttenteClick btn-danger modal-form pull-right" title="Supprimer"><i class="fa fa-trash"></i> Supprimer l'utilisateur</a>
+                            
+                            <?php if ($_SESSION['annuaire_modification']==1 AND !($personne['isActiveDirectory'])) {?>
+                                <a href="annuaireSetAD.php?id=<?=$_GET['id']?>" class="btn btn-warning" onclick="return confirm('Etes-vous sûr de vouloir lier cet utilisateur à l\'annuaire AD ?');" title="Activation AD"><i class="fa fa-link"></i> Lier à l'annuaire AD/LDAP</a>
                             <?php }?>
+                            
+                            <?php if ($_SESSION['annuaire_modification']==1 AND $personne['isActiveDirectory']) {?>
+                                <a href="annuaireSetLocal.php?id=<?=$_GET['id']?>" class="btn btn-warning" onclick="return confirm('Etes-vous sûr de vouloir détacher cet utilisateur à l\'annuaire AD ?');" title="Désactivation AD"><i class="fa fa-unlink"></i> Délier de l'annuaire AD/LDAP</a>
+                            <?php }?>
+
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-4 col-sm-12 col-xs-12">
-                    <div class="box box-info">
-                        <?php if ($_SESSION['annuaire_modification']==1) {?> <form role="form" action="annuaireUpdate.php?id=<?= $_GET['id'] ?>" method="POST"><?php }?>
-                            <div class="box-header with-border">
-                                <i class="fa fa-user"></i>
-                                <h3 class="box-title">Modifier les propriétés de l'utilisateur</h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="form-group">
-                                    <label>Identifiant de connexion: <small style="color:grey;"> Requis</small></label>
-                                    <input type="text" class="form-control" value="<?= isset($personne['identifiant']) ? $personne['identifiant'] : ''?>" name="identifiant" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Nom:</label>
-                                    <input type="text" class="form-control" value="<?= isset($personne['nomPersonne']) ? $personne['nomPersonne'] : ''?>" name="nomPersonne">
-                                </div>
-                                <div class="form-group">
-                                    <label>Prénom:</label>
-                                    <input type="text" class="form-control" value="<?= isset($personne['prenomPersonne']) ? $personne['prenomPersonne'] : ''?>" name="prenomPersonne">
-                                </div>
-                                <div class="form-group">
-                                    <label>Adresse mail:</label>
-                                    <input type="text" class="form-control" value="<?= isset($personne['mailPersonne']) ? $personne['mailPersonne'] : ''?>" name="mailPersonne">
-                                </div>
-                                <div class="form-group">
-                                    <label>Téléphone</label>
-                                    <input type="text" class="form-control" value="<?= isset($personne['telPersonne']) ? $personne['telPersonne'] : ''?>" name="telPersonne">
-                                </div>
-                                <div class="form-group">
-                                    <label>Fonction:</label>
-                                    <input type="text" class="form-control" value="<?= isset($personne['fonction']) ? $personne['fonction'] : ''?>" name="fonction">
-                                </div>
-                                <div class="form-group">
-                                    <label>Profil d'habilitation: </label>
-                                    <select class="form-control select2" style="width: 100%;" name="idProfil[]" multiple <?php if($_SESSION['profils_modification']==0){ echo 'disabled'; } ?>>
+                <?php
+                    if($personne['isActiveDirectory'])
+                    { ?>
+                        <div class="col-md-4 col-sm-12 col-xs-12">
+                            <div class="box box-info">
+                                <?php if ($_SESSION['annuaire_modification']==1 AND $personne['cnil_anonyme'] == false) {?> <form role="form" action="annuaireUpdateAD.php?id=<?= $_GET['id'] ?>" method="POST"><?php }?>
+                                    <div class="box-header with-border">
+                                        <i class="fa fa-user"></i>
+                                        <h3 class="box-title">Modifier les propriétés de l'utilisateur ActiveDirectory</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label>Identifiant de connexion: <small style="color:grey;"> Requis</small></label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['identifiant']) ? $personne['identifiant'] : ''?>" name="identifiant" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Nom:</label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['nomPersonne']) ? $personne['nomPersonne'] : ''?>" name="nomPersonne">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Prénom:</label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['prenomPersonne']) ? $personne['prenomPersonne'] : ''?>" name="prenomPersonne">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Adresse mail:</label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['mailPersonne']) ? $personne['mailPersonne'] : ''?>" name="mailPersonne">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Téléphone</label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['telPersonne']) ? $personne['telPersonne'] : ''?>" name="telPersonne">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Fonction:</label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['fonction']) ? $personne['fonction'] : ''?>" name="fonction">
+                                        </div>
                                         <?php
-                                        $query2 = $db->prepare('
-                                            SELECT
-                                                ao.*,
-                                                (SELECT idPersonne FROM PROFILS_PERSONNES aop WHERE ao.idProfil = aop.idProfil AND aop.idPersonne = :idPersonne) as idPersonne
-                                            FROM
-                                                PROFILS ao
-                                            ORDER BY
-                                                libelleProfil;');
-                                        $query2->execute(array('idPersonne' => $_GET['id']));
-
-                                        while ($data2 = $query2->fetch())
-                                        {
-                                            
-                                            echo '<option value=' . $data2['idProfil'];
-
-                                            if (isset($data2['idPersonne']) AND $data2['idPersonne'])
-                                            {
-                                                echo " selected ";
-                                            }
-                                            echo '>' . $data2['libelleProfil'] . '</option>';
-                                        }
-                                        $query2->closeCursor();?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Dernière Connexion:</label>
-                                    <input type="text" class="form-control" value="<?= isset($personne['derniereConnexion']) ? $personne['derniereConnexion'] : 'Aucune connexion'?>" disabled>
-                                </div>
+                                        	if($personne['cnil_anonyme'] != true)
+                                        	{ ?>
+        		                                <div class="form-group">
+        		                                    <label>Profil d'habilitation: </label>
+        		                                    <select class="form-control select2" style="width: 100%;" name="idProfil[]" multiple disabled>
+        		                                        <?php
+        		                                        $query2 = $db->prepare('
+        		                                            SELECT
+                                                                p.idProfil,
+                                                                p.libelleProfil
+                                                            FROM
+                                                                PROFILS_PERSONNES pp
+                                                                LEFT OUTER JOIN PROFILS p ON pp.idProfil = p.idProfil
+                                                            WHERE
+                                                                idPersonne = :idPersonne;');
+        		                                        $query2->execute(array('idPersonne' => $_GET['id']));
+        		
+        		                                        while ($data2 = $query2->fetch())
+        		                                        {
+        		                                            
+        		                                            echo '<option value="'.$data2['idProfil'].'" selected>' . $data2['libelleProfil'] . '</option>';
+        		                                        }
+        		                                        $query2->closeCursor();?>
+        		                                    </select>
+        		                                </div>
+        		                        <?php } ?>
+        		                        <div class="form-group">
+                                            <label>Dernière Connexion:</label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['derniereConnexion']) ? $personne['derniereConnexion'] : 'Aucune connexion'?>" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Acceptation du texte CNIL:</label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['disclaimerAccept']) ? $personne['disclaimerAccept'] : 'Pas depuis la dernière modification du texte'?>" disabled>
+                                        </div>
+                                    </div>
+                                    <?php if ($_SESSION['annuaire_modification']==1 AND $personne['cnil_anonyme'] == false) {?>
+                                        <div class="box-footer">
+                                            <button type="submit" class="btn btn-primary pull-right">Modifier</button>
+                                        </div>
+                                    <?php }?>
+                                <?php if ($_SESSION['annuaire_modification']==1 AND $personne['cnil_anonyme'] == false) {?></form><?php }?>
                             </div>
-                            <?php if ($_SESSION['annuaire_modification']==1) {?>
-                                <div class="box-footer">
-                                    <button type="submit" class="btn btn-primary pull-right">Modifier</button>
-                                </div>
-                            <?php }?>
-                        <?php if ($_SESSION['annuaire_modification']==1) {?></form><?php }?>
-                    </div>
-                </div>
+                        </div>
+                    <?php }else{ ?>
+                        <div class="col-md-4 col-sm-12 col-xs-12">
+                            <div class="box box-info">
+                                <?php if ($_SESSION['annuaire_modification']==1 AND $personne['cnil_anonyme'] == false) {?> <form role="form" action="annuaireUpdate.php?id=<?= $_GET['id'] ?>" method="POST"><?php }?>
+                                    <div class="box-header with-border">
+                                        <i class="fa fa-user"></i>
+                                        <h3 class="box-title">Modifier les propriétés de l'utilisateur local</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label>Identifiant de connexion: <small style="color:grey;"> Requis</small></label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['identifiant']) ? $personne['identifiant'] : ''?>" name="identifiant" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Nom:</label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['nomPersonne']) ? $personne['nomPersonne'] : ''?>" name="nomPersonne">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Prénom:</label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['prenomPersonne']) ? $personne['prenomPersonne'] : ''?>" name="prenomPersonne">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Adresse mail:</label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['mailPersonne']) ? $personne['mailPersonne'] : ''?>" name="mailPersonne">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Téléphone</label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['telPersonne']) ? $personne['telPersonne'] : ''?>" name="telPersonne">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Fonction:</label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['fonction']) ? $personne['fonction'] : ''?>" name="fonction">
+                                        </div>
+                                        <?php
+                                            if($personne['cnil_anonyme'] != true)
+                                            { ?>
+                                                <div class="form-group">
+                                                    <label>Profil d'habilitation: </label>
+                                                    <select class="form-control select2" style="width: 100%;" name="idProfil[]" multiple <?php if($_SESSION['profils_modification']==0){ echo 'disabled'; } ?>>
+                                                        <?php
+                                                        $query2 = $db->prepare('
+                                                            SELECT
+                                                                ao.*,
+                                                                (SELECT idPersonne FROM PROFILS_PERSONNES aop WHERE ao.idProfil = aop.idProfil AND aop.idPersonne = :idPersonne) as idPersonne
+                                                            FROM
+                                                                PROFILS ao
+                                                            ORDER BY
+                                                                libelleProfil;');
+                                                        $query2->execute(array('idPersonne' => $_GET['id']));
+                
+                                                        while ($data2 = $query2->fetch())
+                                                        {
+                                                            
+                                                            echo '<option value=' . $data2['idProfil'];
+                
+                                                            if (isset($data2['idPersonne']) AND $data2['idPersonne'])
+                                                            {
+                                                                echo " selected ";
+                                                            }
+                                                            echo '>' . $data2['libelleProfil'] . '</option>';
+                                                        }
+                                                        $query2->closeCursor();?>
+                                                    </select>
+                                                </div>
+                                        <?php } ?>
+                                        <div class="form-group">
+                                            <label>Dernière Connexion:</label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['derniereConnexion']) ? $personne['derniereConnexion'] : 'Aucune connexion'?>" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Acceptation du texte CNIL:</label>
+                                            <input type="text" class="form-control" value="<?= isset($personne['disclaimerAccept']) ? $personne['disclaimerAccept'] : 'Pas depuis la dernière modification du texte'?>" disabled>
+                                        </div>
+                                    </div>
+                                    <?php if ($_SESSION['annuaire_modification']==1 AND $personne['cnil_anonyme'] == false) {?>
+                                        <div class="box-footer">
+                                            <button type="submit" class="btn btn-primary pull-right">Modifier</button>
+                                        </div>
+                                    <?php }?>
+                                <?php if ($_SESSION['annuaire_modification']==1 AND $personne['cnil_anonyme'] == false) {?></form><?php }?>
+                            </div>
+                        </div>
+                <?php } ?>
 
                 <div class="col-md-4 col-sm-12 col-xs-12">
                     <div class="box box-success">
@@ -763,7 +902,22 @@ if ($_SESSION['annuaire_lecture']==0)
                         </div>
                     </div>
                 </div>
-
+				
+				<?php if ($_SESSION['annuaire_suppression']==1) {?>
+					<div class="col-md-12 col-sm-12 col-xs-12">
+	                    <div class="box box-danger">
+	                        <div class="box-header with-border">
+	                            <i class="fa fa-warning"></i>
+	                            <h3 class="box-title">Actions de suppression du compte local</h3>
+	                        </div>
+	                        <div class="box-body">
+	                            <?php if($personne['cnil_anonyme'] == false){?><a href="modalDeleteConfirm.php?case=annuaireCnilAnonyme&id=<?=$_GET['id']?>" class="btn btn-danger modal-form" title="Supprimer"><i class="fa fa-user-secret"></i> CNIL - Anonymiser l'utilisateur</a><?php } ?>
+	                            <a href="modalDeleteConfirm.php?case=annuaireDelete&id=<?=$_GET['id']?>" class="btn btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i> Supprimer l'utilisateur</a>
+	                        </div>
+	                    </div>
+	                </div>
+                <?php }?>
+				
             </div>
 
         </section>

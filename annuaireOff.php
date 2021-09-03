@@ -49,9 +49,7 @@ if ($_SESSION['annuaire_lecture']==0)
                                 <th class="all">Identifiant de connexion</th>
                                 <th class="not-mobile">Nom</th>
                                 <th class="not-mobile">Prénom</th>
-                                <th class="not-mobile">Mail</th>
-                                <th class="not-mobile">Fonction</th>
-                                <th class="not-mobile">Profil</th>
+                                <th class="not-mobile">CNIL</th>
                                 <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
@@ -65,16 +63,8 @@ if ($_SESSION['annuaire_lecture']==0)
                                 <td><?php echo $data['identifiant']; ?></td>
                                 <td><?php echo $data['nomPersonne']; ?></td>
                                 <td><?php echo $data['prenomPersonne']; ?></td>
-                                <td><?= $data['mailPersonne'] ?></td>
-                                <td><?php echo $data['fonction']; ?></td>
-                                <td><?php
-                                	$query2 = $db->prepare('SELECT * FROM PROFILS_PERSONNES person LEFT OUTER JOIN PROFILS profil ON person.idProfil = profil.idProfil WHERE idPersonne = :idPersonne;');
-                                	$query2->execute(array('idPersonne'=>$data['idPersonne']));
-                                	while($data2 = $query2->fetch())
-                                	{
-                                		echo $data2['libelleProfil'].'<br/>';
-                                	}
-                                	?>
+                                <td>
+                                	<?php if($data['cnil_anonyme']){echo '<span class="badge bg-green">Anonymisation 3 ans</span>';}else{echo '<span class="badge bg-orange">Anonymisation 3 ans</span>';} ?>
                                 </td>
                                 <td>
                                     <?php if ($_SESSION['annuaire_lecture']==1) {?>

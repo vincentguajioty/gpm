@@ -24,7 +24,7 @@ if($_SESSION['annuaire_lecture']==1 OR $_SESSION['annuaire_ajout']==1 OR $_SESSI
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"><?= isset($_GET['id']) ? 'Modification' : 'Création'?> d'un compte utilisateur</h4>
+                    <h4 class="modal-title"><?= isset($_GET['id']) ? 'Modification' : 'Création'?> d'un compte utilisateur local (non-lié à l'AD)</h4>
                 </div>
                 <form role="form" action="<?= isset($_GET['id']) ? 'annuaireUpdate.php?id='.$_GET['id'] : 'annuaireAdd.php'?>" method="POST">
                     <div class="modal-body">

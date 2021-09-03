@@ -39,6 +39,7 @@ if ($_SESSION['appli_conf']==0)
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#general" data-toggle="tab"><i class="fa fa-wrench"></i> Générale</a></li>
+                    <li><a href="#cnil" data-toggle="tab"><i class="fa fa-balance-scale"></i> CNIL</a></li>
                     <li><a href="#ip" data-toggle="tab"><i class="fa fa-shield"></i> Verrouillage IP</a></li>
                     <li><a href="#captcha" data-toggle="tab"><i class="fa fa-user-secret"></i> reCaptcha V3</a></li>
                     <li><a href="#aes" data-toggle="tab"><i class="fa fa-shopping-cart"></i> Cryptage AES</a></li>
@@ -46,6 +47,7 @@ if ($_SESSION['appli_conf']==0)
                     <li><a href="#notifCMD" data-toggle="tab"><i class="fa fa-envelope"></i> Notifications commandes</a></li>
                     <li><a href="#notifVEH" data-toggle="tab"><i class="fa fa-ambulance"></i> Véhicules</a></li>
                     <li><a href="#alertesBen" data-toggle="tab"><i class="fa fa-comment"></i> Alertes bénévoles</a></li>
+                    <li><a href="#ad" data-toggle="tab"><i class="fa fa-link"></i> Annuaire AD/LDAP</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="active tab-pane" id="general">
@@ -86,6 +88,10 @@ if ($_SESSION['appli_conf']==0)
                                 <input type="checkbox" value="1" name="mailcopy" <?php if($data['mailcopy']==1){echo "checked";}?>> Cette adresse doit être copiste de tous les mails envoyés par la plateforme.
                             </div>
                             <div class="form-group">
+                                <label>Adresse mail de contact CNIL:</label>
+                                <input type="text" class="form-control" value="<?=$data['mailcnil']?>" name="mailcnil" required>
+                            </div>
+                            <div class="form-group">
                                 <label>Temps avant déconnexion d'un utilisateur inactif (minutes):</label>
                                 <input type="number" class="form-control" value="<?=$data['logouttemp']?>" min="1" name="logouttemp" required>
                             </div>
@@ -94,13 +100,29 @@ if ($_SESSION['appli_conf']==0)
                                 <input type="text" class="form-control" name="confirmationSuppression" value="<?= $data['confirmationSuppression'] ?>" required>
                             </div>
                             <div class="form-group">
-                                <label>Mots de passe oubliés:</label>
+                                <label>Mots de passe oubliés (utilisateurs non-AD):</label>
                                 <br/>
                                 <input type="checkbox" value="1" name="resetPassword" <?php if($data['resetPassword']==1){echo "checked";}?>> Les utilisateurs peuvent réinitialiser leur mot de passe oublié par mail. <?php if($RECAPTCHA_ENABLE != 1){ echo '<b>Afin de garantir une meilleure sécurité de la plateforme, il est recommandé d\'activer la fonctionnalité reCaptcha.</b>';}?>
                             </div>
                             <div class="box-footer">
                                 <a data-toggle="modal" class="btn btn-sm btn-danger" <?php if ($MAINTENANCE==0){echo 'data-target="#activateSorryPage"';}else{echo 'disabled';} ?>>Activer le mode maintenance</a>
                                 <a data-toggle="modal" class="btn btn-sm btn-success" <?php if ($MAINTENANCE==1){echo 'data-target="#disactivateSorryPage"';}else{echo 'disabled';} ?>>Désactiver le mode maintenance</a>
+                                <button type="submit" class="btn btn-info pull-right">Modifier</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="tab-pane" id="cnil">
+                        <div class="alert alert-warning">
+                        	<i class="icon fa fa-warning"></i> Toute modification de ces conditions générales vont remettre à zéro les acceptations utilisateurs qui devront à nouveau lire ces conditions et les accepter.
+                        </div>
+                        
+                        <form role="form" action="appliConfUpdateCNIL.php" method="POST">
+                            <div class="form-group">
+                                <label>Conditions générales:</label>
+                                <textarea class="form-control" rows="15" name="cnilDisclaimer"><?php echo $data['cnilDisclaimer']; ?></textarea>
+                            </div>
+                            <div class="box-footer">
                                 <button type="submit" class="btn btn-info pull-right">Modifier</button>
                             </div>
                         </form>
@@ -235,6 +257,9 @@ if ($_SESSION['appli_conf']==0)
                                 echo '</div>';
                             }
                         ?>
+                        <div class="alert alert-info">
+                        	<i class="icon fa fa-info"></i> Les sels de mots de passe ne sont pris en compte que pour les utilisateurs locaux (non-liés à un AD).
+                        </div>
                         <form role="form" action="appliConfUpdateSel.php" method="POST">
                             <div class="form-group">
                                 <label>Sel de pré-hash:</label>
@@ -386,6 +411,27 @@ if ($_SESSION['appli_conf']==0)
                                 <label>Véhicules:</label>
                                 <br/>
                                 <input type="checkbox" value="1" name="alertes_benevoles_vehicules" <?php if($data['alertes_benevoles_vehicules']==1){echo "checked";}?>> Les utilisateurs non-authentifiés peuvent remonter des alertes sur les véchicules.
+                            </div>
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-info pull-right">Modifier</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="tab-pane" id="ad">
+                        <form role="form" action="appliConfUpdateAD.php" method="POST">
+                        	<div class="form-group">
+                                <label>Accès au domaine:</label>
+                                <input type="text" class="form-control" value="<?=$data['LDAP_DOMAIN']?>" name="LDAP_DOMAIN">
+                            </div>
+                            <div class="form-group">
+                                <label>Base DN:</label>
+                                <input type="text" class="form-control" value="<?=$data['LDAP_BASEDN']?>" name="LDAP_BASEDN">
+                            </div>
+                            <div class="form-group">
+                                <label>Windows Active Directory:</label>
+                                <br/>
+                                <input type="checkbox" value="1" name="LDAP_ISWINAD" <?php if($data['LDAP_ISWINAD']==1){echo "checked";}?>> Cocher cette case sur le serveur est de type Windows Active Directory, laisser décochée s'il s'agit d'un serveur LDAP
                             </div>
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-info pull-right">Modifier</button>
