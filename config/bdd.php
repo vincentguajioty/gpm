@@ -145,6 +145,7 @@ function checkUserPasswordAD($identifiant, $password, $idPersonne)
 	global $LDAP_DOMAIN;
 	global $LDAP_BASEDN;
 	global $LDAP_ISWINAD;
+	global $LDAP_SSL;
 	
 	$connect = false;
 	$ldap_username = $identifiant;
@@ -158,6 +159,7 @@ function checkUserPasswordAD($identifiant, $password, $idPersonne)
 	$ldap_connection = ldap_connect($ldap_domain);
 	ldap_set_option($ldap_connection, LDAP_OPT_PROTOCOL_VERSION, 3) or die('Unable to set LDAP protocol version');
 	ldap_set_option($ldap_connection, LDAP_OPT_REFERRALS, 0); // We need this for doing an LDAP search.
+	if($LDAP_SSL){ ldap_start_tls($ldap_connection); }
 
 	if (FALSE === $ldap_connection)
 	{
@@ -217,6 +219,7 @@ function checkUserExistingAD($identifiant, $password)
 	global $LDAP_DOMAIN;
 	global $LDAP_BASEDN;
 	global $LDAP_ISWINAD;
+	global $LDAP_SSL;
 	
 	$connect = false;
 	$ldap_username = $identifiant;
@@ -230,6 +233,7 @@ function checkUserExistingAD($identifiant, $password)
 	$ldap_connection = ldap_connect($ldap_domain);
 	ldap_set_option($ldap_connection, LDAP_OPT_PROTOCOL_VERSION, 3) or die('Unable to set LDAP protocol version');
 	ldap_set_option($ldap_connection, LDAP_OPT_REFERRALS, 0); // We need this for doing an LDAP search.
+	if($LDAP_SSL){ ldap_start_tls($ldap_connection); }
 
 	if (FALSE === $ldap_connection)
 	{
@@ -1801,6 +1805,7 @@ function cnilAnonyme($idPersonne)
             prenomPersonne = "ANONYME",
             mailPersonne = Null,
             telPersonne = Null,
+            isActiveDirectory = FALSE,
             cnil_anonyme = true
         WHERE
             idPersonne = :idPersonne

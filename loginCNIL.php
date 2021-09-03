@@ -8,7 +8,6 @@ $_SESSION['page'] = 000;
 <body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
     <?php include('bandeausup.php'); ?>
-    <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
 
 
@@ -40,7 +39,7 @@ $_SESSION['page'] = 000;
 	            <form action="loginCNILSQL.php" method="post">
 		        	<div class="checkbox">
 		                <label>
-		                    <input type="checkbox" value="1" name="disclaimerAccept" required> J'ai lu, j'ai compris, et j'adhère aux conditions citées ci-dessus.
+		                    <input type="checkbox" value="1" name="disclaimerAccept" required> Je reconnais avoir lu et compris les CGU et je les accepte.
 		                </label>
 		            </div>
 		            <button type="submit" class="btn btn-success">Accepter et continuer</button>

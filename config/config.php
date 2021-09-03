@@ -2,7 +2,7 @@
 
 require_once 'bdd.php';
 
-$VERSIONCHECK = '13.0';
+$VERSIONCHECK = '13.1';
 
 $query = $db->query('SELECT * FROM CONFIG;');
 $data = $query->fetch();
@@ -43,6 +43,7 @@ $XSS_SECURITY    = array("script", "SCRIPT", "<", ">", "/");
 $LDAP_DOMAIN  = $data['LDAP_DOMAIN'];
 $LDAP_BASEDN  = $data['LDAP_BASEDN'];
 $LDAP_ISWINAD = $data['LDAP_ISWINAD'];
+$LDAP_SSL     = $data['LDAP_SSL'];
 
 if($VERSION >= 12)
 {

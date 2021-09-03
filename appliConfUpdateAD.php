@@ -19,12 +19,14 @@ else
         SET 
             LDAP_DOMAIN  = :LDAP_DOMAIN,
             LDAP_BASEDN  = :LDAP_BASEDN,
-            LDAP_ISWINAD = :LDAP_ISWINAD
+            LDAP_ISWINAD = :LDAP_ISWINAD,
+            LDAP_SSL     = :LDAP_SSL
     ;');
     $query->execute(array(
         'LDAP_DOMAIN'  => $_POST['LDAP_DOMAIN'],
         'LDAP_BASEDN'  => $_POST['LDAP_BASEDN'],
         'LDAP_ISWINAD' => $_POST['LDAP_ISWINAD'],
+        'LDAP_SSL'     => $_POST['LDAP_SSL'],
     ));
 
     switch($query->errorCode())

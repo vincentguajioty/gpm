@@ -462,6 +462,13 @@ switch($data['version'])
         break;
 
     case '13.0':
+        writeInLogs("Début de l'installation de la mise à jour 13.1", '1', NULL);
+        $query = $db->query(file_get_contents ("update13.1.sql"));
+        writeInLogs("Fin de l'installation de la mise à jour 13.1", '1', NULL);
+        echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
+        break;
+
+    case '13.1':
         writeInLogs("Fin des mises à jour", '1', NULL);
         echo "<script type='text/javascript'>document.location.replace('INSTALLFINISH.php');</script>";
         break;

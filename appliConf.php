@@ -420,18 +420,35 @@ if ($_SESSION['appli_conf']==0)
                     
                     <div class="tab-pane" id="ad">
                         <form role="form" action="appliConfUpdateAD.php" method="POST">
-                        	<div class="form-group">
-                                <label>Accès au domaine:</label>
-                                <input type="text" class="form-control" value="<?=$data['LDAP_DOMAIN']?>" name="LDAP_DOMAIN">
+                            <div class="row">
+                                <div class="col-md-6">
+                                	<div class="form-group">
+                                        <label>Accès au domaine:</label>
+                                        <input type="text" class="form-control" value="<?=$data['LDAP_DOMAIN']?>" name="LDAP_DOMAIN">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Base DN:</label>
+                                        <input type="text" class="form-control" value="<?=$data['LDAP_BASEDN']?>" name="LDAP_BASEDN">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Base DN:</label>
-                                <input type="text" class="form-control" value="<?=$data['LDAP_BASEDN']?>" name="LDAP_BASEDN">
-                            </div>
-                            <div class="form-group">
-                                <label>Windows Active Directory:</label>
-                                <br/>
-                                <input type="checkbox" value="1" name="LDAP_ISWINAD" <?php if($data['LDAP_ISWINAD']==1){echo "checked";}?>> Cocher cette case sur le serveur est de type Windows Active Directory, laisser décochée s'il s'agit d'un serveur LDAP
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Windows Active Directory:</label>
+                                        <br/>
+                                        <input type="checkbox" value="1" name="LDAP_ISWINAD" <?php if($data['LDAP_ISWINAD']==1){echo "checked";}?>> Cocher cette case si le serveur est de type Windows Active Directory, laisser décochée s'il s'agit d'un serveur LDAP
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Connexion SSL:</label>
+                                        <br/>
+                                        <input type="checkbox" value="1" name="LDAP_SSL" <?php if($data['LDAP_SSL']==1){echo "checked";}?>> Cocher cette case pour que l'annuaire soit interrogé en SSL
+                                    </div>
+                                </div>
                             </div>
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-info pull-right">Modifier</button>
