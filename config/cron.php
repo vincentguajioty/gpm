@@ -15,6 +15,12 @@ updatePeremptionsAnticipations();
 writeInLogs("CRON - Fin de la mise à jour des anticipations de péremption.", '1', NULL);
 
 //Analyse complète des lots
+writeInLogs("CRON - Début du déveouillage des locks d'inventaire des lots et des reserves.", '1', NULL);
+unlockLotsInventaires();
+unlockReservesInventaires();
+writeInLogs("CRON - Fin du déveouillage des locks d'inventaire des lots et des reserves.", '1', NULL);
+
+//Analyse complète des lots
 writeInLogs("CRON - Début de la vérification de conformité de tous les lots.", '1', NULL);
 checkAllConf();
 writeInLogs("CRON - Fin de la vérification de conformité de tous les lots.", '1', NULL);

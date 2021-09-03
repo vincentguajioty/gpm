@@ -21,7 +21,7 @@ if($_SESSION['lots_ajout']==1)
                             <label>Lot à dupliquer: </label>
                             <select class="form-control select2" style="width: 100%;" name="idLot" required>
                                 <?php
-                                $query2 = $db->query('SELECT * FROM LOTS_LOTS ORDER BY libelleLot;');
+                                $query2 = $db->query('SELECT * FROM LOTS_LOTS WHERE inventaireEnCours IS NULL ORDER BY libelleLot;');
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>

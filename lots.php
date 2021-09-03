@@ -37,6 +37,7 @@ if ($_SESSION['lots_lecture']==0)
 	                <div class="box-header">
 						<h3 class="box-title"><a href="lotsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un lot</a></h3>
 						<h3 class="box-title"><a href="lotsDuplicateForm.php" class="btn btn-sm btn-success modal-form">Dupliquer un lot existant</a></h3>
+                        <?php if ($_SESSION['lots_modification']==1 AND $LOTSLOCK) {?><h3 class="box-title pull-right"><a data-toggle="modal" data-target="#modalSuppressionLocks" class="btn btn-sm btn-danger">Inventaires de lots - Désactiver les verrouillages</a></h3><?php } ?>
 	                </div>
                 <?php }?>
                 <!-- /.box-header -->
@@ -170,17 +171,24 @@ if ($_SESSION['lots_lecture']==0)
                                     ?>
                                 </td>
                                 <td><?php
-                                    if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) < date('Y-m-d'))
+                                    if($data['inventaireEnCours'])
                                     {
-                                        ?><span class="badge bg-red"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
-                                    }
-                                    else if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) == date('Y-m-d'))
-                                    {
-                                        ?><span class="badge bg-orange"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+                                        echo '<span class="badge bg-orange faa-flash animated">Inventaire en cours</span><br/>';
                                     }
                                     else
                                     {
-                                        ?><span class="badge bg-green"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+                                        if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) < date('Y-m-d'))
+                                        {
+                                            ?><span class="badge bg-red"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+                                        }
+                                        else if (date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')) == date('Y-m-d'))
+                                        {
+                                            ?><span class="badge bg-orange"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+                                        }
+                                        else
+                                        {
+                                            ?><span class="badge bg-green"><?php echo date('Y-m-d', strtotime($data['dateDernierInventaire'] . ' +' . $data['frequenceInventaire'] . ' days')); ?></span><?php
+                                        }
                                     }
                                     ?>
                                 </td>
@@ -215,10 +223,10 @@ if ($_SESSION['lots_lecture']==0)
                                     <?php if ($_SESSION['lots_lecture']==1) {?>
                                         <a href="lotsContenu.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                     <?php }?>
-                                    <?php if ($_SESSION['lots_modification']==1) {?>
+                                    <?php if ($_SESSION['lots_modification']==1 AND $data['inventaireEnCours']==Null) {?>
                                         <a href="lotsForm.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
-                                    <?php if ($_SESSION['lots_suppression']==1) {?>
+                                    <?php if ($_SESSION['lots_suppression']==1 AND $data['inventaireEnCours']==Null) {?>
                                         <a href="modalDeleteConfirm.php?case=lotsDelete&id=<?=$data['idLot']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>
@@ -248,6 +256,26 @@ if ($_SESSION['lots_lecture']==0)
 
 <?php include('scripts.php'); ?>
 </body>
+
+
+<div class="modal fade modal-danger" id="modalSuppressionLocks">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Inventaires en cours</h4>
+            </div>
+            <div class="modal-body">
+                Des inventaires de lots sont en cours. En conséquent, plusieurs fonctionnalités du site sont verouillées en lecture seule. Le verrouillage s'enlèvera automatiquement dès que les inventaires en cours seront validés. Si ce verrouillage est à tors, vous pouvez forcer le déverrouillage manuellement ici.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+                <a href="lotsInventaireAbortLock.php"><button type="button" class="btn btn-default pull-right">Forcer le déverrouillage</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </html>
 
 

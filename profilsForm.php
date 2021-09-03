@@ -269,6 +269,13 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <td><input <?php if(isset($_GET['id']) AND $data['categories_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="categories_suppression"></td>
                             </tr>
                             <tr>
+                                <td>Codes barre</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['codeBarre_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="codeBarre_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['codeBarre_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="codeBarre_ajout"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['codeBarre_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="codeBarre_modification"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['codeBarre_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="codeBarre_suppression"></td>
+                            </tr>
+                            <tr>
                                 <td>Fournisseurs</td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['fournisseurs_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="fournisseurs_lecture"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['fournisseurs_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="fournisseurs_ajout"></td>

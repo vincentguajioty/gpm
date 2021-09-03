@@ -2,7 +2,7 @@
 
 require_once 'bdd.php';
 
-$VERSIONCHECK = '11.1';
+$VERSIONCHECK = '12.0';
 
 $query = $db->query('SELECT * FROM CONFIG;');
 $data = $query->fetch();
@@ -38,5 +38,30 @@ $RECAPTCHA_SECRETKEY = $data['reCaptcha_secretKey'];
 $RECAPTCHA_SCOREMIN  = $data['reCaptcha_scoreMin'];
 
 $XSS_SECURITY    = array("script", "SCRIPT", "<", ">", "/");
+
+if($VERSION >= 12)
+{
+	$lotsLocks = $db->query('SELECT COUNT(*) as nb FROM LOTS_LOTS WHERE inventaireEnCours = 1;');
+	$lotsLocks = $lotsLocks->fetch();
+	if($lotsLocks['nb']>0)
+	{
+		$LOTSLOCK = 1;
+	}
+	else
+	{
+		$LOTSLOCK = 0;
+	}
+
+	$reservesLock = $db->query('SELECT COUNT(*) as nb FROM RESERVES_CONTENEUR WHERE inventaireEnCours = 1;');
+	$reservesLock = $reservesLock->fetch();
+	if($reservesLock['nb']>0)
+	{
+		$RESERVESLOCK = 1;
+	}
+	else
+	{
+		$RESERVESLOCK = 0;
+	}
+}
 
 ?>

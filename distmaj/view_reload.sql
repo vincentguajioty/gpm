@@ -1,3 +1,5 @@
+DROP VIEW IF EXISTS VIEW_SCAN_RESULTS_RESERVES;
+DROP VIEW IF EXISTS VIEW_SCAN_RESULTS_LOTS;
 DROP VIEW IF EXISTS VIEW_VEHICULES_KM;
 DROP VIEW IF EXISTS VIEW_HABILITATIONS;
 DROP VIEW IF EXISTS VIEW_DOCUMENTS_COMMANDES;
@@ -151,7 +153,11 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		(SELECT MAX(alertesBenevolesLots_affectationTier)      FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as alertesBenevolesLots_affectationTier,
 		(SELECT MAX(alertesBenevolesVehicules_lecture)         FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as alertesBenevolesVehicules_lecture,
 		(SELECT MAX(alertesBenevolesVehicules_affectation)     FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as alertesBenevolesVehicules_affectation,
-		(SELECT MAX(alertesBenevolesVehicules_affectationTier) FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as alertesBenevolesVehicules_affectationTier
+		(SELECT MAX(alertesBenevolesVehicules_affectationTier) FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as alertesBenevolesVehicules_affectationTier,
+		(SELECT MAX(codeBarre_lecture)                         FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as codeBarre_lecture,
+		(SELECT MAX(codeBarre_ajout)                           FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as codeBarre_ajout,
+		(SELECT MAX(codeBarre_modification)                    FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as codeBarre_modification,
+		(SELECT MAX(codeBarre_suppression)                     FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as codeBarre_suppression
 	FROM
 		PERSONNE_REFERENTE p
 ;
@@ -230,6 +236,42 @@ CREATE OR REPLACE VIEW VIEW_VEHICULES_KM AS
 	(SELECT NULL as idReleve, idVehicule, dateHealth as dateReleve, releveKilometrique, idPersonne  FROM VEHICULES_HEALTH WHERE releveKilometrique IS NOT NULL)
 ;
 
+CREATE OR REPLACE VIEW VIEW_SCAN_RESULTS_LOTS AS
+	SELECT
+		t.idLot,
+		t.idEmplacement,
+	    b.idMaterielCatalogue,
+	    c.libelleMateriel,
+	    MIN(peremptionConsommable) as peremption,
+	    COUNT(t.codeBarre) as quantite
+	FROM
+		LOTS_INVENTAIRES_TEMP t
+	    LEFT OUTER JOIN CODES_BARRE b ON t.codeBarre = b.codeBarre
+	    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON b.idMaterielCatalogue = c.idMaterielCatalogue
+	GROUP BY
+		t.idEmplacement,
+	    b.idMaterielCatalogue
+;
+
+CREATE OR REPLACE VIEW VIEW_SCAN_RESULTS_RESERVES AS
+	SELECT
+		t.idConteneur,
+	    b.idMaterielCatalogue,
+	    c.libelleMateriel,
+	    MIN(peremptionConsommable) as peremption,
+	    COUNT(t.codeBarre) as quantite
+	FROM
+		RESERVES_INVENTAIRES_TEMP t
+	    LEFT OUTER JOIN CODES_BARRE b ON t.codeBarre = b.codeBarre
+	    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON b.idMaterielCatalogue = c.idMaterielCatalogue
+	GROUP BY
+		t.idConteneur,
+	    b.idMaterielCatalogue
+;
+
+
+-- Désactivation Recaptcha
+UPDATE CONFIG SET reCaptcha_enable = 0, reCaptcha_siteKey = Null, reCaptcha_secretKey = Null;
 
 -- Anonymisation de la base
 

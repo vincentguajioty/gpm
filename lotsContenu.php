@@ -119,6 +119,14 @@ if ($_SESSION['lots_lecture']==0)
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
+            <?php
+                if($data['inventaireEnCours'])
+                {
+                    echo '<div class="alert alert-warning alert-dismissible">';
+                    echo '<i class="icon fa fa-warning"></i> Ce lot est en cours d\'inventaire et est donc verrouillé en lecture seule.';
+                    echo '</div>';
+                }
+            ?>
             <div class="row">
 
                 <div class="col-md-6">
@@ -248,11 +256,12 @@ if ($_SESSION['lots_lecture']==0)
                     <div class="box box-success box-solid">
                         <div class="box-header with-border">
                             <h3 class="box-title">Contenu de: <?php echo $data['libelleLot']; ?></h3>
-                            <?php if ($_SESSION['lots_modification']==1) {?><a href="lotsForm.php?id=<?=$_GET['id']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
-                            <?php if ($_SESSION['lots_lecture']==1) {?><a href="lotsInventaire.php?id=<?=$data['idLot']?>" target="_blank" class="btn btn-xs" title="Imprimer le dernier inventaire"><i class="fa fa-print"></i> Impresion inventaire</a><?php }?>
-                            <?php if ($_SESSION['materiel_ajout']==1 AND $data3['nb']>0 AND $data['idTypeLot'] != Null) {?><a href="lotsImportRef.php?id=<?=$data['idLot']?>" class="btn btn-xs" title="Importer dans ce lot le matériel du référentiel indiqué" <?php if($data4['nb']!=0){?>onClick="javascript: return confirm('Ce lot n\'est pas vide. Etes vous sur de vouloir faire un import ?');"<?php } ?>><i class="fa fa-bank"></i> Importer référentiel</a><?php }?>
+                            <?php if ($_SESSION['lots_modification']==1 AND $data['inventaireEnCours']==Null) {?><a href="lotsForm.php?id=<?=$_GET['id']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
+                            <?php if ($_SESSION['lots_lecture']==1 AND $data['inventaireEnCours']==Null) {?><a href="lotsInventaire.php?id=<?=$data['idLot']?>" target="_blank" class="btn btn-xs" title="Imprimer le dernier inventaire"><i class="fa fa-print"></i> Impresion inventaire</a><?php }?>
+                            <?php if ($_SESSION['codeBarre_lecture']==1) {?><a href="lotsCBPrintForm.php?id=<?=$data['idLot']?>" class="btn btn-xs modal-form" title="Imprimer tous les codes barre emplacement de ce lot"><i class="fa fa-barcode"></i> Impression codes barre emplacements</a><?php }?>
+                            <?php if ($_SESSION['materiel_ajout']==1 AND $data3['nb']>0 AND $data['idTypeLot'] != Null AND $data['inventaireEnCours']==Null) {?><a href="lotsImportRef.php?id=<?=$data['idLot']?>" class="btn btn-xs" title="Importer dans ce lot le matériel du référentiel indiqué" <?php if($data4['nb']!=0){?>onClick="javascript: return confirm('Ce lot n\'est pas vide. Etes vous sur de vouloir faire un import ?');"<?php } ?>><i class="fa fa-bank"></i> Importer référentiel</a><?php }?>
                             <div class="box-tools pull-right">
-                            	<?php if ($_SESSION['sac_ajout']==1) {?><a href="sacsForm.php?idParent=<?= $_GET['id'] ?>" class="btn btn-sm btn-success modal-form">Ajouter un sac</a><?php } ?>
+                            	<?php if ($_SESSION['sac_ajout']==1 AND $data['inventaireEnCours']==Null) {?><a href="sacsForm.php?idParent=<?= $_GET['id'] ?>" class="btn btn-sm btn-success modal-form">Ajouter un sac</a><?php } ?>
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-minus"></i>
                                 </button>
                             </div>
@@ -270,9 +279,11 @@ if ($_SESSION['lots_lecture']==0)
                                 <div class="col-md-12">
                                     <div class="box box-info box-solid">
                                         <div class="box-header with-border">
-                                            <h3 class="box-title"><?php echo $data7['libelleSac']; ?></h3> <?php if ($_SESSION['sac_modification']==1) {?><a href="sacsForm.php?id=<?=$data7['idSac']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
+                                            <h3 class="box-title"><?php echo $data7['libelleSac']; ?></h3>
+                                            <?php if ($_SESSION['sac_modification']==1 AND $data['inventaireEnCours']==Null) {?><a href="sacsForm.php?id=<?=$data7['idSac']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
+                                            <?php if ($_SESSION['codeBarre_lecture']==1) {?><a href="sacsCBPrintForm.php?id=<?=$data7['idSac']?>" class="btn btn-xs modal-form" title="Imprimer tous les codes barre emplacement de ce sac"><i class="fa fa-barcode"></i></a><?php }?>
                                             <div class="box-tools pull-right">
-                                            	<?php if ($_SESSION['sac2_ajout']==1) {?><a href="emplacementsForm.php?idParent=<?= $data7['idSac'] ?>" class="btn btn-sm btn-info modal-form">Ajouter un emplacement</a><?php } ?>
+                                            	<?php if ($_SESSION['sac2_ajout']==1 AND $data['inventaireEnCours']==Null) {?><a href="emplacementsForm.php?idParent=<?= $data7['idSac'] ?>" class="btn btn-sm btn-info modal-form">Ajouter un emplacement</a><?php } ?>
                                                 <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-minus"></i>
                                                 </button>
                                             </div>
@@ -290,9 +301,11 @@ if ($_SESSION['lots_lecture']==0)
                                                 <div class="col-md-12">
                                                     <div class="box box-warning collapsed-box box-solid">
                                                         <div class="box-header with-border">
-                                                            <h3 class="box-title"><?php echo $data8['libelleEmplacement']; ?></h3> <?php if ($_SESSION['sac2_modification']==1) {?><a href="emplacementsForm.php?id=<?=$data8['idEmplacement']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
+                                                            <h3 class="box-title"><?php echo $data8['libelleEmplacement']; ?></h3>
+                                                            <?php if ($_SESSION['sac2_modification']==1 AND $data['inventaireEnCours']==Null) {?><a href="emplacementsForm.php?id=<?=$data8['idEmplacement']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
+                                                            <?php if ($_SESSION['codeBarre_lecture']==1) {?><a href="emplacementsCBPrintForm.php?id=<?=$data8['idEmplacement']?>" class="btn btn-xs modal-form" title="Imprimer le code barre de cet emplacement"><i class="fa fa-barcode"></i></a><?php }?>
                                                             <div class="box-tools pull-right">
-                                                            	<?php if ($_SESSION['materiel_ajout']==1) {?><a href="materielsForm.php?idParent=<?= $data8['idEmplacement'] ?>" class="btn btn-sm btn-warning modal-form">Ajouter un materiel</a><?php } ?>
+                                                            	<?php if ($_SESSION['materiel_ajout']==1 AND $data['inventaireEnCours']==Null) {?><a href="materielsForm.php?idParent=<?= $data8['idEmplacement'] ?>" class="btn btn-sm btn-warning modal-form">Ajouter un materiel</a><?php } ?>
                                                                 <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-plus"></i>
                                                                 </button>
                                                             </div>
@@ -354,13 +367,13 @@ if ($_SESSION['lots_lecture']==0)
                                                                         </td>
                                                                         <td><?= $data9['libelleMaterielsEtat'] ?></td>
                                                                         <td>
-                                                                            <?php if ($_SESSION['reserve_ReserveVersLot']==1) {?>
+                                                                            <?php if ($_SESSION['reserve_ReserveVersLot']==1 AND $data['inventaireEnCours']==Null) {?>
                                                                             	<a href="transfertResLotsFromLots.php?idElement=<?=$data9['idElement']?>&idMaterielCatalogue=<?=$data9['idMaterielCatalogue']?>" class="btn btn-xs btn-success modal-form" title="Approvisionner depuis la réserve"><i class="fa fa-exchange"></i></a>
                                                                             <?php }?>
-                                                                            <?php if ($_SESSION['materiel_modification']==1) {?>
+                                                                            <?php if ($_SESSION['materiel_modification']==1 AND $data['inventaireEnCours']==Null) {?>
                                                                             	<a href="materielsForm.php?id=<?=$data9['idElement']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                                                             <?php }?>
-                                                                            <?php if ($_SESSION['materiel_suppression']==1) {?>
+                                                                            <?php if ($_SESSION['materiel_suppression']==1 AND $data['inventaireEnCours']==Null) {?>
                                                                                 <a href="modalDeleteConfirm.php?case=materielsDelete&id=<?=$data9['idElement']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                                                             <?php }?>
                                                                         </td>
@@ -513,10 +526,18 @@ if ($_SESSION['lots_lecture']==0)
                             </div>
                         </div>
                         <div class="box-body">
-                            <?php if ($_SESSION['lots_modification']==1) {?>
-                                <a href="lotsInventaireNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-success spinnerAttenteClick"><i class="fa fa-plus"></i> Faire un nouvel inventaire</a>
+                            <?php if ($_SESSION['lots_modification']==1 AND $data['inventaireEnCours']==Null) {?>
+                                <a href="lotsInventaireNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-success spinnerAttenteClick"><i class="fa fa-plus"></i> Nouvel inventaire traditionnel (sans code barre)</a>
+                                <a href="lotsInventaireCBNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-success spinnerAttenteClick"><i class="fa fa-barcode"></i> Nouvel inventaire avec code barre par emplacement</a>
+                                <a href="lotsInventaireCBVNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-success spinnerAttenteClick"><i class="fa fa-barcode"></i> Nouvel inventaire avec code barre tout confondu</a>
                                 <br/><br/>
                             <?php }?>
+
+                            <?php if ($_SESSION['lots_modification']==1 AND $data['inventaireEnCours']==1) {?>
+                                <a data-toggle="modal" data-target="#modalSuppressionLockUnite" class="btn btn-sm btn-danger">Désactiver le verrouillage</a>
+                                <br/><br/>
+                            <?php } ?>
+
                             <table id="tri2R" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
@@ -540,7 +561,7 @@ if ($_SESSION['lots_lecture']==0)
                                             <td><?php echo $data2['identifiant']; ?></td>
                                             <td>
                                                 <a href="lotsInventaireShow.php?id=<?=$data2['idInventaire']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
-                                                <?php if ($_SESSION['lots_modification']==1) {?>
+                                                <?php if ($_SESSION['lots_modification']==1 AND $data['inventaireEnCours']==Null) {?>
                                                     <a href="modalDeleteConfirm.php?case=lotsInventaireDelete&id=<?=$data2['idInventaire']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                                 <?php }?>
                                             </td>
@@ -697,6 +718,23 @@ if ($_SESSION['lots_lecture']==0)
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-danger" id="modalSuppressionLockUnite">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Inventaires en cours</h4>
+            </div>
+            <div class="modal-body">
+                L'inventaire de ce lot est en cours. En conséquent, plusieurs fonctionnalités du site sont verouillées en lecture seule. Le verrouillage s'enlèvera automatiquement dès que tous les inventaires en cours seront validés. Si ce verrouillage est à tors, vous pouvez forcer le déverrouillage manuellement ici.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+                <a href="lotsInventaireNewAbort.php?id=<?=$_GET['id']?>"><button type="button" class="btn btn-default pull-right">Forcer le déverrouillage</button></a>
             </div>
         </div>
     </div>

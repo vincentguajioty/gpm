@@ -11,7 +11,7 @@ if ($_SESSION['lots_modification']==0)
 }
 else
 {
-
+    
     $query = $db->prepare('
         INSERT INTO
             INVENTAIRES
@@ -49,6 +49,7 @@ else
                 'idLot' => $_GET['id']
             ));
             $data = $query->fetch();
+            $idInventaire = $data['idInventaire'];
 
             foreach ($_POST['formArray'] as $idLot => $sacs) {
                 foreach ($sacs as $idSac => $emplacements) {
@@ -71,72 +72,12 @@ else
                                     'idElement' => $idElement
                                 ));
                             }
-
-                            $query2 = $db->prepare('SELECT idMaterielCatalogue FROM MATERIEL_ELEMENT WHERE idElement = :idElement;');
-                            $query2->execute(array(
-                                'idElement' => $idElement
-                            ));
-                            $data2 = $query2->fetch();
-
-                            if (!isset($invArray[$data2['idMaterielCatalogue']]))
-                            {
-                                if ($matos['per'] != Null)
-                                {
-                                    $invArray[$data2['idMaterielCatalogue']] = [
-                                        'qtt' => $matos['qtt'],
-                                        'per' => $matos['per']
-                                    ];
-                                }
-                                else
-                                {
-                                    $invArray[$data2['idMaterielCatalogue']] = [
-                                        'qtt' => $matos['qtt'],
-                                        'per' => Null
-                                    ];
-                                }
-                            }
-                            else
-                            {
-                                $invArray[$data2['idMaterielCatalogue']]['qtt'] += $matos['qtt'];
-
-                                if ($matos['per'] != Null)
-                                {
-                                    if ($invArray[$data2['idMaterielCatalogue']]['per'] != Null)
-                                    {
-                                        if ($invArray[$data2['idMaterielCatalogue']]['per'] > $matos['per'])
-                                        {
-                                            $invArray[$data2['idMaterielCatalogue']]['per'] = $matos['per'];
-                                        }
-                                    }
-                                    else
-                                    {
-                                        $invArray[$data2['idMaterielCatalogue']]['per'] = $matos['per'];
-                                    }
-                                }
-                            }
                         }
                     }
                 }
             }
 
-            foreach ($invArray as $idMaterielCatalogue => $elements)
-            {
-                $query = $db->prepare('
-                    INSERT INTO
-                        INVENTAIRES_CONTENUS
-                    SET
-                        idInventaire         = :idInventaire,
-                        idMaterielCatalogue  = :idMaterielCatalogue,
-                        quantiteInventaire   = :quantiteInventaire,
-                        peremptionInventaire = :peremptionInventaire
-                    ;');
-                $query->execute(array(
-                    'idInventaire'         => $data['idInventaire'],
-                    'idMaterielCatalogue'  => $idMaterielCatalogue,
-                    'quantiteInventaire'   => $elements['qtt'],
-                    'peremptionInventaire' => $elements['per']
-                ));
-            }
+            figeInventaireLot($_GET['id'], $idInventaire);
 
         break;
 
@@ -147,6 +88,11 @@ else
     }
 
 	checkOneConf($_GET['id']);
+
+	$lock = $db->prepare('UPDATE LOTS_LOTS SET inventaireEnCours = Null WHERE idLot = :idLot;');
+    $lock->execute(array(
+        'idLot' => $_GET['id']
+    ));
 
     echo "<script type='text/javascript'>document.location.replace('lotsContenu.php?id=".$_GET['id']."');</script>";
 }

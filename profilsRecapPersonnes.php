@@ -243,6 +243,13 @@ if ($_SESSION['profils_lecture']==0 OR $_SESSION['annuaire_lecture']==0)
                             <td><?php foreach($users as $user){if($user['categories_suppression']){echo $user['identifiant'].'<br/>';}} ?></td>
                         </tr>
                         <tr>
+                            <td>Codes Barre</td>
+                            <td><?php foreach($users as $user){if($user['codeBarre_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['codeBarre_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['codeBarre_modification']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['codeBarre_suppression']){echo $user['identifiant'].'<br/>';}} ?></td>
+                        </tr>
+                        <tr>
                             <td>Fournisseurs</td>
                             <td><?php foreach($users as $user){if($user['fournisseurs_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['fournisseurs_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>

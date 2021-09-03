@@ -33,8 +33,16 @@ if ($_SESSION['materiel_lecture']==0)
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
+            <?php
+                if($LOTSLOCK)
+                {
+                    echo '<div class="alert alert-warning alert-dismissible">';
+                    echo '<i class="icon fa fa-warning"></i> Des inventaires de lots sont en cours, cette section est donc verrouillée en lecture seule.';
+                    echo '</div>';
+                }
+            ?>
             <div class="box">
-                <?php if ($_SESSION['materiel_ajout']==1) {?>
+                <?php if ($_SESSION['materiel_ajout']==1 AND $LOTSLOCK==0) {?>
                 	<div class="box-header">
                         <h3 class="box-title"><a href="materielsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un materiel</a></h3>
                 	</div>
@@ -102,13 +110,13 @@ if ($_SESSION['materiel_lecture']==0)
                                 	<?php if($data['idEtat']!=1){echo '<i class="fa fa-bell-slash-o"></i>';}else{echo '<i class="fa fa-bell-o"></i>';} ?>
                                 </td>
                                 <td>
-                                    <?php if ($_SESSION['reserve_ReserveVersLot']==1) {?>
+                                    <?php if ($_SESSION['reserve_ReserveVersLot']==1 AND $LOTSLOCK==0) {?>
                                     	<a href="transfertResLotsFromLots.php?idElement=<?=$data['idElement']?>&idMaterielCatalogue=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-success modal-form" title="Approvisionner depuis la réserve"><i class="fa fa-exchange"></i></a>
                                     <?php }?>
-                                    <?php if ($_SESSION['materiel_modification']==1) {?>
+                                    <?php if ($_SESSION['materiel_modification']==1 AND $LOTSLOCK==0) {?>
                                         <a href="materielsForm.php?id=<?=$data['idElement']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
-                                    <?php if ($_SESSION['materiel_suppression']==1) {?>
+                                    <?php if ($_SESSION['materiel_suppression']==1 AND $LOTSLOCK==0) {?>
                                         <a href="modalDeleteConfirm.php?case=materielsDelete&id=<?=$data['idElement']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>

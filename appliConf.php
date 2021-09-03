@@ -42,7 +42,7 @@ if ($_SESSION['appli_conf']==0)
                     <li><a href="#ip" data-toggle="tab"><i class="fa fa-shield"></i> Verrouillage IP</a></li>
                     <li><a href="#captcha" data-toggle="tab"><i class="fa fa-user-secret"></i> reCaptcha V3</a></li>
                     <li><a href="#aes" data-toggle="tab"><i class="fa fa-shopping-cart"></i> Cryptage AES</a></li>
-                    <li><a href="#sel" data-toggle="tab"><i class="fa fa-barcode"></i> Sels utilisateurs</a></li>
+                    <li><a href="#sel" data-toggle="tab"><i class="fa fa-key"></i> Sels utilisateurs</a></li>
                     <li><a href="#notifCMD" data-toggle="tab"><i class="fa fa-envelope"></i> Notifications commandes</a></li>
                     <li><a href="#notifVEH" data-toggle="tab"><i class="fa fa-ambulance"></i> Véhicules</a></li>
                     <li><a href="#alertesBen" data-toggle="tab"><i class="fa fa-comment"></i> Alertes bénévoles</a></li>

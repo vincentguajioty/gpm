@@ -12,16 +12,19 @@ if ($_SESSION['lots_modification']==0)
 ?>
 <body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
-    <?php include('bandeausup.php'); ?>
-    <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
 
     <?php
-    $lot = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne WHERE idLot = :idLot;');
-    $lot->execute(array(
-        'idLot' => $_GET['id']
-    ));
-    $lot = $lot->fetch();
+        $lock = $db->prepare('UPDATE LOTS_LOTS SET inventaireEnCours = 1 WHERE idLot = :idLot;');
+        $lock->execute(array(
+            'idLot' => $_GET['id']
+        ));
+
+        $lot = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne WHERE idLot = :idLot;');
+        $lot->execute(array(
+            'idLot' => $_GET['id']
+        ));
+        $lot = $lot->fetch();
     ?>
 
     <!-- Content Wrapper. Contains page content -->
@@ -31,11 +34,6 @@ if ($_SESSION['lots_modification']==0)
             <h1>
                 Nouvel inventaire du lot: <?php echo $lot['libelleLot']; ?>
             </h1>
-            <ol class="breadcrumb">
-                <li><a href="index.php"><i class="fa fa-home"></i>Accueil</a></li>
-                <li><a href="lots.php">Lots</a></li>
-                <li class="active"><?php echo $lot['libelleLot'];?></li>
-            </ol>
         </section>
 
         <!-- Main content -->
@@ -157,7 +155,7 @@ if ($_SESSION['lots_modification']==0)
                 </div>
                 <div class="box">
                     <div class="box-body">
-                        <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
+                        <a href="lotsInventaireNewAbort.php?id=<?=$_GET['id']?>" class="btn btn-default">Retour</a>
                         <button type="submit" class="btn btn-info pull-right">Ajouter</button>
                     </div>
                 </div>
@@ -168,8 +166,6 @@ if ($_SESSION['lots_modification']==0)
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    <?php include('footer.php'); ?>
-
 
     <!-- Add the sidebar's background. This div must be placed
          immediately after the control sidebar -->

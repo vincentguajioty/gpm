@@ -59,6 +59,14 @@ if ($_SESSION['reserve_lecture']==0)
         
     	<section class="content">
     		<?php include('confirmationBox.php'); ?>
+            <?php
+                if($data['inventaireEnCours'])
+                {
+                    echo '<div class="alert alert-warning alert-dismissible">';
+                    echo '<i class="icon fa fa-warning"></i> Ce conteneur est en cours d\'inventaire et est donc verrouillé en lecture seule.';
+                    echo '</div>';
+                }
+            ?>
             <div class="row">
                 <div class="col-md-6">
                     <!-- Widget: user widget style 1 -->
@@ -128,7 +136,7 @@ if ($_SESSION['reserve_lecture']==0)
                 <div class="col-md-12">
                     <div class="box box-warning box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $data['libelleConteneur']; ?></h3> <?php if ($_SESSION['reserve_modification']==1) {?><a href="reserveConteneurForm.php?id=<?=$data['idConteneur']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
+                            <h3 class="box-title"><?php echo $data['libelleConteneur']; ?></h3> <?php if ($_SESSION['reserve_modification']==1 AND $data['inventaireEnCours']==Null) {?><a href="reserveConteneurForm.php?id=<?=$data['idConteneur']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                 </button>
@@ -189,10 +197,10 @@ if ($_SESSION['reserve_lecture']==0)
                                             ?>
                                         </td>
                                         <td>
-                                            <?php if ($_SESSION['reserve_modification']==1) {?>
+                                            <?php if ($_SESSION['reserve_modification']==1 AND $data['inventaireEnCours']==Null) {?>
                                                 <a href="reserveMaterielForm.php?id=<?=$data9['idReserveElement']?>" class="btn btn-xs btn-warning modal-form"><i class="fa fa-pencil"></i></a>
                                             <?php }?>
-                                            <?php if ($_SESSION['reserve_suppression']==1) {?>
+                                            <?php if ($_SESSION['reserve_suppression']==1 AND $data['inventaireEnCours']==Null) {?>
                                                 <a href="modalDeleteConfirm.php?case=reserveMaterielDelete&id=<?=$data9['idReserveElement']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
                                             <?php }?>
                                         </td>
@@ -221,11 +229,16 @@ if ($_SESSION['reserve_lecture']==0)
                             </div>
                         </div>
                         <div class="box-body">
-                            <?php if ($_SESSION['reserve_modification']==1) {?>
+                            <?php if ($_SESSION['reserve_modification']==1 AND $data['inventaireEnCours']==Null) {?>
                                 <a href="reserveInventaireNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-success spinnerAttenteClick"><i class="fa fa-plus"></i> Faire un nouvel inventaire</a>
+                                <a href="reserveInventaireCBNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-success spinnerAttenteClick"><i class="fa fa-barcode"></i> Faire un nouvel inventaire avec code barre</a>
+                                <br/><br/>
                             <?php }?>
-                        </div>
-                        <div class="box-body">
+
+                            <?php if ($_SESSION['reserve_modification']==1 AND $data['inventaireEnCours']==1) {?>
+                                <a data-toggle="modal" data-target="#modalSuppressionLockUnite" class="btn btn-sm btn-danger">Désactiver le verrouillage</a>
+                                <br/><br/>
+                            <?php } ?>
 
                             <br/>
                             <table id="tri2R" class="table table-bordered table-hover">
@@ -251,7 +264,7 @@ if ($_SESSION['reserve_lecture']==0)
                                             <td><?php echo $data2['identifiant']; ?></td>
                                             <td>
                                                 <a href="reserveInventaireShow.php?id=<?=$data2['idReserveInventaire']?>" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i></a>
-                                                <?php if ($_SESSION['reserve_modification']==1) {?>
+                                                <?php if ($_SESSION['reserve_modification']==1 AND $data['inventaireEnCours']==Null) {?>
                                                     <a href="modalDeleteConfirm.php?case=reserveInventaireDelete&id=<?=$data2['idReserveInventaire']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash"></i></a>
                                                 <?php }?>
                                             </td>
@@ -285,6 +298,25 @@ if ($_SESSION['reserve_lecture']==0)
 
 <?php include('scripts.php'); ?>
 </body>
+
+
+<div class="modal fade modal-danger" id="modalSuppressionLockUnite">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Inventaires en cours</h4>
+            </div>
+            <div class="modal-body">
+                L'inventaire de ce conteneur est en cours. En conséquent, plusieurs fonctionnalités du site sont verouillées en lecture seule. Le verrouillage s'enlèvera automatiquement dès que tous les inventaires en cours seront validés. Si ce verrouillage est à tors, vous pouvez forcer le déverrouillage manuellement ici.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
+                <a href="reserveInventaireNewAbort.php?id=<?=$_GET['id']?>"><button type="button" class="btn btn-default pull-right">Forcer le déverrouillage</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+
 </html>
 
 

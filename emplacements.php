@@ -33,8 +33,16 @@ if ($_SESSION['sac2_lecture']==0)
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
+            <?php
+                if($LOTSLOCK)
+                {
+                    echo '<div class="alert alert-warning alert-dismissible">';
+                    echo '<i class="icon fa fa-warning"></i> Des inventaires de lots sont en cours, cette section est donc verrouillée en lecture seule.';
+                    echo '</div>';
+                }
+            ?>
             <div class="box">
-                <?php if ($_SESSION['sac2_ajout']==1) {?>
+                <?php if ($_SESSION['sac2_ajout']==1 AND $LOTSLOCK==0) {?>
                 	<div class="box-header">
                         <h3 class="box-title"><a href="emplacementsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un emplacement</a></h3>
                 	</div>
@@ -71,10 +79,13 @@ if ($_SESSION['sac2_lecture']==0)
                                     <?php if ($_SESSION['sac2_lecture']==1) {?>
                                         <a href="emplacementsContenu.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                     <?php }?>
-                                    <?php if ($_SESSION['sac2_modification']==1) {?>
+                                    <?php if ($_SESSION['sac2_lecture']==1 AND $_SESSION['codeBarre_lecture']==1) {?>
+                                        <a href="emplacementsCBPrintForm.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-success modal-form" title="Imprimer le code barre de cet emplacement"><i class="fa fa-barcode"></i></a>
+                                    <?php }?>
+                                    <?php if ($_SESSION['sac2_modification']==1 AND $LOTSLOCK==0) {?>
                                         <a href="emplacementsForm.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
-                                    <?php if ($_SESSION['sac2_suppression']==1) {?>
+                                    <?php if ($_SESSION['sac2_suppression']==1 AND $LOTSLOCK==0) {?>
                                         <a href="modalDeleteConfirm.php?case=emplacementsDelete&id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>

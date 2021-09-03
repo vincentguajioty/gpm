@@ -511,6 +511,13 @@ if ($_SESSION['annuaire_lecture']==0)
                                     <td><?php if($personne['categories_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                 </tr>
                                 <tr>
+                                    <td>Codes Barre</td>
+                                    <td><?php if($personne['codeBarre_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['codeBarre_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['codeBarre_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($personne['codeBarre_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                </tr>
+                                <tr>
                                     <td>Fournisseurs</td>
                                     <td><?php if($personne['fournisseurs_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($personne['fournisseurs_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>

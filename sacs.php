@@ -34,14 +34,22 @@ if ($_SESSION['sac_lecture']==0)
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
+            <?php
+                if($LOTSLOCK)
+                {
+                    echo '<div class="alert alert-warning alert-dismissible">';
+                    echo '<i class="icon fa fa-warning"></i> Des inventaires de lots sont en cours, cette section est donc verrouillée en lecture seule.';
+                    echo '</div>';
+                }
+            ?>
             <div class="box">
-                <div class="box-header">
-                    <?php if ($_SESSION['sac_ajout']==1) {?>
+                
+                <?php if ($_SESSION['sac_ajout']==1 AND $LOTSLOCK==0) {?>
+                    <div class="box-header">
                         <h3 class="box-title"><a href="sacsForm.php" class="btn btn-sm btn-success modal-form">Ajouter un sac</a></h3>
-                    <?php } else {?>
-                        </br>
-                    <?php } ?>
-                </div>
+                    </div>
+                <?php } ?>
+                
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="tri2" class="table table-bordered table-hover">
@@ -86,10 +94,13 @@ if ($_SESSION['sac_lecture']==0)
                                     <?php if ($_SESSION['sac_lecture']==1) {?>
                                         <a href="sacsContenu.php?id=<?=$data['idSac']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                     <?php }?>
-                                    <?php if ($_SESSION['sac_modification']==1) {?>
+                                    <?php if ($_SESSION['sac_lecture']==1 AND $_SESSION['codeBarre_lecture']==1) {?>
+                                        <a href="sacsCBPrintForm.php?id=<?=$data['idSac']?>" class="btn btn-xs btn-success modal-form" title="Imprimer tous les codes barre emplacement de ce sac"><i class="fa fa-barcode"></i></a>
+                                    <?php }?>
+                                    <?php if ($_SESSION['sac_modification']==1 AND $LOTSLOCK==0) {?>
                                         <a href="sacsForm.php?id=<?=$data['idSac']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
-                                    <?php if ($_SESSION['sac_suppression']==1) {?>
+                                    <?php if ($_SESSION['sac_suppression']==1 AND $LOTSLOCK==0) {?>
                                         <a href="modalDeleteConfirm.php?case=sacsDelete&id=<?=$data['idSac']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>

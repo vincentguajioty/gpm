@@ -174,6 +174,10 @@ else
 	$_SESSION['alertesBenevolesVehicules_lecture']         = $data['alertesBenevolesVehicules_lecture'];
 	$_SESSION['alertesBenevolesVehicules_affectation']     = $data['alertesBenevolesVehicules_affectation'];
 	$_SESSION['alertesBenevolesVehicules_affectationTier'] = $data['alertesBenevolesVehicules_affectationTier'];
+	$_SESSION['codeBarre_lecture']                         = $data['codeBarre_lecture'];
+	$_SESSION['codeBarre_ajout']                           = $data['codeBarre_ajout'];
+	$_SESSION['codeBarre_modification']                    = $data['codeBarre_modification'];
+	$_SESSION['codeBarre_suppression']                     = $data['codeBarre_suppression'];
 
 	$_SESSION['tableRowPerso']                             = $data['tableRowPerso'];
 

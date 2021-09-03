@@ -49,6 +49,7 @@ else
                 'idConteneur' => $_GET['id']
             ));
             $data = $query->fetch();
+            $idReserveInventaire = $data['idReserveInventaire'];
 
             foreach ($_POST['formArray'] as $idConteneur => $materiel) {
 				foreach ($materiel as $idReserveElement => $matos){
@@ -77,70 +78,10 @@ else
 							'idReserveElement' => $idReserveElement
 						));
 					}
-
-					$query2 = $db->prepare('SELECT idMaterielCatalogue FROM RESERVES_MATERIEL WHERE idReserveElement = :idReserveElement;');
-					$query2->execute(array(
-						'idReserveElement' => $idReserveElement
-					));
-					$data2 = $query2->fetch();
-
-					if (!isset($invArray[$data2['idMaterielCatalogue']]))
-					{
-						if ($matos['per'] != Null)
-						{
-							$invArray[$data2['idMaterielCatalogue']] = [
-								'qtt' => $matos['qtt'],
-								'per' => $matos['per']
-							];
-						}
-						else
-						{
-							$invArray[$data2['idMaterielCatalogue']] = [
-								'qtt' => $matos['qtt'],
-								'per' => Null
-							];
-						}
-					}
-					else
-					{
-						$invArray[$data2['idMaterielCatalogue']]['qtt'] += $matos['qtt'];
-
-						if ($matos['per'] != Null)
-						{
-							if ($invArray[$data2['idMaterielCatalogue']]['per'] != Null)
-							{
-								if ($invArray[$data2['idMaterielCatalogue']]['per'] > $matos['per'])
-								{
-									$invArray[$data2['idMaterielCatalogue']]['per'] = $matos['per'];
-								}
-							}
-							else
-							{
-								$invArray[$data2['idMaterielCatalogue']]['per'] = $matos['per'];
-							}
-						}
-					}
 				}
             }
 
-            foreach ($invArray as $idMaterielCatalogue => $elements)
-            {
-                $query = $db->prepare('
-                	INSERT INTO
-                		RESERVES_INVENTAIRES_CONTENUS
-                	SET
-                		idReserveInventaire  = :idReserveInventaire,
-                		idMaterielCatalogue  = :idMaterielCatalogue,
-                		quantiteInventaire   = :quantiteInventaire,
-                		peremptionInventaire = :peremptionInventaire
-                	;');
-                $query->execute(array(
-                    'idReserveInventaire'  => $data['idReserveInventaire'],
-                    'idMaterielCatalogue'  => $idMaterielCatalogue,
-                    'quantiteInventaire'   => $elements['qtt'],
-                    'peremptionInventaire' => $elements['per']
-                ));
-            }
+            figeInventaireReserve($_GET['id'], $idReserveInventaire);
 
         break;
 
@@ -149,6 +90,11 @@ else
             $_SESSION['returnMessage'] = "Erreur inconnue lors l'ajout de l'inventaire.";
             $_SESSION['returnType'] = '2';
     }
+
+    $lock = $db->prepare('UPDATE RESERVES_CONTENEUR SET inventaireEnCours = Null WHERE idConteneur = :idConteneur;');
+    $lock->execute(array(
+        'idConteneur' => $_GET['id']
+    ));
 
     echo "<script type='text/javascript'>document.location.replace('reserveConteneurContenu.php?id=".$_GET['id']."');</script>";
 }

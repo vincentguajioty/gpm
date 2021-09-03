@@ -21,7 +21,14 @@ if ($MAINTENANCE == 1 AND $_SESSION['maintenance'] == 0)
     exit;
 }
 
-if ((strpos($_SERVER['HTTP_REFERER'], "lotsInventaireNew.php") == false) AND (strpos($_SERVER['HTTP_REFERER'], "reserveInventaireNew.php") == false) AND (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > $LOGOUTTEMP * 60)))
+if (
+    (strpos($_SERVER['HTTP_REFERER'], "lotsInventaireNew.php") == false)
+    AND (strpos($_SERVER['HTTP_REFERER'], "reserveInventaireNew.php") == false)
+    AND (strpos($_SERVER['HTTP_REFERER'], "lotsInventaireCBNew.php") == false)
+    AND (strpos($_SERVER['HTTP_REFERER'], "lotsInventaireCBNewCheckScan.php") == false)
+    AND (strpos($_SERVER['HTTP_REFERER'], "reserveInventaireCBNew.php") == false)
+    AND (strpos($_SERVER['HTTP_REFERER'], "reserveInventaireCBNewCheckScan.php") == false)
+    AND (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > $LOGOUTTEMP * 60)))
 {
     echo "<script type='text/javascript'>document.location.replace('logout.php');</script>";
     exit;

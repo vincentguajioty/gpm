@@ -243,6 +243,13 @@ if ($_SESSION['profils_lecture']==0)
                             <td><?php foreach($profils as $profil){if($profil['categories_suppression']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                         </tr>
                         <tr>
+                            <td>Codes Barre</td>
+                            <td><?php foreach($profils as $profil){if($profil['codeBarre_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['codeBarre_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['codeBarre_modification']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['codeBarre_suppression']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                        </tr>
+                        <tr>
                             <td>Fournisseurs</td>
                             <td><?php foreach($profils as $profil){if($profil['fournisseurs_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['fournisseurs_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>

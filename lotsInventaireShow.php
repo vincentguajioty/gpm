@@ -83,7 +83,7 @@ if ($_SESSION['lots_lecture']==0)
                         <div class="box-header">
                             Commentaires:
                         </div>
-                        <?php echo $data['commentairesInventaire']; ?>
+                        <?= nl2br($data['commentairesInventaire']) ?>
                     </div>
                 </div>
             <div class="row"></div>

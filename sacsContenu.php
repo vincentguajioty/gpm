@@ -67,6 +67,14 @@ if ($_SESSION['sac_lecture']==0)
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
+            <?php
+                if($LOTSLOCK)
+                {
+                    echo '<div class="alert alert-warning alert-dismissible">';
+                    echo '<i class="icon fa fa-warning"></i> Des inventaires de lots sont en cours, cette section est donc verrouillée en lecture seule.';
+                    echo '</div>';
+                }
+            ?>
 
             <div class="col-md-6">
                 <!-- Widget: user widget style 1 -->
@@ -127,7 +135,9 @@ if ($_SESSION['sac_lecture']==0)
                 <div class="col-md-12">
                     <div class="box box-info box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $data['libelleSac']; ?></h3> <?php if ($_SESSION['sac_modification']==1) {?><a href="sacsForm.php?id=<?=$data['idSac']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
+                            <h3 class="box-title"><?php echo $data['libelleSac']; ?></h3>
+                            <?php if ($_SESSION['sac_modification']==1 AND $LOTSLOCK==0) {?><a href="sacsForm.php?id=<?=$data['idSac']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
+                            <?php if ($_SESSION['codeBarre_lecture']==1) {?><a href="sacsCBPrintForm.php?id=<?=$data['idSac']?>" class="btn btn-xs modal-form" title="Imprimer tous les codes barre emplacement de ce sac"><i class="fa fa-barcode"></i></a><?php }?>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-minus"></i>
                                 </button>
@@ -146,7 +156,8 @@ if ($_SESSION['sac_lecture']==0)
                                 <div class="col-md-12">
                                     <div class="box box-warning box-solid">
                                         <div class="box-header with-border">
-                                            <h3 class="box-title"><?php echo $data8['libelleEmplacement']; ?></h3> <?php if ($_SESSION['sac2_modification']==1) {?><a href="emplacementsForm.php?id=<?=$data8['idEmplacement']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
+                                            <h3 class="box-title"><?php echo $data8['libelleEmplacement']; ?></h3> <?php if ($_SESSION['sac2_modification']==1 AND $LOTSLOCK==0) {?><a href="emplacementsForm.php?id=<?=$data8['idEmplacement']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
+                                            <?php if ($_SESSION['codeBarre_lecture']==1) {?><a href="emplacementsCBPrintForm.php?id=<?=$data8['idEmplacement']?>" class="btn btn-xs modal-form" title="Imprimer le code barre de cet emplacement"><i class="fa fa-barcode"></i></a><?php }?>
                                             <div class="box-tools pull-right">
                                                 <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-minus"></i>
                                                 </button>
@@ -209,13 +220,13 @@ if ($_SESSION['sac_lecture']==0)
                                                         </td>
                                                         <td><?= $data9['libelleMaterielsEtat'] ?></td>
                                                         <td>
-                                                            <?php if ($_SESSION['reserve_ReserveVersLot']==1) {?>
+                                                            <?php if ($_SESSION['reserve_ReserveVersLot']==1 AND $LOTSLOCK==0) {?>
                                                             	<a href="transfertResLotsFromLots.php?idElement=<?=$data9['idElement']?>&idMaterielCatalogue=<?=$data9['idMaterielCatalogue']?>" class="btn btn-xs btn-success modal-form" title="Approvisionner depuis la réserve"><i class="fa fa-exchange"></i></a>
                                                             <?php }?>
-                                                            <?php if ($_SESSION['materiel_modification']==1) {?>
+                                                            <?php if ($_SESSION['materiel_modification']==1 AND $LOTSLOCK==0) {?>
                                                                 <a href="materielsForm.php?id=<?=$data9['idElement']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                                             <?php }?>
-                                                            <?php if ($_SESSION['materiel_suppression']==1) {?>
+                                                            <?php if ($_SESSION['materiel_suppression']==1 AND $LOTSLOCK==0) {?>
                                                                 <a href="modalDeleteConfirm.php?case=materielsDelete&id=<?=$data9['idElement']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                                             <?php }?>
                                                         </td>

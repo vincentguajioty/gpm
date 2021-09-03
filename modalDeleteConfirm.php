@@ -32,6 +32,7 @@ switch ($_GET['case']) {
             <li>Les matériels de ce type seront supprimés des lots qui les contiennent.</li>
             <li>Les matériels de ce type seront supprimés des inventaires (lots et réserves) qui les contiennent.</li>
             <li>Les matériels de ce type seront supprimés des réserves qui les contiennent.</li>
+            <li>Les codes barre enregistrés pour ce matériel seront supprimés.</li>
         ";
     break;
 
@@ -346,6 +347,13 @@ switch ($_GET['case']) {
             <li>Toutes les données chiffrées fournisseurs seront perdues.</li>
         ";
     break;
+
+    case 'codesBarreDelete':
+        $lien = "codesBarreDelete.php?id=".$_GET['id'];
+        $contenu = "
+            <li>Tous les éléments possendant ce code barre ne seront plus reconnus lors des inventaires.</li>
+        ";
+    break;    
 
 }
 

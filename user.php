@@ -251,6 +251,13 @@ require_once('logCheck.php');
 			                        <td><?php if($_SESSION['categories_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                    </tr>
 			                    <tr>
+			                        <td>Codes Barre</td>
+			                        <td><?php if($_SESSION['codeBarre_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['codeBarre_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['codeBarre_modification'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                        <td><?php if($_SESSION['codeBarre_suppression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+			                    </tr>
+			                    <tr>
 			                        <td>Fournisseurs</td>
 			                        <td><?php if($_SESSION['fournisseurs_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
 			                        <td><?php if($_SESSION['fournisseurs_ajout'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>

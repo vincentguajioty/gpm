@@ -122,6 +122,19 @@ function randomColor()
 	return $color;
 }
 
+function unlockLotsInventaires()
+{
+    global $db;
+
+    $unlock = $db->query('UPDATE LOTS_LOTS SET inventaireEnCours = Null;');
+}
+function unlockReservesInventaires()
+{
+    global $db;
+
+    $unlock = $db->query('UPDATE RESERVES_CONTENEUR SET inventaireEnCours = Null;');
+}
+
 function updatePeremptionsAnticipations()
 {
     global $db;
@@ -1103,6 +1116,52 @@ function replaceString($string,$replacementArray)
         $string = str_replace(":".$chercher, $remplacer, $string);
     }
     return $string;
+}
+
+function figeInventaireLot($idLot, $idInventaire)
+{
+    global $db;
+
+    $elements = $db->prepare('
+        INSERT INTO
+            INVENTAIRES_CONTENUS(idInventaire, idMaterielCatalogue, quantiteInventaire, peremptionInventaire)
+        SELECT
+            :idInventaire as idInventaire,
+            e.idMaterielCatalogue as idMaterielCatalogue,
+            SUM(e.quantite) as quantiteInventaire,
+            MIN(e.peremption) as peremptionInventaire
+        FROM
+            MATERIEL_ELEMENT e
+            LEFT OUTER JOIN MATERIEL_EMPLACEMENT emp ON e.idEmplacement = emp.idEmplacement
+            LEFT OUTER JOIN MATERIEL_SAC s ON emp.idSac = s.idSac
+        WHERE
+            s.idLot = :idLot
+        GROUP BY
+            e.idMaterielCatalogue
+    ');
+    $elements->execute(array('idLot'=>$idLot, 'idInventaire'=>$idInventaire));
+}
+
+function figeInventaireReserve($idConteneur, $idReserveInventaire)
+{
+    global $db;
+
+    $elements = $db->prepare('
+        INSERT INTO
+            RESERVES_INVENTAIRES_CONTENUS(idReserveInventaire, idMaterielCatalogue, quantiteInventaire, peremptionInventaire)
+        SELECT
+            :idReserveInventaire as idReserveInventaire,
+            idMaterielCatalogue as idMaterielCatalogue,
+            SUM(quantiteReserve) as quantiteInventaire,
+            MIN(peremptionReserve) as peremptionInventaire
+        FROM
+            RESERVES_MATERIEL
+        WHERE
+            idConteneur = :idConteneur
+        GROUP BY
+            idMaterielCatalogue
+    ');
+    $elements->execute(array('idConteneur'=>$idConteneur, 'idReserveInventaire'=>$idReserveInventaire));
 }
 
 ?>

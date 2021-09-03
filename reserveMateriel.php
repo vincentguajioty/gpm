@@ -33,8 +33,16 @@ if ($_SESSION['reserve_lecture']==0)
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
+            <?php
+                if($RESERVESLOCK)
+                {
+                    echo '<div class="alert alert-warning alert-dismissible">';
+                    echo '<i class="icon fa fa-warning"></i> Des inventaires de réserves sont en cours, cette section est donc verrouillée en lecture seule.';
+                    echo '</div>';
+                }
+            ?>
             <div class="box">
-                <?php if ($_SESSION['reserve_ajout']==1) {?>
+                <?php if ($_SESSION['reserve_ajout']==1 AND $RESERVESLOCK==0) {?>
                 	<div class="box-header">
                         <h3 class="box-title"><a href="reserveMaterielForm.php" class="btn btn-sm btn-success modal-form">Ajouter un materiel</a></h3>
                     
@@ -93,10 +101,10 @@ if ($_SESSION['reserve_lecture']==0)
                                     ?>
                                 </td>
                                 <td>
-                                    <?php if ($_SESSION['reserve_modification']==1) {?>
+                                    <?php if ($_SESSION['reserve_modification']==1 AND $RESERVESLOCK==0) {?>
                                         <a href="reserveMaterielForm.php?id=<?=$data['idReserveElement']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
-                                    <?php if ($_SESSION['reserve_suppression']==1) {?>
+                                    <?php if ($_SESSION['reserve_suppression']==1 AND $RESERVESLOCK==0) {?>
                                         <a href="modalDeleteConfirm.php?case=reserveMaterielDelete&id=<?=$data['idReserveElement']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash" title="Supprimer"></i></a>
                                     <?php }?>
                                 </td>

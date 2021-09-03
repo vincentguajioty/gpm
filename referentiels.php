@@ -33,6 +33,14 @@ if ($_SESSION['typesLots_lecture']==0)
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
+            <?php
+                if($LOTSLOCK)
+                {
+                    echo '<div class="alert alert-warning alert-dismissible">';
+                    echo '<i class="icon fa fa-warning"></i> Attention, des inventaires de lots sont en cours, il n\'est pas recommandé de modifier les référentiel tant que les inventaires ne sont pas terminés.';
+                    echo '</div>';
+                }
+            ?>
             <div class="box">
                 <?php if ($_SESSION['typesLots_ajout']==1) {?>
                 	<div class="box-header">

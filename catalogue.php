@@ -33,8 +33,16 @@ require_once('logCheck.php');
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
+            <?php
+                if($LOTSLOCK OR $RESERVESLOCK)
+                {
+                    echo '<div class="alert alert-warning alert-dismissible">';
+                    echo '<i class="icon fa fa-warning"></i> Des inventaires de lots sont en cours, cette section est donc verrouillée en lecture seule.';
+                    echo '</div>';
+                }
+            ?>
             <div class="box">
-                <?php if ($_SESSION['catalogue_ajout']==1) {?>
+                <?php if ($_SESSION['catalogue_ajout']==1 AND $LOTSLOCK==0 AND $RESERVESLOCK==0) {?>
                 	<div class="box-header">
                         <h3 class="box-title"><a href="catalogueForm.php" class="btn btn-sm btn-success modal-form">Ajouter un élément au catalogue</a></h3>
                 	</div>
@@ -51,12 +59,32 @@ require_once('logCheck.php');
                                 <th class="not-mobile">Anticipation péremption lots</th>
                                 <th class="not-mobile">Anticipation péremption réserve</th>
                                 <th class="not-mobile">Commentaires</th>
+                                <th class="not-mobile">Codes barres liés</th>
                                 <th class="not-mobile">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query('SELECT * FROM MATERIEL_CATALOGUE l LEFT OUTER JOIN MATERIEL_CATEGORIES c ON l.idCategorie = c.idCategorie LEFT OUTER JOIN FOURNISSEURS f ON l.idFournisseur=f.idFournisseur ORDER BY libelleMateriel;');
+                        $query = $db->query('
+                            SELECT
+                                l.idMaterielCatalogue,
+                                l.libelleMateriel,
+                                c.libelleCategorie,
+                                f.nomFournisseur,
+                                l.peremptionAnticipationOpe,
+                                l.peremptionAnticipationRes,
+                                l.commentairesMateriel,
+                                COUNT(b.codeBarre) as nbCodeBarre
+                            FROM
+                                MATERIEL_CATALOGUE l
+                                LEFT OUTER JOIN MATERIEL_CATEGORIES c ON l.idCategorie = c.idCategorie
+                                LEFT OUTER JOIN FOURNISSEURS f ON l.idFournisseur=f.idFournisseur
+                                LEFT OUTER JOIN CODES_BARRE b ON l.idMaterielCatalogue = b.idMaterielCatalogue
+                            GROUP BY
+                                l.idMaterielCatalogue
+                            ORDER BY
+                                libelleMateriel
+                        ;');
                         while ($data = $query->fetch())
                         {?>
                             <tr>
@@ -67,11 +95,12 @@ require_once('logCheck.php');
                                 <td><?php echo $data['peremptionAnticipationOpe']; ?></td>
                                 <td><?php echo $data['peremptionAnticipationRes']; ?></td>
                                 <td><?php echo $data['commentairesMateriel']; ?></td>
+                                <td><?php echo $data['nbCodeBarre']; ?></td>
                                 <td>
-                                    <?php if ($_SESSION['catalogue_modification']==1) {?>
+                                    <?php if ($_SESSION['catalogue_modification']==1 AND $LOTSLOCK==0 AND $RESERVESLOCK==0) {?>
                                         <a href="catalogueForm.php?id=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                     <?php }?>
-                                    <?php if ($_SESSION['catalogue_suppression']==1) {?>
+                                    <?php if ($_SESSION['catalogue_suppression']==1 AND $LOTSLOCK==0 AND $RESERVESLOCK==0) {?>
                                         <a href="modalDeleteConfirm.php?case=catalogueDelete&id=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                     <?php }?>
                                 </td>

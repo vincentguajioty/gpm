@@ -266,6 +266,7 @@ if ($_SESSION['commande_lecture']==0)
 	                        <?php if ($data['idEtat']>1) { ?><li><a href="#validation" data-toggle="tab">Validation</a></li> <?php } ?>
 	                        <?php if ($data['idEtat']>2) { ?><li><a href="#fournisseur" data-toggle="tab">Passage de la commande</a></li> <?php } ?>
 	                        <?php if ($data['idEtat']>3) { ?><li><a href="#livraison" data-toggle="tab">Livraison</a></li> <?php } ?>
+	                        <?php if ($data['idEtat']>4 AND $_SESSION['codeBarre_lecture']) { ?><li><a href="#codebarre" data-toggle="tab">Vérification des codes barre</a></li> <?php } ?>
 	                        <li class="pull-right"><a href="#timeline" data-toggle="tab">Historique</a></li>
 	                    </ul>
 	                    <div class="tab-content">
@@ -961,6 +962,66 @@ if ($_SESSION['commande_lecture']==0)
 	                            </form>
 	                        </div>
 
+
+	                        <div class="tab-pane" id="codebarre">
+	                            <table id="tri1" class="table table-bordered table-hover">
+			                        <thead>
+			                            <tr>
+			                                <th class="all" style="width: 10px">#</th>
+			                                <th class="all">Code Barre</th>
+			                                <th class="all">Base</th>
+			                                <th class="not-mobile">Element du catalogue</th>
+			                                <th class="not-mobile">Péremption spécifiée</th>
+			                                <th class="not-mobile">Commentaires</th>
+			                                <th class="not-mobile">Actions</th>
+			                            </tr>
+			                        </thead>
+			                        <tbody>
+			                        <?php
+			                        $query2 = $db->prepare('
+			                            SELECT
+			                                c.*,
+			                                m.libelleMateriel
+			                            FROM
+			                                CODES_BARRE c
+			                                LEFT OUTER JOIN MATERIEL_CATALOGUE m ON c.idMaterielCatalogue = m.idMaterielCatalogue
+			                            WHERE
+			                            	c.idMaterielCatalogue IN
+			                            	(
+			                            		SELECT idMaterielCatalogue FROM COMMANDES_MATERIEL WHERE idCommande = :idCommande
+			                            	)
+			                            ;');
+			                        $query2->execute(array('idCommande'=>$_GET['id']));
+			                        while ($data2 = $query2->fetch())
+			                        {
+			                            ?>
+			                            <tr>
+			                                <td><?= $data2['idCode'] ?></td>
+			                                <td><?= $data2['codeBarre'] ?></td>
+			                                <td><?php if($data2['internalReference']){echo 'Interne';}else{echo 'Fournisseur';} ?></td>
+			                                <td><?= $data2['libelleMateriel'] ?></td>
+			                                <td><?= $data2['peremptionConsommable'] ?></td>
+			                                <td><?= nl2br($data2['commentairesCode']) ?></td>
+			                                <td>
+			                                    <a href="codesBarrePrintForm.php?id=<?=$data2['idCode']?>" class="btn btn-xs btn-success modal-form" title="Imprimer le code"><i class="fa fa-barcode"></i></a>
+			                                    <?php if ($_SESSION['codeBarre_modification']==1 AND $data2['internalReference']==1 AND $LOTSLOCK==0 AND $RESERVESLOCK==0) {?>
+			                                        <a href="codesBarreFormInterne.php?id=<?=$data2['idCode']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
+			                                    <?php }?>
+			                                    <?php if ($_SESSION['codeBarre_suppression']==1 AND $LOTSLOCK==0 AND $RESERVESLOCK==0) {?>
+			                                        <a href="modalDeleteConfirm.php?case=codesBarreDelete&id=<?=$data2['idCode']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
+			                                    <?php }?>
+			                                </td>
+			                            </tr>
+			                            <?php
+			                        }
+			                        $query->closeCursor(); ?>
+			                        </tbody>
+			                    </table>
+			                    <?php if ($_SESSION['codeBarre_ajout']==1) {?>
+									<a href="codesBarreFormFournisseur.php?idCommande=<?=$_GET['id']?>" class="btn btn-success modal-form">Enregistrer un nouveau code barre fournisseur</a>
+									<a href="codesBarreFormInterne.php?idCommande=<?=$_GET['id']?>" class="btn btn-success modal-form">Générer un nouveau code barre, l'imprimer, et le coller sur les produits</a>
+				                <?php }?>
+	                        </div>
 
 	                        <div class="tab-pane" id="timeline">
 	                            <div class="box-body table-responsive no-padding">

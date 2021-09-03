@@ -72,13 +72,13 @@
 			});
 
 			//Initialize Select2 Elements
-			$(".select2").select2();
-			listenSelect('select[name="emplacementLot"]', 'select[name="libelleSac"]');
-			$('select[name="libelleSac"]').children('option').prop('disabled', true);
+            $(".select2").select2();
+            listenSelect('select[name="emplacementLot"]', 'select[name="libelleSac"]');
+            $('select[name="libelleSac"]').children('option').prop('disabled', true);
 
-			listenSelect('select[name="materielLot"]', 'select[name="materielSac"]');
-			listenSelect('select[name="materielSac"]', 'select[name="libelleEmplacement"]');
-			$('select[name="materielSac"], select[name="libelleEmplacement"]').children('option').prop('disabled', true);
+            listenSelect('select[name="materielLot"]', 'select[name="materielSac"]');
+            listenSelect('select[name="materielSac"]', 'select[name="libelleEmplacement"]');
+            $('select[name="materielSac"], select[name="libelleEmplacement"]').children('option').prop('disabled', true);
                     });
                 }
             });
@@ -341,6 +341,9 @@
     });
     $('body').on('click', '.spinnerAttenteClick', function() {
         $("body").prepend('<div class="modal-backdrop in" ><i class="fa fa-refresh fa-spin" style="margin: auto; z-index: 4000000; position: fixed; left: calc(50% - 25px); top: calc(50% - 25px); font-size: 50px; "></i></div>');
+    });
+    $('body').on('click', '.closeModalButton', function() {
+        $(".modal-backdrop" ).remove();
     });
 </script>
 

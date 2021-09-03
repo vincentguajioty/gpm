@@ -34,7 +34,60 @@ include('logCheck.php');
 
     <!-- Main content -->
     <section class="content">
-        <?php include('confirmationBox.php'); ?>        
+        <?php include('confirmationBox.php'); ?>
+
+        <?php
+        if($_SESSION['codeBarre_lecture']==1)
+        { ?>
+          <div class="box box-success">
+            <div class="box-header">
+              <i class="fa fa-search"></i>
+              <h3 class="box-title">Références par code barre</h3>
+            </div>
+            <div class="box-body">
+              <table class="table table-bordered">
+                <thead>
+                      <tr>
+                          <th style="width: 10px">#</th>
+                          <th>Code Barre</th>
+                          <th>Base</th>
+                          <th>Element du catalogue</th>
+                          <th>Péremption spécifiée</th>
+                          <th>Commentaires</th>
+                          <th>Actions</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  <?php
+                  $query = $db->query('SELECT c.*, m.libelleMateriel FROM CODES_BARRE c LEFT OUTER JOIN MATERIEL_CATALOGUE m ON c.idMaterielCatalogue = m.idMaterielCatalogue WHERE codeBarre LIKE "%'.$_POST['search'].'%";');
+                  while ($data = $query->fetch())
+                  {?>
+                      <tr>
+                        <td><?= $data['idCode'] ?></td>
+                        <td><?= $data['codeBarre'] ?></td>
+                        <td><?php if($data['internalReference']){echo 'Interne';}else{echo 'Fournisseur';} ?></td>
+                        <td><?= $data['libelleMateriel'] ?></td>
+                        <td><?= $data['peremptionConsommable'] ?></td>
+                        <td><?= nl2br($data['commentairesCode']) ?></td>
+                        <td>
+                            <a href="codesBarreShow.php?id=<?=$data['idCode']?>" class="btn btn-xs btn-success" title="Afficher le code"><i class="fa fa-barcode"></i></a>
+                            <?php if ($_SESSION['codeBarre_modification']==1 AND $data['internalReference']==1 AND $LOTSLOCK==0 AND $RESERVESLOCK==0) {?>
+                                <a href="codesBarreFormInterne.php?id=<?=$data['idCode']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
+                            <?php }?>
+                            <?php if ($_SESSION['codeBarre_suppression']==1 AND $LOTSLOCK==0 AND $RESERVESLOCK==0) {?>
+                                <a href="modalDeleteConfirm.php?case=codesBarreDelete&id=<?=$data['idCode']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
+                            <?php }?>
+                        </td>
+                      </tr>
+                      <?php
+                  }
+                  $query->closeCursor(); ?>
+                  </tbody>
+
+              </table>
+            </div>
+          </div>
+        <?php } ?>
         
         <?php
         if($_SESSION['lots_lecture']==1)
@@ -195,10 +248,10 @@ include('logCheck.php');
                               <?php if ($_SESSION['lots_lecture']==1) {?>
                                   <a href="lotsContenu.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                               <?php }?>
-                              <?php if ($_SESSION['lots_modification']==1) {?>
+                              <?php if ($_SESSION['lots_modification']==1 AND $data['inventaireEnCours']==Null) {?>
                                   <a href="lotsForm.php?id=<?=$data['idLot']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                               <?php }?>
-                              <?php if ($_SESSION['lots_suppression']==1) {?>
+                              <?php if ($_SESSION['lots_suppression']==1 AND $data['inventaireEnCours']==Null) {?>
                                   <a href="modalDeleteConfirm.php?case=lotsDelete&id=<?=$data['idLot']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                               <?php }?>
                           </td>
@@ -263,10 +316,10 @@ include('logCheck.php');
                                   <?php if ($_SESSION['sac_lecture']==1) {?>
                                       <a href="sacsContenu.php?id=<?=$data['idSac']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                                   <?php }?>
-                                  <?php if ($_SESSION['sac_modification']==1) {?>
+                                  <?php if ($_SESSION['sac_modification']==1 AND $LOTSLOCK==0) {?>
                                       <a href="sacsForm.php?id=<?=$data['idSac']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                   <?php }?>
-                                  <?php if ($_SESSION['sac_suppression']==1) {?>
+                                  <?php if ($_SESSION['sac_suppression']==1 AND $LOTSLOCK==0) {?>
                                       <a href="modalDeleteConfirm.php?case=sacsDelete&id=<?=$data['idSac']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                   <?php }?>
                               </td>
@@ -319,10 +372,10 @@ include('logCheck.php');
                               <?php if ($_SESSION['sac2_lecture']==1) {?>
                                   <a href="emplacementsContenu.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                               <?php }?>
-                              <?php if ($_SESSION['sac2_modification']==1) {?>
+                              <?php if ($_SESSION['sac2_modification']==1 AND $LOTSLOCK==0) {?>
                                   <a href="emplacementsForm.php?id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                               <?php }?>
-                              <?php if ($_SESSION['sac2_suppression']==1) {?>
+                              <?php if ($_SESSION['sac2_suppression']==1 AND $LOTSLOCK==0) {?>
                                   <a href="modalDeleteConfirm.php?case=emplacementsDelete&id=<?=$data['idEmplacement']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                               <?php }?>
                           </td>
@@ -413,10 +466,10 @@ include('logCheck.php');
                                 <?php if ($_SESSION['reserve_ReserveVersLot']==1) {?>
                                   <a href="transfertResLotsFromLots.php?idElement=<?=$data['idElement']?>&idMaterielCatalogue=<?=$data['idMaterielCatalogue']?>" class="btn btn-xs btn-success modal-form" title="Approvisionner depuis la réserve"><i class="fa fa-exchange"></i></a>
                                 <?php }?>
-                                <?php if ($_SESSION['materiel_modification']==1) {?>
+                                <?php if ($_SESSION['materiel_modification']==1 AND $LOTSLOCK==0) {?>
                                     <a href="materielsForm.php?id=<?=$data['idElement']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                                 <?php }?>
-                                <?php if ($_SESSION['materiel_suppression']==1) {?>
+                                <?php if ($_SESSION['materiel_suppression']==1 AND $LOTSLOCK==0) {?>
                                     <a href="modalDeleteConfirm.php?case=materielsDelete&id=<?=$data['idElement']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                                 <?php }?>
                             </td>
@@ -479,10 +532,10 @@ include('logCheck.php');
                               <?php if ($_SESSION['reserve_lecture']==1) {?>
                                   <a href="reserveConteneurContenu.php?id=<?=$data['idConteneur']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>
                               <?php }?>
-                              <?php if ($_SESSION['reserve_modification']==1) {?>
+                              <?php if ($_SESSION['reserve_modification']==1 AND $data['inventaireEnCours']==Null) {?>
                                   <a href="reserveConteneurForm.php?id=<?=$data['idConteneur']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                               <?php }?>
-                              <?php if ($_SESSION['reserve_suppression']==1) {?>
+                              <?php if ($_SESSION['reserve_suppression']==1 AND $data['inventaireEnCours']==Null) {?>
                                   <a href="modalDeleteConfirm.php?case=reserveConteneurDelete&id=<?=$data['idConteneur']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
                               <?php }?>
                           </td>
@@ -557,10 +610,10 @@ include('logCheck.php');
                             ?>
                         </td>
                         <td>
-                            <?php if ($_SESSION['reserve_modification']==1) {?>
+                            <?php if ($_SESSION['reserve_modification']==1 AND $RESERVESLOCK==0) {?>
                                 <a href="reserveMaterielForm.php?id=<?=$data['idReserveElement']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
                             <?php }?>
-                            <?php if ($_SESSION['reserve_suppression']==1) {?>
+                            <?php if ($_SESSION['reserve_suppression']==1 AND $RESERVESLOCK==0) {?>
                                 <a href="modalDeleteConfirm.php?case=reserveMaterielDelete&id=<?=$data['idReserveElement']?>" class="btn btn-xs btn-danger modal-form"><i class="fa fa-trash" title="Supprimer"></i></a>
                             <?php }?>
                         </td>
@@ -903,7 +956,7 @@ include('logCheck.php');
           <div class="box box-success">
             <div class="box-header">
               <i class="fa fa-search"></i>
-              <h3 class="box-title">Transmissions - Equipements</h3>
+              <h3 class="box-title">Véhicules</h3>
             </div>
             <div class="box-body">
               <table class="table table-bordered">

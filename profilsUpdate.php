@@ -146,6 +146,10 @@ else
     $_POST['alertesBenevolesVehicules_lecture']         = ($_POST['alertesBenevolesVehicules_lecture']         == 1) ? 1 : 0;
     $_POST['alertesBenevolesVehicules_affectation']     = ($_POST['alertesBenevolesVehicules_affectation']     == 1) ? 1 : 0;
     $_POST['alertesBenevolesVehicules_affectationTier'] = ($_POST['alertesBenevolesVehicules_affectationTier'] == 1) ? 1 : 0;
+    $_POST['codeBarre_lecture']                         = ($_POST['codeBarre_lecture']                         == 1) ? 1 : 0;
+    $_POST['codeBarre_ajout']                           = ($_POST['codeBarre_ajout']                           == 1) ? 1 : 0;
+    $_POST['codeBarre_modification']                    = ($_POST['codeBarre_modification']                    == 1) ? 1 : 0;
+    $_POST['codeBarre_suppression']                     = ($_POST['codeBarre_suppression']                     == 1) ? 1 : 0;
 
     $query = $db->prepare('
         UPDATE
@@ -287,7 +291,11 @@ else
             alertesBenevolesLots_affectationTier      = :alertesBenevolesLots_affectationTier,
             alertesBenevolesVehicules_lecture         = :alertesBenevolesVehicules_lecture,
             alertesBenevolesVehicules_affectation     = :alertesBenevolesVehicules_affectation,
-            alertesBenevolesVehicules_affectationTier = :alertesBenevolesVehicules_affectationTier
+            alertesBenevolesVehicules_affectationTier = :alertesBenevolesVehicules_affectationTier,
+            codeBarre_lecture                         = :codeBarre_lecture,
+            codeBarre_ajout                           = :codeBarre_ajout,
+            codeBarre_modification                    = :codeBarre_modification,
+            codeBarre_suppression                     = :codeBarre_suppression
         WHERE
             idProfil                                  = :idProfil
         ;');
@@ -430,6 +438,10 @@ else
         'alertesBenevolesVehicules_lecture'         => $_POST['alertesBenevolesVehicules_lecture'],
         'alertesBenevolesVehicules_affectation'     => $_POST['alertesBenevolesVehicules_affectation'],
         'alertesBenevolesVehicules_affectationTier' => $_POST['alertesBenevolesVehicules_affectationTier'],
+        'codeBarre_lecture'                         => $_POST['codeBarre_lecture'],
+        'codeBarre_ajout'                           => $_POST['codeBarre_ajout'],
+        'codeBarre_modification'                    => $_POST['codeBarre_modification'],
+        'codeBarre_suppression'                     => $_POST['codeBarre_suppression'],
     ));
 
     switch($query->errorCode())

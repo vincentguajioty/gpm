@@ -12,11 +12,14 @@ if ($_SESSION['reserve_lecture']==0)
 ?>
 <body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
 <div class="wrapper">
-    <?php include('bandeausup.php'); ?>
-    <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
 
     <?php
+    $lock = $db->prepare('UPDATE RESERVES_CONTENEUR SET inventaireEnCours = 1 WHERE idConteneur = :idConteneur;');
+    $lock->execute(array(
+        'idConteneur' => $_GET['id']
+    ));
+
     $query = $db->prepare('SELECT * FROM RESERVES_CONTENEUR WHERE idConteneur = :idConteneur;');
     $query->execute(array(
         'idConteneur' => $_GET['id']
@@ -31,11 +34,6 @@ if ($_SESSION['reserve_lecture']==0)
             <h1>
                 Nouvel inventaire du conteneur: <?php echo $data['libelleConteneur']; ?>
             </h1>
-            <ol class="breadcrumb">
-                <li><a href="index.php"><i class="fa fa-home"></i>Accueil</a></li>
-                <li><a href="reserveConteneurs.php">Reserve</a></li>
-                <li class="active"><?php echo $data['libelleConteneur']; ?></li>
-            </ol>
         </section>
 
         <!-- Main content -->
@@ -117,7 +115,7 @@ if ($_SESSION['reserve_lecture']==0)
                 </div>
                 <div class="box">
                     <div class="box-body">
-                        <a href="javascript:history.go(-1)" class="btn btn-default">Retour</a>
+                        <a href="reserveInventaireNewAbort.php?id=<?=$_GET['id']?>" class="btn btn-default">Retour</a>
                         <button type="submit" class="btn btn-info pull-right">Ajouter</button>
                     </div>
                 </div>

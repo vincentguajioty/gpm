@@ -4,16 +4,100 @@
 		"selected_items":
 		[
 			[
+				"modal",
+				"modal-form\tabc"
+			],
+			[
+				"reserve",
+				"reserve_modification\tabc"
+			],
+			[
+				"RESER",
+				"RESERVESLOCK\tabc"
+			],
+			[
+				"anticipat",
+				"peremptionAnticipationOpe"
+			],
+			[
+				"libell",
+				"libelleCategorie\tabc"
+			],
+			[
+				"MATE",
+				"MATERIEL_SAC\tabc"
+			],
+			[
+				"MATERIEL",
+				"MATERIEL_ELEMENT\tabc"
+			],
+			[
+				"scan",
+				"scansSuccess\tabc"
+			],
+			[
+				"idC",
+				"idMaterielCatalogue\tabc"
+			],
+			[
+				"libelle",
+				"libelleMateriel\t(update12.0.sql)"
+			],
+			[
+				"MATER",
+				"MATERIEL_CATALOGUE\t(update12.0.sql)"
+			],
+			[
+				"VIEW",
+				"VIEW_SCAN_RESULTS\t(update12.0.sql)"
+			],
+			[
+				"MAT",
+				"MATERIEL_ELEMENT\t(lotsInventaireCBNew.php)"
+			],
+			[
+				"text",
+				"textarea\tTag"
+			],
+			[
+				"qu",
+				"quantiteAlerte\t(lotsInventaireNew.php)"
+			],
+			[
+				"id",
+				"idEmplacement\tabc"
+			],
+			[
+				"libelleE",
+				"libelleEmplacement\t(lotsInventaireNew.php)"
+			],
+			[
+				"code",
+				"codeBarre\t(update12.0.sql)"
+			],
+			[
+				"LOTS",
+				"LOTSLOCK\t(config.php)"
+			],
+			[
+				"LOT",
+				"LOTSLOCK\tabc"
+			],
+			[
+				"lot",
+				"lotsLocks\tabc"
+			],
+			[
+				"invent",
+				"inventaireEnCours\t(update11.2.sql)"
+			],
+			[
 				"messageAlerte",
 				"messageAlerteVehicule\tabc"
 			],
 			[
 				"idAlerte",
 				"idAlerte\t(alerteBenevoleAdd.php)"
-			],
-			[
-				"LOTS",
-				"LOTS_ALERTES\t(alerteBenevoleAdd.php)"
 			],
 			[
 				"alerteBene",
@@ -96,10 +180,6 @@
 				"cmdTotal\t(bdd.php)"
 			],
 			[
-				"id",
-				"idPersonne\tabc"
-			],
-			[
 				"str_re",
 				"str_replace"
 			],
@@ -164,10 +244,6 @@
 				"peremptionReserve\tabc"
 			],
 			[
-				"MATER",
-				"MATERIEL_CATALOGUE\tabc"
-			],
-			[
 				"peremption",
 				"peremptionAnticipation\tabc"
 			],
@@ -190,10 +266,6 @@
 			[
 				"idVeh",
 				"idVehiculeHealth\tabc"
-			],
-			[
-				"libelle",
-				"libelleHealthType\tabc"
 			],
 			[
 				"idHe",
@@ -305,11 +377,15 @@
 		"selected_items":
 		[
 			[
-				"ali\t",
+				"al",
 				"AlignTab: Live Preview Mode"
 			],
 			[
 				"align",
+				"AlignTab: Live Preview Mode"
+			],
+			[
+				"ali\t",
 				"AlignTab: Live Preview Mode"
 			],
 			[
@@ -353,20 +429,81 @@
 	},
 	"file_history":
 	[
+		"//192.168.100.248/web_recette/gpm/reserveInventaireCBNew.php",
+		"//192.168.100.248/web_recette/gpm/lotsForm.php",
+		"//192.168.100.248/web_recette/gpm/codesBarreFormInterne.php",
+		"/V/barcode/v2/barcode.php",
+		"//192.168.100.248/web_recette/gpm/codesBarreShow.php",
+		"/V/barcode/v2/barcode128.php",
+		"//192.168.100.248/web_recette/gpm/codesBarre.php",
+		"//192.168.100.248/web_recette/gpm/logCheck.php",
+		"//192.168.100.248/web_recette/gpm/reserveInventaireCBNewCheckScan.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireCBNewCheckScan.php",
+		"//192.168.100.248/web_recette/gpm/reserveInventaireNewAbort.php",
+		"//192.168.100.248/web_recette/gpm/reserveInventaireAbortLock.php",
+		"//192.168.100.248/web_recette/gpm/reserveInventaireCBNewFinalize.php",
+		"//192.168.100.248/web_recette/gpm/distmaj/update12.0.sql",
+		"//192.168.100.248/web_recette/gpm/config/bdd.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireCBNewFinalize.php",
+		"//192.168.100.248/web_recette/gpm/config/cron.php",
+		"//192.168.100.248/web_recette/gpm/distmaj/view_reload.sql",
+		"//192.168.100.248/web_recette/gpm/reserveConteneurs.php",
+		"//192.168.100.248/web_recette/gpm/reserveMateriel.php",
+		"//192.168.100.248/web_recette/gpm/reserveInventaireNewAdd.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireNew.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireNewAdd.php",
+		"//192.168.100.248/web_recette/gpm/reserveInventaireNew.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireNewAbort.php",
+		"//192.168.100.248/web_recette/gpm/lots.php",
+		"//192.168.100.248/web_recette/gpm/materiels.php",
+		"//192.168.100.248/web_recette/gpm/config/config.php",
+		"//192.168.100.248/web_recette/gpm/navbarSearch.php",
+		"//192.168.100.248/web_recette/gpm/sacs.php",
+		"//192.168.100.248/web_recette/gpm/transfertCmdRes.php",
+		"//192.168.100.248/web_recette/gpm/reserveConteneurContenu.php",
+		"//192.168.100.248/web_recette/gpm/lotsContenu.php",
+		"//192.168.100.248/web_recette/gpm/catalogue.php",
+		"//192.168.100.248/web_recette/gpm/transfertResLots.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireAbortLock.php",
+		"//192.168.100.248/web_recette/gpm/index.php",
+		"//192.168.100.248/web_recette/gpm/appliConf.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireShow.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireCBNew.php",
+		"//192.168.100.248/web_recette/gpm/vehiculesForm.php",
+		"//192.168.100.248/web_recette/gpm/emplacementsForm.php",
+		"//192.168.100.248/web_recette/gpm/scripts.php",
+		"//192.168.100.248/web_recette/gpm/vehiculesDocAdd.php",
+		"//192.168.100.248/web_recette/gpm/plugins/barcode/barcode128.php",
+		"//192.168.100.248/web_recette/gpm/plugins/barcode/barcode123.php",
+		"//192.168.100.248/web_recette/gpm/profils.php",
+		"//192.168.100.248/web_recette/gpm/referentiels.php",
+		"//192.168.100.248/web_recette/gpm/emplacementsContenu.php",
+		"//192.168.100.248/web_recette/gpm/emplacements.php",
+		"//192.168.100.248/web_recette/gpm/sacsContenu.php",
+		"//192.168.100.248/web_recette/gpm/distmaj/update11.2.sql",
+		"//192.168.100.248/web_recette/gpm/lotsDuplicateForm.php",
+		"//192.168.100.248/web_recette/gpm/confirmationBox.php",
+		"//192.168.100.248/web/majDist/gpmTimeLine.php",
+		"//192.168.100.248/web_recette/gpm/commandeItemAdd.php",
+		"//192.168.100.248/web_recette/gpm/commandeItemUpdate.php",
+		"//192.168.100.248/web_recette/gpm/commandeItemForm.php",
+		"//192.168.100.248/web_recette/gpm/commandeView.php",
+		"//192.168.100.248/web_recette/gpm/vhfEquipementsDocAdd.php",
+		"//192.168.100.248/web_recette/gpm/vhfEquipementsDocForm.php",
+		"//192.168.100.248/web_recette/gpm/vhfEquipementsContenu.php",
+		"//192.168.100.248/web_recette/gpm/actionsMassives.php",
+		"//192.168.100.248/web_recette/gpm/distmaj/update11.1.sql",
 		"//192.168.100.248/web_recette/gpm/test.php",
 		"//192.168.100.248/web_recette/gpm/login.php",
 		"//192.168.100.248/web_recette/gpm/config/notifications.php",
-		"//192.168.100.248/web_recette/gpm/config/bdd.php",
 		"//192.168.100.248/web_recette/gpm/logs/20200501.log",
 		"//192.168.100.248/web_recette/gpm/alerteBenevoleAdd.php",
-		"//192.168.100.248/web_recette/gpm/config/config.php",
 		"//192.168.100.248/web_recette/gpm/config/mailFunction.php",
 		"//192.168.100.248/web_recette/gpm/vehiculesContenu.php",
 		"//192.168.100.248/web_recette/gpm/distmaj/INSTALL2.php",
 		"//192.168.100.248/web_recette/gpm/profilsUpdate.php",
 		"//192.168.100.248/web_recette/gpm/commandesAdd.php",
 		"//192.168.100.248/web_recette/gpm/lotsAdd.php",
-		"//192.168.100.248/web_recette/gpm/distmaj/update11.1.sql",
 		"//192.168.100.248/web_recette/gpm/annuaireContenu.php",
 		"//192.168.100.248/web_recette/gpm/annuaireImportGoOK.php",
 		"//192.168.100.248/web_recette/gpm/annuaireSetMail.php",
@@ -395,23 +532,17 @@
 		"/V/gpm/vehiculesAlerteBenevoleLockIpLock.php",
 		"/V/gpm/lotsAlerteBenevoleAffectationTiers.php",
 		"/V/gpm/lotsAlerteBenevoleAffectationTiersUpdate.php",
-		"//192.168.100.248/web_recette/gpm/logCheck.php",
 		"//192.168.100.248/web_recette/gpm/userPWD.php",
 		"//192.168.100.248/web_recette/gpm/distmaj/update1.sql",
 		"//192.168.100.248/web_recette/gpm/annuaireAdd.php",
 		"//192.168.100.248/web_recette/gpm/alerteBenevole.php",
 		"//192.168.100.248/web_recette/gpm/vehiculesDocDelete.php",
 		"//192.168.100.248/web_recette/gpm/vehiculesUpdate.php",
-		"//192.168.100.248/web_recette/gpm/vehiculesForm.php",
 		"//192.168.100.248/web_recette/gpm/vehiculesDelete.php",
 		"//192.168.100.248/web_recette/gpm/lotsDelete.php",
-		"//192.168.100.248/web_recette/gpm/lots.php",
-		"//192.168.100.248/web_recette/gpm/commandeView.php",
 		"//192.168.100.248/web_recette/gpm/vhfPlansDocForm.php",
 		"//192.168.100.248/web_recette/gpm/vhfPlansDocAdd.php",
-		"//192.168.100.248/web_recette/gpm/lotsForm.php",
 		"//192.168.100.248/web_recette/gpm/bandeausup.php",
-		"//192.168.100.248/web_recette/gpm/appliConf.php",
 		"//192.168.100.248/web_recette/gpm/logout.php",
 		"//192.168.100.248/web_recette/gpm/verrouIPcheck.php",
 		"//192.168.100.248/web_recette/gpm/headerContent.php",
@@ -421,66 +552,11 @@
 		"//192.168.100.248/web_recette/gpm/documentsGetIcone.php",
 		"//192.168.100.248/web_recette/gpm/navbar.php",
 		"//192.168.100.248/web_recette/gpm/headerCaptcha.php",
-		"//192.168.100.248/web_recette/gpm/index.php",
 		"//192.168.100.248/web_recette/gpm/header.php",
 		"//192.168.100.248/web_recette/gpm/appliConfUpdateCaptcha.php",
 		"/V/gpm/scripts.php",
 		"/U/majDist/gpmTimeLine.php",
-		"/V/gpm/alerteBenevole.php",
-		"/V/gpm/logCheck.php",
-		"/V/gpm/index.php",
-		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleSynthese.php",
-		"//192.168.100.248/web/majDist/gpmTimeLine.php",
-		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleAffectationTiers.php",
-		"//192.168.100.248/web_recette/gpm/distmaj/update11.0.sql",
-		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleLockIpLock.php",
-		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleLockIpConfirmation.php",
-		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleDoublon.php",
-		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleCloture.php",
-		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleAffectationTiersUpdate.php",
-		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleAffectation.php",
-		"//192.168.100.248/web_recette/gpm/profilsDupliquer.php",
-		"//192.168.100.248/web_recette/gpm/loginReloadHabilitation.php",
-		"//192.168.100.248/web_recette/gpm/userReloadHabilitation.php",
-		"//192.168.100.248/web_recette/gpm/loginDelegate.php",
-		"//192.168.100.248/web_recette/gpm/loginDelegateBack.php",
-		"//192.168.100.248/web_recette/gpm/profilsForm.php",
-		"//192.168.100.248/web_recette/gpm/profilsAdd.php",
-		"//192.168.100.248/web_recette/gpm/profils.php",
-		"//192.168.100.248/web_recette/gpm/profilsRecap.php",
-		"//192.168.100.248/web_recette/gpm/profilsRecapPersonnes.php",
-		"//192.168.100.248/web_recette/gpm/distmaj/view_reload.sql",
-		"//192.168.100.248/web_recette/gpm/profilsFormDupliquer.php",
-		"/V/gpm/alerteBenevoleAdd.php",
-		"/V/gpm/config/config.php",
-		"/V/gpm/logs/20200209.log",
-		"/V/gpm/logs/20200208.log",
-		"/V/gpm/lotsAlerteBenevoleLockIpConfirmation.php",
-		"/V/gpm/loginSQL.php",
-		"/V/gpm/lotsDelete.php",
-		"/V/gpm/modalDeleteConfirm.php",
-		"/V/gpm/confirmationBox.php",
-		"/V/gpm/lots.php",
-		"/V/gpm/navbar.php",
-		"/V/gpm/alerteBenevoleSynthese.php",
-		"/V/gpm/distmaj/update10.4.sql",
-		"/V/gpm/lotsAdd.php",
-		"/V/gpm/verrouIPcheck.php",
-		"/V/gpm/commandeView.php",
-		"/V/gpm/lotsForm.php",
-		"/V/gpm/config/bdd.php",
-		"/V/gpm/sacsForm.php",
-		"/V/gpm/user.php",
-		"/V/gpm/appliConfUpdateAlertesBen.php",
-		"/V/gpm/header.php",
-		"/V/gpm/bandeausup.php",
-		"/V/gpm/distmaj/update1.sql",
-		"/V/gpm/vehiculesDelete.php",
-		"//192.168.100.248/web_recette/gpm/commandeView2.php",
-		"/V/gpm/commandesGo56.php",
-		"/V/gpm/distmaj/update10.3.sql",
-		"//192.168.100.248/web_recette/gpm/transfertResLots.php",
-		"//192.168.100.248/web_recette/gpm/demoTimeLine.php"
+		"/V/gpm/alerteBenevole.php"
 	],
 	"find":
 	{
@@ -488,7 +564,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 104.0,
+		"height": 127.0,
 		"where_history":
 		[
 			"*.php",
@@ -511,6 +587,48 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"codesBarreFormFournisseur",
+			"idInventaire",
+			"LOTS_INVENTAIRES_TEMP",
+			"idEmplacement",
+			"quantite",
+			"peremption",
+			"idLot",
+			"VIEW_SCAN_RESULTS_LOTS",
+			"data3",
+			"MATERIEL_EMPLACEMENT",
+			"MATERIEL_ELEMENT",
+			"$emplacement",
+			"idEmplacement",
+			"VIEW_SCAN_RESULTS_LOTS",
+			"idEmplacement",
+			"idLot",
+			"VIEW_SCAN_RESULTS",
+			"idLot",
+			"idInventaire",
+			"figeInventaire",
+			"idLot",
+			"RESERVESLOCK",
+			"LOTSLOCK",
+			"$LOTSLOCK",
+			"unlockLotsInventaires",
+			"LOTSLOCK",
+			"lotsLocks",
+			"inventaireEnCours",
+			"VIEW_SCAN_RESULTS",
+			"date(",
+			"surprlus",
+			"manque",
+			"scanFailure",
+			"manques",
+			"lock",
+			"session",
+			"docVHFtable",
+			"class=\"btn btn-default pull-left\"",
+			"spinnerAttenteSubmit",
+			"spinnerAttenteClick",
+			"listenSelect",
+			"jquery",
 			"lot",
 			"idLot",
 			"à la personne référence",
@@ -596,49 +714,7 @@
 			"[Commande]",
 			"[COMMANDE]",
 			"[Commande]",
-			"sujetNotif           =",
-			"de la commande :idCommande",
-			":idCommande",
-			"[:APPNAME]",
-			"idNotif",
-			"<td>Centres de coûts</td>",
-			"prenomPersonne FROM COMMANDES_VALIDEURS",
-			"CENTRE_COUTS_PERSONNES",
-			"SELECT mailPersonne, prenomPersonne FROM COMMANDES_OBSERVATEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idObservateur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;",
-			"SELECT mailPersonne, prenomPersonne FROM COMMANDES_AFFECTEES ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idAffectee = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;",
-			"SELECT mailPersonne, prenomPersonne FROM COMMANDES_DEMANDEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idDemandeur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;",
-			":montantMaxValidation",
-			"montantMaxVali",
-			"COMMANDES_VALIDEURS",
-			"valideurs",
-			"Etat 5 vers 7",
-			"Etat 4 vers 6",
-			"Etat 4 vers 5",
-			"Etat 6 vers 5",
-			"Etat 3 vers 4",
-			"sujetNotif",
-			"Etat 1 vers 2",
-			"Etat 2 vers 1",
-			"SELECT mailPersonne FROM COMMANDES_DEMANDEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idDemandeur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL",
-			"SELECT mailPersonne FROM COMMANDES_DEMANDEURS ca LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idDemandeur = pr.idPersonne WHERE idCommande = :idCommande AND mailPersonne != '' AND mailPersonne IS NOT NULL;",
-			"INSERT INTO",
-			"$config",
-			"commande_valider_delegate",
-			"commande_valider",
-			"COMMANDES_VALIDEURS",
-			"commande_valider_seuil",
-			"<th>COMMANDES</th>",
-			"commande_valider",
-			"commande_valider_seuil",
-			"idCommande",
-			"COMMANDES_VALIDEURS_DEFAULT",
-			"COMMANDES_VALIDEURS",
-			"valideur",
-			"idLot",
-			"idPersonne",
-			"commentairesCentreCout",
-			"libelleCentreDecout",
-			"dateFermeture"
+			"sujetNotif           ="
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -646,6 +722,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"VIEW_SCAN_RESULTS_LOTS"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -655,11 +732,11 @@
 	},
 	"incremental_find":
 	{
-		"height": 28.0
+		"height": 45.0
 	},
 	"input":
 	{
-		"height": 40.0
+		"height": 45.0
 	},
 	"layout":
 	{
@@ -688,10 +765,14 @@
 	{
 		"height": 0.0
 	},
+	"output.mdpopups":
+	{
+		"height": 0.0
+	},
 	"pinned_build_system": "",
 	"replace":
 	{
-		"height": 52.0
+		"height": 86.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -701,16 +782,440 @@
 		"selected_items":
 		[
 			[
+				"codesbaFOr",
+				"codesBarreFormInterne.php"
+			],
+			[
+				"codebarrfo",
+				"codesBarreFormFournisseur.php"
+			],
+			[
+				"eserveInventaireCBNew.php",
+				"reserveInventaireCBNew.php"
+			],
+			[
+				"codes",
+				"codesBarre.php"
+			],
+			[
+				"form",
+				"lotsForm.php"
+			],
+			[
+				"codesBarreShow.php",
+				"codesBarreShow.php"
+			],
+			[
+				"codesBarreFormInterne",
+				"codesBarreFormInterne.php"
+			],
+			[
+				"codesBarreFormFournisseur",
+				"codesBarreFormFournisseur.php"
+			],
+			[
+				"commandeve",
+				"commandeView.php"
+			],
+			[
+				"code",
+				"codesBarre.php"
+			],
+			[
+				"codesBarreShow",
+				"codesBarreShow.php"
+			],
+			[
+				"codebarre",
+				"codesBarre.php"
+			],
+			[
+				"update12.0",
+				"distmaj\\update12.0.sql"
+			],
+			[
+				"commandeVi",
+				"commandeView.php"
+			],
+			[
+				"lochec",
+				"logCheck.php"
+			],
+			[
+				"lotsCheck",
+				"lotsInventaireCBNewCheckScan.php"
+			],
+			[
+				"reserveInventCheck",
+				"reserveInventaireCBNewCheckScan.php"
+			],
+			[
+				"reseveInventaireCBNew",
+				"reserveInventaireCBNew.php"
+			],
+			[
+				"abort",
+				"reserveInventaireNewAbort.php"
+			],
+			[
+				"reserveAbort",
+				"reserveInventaireNewAbort.php"
+			],
+			[
+				"bdd",
+				"config\\bdd.php"
+			],
+			[
+				"final",
+				"lotsInventaireCBNewFinalize.php"
+			],
+			[
+				"reserveInventaireCBNewFinalize",
+				"reserveInventaireCBNewFinalize.php"
+			],
+			[
+				"reserveInventaireNe",
+				"reserveInventaireNewAdd.php"
+			],
+			[
+				"reserveInvent",
+				"reserveInventaireCBNewCheckScan.php"
+			],
+			[
+				"InventaireCBNewCheckScan",
+				"lotsInventaireCBNewCheckScan.php"
+			],
+			[
+				"reser",
+				"reserveConteneurContenu.php"
+			],
+			[
+				"reserveInventaireCBNew",
+				"reserveInventaireCBNew.php"
+			],
+			[
+				"lotsInventaireCBNew",
+				"lotsInventaireCBNew.php"
+			],
+			[
+				"lotsConte",
+				"lotsContenu.php"
+			],
+			[
+				"reserveConte",
+				"reserveConteneurContenu.php"
+			],
+			[
+				"cron",
+				"config\\cron.php"
+			],
+			[
+				"reserveInven",
+				"reserveInventaireNewAbort.php"
+			],
+			[
+				"lotsinventaireNew",
+				"lotsInventaireNewAdd.php"
+			],
+			[
+				"reserveInventaireNewAdd",
+				"reserveInventaireNewAdd.php"
+			],
+			[
+				"newAbort",
+				"lotsInventaireNewAbort.php"
+			],
+			[
+				"lotsinvent",
+				"lotsInventaireNew.php"
+			],
+			[
+				"inventaire",
+				"lotsInventaireNew.php"
+			],
+			[
+				"reserveInventaireAbortLock",
+				"reserveInventaireAbortLock.php"
+			],
+			[
+				"conteneur",
+				"reserveConteneurs.php"
+			],
+			[
+				"lots",
+				"lots.php"
+			],
+			[
+				"matie",
+				"materiels.php"
+			],
+			[
+				"reserveInv",
+				"reserveInventaireNew.php"
+			],
+			[
+				"inventaireNe",
+				"lotsInventaireNew.php"
+			],
+			[
+				"update",
+				"distmaj\\update12.0.sql"
+			],
+			[
+				"reserveMate",
+				"reserveMateriel.php"
+			],
+			[
+				"reserve",
+				"reserveConteneurs.php"
+			],
+			[
+				"sacs",
+				"sacs.php"
+			],
+			[
+				"config",
+				"config\\config.php"
+			],
+			[
+				"mater",
+				"materiels.php"
+			],
+			[
+				"lotscontenu",
+				"lotsContenu.php"
+			],
+			[
+				"conteneurConten",
+				"reserveConteneurContenu.php"
+			],
+			[
+				"conteneurs",
+				"reserveConteneurs.php"
+			],
+			[
+				"mate",
+				"materiels.php"
+			],
+			[
+				"transfertcmd",
+				"transfertCmdRes.php"
+			],
+			[
+				"transfertCmd",
+				"transfertCmdRes.php"
+			],
+			[
+				"reserveC",
+				"reserveConteneurs.php"
+			],
+			[
+				"reload",
+				"distmaj\\view_reload.sql"
+			],
+			[
+				"view",
+				"distmaj\\view_reload.sql"
+			],
+			[
+				"appliConf.",
+				"appliConf.php"
+			],
+			[
+				"catalogue",
+				"catalogue.php"
+			],
+			[
+				"lotsInventaireCB",
+				"lotsInventaireCBNewCheckScan.php"
+			],
+			[
+				"inventaireCB",
+				"lotsInventaireCBNewFinalize.php"
+			],
+			[
+				"inventaireNewAdd",
+				"lotsInventaireNewAdd.php"
+			],
+			[
+				"inventairenew",
+				"lotsInventaireNew.php"
+			],
+			[
+				"inventaireadd",
+				"lotsInventaireNewAdd.php"
+			],
+			[
+				"lotsInventaireNewAbort",
+				"lotsInventaireNewAbort.php"
+			],
+			[
+				"lotsinventaireAdd",
+				"lotsInventaireNewAdd.php"
+			],
+			[
+				"checkscn",
+				"lotsInventaireCBNewCheckScan.php"
+			],
+			[
+				"vehiculeForm",
+				"vehiculesForm.php"
+			],
+			[
+				"lotsinventNew",
+				"lotsInventaireNew.php"
+			],
+			[
+				"log",
+				"logCheck.php"
+			],
+			[
+				"scri",
+				"scripts.php"
+			],
+			[
+				"vehiculesDoc",
+				"vehiculesDocAdd.php"
+			],
+			[
+				"emplacementsForm",
+				"emplacementsForm.php"
+			],
+			[
+				"cbnew",
+				"lotsInventaireCBNew.php"
+			],
+			[
+				"lotsinventairenew",
+				"lotsInventaireNew.php"
+			],
+			[
+				"navsear",
+				"navbarSearch.php"
+			],
+			[
+				"codesB",
+				"codesBarre.php"
+			],
+			[
+				"update12",
+				"distmaj\\update12.0.sql"
+			],
+			[
+				"index",
+				"index.php"
+			],
+			[
+				"profils",
+				"profils.php"
+			],
+			[
+				"referen",
+				"referentiels.php"
+			],
+			[
+				"cata",
+				"catalogue.php"
+			],
+			[
+				"transfertResLts",
+				"transfertResLots.php"
+			],
+			[
+				"mateirels",
+				"materiels.php"
+			],
+			[
+				"emplacementCote",
+				"emplacementsContenu.php"
+			],
+			[
+				"emplace",
+				"emplacements.php"
+			],
+			[
+				"sacsConte",
+				"sacsContenu.php"
+			],
+			[
+				"scas",
+				"sacs.php"
+			],
+			[
+				"lotsduplica",
+				"lotsDuplicateForm.php"
+			],
+			[
+				"lotConte",
+				"lotsContenu.php"
+			],
+			[
+				"lotsinven",
+				"lotsInventaireNewAdd.php"
+			],
+			[
+				"sac",
+				"sacsContenu.php"
+			],
+			[
+				"materiels",
+				"materiels.php"
+			],
+			[
+				"confirmationBox",
+				"confirmationBox.php"
+			],
+			[
+				"lotsInventaireNewAdd",
+				"lotsInventaireNewAdd.php"
+			],
+			[
+				"commandeItemAdd",
+				"commandeItemAdd.php"
+			],
+			[
+				"commandeItemUpdate",
+				"commandeItemUpdate.php"
+			],
+			[
+				"commandeitemfo",
+				"commandeItemForm.php"
+			],
+			[
+				"commandeView.php",
+				"commandeView.php"
+			],
+			[
+				"scripts",
+				"scripts.php"
+			],
+			[
+				"script",
+				"scripts.php"
+			],
+			[
+				"vhfEquipementsDocAdd.php",
+				"vhfEquipementsDocAdd.php"
+			],
+			[
+				"vhfEquipementsDocForm.php",
+				"vhfEquipementsDocForm.php"
+			],
+			[
+				"vhfEquipementsContenu.php",
+				"vhfEquipementsContenu.php"
+			],
+			[
+				"update11.1",
+				"distmaj\\update11.1.sql"
+			],
+			[
 				"login.php",
 				"login.php"
 			],
 			[
 				"test",
 				"test.php"
-			],
-			[
-				"config",
-				"config\\config.php"
 			],
 			[
 				"alerte",
@@ -753,10 +1258,6 @@
 				"loginSQL.php"
 			],
 			[
-				"update11.1",
-				"distmaj\\update11.1.sql"
-			],
-			[
 				"update10.0",
 				"distmaj\\update10.0.sql"
 			],
@@ -791,426 +1292,6 @@
 			[
 				"update11.0",
 				"distmaj\\update11.0.sql"
-			],
-			[
-				"lotsContenu",
-				"lotsContenu.php"
-			],
-			[
-				"vehiculesConten",
-				"vehiculesContenu.php"
-			],
-			[
-				"lotsAlerte",
-				"lotsAlerteBenevoleAffectationTiersUpdate.php"
-			],
-			[
-				"lotsAlert",
-				"lotsAlerteBenevoleAffectationTiers.php"
-			],
-			[
-				"vehiculesConte",
-				"vehiculesContenu.php"
-			],
-			[
-				"lotsalertes",
-				"lotsAlerteBenevoleSynthese.php"
-			],
-			[
-				"lotsAlertes",
-				"lotsAlerteBenevoleSynthese.php"
-			],
-			[
-				"lotsCOnten",
-				"lotsContenu.php"
-			],
-			[
-				"catego",
-				"categories.php"
-			],
-			[
-				"vehiculesAdd",
-				"vehiculesAdd.php"
-			],
-			[
-				"vehiculesForm",
-				"vehiculesForm.php"
-			],
-			[
-				"RAZ",
-				"annuaireRAZ.php"
-			],
-			[
-				"annuaireCon",
-				"annuaireContenu.php"
-			],
-			[
-				"logche",
-				"logCheck.php"
-			],
-			[
-				"userPWD",
-				"userPWD.php"
-			],
-			[
-				"update1.",
-				"distmaj\\update1.sql"
-			],
-			[
-				"annuaire",
-				"annuaireAdd.php"
-			],
-			[
-				"docDe",
-				"vehiculesDocDelete.php"
-			],
-			[
-				"docDelete",
-				"commandeDocDelete.php"
-			],
-			[
-				"vehiculesDoc",
-				"vehiculesDocForm.php"
-			],
-			[
-				"vehiculeConten",
-				"vehiculesContenu.php"
-			],
-			[
-				"vehiculesUpdate",
-				"vehiculesUpdate.php"
-			],
-			[
-				"userConfig",
-				"userConfig.php"
-			],
-			[
-				"user",
-				"user.php"
-			],
-			[
-				"vehiculeDe",
-				"vehiculesDelete.php"
-			],
-			[
-				"lotsdelete",
-				"lotsDelete.php"
-			],
-			[
-				"lots",
-				"lots.php"
-			],
-			[
-				"commande",
-				"commandeView.php"
-			],
-			[
-				"vhfadd",
-				"vhfPlansDocAdd.php"
-			],
-			[
-				"VHFDoc",
-				"vhfPlansDocForm.php"
-			],
-			[
-				"lotsAd",
-				"lotsAdd.php"
-			],
-			[
-				"lotsFor",
-				"lotsForm.php"
-			],
-			[
-				"bandeau",
-				"bandeausup.php"
-			],
-			[
-				"login",
-				"loginSQL.php"
-			],
-			[
-				"logout",
-				"logout.php"
-			],
-			[
-				"ver",
-				"verrouIPcheck.php"
-			],
-			[
-				"check",
-				"logCheck.php"
-			],
-			[
-				"cont",
-				"contactSend.php"
-			],
-			[
-				"header",
-				"headerContent.php"
-			],
-			[
-				"docvi",
-				"commandeDocView.php"
-			],
-			[
-				"DocDL",
-				"commandeDocDL.php"
-			],
-			[
-				"vehiculeDoc",
-				"vehiculesDocDL.php"
-			],
-			[
-				"documentsGetIcone.php",
-				"documentsGetIcone.php"
-			],
-			[
-				"vehiculesCon",
-				"vehiculesContenu.php"
-			],
-			[
-				"navbar",
-				"navbar.php"
-			],
-			[
-				"nav",
-				"navbar.php"
-			],
-			[
-				"index",
-				"index.php"
-			],
-			[
-				"appliConfUpdateCaptcha",
-				"appliConfUpdateCaptcha.php"
-			],
-			[
-				"applico",
-				"appliConf.php"
-			],
-			[
-				"log",
-				"logCheck.php"
-			],
-			[
-				"script",
-				"scripts.php"
-			],
-			[
-				"profilUpda",
-				"profilsUpdate.php"
-			],
-			[
-				"bdd.php",
-				"config\\bdd.php"
-			],
-			[
-				"lotsAlerSynt",
-				"lotsAlerteBenevoleSynthese.php"
-			],
-			[
-				"update11.",
-				"distmaj\\update11.0.sql"
-			],
-			[
-				"lotsalerte",
-				"lotsAlerteBenevoleAffectation.php"
-			],
-			[
-				"loginDelete",
-				"loginDelegateBack.php"
-			],
-			[
-				"logindelete",
-				"loginDelegate.php"
-			],
-			[
-				"loginsl",
-				"loginSQL.php"
-			],
-			[
-				"userre",
-				"userReloadHabilitation.php"
-			],
-			[
-				"loginReloadHabilitation.php",
-				"loginReloadHabilitation.php"
-			],
-			[
-				"user.php",
-				"user.php"
-			],
-			[
-				"annuaireCOntenu",
-				"annuaireContenu.php"
-			],
-			[
-				"profilPer",
-				"profilsRecapPersonnes.php"
-			],
-			[
-				"profilsReca",
-				"profilsRecap.php"
-			],
-			[
-				"profilsDup",
-				"profilsDupliquer.php"
-			],
-			[
-				"profilsForm",
-				"profilsForm.php"
-			],
-			[
-				"profilForm",
-				"profilsForm.php"
-			],
-			[
-				"profil",
-				"profilsFormDupliquer.php"
-			],
-			[
-				"profilsAdd",
-				"profilsAdd.php"
-			],
-			[
-				"profils",
-				"profils.php"
-			],
-			[
-				"loginsql",
-				"loginSQL.php"
-			],
-			[
-				"loginSQL",
-				"loginSQL.php"
-			],
-			[
-				"lotsDe",
-				"lotsDelete.php"
-			],
-			[
-				"modal",
-				"modalDeleteConfirm.php"
-			],
-			[
-				"update10.4",
-				"distmaj\\update10.4.sql"
-			],
-			[
-				"confirmatio",
-				"confirmationBox.php"
-			],
-			[
-				"lotsAdd",
-				"lotsAdd.php"
-			],
-			[
-				"loginSQ",
-				"loginSQL.php"
-			],
-			[
-				"verrouIPcheck",
-				"verrouIPcheck.php"
-			],
-			[
-				"logCheck",
-				"logCheck.php"
-			],
-			[
-				"lotFor",
-				"lotsForm.php"
-			],
-			[
-				"lotsform",
-				"lotsForm.php"
-			],
-			[
-				"sacForm",
-				"sacsForm.php"
-			],
-			[
-				"commandeVie",
-				"commandeView.php"
-			],
-			[
-				"bandea",
-				"bandeausup.php"
-			],
-			[
-				"logch",
-				"logCheck.php"
-			],
-			[
-				"vehiculesde",
-				"vehiculesDelete.php"
-			],
-			[
-				"confir",
-				"modalDeleteConfirm.php"
-			],
-			[
-				"applic",
-				"appliConf.php"
-			],
-			[
-				"update 10.4",
-				"distmaj\\update10.4.sql"
-			],
-			[
-				"commandestoutes",
-				"commandesToutes.php"
-			],
-			[
-				"vie",
-				"distmaj\\view_reload.sql"
-			],
-			[
-				"fournisseur",
-				"fournisseurs.php"
-			],
-			[
-				"commandeGo56",
-				"commandesGo56.php"
-			],
-			[
-				"Go5",
-				"commandesGo56.php"
-			],
-			[
-				"commandeView",
-				"commandeView.php"
-			],
-			[
-				"trans",
-				"transfertResLots.php"
-			],
-			[
-				"udnzTimeline/demo/scripts/jquery-1.10.2.min.js",
-				"plugins\\udnzTimeline\\demo\\scripts\\jquery-1.10.2.min.js"
-			],
-			[
-				"rc/css/timeline.css",
-				"plugins\\udnzTimeline\\src\\css\\timeline.css"
-			],
-			[
-				"demoT",
-				"demoTimeLine.php"
-			],
-			[
-				"centre",
-				"centreCouts.php"
-			],
-			[
-				"annuaireContenu",
-				"annuaireContenu.php"
-			],
-			[
-				"centreCout",
-				"centreCouts.php"
-			],
-			[
-				"user.",
-				"user.php"
 			]
 		],
 		"width": 0.0

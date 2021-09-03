@@ -157,7 +157,11 @@ else
 			alertesBenevolesLots_affectationTier      = :alertesBenevolesLots_affectationTier,
 			alertesBenevolesVehicules_lecture         = :alertesBenevolesVehicules_lecture,
 			alertesBenevolesVehicules_affectation     = :alertesBenevolesVehicules_affectation,
-			alertesBenevolesVehicules_affectationTier = :alertesBenevolesVehicules_affectationTier
+			alertesBenevolesVehicules_affectationTier = :alertesBenevolesVehicules_affectationTier,
+            codeBarre_lecture                         = :codeBarre_lecture,
+            codeBarre_ajout                           = :codeBarre_ajout,
+            codeBarre_modification                    = :codeBarre_modification,
+            codeBarre_suppression                     = :codeBarre_suppression
 	;');
     $query->execute(array(
 		'libelleProfil'                             => $data['libelleProfil'] . ' - Copie',
@@ -297,6 +301,10 @@ else
 		'alertesBenevolesVehicules_lecture'         => $data['alertesBenevolesVehicules_lecture'],
 		'alertesBenevolesVehicules_affectation'     => $data['alertesBenevolesVehicules_affectation'],
 		'alertesBenevolesVehicules_affectationTier' => $data['alertesBenevolesVehicules_affectationTier'],
+        'codeBarre_lecture'                         => $data['codeBarre_lecture'],
+        'codeBarre_ajout'                           => $data['codeBarre_ajout'],
+        'codeBarre_modification'                    => $data['codeBarre_modification'],
+        'codeBarre_suppression'                     => $data['codeBarre_suppression'],
 ));
 
     switch($query->errorCode())
