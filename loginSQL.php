@@ -305,7 +305,7 @@ if ($data['idIP'] == "")
 		
 	    if ((password_verify($SELPRE.$_POST['identifiant'].$SELPOST, $data['motDePasse'])))
 	    {
-	        $_SESSION['connexion_connexion'] = "0";
+	        
 	
 	        writeInLogs("Connexion réussie et redirection automatique sur la modification de mot de passe.", '1', NULL);
 	
@@ -314,18 +314,27 @@ if ($data['idIP'] == "")
 	    else
 	    {
 	        //bon
-	        $_SESSION['connexion_connexion'] = $data['connexion_connexion'];
-	
-	        writeInLogs("Connexion réussie.", '1', NULL);
-	
-	        echo "<script type='text/javascript'>document.location.replace('index.php');</script>";
+	        if($data['doubleAuthSecret'] == Null)
+			{
+				$_SESSION['connexion_connexion'] = $data['connexion_connexion'];
+				writeInLogs("MFA non-paramétré", '1', NULL);
+				writeInLogs("Connexion réussie.", '1', NULL);
+				echo "<script type='text/javascript'>document.location.replace('index.php');</script>";
+			}
+			else
+			{
+				$_SESSION['connexion_connexion'] = "0";
+				writeInLogs("MFA paramétré, redirection sur la page MFA", '1', NULL);
+				echo "<script type='text/javascript'>document.location.replace('loginMFA.php');</script>";
+				exit;
+			}
 	    }
 	
 	}
 }
 else
 {
-	 //pas bon
+	//pas bon
     writeInLogs("Connexion refusée par le filtrage IP pour l'authentification avec ".$_POST['identifiant'], '2', NULL);
     echo "<script type='text/javascript'>document.location.replace('login.php');</script>";
 }

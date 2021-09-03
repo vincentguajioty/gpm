@@ -878,7 +878,7 @@ function cmdEstValideur ($idPersonne, $idCommande)
                 return 0;
             }
 
-            if($cmdTotal > $enCours AND $data['depasseBudget'] == 0)
+            if($cmdTotal >= $enCours AND $data['depasseBudget'] == 0)
             {
                 return 0;
             }
@@ -887,7 +887,7 @@ function cmdEstValideur ($idPersonne, $idCommande)
         }
         else
         {
-            if($data['montantMaxValidation'] > $cmdTotal)
+            if($data['montantMaxValidation'] >= $cmdTotal)
             {
                 if($ouvert == 0 AND $data['validerClos'] == 0)
                 {
@@ -909,6 +909,45 @@ function cmdEstValideur ($idPersonne, $idCommande)
     }
     
     return 0;
+}
+function cmdEstValideurUniversel ($idPersonne, $idCommande)
+{
+	global $db;
+	$user = $db->prepare('SELECT commande_valider_delegate FROM VIEW_HABILITATIONS WHERE idPersonne = :idPersonne');
+	$user->execute(array('idPersonne' => $idPersonne));
+	$user = $user->fetch();
+	
+	if($user['commande_valider_delegate'] != 1)
+	{
+		return 0;
+	}
+	
+	$cmdTotal = cmdTotal($idCommande);
+	
+	$nbValideursStandards = $db->prepare('
+		SELECT
+			COUNT(*) as nb
+		FROM
+			CENTRE_COUTS_PERSONNES c
+			INNER JOIN PERSONNE_REFERENTE p ON c.idPersonne = p.idPersonne
+		WHERE
+			idCentreDeCout = (SELECT idCentreDeCout FROM COMMANDES WHERE idCommande = :idCommande)
+			AND
+			(montantMaxValidation >= :montantTotalCommande OR montantMaxValidation IS NULL)
+	');
+	$nbValideursStandards->execute(array(
+		'idCommande' => $idCommande,
+		'montantTotalCommande' => $cmdTotal,
+	));
+	$nbValideursStandards = $nbValideursStandards->fetch();
+	if($nbValideursStandards['nb'] == 0)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
 }
 function cmdEstObservateur ($idPersonne, $idCommande)
 {

@@ -60,7 +60,11 @@ if ($_SESSION['annuaire_lecture']==0)
                             <?php }?>
 
                             <?php if ($_SESSION['annuaire_mdp']==1) {?>
-                                <a href="annuaireRAZ.php?id=<?=$_GET['id']?>" class="btn btn-info spinnerAttenteClick" onclick="return confirm('Etes-vous sûr de vouloir réinitialiser ce mot de passe (le nouveau mot de passe prendra la valeur de l\'identifiant) ?');" title="Réinitialiser le mot de passe"><i class="fa fa-lock"></i> Réinitialiser le mot de passe de l'utilisateur</a>
+                                <a href="annuaireRAZdoubleFactor.php?id=<?=$_GET['id']?>" class="btn btn-info spinnerAttenteClick" onclick="return confirm('Etes-vous sûr de vouloir désactiver la double authentification pour cet utilisateur ?');" title="Désactiver le MFA"><i class="fa fa-unlock"></i> Désactiver la double authentification</a>
+                            <?php }?>
+
+                            <?php if ($_SESSION['annuaire_mdp']==1) {?>
+                                <a href="annuaireRAZ.php?id=<?=$_GET['id']?>" class="btn btn-info spinnerAttenteClick" onclick="return confirm('Etes-vous sûr de vouloir réinitialiser ce mot de passe (le nouveau mot de passe prendra la valeur de l\'identifiant) ce qui va également désactiver la double authentification ?');" title="Réinitialiser le mot de passe"><i class="fa fa-lock"></i> Réinitialiser le mot de passe de l'utilisateur</a>
                             <?php }?>
                             
                             <?php if ($_SESSION['delegation']==1 AND $_SESSION['DELEGATION_ACTIVE']==0 AND $_SESSION['idPersonne']!=$_GET['id']) {?>

@@ -59,7 +59,7 @@ if ($_SESSION['commande_lecture']==0)
                         ));
                         while ($data = $query->fetch())
                         {
-                            if(cmdEstValideur($_SESSION['idPersonne'],$data['idCommande']) == 1){
+                            if(cmdEstValideur($_SESSION['idPersonne'],$data['idCommande']) == 1 OR cmdEstValideurUniversel($_SESSION['idPersonne'],$data['idCommande']) == 1){
                             ?>
                             <tr <?php if ($_SESSION['commande_lecture']==1) {?>data-href="commandeView.php?id=<?=$data['idCommande']?>"<?php }?>>
                                 <td><?php echo $data['idCommande']; ?></td>

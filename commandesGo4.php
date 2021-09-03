@@ -62,6 +62,7 @@ else
             sendMailCmdStage($_GET['id'],14);
             sendMailCmdStage($_GET['id'],15);
             sendMailCmdStage($_GET['id'],16);
+            sendMailCmdStage($_GET['id'],37);
             break;
 
         default:

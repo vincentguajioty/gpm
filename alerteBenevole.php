@@ -5,7 +5,7 @@ session_start();
 require_once 'verrouIPcheck.php';
 ?>
 <?php include('headerCaptcha.php'); require_once('config/config.php'); ?>
-<body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini sidebar-collapse">
+<body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini fixed">
 <div class="wrapper">
     <?php require_once('config/config.php'); ?>
 
@@ -25,6 +25,8 @@ require_once 'verrouIPcheck.php';
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
 	        <!-- Content Header (Page header) -->
+
+	    <?php include('bandeausupPublic.php'); ?>
 	        
         <?php
 			if ($MAINTENANCE)

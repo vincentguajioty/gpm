@@ -24,6 +24,7 @@ else
     $_POST['notifications_commandes_valideur_validationOK']     = ($_POST['notifications_commandes_valideur_validationOK']     == 1) ? 1 : 0;
     $_POST['notifications_commandes_valideur_validationNOK']    = ($_POST['notifications_commandes_valideur_validationNOK']    == 1) ? 1 : 0;
     $_POST['notifications_commandes_valideur_passee']           = ($_POST['notifications_commandes_valideur_passee']           == 1) ? 1 : 0;
+    $_POST['notifications_commandes_valideur_centreCout']       = ($_POST['notifications_commandes_valideur_centreCout']       == 1) ? 1 : 0;
     $_POST['notifications_commandes_valideur_livraisonOK']      = ($_POST['notifications_commandes_valideur_livraisonOK']      == 1) ? 1 : 0;
     $_POST['notifications_commandes_valideur_livraisonNOK']     = ($_POST['notifications_commandes_valideur_livraisonNOK']     == 1) ? 1 : 0;
     $_POST['notifications_commandes_valideur_savOK']            = ($_POST['notifications_commandes_valideur_savOK']            == 1) ? 1 : 0;
@@ -46,7 +47,8 @@ else
     $_POST['notifications_commandes_observateur_livraisonNOK']  = ($_POST['notifications_commandes_observateur_livraisonNOK']  == 1) ? 1 : 0;
     $_POST['notifications_commandes_observateur_savOK']         = ($_POST['notifications_commandes_observateur_savOK']         == 1) ? 1 : 0;
     $_POST['notifications_commandes_observateur_cloture']       = ($_POST['notifications_commandes_observateur_cloture']       == 1) ? 1 : 0;
-    $_POST['notifications_commandes_observateur_abandon']       = ($_POST['notifications_commandes_observateur_abandon']       == 1) ? 1 : 0;
+    $_POST['notifications_commandes_observateur_abandon']       = ($_POST['notifications_commandes_observateur_abandon']       == 1) ? 1 : 0; 
+            
 
     $query = $db->prepare('
         UPDATE
@@ -65,6 +67,7 @@ else
             notifications_commandes_valideur_validationOK     = :notifications_commandes_valideur_validationOK ,
             notifications_commandes_valideur_validationNOK    = :notifications_commandes_valideur_validationNOK ,
             notifications_commandes_valideur_passee           = :notifications_commandes_valideur_passee ,
+            notifications_commandes_valideur_centreCout       = :notifications_commandes_valideur_centreCout ,
             notifications_commandes_valideur_livraisonOK      = :notifications_commandes_valideur_livraisonOK ,
             notifications_commandes_valideur_livraisonNOK     = :notifications_commandes_valideur_livraisonNOK ,
             notifications_commandes_valideur_savOK            = :notifications_commandes_valideur_savOK ,
@@ -103,6 +106,7 @@ else
         'notifications_commandes_valideur_validationOK'     => $_POST['notifications_commandes_valideur_validationOK'],
         'notifications_commandes_valideur_validationNOK'    => $_POST['notifications_commandes_valideur_validationNOK'],
         'notifications_commandes_valideur_passee'           => $_POST['notifications_commandes_valideur_passee'],
+        'notifications_commandes_valideur_centreCout'       => $_POST['notifications_commandes_valideur_centreCout'],
         'notifications_commandes_valideur_livraisonOK'      => $_POST['notifications_commandes_valideur_livraisonOK'],
         'notifications_commandes_valideur_livraisonNOK'     => $_POST['notifications_commandes_valideur_livraisonNOK'],
         'notifications_commandes_valideur_savOK'            => $_POST['notifications_commandes_valideur_savOK'],
@@ -125,8 +129,8 @@ else
         'notifications_commandes_observateur_livraisonNOK'  => $_POST['notifications_commandes_observateur_livraisonNOK'],
         'notifications_commandes_observateur_savOK'         => $_POST['notifications_commandes_observateur_savOK'],
         'notifications_commandes_observateur_cloture'       => $_POST['notifications_commandes_observateur_cloture'],
-        'notifications_commandes_observateur_abandon'       => $_POST['notifications_commandes_observateur_abandon']
-    ));
+        'notifications_commandes_observateur_abandon'       => $_POST['notifications_commandes_observateur_abandon'],
+    ));    
 
     switch($query->errorCode())
     {

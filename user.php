@@ -12,6 +12,7 @@ require_once('logCheck.php');
     <?php include('bandeausup.php'); ?>
     <?php include('navbar.php'); ?>
     <?php require_once('config/config.php'); ?>
+    <?php require_once('plugins/authenticator/authenticator.php'); ?>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -530,6 +531,57 @@ require_once('logCheck.php');
 			                    </form>
 			                <?php } else { ?>
 			                	<center>La modification du mot de passe est désactivée en mode délégation.</center>
+			                <?php } ?>
+		                </div>
+		            </div>
+		            <div class="box box-info">
+		            	<?php
+		            		$fa = $db->prepare('SELECT doubleAuthSecret FROM PERSONNE_REFERENTE WHERE idPersonne = :idPersonne;');
+                			$fa->execute(array('idPersonne' => $_SESSION['idPersonne']));
+                			$fa = $fa->fetch();
+		            	?>
+		            	<div class="box-header with-border">
+		                    <h3 class="box-title">Double authentification (actuellement <?php if(!is_null($fa['doubleAuthSecret'])){echo 'activée';}else{echo 'désactivée';} ?>)</h3>
+		                </div>
+		                <div class="box-body">
+		                	<?php
+		                		if ($_SESSION['DELEGATION_ACTIVE']==0)
+		                		{
+		                			if(is_null($fa['doubleAuthSecret']))
+			                		{
+			                			$Authenticator = new Authenticator();
+			                			if (!isset($_SESSION['doubleAuthSecret_config']))
+			                			{
+			                				$_SESSION['doubleAuthSecret_config'] = $Authenticator->generateRandomSecret();
+			                			}
+			                			$qrCodeUrl = $Authenticator->getQR($_SESSION['identifiant'], $_SESSION['doubleAuthSecret_config'], $APPNAME);
+			                			?>
+			                			<form role="form" action="userDoubleAuthEnable.php" method="POST">
+			                				<div class="form-group">
+					                            <label>1 - Téléchargez sur votre appareil mobile une application MFA (Google Authenticator, Microsoft Authenticator, ...)</label>
+					                        </div>
+			                				<div class="form-group">
+					                            <label>2 - Dans l'application mobile, scannez le QRCode ci-dessous pour ajouter le compte (ou ajoutez le code manuellement):</label>
+					                        </div>
+			                				<center><img class="img-fluid" src="<?= $qrCodeUrl ?>"></center>
+			                				<br/>
+			                				<center><?=$_SESSION['doubleAuthSecret_config']?></center>
+			                				<br/>
+			                				<div class="form-group">
+					                            <label>3 - Saisissez le code de sécurité obtenu:</label>
+					                            <input type="text" class="form-control" placeholder="123456" name="code" required>
+					                        </div>
+					                        <button type="submit" class="btn btn-info pull-right"><i class="fa fa-lock"></i> Activer la double authentification</button>
+			                			</form>
+			                		<?php }
+			                		else
+			                		{ ?>
+			                			<center><a href="userDoubleAuthDisable.php" class="btn btn-warning spinnerAttenteClick" onclick="return confirm('Etes-vous sûr de vouloir désactiver la double authentification ?');" title="Désactiver la double authentification"><i class="fa fa-unlock"></i> Désactiver la double authentification</a></center>
+			                		<?php }
+		                		}
+		                		else
+		                		{ ?>
+			                		<center>La gestion de la double authentification est désactivée en mode délégation.</center>
 			                <?php } ?>
 		                </div>
 		            </div>

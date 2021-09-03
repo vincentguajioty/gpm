@@ -150,7 +150,7 @@ if ($_SESSION['sac2_lecture']==0)
                                 </thead>
                                 <tbody>
                                 <?php
-                                $query9 = $db->prepare('SELECT * FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue LEFT OUTER JOIN MATERIEL_ETATS me ON e.idMaterielsEtat = me.idMaterielsEtat WHERE idEmplacement = :idEmplacement;');
+                                $query9 = $db->prepare('SELECT * FROM MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue LEFT OUTER JOIN MATERIEL_ETATS me ON e.idMaterielsEtat = me.idMaterielsEtat WHERE idEmplacement = :idEmplacement ORDER BY libelleMateriel;');
                                 $query9->execute(array(
                                     'idEmplacement' => $data['idEmplacement']
                                 ));

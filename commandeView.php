@@ -464,14 +464,26 @@ if ($_SESSION['commande_lecture']==0)
 	                                                	{
 	                                                		$query2 = $db->prepare('SELECT c.idPersonne, p.identifiant FROM CENTRE_COUTS_PERSONNES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idPersonne = p.idPersonne WHERE c.idCentreDeCout = :idCentreDeCout;');
 	                                                		$query2->execute(array('idCentreDeCout'=>$data['idCentreDeCout']));
+	                                                		$qttValideurs = 0;
 	                                                		while($data2 = $query2->fetch())
 	                                                		{
-	                                                			echo $data2['idPersonne'];
 	                                                			if(cmdEstValideur($data2['idPersonne'], $_GET['id'])==1)
 	                                                			{
-	                                                			?>
-	                                                			<option selected ><?php echo $data2['identifiant']; ?></option>
-	                                                		<?php }}
+	                                                				$qttValideurs += 1;
+	                                                				?>
+	                                                				<option selected ><?php echo $data2['identifiant']; ?></option>
+	                                                			<?php }
+	                                                		}
+
+	                                                		if($qttValideurs == 0)
+	                                                		{
+	                                                			$query2 = $db->prepare('SELECT idPersonne, identifiant FROM VIEW_HABILITATIONS WHERE commande_valider_delegate = 1;');
+	                                                			$query2->execute(array('idCentreDeCout'=>$data['idCentreDeCout']));
+	                                                			while($data2 = $query2->fetch())
+	                                                			{ ?>
+	                                                				<option selected ><?php echo $data2['identifiant']; ?></option>
+	                                                			<?php }
+	                                                		}
 	                                                	}
 	                                                ?>
 	                                            </select>
@@ -809,20 +821,33 @@ if ($_SESSION['commande_lecture']==0)
 	                                    </div>
 	                                    <div class="col-md-4">
 	                                        <div class="form-group">
-	                                            <label>Valideurs potentiels: </label>
+	                                            <label>Valideurs potentiels:</label>
 	                                            <select class="form-control select2" style="width: 100%;" disabled name="idValideur[]" multiple>
 	                                                <?php
 	                                                	if($data['idCentreDeCout'] != Null)
 	                                                	{
 	                                                		$query2 = $db->prepare('SELECT c.idPersonne, p.identifiant FROM CENTRE_COUTS_PERSONNES c LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idPersonne = p.idPersonne WHERE c.idCentreDeCout = :idCentreDeCout;');
 	                                                		$query2->execute(array('idCentreDeCout'=>$data['idCentreDeCout']));
+	                                                		$qttValideurs = 0;
 	                                                		while($data2 = $query2->fetch())
 	                                                		{
 	                                                			if(cmdEstValideur($data2['idPersonne'], $_GET['id'])==1)
 	                                                			{
-	                                                			?>
-	                                                			<option selected ><?php echo $data2['identifiant']; ?></option>
-	                                                		<?php }}
+	                                                				$qttValideurs += 1;
+	                                                				?>
+	                                                				<option selected ><?php echo $data2['identifiant']; ?></option>
+	                                                			<?php }
+	                                                		}
+
+	                                                		if($qttValideurs == 0)
+	                                                		{
+	                                                			$query2 = $db->prepare('SELECT idPersonne, identifiant FROM VIEW_HABILITATIONS WHERE commande_valider_delegate = 1;');
+	                                                			$query2->execute(array('idCentreDeCout'=>$data['idCentreDeCout']));
+	                                                			while($data2 = $query2->fetch())
+	                                                			{ ?>
+	                                                				<option selected ><?php echo $data2['identifiant']; ?></option>
+	                                                			<?php }
+	                                                		}
 	                                                	}
 	                                                ?>
 	                                            </select>

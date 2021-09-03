@@ -92,6 +92,15 @@ require_once 'config/bdd.php';
 	                        ?>
 	                        ><a href="lotsAlerteBenevoleSynthese.php"><i class="fa fa-comment"></i> <span>Alertes des bénévoles</span></a></li>
 	                    <?php } ?>
+	                    <?php if ($_SESSION['lots_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 106)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="lotsCompare.php"><i class="fa fa-copy"></i> <span>Comparaison de lots</span></a></li>
+	                    <?php } ?>
 	                </ul>
 	            </li>
 	        <?php
@@ -187,6 +196,7 @@ require_once 'config/bdd.php';
                         while($data = $query->fetch())
                         {
                         	if(cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])==1){$nb+=1;}
+                        	if(cmdEstValideurUniversel($_SESSION['idPersonne'], $data['idCommande'])==1){$nb+=1;}
                         }
                         ?>
                         <li <?php

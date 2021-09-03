@@ -264,7 +264,7 @@ if ($_SESSION['appli_conf']==0)
                                 <tr>
                                     <th></th>
                                     <th>Demandeur</th>
-                                    <th>Valideur</th>
+                                    <th>Valideur<br/>(Responsable du centre de couts)</th>
                                     <th>Gérant</th>
                                     <th>Observateur</th>
                                 </tr>
@@ -295,6 +295,13 @@ if ($_SESSION['appli_conf']==0)
                                     <td><input <?php if($data['notifications_commandes_valideur_passee'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_valideur_passee"></td>
                                     <td><input <?php if($data['notifications_commandes_affectee_passee'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_affectee_passee"></td>
                                     <td><input <?php if($data['notifications_commandes_observateur_passee'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_observateur_passee"></td>
+                                </tr>
+                                <tr>
+                                    <td>La commande est prête à être intégrée au centre de couts</td>
+                                    <td></td>
+                                    <td><input <?php if($data['notifications_commandes_valideur_centreCout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notifications_commandes_valideur_centreCout"></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>La commande est receptionnée sans SAV</td>

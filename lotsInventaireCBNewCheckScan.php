@@ -335,6 +335,8 @@ if ($_SESSION['lots_modification']==0)
                                                                         LEFT OUTER JOIN (SELECT * FROM VIEW_SCAN_RESULTS_LOTS WHERE idEmplacement = :idEmplacement) v ON e.idMaterielCatalogue = v.idMaterielCatalogue
                                                                     WHERE
                                                                         e.idEmplacement = :idEmplacement
+                                                                    ORDER BY
+                                                                        c.libelleMateriel
                                                                 ;');
                                                                 $materiels->execute(array('idEmplacement'=>$emplacement['idEmplacement']));
                                                                 while($materiel = $materiels->fetch())
