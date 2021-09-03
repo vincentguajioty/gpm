@@ -16,7 +16,6 @@ include('logCheck.php');
     <?php include('navbar.php'); ?>
     <?php require_once 'config/bdd.php'; ?>
 
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 

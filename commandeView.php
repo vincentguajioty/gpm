@@ -728,7 +728,7 @@ if ($_SESSION['commande_lecture']==0)
                                             <th></th>
                                         </tr>
                                         <?php
-                                        $query2 = $db->prepare('SELECT * FROM VIEW_DOCUMENTS_COMMANDES WHERE idCommande = :idCommande ORDER BY nomDocCommande ASC ;');
+                                        $query2 = $db->prepare('SELECT * FROM VIEW_DOCUMENTS_COMMANDES WHERE idCommande = :idCommande ORDER BY dateDocCommande DESC;');
                                         $query2->execute(array('idCommande' => $_GET['id']));
                                         while ($data2 = $query2->fetch())
                                         {

@@ -503,7 +503,7 @@ if ($_SESSION['vehicules_lecture']==0)
                                         <th><?php if($_SESSION['vehicules_modification']==1){ ?><a href="vehiculesDocForm.php?idVehicule=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a><?php } ?></th>
                                     </tr>
                                     <?php
-                                    $query2 = $db->prepare('SELECT * FROM VIEW_DOCUMENTS_VEHICULES WHERE idVehicule = :idVehicule ORDER BY nomDocVehicule ASC ;');
+                                    $query2 = $db->prepare('SELECT * FROM VIEW_DOCUMENTS_VEHICULES WHERE idVehicule = :idVehicule ORDER BY dateDocVehicule DESC;');
                                     $query2->execute(array('idVehicule' => $_GET['id']));
                                     while ($data2 = $query2->fetch())
                                     {

@@ -47,7 +47,7 @@ require_once('logCheck.php');
 	                        <?php
 	                        	if($_SESSION['commande_lecture']==1)
 	                        	{
-	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_COMMANDES;');
+	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_COMMANDES ORDER BY dateDocCommande DESC;');
 			                        while ($data = $query->fetch())
 			                        {?>
 			                        	<tr>
@@ -73,7 +73,7 @@ require_once('logCheck.php');
 	                        <?php
 	                        	if($_SESSION['cout_lecture']==1)
 	                        	{
-	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_CENTRE_COUTS;');
+	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_CENTRE_COUTS ORDER BY dateDocCouts DESC;');
 			                        while ($data = $query->fetch())
 			                        {?>
 			                        	<tr>
@@ -99,7 +99,7 @@ require_once('logCheck.php');
 	                        <?php
 	                        	if($_SESSION['vehicules_lecture']==1)
 	                        	{
-	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_VEHICULES;');
+	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_VEHICULES ORDER BY dateDocVehicule DESC;');
 			                        while ($data = $query->fetch())
 			                        {?>
 			                        	<tr>
@@ -125,7 +125,7 @@ require_once('logCheck.php');
 	                        <?php
 	                        	if($_SESSION['vhf_canal_lecture']==1)
 	                        	{
-	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_CANAL_VHF;');
+	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_CANAL_VHF ORDER BY dateDocCanalVHF DESC;');
 			                        while ($data = $query->fetch())
 			                        {?>
 			                        	<tr>
@@ -151,7 +151,7 @@ require_once('logCheck.php');
 	                        <?php
 	                        	if($_SESSION['vhf_plan_lecture']==1)
 	                        	{
-	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_PLAN_VHF;');
+	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_PLAN_VHF ORDER BY dateDocPlanVHF DESC;');
 			                        while ($data = $query->fetch())
 			                        {?>
 			                        	<tr>
@@ -177,7 +177,7 @@ require_once('logCheck.php');
 	                        <?php
 	                        	if($_SESSION['vhf_equipement_lecture']==1)
 	                        	{
-	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_VHF;');
+	                        		$query = $db->query('SELECT * FROM VIEW_DOCUMENTS_VHF ORDER BY dateDocVHF DESC;');
 			                        while ($data = $query->fetch())
 			                        {?>
 			                        	<tr>

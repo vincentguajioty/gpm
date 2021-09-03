@@ -192,7 +192,7 @@ if ($_SESSION['vhf_equipement_lecture']==0)
                                         <th></th>
                                     </tr>
                                     <?php
-                                    $query2 = $db->prepare('SELECT * FROM VIEW_DOCUMENTS_VHF WHERE idVhfEquipement = :idVhfEquipement ORDER BY nomDocVHF ASC ;');
+                                    $query2 = $db->prepare('SELECT * FROM VIEW_DOCUMENTS_VHF WHERE idVhfEquipement = :idVhfEquipement ORDER BY dateDocVHF DESC;');
                                     $query2->execute(array('idVhfEquipement' => $_GET['id']));
                                     while ($data2 = $query2->fetch())
                                     {

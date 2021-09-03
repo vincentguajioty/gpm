@@ -128,7 +128,7 @@ if ($_SESSION['vhf_plan_lecture']==0)
                                         <th></th>
                                     </tr>
                                     <?php
-                                    $query2 = $db->prepare('SELECT * FROM VIEW_DOCUMENTS_PLAN_VHF WHERE idVhfPlan = :idVhfPlan ORDER BY nomDocPlanVHF ASC ;');
+                                    $query2 = $db->prepare('SELECT * FROM VIEW_DOCUMENTS_PLAN_VHF WHERE idVhfPlan = :idVhfPlan ORDER BY dateDocPlanVHF DESC;');
                                     $query2->execute(array('idVhfPlan' => $_GET['id']));
                                     while ($data2 = $query2->fetch())
                                     {

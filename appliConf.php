@@ -83,10 +83,61 @@ if ($_SESSION['appli_conf']==0)
                                 <input type="text" class="form-control" value="<?=$data['urlsite']?>" name="urlsite" required>
                             </div>
                             <div class="form-group">
-                                <label>Adresse mail expéditrice des notifications:</label>
-                                <input type="text" class="form-control" value="<?=$data['mailserver']?>" name="mailserver" required>
+                                <div class=row>
+                                    <div class="col-md-6">
+                                        <label>Adresse mail expéditrice des notifications:</label>
+                                        <input type="text" class="form-control" value="<?=$data['mailserver']?>" name="mailserver" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Nom de l'expédieur:</label>
+                                        <input type="text" class="form-control" value="<?=$data['appname']?>" disabled>
+                                    </div>
+                                </div>
                                 <input type="checkbox" value="1" name="mailcopy" <?php if($data['mailcopy']==1){echo "checked";}?>> Cette adresse doit être copiste de tous les mails envoyés par la plateforme.
                             </div>
+                            <div class="form-group">
+                                <label>SMTP:</label>
+                                <br/>
+                                <input type="checkbox" value="1" name="mailIsSMTP" <?php if($data['mailIsSMTP']==1){echo "checked";}?>> Utiliser la configuration SMTP ci-dessous plutôt que la fonction de mail par défaut.
+                            </div>
+
+                            <div class="form-group">
+                                <div class=row>
+                                    <div class="col-md-4">
+                                        <label>Serveur SMTP:</label>
+                                        <input type="text" class="form-control" value="<?=$data['SMTPhost']?>" name="SMTPhost">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Port SMTP:</label>
+                                        <input type="number" class="form-control" value="<?=$data['SMTPport']?>" name="SMTPport">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Protocole sécurisé</label>
+                                            <select class="form-control select2" style="width: 100%;" name="smtpSecurity">
+                                                <option value="1">Aucun</option>
+                                                <option value="2" <?php if($data['SMTPssl']){echo 'selected';}?>>SSL</option>
+                                                <option value="3" <?php if($data['SMTPtls']){echo 'selected';}?>>TLS</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="checkbox" value="1" name="SMTPauth" <?php if($data['SMTPauth']==1){echo "checked";}?>> Une authentification est requise sur le serveur SMTP
+                                <div class=row>
+                                    <div class="col-md-6">
+                                        <label>Utilisateur SMTP:</label>
+                                        <input type="text" class="form-control" value="<?=$data['SMTPuser']?>" name="SMTPuser">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Mot de passe SMTP:</label>
+                                        <input type="password" class="form-control" value="<?=$data['SMTPpwd']?>" name="SMTPpwd">
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label>Adresse mail de contact CNIL:</label>
                                 <input type="text" class="form-control" value="<?=$data['mailcnil']?>" name="mailcnil" required>

@@ -3,13 +3,92 @@ session_start();
 require_once 'bdd.php';
 require_once 'config.php';
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+if(is_dir('plugins'))
+{
+    require 'plugins/phpmailer/src/Exception.php';
+    require 'plugins/phpmailer/src/PHPMailer.php';
+    require 'plugins/phpmailer/src/SMTP.php';
+}
+else
+{
+    if(is_dir('../plugins'))
+    {
+        require '../plugins/phpmailer/src/Exception.php';
+        require '../plugins/phpmailer/src/PHPMailer.php';
+        require '../plugins/phpmailer/src/SMTP.php';
+    }
+    else
+    {
+        chdir(dirname(__FILE__));
+        if(is_dir('plugins'))
+        {
+            require 'plugins/phpmailer/src/Exception.php';
+            require 'plugins/phpmailer/src/PHPMailer.php';
+            require 'plugins/phpmailer/src/SMTP.php';
+        }
+        else
+        {
+            require '../plugins/phpmailer/src/Exception.php';
+            require '../plugins/phpmailer/src/PHPMailer.php';
+            require '../plugins/phpmailer/src/SMTP.php';
+        }
+    }
+}
+
 $RETOURLIGNE = "\r\n";
 
-function sendMail($adresseDest, $sujet, $niveau, $contenu)
+function sendMailSMTP($adresseDest, $sujet, $niveau, $contenu)
+{
+    global $db;
+
+    $query = $db->query('SELECT * FROM CONFIG;');
+    $config = $query->fetch();
+
+    writeInLogs("Chargement sendMailSMTP", '1', NULL);
+
+    $mail = new PHPMailer;
+    $mail->isSMTP();
+    $mail->CharSet = 'UTF-8';
+    $mail->Encoding = 'base64';
+    $mail->Host = $config['SMTPhost']; 
+    $mail->Port = $config['SMTPport'];
+
+    if($config['SMTPssl']){$mail->SMTPSecure = 'ssl';}
+    if($config['SMTPtls']){$mail->SMTPSecure = 'tls';}
+
+    if($config['SMTPauth'])
+    {
+        $mail->SMTPAuth = true;
+        $mail->Username = $config['SMTPuser'];
+        $mail->Password = $config['SMTPpwd'];
+    }
+
+    $mail->setFrom($config['mailserver'], $config['appname']);
+
+    $mail->addAddress($adresseDest);
+
+    if($config['mailcopy'] == 1)
+    {
+        $mail->addCC($config['mailserver']);
+    }
+
+    $mail->Subject = $sujet;
+    $mail->msgHTML($contenu);
+    $mail->AltBody = $contenu;
+
+    return $mail->send();
+}
+
+function sendMailPHP($adresseDest, $sujet, $niveau, $contenu)
 {
     global $APPNAME;
     global $MAILSERVER;
     global $MAILCOPY;
+
+    writeInLogs("Chargement sendMailPHP", '1', NULL);
     
     $RETOURLIGNE = "\r\n";
 
@@ -44,6 +123,20 @@ function sendMail($adresseDest, $sujet, $niveau, $contenu)
     $header.= "Content-Type: text/html; charset=UTF-8;".$RETOURLIGNE." boundary=\"$boundary\"".$RETOURLIGNE;
 
     return mail($adresseDest,$sujet,$contenu,$header);
+}
+
+function sendMail($adresseDest, $sujet, $niveau, $contenu)
+{
+    global $MAILISSMTP;
+
+    if($MAILISSMTP)
+    {
+        return sendMailSMTP($adresseDest, $sujet, $niveau, $contenu);
+    }
+    else
+    {
+        return sendMailPHP($adresseDest, $sujet, $niveau, $contenu);
+    }
 }
 
 function sendMailCmdStage($idCommande, $idNotif)

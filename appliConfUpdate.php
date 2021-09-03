@@ -13,6 +13,27 @@ else
 {
 	$_POST['mailcopy'] = ($_POST['mailcopy'] ==1) ? 1 : 0;
     $_POST['resetPassword'] = ($_POST['resetPassword'] ==1) ? 1 : 0;
+
+    $_POST['mailIsSMTP'] = ($_POST['mailIsSMTP'] ==1) ? 1 : 0;
+    $_POST['SMTPauth'] = ($_POST['SMTPauth'] ==1) ? 1 : 0;
+
+    if($_POST['smtpSecurity']==1)
+    {
+        $tls = 0;
+        $ssl = 0;
+    }
+
+    if($_POST['smtpSecurity']==2)
+    {
+        $tls = 0;
+        $ssl = 1;
+    }
+
+    if($_POST['smtpSecurity']==3)
+    {
+        $tls = 1;
+        $ssl = 0;
+    }
 	
     $query = $db->prepare('
         UPDATE
@@ -26,7 +47,15 @@ else
             logouttemp              = :logouttemp,
             mailcopy                = :mailcopy,
             confirmationSuppression = :confirmationSuppression,
-            resetPassword           = :resetPassword
+            resetPassword           = :resetPassword,
+            mailIsSMTP              = :mailIsSMTP,
+            SMTPhost                = :SMTPhost,
+            SMTPport                = :SMTPport,
+            SMTPssl                 = :SMTPssl,
+            SMTPtls                 = :SMTPtls,
+            SMTPauth                = :SMTPauth,
+            SMTPuser                = :SMTPuser,
+            SMTPpwd                 = :SMTPpwd
     ;');
     $query->execute(array(
         'appname'                 => $_POST['appname'],
@@ -37,7 +66,15 @@ else
         'logouttemp'              => $_POST['logouttemp'],
         'mailcopy'                => $_POST['mailcopy'],
         'resetPassword'           => $_POST['resetPassword'],
-        'confirmationSuppression' => $_POST['confirmationSuppression']
+        'confirmationSuppression' => $_POST['confirmationSuppression'],
+        'mailIsSMTP'              => $_POST['mailIsSMTP'],
+        'SMTPhost'                => $_POST['SMTPhost'],
+        'SMTPport'                => $_POST['SMTPport'],
+        'SMTPssl'                 => $ssl,
+        'SMTPtls'                 => $tls,
+        'SMTPauth'                => $_POST['SMTPauth'],
+        'SMTPuser'                => $_POST['SMTPuser'],
+        'SMTPpwd'                 => $_POST['SMTPpwd'],
     ));
 
     switch($query->errorCode())

@@ -442,7 +442,7 @@ if ($_SESSION['cout_lecture']==0)
                                         <th><?php if(centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['id'])==1){ ?><a href="centreCoutsDocForm.php?idCentreDeCout=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a><?php } ?></th>
                                     </tr>
                                     <?php
-                                    $query2 = $db->prepare('SELECT * FROM VIEW_DOCUMENTS_CENTRE_COUTS WHERE idCentreDeCout = :idCentreDeCout ORDER BY nomDocCouts ASC ;');
+                                    $query2 = $db->prepare('SELECT * FROM VIEW_DOCUMENTS_CENTRE_COUTS WHERE idCentreDeCout = :idCentreDeCout ORDER BY dateDocCouts DESC;');
                                     $query2->execute(array('idCentreDeCout' => $_GET['id']));
                                     while ($data2 = $query2->fetch())
                                     {
