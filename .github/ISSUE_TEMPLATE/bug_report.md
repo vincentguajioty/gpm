@@ -1,38 +1,29 @@
 ---
-name: Bug report
-about: Create a report to help us improve
+name: Bug/Incident
+about: Signaler un incident/bug
 title: ''
 labels: ''
 assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Description**
+Donnez la meilleure description de l'incident/bug
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**Etapes de reproduction**
+Aidez nous à reproduire en décrivant les étapes qui vous amènent au bug:
+1. Aller sur la page '...'
+2. Cliquez sur '....'
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**L'attendu**
+Ce que vous vous attendez à ce que GPM fasse
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Capture d'écrans**
+Si possible, joignez nous une capture d'écran
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**Environnement**
+ - Appareil: ordinateur, téléphone, ...
+ - Navigateur: chrome, edge, safari, ...
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
-**Additional context**
-Add any other context about the problem here.
+**Informations complémentaires**
+Toute information complémentaire est bonne à prendre
