@@ -53,6 +53,8 @@ require_once 'config/config.php';
                         <div class="box-body">
                             <?php echo file_get_contents("https://maj.guajioty.fr/gpmDevStack.php"); ?>
                             <a href="contact.php">N'hésitez pas à me faire parvenir vos idées !</a>
+                            <br/>
+                            <a href="https://github.com/vincentguajioty/gpm/issues/new/choose">Les tickets GitHub sont également un bon moyen de communiquer !</a>
                         </div>
                     </div>
                 </div>
