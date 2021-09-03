@@ -250,13 +250,6 @@ if ($_SESSION['profils_lecture']==0)
                             <td><?php foreach($profils as $profil){if($profil['codeBarre_suppression']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                         </tr>
                         <tr>
-                            <td>Fournisseurs</td>
-                            <td><?php foreach($profils as $profil){if($profil['fournisseurs_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
-                            <td><?php foreach($profils as $profil){if($profil['fournisseurs_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
-                            <td><?php foreach($profils as $profil){if($profil['fournisseurs_modification']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
-                            <td><?php foreach($profils as $profil){if($profil['fournisseurs_suppression']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
-                        </tr>
-                        <tr>
                             <td>Référentiels</td>
                             <td><?php foreach($profils as $profil){if($profil['typesLots_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['typesLots_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
@@ -345,7 +338,8 @@ if ($_SESSION['profils_lecture']==0)
                         <tr>
                             <th>COMMANDES</th>
                             <th>Lecture</th>
-                            <th>Ajout/Modification</th>
+                            <th>Ajout</th>
+                            <th>Modification</th>
                             <th>Valideur universel</th>
                             <th>Etre en charge</th>
                             <th>Abandonner/Supprimer</th>
@@ -354,13 +348,24 @@ if ($_SESSION['profils_lecture']==0)
                             <td>Commandes</td>
                             <td><?php foreach($profils as $profil){if($profil['commande_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['commande_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['commande_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['commande_valider_delegate']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['commande_etreEnCharge']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['commande_abandonner']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                         </tr>
                         <tr>
+                            <td>Fournisseurs</td>
+                            <td><?php foreach($profils as $profil){if($profil['fournisseurs_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['fournisseurs_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['fournisseurs_modification']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td></td>
+                            <td></td>
+                            <td><?php foreach($profils as $profil){if($profil['fournisseurs_suppression']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                        </tr>
+                        <tr>
                             <td>Centres de coûts</td>
                             <td><?php foreach($profils as $profil){if($profil['cout_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['cout_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['cout_ajout']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td></td>
                             <td><?php foreach($profils as $profil){if($profil['cout_etreEnCharge']){echo $profil['libelleProfil'].'<br/>';}} ?></td>

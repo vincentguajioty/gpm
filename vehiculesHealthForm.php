@@ -94,11 +94,11 @@ if($_SESSION['vehiculeHealth_lecture']==1 OR $_SESSION['vehiculeHealth_ajout']==
                                 <?php
                                 if(isset($_GET['id']))
                                 {
-                                    $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE;');
+                                    $query2 = $db->query('SELECT * FROM VIEW_PERSONNE_REFERENTE;');
                                 }
                                 else
                                 {
-                                    $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE vehiculeHealth_modification = 1;');
+                                    $query2 = $db->query('SELECT * FROM VIEW_PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE vehiculeHealth_modification = 1;');
                                 }
                                 while ($data2 = $query2->fetch())
                                 {

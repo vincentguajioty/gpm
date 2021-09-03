@@ -55,6 +55,9 @@ cnilAnonymeAlerte1();
 //Anonymisation des comptes
 cnilAnonymeCron();
 
+//Notification sur les alertes métiers
+notifications();
+
 writeInLogs("CRON - Fin du CRON.", '1', NULL);
 
 ?>

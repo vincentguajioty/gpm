@@ -146,7 +146,7 @@ if($_SESSION['vehicules_lecture']==1 OR $_SESSION['vehicules_ajout']==1 OR $_SES
 		                            <select class="form-control select2" style="width: 100%;" name="idResponsable">
 		                                <option value="">--- Pas de Référent ---</option>
 		                                <?php
-		                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE ORDER BY identifiant;');
+		                                $query2 = $db->query('SELECT * FROM VIEW_PERSONNE_REFERENTE ORDER BY identifiant;');
 		                                while ($data2 = $query2->fetch())
 		                                {
 		                                    ?>

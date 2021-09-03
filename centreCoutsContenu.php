@@ -246,23 +246,23 @@ if ($_SESSION['cout_lecture']==0)
                             <div class="tab-pane table-responsive no-padding" id="cmd">
                                 
                                 <?php
-                                    	if($text == 'Clos')
-                                    	{ ?>
-                                    		<div class="col-md-12">
-		                                		<div class="alert alert-warning">
-								                    <i class="icon fa fa-warning"></i> Ce centre de coût est clos. Aucune action ne devrait y être menée !
-								                </div>
-		                                	</div>
-                                    	<?php }
-                                    	if($text == 'Futur')
-                                    	{ ?>
-                                    		<div class="col-md-12">
-		                                		<div class="alert alert-warning">
-								                    <i class="icon fa fa-warning"></i> Ce centre de coût n'est pas encore ouvert. Aucune action ne devrait y être menée !
-								                </div>
-		                                	</div>
-                                    	<?php }
-                                    ?>
+                                	if($text == 'Clos')
+                                	{ ?>
+                                		<div class="col-md-12">
+	                                		<div class="alert alert-warning">
+							                    <i class="icon fa fa-warning"></i> Ce centre de coût est clos. Aucune action ne devrait y être menée !
+							                </div>
+	                                	</div>
+                                	<?php }
+                                	if($text == 'Futur')
+                                	{ ?>
+                                		<div class="col-md-12">
+	                                		<div class="alert alert-warning">
+							                    <i class="icon fa fa-warning"></i> Ce centre de coût n'est pas encore ouvert. Aucune action ne devrait y être menée !
+							                </div>
+	                                	</div>
+                                	<?php }
+                                ?>
                                 
                                 <table class="table table-hover">
                                     <tr>

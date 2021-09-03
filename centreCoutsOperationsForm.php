@@ -53,7 +53,7 @@ if(centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['idCentreDeCout'])==1)
                             <label>Responsable de la transaction: </label>
                             <select class="form-control select2" style="width: 100%;" name="idPersonne">
                                 <?php
-                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE cout_etreEnCharge = 1;');
+                                $query2 = $db->query('SELECT * FROM VIEW_PERSONNE_REFERENTE p LEFT OUTER JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE cout_etreEnCharge = 1;');
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>

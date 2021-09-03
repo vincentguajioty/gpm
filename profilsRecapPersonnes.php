@@ -250,13 +250,6 @@ if ($_SESSION['profils_lecture']==0 OR $_SESSION['annuaire_lecture']==0)
                             <td><?php foreach($users as $user){if($user['codeBarre_suppression']){echo $user['identifiant'].'<br/>';}} ?></td>
                         </tr>
                         <tr>
-                            <td>Fournisseurs</td>
-                            <td><?php foreach($users as $user){if($user['fournisseurs_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
-                            <td><?php foreach($users as $user){if($user['fournisseurs_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>
-                            <td><?php foreach($users as $user){if($user['fournisseurs_modification']){echo $user['identifiant'].'<br/>';}} ?></td>
-                            <td><?php foreach($users as $user){if($user['fournisseurs_suppression']){echo $user['identifiant'].'<br/>';}} ?></td>
-                        </tr>
-                        <tr>
                             <td>Référentiels</td>
                             <td><?php foreach($users as $user){if($user['typesLots_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['typesLots_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>
@@ -345,7 +338,8 @@ if ($_SESSION['profils_lecture']==0 OR $_SESSION['annuaire_lecture']==0)
                         <tr>
                             <th>COMMANDES</th>
                             <th>Lecture</th>
-                            <th>Ajout/Modification</th>
+                            <th>Ajout</th>
+                            <th>Modification</th>
                             <th>Valideur universel</th>
                             <th>Etre en charge</th>
                             <th>Abandonner/Supprimer</th>
@@ -354,13 +348,23 @@ if ($_SESSION['profils_lecture']==0 OR $_SESSION['annuaire_lecture']==0)
                             <td>Commandes</td>
                             <td><?php foreach($users as $user){if($user['commande_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['commande_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['commande_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['commande_valider_delegate']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['commande_etreEnCharge']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['commande_abandonner']){echo $user['identifiant'].'<br/>';}} ?></td>
                         </tr>
                         <tr>
+                            <td>Fournisseurs</td>
+                            <td><?php foreach($users as $user){if($user['fournisseurs_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['fournisseurs_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['fournisseurs_modification']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td></td>
+                            <td><?php foreach($users as $user){if($user['fournisseurs_suppression']){echo $user['identifiant'].'<br/>';}} ?></td>
+                        </tr>
+                        <tr>
                             <td>Centres de coûts</td>
                             <td><?php foreach($users as $user){if($user['cout_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['cout_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['cout_ajout']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td></td>
                             <td><?php foreach($users as $user){if($user['cout_etreEnCharge']){echo $user['identifiant'].'<br/>';}} ?></td>

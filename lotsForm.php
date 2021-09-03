@@ -12,7 +12,7 @@ if($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots
     <?php
     	if (isset($_GET['id']))
 		{
-		    $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN ETATS s on l.idEtat = s.idEtat LEFT OUTER JOIN LIEUX e ON l.idLieu = e.idLieu LEFT OUTER JOIN PERSONNE_REFERENTE p on l.idPersonne = p.idPersonne WHERE idLot =:idLot;');
+		    $query = $db->prepare('SELECT * FROM LOTS_LOTS l LEFT OUTER JOIN LOTS_TYPES t ON l.idTypeLot = t.idTypeLot LEFT OUTER JOIN ETATS s on l.idEtat = s.idEtat LEFT OUTER JOIN LIEUX e ON l.idLieu = e.idLieu LEFT OUTER JOIN VIEW_PERSONNE_REFERENTE p on l.idPersonne = p.idPersonne WHERE idLot =:idLot;');
 		    $query->execute(array('idLot' => $_GET['id']));
 		    $data = $query->fetch();
 		    $query->closeCursor();
@@ -121,7 +121,7 @@ if($_SESSION['lots_lecture']==1 OR $_SESSION['lots_ajout']==1 OR $_SESSION['lots
                             <select class="form-control select2" style="width: 100%;" name="identifiant">
                                 <option value="">--- Pas de Référent ---</option>
                                 <?php
-                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE ORDER BY identifiant;');
+                                $query2 = $db->query('SELECT * FROM VIEW_PERSONNE_REFERENTE ORDER BY identifiant;');
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>

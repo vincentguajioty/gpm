@@ -151,6 +151,7 @@ if ($_SESSION['reserve_lecture']==0)
                                 <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
+                                    <th>Catégorie</th>
                                     <th>Libelle</th>
                                     <th>Quantité</th>
                                     <th>Péremption</th>
@@ -159,7 +160,7 @@ if ($_SESSION['reserve_lecture']==0)
                                 </thead>
                                 <tbody>
                                 <?php
-                                $query9 = $db->prepare('SELECT * FROM RESERVES_MATERIEL e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue WHERE idConteneur = :idConteneur;');
+                                $query9 = $db->prepare('SELECT * FROM RESERVES_MATERIEL e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue LEFT OUTER JOIN MATERIEL_CATEGORIES cc ON c.idCategorie = cc.idCategorie WHERE idConteneur = :idConteneur ORDER BY libelleCategorie ASC, libelleMateriel ASC;');
                                 $query9->execute(array(
                                     'idConteneur' => $data['idConteneur']
                                 ));
@@ -167,6 +168,7 @@ if ($_SESSION['reserve_lecture']==0)
                                 { ?>
                                     <tr>
                                         <td><?php echo $data9['idReserveElement']; ?></td>
+                                        <td><?php echo $data9['libelleCategorie']; ?></td>
                                         <td><?php echo $data9['libelleMateriel']; ?></td>
                                         <td><?php
                                             if ($data9['quantiteReserve'] < $data9['quantiteAlerteReserve'])

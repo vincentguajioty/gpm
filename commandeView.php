@@ -328,7 +328,7 @@ if ($_SESSION['commande_lecture']==0)
 		                                                		ao.*,
 		                                                		(SELECT idCommande FROM COMMANDES_DEMANDEURS aop WHERE ao.idPersonne = aop.idDemandeur AND aop.idCommande = :idCommande) as idCommande
 		                                                	FROM
-		                                                		PERSONNE_REFERENTE ao
+		                                                		VIEW_PERSONNE_REFERENTE ao
 		                                                		JOIN VIEW_HABILITATIONS h ON ao.idPersonne = h.idPersonne
 		                                                		
 		                                                	WHERE
@@ -374,7 +374,7 @@ if ($_SESSION['commande_lecture']==0)
 		                                                		ao.*,
 		                                                		(SELECT idCommande FROM COMMANDES_OBSERVATEURS aop WHERE ao.idPersonne = aop.idObservateur AND aop.idCommande = :idCommande) as idCommande
 		                                                	FROM
-		                                                		PERSONNE_REFERENTE ao
+		                                                		VIEW_PERSONNE_REFERENTE ao
 		                                                		JOIN VIEW_HABILITATIONS h ON ao.idPersonne = h.idPersonne
 		                                                	WHERE
 		                                                		commande_lecture = 1
@@ -421,7 +421,7 @@ if ($_SESSION['commande_lecture']==0)
 		                                                		ao.*,
 		                                                		(SELECT idCommande FROM COMMANDES_AFFECTEES aop WHERE ao.idPersonne = aop.idAffectee AND aop.idCommande = :idCommande) as idCommande
 	                                                		FROM
-	                                                			PERSONNE_REFERENTE ao
+	                                                			VIEW_PERSONNE_REFERENTE ao
 	                                                			JOIN VIEW_HABILITATIONS h ON ao.idPersonne = h.idPersonne
 	                                                		WHERE
 	                                                			commande_lecture = 1

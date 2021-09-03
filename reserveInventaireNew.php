@@ -46,7 +46,7 @@ if ($_SESSION['reserve_lecture']==0)
                             <label>Personne ayant fait l'inventaire:</label>
                             <select class="form-control select2" style="width: 100%;" name="identifiant" required>
                                 <?php
-                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE ORDER BY identifiant;');
+                                $query2 = $db->query('SELECT * FROM VIEW_PERSONNE_REFERENTE ORDER BY identifiant;');
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>

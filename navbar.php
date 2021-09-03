@@ -152,7 +152,7 @@ require_once 'config/bdd.php';
 			?>
             
             <?php
-			if ($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSION['commande_etreEnCharge']==1 OR $_SESSION['commande_abandonner']==1 OR $_SESSION['cout_lecture']==1)
+			if ($_SESSION['commande_lecture']==1 OR $_SESSION['commande_ajout']==1 OR $_SESSION['commande_etreEnCharge']==1 OR $_SESSION['commande_abandonner']==1 OR $_SESSION['fournisseurs_lecture']==1 OR $_SESSION['cout_lecture']==1)
 			{
 			?>
 	            <li <?php
@@ -171,68 +171,88 @@ require_once 'config/bdd.php';
 	                    <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
 	                </a>
 	                <ul class="treeview-menu">
-	                    <?php if ($_SESSION['commande_ajout']==1){ ?>
-	                        <li><a href="commandesAdd.php"><i class="fa fa-plus"></i> <span>Nouvelle demande d'achat</span></a></li>
-	                    <?php } ?>
-	                    <?php if ($_SESSION['commande_lecture']==1){ ?>
-	                        <?php
-	                        $query = $db->prepare('SELECT COUNT(*) as nb FROM COMMANDES WHERE idEtat < 7;');
-	                        $query->execute(array(
-	                            'idPersonne' => $_SESSION['idPersonne']
-	                        ));
-	                        $data = $query -> fetch();
-	                        ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 607)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="commandesNonCloses.php"><i class="fa fa-spinner"></i> <span>Non closes</span><?php if ($data['nb']>0) { ?><span class="pull-right-container"><small class="label pull-right bg-blue"><?php echo $data['nb'];?></small></span> <?php } ?></a></li>
-	                    <?php } ?>
-                        <?php
-                        $query = $db->query('SELECT c.idCommande FROM COMMANDES c WHERE c.idEtat = 2;');
-                        $nb=0;
-                        while($data = $query->fetch())
-                        {
-                        	if(cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])==1){$nb+=1;}
-                        	if(cmdEstValideurUniversel($_SESSION['idPersonne'], $data['idCommande'])==1){$nb+=1;}
-                        }
-                        ?>
-                        <li <?php
-                        if ($_SESSION['page'] == 602)
-                        {
-                            echo 'class="active"';
-                        }
-                        ?>
-                        ><a href="commandesValidations.php"><i class="fa fa-map-signs"></i> <span>Je dois valider</span><?php if ($nb>0) { ?><span class="pull-right-container"><small class="label pull-right bg-yellow"><?=$nb?></small></span> <?php } ?></a></li>
-	                    <?php if ($_SESSION['commande_etreEnCharge']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 603)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="commandesTraiter.php"><i class="fa fa-file"></i> <span>Je dois traiter</span></a></li>
-	                    <?php } ?>
-	                    <?php if ($_SESSION['commande_etreEnCharge']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 604)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="commandesSuivi.php"><i class="fa fa-truck"></i> <span>Je dois suivre</span></a></li>
-	                    <?php } ?>
-	                    <?php if ($_SESSION['commande_lecture']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 601)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="commandesToutes.php"><i class="fa fa-reorder"></i> <span>Toutes les commandes</span></a></li>
-	                    <?php } ?>
+	                    <li <?php
+			            if (in_array($_SESSION['page'], array("607", "602", "603", "604", "601")))
+			            {
+			                echo 'class="active treeview"';
+			            }
+			            else
+			            {
+			                echo 'class="treeview"';
+			            }
+			            ?>
+			            >
+		                    <a href="#"><i class="fa fa-shopping-cart"></i> Commandes
+				                <span class="pull-right-container">
+				                	<i class="fa fa-angle-left pull-right"></i>
+				                </span>
+				            </a>
+				            <ul class="treeview-menu">
+				                <?php if ($_SESSION['commande_ajout']==1){ ?>
+			                        <li><a href="commandesAdd.php"><i class="fa fa-plus"></i> <span>Nouvelle demande d'achat</span></a></li>
+			                    <?php } ?>
+			                    <?php if ($_SESSION['commande_lecture']==1){ ?>
+			                        <?php
+			                        $query = $db->prepare('SELECT COUNT(*) as nb FROM COMMANDES WHERE idEtat < 7;');
+			                        $query->execute(array(
+			                            'idPersonne' => $_SESSION['idPersonne']
+			                        ));
+			                        $data = $query -> fetch();
+			                        ?>
+			                        <li <?php
+			                        if ($_SESSION['page'] == 607)
+			                        {
+			                            echo 'class="active"';
+			                        }
+			                        ?>
+			                        ><a href="commandesNonCloses.php"><i class="fa fa-spinner"></i> <span>Non closes</span><?php if ($data['nb']>0) { ?><span class="pull-right-container"><small class="label pull-right bg-blue"><?php echo $data['nb'];?></small></span> <?php } ?></a></li>
+			                    <?php } ?>
+		                        <?php
+		                        $query = $db->query('SELECT c.idCommande FROM COMMANDES c WHERE c.idEtat = 2;');
+		                        $nb=0;
+		                        while($data = $query->fetch())
+		                        {
+		                        	if(cmdEstValideur($_SESSION['idPersonne'], $data['idCommande'])==1){$nb+=1;}
+		                        	if(cmdEstValideurUniversel($_SESSION['idPersonne'], $data['idCommande'])==1){$nb+=1;}
+		                        }
+		                        ?>
+		                        <li <?php
+		                        if ($_SESSION['page'] == 602)
+		                        {
+		                            echo 'class="active"';
+		                        }
+		                        ?>
+		                        ><a href="commandesValidations.php"><i class="fa fa-map-signs"></i> <span>Je dois valider</span><?php if ($nb>0) { ?><span class="pull-right-container"><small class="label pull-right bg-yellow"><?=$nb?></small></span> <?php } ?></a></li>
+			                    <?php if ($_SESSION['commande_etreEnCharge']==1){ ?>
+			                        <li <?php
+			                        if ($_SESSION['page'] == 603)
+			                        {
+			                            echo 'class="active"';
+			                        }
+			                        ?>
+			                        ><a href="commandesTraiter.php"><i class="fa fa-file"></i> <span>Je dois traiter</span></a></li>
+			                    <?php } ?>
+			                    <?php if ($_SESSION['commande_etreEnCharge']==1){ ?>
+			                        <li <?php
+			                        if ($_SESSION['page'] == 604)
+			                        {
+			                            echo 'class="active"';
+			                        }
+			                        ?>
+			                        ><a href="commandesSuivi.php"><i class="fa fa-truck"></i> <span>Je dois suivre</span></a></li>
+			                    <?php } ?>
+			                    <?php if ($_SESSION['commande_lecture']==1){ ?>
+			                        <li <?php
+			                        if ($_SESSION['page'] == 601)
+			                        {
+			                            echo 'class="active"';
+			                        }
+			                        ?>
+			                        ><a href="commandesToutes.php"><i class="fa fa-reorder"></i> <span>Toutes les commandes</span></a></li>
+			                    <?php } ?>
+				            </ul>
+				        </li>
+	                    
 	                    <?php if ($_SESSION['cout_lecture']==1){ ?>
 	                        <li <?php
 	                        if ($_SESSION['page'] == 606)
@@ -241,6 +261,16 @@ require_once 'config/bdd.php';
 	                        }
 	                        ?>
 	                        ><a href="centreCouts.php"><i class="fa fa-euro"></i> <span>Centres de coûts</span></a></li>
+	                    <?php } ?>
+
+	                    <?php if ($_SESSION['fournisseurs_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 605)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="fournisseurs.php"><i class="fa fa-shopping-cart"></i> <span>Fournisseurs</span></a></li>
 	                    <?php } ?>
 	                </ul>
 	            </li>
@@ -509,7 +539,7 @@ require_once 'config/bdd.php';
 			
 			
             <?php
-			if ($_SESSION['catalogue_lecture']==1 OR $_SESSION['codeBarre_lecture']==1 OR $_SESSION['categories_lecture']==1 OR $_SESSION['lieux_lecture']==1 OR $_SESSION['fournisseurs_lecture']==1 OR $_SESSION['vehicules_types_lecture']==1 OR $_SESSION['etats_lecture']==1)
+			if ($_SESSION['catalogue_lecture']==1 OR $_SESSION['codeBarre_lecture']==1 OR $_SESSION['categories_lecture']==1 OR $_SESSION['lieux_lecture']==1 OR $_SESSION['vehicules_types_lecture']==1 OR $_SESSION['etats_lecture']==1)
 			{
 			?>
 	            <li <?php
@@ -563,15 +593,6 @@ require_once 'config/bdd.php';
 	                        }
 	                        ?>
 	                        ><a href="lieux.php"><i class="fa fa-map-pin"></i> <span>Lieux de stockage</span></a></li>
-	                    <?php } ?>
-	                    <?php if ($_SESSION['fournisseurs_lecture']==1){ ?>
-	                        <li <?php
-	                        if ($_SESSION['page'] == 305)
-	                        {
-	                            echo 'class="active"';
-	                        }
-	                        ?>
-	                        ><a href="fournisseurs.php"><i class="fa fa-shopping-cart"></i> <span>Fournisseurs</span></a></li>
 	                    <?php } ?>
 	                    <?php if ($_SESSION['vehicules_types_lecture']==1 OR $_SESSION['typesDesinfections_lecture']==1 OR $_SESSION['vehiculeHealthType_lecture']==1){ ?>
 	                        <li <?php

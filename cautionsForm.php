@@ -33,7 +33,7 @@ if($_SESSION['cautions_lecture']==1 OR $_SESSION['cautions_ajout']==1 OR $_SESSI
                             <select class="form-control select2" style="width: 100%;" name="idPersonne">
                                 <option value="">--- Affectée à un externe ---</option>
                                 <?php
-                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE ORDER BY nomPersonne, prenomPersonne;');
+                                $query2 = $db->query('SELECT * FROM VIEW_PERSONNE_REFERENTE ORDER BY nomPersonne, prenomPersonne;');
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>

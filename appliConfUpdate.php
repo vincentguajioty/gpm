@@ -34,6 +34,8 @@ else
         $tls = 1;
         $ssl = 0;
     }
+
+    $_POST['SMTPport'] = ($_POST['SMTPport'] == Null) ? Null : $_POST['SMTPport'];
 	
     $query = $db->prepare('
         UPDATE

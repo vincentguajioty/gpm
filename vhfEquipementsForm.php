@@ -99,7 +99,7 @@ if($_SESSION['vhf_equipement_lecture']==1 OR $_SESSION['vhf_equipement_ajout']==
                                     <select class="form-control select2" style="width: 100%;" name="idResponsable">
                                         <option value="">--- Pas de Responsable ---</option>
                                         <?php
-                                        $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE ORDER BY identifiant;');
+                                        $query2 = $db->query('SELECT * FROM VIEW_PERSONNE_REFERENTE ORDER BY identifiant;');
                                         while ($data2 = $query2->fetch())
                                         {
                                             ?>

@@ -276,13 +276,6 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <td><input <?php if(isset($_GET['id']) AND $data['codeBarre_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="codeBarre_suppression"></td>
                             </tr>
                             <tr>
-                                <td>Fournisseurs</td>
-                                <td><input <?php if(isset($_GET['id']) AND $data['fournisseurs_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="fournisseurs_lecture"></td>
-                                <td><input <?php if(isset($_GET['id']) AND $data['fournisseurs_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="fournisseurs_ajout"></td>
-                                <td><input <?php if(isset($_GET['id']) AND $data['fournisseurs_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="fournisseurs_modification"></td>
-                                <td><input <?php if(isset($_GET['id']) AND $data['fournisseurs_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="fournisseurs_suppression"></td>
-                            </tr>
-                            <tr>
                                 <td>Référentiels</td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['typesLots_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesLots_lecture"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['typesLots_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="typesLots_ajout"></td>
@@ -363,7 +356,8 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                             <tr>
                                 <th>COMMANDES</th>
                                 <th>Lecture</th>
-                                <th>Ajout/Modification</th>
+                                <th>Ajout</th>
+                                <th>Modification</th>
                                 <th>Valideur universel</th>
                                 <th>Etre en charge</th>
                                 <th>Abandonner/Supprimer</th>
@@ -372,14 +366,25 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                 <td>Commandes</td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_lecture"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_ajout"></td>
+                                <td>Lié à l'ajout</td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_valider_delegate'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_valider_delegate"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_etreEnCharge'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_etreEnCharge"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['commande_abandonner'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="commande_abandonner"></td>
                             </tr>
                             <tr>
+                                <td>Fournisseurs</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['fournisseurs_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="fournisseurs_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['fournisseurs_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="fournisseurs_ajout"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['fournisseurs_modification'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="fournisseurs_modification"></td>
+                                <td></td>
+                                <td></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['fournisseurs_suppression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="fournisseurs_suppression"></td>
+                            </tr>
+                            <tr>
                                 <td>Centres de coûts</td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['cout_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_lecture"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['cout_ajout'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_ajout"></td>
+                                <td>Lié à l'ajout</td>
                                 <td></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['cout_etreEnCharge'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_etreEnCharge"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['cout_supprimer'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="cout_supprimer"></td>
@@ -484,7 +489,7 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                                                 ao.*,
                                                 (SELECT idProfil FROM PROFILS_PERSONNES aop WHERE ao.idPersonne = aop.idPersonne AND aop.idProfil = :idProfil) as idProfil
                                             FROM
-                                                PERSONNE_REFERENTE ao
+                                                VIEW_PERSONNE_REFERENTE ao
                                             WHERE
                                             	ao.cnil_anonyme = false
                                             ORDER BY

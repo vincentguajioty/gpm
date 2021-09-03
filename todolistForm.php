@@ -32,7 +32,7 @@ if (isset($_GET['id']))
                             <select class="form-control select2" style="width: 100%;" name="idCreateur" disabled>
                                 <option value=""></option>
                                 <?php
-                                $query2 = $db->query('SELECT * FROM PERSONNE_REFERENTE ORDER BY nomPersonne, prenomPersonne;');
+                                $query2 = $db->query('SELECT * FROM VIEW_PERSONNE_REFERENTE ORDER BY nomPersonne, prenomPersonne;');
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>
@@ -67,7 +67,7 @@ if (isset($_GET['id']))
                                             ao.*,
                                             (SELECT idExecutant FROM TODOLIST_PERSONNES aop WHERE ao.idPersonne = aop.idExecutant AND aop.idTache = :idTache) as idExecutant
                                         FROM
-                                            PERSONNE_REFERENTE ao
+                                            VIEW_PERSONNE_REFERENTE ao
                                         ORDER BY
                                             nomPersonne,
                                             prenomPersonne;');

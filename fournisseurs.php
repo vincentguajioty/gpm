@@ -3,7 +3,7 @@
 <?php include('header.php'); require_once('config/config.php'); ?>
 <?php
 session_start();
-$_SESSION['page'] = 305;
+$_SESSION['page'] = 605;
 require_once('logCheck.php');
 ?>
 <?php
@@ -79,7 +79,7 @@ if ($_SESSION['fournisseurs_lecture']==0)
                                             <a href="<?=$data['siteWebFournisseur']?>" class="btn btn-xs btn-info" title="Aller sur le site du fournisseur" target="_blank"><i class="fa fa-internet-explorer"></i></a>
                                     <?php } ?>
                                 </td>
-                                <?php if(isset($_SESSION['aesFour'])){echo '<td>'.$data['aesFournisseurDecode'].'</td>';} ?>
+                                <?php if(isset($_SESSION['aesFour'])){echo '<td>'.nl2br($data['aesFournisseurDecode']).'</td>';} ?>
                                 <td>
                                     <?php if ($_SESSION['fournisseurs_lecture']==1) {?>
                                         <a href="fournisseursContenu.php?id=<?=$data['idFournisseur']?>" class="btn btn-xs btn-info" title="Ouvrir"><i class="fa fa-folder-open"></i></a>

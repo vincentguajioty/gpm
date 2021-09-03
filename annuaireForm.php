@@ -13,7 +13,7 @@ if($_SESSION['annuaire_lecture']==1 OR $_SESSION['annuaire_ajout']==1 OR $_SESSI
     <?php
     if (isset($_GET['id']))
 	{
-	    $query = $db->prepare('SELECT * FROM PERSONNE_REFERENTE WHERE idPersonne=:idPersonne;');
+	    $query = $db->prepare('SELECT * FROM VIEW_PERSONNE_REFERENTE WHERE idPersonne=:idPersonne;');
 	    $query->execute(array('idPersonne' => $_GET['id']));
 	    $data = $query->fetch();
 	    $query->closeCursor();

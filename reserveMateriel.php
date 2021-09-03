@@ -54,6 +54,7 @@ if ($_SESSION['reserve_lecture']==0)
                         <thead>
                             <tr>
                                 <th class="all" style="width: 10px">#</th>
+                                <th class="all">Catégorie</th>
                                 <th class="all">Libelle</th>
                                 <th class="not-mobile">Conteneur</th>
                                 <th class="not-mobile">Quantité</th>
@@ -63,11 +64,12 @@ if ($_SESSION['reserve_lecture']==0)
                         </thead>
                         <tbody>
                         <?php
-                        $query = $db->query('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR e ON m.idConteneur=e.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue;');
+                        $query = $db->query('SELECT * FROM RESERVES_MATERIEL m LEFT OUTER JOIN RESERVES_CONTENEUR e ON m.idConteneur=e.idConteneur LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue LEFT OUTER JOIN MATERIEL_CATEGORIES cc ON c.idCategorie = cc.idCategorie;');
                         while ($data = $query->fetch())
                         {?>
                             <tr>
                                 <td><?php echo $data['idReserveElement']; ?></td>
+                                <td><?php echo $data['libelleCategorie']; ?></td>
                                 <td><?php echo $data['libelleMateriel']; ?></td>
                                 <td><?php echo $data['libelleConteneur']; ?></td>
                                 <td><?php
