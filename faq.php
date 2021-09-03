@@ -28,7 +28,7 @@ require_once 'config/config.php';
         <!-- Main content -->
         <section class="content">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-4">
                     <div class="box box-success">
                         <div class="box-header with-border">
                             <i class="fa fa-clock-o"></i>
@@ -70,7 +70,7 @@ require_once 'config/config.php';
                         <div class="box-body">
                             <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a> Elements graphiques du site: <a href="https://adminlte.io/">AdminLTE</a> ; Application: Vincent Guajioty
                             <br/><br/>
-                            Version <?php echo $VERSION; ?> <a href="http://maj.guajioty.fr/gpm.zip"><b style="color:red;"><?php echo file_get_contents("https://maj.guajioty.fr/gpmMAJ.php?versionClient=".$VERSION); ?></b></a>
+                            Version <?php echo $VERSION; ?> <a href="https://github.com/vincentguajioty/gpm"><b style="color:red;"><?php echo file_get_contents("https://maj.guajioty.fr/gpmMAJ.php?versionClient=".$VERSION); ?></b></a>
                             <br/><br/>
                             Adresse mail de l'administrateur de cette instance de GPM: <?php echo $MAILSERVER; ?>
                             <br/><br/>
@@ -81,7 +81,7 @@ require_once 'config/config.php';
                     </div>
                 </div>
                 
-                <div class="col-md-4">
+                <div class="col-md-12">
                     <div class="box box-info">
 
                         <div class="box-header with-border">
