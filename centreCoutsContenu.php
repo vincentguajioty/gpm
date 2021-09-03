@@ -243,7 +243,7 @@ if ($_SESSION['cout_lecture']==0)
                                 </table>
                             </div>
 
-                            <div class="tab-pane" id="cmd">
+                            <div class="tab-pane table-responsive no-padding" id="cmd">
                                 
                                 <?php
                                     	if($text == 'Clos')
@@ -348,7 +348,7 @@ if ($_SESSION['cout_lecture']==0)
                                 </table>
                             </div>
 
-							<div class="tab-pane" id="cmdKO">
+							<div class="tab-pane table-responsive no-padding" id="cmdKO">
                                 <table class="table table-hover">
                                     <tr>
                                         <th>#</th>
@@ -432,7 +432,7 @@ if ($_SESSION['cout_lecture']==0)
                                 </table>
                             </div>
 
-                            <div class="tab-pane" id="pj">
+                            <div class="tab-pane table-responsive no-padding" id="pj">
                                 <table class="table table-hover">
                                     <tr>
                                         <th>Nom du document</th>
@@ -442,29 +442,47 @@ if ($_SESSION['cout_lecture']==0)
                                         <th><?php if(centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['id'])==1){ ?><a href="centreCoutsDocForm.php?idCentreDeCout=<?= $_GET['id'] ?>" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a><?php } ?></th>
                                     </tr>
                                     <?php
-                                    $query2 = $db->prepare('SELECT * FROM VIEW_DOCUMENTS_CENTRE_COUTS WHERE idCentreDeCout = :idCentreDeCout ORDER BY dateDocCouts DESC;');
+                                    $query2 = $db->prepare('SELECT * FROM VIEW_DOCUMENTS_CENTRE_COUTS_COMMANDES WHERE idCentreDeCout = :idCentreDeCout ORDER BY dateDocCouts DESC;');
                                     $query2->execute(array('idCentreDeCout' => $_GET['id']));
                                     while ($data2 = $query2->fetch())
                                     {
                                         ?>
                                         <tr>
-                                            <td><?php echo $data2['nomDocCouts'];?></td>
-                                            <td><?php echo $data2['libelleTypeDocument'];?></td>
+                                            <td><?php echo $data2['nomDocCouts']; ?></td>
+                                            <td><?php
+                                                echo $data2['libelleTypeDocument'];
+                                                if(is_null($data2['idDocCouts'])){echo ' <i class="fa fa-shopping-cart"></i>';}
+                                            ?></td>
                                             <td><?php echo $data2['dateDocCouts'];?></td>
                                             <td><i class="fa <?php echo documentsGetIcone($data2['formatDocCouts']);?>"></i></td>
                                             <td>
-                                                <?php if($_SESSION['cout_lecture']==1){
-                                                    if ($data2['formatDocCouts'] == 'pdf' OR $data2['formatDocCouts'] == 'jpg' OR $data2['formatDocCouts'] == 'jpeg' OR $data2['formatDocCouts'] == 'png'){?>
-                                                        <a href="centreCoutsDocView.php?idDoc=<?=$data2['idDocCouts']?>" class="btn btn-xs btn-info" title="Visionner"><i class="fa fa-eye"></i></a>
-                                                    <?php } else { ?>
-                                                        <a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                                    <?php }}?>
-                                                <?php if($_SESSION['cout_lecture']==1){ ?>
-                                                    <a href="centreCoutsDocDL.php?idDoc=<?=$data2['idDocCouts']?>" class="btn btn-xs btn-success" title="Télécharger"><i class="fa fa-download"></i></a>
-                                                <?php }?>
-                                                <?php if(centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['id'])==1){ ?>
-                                                    <a href="centreCoutsDocDelete.php?idDoc=<?=$data2['idDocCouts']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');" title="Supprimer"><i class="fa fa-minus"></i></a>
-                                                <?php }?>
+                                                <?php
+                                                    if(is_null($data2['idDocCommande']))
+                                                    { ?>
+                                                        <?php if($_SESSION['cout_lecture']==1){
+                                                            if ($data2['formatDocCouts'] == 'pdf' OR $data2['formatDocCouts'] == 'jpg' OR $data2['formatDocCouts'] == 'jpeg' OR $data2['formatDocCouts'] == 'png'){?>
+                                                                <a href="centreCoutsDocView.php?idDoc=<?=$data2['idDocCouts']?>" class="btn btn-xs btn-info" title="Visionner"><i class="fa fa-eye"></i></a>
+                                                            <?php } else { ?>
+                                                                <a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                                            <?php }}?>
+                                                        <?php if($_SESSION['cout_lecture']==1){ ?>
+                                                            <a href="centreCoutsDocDL.php?idDoc=<?=$data2['idDocCouts']?>" class="btn btn-xs btn-success" title="Télécharger"><i class="fa fa-download"></i></a>
+                                                        <?php }?>
+                                                        <?php if(centreCoutsEstCharge($_SESSION['idPersonne'],$_GET['id'])==1){ ?>
+                                                            <a href="centreCoutsDocDelete.php?idDoc=<?=$data2['idDocCouts']?>" class="btn btn-xs btn-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet élément?');" title="Supprimer"><i class="fa fa-minus"></i></a>
+                                                        <?php }?>
+                                                    <?php }else{ ?>
+                                                        <?php if($_SESSION['commande_lecture']==1){
+                                                                if ($data2['formatDocCouts'] == 'pdf' OR $data2['formatDocCouts'] == 'jpg' OR $data2['formatDocCouts'] == 'jpeg' OR $data2['formatDocCouts'] == 'png'){?>
+                                                                    <a href="commandeDocView.php?idDoc=<?=$data2['idDocCommande']?>" class="btn btn-xs btn-info" title="Visualiser"><i class="fa fa-eye"></i></a>
+                                                        <?php } else { ?>
+                                                                    <a class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                                        <?php }}?>
+                                                        <?php if($_SESSION['commande_lecture']==1){ ?>
+                                                            <a href="commandeDocDL.php?idDoc=<?=$data2['idDocCommande']?>" class="btn btn-xs btn-success" title="Télécharger"><i class="fa fa-download"></i></a>
+                                                        <?php }?>
+                                                        <a class="btn btn-xs btn-default"><i class="fa fa-minus"></i></a>
+                                                <?php } ?>
                                             </td>
                                         </tr>
                                         <?php

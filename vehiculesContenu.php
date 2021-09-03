@@ -242,7 +242,7 @@ if ($_SESSION['vehicules_lecture']==0)
                             <li><a href="#pj" data-toggle="tab">Pièces jointes</a></li>
                         </ul>
                         <div class="tab-content">
-                            <div class="active tab-pane" id="maintenance">
+                            <div class="active tab-pane table-responsive no-padding" id="maintenance">
                                 <table class="table table-hover">
                                     <tr>
                                         <th>Date</th>
@@ -277,7 +277,7 @@ if ($_SESSION['vehicules_lecture']==0)
                             </div>
                             
                             <?php if($_SESSION['vehiculeHealth_lecture']){ ?>
-                                <div class="tab-pane" id="health">
+                                <div class="tab-pane table-responsive no-padding" id="health">
                                     <table class="table table-hover">
                                         <tr>
                                             <th>Date</th>
@@ -322,7 +322,7 @@ if ($_SESSION['vehicules_lecture']==0)
                                 </div>
                             <?php } ?>
 							
-							<div class="tab-pane" id="km">
+							<div class="tab-pane table-responsive no-padding" id="km">
 								<table class="table table-hover">
                                     <tr>
                                         <th>Date</th>
@@ -365,7 +365,7 @@ if ($_SESSION['vehicules_lecture']==0)
 							</div>
 							
 							<?php if($_SESSION['desinfections_lecture']){ ?>
-								<div class="tab-pane" id="desinfections">
+								<div class="tab-pane table-responsive no-padding" id="desinfections">
 									<table class="table table-hover">
                                         <tr>
                                             <th>Date</th>
@@ -403,7 +403,7 @@ if ($_SESSION['vehicules_lecture']==0)
 								</div>
 							<?php } ?>
 							
-							<div class="tab-pane" id="lots">
+							<div class="tab-pane table-responsive no-padding" id="lots">
 								<table class="table table-hover">
                                     <tr>
                                         <th>Lots</th>
@@ -432,7 +432,7 @@ if ($_SESSION['vehicules_lecture']==0)
 							</div>
 
 
-                            <div class="tab-pane" id="pj">
+                            <div class="tab-pane table-responsive no-padding" id="pj">
                                 <table class="table table-hover">
                                     <tr>
                                         <th>Nom du document</th>

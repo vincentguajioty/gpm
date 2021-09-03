@@ -39,21 +39,18 @@ if ($_SESSION['actionsMassives']==0)
             <?php
             	if (isset($_POST['mdp']) AND $_POST['mdp']!='')
             	{
-            		$user = $db->prepare('SELECT * FROM PERSONNE_REFERENTE WHERE idPersonne = :idPersonne;');
-            		$user->execute(array('idPersonne'=>$_SESSION['idPersonne']));
-            		$user = $user->fetch();
-            		if(password_verify($SELPRE.$_POST['mdp'].$SELPOST, $user['motDePasse']))
-            		{
-            			$_SESSION['actionsMassives_authent_ok'] = 1;
-            			writeInLogs("Accès autorisé aux actions massives.", '1', NULL);
-            		}
-            		else
-            		{
-            			echo '<div class="alert alert-warning">';
-				        echo '<i class="icon fa fa-warning"></i> Erreur dans la vérification de l\'utilisateur.';
-				        echo '</div>';
-				        writeInLogs("Erreur d'authentification de l'utilisateur pour accéder aux actions massives.", '2', NULL);
-            		}
+            		if(checkUserPassword($_SESSION['identifiant'], $_POST['mdp'])==true)
+                    {
+                        $_SESSION['actionsMassives_authent_ok'] = 1;
+                        writeInLogs("Accès autorisé aux actions massives.", '1', NULL);
+                    }
+                    else
+                    {
+                        echo '<div class="alert alert-warning">';
+                        echo '<i class="icon fa fa-warning"></i> Erreur dans la vérification de l\'utilisateur.';
+                        echo '</div>';
+                        writeInLogs("Erreur d'authentification de l'utilisateur pour accéder aux actions massives.", '2', NULL);
+                    }
             	}
             ?>
 
@@ -186,7 +183,7 @@ if ($_SESSION['actionsMassives']==0)
             		?>
             		
             		<div class="box box-danger">
-            			<div class="box-body">
+            			<div class="box-body table-responsive no-padding">
             				<table class="table table-hover">
             					<tr>
             						<th>Ref</th>

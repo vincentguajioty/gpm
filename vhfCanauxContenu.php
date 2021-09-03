@@ -119,7 +119,7 @@ if ($_SESSION['vhf_canal_lecture']==0)
                         </div>
 
                         <!-- /.box-header -->
-                        <div class="box-body">
+                        <div class="box-body table-responsive no-padding">
                             <table class="table table-hover">
                                 <tr>
                                     <th>Nom du document</th>

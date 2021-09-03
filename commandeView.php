@@ -641,7 +641,7 @@ if ($_SESSION['commande_lecture']==0)
 	
 	
 	                        <div class="tab-pane" id="contenu">
-	                            <div class="box-body table-responsive no-padding">
+	                            <div class="table-responsive no-padding">
 					              <table class="table table-hover">
 					                <tr>
 					                  <th>Matériel</th>
@@ -718,7 +718,7 @@ if ($_SESSION['commande_lecture']==0)
 	                        
 
 	                        <div class="tab-pane" id="pj">
-	                            <div class="box-body table-responsive no-padding">
+	                            <div class="table-responsive no-padding">
                                     <table class="table table-hover">
                                         <tr>
                                             <th>Nom du document</th>
@@ -1049,7 +1049,7 @@ if ($_SESSION['commande_lecture']==0)
 	                        </div>
 
 	                        <div class="tab-pane" id="timeline">
-	                            <div class="box-body table-responsive no-padding">
+	                            <div class="table-responsive no-padding">
 					             	<ul class="timeline">
 							            <li class="time-label">
 							                  <span class="bg-blue">

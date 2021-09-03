@@ -41,7 +41,7 @@ require_once('logCheck.php');
                 	<?php } ?>
             	</div>
                 <!-- /.box-header -->
-                <div class="box-body">
+                <div class="box-body table-responsive no-padding">
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -85,7 +85,7 @@ require_once('logCheck.php');
                     <?php } ?>
                 </div>
                 <!-- /.box-header -->
-                <div class="box-body">
+                <div class="box-body table-responsive no-padding">
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -129,7 +129,7 @@ require_once('logCheck.php');
                     <?php } ?>
                 </div>
                 <!-- /.box-header -->
-                <div class="box-body">
+                <div class="box-body table-responsive no-padding">
                     <table class="table table-hover">
                         <thead>
                             <tr>

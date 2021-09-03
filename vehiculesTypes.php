@@ -45,7 +45,7 @@ if ($_SESSION['vehicules_types_lecture']==0 AND $_SESSION['typesDesinfections_le
 		                    <?php } ?>
 		            	</div>
 		                <!-- /.box-header -->
-		                <div class="box-body">
+		                <div class="box-body table-responsive no-padding">
 		                    <table class="table table-hover">
 		                        <thead>
 		                            <tr>
@@ -93,7 +93,7 @@ if ($_SESSION['vehicules_types_lecture']==0 AND $_SESSION['typesDesinfections_le
 		                    <?php } ?>
 		            	</div>
 		                <!-- /.box-header -->
-		                <div class="box-body">
+		                <div class="box-body table-responsive no-padding">
 		                    <table class="table table-hover">
 		                        <thead>
 		                            <tr>
@@ -141,7 +141,7 @@ if ($_SESSION['vehicules_types_lecture']==0 AND $_SESSION['typesDesinfections_le
 		                    <?php } ?>
 		            	</div>
 		                <!-- /.box-header -->
-		                <div class="box-body">
+		                <div class="box-body table-responsive no-padding">
 		                    <table class="table table-hover">
 		                        <thead>
 		                            <tr>

@@ -89,7 +89,7 @@ if ($_SESSION['fournisseurs_lecture']==0)
                             <li><a href="#aes" data-toggle="tab">Informations chiffrées</a></li>
                         </ul>
                         <div class="tab-content">
-                            <div class="active tab-pane" id="produits">
+                            <div class="active tab-pane table-responsive no-padding" id="produits">
                                 <?php if($_SESSION['catalogue_lecture']){?>
                                     <table class="table table-hover">
                                         <tr>
@@ -117,7 +117,7 @@ if ($_SESSION['fournisseurs_lecture']==0)
                                 <?php } ?>
                             </div>
 							
-							<div class="tab-pane" id="commandes">
+							<div class="tab-pane table-responsive no-padding" id="commandes">
 								<?php if($_SESSION['commande_lecture']){?>
                                     <table class="table table-hover">
                                         <tr>

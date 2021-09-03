@@ -73,7 +73,7 @@ if ($_SESSION['vhf_plan_lecture']==0)
                             <li class="active"><a href="#canaux" data-toggle="tab">Canaux</a></li>
                             <li><a href="#pj" data-toggle="tab">Pièces jointes</a></li>
                         </ul>
-                        <div class="tab-content">
+                        <div class="tab-content table-responsive no-padding">
                             <div class="active tab-pane" id="canaux">
                                 <table class="table table-hover">
                                     <thead>
@@ -118,7 +118,7 @@ if ($_SESSION['vhf_plan_lecture']==0)
                             </div>
 
 
-                            <div class="tab-pane" id="pj">
+                            <div class="tab-pane table-responsive no-padding" id="pj">
                                 <table class="table table-hover">
                                     <tr>
                                         <th>Nom du document</th>

@@ -107,7 +107,7 @@ if ($_SESSION['vhf_equipement_lecture']==0)
                             <li><a href="#pj" data-toggle="tab">Pièces jointes</a></li>
                         </ul>
                         <div class="tab-content">
-                            <div class="active tab-pane" id="canaux">
+                            <div class="active tab-pane table-responsive no-padding" id="canaux">
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
@@ -137,7 +137,7 @@ if ($_SESSION['vhf_equipement_lecture']==0)
                                 </table>
                             </div>
                             
-                            <div class="tab-pane" id="accessoires">
+                            <div class="tab-pane table-responsive no-padding" id="accessoires">
                                 <table class="table table-hover">
                                     <tr>
                                         <th>#</th>
@@ -182,7 +182,7 @@ if ($_SESSION['vhf_equipement_lecture']==0)
                                 </table>
                             </div>
 
-                            <div class="tab-pane" id="pj">
+                            <div class="tab-pane table-responsive no-padding" id="pj">
                                 <table class="table table-hover">
                                     <tr>
                                         <th>Nom du document</th>
