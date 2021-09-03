@@ -140,6 +140,7 @@ if ($_SESSION['reserve_lecture']==0)
                             <?php if ($_SESSION['reserve_modification']==1 AND $data['inventaireEnCours']==Null) {?><a href="reserveConteneurForm.php?id=<?=$data['idConteneur']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
                             <?php if ($_SESSION['codeBarre_lecture']==1) {?><a href="reserveConteneurCBPrintForm.php?id=<?=$data['idConteneur']?>" class="btn btn-xs modal-form" title="Imprimer le code barre de ce conteneur de réserve"><i class="fa fa-barcode"></i> Impression code barre conteneur</a><?php }?>
                             <div class="box-tools pull-right">
+                                <?php if ($_SESSION['reserve_ajout']==1 AND $data['inventaireEnCours']==Null) {?><a href="reserveMaterielForm.php?idParent=<?= $data['idConteneur'] ?>" class="btn btn-sm btn-warning modal-form">Ajouter un materiel</a><?php } ?>
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                 </button>
                             </div>

@@ -125,20 +125,6 @@ function sendMailPHP($adresseDest, $sujet, $niveau, $contenu)
     return mail($adresseDest,$sujet,$contenu,$header);
 }
 
-function sendMail($adresseDest, $sujet, $niveau, $contenu)
-{
-    global $MAILISSMTP;
-
-    if($MAILISSMTP)
-    {
-        return sendMailSMTP($adresseDest, $sujet, $niveau, $contenu);
-    }
-    else
-    {
-        return sendMailPHP($adresseDest, $sujet, $niveau, $contenu);
-    }
-}
-
 function sendMailCmdStage($idCommande, $idNotif)
 {
     global $db;
@@ -178,14 +164,7 @@ function sendMailCmdStage($idCommande, $idNotif)
             ));
 
             $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-            if(sendmail($data['mailPersonne'], $sujet, 2, $message))
-            {
-                writeInLogs("Notification ".$idNotif." envoyée à ".$data['mailPersonne']." pour la commande ".$idCommande, '1', NULL);
-            }
-            else
-            {
-                writeInLogs("Erreur lors de l'envoie de la notification ".$idNotif." envoyée à ".$data['mailPersonne']." pour la commande ".$idCommande, '3', NULL);
-            }
+            queueMail("Commandes", $data['mailPersonne'], $sujet, 2, $message);
         }
     }
 }

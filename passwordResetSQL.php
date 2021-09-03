@@ -99,14 +99,7 @@ else
 	    $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
 	    $message = $RETOURLIGNE.$message.$RETOURLIGNE;
 
-	    if(sendmail($_POST['mailPersonne'], $sujet, 2, $message))
-	    {
-		    writeInLogs("Mail de réinitialisation de mot de passe envoyé à " . $_POST['mailPersonne'] . " pour le compte référence ".$data['idPersonne'], '1', NULL);
-	    }
-	    else
-	    {
-	         writeInLogs("Erreur d'envoi du mail de réinitialisation de mot de passe à " . $_POST['mailPersonne'] . " pour le compte référence ".$data['idPersonne'], '3', NULL);
-	    }
+	    queueMail("Réinitialisation de mot de passe", $_POST['mailPersonne'], $sujet, 2, $message);
 
 		echo "<script type='text/javascript'>document.location.replace('passwordResetOK.php');</script>";
     }

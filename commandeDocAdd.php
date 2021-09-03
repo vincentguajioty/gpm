@@ -58,7 +58,8 @@ else {
         $_SESSION['returnMessage'] = "Erreur inconnue lors du chargement du document.";
         $_SESSION['returnType'] = '2';
     }
-
+	
+	$_SESSION['commandesTab'] = 3;
     echo "<script>window.location = document.referrer;</script>";
 }
 ?>

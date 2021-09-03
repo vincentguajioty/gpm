@@ -45,8 +45,7 @@ if ($_SESSION['reserve_lecture']==0)
                 <?php if ($_SESSION['reserve_ajout']==1 AND $RESERVESLOCK==0) {?>
                 	<div class="box-header">
                         <h3 class="box-title"><a href="reserveMaterielForm.php" class="btn btn-sm btn-success modal-form">Ajouter un materiel</a></h3>
-                    
-                </div>
+                    </div>
                 <?php } ?>
                 <!-- /.box-header -->
                 <div class="box-body">

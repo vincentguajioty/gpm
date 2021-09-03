@@ -101,7 +101,7 @@ else
     }
 
 
-
+	$_SESSION['commandesTab'] = 2;
     echo "<script>window.location = document.referrer;</script>";
 
 

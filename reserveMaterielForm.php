@@ -52,7 +52,7 @@ if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
                                 while ($data2 = $query2->fetch())
                                 {
                                     ?>
-                                    <option value="<?php echo $data2['idConteneur']; ?>" <?php if (isset($data['idConteneur']) AND ($data2['idConteneur'] == $data['idConteneur'])) { echo 'selected'; } ?> data-id="<?php echo $data['libelleSac']; ?>"><?php echo $data2['libelleConteneur']; ?></option>
+                                    <option value="<?php echo $data2['idConteneur']; ?>" <?php if (isset($data['idConteneur']) AND ($data2['idConteneur'] == $data['idConteneur'])) { echo 'selected'; } ?> <?php if (isset($_GET['idParent']) AND ($data2['idConteneur'] == $_GET['idParent'])) { echo 'selected'; } ?> data-id="<?php echo $data['libelleSac']; ?>"><?php echo $data2['libelleConteneur']; ?></option>
                                     <?php
                                 }
                                 $query2->closeCursor(); ?>

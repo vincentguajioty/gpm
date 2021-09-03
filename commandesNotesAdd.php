@@ -14,6 +14,7 @@ else
 {
     writeInLogs("Ajout d'un commentaire dans la timeline de la commande " . $_GET['id'], '1', NULL);
     addCommandeComment($_GET['id'], $_SESSION['identifiant'] . " ajoute le commentaire: " . $_POST['notes'], "36");
+    $_SESSION['commandesTab'] = 8;
     echo "<script>window.location = document.referrer;</script>";
 }
 ?>

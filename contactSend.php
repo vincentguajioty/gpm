@@ -19,19 +19,14 @@ $message = $message . "Message:<br/>" . $_POST['contenu'];
 $message = $RETOURLIGNE.$message.$RETOURLIGNE;
 
 $sujet = "[" . $APPNAME . "] - Votre demande a bien été enregistrée";
-sendmail($_POST['mail'], $sujet, 2, $message);
+queueMail("Contact développeur", $_POST['mail'], $sujet, 2, $message);
 
 $sujet = "[GPM] - Formulaire de contact - " . $_POST['motif'] . " - " . $_POST['module'];
-if(sendmail('contact@guajioty.fr', $sujet, 2, $message))
-{
-    $_SESSION['returnMessage'] = 'Demande envoyée avec succès.';
-    $_SESSION['returnType'] = '1';
-}
-else
-{
-    $_SESSION['returnMessage'] = 'Echec lors de l\'envoi de la demande.';
-    $_SESSION['returnType'] = '2';
-}
+
+queueMail("Contact développeur", 'contact@guajioty.fr', $sujet, 2, $message);
+
+$_SESSION['returnMessage'] = 'Demande envoyée avec succès.';
+$_SESSION['returnType'] = '1';
 
 echo "<script type='text/javascript'>document.location.replace('index.php');</script>";
 

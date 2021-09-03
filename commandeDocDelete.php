@@ -26,7 +26,7 @@ else {
     writeInLogs("Suppression d'une pièce jointe référence " . $data['nomDocCommande'] . " à la commande " . $data['idCommande'], '1', NULL);
     addCommandeComment($data['idCommande'], $_SESSION['identifiant'] . " supprime la pièce jointe " . $data['nomDocCommande'], "11");
 
-
+	$_SESSION['commandesTab'] = 3;
     echo "<script>window.location = document.referrer;</script>";
 }
 ?>

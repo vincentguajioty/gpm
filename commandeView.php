@@ -6,10 +6,16 @@ session_start();
 $_SESSION['page'] = 601;
 require_once('logCheck.php');
 require_once('config/config.php');
-?>
-<?php
+
 if ($_SESSION['commande_lecture']==0)
     echo "<script type='text/javascript'>document.location.replace('loginHabilitation.php');</script>";
+
+if(!(isset($_SESSION['commandesLastSeen'])) OR $_SESSION['commandesLastSeen'] != $_GET['id'])
+{
+	$_SESSION['commandesLastSeen'] = $_GET['id'];
+	$_SESSION['commandesTab'] = 1;
+}
+
 ?>
 
 <body class="hold-transition skin-<?= $SITECOLOR ?> sidebar-mini <?= $_SESSION['layout'] ?>">
@@ -42,22 +48,9 @@ if ($_SESSION['commande_lecture']==0)
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
-            <?php
-            	$nbArticles = $db->prepare('SELECT COUNT(*) AS nb FROM COMMANDES_MATERIEL WHERE idCommande = :idCommande;');
-            	$nbArticles->execute(array('idCommande'=>$_GET['id']));
-            	$nbArticles = $nbArticles->fetch();
-            	$nbArticles = $nbArticles['nb'];
-
-            	if($nbArticles == 0)
-            	{ ?>
-            		<div class="alert alert-warning">
-	                    <i class="icon fa fa-warning"></i> Attention cette commande ne contient aucun article
-	                </div>
-            	<?php }
-            ?>
 			<div class="row">
 	            <div class="col-md-3">
-	                <ul class="timeline">
+		            <ul class="timeline">
 			            <li class="time-label"><span class="bg-blue">Processus</span></li>
 			            <li>
 							<?php
@@ -77,6 +70,56 @@ if ($_SESSION['commande_lecture']==0)
 							?>
 							<div class="timeline-item"><h3 class="timeline-header no-border">Création de la commande</h3></div>
 			            </li>
+			            <?php
+			            	$nbArticles = $db->prepare('SELECT COUNT(*) AS nb FROM COMMANDES_MATERIEL WHERE idCommande = :idCommande;');
+			            	$nbArticles->execute(array('idCommande'=>$_GET['id']));
+			            	$nbArticles = $nbArticles->fetch();
+			            	$nbArticles = $nbArticles['nb'];
+
+			            	if($nbArticles == 0)
+			            	{ ?>
+			            		<li>
+			            			<i class="fa bg-orange"></i>
+			            			<i class="fa bg-orange fa-warning faa-flash animated"></i>
+			            			<div class="timeline-item"><h3 class="timeline-header no-border">Attention cette commande ne contient aucun article</h3></div>
+			            		</li>
+			            	<?php }
+			            ?>
+			            <?php
+			            	if(is_null($data['idCentreDeCout']))
+			            	{ ?>
+			            		<li>
+			            			<i class="fa bg-orange"></i>
+			            			<i class="fa bg-orange fa-warning faa-flash animated"></i>
+			            			<div class="timeline-item"><h3 class="timeline-header no-border">Attention cette commande n'est rattachée à aucun centre de couts, elle ne pourra pas être validée</h3></div>
+			            		</li>
+			            	<?php }
+			            ?>
+			            <?php
+			            	if(is_null($data['idFournisseur']))
+			            	{ ?>
+			            		<li>
+			            			<i class="fa bg-orange"></i>
+			            			<i class="fa bg-orange fa-warning faa-flash animated"></i>
+			            			<div class="timeline-item"><h3 class="timeline-header no-border">Attention cette commande ne pourra pas être validée tant qu'aucun fournisseur n'est sélectionné</h3></div>
+			            		</li>
+			            	<?php }
+			            ?>
+			            <?php
+			            	$nbAffectes = $db->prepare('SELECT COUNT(*) AS nb FROM COMMANDES_AFFECTEES WHERE idCommande = :idCommande;');
+			            	$nbAffectes->execute(array('idCommande'=>$_GET['id']));
+			            	$nbAffectes = $nbAffectes->fetch();
+			            	$nbAffectes = $nbAffectes['nb'];
+
+			            	if($nbAffectes == 0)
+			            	{ ?>
+			            		<li>
+			            			<i class="fa bg-orange"></i>
+			            			<i class="fa bg-orange fa-warning faa-flash animated"></i>
+			            			<div class="timeline-item"><h3 class="timeline-header no-border">Attention cette commande n'est affectée à personne, elle ne pourra donc pas être passée chez un fournisseur même une fois validée</h3></div>
+			            		</li>
+			            	<?php }
+			            ?>
 			            <li>
 							<?php
 								switch($data['idEtat'])
@@ -260,18 +303,18 @@ if ($_SESSION['commande_lecture']==0)
 	            <div class="col-md-9">
 	                <div class="nav-tabs-custom">
 	                    <ul class="nav nav-tabs">
-	                        <li class="active"><a href="#general" data-toggle="tab">Informations générales</a></li>
-	                        <li><a href="#contenu" data-toggle="tab">Contenu</a></li>
-	                        <li><a href="#pj" data-toggle="tab">Pièces jointes</a></li>
-	                        <?php if ($data['idEtat']>1) { ?><li><a href="#validation" data-toggle="tab">Validation</a></li> <?php } ?>
-	                        <?php if ($data['idEtat']>2) { ?><li><a href="#fournisseur" data-toggle="tab">Passage de la commande</a></li> <?php } ?>
-	                        <?php if ($data['idEtat']>3) { ?><li><a href="#livraison" data-toggle="tab">Livraison</a></li> <?php } ?>
-	                        <?php if ($data['idEtat']>4 AND $_SESSION['codeBarre_lecture']) { ?><li><a href="#codebarre" data-toggle="tab">Vérification des codes barre</a></li> <?php } ?>
-	                        <li class="pull-right"><a href="#timeline" data-toggle="tab">Historique</a></li>
+	                        <li <?php if($_SESSION['commandesTab'] == 1){echo 'class="active"';} ?>><a href="#general" data-toggle="tab">Informations générales</a></li>
+	                        <li <?php if($_SESSION['commandesTab'] == 2){echo 'class="active"';} ?>><a href="#contenu" data-toggle="tab">Contenu</a></li>
+	                        <li <?php if($_SESSION['commandesTab'] == 3){echo 'class="active"';} ?>><a href="#pj" data-toggle="tab">Pièces jointes</a></li>
+	                        <?php if ($data['idEtat']>1) { ?><li <?php if($_SESSION['commandesTab'] == 4){echo 'class="active"';} ?>><a href="#validation" data-toggle="tab">Validation</a></li> <?php } ?>
+	                        <?php if ($data['idEtat']>2) { ?><li <?php if($_SESSION['commandesTab'] == 5){echo 'class="active"';} ?>><a href="#fournisseur" data-toggle="tab">Passage de la commande</a></li> <?php } ?>
+	                        <?php if ($data['idEtat']>3) { ?><li <?php if($_SESSION['commandesTab'] == 6){echo 'class="active"';} ?>><a href="#livraison" data-toggle="tab">Livraison</a></li> <?php } ?>
+	                        <?php if ($data['idEtat']>4 AND $_SESSION['codeBarre_lecture']) { ?><li <?php if($_SESSION['commandesTab'] == 7){echo 'class="active"';} ?>><a href="#codebarre" data-toggle="tab">Vérification des codes barre</a></li> <?php } ?>
+	                        <li class="<?php if($_SESSION['commandesTab'] == 8){echo 'active';} ?> pull-right"><a href="#timeline" data-toggle="tab">Historique</a></li>
 	                    </ul>
 	                    <div class="tab-content">
 	
-	                        <div class="active tab-pane" id="general">
+	                        <div class="<?php if($_SESSION['commandesTab'] == 1){echo 'active';} ?> tab-pane" id="general">
 	                            <form role="form" class="spinnerAttenteSubmit" action="commandesUpdate.php?id=<?php echo $_GET['id'];?>" method="POST">
 	                                <div class="row">
 	                                	<div class="col-md-12">
@@ -634,13 +677,13 @@ if ($_SESSION['commande_lecture']==0)
 	                                <div class="box-footer">
 	                                    <?php if (($data['idEtat']<7) AND ($_SESSION['commande_abandonner']==1)){ ?><a href="commandesGo8.php?id=<?=$_GET['id']?>" class="btn btn-danger spinnerAttenteClick" onclick="return confirm('Etes-vous sûr de vouloir abandonner la commande (action irreversible) ?');">Abandon de la commande</a> <?php } ?>
 	                                    <?php if ($_SESSION['commande_abandonner']==1){ ?><a href="modalDeleteConfirm.php?case=commandesDelete&id=<?=$_GET['id']?>" class="btn btn-danger modal-form">Suppression de la commande</a><?php } ?>
-	                                    <?php if (($data['idEtat']==1 OR ($data['idEtat']==2 AND (cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])==1 OR $_SESSION['commande_valider_delegate']))) AND (($_SESSION['commande_ajout']==1) OR ($_SESSION['commande_etreEnCharge']==1))) { ?><button type="submit" class="btn btn-warning pull-right">Modifier</button> <?php } ?>
+	                                    <?php if (($data['idEtat']==1 OR ($data['idEtat']==2 AND (cmdEstValideur($_SESSION['idPersonne'], $_GET['id'])==1 OR $_SESSION['commande_valider_delegate']))) AND (($_SESSION['commande_ajout']==1) OR ($_SESSION['commande_etreEnCharge']==1))) { ?><button type="submit" class="btn btn-warning pull-right">Enregistrer</button> <?php } ?>
 	                                </div>
 	                            </form>
 	                        </div>
 	
 	
-	                        <div class="tab-pane" id="contenu">
+	                        <div class="<?php if($_SESSION['commandesTab'] == 2){echo 'active';} ?> tab-pane" id="contenu">
 	                            <div class="table-responsive no-padding">
 					              <table class="table table-hover">
 					                <tr>
@@ -717,7 +760,7 @@ if ($_SESSION['commande_lecture']==0)
 	                        </div>
 	                        
 
-	                        <div class="tab-pane" id="pj">
+	                        <div class="<?php if($_SESSION['commandesTab'] == 3){echo 'active';} ?> tab-pane" id="pj">
 	                            <div class="table-responsive no-padding">
                                     <table class="table table-hover">
                                         <tr>
@@ -771,7 +814,7 @@ if ($_SESSION['commande_lecture']==0)
 	                        </div>
 	
 	
-	                        <div class="tab-pane" id="validation">
+	                        <div class="<?php if($_SESSION['commandesTab'] == 4){echo 'active';} ?> tab-pane" id="validation">
 	                            <form role="form" class="spinnerAttenteSubmit" action="commandesGo13.php?id=<?=$_GET['id']?>" method="POST">
 	                                <div class="row">
 	                                	<?php
@@ -880,7 +923,7 @@ if ($_SESSION['commande_lecture']==0)
 	                        </div>
 	                        
 	                        
-	                        <div class="tab-pane" id="fournisseur">
+	                        <div class="<?php if($_SESSION['commandesTab'] == 5){echo 'active';} ?> tab-pane" id="fournisseur">
 	                            <form role="form" class="spinnerAttenteSubmit" action="commandesGo4.php?id=<?=$_GET['id']?>" method="POST">
 	                                <div class="row">
 	                                    <div class="col-md-6">
@@ -933,7 +976,7 @@ if ($_SESSION['commande_lecture']==0)
 	                        </div>
 	                        
 	                        
-	                        <div class="tab-pane" id="livraison">
+	                        <div class="<?php if($_SESSION['commandesTab'] == 6){echo 'active';} ?> tab-pane" id="livraison">
 	                            <form role="form" class="spinnerAttenteSubmit" action="commandesGo56.php?id=<?=$_GET['id']?>" method="POST">
 	                                <div class="row">
 	                                    <div class="col-md-4">
@@ -988,7 +1031,7 @@ if ($_SESSION['commande_lecture']==0)
 	                        </div>
 
 
-	                        <div class="tab-pane" id="codebarre">
+	                        <div class="<?php if($_SESSION['commandesTab'] == 7){echo 'active';} ?> tab-pane" id="codebarre">
 	                            <table id="tri1" class="table table-bordered table-hover">
 			                        <thead>
 			                            <tr>
@@ -1048,7 +1091,7 @@ if ($_SESSION['commande_lecture']==0)
 				                <?php }?>
 	                        </div>
 
-	                        <div class="tab-pane" id="timeline">
+	                        <div class="<?php if($_SESSION['commandesTab'] == 8){echo 'active';} ?> tab-pane" id="timeline">
 	                            <div class="table-responsive no-padding">
 					             	<ul class="timeline">
 							            <li class="time-label">
@@ -1104,7 +1147,7 @@ if ($_SESSION['commande_lecture']==0)
     </div>
     <!-- /.content-wrapper -->
     <?php include('footer.php'); ?>
-
+   
 
     <!-- Add the sidebar's background. This div must be placed
          immediately after the control sidebar -->

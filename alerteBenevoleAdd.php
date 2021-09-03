@@ -60,14 +60,7 @@ function alerteBenevoleMail($idAlerteLot, $idAlerteVehicule)
                 $message.= $RETOURLIGNE.$message_html.$RETOURLIGNE;
                 $prio = 3;
 
-                if(sendmail($data['mailPersonne'], $sujet, $prio, $message))
-                {
-                    writeInLogs("Notification d'alerte bénévole lot envoyée avec succès à la personne référence ".$data['idPersonne']." sur l'adresse ". $data['mailPersonne'], '1', NULL);
-                }
-                else
-                {
-                    writeInLogs("Echec de l'envoi de la notification d'alerte bénévole lot à la personne référence ".$data['idPersonne']." sur l'adresse ". $data['mailPersonne'], '1', NULL);
-                }
+                queueMail("Alerte bénévole lots", $data['mailPersonne'], $sujet, $prio, $message);
                 
                 unset($message_html);
                 unset($message);
@@ -130,14 +123,7 @@ function alerteBenevoleMail($idAlerteLot, $idAlerteVehicule)
                 $message.= $RETOURLIGNE.$message_html.$RETOURLIGNE;
                 $prio = 3;
 
-                if(sendmail($data['mailPersonne'], $sujet, $prio, $message))
-                {
-                    writeInLogs("Notification d'alerte bénévole vehicule envoyée avec succès à la personne référence ".$data['idPersonne']." sur l'adresse ". $data['mailPersonne'], '1', NULL);
-                }
-                else
-                {
-                    writeInLogs("Echec de l'envoi de la notification d'alerte bénévole vehicule à la personne référence ".$data['idPersonne']." sur l'adresse ". $data['mailPersonne'], '1', NULL);
-                }
+                queueMail("Alerte bénévole véhicules", $data['mailPersonne'], $sujet, $prio, $message);
                 
                 unset($message_html);
                 unset($message);

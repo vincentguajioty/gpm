@@ -96,7 +96,8 @@ else
 
         $db->query($insertSQL);
     }
-
+	
+	$_SESSION['commandesTab'] = 1;
     echo "<script>window.location = document.referrer;</script>";
 
 }

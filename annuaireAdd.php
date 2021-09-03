@@ -113,14 +113,7 @@ else
 		        $message = $message . "<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME;
 		
 		        $message = $RETOURLIGNE.$message.$RETOURLIGNE;
-		        if(sendmail($_POST['mailPersonne'], $sujet, 2, $message))
-		        {
-		            writeInLogs("Mail d'accueil envoyé à " . $_POST['identifiant'], '1', NULL);
-		        }
-		        else
-		        {
-		            writeInLogs("Erreur lors de l'envoi du mail d'accueil à " . $_POST['identifiant'], '3', NULL);
-		        }
+		        queueMail("Création compte utilisateur", $_POST['mailPersonne'], $sujet, 2, $message);
 		    }
 		
 		    $query = $db->query('SELECT MAX(idPersonne) as idPersonne FROM PERSONNE_REFERENTE;');

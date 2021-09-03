@@ -5,20 +5,11 @@ require_once 'config/bdd.php';
 require_once 'config/config.php';
 require_once 'config/mailFunction.php';
 
-$echec = 0;
 $envois = 0;
 $message = $RETOURLIGNE.$_POST['contenu'].$RETOURLIGNE;
 
 $sujet = "[" . $APPNAME . "] " . $_POST['sujet'];
-if(sendmail($_SESSION['mailPersonne'], $sujet, 2, $message))
-{
-    writeInLogs("Contact des équipes par mail - Copie envoyée à l'expéditeur " . $_SESSION['mailPersonne'], '1', NULL);
-}
-else
-{
-    writeInLogs("Contact des équipes par mail - Echec de l'envoi d'une copie à l'expéditeur", '3', NULL);
-    $echec += 1;
-}
+queueMail("Messages mail aux équipes", $_SESSION['mailPersonne'], $sujet, 2, $message);
 
 if (!empty($_POST['idPersonne'])) {
 	$listePersonnes = 'SELECT DISTINCT mailPersonne FROM PERSONNE_REFERENTE WHERE ';
@@ -55,27 +46,11 @@ $query = $db->query($requeteFinale);
 while ($data = $query->fetch())
 {
 	$envois += 1 ;
-	if(sendmail($data['mailPersonne'], $sujet, 2, $message))
-	{
-	    writeInLogs("Contact des équipes par mail - Message envoyé à " . $data['mailPersonne'], '1', NULL);
-	}
-	else
-	{
-	    writeInLogs("Contact des équipes par mail - Echec de l'envoi du message à " . $data['mailPersonne'], '3', NULL);
-	    $echec += 1;
-	}
+	queueMail("Messages mail aux équipes", $data['mailPersonne'], $sujet, 2, $message);
 }
 
-if ($echec == 0)
-{
-	$_SESSION['returnMessage'] = 'Les ' . $envois . ' messages ont été envoyés avec succès.';
-    $_SESSION['returnType'] = '1';
-}
-else
-{
-	$_SESSION['returnMessage'] = 'Il y a ' . $echec . '/' . $envois . ' erreurs dans l\'envoi des messages.';
-    $_SESSION['returnType'] = '2';
-}
+$_SESSION['returnMessage'] = 'Les ' . $envois . ' messages ont été enregistrés dans la file d\'envoi.';
+$_SESSION['returnType'] = '1';
 
 
 echo "<script type='text/javascript'>document.location.replace('index.php');</script>";

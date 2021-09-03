@@ -41,7 +41,8 @@ else
             $_SESSION['returnMessage'] = "Erreur inconnue lors la modification de la commande.";
             $_SESSION['returnType'] = '2';
     }
-
+	
+	$_SESSION['commandesTab'] = 2;
     echo "<script>window.location = document.referrer;</script>";
 }
 ?>

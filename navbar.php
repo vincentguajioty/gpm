@@ -725,6 +725,15 @@ require_once 'config/bdd.php';
                         ?>
                         ><a href="verrouIP.php"><i class="fa fa-shield"></i> <span>Verrouillage IP</span></a></li>
                     <?php } ?>
+                    <?php if ($_SESSION['verrouIP']==1){ ?>
+                        <li <?php
+                        if ($_SESSION['page'] == 501)
+                        {
+                            echo 'class="active"';
+                        }
+                        ?>
+                        ><a href="historiqueMails.php"><i class="fa fa-envelope"></i> <span>Historiques mails</span></a></li>
+                    <?php } ?>
                     <?php if ($_SESSION['appli_conf']==1){ ?>
                         <li <?php
                         if ($_SESSION['page'] == 505)
