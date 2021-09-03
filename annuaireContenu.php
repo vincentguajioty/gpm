@@ -172,12 +172,14 @@ if ($_SESSION['annuaire_lecture']==0)
                             </div>
                             <div class="form-group">
                                 <?php
-                                    $lots = $personne['lots_lecture'] OR $personne['sac_lecture'] OR $personne['sac2_lecture'] OR $personne['materiel_lecture'];
-                                    $reserves = $personne['reserve_lecture'];
-                                    $vehicules = $personne['vehicules_lecture'];
-                                    $desinfections = $personne['desinfections_lecture'];
-                                    $health = $personne['vehiculeHealth_lecture'];
-                                    $tenues = $personne['tenues_lecture'] OR $personne['tenuesCatalogue_lecture'];
+                                    $lots                      = $personne['lots_lecture'] OR $personne['sac_lecture'] OR $personne['sac2_lecture'] OR $personne['materiel_lecture'];
+                                    $reserves                  = $personne['reserve_lecture'];
+                                    $vehicules                 = $personne['vehicules_lecture'];
+                                    $desinfections             = $personne['desinfections_lecture'];
+                                    $health                    = $personne['vehiculeHealth_lecture'];
+                                    $tenues                    = $personne['tenues_lecture'] OR $personne['tenuesCatalogue_lecture'];
+                                    $alertesBenevolesLots      = $personne['alertesBenevolesLots_lecture'];
+                                    $alertesBenevolesVehicules = $personne['alertesBenevolesVehicules_lecture'];
                                 ?>
                                 <label>Présence des indicateurs sur la page d'accueil:</label><br/>
                                 
@@ -239,6 +241,12 @@ if ($_SESSION['annuaire_lecture']==0)
                                 <?php if ($tenues > 0 AND $data['notifications']==1){ if($data['notif_tenues_stock'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Stock des tenues
                                 <br/>
                                 <?php if ($tenues > 0 AND $data['notifications']==1){ if($data['notif_tenues_retours'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Non retour de tenues
+                            </div>
+                            <div class="form-group">
+                                <label>Notifications en temps réel sur alerte bénévole:</label><br/>
+                                <?php if ($alertesBenevolesLots > 0 AND $data['notifications']==1){ if($data['notif_benevoles_lots'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Alerte remontée par un bénévole sur un lot opérationnel
+                                <br/>
+                                <?php if ($alertesBenevolesVehicules > 0 AND $data['notifications']==1){ if($data['notif_benevoles_vehicules'] == 1) { echo '<i class="fa fa-check"></i>'; }else{echo '<i class="fa fa-minus"></i>';}}else{echo '<i class="fa fa-close"></i>';} ?> Alerte remontée par un bénévole sur un véhicule
                             </div>
                         </div>
                         <div class="box-footer with-border">

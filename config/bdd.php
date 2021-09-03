@@ -687,6 +687,10 @@ function majNotificationsPersonne($idPersonne, $enableLog)
     $notif_tenues_stock = $data['notifications'] && ($data['tenuesCatalogue_lecture']) && ($data['notif_tenues_stock']);
     
     $notif_tenues_retours = $data['notifications'] && ($data['tenues_lecture']) && ($data['notif_tenues_retours']);
+
+    $notif_benevoles_lots = $data['notifications'] && ($data['alertesBenevolesLots_lecture']) && ($data['notif_benevoles_lots']);
+
+    $notif_benevoles_vehicules = $data['notifications'] && ($data['alertesBenevolesVehicules_lecture']) && ($data['notif_benevoles_vehicules']);
     
     $query = $db->prepare('
         UPDATE
@@ -705,7 +709,9 @@ function majNotificationsPersonne($idPersonne, $enableLog)
             notif_vehicules_health        = :notif_vehicules_health,
             notif_vehicules_desinfections = :notif_vehicules_desinfections,
             notif_tenues_stock            = :notif_tenues_stock,
-            notif_tenues_retours          = :notif_tenues_retours
+            notif_tenues_retours          = :notif_tenues_retours,
+            notif_benevoles_lots          = :notif_benevoles_lots,
+            notif_benevoles_vehicules     = :notif_benevoles_vehicules
         WHERE
             idPersonne                    = :idPersonne
     ;');
@@ -724,7 +730,9 @@ function majNotificationsPersonne($idPersonne, $enableLog)
         'notif_vehicules_ct'            => (int)$notif_vehicules_ct,
         'notif_vehicules_health'        => (int)$notif_vehicules_health,
         'notif_tenues_stock'            => (int)$notif_tenues_stock,
-        'notif_tenues_retours'          => (int)$notif_tenues_retours
+        'notif_tenues_retours'          => (int)$notif_tenues_retours,
+        'notif_benevoles_lots'          => (int)$notif_benevoles_lots,
+        'notif_benevoles_vehicules'     => (int)$notif_benevoles_vehicules
     ));
     
     if ($enableLog == 1)

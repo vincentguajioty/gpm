@@ -2,7 +2,154 @@
 session_start();
 require_once 'config/bdd.php';
 require_once 'config/config.php';
+require_once 'config/mailFunction.php';
 require_once 'verrouIPcheck.php';
+
+function alerteBenevoleMail($idAlerteLot, $idAlerteVehicule)
+{
+    global $db;
+    global $RETOURLIGNE;
+    global $APPNAME;
+
+    if($idAlerteLot > 0)
+    {
+        $alerte = $db->prepare('
+            SELECT
+                a.*,
+                l.libelleLot,
+                COUNT(p.identifiant) as nbNotif
+            FROM
+                LOTS_ALERTES a
+                LEFT OUTER JOIN LOTS_LOTS l ON a.idLot = l.idLot
+                LEFT JOIN PERSONNE_REFERENTE p ON 1=1
+            WHERE 
+                a.idAlerte = :idAlerte
+                AND
+                p.notif_benevoles_lots = 1
+            GROUP BY
+                a.idAlerte
+            ;
+        ');
+        $alerte->execute(array('idAlerte' => $idAlerteLot));
+        $alerte = $alerte->fetch();
+
+        if($alerte['nbNotif']>0)
+        {
+            writeInLogs($alerte['nbNotif']." notifications lots d'alerte à envoyer.", '1', NULL);
+
+            $query = $db->query('
+                SELECT
+                    *
+                FROM
+                    PERSONNE_REFERENTE
+                WHERE
+                    notif_benevoles_lots = 1
+            ;');
+            while($data = $query->fetch())
+            {
+                $sujet = "[" . $APPNAME . "] Alerte bénévole sur un lot";
+
+                $message_html = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/>Un membre de la structure a remonté une alerte lot via l'interface publique de " . $APPNAME . ". Voici le détail de son message:<br/><br/>";
+                $message_html .= "Déclarant: ".$alerte['nomDeclarant']." (".$alerte['mailDeclarant'].")<br/>";
+                $message_html .= "Date: ".$alerte['dateCreationAlerte']."<br/>";
+                $message_html .= "Lot: ".$alerte['libelleLot']."<br/>";
+                $message_html .= "Message:<br/>".nl2br($alerte['messageAlerteLot'])."<br/><br/>";
+
+                $message_html .= "Veuillez vous connecter sur ".$APPNAME." afin d'y traiter l'alerte.<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME . "<br/>";
+
+                $message.= $RETOURLIGNE.$message_html.$RETOURLIGNE;
+                $prio = 3;
+
+                if(sendmail($data['mailPersonne'], $sujet, $prio, $message))
+                {
+                    writeInLogs("Notification d'alerte bénévole lot envoyée avec succès à la personne référence ".$data['idPersonne']." sur l'adresse ". $data['mailPersonne'], '1', NULL);
+                }
+                else
+                {
+                    writeInLogs("Echec de l'envoi de la notification d'alerte bénévole lot à la personne référence ".$data['idPersonne']." sur l'adresse ". $data['mailPersonne'], '1', NULL);
+                }
+                
+                unset($message_html);
+                unset($message);
+                unset($sujet);
+            }
+        }
+        else
+        {
+            writeInLogs("Aucune notification d'alerte à envoyer.", '1', NULL);
+        }
+
+    }
+
+    if($idAlerteVehicule > 0)
+    {
+        $alerte = $db->prepare('
+            SELECT
+                a.*,
+                v.libelleVehicule,
+                COUNT(p.identifiant) as nbNotif
+            FROM
+                VEHICULES_ALERTES a
+                LEFT OUTER JOIN VEHICULES v ON a.idVehicule = v.idVehicule
+                LEFT JOIN PERSONNE_REFERENTE p ON 1=1
+            WHERE 
+                a.idAlerte = :idAlerte
+                AND
+                p.notif_benevoles_vehicules = 1
+            GROUP BY
+                a.idAlerte
+            ;
+        ');
+        $alerte->execute(array('idAlerte' => $idAlerteVehicule));
+        $alerte = $alerte->fetch();
+
+        if($alerte['nbNotif']>0)
+        {
+            writeInLogs($alerte['nbNotif']." notifications vehicules d'alerte à envoyer.", '1', NULL);
+
+            $query = $db->query('
+                SELECT
+                    *
+                FROM
+                    PERSONNE_REFERENTE
+                WHERE
+                    notif_benevoles_vehicules = 1
+            ;');
+            while($data = $query->fetch())
+            {
+                $sujet = "[" . $APPNAME . "] Alerte bénévole sur un vehicule";
+
+                $message_html = "Bonjour " . $data['prenomPersonne'] . ", <br/><br/>Un membre de la structure a remonté une alerte véhicule via l'interface publique de " . $APPNAME . ". Voici le détail de son message:<br/><br/>";
+                $message_html .= "Déclarant: ".$alerte['nomDeclarant']." (".$alerte['mailDeclarant'].")<br/>";
+                $message_html .= "Date: ".$alerte['dateCreationAlerte']."<br/>";
+                $message_html .= "Lot: ".$alerte['libelleVehicule']."<br/>";
+                $message_html .= "Message:<br/>".nl2br($alerte['messageAlerteVehicule'])."<br/><br/>";
+
+                $message_html .= "Veuillez vous connecter sur ".$APPNAME." afin d'y traiter l'alerte.<br/><br/>Cordialement<br/><br/>L'équipe administrative de " . $APPNAME . "<br/>";
+
+                $message.= $RETOURLIGNE.$message_html.$RETOURLIGNE;
+                $prio = 3;
+
+                if(sendmail($data['mailPersonne'], $sujet, $prio, $message))
+                {
+                    writeInLogs("Notification d'alerte bénévole vehicule envoyée avec succès à la personne référence ".$data['idPersonne']." sur l'adresse ". $data['mailPersonne'], '1', NULL);
+                }
+                else
+                {
+                    writeInLogs("Echec de l'envoi de la notification d'alerte bénévole vehicule à la personne référence ".$data['idPersonne']." sur l'adresse ". $data['mailPersonne'], '1', NULL);
+                }
+                
+                unset($message_html);
+                unset($message);
+                unset($sujet);
+            }
+        }
+        else
+        {
+            writeInLogs("Aucune notification d'alerte à envoyer.", '1', NULL);
+        }
+    }
+}
 
 if (checkIP($_SERVER['REMOTE_ADDR'])==1)
 {
@@ -78,6 +225,11 @@ else
 			{
 			    case '00000':
 			        writeInLogs("Ajout d'une alerte bénévoles sur les lots au nom de ".$_POST['nomDeclarant']." depuis l'IP ".$_POST['ipDeclarant'], '1', NULL);
+
+			        $alerte = $db->query('SELECT MAX(idAlerte) as idAlerte FROM LOTS_ALERTES;');
+			        $alerte = $alerte->fetch();
+			        alerteBenevoleMail($alerte['idAlerte'], Null);
+			        
 			        break;
 
 			    default:
@@ -114,6 +266,11 @@ else
 			{
 			    case '00000':
 			        writeInLogs("Ajout d'une alerte bénévoles sur les véhicules au nom de ".$_POST['nomDeclarant']." depuis l'IP ".$_POST['ipDeclarant'], '1', NULL);
+
+			        $alerte = $db->query('SELECT MAX(idAlerte) as idAlerte FROM VEHICULES_ALERTES;');
+			        $alerte = $alerte->fetch();
+			        alerteBenevoleMail(Null, $alerte['idAlerte']);
+			        
 			        break;
 
 			    default:

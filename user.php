@@ -563,10 +563,12 @@ require_once('logCheck.php');
 		                        		$health = $_SESSION['vehiculeHealth_lecture'];
 		                        		$desinfections = $_SESSION['desinfections_lecture'];
 		                        		$tenues = $_SESSION['tenues_lecture'] OR $_SESSION['tenuesCatalogue_lecture'];
+		                        		$alertesBenevolesLots      = $_SESSION['alertesBenevolesLots_lecture'];
+                                    	$alertesBenevolesVehicules = $_SESSION['alertesBenevolesVehicules_lecture'];
 		                        	?>
 		                            <label>Présence des indicateurs sur la page d'accueil:</label><br/>
 		                            <?php
-		                            	if ($lots+$reserves+$vehicules+$tenues == 0)
+		                            	if ($lots+$reserves+$vehicules+$tenues+$health+$desinfections == 0)
 		                            	{ ?>
 		                            		<i><center>Votre profil actuel ne vous permet pas d'afficher des indicateurs sur votre dashboard.</center></i>
 		                            	<?php }
@@ -616,7 +618,7 @@ require_once('logCheck.php');
 		                        	?>
 		                            <label>Abonnements aux notifications journalières par mail:</label><br/>
 		                            <?php
-		                            	if ($data['notifications']==0 OR ($lots+$reserves+$vehicules+$tenues == 0))
+		                            	if ($data['notifications']==0 OR ($lots+$reserves+$vehicules+$tenues+$health+$desinfections+$alertesBenevolesVehicules+$alertesBenevolesLots == 0))
 		                            	{ ?>
 		                            		<i><center>Votre profil actuel ne vous permet pas de vous abonner aux notifications mail.</center></i>
 		                            	<?php }
@@ -691,6 +693,15 @@ require_once('logCheck.php');
                                            ?>
                                         </select>
                                     </div>
+		                        </div>
+		                        <div class="form-group">
+		                            <label>Notifications en temps réel sur alerte bénévole:</label><br/>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_benevoles_lots'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_benevoles_lots" <?php if ($alertesBenevolesLots == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Alerte remontée par un bénévole sur un lot opérationnel</label>
+	                                </div>
+	                                <div class="checkbox">
+	                                	<label><input <?php if($data['notif_benevoles_vehicules'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="notif_benevoles_vehicules" <?php if ($alertesBenevolesVehicules == 0 OR $data['notifications']==0){echo 'disabled';} ?>> Alerte remontée par un bénévole sur un véhicule</label>
+	                                </div>
 		                        </div>
 		                        <div class="box-footer">
 		                            <button type="submit" class="btn btn-info pull-right">Modifier</button>

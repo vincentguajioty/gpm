@@ -149,11 +149,10 @@ require_once 'verrouIPcheck.php';
 					            </div>
 					        </div>
 				        <?php } ?>
+					</div>
 	
-	
-				        <div class="col-md-12">
-					        <center><button type="submit" class="btn btn-success">ENVOYER !</button></center>
-					    </div>
+					<center><button type="submit" class="btn btn-success">ENVOYER !</button></center>
+					
 	        		</form>	        
 		        </div>
 	        </section>

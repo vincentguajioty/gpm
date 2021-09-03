@@ -32,6 +32,11 @@ if ($_SESSION['alertesBenevolesLots_lecture']==0)
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
+            <?php if($ALERTES_BENEVOLES_LOTS != 1){ ?>
+                <div class="alert alert-warning">
+                    <i class="icon fa fa-warning"></i> La fonctionnalité est désactivée dans la configuration générale du site. Les bénévoles ne peuvent pas saisir de déclaration d'incidents liés à un lot !
+                </div>
+            <?php } ?>
             <div class="box">
                 <!-- /.box-header -->
                 <div class="box-body">

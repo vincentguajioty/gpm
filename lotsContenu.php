@@ -84,6 +84,21 @@ if ($_SESSION['lots_lecture']==0)
         'idLot' => $_GET['id']
     ));
     $data6 = $query6->fetch();
+    $query13 = $db->prepare('
+        SELECT
+            e.*,
+            COUNT(idLot) as nb
+        FROM
+            LOTS_ALERTES_ETATS e
+            LEFT OUTER JOIN (SELECT * FROM LOTS_ALERTES WHERE idLot = :idLot) a ON e.idLotsAlertesEtat = a.idLotsAlertesEtat
+        GROUP BY
+            e.idLotsAlertesEtat
+        ORDER BY
+            e.idLotsAlertesEtat DESC
+        ;');
+    $query13->execute(array(
+        'idLot' => $_GET['id']
+    ));
 
     ?>
 
@@ -148,6 +163,7 @@ if ($_SESSION['lots_lecture']==0)
                     </div>
                     <!-- /.widget-user -->
                 </div>
+
                 <div class="col-md-6">
                     <!-- Widget: user widget style 1 -->
                     <div class="box box-widget widget-user-2">
@@ -209,13 +225,19 @@ if ($_SESSION['lots_lecture']==0)
                                 <li><a>Notifications<?php
                                     if ($data[3]==1) /*Attention, indice passé en fonction de la requete -> si la requete change vérifier que l'indice soit toujours en même position.*/
                                     {
-                                        echo '<span class="pull-right badge bg-green"><i class="fa fa-bell-o"></i></span>';
+                                        echo '<span class="pull-right badge bg-green" title="Notifications activées"><i class="fa fa-bell-o"></i></span>';
                                     }
                                     else
                                     {
-                                        echo '<span class="pull-right badge bg-orange"><i class="fa fa-bell-slash-o"></i></span>';
+                                        echo '<span class="pull-right badge bg-orange" title="Notifications désactivées"><i class="fa fa-bell-slash-o"></i></span>';
                                     }
                                         ?></a></li>
+                                <li><a>Alertes bénévoles<?php
+                                    while($data13 = $query13->fetch())
+                                    { ?>
+                                        <span class="pull-right badge bg-<?=$data13['couleurLotsAlertesEtat']?>" title="<?=$data13['libelleLotsAlertesEtat']?>"><?=$data13['nb']?></span>
+                                    <?php } ?>
+                                </a></li>
                             </ul>
                         </div>
                     </div>
@@ -480,6 +502,7 @@ if ($_SESSION['lots_lecture']==0)
                         <?php
                     }
                 ?>
+                
                 <div class="col-md-12">
                     <div class="box box-success collapsed-box box-solid">
                         <div class="box-header with-border">
@@ -492,11 +515,8 @@ if ($_SESSION['lots_lecture']==0)
                         <div class="box-body">
                             <?php if ($_SESSION['lots_modification']==1) {?>
                                 <a href="lotsInventaireNew.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-success spinnerAttenteClick"><i class="fa fa-plus"></i> Faire un nouvel inventaire</a>
+                                <br/><br/>
                             <?php }?>
-                        </div>
-                        <div class="box-body">
-
-                            <br/>
                             <table id="tri2R" class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
@@ -536,6 +556,82 @@ if ($_SESSION['lots_lecture']==0)
                         </div>
                     </div>
                 </div>
+
+                <?php
+                    if ($_SESSION['alertesBenevolesLots_lecture']==1){ ?>
+                        <div class="col-md-12">
+                            <div class="box box-success collapsed-box box-solid">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Alertes des bénévoles</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <table id="tri3R" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="all" style="width: 10px">#</th>
+                                                <th class="all">Bénévole</th>
+                                                <th class="not-mobile">Date d'ouverture</th>
+                                                <th class="not-mobile">Message</th>
+                                                <th class="not-mobile">Traitement</th>
+                                                <th class="not-mobile">Affectation</th>
+                                                <th class="not-mobile">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        $query14 = $db->prepare('
+                                            SELECT
+                                                a.*,
+                                                e.libelleLotsAlertesEtat,
+                                                e.couleurLotsAlertesEtat,
+                                                p.identifiant
+                                            FROM
+                                                LOTS_ALERTES a
+                                                LEFT OUTER JOIN LOTS_LOTS l ON a.idLot = l.idLot
+                                                LEFT OUTER JOIN LOTS_ALERTES_ETATS e on a.idLotsAlertesEtat = e.idLotsAlertesEtat
+                                                LEFT OUTER JOIN PERSONNE_REFERENTE p ON a.idTraitant = p.idPersonne
+                                            WHERE
+                                                a.idLot = :idLot
+                                            ORDER BY
+                                                idLotsAlertesEtat
+                                            ;');
+                                        $query14->execute(array('idLot' => $_GET['id']));
+                                        while ($data14 = $query14->fetch())
+                                        {
+                                            ?>
+                                            <tr>
+                                                <td><?= $data14['idAlerte'] ?></td>
+                                                <td><?= $data14['nomDeclarant'] ?></td>
+                                                <td><?= $data14['dateCreationAlerte'] ?></td>
+                                                <td><?= nl2br($data14['messageAlerteLot']) ?></td>
+                                                <td><span class="badge bg-<?= $data14['couleurLotsAlertesEtat'] ?>"><?= $data14['libelleLotsAlertesEtat'] ?></span></td>
+                                                <td>
+                                                    <?php if($data14['idLotsAlertesEtat']==1){?>
+                                                        <a href="lotsAlerteBenevoleAffectation.php?id=<?=$data14['idAlerte']?>" class="btn btn-xs btn-success" title="S'affecter cette alerte">Je prends en charge cette alerte</a>
+                                                        <br/>
+                                                        <a href="lotsAlerteBenevoleAffectationTiers.php?id=<?=$data14['idAlerte']?>" class="btn btn-xs btn-success modal-form" title="Affecter cette alerte à une personne de l'équipe">Affecter l'alerte à quelqu'un</a>
+                                                    <?php } ?>
+                                                    <?= $data14['identifiant'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php if($data14['idLotsAlertesEtat']==1){?><a href="lotsAlerteBenevoleDoublon.php?id=<?=$data14['idAlerte']?>" class="btn btn-xs btn-warning modal-form" title="Cette alerte bénévole fait doublon à une alerte déjà remontée">Signaler un doublon</a><?php } ?>
+                                                    <?php if($data14['idLotsAlertesEtat']==1){?><a href="lotsAlerteBenevoleLockIpConfirmation.php?id=<?=$data14['idAlerte']?>" class="btn btn-xs btn-danger modal-form" title="Cette entrée est frauduleuse">Fraude</a><?php } ?>
+                                                    <?php if($data14['idLotsAlertesEtat']==2 OR $data14['idLotsAlertesEtat']==3){?><a href="lotsAlerteBenevoleCloture.php?id=<?=$data14['idAlerte']?>" class="btn btn-xs btn-success" title="Cette alerte est traitée et doit être close">Clôturer cette alerte</a><?php } ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $query->closeCursor(); ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                <?php } ?>
             </div>
         </section>
         <!-- /.content -->

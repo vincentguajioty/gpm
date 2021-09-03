@@ -4,6 +4,50 @@
 		"selected_items":
 		[
 			[
+				"messageAlerte",
+				"messageAlerteVehicule\tabc"
+			],
+			[
+				"idAlerte",
+				"idAlerte\t(alerteBenevoleAdd.php)"
+			],
+			[
+				"LOTS",
+				"LOTS_ALERTES\t(alerteBenevoleAdd.php)"
+			],
+			[
+				"alerteBene",
+				"alertesBenevolesVehicules_lecture\tabc"
+			],
+			[
+				"alerte",
+				"alertesBenevolesLots_lecture\tabc"
+			],
+			[
+				"notif_ben",
+				"notif_benevoles_vehicules\t(update11.1.sql)"
+			],
+			[
+				"notif_be",
+				"notif_benevoles_vehicules\tabc"
+			],
+			[
+				"notif_bene",
+				"notif_benevoles_lots\tabc"
+			],
+			[
+				"alerteB",
+				"alertesBenevolesLots"
+			],
+			[
+				"idLot",
+				"idLotsAlertesEtat"
+			],
+			[
+				"idLots",
+				"idLotsAlertesEtat\tabc"
+			],
+			[
 				"alerteBenevolesLots",
 				"alertesBenevolesLots_affectationTier\t(update11.0.sql)"
 			],
@@ -90,10 +134,6 @@
 			[
 				"notif_ve",
 				"notif_vehicules_health\tabc"
-			],
-			[
-				"alerte",
-				"alerteMaintenance\t(update10.0.sql)"
 			],
 			[
 				"notif_veh",
@@ -265,6 +305,10 @@
 		"selected_items":
 		[
 			[
+				"ali\t",
+				"AlignTab: Live Preview Mode"
+			],
+			[
 				"align",
 				"AlignTab: Live Preview Mode"
 			],
@@ -309,27 +353,95 @@
 	},
 	"file_history":
 	[
-		"//192.168.100.248/web_recette/gpm/index.php",
+		"//192.168.100.248/web_recette/gpm/test.php",
+		"//192.168.100.248/web_recette/gpm/login.php",
+		"//192.168.100.248/web_recette/gpm/config/notifications.php",
 		"//192.168.100.248/web_recette/gpm/config/bdd.php",
+		"//192.168.100.248/web_recette/gpm/logs/20200501.log",
+		"//192.168.100.248/web_recette/gpm/alerteBenevoleAdd.php",
+		"//192.168.100.248/web_recette/gpm/config/config.php",
+		"//192.168.100.248/web_recette/gpm/config/mailFunction.php",
+		"//192.168.100.248/web_recette/gpm/vehiculesContenu.php",
+		"//192.168.100.248/web_recette/gpm/distmaj/INSTALL2.php",
 		"//192.168.100.248/web_recette/gpm/profilsUpdate.php",
+		"//192.168.100.248/web_recette/gpm/commandesAdd.php",
+		"//192.168.100.248/web_recette/gpm/lotsAdd.php",
+		"//192.168.100.248/web_recette/gpm/distmaj/update11.1.sql",
+		"//192.168.100.248/web_recette/gpm/annuaireContenu.php",
+		"//192.168.100.248/web_recette/gpm/annuaireImportGoOK.php",
+		"//192.168.100.248/web_recette/gpm/annuaireSetMail.php",
+		"//192.168.100.248/web_recette/gpm/profilsSetMail.php",
+		"//192.168.100.248/web_recette/gpm/user.php",
+		"//192.168.100.248/web_recette/gpm/userConfig.php",
+		"//192.168.100.248/web_recette/gpm/loginSQL.php",
+		"//192.168.100.248/web_recette/gpm/distmaj/update10.0.sql",
+		"/V/gpm/vehiculesAlerteBenevoleSynthese.php",
+		"/V/gpm/lotsAlerteBenevoleSynthese.php",
+		"/V/gpm/login.php",
+		"/V/gpm/appliConf.php",
+		"/V/gpm/alerteBenevoleFailure.php",
+		"/V/gpm/alerteBenevoleSuccess.php",
+		"/V/gpm/lotsContenu.php",
+		"/V/gpm/distmaj/update11.0.sql",
+		"/V/gpm/vehiculesContenu.php",
+		"/V/gpm/vehiculesAlerteBenevoleAffectationTiersUpdate.php",
+		"/V/gpm/lotsAlerteBenevoleAffectation.php",
+		"/V/gpm/lotsAlerteBenevoleCloture.php",
+		"/V/gpm/lotsAlerteBenevoleDoublon.php",
+		"/V/gpm/lotsAlerteBenevoleLockIpLock.php",
+		"/V/gpm/vehiculesAlerteBenevoleAffectation.php",
+		"/V/gpm/vehiculesAlerteBenevoleCloture.php",
+		"/V/gpm/vehiculesAlerteBenevoleDoublon.php",
+		"/V/gpm/vehiculesAlerteBenevoleLockIpLock.php",
+		"/V/gpm/lotsAlerteBenevoleAffectationTiers.php",
+		"/V/gpm/lotsAlerteBenevoleAffectationTiersUpdate.php",
+		"//192.168.100.248/web_recette/gpm/logCheck.php",
+		"//192.168.100.248/web_recette/gpm/userPWD.php",
+		"//192.168.100.248/web_recette/gpm/distmaj/update1.sql",
+		"//192.168.100.248/web_recette/gpm/annuaireAdd.php",
+		"//192.168.100.248/web_recette/gpm/alerteBenevole.php",
+		"//192.168.100.248/web_recette/gpm/vehiculesDocDelete.php",
+		"//192.168.100.248/web_recette/gpm/vehiculesUpdate.php",
+		"//192.168.100.248/web_recette/gpm/vehiculesForm.php",
+		"//192.168.100.248/web_recette/gpm/vehiculesDelete.php",
+		"//192.168.100.248/web_recette/gpm/lotsDelete.php",
+		"//192.168.100.248/web_recette/gpm/lots.php",
+		"//192.168.100.248/web_recette/gpm/commandeView.php",
+		"//192.168.100.248/web_recette/gpm/vhfPlansDocForm.php",
+		"//192.168.100.248/web_recette/gpm/vhfPlansDocAdd.php",
+		"//192.168.100.248/web_recette/gpm/lotsForm.php",
+		"//192.168.100.248/web_recette/gpm/bandeausup.php",
+		"//192.168.100.248/web_recette/gpm/appliConf.php",
+		"//192.168.100.248/web_recette/gpm/logout.php",
+		"//192.168.100.248/web_recette/gpm/verrouIPcheck.php",
+		"//192.168.100.248/web_recette/gpm/headerContent.php",
+		"//192.168.100.248/web_recette/gpm/commandeDocDL.php",
+		"//192.168.100.248/web_recette/gpm/commandeDocView.php",
+		"//192.168.100.248/web_recette/gpm/vehiculesDocDL.php",
+		"//192.168.100.248/web_recette/gpm/documentsGetIcone.php",
+		"//192.168.100.248/web_recette/gpm/navbar.php",
+		"//192.168.100.248/web_recette/gpm/headerCaptcha.php",
+		"//192.168.100.248/web_recette/gpm/index.php",
+		"//192.168.100.248/web_recette/gpm/header.php",
+		"//192.168.100.248/web_recette/gpm/appliConfUpdateCaptcha.php",
+		"/V/gpm/scripts.php",
+		"/U/majDist/gpmTimeLine.php",
+		"/V/gpm/alerteBenevole.php",
+		"/V/gpm/logCheck.php",
+		"/V/gpm/index.php",
 		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleSynthese.php",
 		"//192.168.100.248/web/majDist/gpmTimeLine.php",
 		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleAffectationTiers.php",
 		"//192.168.100.248/web_recette/gpm/distmaj/update11.0.sql",
 		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleLockIpLock.php",
-		"//192.168.100.248/web_recette/gpm/lotsAdd.php",
 		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleLockIpConfirmation.php",
 		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleDoublon.php",
 		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleCloture.php",
 		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleAffectationTiersUpdate.php",
 		"//192.168.100.248/web_recette/gpm/lotsAlerteBenevoleAffectation.php",
-		"//192.168.100.248/web_recette/gpm/navbar.php",
 		"//192.168.100.248/web_recette/gpm/profilsDupliquer.php",
-		"//192.168.100.248/web_recette/gpm/annuaireContenu.php",
-		"//192.168.100.248/web_recette/gpm/user.php",
 		"//192.168.100.248/web_recette/gpm/loginReloadHabilitation.php",
 		"//192.168.100.248/web_recette/gpm/userReloadHabilitation.php",
-		"//192.168.100.248/web_recette/gpm/loginSQL.php",
 		"//192.168.100.248/web_recette/gpm/loginDelegate.php",
 		"//192.168.100.248/web_recette/gpm/loginDelegateBack.php",
 		"//192.168.100.248/web_recette/gpm/profilsForm.php",
@@ -338,15 +450,12 @@
 		"//192.168.100.248/web_recette/gpm/profilsRecap.php",
 		"//192.168.100.248/web_recette/gpm/profilsRecapPersonnes.php",
 		"//192.168.100.248/web_recette/gpm/distmaj/view_reload.sql",
-		"//192.168.100.248/web_recette/gpm/config/config.php",
-		"//192.168.100.248/web_recette/gpm/distmaj/INSTALL2.php",
 		"//192.168.100.248/web_recette/gpm/profilsFormDupliquer.php",
 		"/V/gpm/alerteBenevoleAdd.php",
 		"/V/gpm/config/config.php",
 		"/V/gpm/logs/20200209.log",
 		"/V/gpm/logs/20200208.log",
 		"/V/gpm/lotsAlerteBenevoleLockIpConfirmation.php",
-		"/V/gpm/lotsAlerteBenevoleLockIpLock.php",
 		"/V/gpm/loginSQL.php",
 		"/V/gpm/lotsDelete.php",
 		"/V/gpm/modalDeleteConfirm.php",
@@ -354,19 +463,14 @@
 		"/V/gpm/lots.php",
 		"/V/gpm/navbar.php",
 		"/V/gpm/alerteBenevoleSynthese.php",
-		"/V/gpm/alerteBenevole.php",
 		"/V/gpm/distmaj/update10.4.sql",
 		"/V/gpm/lotsAdd.php",
-		"/V/gpm/index.php",
-		"/V/gpm/login.php",
-		"/V/gpm/logCheck.php",
 		"/V/gpm/verrouIPcheck.php",
 		"/V/gpm/commandeView.php",
 		"/V/gpm/lotsForm.php",
 		"/V/gpm/config/bdd.php",
 		"/V/gpm/sacsForm.php",
 		"/V/gpm/user.php",
-		"/V/gpm/appliConf.php",
 		"/V/gpm/appliConfUpdateAlertesBen.php",
 		"/V/gpm/header.php",
 		"/V/gpm/bandeausup.php",
@@ -376,77 +480,23 @@
 		"/V/gpm/commandesGo56.php",
 		"/V/gpm/distmaj/update10.3.sql",
 		"//192.168.100.248/web_recette/gpm/transfertResLots.php",
-		"//192.168.100.248/web_recette/gpm/demoTimeLine.php",
-		"//192.168.100.248/web_recette/gpm/plugins/udnzTimeline/demo/data/demo-3-1.json",
-		"//192.168.100.248/web_recette/gpm/plugins/udnzTimeline/demo/scripts/jquery-1.10.2.min.js",
-		"//192.168.100.248/web_recette/gpm/plugins/udnzTimeline/src/css/timeline.css",
-		"//192.168.100.248/web_recette/gpm/header.php",
-		"//192.168.100.248/web_recette/gpm/plugins/udnzTimeline/demo/index.html",
-		"//192.168.100.248/web_recette/UDNZTimeline-master/demo/index.html",
-		"//192.168.100.248/web_recette/gpm/config/.htaccess",
-		"//192.168.100.248/web_recette/gpm/distmaj/update10.3.sql",
-		"//192.168.100.248/web_recette/gpm/centreCoutsContenu.php",
-		"//192.168.100.248/web_recette/gpm/centreCouts.php",
-		"//192.168.100.248/web_recette/gpm/centreCoutsDocView.php",
-		"//192.168.100.248/web_recette/gpm/centreCoutsDocDL.php",
-		"//192.168.100.248/web_recette/gpm/loginHabilitation.php",
-		"//192.168.100.248/web_recette/gpm/centreCoutsGerantForm.php",
-		"//192.168.100.248/web_recette/gpm/centreCoutsGerantUpdate.php",
-		"//192.168.100.248/web_recette/gpm/centreCoutsGerantAdd.php",
-		"/C/Users/Vincent Guajioty/AppData/Roaming/AnyDesk/chat/933766973.txt",
-		"//192.168.100.248/web_recette/gpm/lots.php",
-		"//192.168.100.248/web_recette/gpm/vehiculesUpdate.php",
-		"//192.168.100.248/web_recette/gpm/vehiculesForm.php",
-		"/V/gpm/distmaj/view_reload.sql",
-		"/V/gpm/profilsUsersUpdate.php",
-		"/V/gpm/config/cron.php",
-		"/V/gpm/profilsDelete.php",
-		"/V/gpm/annuaireUpdate.php",
-		"/V/gpm/commandesGo4.php",
-		"/V/gpm/centreCoutsContenu.php",
-		"/V/gpm/config/mailFunction.php",
-		"/V/gpm/commandesGo2.php",
-		"/V/gpm/logs/20191205.log",
-		"/V/gpm/profilsForm.php",
-		"/V/gpm/profilsRecap.php",
-		"/V/gpm/profilsRecapPersonnes.php",
-		"/V/gpm/annuaireShowProfils.php",
-		"/V/gpm/annuaireContenu.php",
-		"//192.168.100.248/web_recette/gpm/commandeView.php",
-		"//192.168.100.248/web_recette/gpm/config/mailFunction.php",
-		"//192.168.100.248/web_recette/gpm/commandesGo7.php",
-		"//192.168.100.248/web_recette/gpm/commandesGo8.php",
-		"//192.168.100.248/web_recette/gpm/commandesGo56.php",
-		"//192.168.100.248/web_recette/gpm/commandesGo5.php",
-		"//192.168.100.248/web_recette/gpm/commandesGo4.php",
-		"//192.168.100.248/web_recette/gpm/commandesGo2.php",
-		"//192.168.100.248/web_recette/gpm/commandesGo13.php",
-		"//192.168.100.248/web_recette/gpm/commandesGo13Index.php",
-		"/C/Users/Vincent Guajioty/Downloads/GPM_VALIDATION_motsClefs.txt",
-		"//192.168.100.248/web_recette/gpm/config/notifications.php",
-		"//192.168.100.248/web_recette/gpm/annuaireDelete.php",
-		"//192.168.100.248/web_recette/gpm/commandesDelete.php",
-		"//192.168.100.248/web_recette/gpm/commandesValidations.php",
-		"//192.168.100.248/web_recette/gpm/commandesToutes.php",
-		"//192.168.100.248/web_recette/gpm/annuaireShowProfils.php",
-		"//192.168.100.248/web_recette/gpm/commandesNotesAdd.php",
-		"//192.168.100.248/web_recette/gpm/appliConf.php",
-		"//192.168.100.248/web_recette/gpm/commandesAdd.php",
-		"//192.168.100.248/web_recette/gpm/appliConfUpdateValideurs.php",
-		"//192.168.100.248/web_recette/gpm/commandesUpdate.php",
-		"//192.168.100.248/web_recette/gpm/centreCoutsGerantDelete.php",
-		"//192.168.100.248/web_recette/gpm/lotsDelete.php",
-		"//192.168.100.248/web_recette/gpm/centreCoutsAdd.php"
+		"//192.168.100.248/web_recette/gpm/demoTimeLine.php"
 	],
 	"find":
 	{
-		"height": 39.0
+		"height": 40.0
 	},
 	"find_in_files":
 	{
 		"height": 104.0,
 		"where_history":
 		[
+			"*.php",
+			"*.sql",
+			"*.php",
+			"",
+			"*.php",
+			"*.sql",
 			"*.php",
 			"*.css",
 			"*.php",
@@ -461,6 +511,39 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"lot",
+			"idLot",
+			"à la personne référence",
+			"message",
+			"$message",
+			"$message ",
+			"message",
+			"actifCeJour",
+			"notifications_abo_cejo",
+			"notifications_abo_cejour",
+			"notif_tenues_retours",
+			"notif_vehicules_health",
+			"$data",
+			"query3",
+			"$data",
+			"data13",
+			"data11",
+			"data9",
+			"data8",
+			"data7",
+			"img/favicon.ico",
+			"favicon.ico",
+			"personne_refe",
+			"documents",
+			"span",
+			"label",
+			"date(",
+			"window.location",
+			"getCaptcha",
+			"pj",
+			"VERROUILL",
+			"document",
+			"attached",
 			"majIndicateursPersonne",
 			"personne",
 			"10.4",
@@ -555,40 +638,7 @@
 			"idPersonne",
 			"commentairesCentreCout",
 			"libelleCentreDecout",
-			"dateFermeture",
-			"frequenceInventaire",
-			"idCentreDeCout",
-			"identifiant",
-			"idCentreDeCout",
-			"giqu",
-			"xavier",
-			"commandesToutes.php",
-			"Valider à la place de",
-			"vehiculesContenu",
-			"attention",
-			"cmdEstValideur",
-			"attention",
-			"cmdEstValideur",
-			"valideur",
-			"libelleTypeLot",
-			"message_InventaireLots",
-			"message_Desinfection",
-			"modalAccueilAlerteDesinfections",
-			"checkVehiculeMaintenance",
-			"notif",
-			",",
-			"notif_vehicules_ct",
-			",",
-			"mail",
-			"\"tab\">",
-			"IP",
-			"peremptionAnticipation",
-			"peremptionAnticipationOpe",
-			"idFournisseur",
-			"peremptionAnticipationOpe",
-			"conditionnementMultiple",
-			"idMaterielCatalogue",
-			"sidebar-mini fixed fixed\">"
+			"dateFermeture"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -651,6 +701,302 @@
 		"selected_items":
 		[
 			[
+				"login.php",
+				"login.php"
+			],
+			[
+				"test",
+				"test.php"
+			],
+			[
+				"config",
+				"config\\config.php"
+			],
+			[
+				"alerte",
+				"alerteBenevoleAdd.php"
+			],
+			[
+				"mailfo",
+				"config\\mailFunction.php"
+			],
+			[
+				"vehiculeCo",
+				"vehiculesContenu.php"
+			],
+			[
+				"profilupdate",
+				"profilsUpdate.php"
+			],
+			[
+				"bdd.ph",
+				"config\\bdd.php"
+			],
+			[
+				"commandeadd",
+				"commandesAdd.php"
+			],
+			[
+				"lotsadd",
+				"lotsAdd.php"
+			],
+			[
+				"notifica\t",
+				"config\\notifications.php"
+			],
+			[
+				"annaireconten",
+				"annuaireContenu.php"
+			],
+			[
+				"loginsql.php",
+				"loginSQL.php"
+			],
+			[
+				"update11.1",
+				"distmaj\\update11.1.sql"
+			],
+			[
+				"update10.0",
+				"distmaj\\update10.0.sql"
+			],
+			[
+				"update 10",
+				"distmaj\\update10.0.sql"
+			],
+			[
+				"appcon",
+				"appliConf.php"
+			],
+			[
+				"vehiculeAlerte",
+				"vehiculesAlerteBenevoleSynthese.php"
+			],
+			[
+				"lotsAlerteBene",
+				"lotsAlerteBenevoleSynthese.php"
+			],
+			[
+				"alerteBenevoleSuccess.php",
+				"alerteBenevoleSuccess.php"
+			],
+			[
+				"alerteBenevole.php",
+				"alerteBenevoleFailure.php"
+			],
+			[
+				"vehiculesAlertes",
+				"vehiculesAlerteBenevoleSynthese.php"
+			],
+			[
+				"update11.0",
+				"distmaj\\update11.0.sql"
+			],
+			[
+				"lotsContenu",
+				"lotsContenu.php"
+			],
+			[
+				"vehiculesConten",
+				"vehiculesContenu.php"
+			],
+			[
+				"lotsAlerte",
+				"lotsAlerteBenevoleAffectationTiersUpdate.php"
+			],
+			[
+				"lotsAlert",
+				"lotsAlerteBenevoleAffectationTiers.php"
+			],
+			[
+				"vehiculesConte",
+				"vehiculesContenu.php"
+			],
+			[
+				"lotsalertes",
+				"lotsAlerteBenevoleSynthese.php"
+			],
+			[
+				"lotsAlertes",
+				"lotsAlerteBenevoleSynthese.php"
+			],
+			[
+				"lotsCOnten",
+				"lotsContenu.php"
+			],
+			[
+				"catego",
+				"categories.php"
+			],
+			[
+				"vehiculesAdd",
+				"vehiculesAdd.php"
+			],
+			[
+				"vehiculesForm",
+				"vehiculesForm.php"
+			],
+			[
+				"RAZ",
+				"annuaireRAZ.php"
+			],
+			[
+				"annuaireCon",
+				"annuaireContenu.php"
+			],
+			[
+				"logche",
+				"logCheck.php"
+			],
+			[
+				"userPWD",
+				"userPWD.php"
+			],
+			[
+				"update1.",
+				"distmaj\\update1.sql"
+			],
+			[
+				"annuaire",
+				"annuaireAdd.php"
+			],
+			[
+				"docDe",
+				"vehiculesDocDelete.php"
+			],
+			[
+				"docDelete",
+				"commandeDocDelete.php"
+			],
+			[
+				"vehiculesDoc",
+				"vehiculesDocForm.php"
+			],
+			[
+				"vehiculeConten",
+				"vehiculesContenu.php"
+			],
+			[
+				"vehiculesUpdate",
+				"vehiculesUpdate.php"
+			],
+			[
+				"userConfig",
+				"userConfig.php"
+			],
+			[
+				"user",
+				"user.php"
+			],
+			[
+				"vehiculeDe",
+				"vehiculesDelete.php"
+			],
+			[
+				"lotsdelete",
+				"lotsDelete.php"
+			],
+			[
+				"lots",
+				"lots.php"
+			],
+			[
+				"commande",
+				"commandeView.php"
+			],
+			[
+				"vhfadd",
+				"vhfPlansDocAdd.php"
+			],
+			[
+				"VHFDoc",
+				"vhfPlansDocForm.php"
+			],
+			[
+				"lotsAd",
+				"lotsAdd.php"
+			],
+			[
+				"lotsFor",
+				"lotsForm.php"
+			],
+			[
+				"bandeau",
+				"bandeausup.php"
+			],
+			[
+				"login",
+				"loginSQL.php"
+			],
+			[
+				"logout",
+				"logout.php"
+			],
+			[
+				"ver",
+				"verrouIPcheck.php"
+			],
+			[
+				"check",
+				"logCheck.php"
+			],
+			[
+				"cont",
+				"contactSend.php"
+			],
+			[
+				"header",
+				"headerContent.php"
+			],
+			[
+				"docvi",
+				"commandeDocView.php"
+			],
+			[
+				"DocDL",
+				"commandeDocDL.php"
+			],
+			[
+				"vehiculeDoc",
+				"vehiculesDocDL.php"
+			],
+			[
+				"documentsGetIcone.php",
+				"documentsGetIcone.php"
+			],
+			[
+				"vehiculesCon",
+				"vehiculesContenu.php"
+			],
+			[
+				"navbar",
+				"navbar.php"
+			],
+			[
+				"nav",
+				"navbar.php"
+			],
+			[
+				"index",
+				"index.php"
+			],
+			[
+				"appliConfUpdateCaptcha",
+				"appliConfUpdateCaptcha.php"
+			],
+			[
+				"applico",
+				"appliConf.php"
+			],
+			[
+				"log",
+				"logCheck.php"
+			],
+			[
+				"script",
+				"scripts.php"
+			],
+			[
 				"profilUpda",
 				"profilsUpdate.php"
 			],
@@ -659,20 +1005,8 @@
 				"config\\bdd.php"
 			],
 			[
-				"index",
-				"index.php"
-			],
-			[
 				"lotsAlerSynt",
 				"lotsAlerteBenevoleSynthese.php"
-			],
-			[
-				"lotsadd",
-				"lotsAdd.php"
-			],
-			[
-				"nav",
-				"navbar.php"
 			],
 			[
 				"update11.",
@@ -727,10 +1061,6 @@
 				"profilsForm.php"
 			],
 			[
-				"config",
-				"config\\config.php"
-			],
-			[
 				"profilForm",
 				"profilsForm.php"
 			],
@@ -745,10 +1075,6 @@
 			[
 				"profils",
 				"profils.php"
-			],
-			[
-				"lotsalertes",
-				"lotsAlerteBenevoleSynthese.php"
 			],
 			[
 				"loginsql",
@@ -775,22 +1101,6 @@
 				"confirmationBox.php"
 			],
 			[
-				"lots",
-				"lots.php"
-			],
-			[
-				"alerte",
-				"alerteBenevoleSynthese.php"
-			],
-			[
-				"navbar",
-				"navbar.php"
-			],
-			[
-				"login",
-				"login.php"
-			],
-			[
 				"lotsAdd",
 				"lotsAdd.php"
 			],
@@ -805,10 +1115,6 @@
 			[
 				"logCheck",
 				"logCheck.php"
-			],
-			[
-				"check",
-				"verrouIPcheck.php"
 			],
 			[
 				"lotFor",
@@ -827,19 +1133,7 @@
 				"commandeView.php"
 			],
 			[
-				"header",
-				"header.php"
-			],
-			[
-				"user",
-				"user.php"
-			],
-			[
 				"bandea",
-				"bandeausup.php"
-			],
-			[
-				"bandeau",
 				"bandeausup.php"
 			],
 			[
@@ -873,10 +1167,6 @@
 			[
 				"fournisseur",
 				"fournisseurs.php"
-			],
-			[
-				"commande",
-				"commandeView.php"
 			],
 			[
 				"commandeGo56",
@@ -921,246 +1211,6 @@
 			[
 				"user.",
 				"user.php"
-			],
-			[
-				"navb",
-				"navbar.php"
-			],
-			[
-				"centreCOutsDoc",
-				"centreCoutsDocDL.php"
-			],
-			[
-				"centreCoutsDocView",
-				"centreCoutsDocView.php"
-			],
-			[
-				"loginHabilitation.php",
-				"loginHabilitation.php"
-			],
-			[
-				"centrecoutsGe",
-				"centreCoutsGerantForm.php"
-			],
-			[
-				"centrecout",
-				"centreCouts.php"
-			],
-			[
-				"bdd",
-				"config\\bdd.php"
-			],
-			[
-				"centrecoutsCo",
-				"centreCoutsContenu.php"
-			],
-			[
-				"vehiculesUdate",
-				"vehiculesUpdate.php"
-			],
-			[
-				"vehiculesForm",
-				"vehiculesForm.php"
-			],
-			[
-				"centreCoutsGer",
-				"centreCoutsGerantForm.php"
-			],
-			[
-				"cron.",
-				"config\\cron.php"
-			],
-			[
-				"bdd.",
-				"config\\bdd.php"
-			],
-			[
-				"config.",
-				"config\\config.php"
-			],
-			[
-				"view_re",
-				"distmaj\\view_reload.sql"
-			],
-			[
-				"centreCoutsForm",
-				"centreCoutsGerantForm.php"
-			],
-			[
-				"Go4",
-				"commandesGo4.php"
-			],
-			[
-				"mailFunct",
-				"config\\mailFunction.php"
-			],
-			[
-				"commandeGo",
-				"commandesGo2.php"
-			],
-			[
-				"commandeVi",
-				"commandeView.php"
-			],
-			[
-				"mailFun",
-				"config\\mailFunction.php"
-			],
-			[
-				"commandeV",
-				"commandeView.php"
-			],
-			[
-				"mailfuncti",
-				"config\\mailFunction.php"
-			],
-			[
-				"notifi",
-				"config\\notifications.php"
-			],
-			[
-				"bdd.ph",
-				"config\\bdd.php"
-			],
-			[
-				"commandesTout",
-				"commandesToutes.php"
-			],
-			[
-				"annuairecon",
-				"annuaireContenu.php"
-			],
-			[
-				"commandeAdd",
-				"commandesAdd.php"
-			],
-			[
-				"commandesAdd",
-				"commandesAdd.php"
-			],
-			[
-				"commandesGo2",
-				"commandesGo2.php"
-			],
-			[
-				"commandesUpdate",
-				"commandesUpdate.php"
-			],
-			[
-				"lotsDel",
-				"lotsDelete.php"
-			],
-			[
-				"lotsForm",
-				"lotsForm.php"
-			],
-			[
-				"centrecoutsForm",
-				"centreCoutsForm.php"
-			],
-			[
-				"centrecouts",
-				"centreCoutsExport.php"
-			],
-			[
-				"centrecoutsform",
-				"centreCoutsForm.php"
-			],
-			[
-				"reload",
-				"distmaj\\view_reload.sql"
-			],
-			[
-				"update10.",
-				"distmaj\\update10.3.sql"
-			],
-			[
-				"commandes",
-				"commandesToutes.php"
-			],
-			[
-				"navba",
-				"navbar.php"
-			],
-			[
-				"commandetou",
-				"commandesToutes.php"
-			],
-			[
-				"mater",
-				"materielsForm.php"
-			],
-			[
-				"reserveMa",
-				"reserveMaterielForm.php"
-			],
-			[
-				"indexMo",
-				"indexModalCalendrier.php"
-			],
-			[
-				"inde",
-				"index.php"
-			],
-			[
-				"update10.1",
-				"distmaj\\update10.1.sql"
-			],
-			[
-				"commandesGo1",
-				"commandesGo13.php"
-			],
-			[
-				"commandesGo",
-				"commandesGo2.php"
-			],
-			[
-				"commandevie",
-				"commandeView.php"
-			],
-			[
-				"update10",
-				"distmaj\\update10.0.sql"
-			],
-			[
-				"commandesS",
-				"commandesSuivi.php"
-			],
-			[
-				"commandesTra",
-				"commandesTraiter.php"
-			],
-			[
-				"commandesNon",
-				"commandesNonCloses.php"
-			],
-			[
-				"commandesV",
-				"commandesValidations.php"
-			],
-			[
-				"logindel",
-				"loginDelegateBack.php"
-			],
-			[
-				"loginde",
-				"loginDelegate.php"
-			],
-			[
-				"loginSQL.php",
-				"loginSQL.php"
-			],
-			[
-				"userReloadHabilitation.php",
-				"userReloadHabilitation.php"
-			],
-			[
-				"annuaireContenu.php",
-				"annuaireContenu.php"
-			],
-			[
-				"profilsRecapPersonnes.php",
-				"profilsRecapPersonnes.php"
 			]
 		],
 		"width": 0.0

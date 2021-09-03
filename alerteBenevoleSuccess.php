@@ -12,9 +12,10 @@ require_once 'verrouIPcheck.php';
     </div>
     <div class="alert alert-success">
         <center>
-            Votre message a bien été enregistré, merci de votre retour !
+            Votre message a bien été enregistré, merci de votre déclaration !
         </center>
     </div>
+    <a href="alerteBenevole.php" class="btn btn-primary btn-block btn-flat">Faire une autre déclaration</a>
     <!-- /.login-box-body -->
 </div>
 <center>GPM - Gestionnaire de Parc Matériel</center>

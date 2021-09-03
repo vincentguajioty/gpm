@@ -30,6 +30,8 @@ require_once 'config/bdd.php';
 	$_POST['notif_vehicules_health']        = ($_POST['notif_vehicules_health']        == 1) ? 1 : 0;
 	$_POST['notif_tenues_stock']            = ($_POST['notif_tenues_stock']            == 1) ? 1 : 0;
 	$_POST['notif_tenues_retours']          = ($_POST['notif_tenues_retours']          == 1) ? 1 : 0;
+	$_POST['notif_benevoles_lots']          = ($_POST['notif_benevoles_lots']          == 1) ? 1 : 0;
+	$_POST['notif_benevoles_vehicules']     = ($_POST['notif_benevoles_vehicules']     == 1) ? 1 : 0;
     
     $query = $db->prepare('
     	UPDATE
@@ -62,6 +64,8 @@ require_once 'config/bdd.php';
     		notif_vehicules_health        = :notif_vehicules_health,
     		notif_tenues_stock            = :notif_tenues_stock,
     		notif_tenues_retours          = :notif_tenues_retours,
+    		notif_benevoles_lots          = :notif_benevoles_lots,
+			notif_benevoles_vehicules     = :notif_benevoles_vehicules,
     		tableRowPerso                 = :tableRowPerso,
     		layout                        = :layout
     	WHERE
@@ -95,6 +99,8 @@ require_once 'config/bdd.php';
 		'notif_vehicules_health'        => $_POST['notif_vehicules_health'],
 		'notif_tenues_stock'            => $_POST['notif_tenues_stock'],
 		'notif_tenues_retours'          => $_POST['notif_tenues_retours'],
+		'notif_benevoles_lots'          => $_POST['notif_benevoles_lots'],
+		'notif_benevoles_vehicules'     => $_POST['notif_benevoles_vehicules'],
 		'tableRowPerso'                 => $_POST['tableRowPerso'],
 		'layout'                        => $_POST['layout'],
     ));

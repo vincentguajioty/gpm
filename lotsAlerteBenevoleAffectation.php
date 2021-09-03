@@ -39,6 +39,6 @@ else
             $_SESSION['returnType'] = '2';
     }
     
-    echo "<script type='text/javascript'>document.location.replace('lotsAlerteBenevoleSynthese.php');</script>";
+    echo "<script>window.location = document.referrer;</script>";
 }
 ?>

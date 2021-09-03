@@ -27,7 +27,9 @@ else {
             notif_vehicules_ct            = 1,
             notif_vehicules_health        = 1,
             notif_tenues_stock            = 1,
-            notif_tenues_retours          = 1
+            notif_tenues_retours          = 1,
+            notif_benevoles_lots          = 1,
+            notif_benevoles_vehicules     = 1
         WHERE
             idPersonne     = :idPersonne
         ;');

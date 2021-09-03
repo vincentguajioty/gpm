@@ -280,7 +280,7 @@ if ($_SESSION['vehicules_lecture']==0)
                                 </tr>
                                 <tr>
                                     <td>Remarques</td>
-                                    <td><?= $data['remarquesVehicule'] ?></td>
+                                    <td><?= nl2br($data['remarquesVehicule']) ?></td>
                                 </tr>
                             </table>
                         </div>
@@ -554,6 +554,80 @@ if ($_SESSION['vehicules_lecture']==0)
                             </div>
                         </div>
                     </div>
+                <?php } ?>
+
+                <?php
+                    if ($_SESSION['alertesBenevolesVehicules_lecture']==1){ ?>
+                        <div class="col-md-12">
+                            <div class="box box-success collapsed-box box-solid">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Alertes des bénévoles</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <table id="tri3R" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="all" style="width: 10px">#</th>
+                                                <th class="all">Bénévole</th>
+                                                <th class="not-mobile">Date d'ouverture</th>
+                                                <th class="not-mobile">Message</th>
+                                                <th class="not-mobile">Traitement</th>
+                                                <th class="not-mobile">Affectation</th>
+                                                <th class="not-mobile">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        $query3 = $db->prepare('
+                                            SELECT
+                                                a.*,
+                                                e.libelleVehiculesAlertesEtat,
+                                                e.couleurVehiuclesAlertesEtat,
+                                                p.identifiant
+                                            FROM
+                                                VEHICULES_ALERTES a
+                                                LEFT OUTER JOIN VEHICULES v ON a.idVehicule = v.idVehicule
+                                                LEFT OUTER JOIN VEHICULES_ALERTES_ETATS e on a.idVehiculesAlertesEtat = e.idVehiculesAlertesEtat
+                                                LEFT OUTER JOIN PERSONNE_REFERENTE p ON a.idTraitant = p.idPersonne
+                                            WHERE
+                                                a.idVehicule = :idVehicule
+                                            ;');
+                                        $query3->execute(array('idVehicule' => $_GET['id']));
+                                        while ($data3 = $query3->fetch())
+                                        {
+                                            ?>
+                                            <tr>
+                                                <td><?= $data3['idAlerte'] ?></td>
+                                                <td><?= $data3['nomDeclarant'] ?></td>
+                                                <td><?= $data3['dateCreationAlerte'] ?></td>
+                                                <td><?= nl2br($data3['messageAlerteVehicule']) ?></td>
+                                                <td><span class="badge bg-<?= $data3['couleurVehiuclesAlertesEtat'] ?>"><?= $data3['libelleVehiculesAlertesEtat'] ?></span></td>
+                                                <td>
+                                                    <?php if($data3['idVehiculesAlertesEtat']==1){?>
+                                                        <a href="vehiculesAlerteBenevoleAffectation.php?id=<?=$data3['idAlerte']?>" class="btn btn-xs btn-success" title="S'affecter cette alerte">Je prends en charge cette alerte</a>
+                                                        <br/>
+                                                        <a href="vehiculesAlerteBenevoleAffectationTiers.php?id=<?=$data3['idAlerte']?>" class="btn btn-xs btn-success modal-form" title="Affecter cette alerte à une personne de l'équipe">Affecter l'alerte à quelqu'un</a>
+                                                    <?php } ?>
+                                                    <?= $data3['identifiant'] ?>
+                                                </td>
+                                                <td>
+                                                    <?php if($data3['idVehiculesAlertesEtat']==1){?><a href="vehiculesAlerteBenevoleDoublon.php?id=<?=$data3['idAlerte']?>" class="btn btn-xs btn-warning modal-form" title="Cette alerte bénévole fait doublon à une alerte déjà remontée">Signaler un doublon</a><?php } ?>
+                                                    <?php if($data3['idVehiculesAlertesEtat']==1){?><a href="vehiculesAlerteBenevoleLockIpConfirmation.php?id=<?=$data3['idAlerte']?>" class="btn btn-xs btn-danger modal-form" title="Cette entrée est frauduleuse">Fraude</a><?php } ?>
+                                                    <?php if($data3['idVehiculesAlertesEtat']==2 OR $data3['idVehiculesAlertesEtat']==3){?><a href="vehiculesAlerteBenevoleCloture.php?id=<?=$data3['idAlerte']?>" class="btn btn-xs btn-success" title="Cette alerte est traitée et doit être close">Clôturer cette alerte</a><?php } ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $query->closeCursor(); ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                 <?php } ?>
 
             </div>

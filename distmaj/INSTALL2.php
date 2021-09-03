@@ -412,8 +412,21 @@ switch($data['version'])
         writeInLogs("Fin de l'installation de la mise à jour 11.0", '1', NULL);
         echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
         break;
-
+        
     case '11.0':
+        writeInLogs("Début de l'installation de la mise à jour 11.1", '1', NULL);
+        $query = $db->query(file_get_contents ("update11.1.sql"));
+        $query = $db->query('SELECT idPersonne FROM PERSONNE_REFERENTE;');
+        while($data = $query->fetch())
+        {
+            majIndicateursPersonne($data['idPersonne'],1);
+            majNotificationsPersonne($data['idPersonne'],1);
+        }
+        writeInLogs("Fin de l'installation de la mise à jour 11.1", '1', NULL);
+        echo "<script type='text/javascript'>document.location.replace('INSTALL2.php');</script>";
+        break;
+
+    case '11.1':
         writeInLogs("Fin des mises à jour", '1', NULL);
         echo "<script type='text/javascript'>document.location.replace('INSTALLFINISH.php');</script>";
         break;

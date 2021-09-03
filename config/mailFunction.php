@@ -3,7 +3,6 @@ session_start();
 require_once 'bdd.php';
 require_once 'config.php';
 
-
 $RETOURLIGNE = "\r\n";
 
 function sendMail($adresseDest, $sujet, $niveau, $contenu)
