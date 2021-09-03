@@ -43,194 +43,224 @@ if ($_SESSION['vehicules_lecture']==0)
             <?php include('confirmationBox.php'); ?>
             <div class="row">
 
-                <div class="col-md-4">
+                <div class="col-md-12">
                     <!-- Widget: user widget style 1 -->
                     <div class="box box-success">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Détails</h3> <?php if ($_SESSION['vehicules_modification']==1) {?><a href="vehiculesForm.php?id=<?=$_GET['id']?>" class="btn btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i></a><?php }?>
+                            <h3 class="box-title">Détails</h3>
+                            <div class="box-tools pull-right">
+                            	<?php if ($_SESSION['vehicules_modification']==1) {?><a href="vehiculesForm.php?id=<?=$_GET['id']?>" class="btn btn-warning btn-xs modal-form" title="Modifier"><i class="fa fa-pencil"></i> Modifier</a><?php }?>
+                            </div>
                         </div>
 
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <table class="table table-condensed">
-                                <tr>
-                                    <td>Libellé/Indicatif</td>
-                                    <td><?= $data['libelleVehicule'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Marque/modele</td>
-                                    <td><?= $data['marqueModele'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Carburant</td>
-                                    <td><?= $data['libelleCarburant'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Immatriculation</td>
-                                    <td><?= $data['immatriculation'] ?></td>
-                                </tr>
-								<tr>
-                                    <td>Type</td>
-                                    <td><?= $data['libelleType'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Notifications</td>
-                                    <td><?= $data['libelleEtat'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Lieu de parking</td>
-                                    <td><?= $data['libelleLieu'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Dernier relevé kilométrique</td>
-                                    <td>
-                                    	<?php
-                                    		$kilometrages = $db->prepare('SELECT * FROM VIEW_VEHICULES_KM WHERE idVehicule = :idVehicule ORDER BY dateReleve DESC;');
-                                    		$kilometrages->execute(array('idVehicule'=>$_GET['id']));
-                                    		$kilometrage = $kilometrages->fetch();
-                                    		if(!(isset($kilometrage['releveKilometrique'])) OR $kilometrage['releveKilometrique'] == Null)
-                                    		{
-                                    			echo 'Pas de relevé fait';
-                                    		}
-                                    		else
-                                    		{
-                                    			echo $kilometrage['releveKilometrique'].'km ('.$kilometrage['dateReleve'].')';
-                                    		}
-                                    	?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Nombre de places</td>
-                                    <td><?= $data['nbPlaces'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Poids (tonnes)</td>
-                                    <td><?= $data['poidsVehicule'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Dimensions</td>
-                                    <td><?= $data['dimensions'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Responsable</td>
-                                    <td><?= $data['identifiant'] ?></td>
-                                </tr>
-								<tr>
-                                    <td>Date d'achat</td>
-                                    <td><?= $data['dateAchat'] ?></td>
-                                </tr>
-								<tr>
-                                    <td>Numéro d'assurance</td>
-                                    <td><?= $data['assuranceNumero'] ?></td>
-                                </tr>
-                                <?php
-                                    $desinfections = $db->prepare('
-                                        SELECT
-                                            a.*,
-                                            t.libelleVehiculesDesinfectionsType,
-                                            MAX(v.dateDesinfection) as dateDesinfection
-                                        FROM
-                                            VEHICULES_DESINFECTIONS_ALERTES a
-                                            LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON a.idVehiculesDesinfectionsType=t.idVehiculesDesinfectionsType
-                                            LEFT OUTER JOIN (SELECT * FROM VEHICULES_DESINFECTIONS WHERE idVehicule = :idVehicule) v ON a.idVehiculesDesinfectionsType = v.idVehiculesDesinfectionsType
-                                        WHERE
-                                            a.idVehicule = :idVehicule
-                                        GROUP BY
-                                            a.idDesinfectionsAlerte
-                                    ;');
-                                    $desinfections->execute(array('idVehicule'=>$_GET['id']));
-                                    while($desinfection = $desinfections->fetch())
-                                    {?>
-                                        <tr>
-                                            <td>Prochaine désinfection <?=$desinfection['libelleVehiculesDesinfectionsType']?></td>
-                                            <td><?php
-                                                if($desinfection['dateDesinfection'] == Null)
-                                                {
-                                                    echo '<span class="badge bg-red">Aucune désinfection enregistrée</span>';
-                                                }
-                                                else
-                                                {
-                                                    $nextDesinf = date('Y-m-d', strtotime($desinfection['dateDesinfection']. ' + '.$desinfection['frequenceDesinfection'].' days'));
-                                                    if($nextDesinf <= date('Y-m-d'))
-                                                    {
-                                                        echo '<span class="badge bg-red">'.$nextDesinf.'</span>';
-                                                    }
-                                                    else
-                                                    {
-                                                        echo '<span class="badge bg-green">'.$nextDesinf.'</span>';
-                                                    }
-                                                }
-                                            ?></td>
-                                        </tr>
-                                    <?php }
-                                ?>
-                                <?php
-                                    $maintenances = $db->prepare('
-                                        SELECT
-                                            a.*,
-                                            t.libelleHealthType,
-                                            MAX(v.dateHealth) as dateHealth
-                                        FROM
-                                            VEHICULES_HEALTH_ALERTES a
-                                            LEFT OUTER JOIN VEHICULES_HEALTH_TYPES t ON a.idHealthType=t.idHealthType
-                                            LEFT OUTER JOIN (SELECT c.*, h.dateHealth FROM VEHICULES_HEALTH_CHECKS c  LEFT OUTER JOIN VEHICULES_HEALTH h ON h.idVehiculeHealth = c.idVehiculeHealth WHERE idVehicule = :idVehicule) v ON a.idHealthType = v.idHealthType
-                                        WHERE
-                                            a.idVehicule = :idVehicule
-                                        GROUP BY
-                                            a.idHealthAlerte
-                                    ;');
-                                    $maintenances->execute(array('idVehicule'=>$_GET['id']));
-                                    while($maintenance = $maintenances->fetch())
-                                    {?>
-                                        <tr>
-                                            <td>Prochain(e) <?=$maintenance['libelleHealthType']?></td>
-                                            <td><?php
-                                                if($maintenance['dateHealth'] == Null)
-                                                {
-                                                    echo '<span class="badge bg-red">Aucune maintenance enregistrée</span>';
-                                                }
-                                                else
-                                                {
-                                                    $nextMaint = date('Y-m-d', strtotime($maintenance['dateHealth']. ' + '.$maintenance['frequenceHealth'].' days'));
-                                                    if($nextMaint <= date('Y-m-d'))
-                                                    {
-                                                        echo '<span class="badge bg-red">'.$nextMaint.'</span>';
-                                                    }
-                                                    else
-                                                    {
-                                                        echo '<span class="badge bg-green">'.$nextMaint.'</span>';
-                                                    }
-                                                }
-                                            ?></td>
-                                        </tr>
-                                    <?php }
-                                ?>
-                                <tr>
-                                    <td>Equipements embarqués</td>
-                                    <td>
-                                    	<?= ($data['pneusAVhivers']==1)? 'Pneus hivers Avant<br/>':'' ?>
-                                    	<?= ($data['pneusARhivers']==1)? 'Pneus hivers Arrière<br/>':'' ?>
-                                    	<?= ($data['priseAlimentation220']==1)? 'Prise MARECHAL 220V<br/>':'' ?>
-                                    	<?= ($data['climatisation']==1)? 'Climatisation<br/>':'' ?>
-                                    	<?= ($data['signaletiqueOrange']==1)? 'Feux oranges<br/>':'' ?>
-                                    	<?= ($data['signaletiqueBleue']==1)? 'Feux bleux<br/>':'' ?>
-                                    	<?= ($data['signaletique2tons']==1)? 'Sirène 2 tons<br/>':'' ?>
-                                    	<?= ($data['signaletique3tons']==1)? 'Sirène 3 tons<br/>':'' ?>
-                                    	<?= ($data['pmv']==1)? 'Panneau à message variable<br/>':'' ?>
-                                    	<?= ($data['fleche']==1)? 'Flèche<br/>':'' ?>
-                                    	<?= ($data['nbCones']>0)? $data['nbCones'].' cônes de lubëck<br/>':'' ?>
-                                	</td>
-                                </tr>
-                                <tr>
-                                    <td>Remarques</td>
-                                    <td><?= nl2br($data['remarquesVehicule']) ?></td>
-                                </tr>
-                            </table>
+                        	<div class="row">
+                        		<div class="col-md-4">
+                        			<div class="box box-gray">
+			                            <table class="table table-condensed">
+			                                <tr>
+			                                    <th>Libellé/Indicatif</th>
+			                                    <td><?= $data['libelleVehicule'] ?></td>
+			                                </tr>
+			                                <tr>
+			                                    <th>Marque/modele</th>
+			                                    <td><?= $data['marqueModele'] ?></td>
+			                                </tr>
+			                                <tr>
+			                                    <th>Carburant</th>
+			                                    <td><?= $data['libelleCarburant'] ?></td>
+			                                </tr>
+			                                <tr>
+			                                    <th>Immatriculation</th>
+			                                    <td><?= $data['immatriculation'] ?></td>
+			                                </tr>
+											<tr>
+			                                    <th>Type</th>
+			                                    <td><?= $data['libelleType'] ?></td>
+			                                </tr>
+			                                <tr>
+			                                    <th>Notifications</th>
+			                                    <td><?= $data['libelleEtat'] ?></td>
+			                                </tr>
+			                                <tr>
+			                                    <th>Lieu de parking</th>
+			                                    <td><?= $data['libelleLieu'] ?></td>
+			                                </tr>
+			                                <tr>
+			                                    <th>Dernier relevé kilométrique</th>
+			                                    <td>
+			                                    	<?php
+			                                    		$kilometrages = $db->prepare('SELECT * FROM VIEW_VEHICULES_KM WHERE idVehicule = :idVehicule ORDER BY dateReleve DESC;');
+			                                    		$kilometrages->execute(array('idVehicule'=>$_GET['id']));
+			                                    		$kilometrage = $kilometrages->fetch();
+			                                    		if(!(isset($kilometrage['releveKilometrique'])) OR $kilometrage['releveKilometrique'] == Null)
+			                                    		{
+			                                    			echo 'Pas de relevé fait';
+			                                    		}
+			                                    		else
+			                                    		{
+			                                    			echo $kilometrage['releveKilometrique'].'km ('.$kilometrage['dateReleve'].')';
+			                                    		}
+			                                    	?>
+			                                    </td>
+			                                </tr>
+			                                <tr>
+			                                    <th>Nombre de places</th>
+			                                    <td><?= $data['nbPlaces'] ?></td>
+			                                </tr>
+			                                <tr>
+			                                    <th>Poids (tonnes)</th>
+			                                    <td><?= $data['poidsVehicule'] ?></td>
+			                                </tr>
+			                                <tr>
+			                                    <th>Dimensions</th>
+			                                    <td><?= $data['dimensions'] ?></td>
+			                                </tr>
+			                                <tr>
+			                                    <th>Responsable</th>
+			                                    <td><?= $data['identifiant'] ?></td>
+			                                </tr>
+											<tr>
+			                                    <th>Date d'achat</th>
+			                                    <td><?= $data['dateAchat'] ?></td>
+			                                </tr>
+											<tr>
+			                                    <th>Numéro d'assurance</th>
+			                                    <td><?= $data['assuranceNumero'] ?></td>
+			                                </tr>
+			                            </table>
+			                        </div>
+		                        </div>
+		                        <div class="col-md-8">
+		                        	<div class="box box-gray">
+			                            <table class="table table-condensed">
+			                                <?php
+			                                    $desinfections = $db->prepare('
+			                                        SELECT
+			                                            a.*,
+			                                            t.libelleVehiculesDesinfectionsType,
+			                                            MAX(v.dateDesinfection) as dateDesinfection
+			                                        FROM
+			                                            VEHICULES_DESINFECTIONS_ALERTES a
+			                                            LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON a.idVehiculesDesinfectionsType=t.idVehiculesDesinfectionsType
+			                                            LEFT OUTER JOIN (SELECT * FROM VEHICULES_DESINFECTIONS WHERE idVehicule = :idVehicule) v ON a.idVehiculesDesinfectionsType = v.idVehiculesDesinfectionsType
+			                                        WHERE
+			                                            a.idVehicule = :idVehicule
+			                                        GROUP BY
+			                                            a.idDesinfectionsAlerte
+			                                    ;');
+			                                    $desinfections->execute(array('idVehicule'=>$_GET['id']));
+			                                    while($desinfection = $desinfections->fetch())
+			                                    {?>
+			                                        <tr>
+			                                            <th>Prochaine désinfection <?=$desinfection['libelleVehiculesDesinfectionsType']?></th>
+			                                            <td><?php
+			                                                if($desinfection['dateDesinfection'] == Null)
+			                                                {
+			                                                    echo '<span class="badge bg-red">Aucune désinfection enregistrée</span>';
+			                                                }
+			                                                else
+			                                                {
+			                                                    $nextDesinf = date('Y-m-d', strtotime($desinfection['dateDesinfection']. ' + '.$desinfection['frequenceDesinfection'].' days'));
+			                                                    if($nextDesinf <= date('Y-m-d'))
+			                                                    {
+			                                                        echo '<span class="badge bg-red">'.$nextDesinf.'</span>';
+			                                                    }
+			                                                    else
+			                                                    {
+			                                                        echo '<span class="badge bg-green">'.$nextDesinf.'</span>';
+			                                                    }
+			                                                }
+			                                            ?></td>
+			                                        </tr>
+			                                    <?php }
+			                                ?>
+			                                <?php
+			                                    $maintenances = $db->prepare('
+			                                        SELECT
+			                                            a.*,
+			                                            t.libelleHealthType,
+			                                            MAX(v.dateHealth) as dateHealth
+			                                        FROM
+			                                            VEHICULES_HEALTH_ALERTES a
+			                                            LEFT OUTER JOIN VEHICULES_HEALTH_TYPES t ON a.idHealthType=t.idHealthType
+			                                            LEFT OUTER JOIN (SELECT c.*, h.dateHealth FROM VEHICULES_HEALTH_CHECKS c  LEFT OUTER JOIN VEHICULES_HEALTH h ON h.idVehiculeHealth = c.idVehiculeHealth WHERE idVehicule = :idVehicule) v ON a.idHealthType = v.idHealthType
+			                                        WHERE
+			                                            a.idVehicule = :idVehicule
+			                                        GROUP BY
+			                                            a.idHealthAlerte
+			                                    ;');
+			                                    $maintenances->execute(array('idVehicule'=>$_GET['id']));
+			                                    while($maintenance = $maintenances->fetch())
+			                                    {?>
+			                                        <tr>
+			                                            <th>Prochain(e) <?=$maintenance['libelleHealthType']?></th>
+			                                            <td><?php
+			                                                if($maintenance['dateHealth'] == Null)
+			                                                {
+			                                                    echo '<span class="badge bg-red">Aucune maintenance enregistrée</span>';
+			                                                }
+			                                                else
+			                                                {
+			                                                    $nextMaint = date('Y-m-d', strtotime($maintenance['dateHealth']. ' + '.$maintenance['frequenceHealth'].' days'));
+			                                                    if($nextMaint <= date('Y-m-d'))
+			                                                    {
+			                                                        echo '<span class="badge bg-red">'.$nextMaint.'</span>';
+			                                                    }
+			                                                    else
+			                                                    {
+			                                                        echo '<span class="badge bg-green">'.$nextMaint.'</span>';
+			                                                    }
+			                                                }
+			                                            ?></td>
+			                                        </tr>
+			                                    <?php }
+			                                ?>
+			                                <tr>
+			                                    <th>Equipements embarqués</th>
+			                                    <td>
+			                                    	<?= ($data['pneusAVhivers']==1)? 'Pneus hivers Avant<br/>':'' ?>
+			                                    	<?= ($data['pneusARhivers']==1)? 'Pneus hivers Arrière<br/>':'' ?>
+			                                    	<?= ($data['priseAlimentation220']==1)? 'Prise MARECHAL 220V<br/>':'' ?>
+			                                    	<?= ($data['climatisation']==1)? 'Climatisation<br/>':'' ?>
+			                                    	<?= ($data['signaletiqueOrange']==1)? 'Feux oranges<br/>':'' ?>
+			                                    	<?= ($data['signaletiqueBleue']==1)? 'Feux bleux<br/>':'' ?>
+			                                    	<?= ($data['signaletique2tons']==1)? 'Sirène 2 tons<br/>':'' ?>
+			                                    	<?= ($data['signaletique3tons']==1)? 'Sirène 3 tons<br/>':'' ?>
+			                                    	<?= ($data['pmv']==1)? 'Panneau à message variable<br/>':'' ?>
+			                                    	<?= ($data['fleche']==1)? 'Flèche<br/>':'' ?>
+			                                    	<?= ($data['nbCones']>0)? $data['nbCones'].' cônes de lubëck<br/>':'' ?>
+			                                	</td>
+			                                </tr>
+			                                <tr>
+			                                    <th>Remarques</th>
+			                                    <td><?= nl2br($data['remarquesVehicule']) ?></td>
+			                                </tr>
+			                            </table>
+
+			                            <?php
+						                    $nb = $db->prepare('SELECT COUNT(*) as nb FROM VIEW_VEHICULES_KM WHERE idVehicule = :idVehicule;');
+						                    $nb->execute(array(
+						                        'idVehicule' => $_GET['id']));
+						                    $nb=$nb->fetch();
+						                    $nb = $nb['nb'];
+						                    if($nb > 1)
+						                    {
+						                ?>
+			                            	Evolution kilométrique:
+				                            <div class="chart-responsive">
+				                                <div class="chart" id="line-chart" style="height: 300px;"></div>
+				                            </div>
+						                <?php } ?>
+			                        </div>
+		                        </div>
+	                        </div>
                         </div>
                     </div>
                     <!-- /.widget-user -->
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <!-- Widget: user widget style 1 -->
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
@@ -478,27 +508,7 @@ if ($_SESSION['vehicules_lecture']==0)
                     </div>
                     <!-- /.widget-user -->
                 </div>
-                <?php
-                    $nb = $db->prepare('SELECT COUNT(*) as nb FROM VIEW_VEHICULES_KM WHERE idVehicule = :idVehicule;');
-                    $nb->execute(array(
-                        'idVehicule' => $_GET['id']));
-                    $nb=$nb->fetch();
-                    $nb = $nb['nb'];
-                    if($nb > 1)
-                    {
-                ?>
-                    <div class="col-md-12">
-                        <div class="box box-success">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Evolution kilométrique</h3>
-                            </div>
-                            <div class="box-body chart-responsive">
-                                <div class="chart" id="line-chart" style="height: 300px;"></div>
-                            </div>
-                        </div>
-                    </div>
-                <?php } ?>
-
+                
                 <?php
                     if ($_SESSION['alertesBenevolesVehicules_lecture']==1){ ?>
                         <div class="col-md-12">
