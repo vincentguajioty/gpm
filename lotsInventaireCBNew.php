@@ -47,7 +47,7 @@ if ($_SESSION['lots_modification']==0)
 
             <?php $autofocus = 1; ?>
             
-            <form role="form" class="spinnerAttenteSubmit" action="lotsInventaireCBNewCheckScan.php?id=<?=$_GET['id']?>" method="POST">
+            <form role="form" class="spinnerAttenteSubmit" action="lotsInventaireCBNewCheckScan.php?id=<?=$_GET['id']?>&methode=1" method="POST">
                 <?php
                     $sacs = $db->prepare('SELECT * FROM MATERIEL_SAC WHERE idLot = :idLot;');
                     $sacs->execute(array('idLot' => $_GET['id']));

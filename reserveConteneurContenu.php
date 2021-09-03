@@ -136,7 +136,9 @@ if ($_SESSION['reserve_lecture']==0)
                 <div class="col-md-12">
                     <div class="box box-warning box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $data['libelleConteneur']; ?></h3> <?php if ($_SESSION['reserve_modification']==1 AND $data['inventaireEnCours']==Null) {?><a href="reserveConteneurForm.php?id=<?=$data['idConteneur']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
+                            <h3 class="box-title"><?php echo $data['libelleConteneur']; ?></h3>
+                            <?php if ($_SESSION['reserve_modification']==1 AND $data['inventaireEnCours']==Null) {?><a href="reserveConteneurForm.php?id=<?=$data['idConteneur']?>" class="btn btn-xs modal-form"><i class="fa fa-pencil"></i></a><?php }?>
+                            <?php if ($_SESSION['codeBarre_lecture']==1) {?><a href="reserveConteneurCBPrintForm.php?id=<?=$data['idConteneur']?>" class="btn btn-xs modal-form" title="Imprimer le code barre de ce conteneur de réserve"><i class="fa fa-barcode"></i> Impression code barre conteneur</a><?php }?>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                 </button>

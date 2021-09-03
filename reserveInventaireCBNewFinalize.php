@@ -52,69 +52,25 @@ else
             {
                 foreach ($_POST['formArray'] as $idConteneur => $materiel) {
                     foreach ($materiel as $idReserveElement => $matos){
-                        if ($matos['per'] != Null)
-                        {
-                            $query = $db->prepare('
-                                UPDATE
-                                    RESERVES_MATERIEL
-                                SET
-                                    peremptionReserve = :peremptionReserve,
-                                    quantiteReserve   = :quantiteReserve
-                                WHERE
-                                    idReserveElement  = :idReserveElement
-                                ;');
-                            $query->execute(array(
-                                'peremptionReserve' => $matos['per'],
-                                'quantiteReserve'   => $matos['qtt'],
-                                'idReserveElement'  => $idReserveElement
-                            ));
-                        }
-                        else
-                        {
-                            $query = $db->prepare('UPDATE RESERVES_MATERIEL SET quantiteReserve = :quantiteReserve WHERE idReserveElement = :idReserveElement;');
-                            $query->execute(array(
-                                'quantiteReserve' => $matos['qtt'],
-                                'idReserveElement' => $idReserveElement
-                            ));
-                        }
+                        $matos['per'] = ($matos['per'] == Null) ? Null : $matos['per'];
+                        $query = $db->prepare('
+                            UPDATE
+                                RESERVES_MATERIEL
+                            SET
+                                peremptionReserve = :peremptionReserve,
+                                quantiteReserve   = :quantiteReserve
+                            WHERE
+                                idReserveElement  = :idReserveElement
+                            ;');
+                        $query->execute(array(
+                            'peremptionReserve' => $matos['per'],
+                            'quantiteReserve'   => $matos['qtt'],
+                            'idReserveElement'  => $idReserveElement
+                        ));
                     }
                 }
             }
 
-            $scansSuccess = $db->prepare('
-                SELECT
-                    *
-                FROM 
-                    VIEW_SCAN_RESULTS_RESERVES
-                WHERE
-                    idConteneur = :idConteneur
-                    AND
-                    idMaterielCatalogue IS NOT NULL
-                ;
-            ');
-            $scansSuccess->execute(array(
-                'idConteneur' => $_GET['id'],
-            ));
-            while($element = $scansSuccess->fetch())
-            {
-                $update = $db->prepare('
-                    UPDATE
-                        RESERVES_MATERIEL
-                    SET
-                        peremptionReserve = :peremptionReserve,
-                        quantiteReserve = :quantiteReserve
-                    WHERE
-                        idConteneur = :idConteneur
-                        AND
-                        idMaterielCatalogue = :idMaterielCatalogue
-                ;');
-                $update->execute(array(
-                    'peremptionReserve'   => $element['peremption'],
-                    'quantiteReserve'     => $element['quantite'],
-                    'idConteneur'         => $element['idConteneur'],
-                    'idMaterielCatalogue' => $element['idMaterielCatalogue'],
-                ));
-            }
 
             $clean = $db->prepare('DELETE FROM RESERVES_INVENTAIRES_TEMP WHERE idConteneur = :idConteneur;');
             $clean->execute(array(

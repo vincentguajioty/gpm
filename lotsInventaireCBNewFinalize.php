@@ -54,64 +54,17 @@ else
                     foreach ($sacs as $idSac => $emplacements) {
                         foreach ($emplacements as $idEmplacement => $materiel) {
                             foreach ($materiel as $idElement => $matos){
-                                if ($matos['per'] != Null)
-                                {
-                                    $query = $db->prepare('UPDATE MATERIEL_ELEMENT SET peremption = :peremption, quantite = :quantite WHERE idElement = :idElement;');
-                                    $query->execute(array(
-                                        'peremption' => $matos['per'],
-                                        'quantite' => $matos['qtt'],
-                                        'idElement' => $idElement
-                                    ));
-                                }
-                                else
-                                {
-                                    $query = $db->prepare('UPDATE MATERIEL_ELEMENT SET quantite = :quantite WHERE idElement = :idElement;');
-                                    $query->execute(array(
-                                        'quantite' => $matos['qtt'],
-                                        'idElement' => $idElement
-                                    ));
-                                }
+                                $matos['per'] = ($matos['per'] == Null) ? Null : $matos['per'];
+                                $query = $db->prepare('UPDATE MATERIEL_ELEMENT SET peremption = :peremption, quantite = :quantite WHERE idElement = :idElement;');
+                                $query->execute(array(
+                                    'peremption' => $matos['per'],
+                                    'quantite' => $matos['qtt'],
+                                    'idElement' => $idElement
+                                ));
                             }
                         }
                     }
                 }
-            }
-
-            $scansSuccess = $db->prepare('
-                SELECT
-                    *
-                FROM 
-                    VIEW_SCAN_RESULTS_LOTS
-                WHERE
-                    idLot = :idLot
-                    AND
-                    idEmplacement IS NOT NULL
-                    AND
-                    idMaterielCatalogue IS NOT NULL
-                ;
-            ');
-            $scansSuccess->execute(array(
-                'idLot' => $_GET['id'],
-            ));
-            while($element = $scansSuccess->fetch())
-            {
-                $update = $db->prepare('
-                    UPDATE
-                        MATERIEL_ELEMENT
-                    SET
-                        peremption = :peremption,
-                        quantite = :quantite
-                    WHERE
-                        idEmplacement = :idEmplacement
-                        AND
-                        idMaterielCatalogue = :idMaterielCatalogue
-                ;');
-                $update->execute(array(
-                    'peremption'          => $element['peremption'],
-                    'quantite'            => $element['quantite'],
-                    'idEmplacement'       => $element['idEmplacement'],
-                    'idMaterielCatalogue' => $element['idMaterielCatalogue'],
-                ));
             }
 
             $clean = $db->prepare('DELETE FROM LOTS_INVENTAIRES_TEMP WHERE idLot = :idLot;');

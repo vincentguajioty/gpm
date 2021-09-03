@@ -32,6 +32,14 @@ if ($_SESSION['codeBarre_lecture']==0)
         <!-- Main content -->
         <section class="content">
             <?php include('confirmationBox.php'); ?>
+            <?php
+                if($LOTSLOCK OR $RESERVESLOCK)
+                {
+                    echo '<div class="alert alert-warning alert-dismissible">';
+                    echo '<i class="icon fa fa-warning"></i> Des inventaires de lots sont en cours, cette section est donc verrouillée en lecture seule.';
+                    echo '</div>';
+                }
+            ?>
             <div class="box">
                 <div class="box-header">
                     <?php if ($_SESSION['codeBarre_ajout']==1) {?>
@@ -39,10 +47,11 @@ if ($_SESSION['codeBarre_lecture']==0)
     					<h3 class="box-title"><a href="codesBarreFormInterne.php" class="btn btn-sm btn-success modal-form">Générer un code barre interne et l'ajouter au référentiel</a></h3>
                     <?php }?>
                     <h3 class="box-title pull-right "><a href="codesBarrePrintRef.php" class="btn btn-sm btn-success">Imprimer le référentiel des codes barre</a></h3>
+                    <h3 class="box-title pull-right "><a href="codesBarreExport.php" class="btn btn-sm btn-success">Exporter le référentiel des codes barre</a></h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table id="tri1" class="table table-bordered table-hover">
+                    <table id="tri1R" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th class="all" style="width: 10px">#</th>

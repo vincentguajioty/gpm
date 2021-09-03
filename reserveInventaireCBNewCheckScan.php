@@ -78,28 +78,39 @@ if ($_SESSION['reserve_modification']==0)
                     $scanFailure->execute(array('idConteneur'=>$data['idConteneur']));
                     $scanFailure = $scanFailure->fetch();
 
-                    $manque = $db->prepare('
+                    $scanAbsent = $db->prepare('
                         SELECT
                             COUNT(*) as nb
                         FROM
                             RESERVES_MATERIEL m
-                            LEFT OUTER JOIN RESERVES_CONTENEUR e ON m.idConteneur=e.idConteneur
-                            LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
                             LEFT OUTER JOIN (SELECT * FROM VIEW_SCAN_RESULTS_RESERVES WHERE idConteneur = :idConteneur) v ON m.idMaterielCatalogue = v.idMaterielCatalogue
                         WHERE
                             m.idConteneur = :idConteneur
                             AND
                             v.idMaterielCatalogue IS NULL
-                        ORDER BY
-                            c.libelleMateriel;
                     ;');
-                    $manque->execute(array(
+                    $scanAbsent->execute(array(
                         'idConteneur' => $data['idConteneur'],
                         'idTypeLot'     => $lot['idTypeLot'],
                     ));
-                    $manque = $manque->fetch();
+                    $scanAbsent = $scanAbsent->fetch();
 
-                    $surplus = $db->prepare('
+                    $scansPerimes = $db->prepare('
+                        SELECT
+                            COUNT(*) as nb
+                        FROM
+                            VIEW_SCAN_RESULTS_RESERVES 
+                        WHERE
+                            peremption <= CURRENT_TIMESTAMP
+                            AND
+                            idConteneur = :idConteneur
+                    ;');
+                    $scansPerimes->execute(array(
+                        'idConteneur' => $data['idConteneur'],
+                    ));
+                    $scansPerimes = $scansPerimes->fetch();
+
+                    $scanTrop = $db->prepare('
                         SELECT
                             COUNT(*) as nb
                         FROM
@@ -112,114 +123,120 @@ if ($_SESSION['reserve_modification']==0)
                             AND
                             s.idMaterielCatalogue IS NOT NULL
                     ;');
-                    $surplus->execute(array('idConteneur'=>$data['idConteneur']));
-                    $surplus = $surplus->fetch();
+                    $scanTrop->execute(array('idConteneur'=>$data['idConteneur']));
+                    $scanTrop = $scanTrop->fetch();
 
-                    $nberreurs = $scanFailure['nb']+$manque['nb']+$surplus['nb'];
+                    $nberreurs = $scanFailure['nb']+$scanAbsent['nb']+$scanTrop['nb']+$scansPerimes['nb'];
+
 
                     if($nberreurs > 0)
                     { ?>
-                        <div class="box box-danger collapsed-box box-solid">
+                        <div class="box box-warning collapsed-box box-solid">
                             <div class="box-header with-border">
                                 <h3 class="box-title"><?= $data['libelleConteneur'] ?> <i class="fa fa-arrow-right"></i> <?= $nberreurs ?> points d'attention</h3>
                                 <div class="box-tools pull-right"><button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-plus"></i></button></div>
                             </div>
                             <div class="box-body">
-                                <table class="table table-striped">
+                    <?php } else { ?>
+                        <div class="box box-success collapsed-box box-solid">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><?= $data['libelleConteneur'] ?> <i class="fa fa-arrow-right"></i> OK !</h3>
+                                <div class="box-tools pull-right"><button type="button" class="btn btn-box-tool" data-widget="collapse" title="Agrandir/Réduire"><i class="fa fa-plus"></i></button></div>
+                            </div>
+                            <div class="box-body">
+                    <?php } ?>
+
+                                <?php
+                                    if($scanFailure['nb'] > 0)
+                                    {
+                                        echo '<div class="alert alert-warning">';
+                                        echo '<i class="icon fa fa-warning"></i> '.$scanFailure['nb'].' codes ont été scannés mais pas reconnus. Veuillez vérifier l\'inventaire ci-dessous.';
+                                        echo '</div>';
+                                    }
+                                    if($scanTrop['nb'] > 0)
+                                    {
+                                        echo '<div class="alert alert-warning">';
+                                        echo '<i class="icon fa fa-warning"></i> Les éléments suivants ont été scannés dans ce conteneur et doivent être retirés:';
+                                        echo '<ul>';
+                                        $elements = $db->prepare('
+                                            SELECT
+                                                s.*
+                                            FROM
+                                                VIEW_SCAN_RESULTS_RESERVES s
+                                                LEFT OUTER JOIN (SELECT * FROM RESERVES_MATERIEL WHERE idConteneur = :idConteneur) e ON e.idMaterielCatalogue = s.idMaterielCatalogue
+                                            WHERE
+                                                s.idConteneur = :idConteneur
+                                                AND
+                                                e.idConteneur IS NULL
+                                                AND
+                                                s.idMaterielCatalogue IS NOT NULL
+                                        ');
+                                        $elements->execute(array('idConteneur'=>$data['idConteneur']));
+                                        while($element = $elements->fetch())
+                                        {
+                                            echo '<li>'.$element['libelleMateriel'].'</li>';
+                                        }
+                                        echo '</ul>';
+                                        echo '</div>';
+                                    }
+                                ?>
+
+                                <table class="table">
                                     <thead>
-                                        <tr>
-                                            <?php if($scanFailure['nb']>0){?><th>Nombre de codes barre non-reconnus</th><?php } ?>
-                                            <?php if($manque['nb']>0){?><th>Elements manquants (non-scannés)</th><?php } ?>
-                                            <?php if($surplus['nb']>0){?><th>Elements en surplus qu'il faut enlever</th><?php } ?>
-                                        </tr>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>Libelle du matériel</th>
+                                        <th>Quantité</th>
+                                        <th>Péremption</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <?php if($scanFailure['nb']>0){?><td><?=$scanFailure['nb']?></td><?php } ?>
-                                            <?php if($manque['nb']>0){?><td>
-                                                <table class="table table-striped">
-                                                    <thead>
-                                                    <tr>
-                                                        <th style="width: 10px">#</th>
-                                                        <th>Libelle du matériel</th>
-                                                        <th>Quantité</th>
-                                                        <th>Péremption</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                        $materiels = $db->prepare('
-                                                            SELECT
-                                                                m.*,
-                                                                e.*,
-                                                                c.*
-                                                            FROM
-                                                                RESERVES_MATERIEL m
-                                                                LEFT OUTER JOIN RESERVES_CONTENEUR e ON m.idConteneur=e.idConteneur
-                                                                LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
-                                                                LEFT OUTER JOIN (SELECT * FROM VIEW_SCAN_RESULTS_RESERVES WHERE idConteneur = :idConteneur) v ON m.idMaterielCatalogue = v.idMaterielCatalogue
-                                                            WHERE
-                                                                m.idConteneur = :idConteneur
-                                                                AND
-                                                                v.idMaterielCatalogue IS NULL
-                                                            ORDER BY
-                                                                c.libelleMateriel;');
-                                                        $materiels->execute(array(
-                                                            'idConteneur' => $data['idConteneur'],
-                                                        ));
-                                                        while ($materiel = $materiels->fetch()) { ?>
-                            
-                                                            <tr>
-                                                                <td><?php echo $materiel['idReserveElement']; ?></td>
-                                                                <td><?php echo $materiel['libelleMateriel']; ?></td>
-                                                                <td><input type="text" class="form-control" value="<?php echo $materiel['quantiteReserve']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $materiel['idReserveElement']; ?>][qtt]"></td>
-                                                                <td><input type="text" class="input-datepicker form-control" value="<?php echo $materiel['peremptionReserve']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $materiel['idReserveElement']; ?>][per]" <?php if ($materiel['peremptionReserve'] != Null) echo 'required';?>></td>
-                                                            </tr>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </tbody>
-                                                </table>
-                                            </td><?php } ?>
-                                            <?php if($surplus['nb']>0){?><td>
-                                                <ul>
-                                                    <?php
-                                                        $surplus = $db->prepare('
-                                                            SELECT
-                                                                s.*
-                                                            FROM
-                                                                VIEW_SCAN_RESULTS_RESERVES s
-                                                                LEFT OUTER JOIN (SELECT * FROM RESERVES_MATERIEL WHERE idConteneur = :idConteneur) e ON e.idMaterielCatalogue = s.idMaterielCatalogue
-                                                            WHERE
-                                                                s.idConteneur = :idConteneur
-                                                                AND
-                                                                e.idConteneur IS NULL
-                                                                AND
-                                                                s.idMaterielCatalogue IS NOT NULL
-                                                        ');
-                                                        $surplus->execute(array('idConteneur'=>$data['idConteneur']));
-                                                        while($surplu = $surplus->fetch())
-                                                        {
-                                                            echo '<li>'.$surplu['libelleMateriel'].'</li>';
-                                                        }
-                                                    ?>
-                                                </ul>
-                                            </td><?php } ?>
-                                        </tr>
+                                        <?php
+                                            $materiels = $db->prepare('
+                                                SELECT
+                                                    e.*,
+                                                    c.libelleMateriel,
+                                                    v.peremption as peremptionScan,
+                                                    v.quantite as quantiteScan
+                                                FROM
+                                                    RESERVES_MATERIEL e
+                                                    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue
+                                                    LEFT OUTER JOIN (SELECT * FROM VIEW_SCAN_RESULTS_RESERVES WHERE idConteneur = :idConteneur) v ON e.idMaterielCatalogue = v.idMaterielCatalogue
+                                                WHERE
+                                                    e.idConteneur = :idConteneur
+                                            ;');
+                                            $materiels->execute(array('idConteneur'=>$data['idConteneur']));
+                                            while($materiel = $materiels->fetch())
+                                            {
+                                                if(is_null($materiel['quantiteScan']))
+                                                    {$colorQTT='has-error';}else{$colorQTT='has-success';}
+                                                if(($materiel['peremptionScan'] != Null AND $materiel['peremptionScan'] <= date('Y-m-d')) OR ($materiel['peremptionReserve'] != Null AND $materiel['peremptionScan'] <= date('Y-m-d')))
+                                                    {$colorDATE='has-error';}else{$colorDATE='has-success';}
+                                                if($colorQTT=='has-success' AND $colorDATE=='has-success')
+                                                    {$colorLINE='bg-success';}else{$colorLINE='bg-danger';}
+                                                ?>
+                                                <tr class="<?=$colorLINE?>">
+                                                    <td><?= $materiel['idReserveElement'] ?></td>
+                                                    <td><?= $materiel['libelleMateriel'] ?></td>
+                                                    <td>
+                                                        <div class="form-group <?= $colorQTT ?>">
+                                                            <input type="text" class="form-control" required value="<?php echo $materiel['quantiteScan']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $materiel['idReserveElement']; ?>][qtt]">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group <?= $colorDATE ?>">
+                                                            <input type="text" class="input-datepicker form-control" value="<?php echo $materiel['peremptionScan']; ?>"name="formArray[<?php echo $_GET['id']; ?>][<?php echo $materiel['idReserveElement']; ?>][per]" <?php if ($materiel['peremptionReserve'] != Null) echo 'required';?>>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <?php }
+                                        ?>
                                     </tbody>
                                 </table>
+
                             </div>
                         </div>
-                    <?php }
-                    else
-                    { ?>
-                        <div class="box box-success box-solid">
-                            <div class="box-header">
-                                <h3 class="box-title"><?= $data['libelleConteneur'] ?> <i class="fa fa-arrow-right"></i> Inventaire terminé !</h3>
-                            </div>
-                        </div>
-                    <?php }
-                ?>
+
 
                 <div class="box">
                     <div class="box-body">

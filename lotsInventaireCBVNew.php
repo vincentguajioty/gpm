@@ -45,7 +45,7 @@ if ($_SESSION['lots_modification']==0)
         <section class="content">
             <?php include('confirmationBox.php'); ?>
             
-            <form role="form" class="spinnerAttenteSubmit" action="lotsInventaireCBVNewCheckScan.php?id=<?=$_GET['id']?>" method="POST">
+            <form role="form" class="spinnerAttenteSubmit" action="lotsInventaireCBNewCheckScan.php?id=<?=$_GET['id']?>&methode=2" method="POST">
                 <div class="box box-info box-solid">
                     <div class="box-header with-border">
                         <h3 class="box-title">Scanner successivement les emplacements puis leur contenu</h3>

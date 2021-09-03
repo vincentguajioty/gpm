@@ -4,6 +4,30 @@
 		"selected_items":
 		[
 			[
+				"RESER",
+				"RESERVES_CONTENEUR\t(reserveConteneurContenu.php)"
+			],
+			[
+				"RESERVE",
+				"RESERVES_CONTENEUR\tabc"
+			],
+			[
+				"nav",
+				"navbarBYPASS\t(lotsInventaireCBNew.php)"
+			],
+			[
+				"libelle",
+				"libelleMateriel\tabc"
+			],
+			[
+				"MAT",
+				"MATERIEL_CATALOGUE\t(lotsInventaireCBVNewCheckScan.php)"
+			],
+			[
+				"MATERIEL",
+				"MATERIEL_ELEMENT\tabc"
+			],
+			[
 				"auto",
 				"autofocus\tabc"
 			],
@@ -32,20 +56,12 @@
 				"categories\tabc"
 			],
 			[
-				"MATERIEL",
-				"MATERIEL_SAC\tabc"
-			],
-			[
 				"MATERI",
 				"MATERIEL_EMPLACEMENT\tabc"
 			],
 			[
 				"lib",
 				"libelleLot\t(emplacements.php)"
-			],
-			[
-				"libelle",
-				"libelleSac\t(emplacements.php)"
 			],
 			[
 				"LOT",
@@ -58,10 +74,6 @@
 			[
 				"reserve",
 				"reserve_modification\tabc"
-			],
-			[
-				"RESER",
-				"RESERVESLOCK\tabc"
 			],
 			[
 				"anticipat",
@@ -78,10 +90,6 @@
 			[
 				"VIEW",
 				"VIEW_SCAN_RESULTS\t(update12.0.sql)"
-			],
-			[
-				"MAT",
-				"MATERIEL_ELEMENT\t(lotsInventaireCBNew.php)"
 			],
 			[
 				"text",
@@ -453,31 +461,47 @@
 	},
 	"file_history":
 	[
+		"//192.168.100.248/web_recette/gpm/lotsInventaireCBNewCheckScan.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireCBNew.php",
+		"//192.168.100.248/web_recette/gpm/reserveConteneurCBShow.php",
+		"//192.168.100.248/web_recette/gpm/reserveConteneurCBPrintForm.php",
+		"//192.168.100.248/web_recette/gpm/reserveConteneurContenu.php",
+		"//192.168.100.248/web_recette/gpm/emplacementsCBShow.php",
+		"//192.168.100.248/web_recette/gpm/lotsCBPrintForm.php",
 		"//192.168.100.248/web_recette/gpm/lotsContenu.php",
+		"//192.168.100.248/web_recette/gpm/lots.php",
+		"//192.168.100.248/web_recette/gpm/codesBarre.php",
 		"//192.168.100.248/web_recette/gpm/catalogue.php",
+		"//192.168.100.248/web_recette/gpm/reserveInventaireCBNewCheckScan.php",
+		"//192.168.100.248/web_recette/gpm/reserveInventaireNew.php",
+		"//192.168.100.248/web_recette/gpm/reserveInventaireCBNewFinalize.php",
+		"//192.168.100.248/web_recette/gpm/reserveInventaireCBNew.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireCBVNewCheckScan.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireCBVNew.php",
+		"//192.168.100.248/web_recette/gpm/commandeView.php",
+		"//192.168.100.248/web_recette/gpm/navbar.php",
+		"/U/majDist/gpmTimeLine.php",
+		"//192.168.100.248/web_recette/gpm/navbarSearch.php",
+		"//192.168.100.248/web_recette/gpm/lotsInventaireCBNewFinalize.php",
+		"//192.168.100.248/web_recette/gpm/vehiculesAdd.php",
+		"//192.168.100.248/web_recette/gpm/confirmationBox.php",
+		"//192.168.100.248/web_recette/gpm/centreCoutsContenu.php",
+		"//192.168.100.248/web_recette/gpm/codesBarrePrintRef.php",
+		"//192.168.100.248/web_recette/gpm/config/config.php",
+		"//192.168.100.248/web_recette/gpm/distmaj/INSTALL2.php",
+		"//192.168.100.248/web_recette/gpm/distmaj/update12.2.sql",
 		"//192.168.100.248/web_recette/gpm/lotsInventaireHelp.php",
 		"//192.168.100.248/web_recette/gpm/sacs.php",
-		"//192.168.100.248/web_recette/gpm/lots.php",
-		"//192.168.100.248/web_recette/gpm/reserveInventaireCBNew.php",
-		"//192.168.100.248/web_recette/gpm/lotsInventaireCBNew.php",
-		"//192.168.100.248/web_recette/gpm/lotsInventaireCBVNew.php",
-		"//192.168.100.248/web_recette/gpm/reserveConteneurContenu.php",
 		"//192.168.100.248/web/gpmunass69/logs/20200512.log",
 		"//192.168.100.248/web/gpmunass69/distmaj/update11.1.sql",
 		"//192.168.100.248/web/gpmvg/logs/20200512.log",
 		"//192.168.100.248/web/majDist/gpmTimeLine.php",
 		"//192.168.100.248/web/majDist/gpmMAJ.php",
-		"//192.168.100.248/web_recette/gpm/codesBarrePrintRef.php",
-		"//192.168.100.248/web_recette/gpm/emplacementsCBShow.php",
-		"//192.168.100.248/web_recette/gpm/codesBarre.php",
 		"//192.168.100.248/web_recette/gpm/lotsInventaire.php",
 		"//192.168.100.248/web_recette/gpm/codesBarreShow.php",
 		"//192.168.100.248/web_recette/gpm/distmaj/update12.1.sql",
-		"//192.168.100.248/web_recette/gpm/distmaj/INSTALL2.php",
 		"//192.168.100.248/web_recette/gpm/lotsCBShow.php",
-		"//192.168.100.248/web_recette/gpm/lotsInventaireCBVNewCheckScan.php",
 		"//192.168.100.248/web_recette/gpm/sacsCBShow.php",
-		"//192.168.100.248/web_recette/gpm/lotsCBPrintForm.php",
 		"//192.168.100.248/web_recette/gpm/sacsCBPrintForm.php",
 		"//192.168.100.248/web_recette/gpm/emplacementsCBPrintForm.php",
 		"//192.168.100.248/web_recette/gpm/sacsContenu.php",
@@ -489,14 +513,10 @@
 		"/V/barcode/v2/barcode.php",
 		"/V/barcode/v2/barcode128.php",
 		"//192.168.100.248/web_recette/gpm/logCheck.php",
-		"//192.168.100.248/web_recette/gpm/reserveInventaireCBNewCheckScan.php",
-		"//192.168.100.248/web_recette/gpm/lotsInventaireCBNewCheckScan.php",
 		"//192.168.100.248/web_recette/gpm/reserveInventaireNewAbort.php",
 		"//192.168.100.248/web_recette/gpm/reserveInventaireAbortLock.php",
-		"//192.168.100.248/web_recette/gpm/reserveInventaireCBNewFinalize.php",
 		"//192.168.100.248/web_recette/gpm/distmaj/update12.0.sql",
 		"//192.168.100.248/web_recette/gpm/config/bdd.php",
-		"//192.168.100.248/web_recette/gpm/lotsInventaireCBNewFinalize.php",
 		"//192.168.100.248/web_recette/gpm/config/cron.php",
 		"//192.168.100.248/web_recette/gpm/distmaj/view_reload.sql",
 		"//192.168.100.248/web_recette/gpm/reserveConteneurs.php",
@@ -504,11 +524,8 @@
 		"//192.168.100.248/web_recette/gpm/reserveInventaireNewAdd.php",
 		"//192.168.100.248/web_recette/gpm/lotsInventaireNew.php",
 		"//192.168.100.248/web_recette/gpm/lotsInventaireNewAdd.php",
-		"//192.168.100.248/web_recette/gpm/reserveInventaireNew.php",
 		"//192.168.100.248/web_recette/gpm/lotsInventaireNewAbort.php",
 		"//192.168.100.248/web_recette/gpm/materiels.php",
-		"//192.168.100.248/web_recette/gpm/config/config.php",
-		"//192.168.100.248/web_recette/gpm/navbarSearch.php",
 		"//192.168.100.248/web_recette/gpm/transfertCmdRes.php",
 		"//192.168.100.248/web_recette/gpm/transfertResLots.php",
 		"//192.168.100.248/web_recette/gpm/lotsInventaireAbortLock.php",
@@ -525,11 +542,9 @@
 		"//192.168.100.248/web_recette/gpm/referentiels.php",
 		"//192.168.100.248/web_recette/gpm/distmaj/update11.2.sql",
 		"//192.168.100.248/web_recette/gpm/lotsDuplicateForm.php",
-		"//192.168.100.248/web_recette/gpm/confirmationBox.php",
 		"//192.168.100.248/web_recette/gpm/commandeItemAdd.php",
 		"//192.168.100.248/web_recette/gpm/commandeItemUpdate.php",
 		"//192.168.100.248/web_recette/gpm/commandeItemForm.php",
-		"//192.168.100.248/web_recette/gpm/commandeView.php",
 		"//192.168.100.248/web_recette/gpm/vhfEquipementsDocAdd.php",
 		"//192.168.100.248/web_recette/gpm/vhfEquipementsDocForm.php",
 		"//192.168.100.248/web_recette/gpm/vhfEquipementsContenu.php",
@@ -573,18 +588,11 @@
 		"/V/gpm/vehiculesAlerteBenevoleLockIpLock.php",
 		"/V/gpm/lotsAlerteBenevoleAffectationTiers.php",
 		"/V/gpm/lotsAlerteBenevoleAffectationTiersUpdate.php",
-		"//192.168.100.248/web_recette/gpm/userPWD.php",
-		"//192.168.100.248/web_recette/gpm/distmaj/update1.sql",
-		"//192.168.100.248/web_recette/gpm/annuaireAdd.php",
-		"//192.168.100.248/web_recette/gpm/alerteBenevole.php",
-		"//192.168.100.248/web_recette/gpm/vehiculesDocDelete.php",
-		"//192.168.100.248/web_recette/gpm/vehiculesUpdate.php",
-		"//192.168.100.248/web_recette/gpm/vehiculesDelete.php",
-		"//192.168.100.248/web_recette/gpm/lotsDelete.php"
+		"//192.168.100.248/web_recette/gpm/userPWD.php"
 	],
 	"find":
 	{
-		"height": 40.0
+		"height": 27.0
 	},
 	"find_in_files":
 	{
@@ -611,6 +619,25 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"idEmplacement",
+			"<?= $emplacement['libelleEmplacement'] ?>",
+			"surplus",
+			"idEmplacement",
+			"e.",
+			"manque",
+			"$matos['per']",
+			"emplacements",
+			"$_POST['dateAchat']",
+			"e.",
+			"scanInsuff",
+			"scanFailure",
+			"scanInsuff",
+			"scanAbsent",
+			"surplus",
+			"manque",
+			"colspan",
+			"th",
+			"12.1",
 			"fa-play",
 			"<th style=\"width: 1000px\">Code Barre</th>",
 			"vue",
@@ -719,26 +746,7 @@
 			"?>\n<?php",
 			"mailcopy",
 			"vehicules_revision_delais_notif",
-			"vehicules_ct_delais_notif",
-			"validation",
-			"data",
-			"YY",
-			"XX",
-			"echo\n\t\t\t\t\t\t\t\t\tbreak;",
-			"<?php if",
-			"<i class=\"fa fa-check bg-green\"></i>",
-			"data/",
-			"data",
-			"})\n",
-			"data",
-			"data2",
-			"personne",
-			"centreCoutsEstCharge",
-			"function ",
-			"depasseBudget",
-			"previsions",
-			"label",
-			"personnes"
+			"vehicules_ct_delais_notif"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -756,7 +764,7 @@
 	},
 	"incremental_find":
 	{
-		"height": 45.0
+		"height": 27.0
 	},
 	"input":
 	{
@@ -796,7 +804,7 @@
 	"pinned_build_system": "",
 	"replace":
 	{
-		"height": 86.0
+		"height": 50.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -805,6 +813,138 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"lotsCBcheck",
+				"lotsInventaireCBNewCheckScan.php"
+			],
+			[
+				"lotsinventaireCB",
+				"lotsInventaireCBNew.php"
+			],
+			[
+				"navbarsea",
+				"navbarSearch.php"
+			],
+			[
+				"cbshow",
+				"emplacementsCBShow.php"
+			],
+			[
+				"cbprintfor",
+				"lotsCBPrintForm.php"
+			],
+			[
+				"conteneur",
+				"reserveConteneurContenu.php"
+			],
+			[
+				"lotsconte",
+				"lotsContenu.php"
+			],
+			[
+				"lots",
+				"lots.php"
+			],
+			[
+				"emplacement",
+				"emplacementsCBShow.php"
+			],
+			[
+				"cata",
+				"catalogue.php"
+			],
+			[
+				"codes",
+				"codesBarre.php"
+			],
+			[
+				"reserveinventarenew",
+				"reserveInventaireNew.php"
+			],
+			[
+				"reservefin",
+				"reserveInventaireCBNewFinalize.php"
+			],
+			[
+				"reservecb",
+				"reserveInventaireCBNewCheckScan.php"
+			],
+			[
+				"reserveCBne",
+				"reserveInventaireCBNew.php"
+			],
+			[
+				"lotscbfina",
+				"lotsInventaireCBNewFinalize.php"
+			],
+			[
+				"lotscbcheck",
+				"lotsInventaireCBNewCheckScan.php"
+			],
+			[
+				"lotscbv",
+				"lotsInventaireCBVNew.php"
+			],
+			[
+				"lotsinvent",
+				"lotsInventaireCBNew.php"
+			],
+			[
+				"lotsInventaireCBV",
+				"lotsInventaireCBVNew.php"
+			],
+			[
+				"lotsCheck",
+				"lotsInventaireCBNewCheckScan.php"
+			],
+			[
+				"commandeV",
+				"commandeView.php"
+			],
+			[
+				"navbar",
+				"navbar.php"
+			],
+			[
+				"lotsinve",
+				"lotsInventaireCBNew.php"
+			],
+			[
+				"reserveinvenCB",
+				"reserveInventaireCBNewCheckScan.php"
+			],
+			[
+				"vehiculeAdd",
+				"vehiculesAdd.php"
+			],
+			[
+				"lotsInventaireCBNewFinalize",
+				"lotsInventaireCBNewFinalize.php"
+			],
+			[
+				"confirm",
+				"confirmationBox.php"
+			],
+			[
+				"vehiculesadd",
+				"vehiculesAdd.php"
+			],
+			[
+				"centrecoutconte",
+				"centreCoutsContenu.php"
+			],
+			[
+				"lotscbChe",
+				"lotsInventaireCBNewCheckScan.php"
+			],
+			[
+				"lotsVBneCheck",
+				"lotsInventaireCBVNewCheckScan.php"
+			],
+			[
+				"lotsInventaireHelp.php",
+				"lotsInventaireHelp.php"
+			],
 			[
 				"lotscont",
 				"lotsContenu.php"
@@ -818,20 +958,8 @@
 				"sacs.php"
 			],
 			[
-				"lots",
-				"lots.php"
-			],
-			[
-				"reservecb",
-				"reserveInventaireCBNew.php"
-			],
-			[
 				"lotscb",
 				"lotsInventaireCBNew.php"
-			],
-			[
-				"lotscbv",
-				"lotsInventaireCBVNew.php"
 			],
 			[
 				"reservec",
@@ -842,16 +970,8 @@
 				"codesBarrePrintRef.php"
 			],
 			[
-				"emplacement",
-				"emplacementsCBShow.php"
-			],
-			[
 				"printRef",
 				"codesBarrePrintRef.php"
-			],
-			[
-				"lotsconte",
-				"lotsContenu.php"
 			],
 			[
 				"conteneurCon",
@@ -884,10 +1004,6 @@
 			[
 				"final",
 				"lotsInventaireCBNewFinalize.php"
-			],
-			[
-				"cbshow",
-				"lotsCBShow.php"
 			],
 			[
 				"lotsCBV",
@@ -970,10 +1086,6 @@
 				"reserveInventaireCBNew.php"
 			],
 			[
-				"codes",
-				"codesBarre.php"
-			],
-			[
 				"form",
 				"lotsForm.php"
 			],
@@ -1016,10 +1128,6 @@
 			[
 				"lochec",
 				"logCheck.php"
-			],
-			[
-				"lotsCheck",
-				"lotsInventaireCBNewCheckScan.php"
 			],
 			[
 				"reserveInventCheck",
@@ -1098,20 +1206,12 @@
 				"lotsInventaireNewAbort.php"
 			],
 			[
-				"lotsinvent",
-				"lotsInventaireNew.php"
-			],
-			[
 				"inventaire",
 				"lotsInventaireNew.php"
 			],
 			[
 				"reserveInventaireAbortLock",
 				"reserveInventaireAbortLock.php"
-			],
-			[
-				"conteneur",
-				"reserveConteneurs.php"
 			],
 			[
 				"matie",
@@ -1224,98 +1324,6 @@
 			[
 				"vehiculeForm",
 				"vehiculesForm.php"
-			],
-			[
-				"lotsinventNew",
-				"lotsInventaireNew.php"
-			],
-			[
-				"log",
-				"logCheck.php"
-			],
-			[
-				"scri",
-				"scripts.php"
-			],
-			[
-				"vehiculesDoc",
-				"vehiculesDocAdd.php"
-			],
-			[
-				"emplacementsForm",
-				"emplacementsForm.php"
-			],
-			[
-				"cbnew",
-				"lotsInventaireCBNew.php"
-			],
-			[
-				"lotsinventairenew",
-				"lotsInventaireNew.php"
-			],
-			[
-				"navsear",
-				"navbarSearch.php"
-			],
-			[
-				"codesB",
-				"codesBarre.php"
-			],
-			[
-				"update12",
-				"distmaj\\update12.0.sql"
-			],
-			[
-				"index",
-				"index.php"
-			],
-			[
-				"profils",
-				"profils.php"
-			],
-			[
-				"referen",
-				"referentiels.php"
-			],
-			[
-				"cata",
-				"catalogue.php"
-			],
-			[
-				"transfertResLts",
-				"transfertResLots.php"
-			],
-			[
-				"mateirels",
-				"materiels.php"
-			],
-			[
-				"emplacementCote",
-				"emplacementsContenu.php"
-			],
-			[
-				"sacsConte",
-				"sacsContenu.php"
-			],
-			[
-				"lotsduplica",
-				"lotsDuplicateForm.php"
-			],
-			[
-				"lotConte",
-				"lotsContenu.php"
-			],
-			[
-				"lotsinven",
-				"lotsInventaireNewAdd.php"
-			],
-			[
-				"sac",
-				"sacsContenu.php"
-			],
-			[
-				"materiels",
-				"materiels.php"
 			]
 		],
 		"width": 0.0

@@ -35,59 +35,6 @@ include('logCheck.php');
     <!-- Main content -->
     <section class="content">
         <?php include('confirmationBox.php'); ?>
-
-        <?php
-        if($_SESSION['codeBarre_lecture']==1)
-        { ?>
-          <div class="box box-success">
-            <div class="box-header">
-              <i class="fa fa-search"></i>
-              <h3 class="box-title">Références par code barre</h3>
-            </div>
-            <div class="box-body">
-              <table class="table table-bordered">
-                <thead>
-                      <tr>
-                          <th style="width: 10px">#</th>
-                          <th>Code Barre</th>
-                          <th>Base</th>
-                          <th>Element du catalogue</th>
-                          <th>Péremption spécifiée</th>
-                          <th>Commentaires</th>
-                          <th>Actions</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                  <?php
-                  $query = $db->query('SELECT c.*, m.libelleMateriel FROM CODES_BARRE c LEFT OUTER JOIN MATERIEL_CATALOGUE m ON c.idMaterielCatalogue = m.idMaterielCatalogue WHERE codeBarre LIKE "%'.$_POST['search'].'%";');
-                  while ($data = $query->fetch())
-                  {?>
-                      <tr>
-                        <td><?= $data['idCode'] ?></td>
-                        <td><?= $data['codeBarre'] ?></td>
-                        <td><?php if($data['internalReference']){echo 'Interne';}else{echo 'Fournisseur';} ?></td>
-                        <td><?= $data['libelleMateriel'] ?></td>
-                        <td><?= $data['peremptionConsommable'] ?></td>
-                        <td><?= nl2br($data['commentairesCode']) ?></td>
-                        <td>
-                            <a href="codesBarreShow.php?id=<?=$data['idCode']?>" class="btn btn-xs btn-success" title="Afficher le code"><i class="fa fa-barcode"></i></a>
-                            <?php if ($_SESSION['codeBarre_modification']==1 AND $data['internalReference']==1 AND $LOTSLOCK==0 AND $RESERVESLOCK==0) {?>
-                                <a href="codesBarreFormInterne.php?id=<?=$data['idCode']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
-                            <?php }?>
-                            <?php if ($_SESSION['codeBarre_suppression']==1 AND $LOTSLOCK==0 AND $RESERVESLOCK==0) {?>
-                                <a href="modalDeleteConfirm.php?case=codesBarreDelete&id=<?=$data['idCode']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
-                            <?php }?>
-                        </td>
-                      </tr>
-                      <?php
-                  }
-                  $query->closeCursor(); ?>
-                  </tbody>
-
-              </table>
-            </div>
-          </div>
-        <?php } ?>
         
         <?php
         if($_SESSION['lots_lecture']==1)
@@ -355,7 +302,7 @@ include('logCheck.php');
                   </thead>
                   <tbody>
                   <?php
-                  $query = $db->query('SELECT * FROM MATERIEL_EMPLACEMENT e LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot WHERE libelleEmplacement LIKE "%'.$_POST['search'].'%";');
+                  $query = $db->query('SELECT * FROM MATERIEL_EMPLACEMENT e LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot WHERE libelleEmplacement LIKE "%'.$_POST['search'].'%" OR CONCAT("GPMEMP",idEmplacement)="'.$_POST['search'].'";');
                   while ($data = $query->fetch())
                   {
                       $query2 = $db->prepare('SELECT COUNT(*) as nb FROM MATERIEL_ELEMENT WHERE idEmplacement = :idEmplacement;');
@@ -486,6 +433,59 @@ include('logCheck.php');
         <?php } ?>
 
         <?php
+        if($_SESSION['codeBarre_lecture']==1)
+        { ?>
+          <div class="box box-success">
+            <div class="box-header">
+              <i class="fa fa-search"></i>
+              <h3 class="box-title">Matériels par code barre</h3>
+            </div>
+            <div class="box-body">
+              <table class="table table-bordered">
+                <thead>
+                      <tr>
+                          <th style="width: 10px">#</th>
+                          <th>Code Barre</th>
+                          <th>Base</th>
+                          <th>Element du catalogue</th>
+                          <th>Péremption spécifiée</th>
+                          <th>Commentaires</th>
+                          <th>Actions</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  <?php
+                  $query = $db->query('SELECT c.*, m.libelleMateriel FROM CODES_BARRE c LEFT OUTER JOIN MATERIEL_CATALOGUE m ON c.idMaterielCatalogue = m.idMaterielCatalogue WHERE codeBarre LIKE "%'.$_POST['search'].'%";');
+                  while ($data = $query->fetch())
+                  {?>
+                      <tr>
+                        <td><?= $data['idCode'] ?></td>
+                        <td><?= $data['codeBarre'] ?></td>
+                        <td><?php if($data['internalReference']){echo 'Interne';}else{echo 'Fournisseur';} ?></td>
+                        <td><?= $data['libelleMateriel'] ?></td>
+                        <td><?= $data['peremptionConsommable'] ?></td>
+                        <td><?= nl2br($data['commentairesCode']) ?></td>
+                        <td>
+                            <a href="codesBarreShow.php?id=<?=$data['idCode']?>" class="btn btn-xs btn-success" title="Afficher le code"><i class="fa fa-barcode"></i></a>
+                            <?php if ($_SESSION['codeBarre_modification']==1 AND $data['internalReference']==1 AND $LOTSLOCK==0 AND $RESERVESLOCK==0) {?>
+                                <a href="codesBarreFormInterne.php?id=<?=$data['idCode']?>" class="btn btn-xs btn-warning modal-form" title="Modifier"><i class="fa fa-pencil"></i></a>
+                            <?php }?>
+                            <?php if ($_SESSION['codeBarre_suppression']==1 AND $LOTSLOCK==0 AND $RESERVESLOCK==0) {?>
+                                <a href="modalDeleteConfirm.php?case=codesBarreDelete&id=<?=$data['idCode']?>" class="btn btn-xs btn-danger modal-form" title="Supprimer"><i class="fa fa-trash"></i></a>
+                            <?php }?>
+                        </td>
+                      </tr>
+                      <?php
+                  }
+                  $query->closeCursor(); ?>
+                  </tbody>
+
+              </table>
+            </div>
+          </div>
+        <?php } ?>
+
+        <?php
         if($_SESSION['reserve_lecture']==1)
         { ?>
           <div class="box box-success">
@@ -506,7 +506,7 @@ include('logCheck.php');
                   </thead>
                   <tbody>
                   <?php
-                  $query = $db->query('SELECT * FROM RESERVES_CONTENEUR c LEFT OUTER JOIN LIEUX l  ON c.idLieu = l.idLieu WHERE libelleConteneur LIKE "%'.$_POST['search'].'%" ORDER BY libelleConteneur;');
+                  $query = $db->query('SELECT * FROM RESERVES_CONTENEUR c LEFT OUTER JOIN LIEUX l  ON c.idLieu = l.idLieu WHERE libelleConteneur LIKE "%'.$_POST['search'].'%" OR CONCAT("GPMRES",idConteneur)="'.$_POST['search'].'" ORDER BY libelleConteneur;');
                   while ($data = $query->fetch())
                   {?>
                       <tr <?php if ($_SESSION['reserve_lecture']==1) {?>data-href="reserveConteneurContenu.php?id=<?=$data['idConteneur']?>"<?php }?>>

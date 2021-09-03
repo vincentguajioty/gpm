@@ -95,7 +95,7 @@ span { font-size: 13px;}
                                     LEFT OUTER JOIN MATERIEL_EMPLACEMENT em ON e.idEmplacement = em.idEmplacement
                                     LEFT OUTER JOIN MATERIEL_SAC s ON em.idSac = s.idSac
                                 WHERE
-                                    s.idLot = 33
+                                    s.idLot = :idLot
                             ) mat ON c.idMaterielCatalogue = mat.idMaterielCatalogue
                     WHERE
                         b.idCode IS NOT NULL
