@@ -46,6 +46,11 @@ else
         'idConteneur' => $_GET['id']
     ));
 
+    $query = $db->prepare('UPDATE LOTS_CONSOMMATION_MATERIEL SET idConteneur = Null WHERE idConteneur = :idConteneur ;');
+    $query->execute(array(
+        'idConteneur' => $_GET['id']
+    ));
+
     $query = $db->prepare('DELETE FROM RESERVES_CONTENEUR WHERE idConteneur = :idConteneur;');
     $query->execute(array(
         'idConteneur' => $_GET['id']

@@ -55,6 +55,11 @@ else
         'idMaterielCatalogue' => $_GET['id']
     ));
 
+    $query = $db->prepare('DELETE FROM LOTS_CONSOMMATION_MATERIEL WHERE idMaterielCatalogue = :idMaterielCatalogue;');
+    $query->execute(array(
+        'idMaterielCatalogue' => $_GET['id']
+    ));
+
     $query = $db->prepare('DELETE FROM MATERIEL_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue;');
     $query->execute(array(
         'idMaterielCatalogue' => $_GET['id']

@@ -30,6 +30,11 @@ else
         'idEmplacement' => $_GET['id']
     ));
 
+    $query = $db->prepare('UPDATE LOTS_CONSOMMATION_MATERIEL SET idEmplacement = Null WHERE idEmplacement = :idEmplacement;');
+    $query->execute(array(
+        'idEmplacement' => $_GET['id']
+    ));
+
     $query = $db->prepare('DELETE FROM MATERIEL_EMPLACEMENT WHERE idEmplacement = :idEmplacement;');
     $query->execute(array(
         'idEmplacement' => $_GET['id']

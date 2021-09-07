@@ -43,6 +43,7 @@ switch ($_GET['case']) {
             <li>Les matériels de ce type seront supprimés des inventaires (lots et réserves) qui les contiennent.</li>
             <li>Les matériels de ce type seront supprimés des réserves qui les contiennent.</li>
             <li>Les codes barre enregistrés pour ce matériel seront supprimés.</li>
+            <li>Les matériels de ce type seront supprimés des fiches de consommation des bénévoles.</li>
         ";
     break;
 
@@ -75,7 +76,8 @@ switch ($_GET['case']) {
     case 'emplacementsDelete':
         $lien = "emplacementsDelete.php?id=".$_GET['id'];
         $contenu = "
-            Tous les éléments de matériels contenus dans l'emplacement se verront sans emplacement et ne feront donc plus parti d'un sac/lot.
+            <li>Tous les éléments de matériels contenus dans l'emplacement se verront sans emplacement et ne feront donc plus parti d'un sac/lot.</li>
+            <li>Toutes les fiches de consommation de matériel remontées par les bénévoles sur cet emplacement ne seront plus liées à aucun lot/sac/emplacement.</li>
         ";
     break;
 
@@ -143,6 +145,7 @@ switch ($_GET['case']) {
         $contenu = "
             <li>Tous les inventaires du conteneur seront supprimés.</li>
             <li>Tous les éléments de matériels contenus dans le conteneur se verront sans conteneur de réserve (ils ne seront pas supprimés).</li>
+            <li>Les fiches de consommation de matériel remontées par les bénévoles ne seront plus liées aux réserves</li>
         ";
     break;
 
