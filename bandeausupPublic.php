@@ -13,7 +13,7 @@ require_once 'config/config.php';
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 <li class="dropdown user user-menu">
-                    <a href="alerteBenevole.php" title="Mon Compte"><i class="fa fa-warning"></i> Contacter l'équipe logistique</a>
+                    <a href="logout.php"><i class="fa fa-sign-out"></i> Quitter</a>
                 </li>
             </ul>
         </div>

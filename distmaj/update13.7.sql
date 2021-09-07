@@ -6,7 +6,8 @@ CREATE TABLE LOTS_CONSOMMATION(
 	nomDeclarantConsommation TEXT,
 	dateConsommation DATETIME,
 	evenementConsommation TEXT,
-	commentairesConsommation TEXT
+	commentairesConsommation TEXT,
+	ipDeclarantConsommation TEXT
 );
 
 CREATE TABLE LOTS_CONSOMMATION_MATERIEL(

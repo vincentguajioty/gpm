@@ -89,7 +89,7 @@ if ($_SESSION['connexion_connexion'] == 1)
                 <div class="login-box-body">
                     <p class="login-box-msg"><b>Espace public</b></p>
                     <p class="login-box-msg">Je fais partie de la structure mais ne suis pas membre de l'équipe logistique.</p>
-                    <?php if($CONSOMMATION_BENEVOLES){ ?><p class="login-box-msg"><a href="consommationBenevole.php" class="btn btn-primary btn-block btn-flat">Consommation de matériel</a></p><?php } ?>
+                    <?php if($CONSOMMATION_BENEVOLES){ ?><p class="login-box-msg"><a href="consommationBenevole.php" class="btn btn-primary btn-block btn-flat modal-form">Consommation de matériel</a></p><?php } ?>
                     <?php if($ALERTES_BENEVOLES_LOTS OR $ALERTES_BENEVOLES_VEHICULES){ ?><p class="login-box-msg"><a href="alerteBenevole.php" class="btn btn-primary btn-block btn-flat">Déclarer un incident</a></p><?php } ?>
                 </div>
 
