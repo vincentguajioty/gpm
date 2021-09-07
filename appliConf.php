@@ -436,6 +436,8 @@ if ($_SESSION['appli_conf']==0)
                                 <label>Lots:</label>
                                 <br/>
                                 <input type="checkbox" value="1" name="alertes_benevoles_lots" <?php if($data['alertes_benevoles_lots']==1){echo "checked";}?>> Les utilisateurs non-authentifiés peuvent remonter des alertes sur les lots opérationnels.
+                                <br/>
+                                <input type="checkbox" value="1" name="consommation_benevoles" <?php if($data['consommation_benevoles']==1){echo "checked";}?>> Les utilisateurs non-authentifiés peuvent saisir le matériel consommé lors d'événements.
                             </div>
                             <div class="form-group">
                                 <label>Véhicules:</label>

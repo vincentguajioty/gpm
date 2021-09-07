@@ -88,7 +88,7 @@ if ($_SESSION['connexion_connexion'] == 1)
                 <br/>
                 <div class="login-box-body">
                     <p class="login-box-msg"><b>Espace public</b></p>
-                    <p class="login-box-msg">Je fais partie de la structure mais ne suis pas membre de l'équipe logistique. J'ai rencontré un incident avec un élément du parc matériel et je souhaite le signaler.</p>
+                    <p class="login-box-msg">Je fais partie de la structure mais ne suis pas membre de l'équipe logistique.</p>
                     <p class="login-box-msg"><a href="alerteBenevole.php" class="btn btn-primary btn-block btn-flat">Déclarer un incident</a></p>
                 </div>
 

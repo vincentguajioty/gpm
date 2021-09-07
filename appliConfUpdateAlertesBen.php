@@ -14,6 +14,7 @@ else
 
     $_POST['alertes_benevoles_lots']      = ($_POST['alertes_benevoles_lots'] ==1) ? 1 : 0;
     $_POST['alertes_benevoles_vehicules'] = ($_POST['alertes_benevoles_vehicules'] ==1) ? 1 : 0;
+    $_POST['consommation_benevoles']      = ($_POST['consommation_benevoles'] ==1) ? 1 : 0;
 
 
     $query = $db->prepare('
@@ -21,11 +22,13 @@ else
             CONFIG
         SET 
             alertes_benevoles_lots       = :alertes_benevoles_lots ,
-            alertes_benevoles_vehicules  = :alertes_benevoles_vehicules
+            alertes_benevoles_vehicules  = :alertes_benevoles_vehicules,
+            consommation_benevoles       = :consommation_benevoles
     ;');
     $query->execute(array(
         'alertes_benevoles_lots'       => $_POST['alertes_benevoles_lots'],
         'alertes_benevoles_vehicules'  => $_POST['alertes_benevoles_vehicules'],
+        'consommation_benevoles'       => $_POST['consommation_benevoles'],
     ));
 
     switch($query->errorCode())
