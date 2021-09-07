@@ -24,6 +24,7 @@ $SELPOST         = $data['selPost'];
 
 $ALERTES_BENEVOLES_LOTS      = $data['alertes_benevoles_lots'];
 $ALERTES_BENEVOLES_VEHICULES = $data['alertes_benevoles_vehicules'];
+$CONSOMMATION_BENEVOLES      = $data['consommation_benevoles'];
 
 if($data['aesFournisseurTemoin'] != Null){$AESFOUR = true;}else{$AESFOUR = false;}
 
