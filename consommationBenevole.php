@@ -39,65 +39,158 @@ require_once 'verrouIPcheck.php';
 			{
 		?>
 	        <section class="content-header">
-	            <h1>
-	                <?= $APPNAME ?> - Communiquez avec votre équipe logistique !
-	            </h1>
+	        	<?php
+	        		if(isset($_SESSION['evenementConsommation']))
+	        		{ ?>
+	        			<h1>
+			                Matériel utilisé sur l'évènement "<?=$_SESSION['evenementConsommation']?>"
+			            </h1>
+	        		<?php }
+	        		else
+	        		{ ?>
+	        			<h1>
+			                <?= $APPNAME ?> - Tracez le consommable utilisé !
+			            </h1>
+	        		<?php }
+	        	?>
+	            
 	        </section>
 			
 	        <!-- Main content -->
 	        <section class="content">
-	        	<?php include('confirmationBox.php'); ?>
-	        	<?php
-					if(is_null($_SESSION['nomDeclarantConsommation']))
-					{ ?>
-						<form role="form" class="spinnerAttenteSubmit" action="consommationBenevoleInit.php" method="POST">
-		        			<div class="col-md-12">
+	        	<div class="row">
+		        	<?php include('confirmationBox.php'); ?>
+		        	<?php
+						if(is_null($_SESSION['nomDeclarantConsommation']))
+						{ ?>
+							<form role="form" class="spinnerAttenteSubmit" action="consommationBenevoleInit.php" method="POST">
+			        			<div class="col-md-12">
+						            <div class="box box-info">
+						                <div class="box-header with-border">
+						                	<i class="fa fa-user"></i>
+						                    <h3 class="box-title">Mes informations</h3>
+						                </div>
+						                <div class="box-body">
+						                	<div class="row">
+						                		<div class="col-md-4">
+								                	<div class="form-group">
+							                            <label>Nom et Prenom:</label>
+							                            <input type="text" class="form-control" name="nomDeclarantConsommation" required>
+							                        </div>
+							                    </div>
+							                    <div class="col-md-4">
+							                        <div class="form-group">
+							                            <label>Evènement:</label>
+							                            <input type="text" class="form-control" name="evenementConsommation" required>
+							                        </div>
+							                    </div>
+							                    <div class="col-md-4">
+							                        <div class="form-group">
+							                            <label>IP:</label>
+							                            <input type="email" class="form-control" name="ipDeclarant" value="<?=$_SERVER['REMOTE_ADDR']?>" disabled>
+							                            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" >
+							                        </div>
+							                    </div>
+					                    	</div>
+						                </div>
+						                <div class="box-footer">
+						                	<button type="submit" class="btn btn-primary pull-right">Suivant</button>
+						                </div>
+						            </div>
+						        </div>
+						    </form>
+						<?php
+						}else{
+						?>
+							<div class="col-md-12">
 					            <div class="box box-info">
 					                <div class="box-header with-border">
-					                	<i class="fa fa-user"></i>
-					                    <h3 class="box-title">Mes informations</h3>
+					                	<i class="fa fa-medkit"></i>
+					                    <h3 class="box-title">Matériel consommé</h3>
 					                </div>
 					                <div class="box-body">
-					                	<div class="row">
-					                		<div class="col-md-4">
-							                	<div class="form-group">
-						                            <label>Nom et Prenom:</label>
-						                            <input type="text" class="form-control" name="nomDeclarantConsommation" required>
-						                        </div>
-						                    </div>
-						                    <div class="col-md-4">
-						                        <div class="form-group">
-						                            <label>Evenement:</label>
-						                            <input type="text" class="form-control" name="evenementConsommation" required>
-						                        </div>
-						                    </div>
-						                    <div class="col-md-4">
-						                        <div class="form-group">
-						                            <label>IP:</label>
-						                            <input type="email" class="form-control" name="ipDeclarant" value="<?=$_SERVER['REMOTE_ADDR']?>" disabled>
-						                            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" >
-						                        </div>
-						                    </div>
-				                    	</div>
-					                </div>
-					                <div class="box-footer">
-					                	<button type="submit" class="btn btn-primary pull-right">Suivant</button>
+					                	<table id="tri1" class="table table-bordered table-hover">
+					                        <thead>
+					                            <tr>
+					                                <th class="all">Matériel</th>
+					                                <th class="all">Lot</th>
+					                                <th class="all">Quantité</th>
+					                                <th class="all">Reconditionné</th>
+					                                <th class="all">Actions</th>
+					                            </tr>
+					                        </thead>
+					                        <tbody>
+					                        <?php
+					                        foreach($_SESSION['consoArray'] as $item)
+					                        {
+					                            ?>
+					                            <tr>
+					                                <td><?php
+					                                	$query = $db->prepare('SELECT libelleMateriel FROM MATERIEL_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue;');
+					                                	$query->execute(array('idMaterielCatalogue' => $item[0]));
+					                                	$data = $query->fetch();
+					                                	echo $data['libelleMateriel'];
+					                                ?></td>
+					                                <td><?php
+					                                	$query = $db->prepare('SELECT libelleLot FROM LOTS_LOTS WHERE idLot = :idLot;');
+					                                	$query->execute(array('idLot' => $item[1]));
+					                                	$data = $query->fetch();
+					                                	echo $data['libelleLot'];
+					                                ?></td>
+					                                <td><?= $item[2] ?></td>
+					                                <td><?php
+					                                	if($item[3]>0)
+					                                	{
+					                                		$query = $db->prepare('SELECT libelleConteneur FROM RESERVES_CONTENEUR WHERE idConteneur = :idConteneur;');
+						                                	$query->execute(array('idConteneur' => $item[3]));
+						                                	$data = $query->fetch();
+						                                	echo $data['libelleConteneur'];
+					                                	}
+					                                	else
+					                                	{
+					                                		echo "Non-reconditionné";
+					                                	}
+					                            	?></td>
+					                                <td>
+					                                    BOUTONS
+					                                </td>
+					                            </tr>
+					                            <?php
+					                        }
+					                        $query->closeCursor(); ?>
+					                        <tr>
+					                        	<td></td>
+					                        	<td></td>
+					                        	<td></td>
+					                        	<td></td>
+					                        	<td><a href="consommationBenevoleForm.php" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a></td>
+					                        </tr>
+					                        </tbody>
+					                    </table>
 					                </div>
 					            </div>
 					        </div>
-					    </form>
-					<?php
-					}else{
+							<form role="form" class="spinnerAttenteSubmit" action="consommationBenevoleComments.php" method="POST">
+			        			<div class="col-md-12">
+						            <div class="box box-info">
+						                <div class="box-header with-border">
+						                	<i class="fa fa-comments"></i>
+						                    <h3 class="box-title">Commentaires</h3>
+						                </div>
+						                <div class="box-body">
+						                	<div class="form-group">
+					                            <textarea class="form-control" rows="3" name="commentairesConsommation"><?= $_SESSION['commentairesConsommation'] ?></textarea>
+					                        </div>
+						                </div>
+						                <div class="box-footer">
+						                	<button type="submit" class="btn btn-primary pull-right">Enregistrer le commentaire</button>
+						                </div>
+						            </div>
+						        </div>
+						    </form>
+						<?php }
 					?>
-						<?= $_SESSION['nomDeclarantConsommation'] ?>
-						<br/>
-						<?= $_SESSION['dateConsommation']         ?>
-						<br/>
-						<?= $_SESSION['evenementConsommation']    ?>
-						<br/>
-						<?= $_SESSION['ipDeclarantConsommation']  ?>
-					<?php }
-				?>
+				</div>
 	        </section>
 	    <?php } ?>
         

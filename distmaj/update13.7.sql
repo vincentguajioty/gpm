@@ -14,9 +14,8 @@ CREATE TABLE LOTS_CONSOMMATION_MATERIEL(
 	idConsommationMateriel INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	idConsommation INT,
 	idMaterielCatalogue INT,
-	idEmplacement INT,
+	idLot INT,
 	quantiteConsommation INT,
-	reconditionne BOOLEAN,
 	idConteneur INT,
 	CONSTRAINT fk_consoMateriel_conso
 		FOREIGN KEY (idConsommation)
@@ -24,9 +23,9 @@ CREATE TABLE LOTS_CONSOMMATION_MATERIEL(
 	CONSTRAINT fk_consoMateriel_materiel
 		FOREIGN KEY (idMaterielCatalogue)
 		REFERENCES MATERIEL_CATALOGUE(idMaterielCatalogue),
-	CONSTRAINT fk_consoMateriel_emplacement
-		FOREIGN KEY (idEmplacement)
-		REFERENCES MATERIEL_EMPLACEMENT(idEmplacement),
+	CONSTRAINT fk_consoMateriel_lot
+		FOREIGN KEY (idLot)
+		REFERENCES LOTS_LOTS(idLot),
 	CONSTRAINT fk_consoMateriel_reserve
 		FOREIGN KEY (idConteneur)
 		REFERENCES RESERVES_CONTENEUR(idConteneur)
