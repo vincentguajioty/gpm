@@ -68,25 +68,22 @@ require_once 'verrouIPcheck.php';
 						            <div class="box box-info">
 						                <div class="box-header with-border">
 						                	<i class="fa fa-user"></i>
-						                    <h3 class="box-title">Mes informations</h3>
+						                    <h3 class="box-title">Informations générales</h3>
 						                </div>
 						                <div class="box-body">
 						                	<div class="row">
 						                		<div class="col-md-4">
 								                	<div class="form-group">
-							                            <label>Nom et Prenom:</label>
-							                            <input type="text" class="form-control" name="nomDeclarantConsommation" required>
+							                            <input type="text" class="form-control" placeholder="Nom Prénom" name="nomDeclarantConsommation" required>
 							                        </div>
 							                    </div>
 							                    <div class="col-md-4">
 							                        <div class="form-group">
-							                            <label>Evènement:</label>
-							                            <input type="text" class="form-control" name="evenementConsommation" required>
+							                            <input type="text" class="form-control" placeholder="Evènement, poste de secours, manoeuvre, ..." name="evenementConsommation" required>
 							                        </div>
 							                    </div>
 							                    <div class="col-md-4">
 							                        <div class="form-group">
-							                            <label>IP:</label>
 							                            <input type="email" class="form-control" name="ipDeclarant" value="<?=$_SERVER['REMOTE_ADDR']?>" disabled>
 							                            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" >
 							                        </div>
@@ -112,8 +109,8 @@ require_once 'verrouIPcheck.php';
 					                	<table id="tri1" class="table table-bordered table-hover">
 					                        <thead>
 					                            <tr>
-					                                <th class="all">Matériel</th>
 					                                <th class="all">Lot</th>
+					                                <th class="all">Consommable/Matériel utilisé</th>
 					                                <th class="all">Quantité</th>
 					                                <th class="all">Reconditionné</th>
 					                                <th class="all"></th>
@@ -126,16 +123,16 @@ require_once 'verrouIPcheck.php';
 					                            ?>
 					                            <tr>
 					                                <td><?php
-					                                	$query = $db->prepare('SELECT libelleMateriel FROM MATERIEL_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue;');
-					                                	$query->execute(array('idMaterielCatalogue' => $content[0]));
-					                                	$data = $query->fetch();
-					                                	echo $data['libelleMateriel'];
-					                                ?></td>
-					                                <td><?php
 					                                	$query = $db->prepare('SELECT libelleLot FROM LOTS_LOTS WHERE idLot = :idLot;');
 					                                	$query->execute(array('idLot' => $content[1]));
 					                                	$data = $query->fetch();
 					                                	echo $data['libelleLot'];
+					                                ?></td>
+					                                <td><?php
+					                                	$query = $db->prepare('SELECT libelleMateriel FROM MATERIEL_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue;');
+					                                	$query->execute(array('idMaterielCatalogue' => $content[0]));
+					                                	$data = $query->fetch();
+					                                	echo $data['libelleMateriel'];
 					                                ?></td>
 					                                <td><?= $content[2] ?></td>
 					                                <td><?php
