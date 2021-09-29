@@ -116,43 +116,43 @@ require_once 'verrouIPcheck.php';
 					                                <th class="all">Lot</th>
 					                                <th class="all">Quantité</th>
 					                                <th class="all">Reconditionné</th>
-					                                <th class="all">Actions</th>
+					                                <th class="all"></th>
 					                            </tr>
 					                        </thead>
 					                        <tbody>
 					                        <?php
-					                        foreach($_SESSION['consoArray'] as $item)
+					                        foreach($_SESSION['consoArray'] as $line => $content)
 					                        {
 					                            ?>
 					                            <tr>
 					                                <td><?php
 					                                	$query = $db->prepare('SELECT libelleMateriel FROM MATERIEL_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue;');
-					                                	$query->execute(array('idMaterielCatalogue' => $item[0]));
+					                                	$query->execute(array('idMaterielCatalogue' => $content[0]));
 					                                	$data = $query->fetch();
 					                                	echo $data['libelleMateriel'];
 					                                ?></td>
 					                                <td><?php
 					                                	$query = $db->prepare('SELECT libelleLot FROM LOTS_LOTS WHERE idLot = :idLot;');
-					                                	$query->execute(array('idLot' => $item[1]));
+					                                	$query->execute(array('idLot' => $content[1]));
 					                                	$data = $query->fetch();
 					                                	echo $data['libelleLot'];
 					                                ?></td>
-					                                <td><?= $item[2] ?></td>
+					                                <td><?= $content[2] ?></td>
 					                                <td><?php
-					                                	if($item[3]>0)
+					                                	if($content[3]>0)
 					                                	{
 					                                		$query = $db->prepare('SELECT libelleConteneur FROM RESERVES_CONTENEUR WHERE idConteneur = :idConteneur;');
-						                                	$query->execute(array('idConteneur' => $item[3]));
+						                                	$query->execute(array('idConteneur' => $content[3]));
 						                                	$data = $query->fetch();
-						                                	echo $data['libelleConteneur'];
+						                                	echo '<span class="badge bg-green">'.$data['libelleConteneur'].'</span>';
 					                                	}
 					                                	else
 					                                	{
-					                                		echo "Non-reconditionné";
+					                                		echo '<span class="badge bg-orange">Non-Reconditionné</span>';
 					                                	}
 					                            	?></td>
 					                                <td>
-					                                    BOUTONS
+					                                    <a href="consommationBenevoleDelete.php?id=<?=$line?>" class="btn btn-xs btn-danger" title="Supprimer"><i class="fa fa-trash"></i></a>
 					                                </td>
 					                            </tr>
 					                            <?php
