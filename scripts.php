@@ -94,6 +94,10 @@
 <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script src="plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
 
+<?php
+    if(!(isset($_SESSION['tableRowPerso']))){$_SESSION['tableRowPerso'] = 50;}
+?>
+
 <script>
     $(function () {
         $("#tri0").DataTable({

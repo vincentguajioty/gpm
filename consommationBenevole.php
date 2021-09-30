@@ -125,10 +125,10 @@ require_once 'verrouIPcheck.php';
 					                        <thead>
 					                            <tr>
 					                                <th class="all">Lot</th>
-					                                <th class="all">Consommable/Matériel utilisé</th>
-					                                <th class="all">Quantité</th>
-					                                <th class="all">Reconditionné</th>
-					                                <th class="all"></th>
+					                                <th class="all">Matériel utilisé</th>
+					                                <th class="not-mobile">Quantité</th>
+					                                <th class="not-mobile">Reconditionné</th>
+					                                <th class="not-mobile"></th>
 					                            </tr>
 					                        </thead>
 					                        <tbody>
@@ -171,11 +171,11 @@ require_once 'verrouIPcheck.php';
 					                        }
 					                        $query->closeCursor(); ?>
 					                        <tr>
+					                        	<td><a href="consommationBenevoleForm.php" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i> Ajouter</a></td>
 					                        	<td></td>
 					                        	<td></td>
 					                        	<td></td>
 					                        	<td></td>
-					                        	<td><a href="consommationBenevoleForm.php" class="btn btn-xs btn-success modal-form" title="Ajouter"><i class="fa fa-plus"></i></a></td>
 					                        </tr>
 					                        </tbody>
 					                    </table>
