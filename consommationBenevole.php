@@ -1,7 +1,10 @@
+<?php
+	session_start();
+	if($_SESSION['EXIT']) {header( "refresh:5;url=logout.php" );}
+?>
 <!DOCTYPE html>
 <html>
 <?php
-session_start();
 require_once 'verrouIPcheck.php';
 ?>
 <?php include('headerCaptcha.php'); require_once('config/config.php'); ?>
@@ -60,6 +63,18 @@ require_once 'verrouIPcheck.php';
 	        <section class="content">
 	        	<div class="row">
 		        	<?php include('confirmationBox.php'); ?>
+		        	<?php
+		        		if($_SESSION['EXIT'])
+		        		{
+							
+							echo '<div class="col-md-12">';
+							echo '<div class="alert alert-success">';
+					        echo '<i class="icon fa fa-check"></i> Déclaration enregistrée ! Vous serez redirigé vers l\'accueil dans 5 secondes ...';
+					        echo '</div>';
+					        echo '</div>';
+		        			exit;
+		        		}
+		        	?>
 		        	<?php
 						if(is_null($_SESSION['nomDeclarantConsommation']))
 						{ ?>
@@ -167,24 +182,9 @@ require_once 'verrouIPcheck.php';
 					                </div>
 					            </div>
 					        </div>
-							<form role="form" class="spinnerAttenteSubmit" action="consommationBenevoleComments.php" method="POST">
-			        			<div class="col-md-12">
-						            <div class="box box-info">
-						                <div class="box-header with-border">
-						                	<i class="fa fa-comments"></i>
-						                    <h3 class="box-title">Commentaires</h3>
-						                </div>
-						                <div class="box-body">
-						                	<div class="form-group">
-					                            <textarea class="form-control" rows="3" name="commentairesConsommation"><?= $_SESSION['commentairesConsommation'] ?></textarea>
-					                        </div>
-						                </div>
-						                <div class="box-footer">
-						                	<button type="submit" class="btn btn-primary pull-right">Enregistrer le commentaire</button>
-						                </div>
-						            </div>
-						        </div>
-						    </form>
+					        <div class="col-md-12">
+					        	<a href="consommationBenevoleSubmitForm.php" class="btn btn-xl btn-success pull-right modal-form" title="Envoyer"><i class="fa fa-envelope"></i> Envoyer à l'équipe logistique</a>
+					        </div>
 						<?php }
 					?>
 				</div>
