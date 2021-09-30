@@ -312,22 +312,46 @@ if ($_SESSION['profils_lecture']==0)
                 <div class="box-body">
                     <table class="table table-bordered">
                         <tr>
-                            <th>ALERTES BENEVOLES</th>
+                            <th></th>
                             <th>Lecture</th>
                             <th>Traitement</th>
                             <th>Affecter à un tier</th>
+                            <th>Suppression</th>
+                        </tr>
+                        <tr>
+                            <th>ALERTES BENEVOLES</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                         </tr>
                         <tr>
                             <td>Lots</td>
                             <td><?php foreach($profils as $profil){if($profil['alertesBenevolesLots_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['alertesBenevolesLots_affectation']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['alertesBenevolesLots_affectationTier']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>Véhicules</td>
                             <td><?php foreach($profils as $profil){if($profil['alertesBenevolesVehicules_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['alertesBenevolesVehicules_affectation']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                             <td><?php foreach($profils as $profil){if($profil['alertesBenevolesVehicules_affectationTier']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>CONSOMMATION DES BENEVOLES</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>Rapports de consommation</td>
+                            <td><?php foreach($profils as $profil){if($profil['consommationLots_lecture']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td><?php foreach($profils as $profil){if($profil['consommationLots_affectation']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
+                            <td></td>
+                            <td><?php foreach($profils as $profil){if($profil['consommationLots_supression']){echo $profil['libelleProfil'].'<br/>';}} ?></td>
                         </tr>
                     </table>
                 </div>

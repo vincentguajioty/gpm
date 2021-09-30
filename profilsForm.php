@@ -334,22 +334,46 @@ ATTENTION: modification d'un profil necessite à mettre à jour:
                         </table>
                         <table class="table table-bordered">
                             <tr>
-                                <th>ALERTES BENEVOLES</th>
+                                <th></th>
                                 <th>Lecture</th>
                                 <th>Traitement</th>
                                 <th>Affecter à un tier</th>
+                                <th>Suppression</th>
+                            </tr>
+                            <tr>
+                                <th>ALERTES BENEVOLES</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                             </tr>
                             <tr>
                                 <td>Lots</td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['alertesBenevolesLots_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="alertesBenevolesLots_lecture"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['alertesBenevolesLots_affectation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="alertesBenevolesLots_affectation"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['alertesBenevolesLots_affectationTier'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="alertesBenevolesLots_affectationTier"></td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td>Véhicules</td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['alertesBenevolesVehicules_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="alertesBenevolesVehicules_lecture"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['alertesBenevolesVehicules_affectation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="alertesBenevolesVehicules_affectation"></td>
                                 <td><input <?php if(isset($_GET['id']) AND $data['alertesBenevolesVehicules_affectationTier'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="alertesBenevolesVehicules_affectationTier"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>CONSOMMATION DES BENEVOLES</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Rapports de consommation</td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['consommationLots_lecture'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="consommationLots_lecture"></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['consommationLots_affectation'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="consommationLots_affectation"></td>
+                                <td></td>
+                                <td><input <?php if(isset($_GET['id']) AND $data['consommationLots_supression'] == 1) { echo 'checked'; } ?> type="checkbox" value="1" name="consommationLots_supression"></td>
                             </tr>
                         </table>
                         <table class="table table-bordered">

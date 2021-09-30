@@ -162,7 +162,10 @@ else
             codeBarre_lecture                         = :codeBarre_lecture,
             codeBarre_ajout                           = :codeBarre_ajout,
             codeBarre_modification                    = :codeBarre_modification,
-            codeBarre_suppression                     = :codeBarre_suppression
+            codeBarre_suppression                     = :codeBarre_suppression,
+            consommationLots_lecture                  = :consommationLots_lecture,
+            consommationLots_affectation              = :consommationLots_affectation,
+            consommationLots_supression               = :consommationLots_supression
 	;');
     $query->execute(array(
 		'libelleProfil'                             => $data['libelleProfil'] . ' - Copie',
@@ -307,6 +310,9 @@ else
         'codeBarre_ajout'                           => $data['codeBarre_ajout'],
         'codeBarre_modification'                    => $data['codeBarre_modification'],
         'codeBarre_suppression'                     => $data['codeBarre_suppression'],
+        'consommationLots_lecture'                  => $data['consommationLots_lecture'],
+        'consommationLots_affectation'              => $data['consommationLots_affectation'],
+        'consommationLots_supression'               => $data['consommationLots_supression'],
 ));
 
     switch($query->errorCode())

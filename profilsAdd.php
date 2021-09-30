@@ -150,6 +150,9 @@ else
     $_POST['codeBarre_ajout']                           = ($_POST['codeBarre_ajout']                           == 1) ? 1 : 0;
     $_POST['codeBarre_modification']                    = ($_POST['codeBarre_modification']                    == 1) ? 1 : 0;
     $_POST['codeBarre_suppression']                     = ($_POST['codeBarre_suppression']                     == 1) ? 1 : 0;
+    $_POST['consommationLots_lecture']                  = ($_POST['consommationLots_lecture']                  == 1) ? 1 : 0;
+    $_POST['consommationLots_affectation']              = ($_POST['consommationLots_affectation']              == 1) ? 1 : 0;
+    $_POST['consommationLots_supression']               = ($_POST['consommationLots_supression']               == 1) ? 1 : 0;
 
 	$query = $db->prepare('
 		INSERT INTO
@@ -296,7 +299,10 @@ else
             codeBarre_lecture                         = :codeBarre_lecture,
             codeBarre_ajout                           = :codeBarre_ajout,
             codeBarre_modification                    = :codeBarre_modification,
-            codeBarre_suppression                     = :codeBarre_suppression
+            codeBarre_suppression                     = :codeBarre_suppression,
+            consommationLots_lecture                  = :consommationLots_lecture,
+            consommationLots_affectation              = :consommationLots_affectation,
+            consommationLots_supression               = :consommationLots_supression
 		;');
     $query->execute(array(
         'libelleProfil'                             => $_POST['libelleProfil'],
@@ -441,6 +447,9 @@ else
         'codeBarre_ajout'                           => $_POST['codeBarre_ajout'],
         'codeBarre_modification'                    => $_POST['codeBarre_modification'],
         'codeBarre_suppression'                     => $_POST['codeBarre_suppression'],
+        'consommationLots_lecture'                  => $_POST['consommationLots_lecture'],
+        'consommationLots_affectation'              => $_POST['consommationLots_affectation'],
+        'consommationLots_supression'               => $_POST['consommationLots_supression'],
 ));
 
     switch($query->errorCode())

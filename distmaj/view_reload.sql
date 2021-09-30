@@ -168,6 +168,9 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		(SELECT MAX(alertesBenevolesVehicules_lecture)         FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as alertesBenevolesVehicules_lecture,
 		(SELECT MAX(alertesBenevolesVehicules_affectation)     FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as alertesBenevolesVehicules_affectation,
 		(SELECT MAX(alertesBenevolesVehicules_affectationTier) FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as alertesBenevolesVehicules_affectationTier,
+		(SELECT MAX(consommationLots_lecture)                  FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as consommationLots_lecture,
+		(SELECT MAX(consommationLots_affectation)              FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as consommationLots_affectation,
+		(SELECT MAX(consommationLots_supression)               FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as consommationLots_supression,
 		(SELECT MAX(codeBarre_lecture)                         FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as codeBarre_lecture,
 		(SELECT MAX(codeBarre_ajout)                           FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as codeBarre_ajout,
 		(SELECT MAX(codeBarre_modification)                    FROM PROFILS_PERSONNES pp JOIN PROFILS po ON pp.idProfil = po.idProfil WHERE pp.idPersonne = p.idPersonne) as codeBarre_modification,
@@ -175,6 +178,7 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 	FROM
 		PERSONNE_REFERENTE p
 ;
+
 CREATE OR REPLACE VIEW VIEW_DOCUMENTS_COMMANDES AS
 	SELECT
 		c.*,

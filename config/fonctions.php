@@ -687,6 +687,9 @@ function loadSession($idPersonne)
 	$_SESSION['alertesBenevolesVehicules_lecture']         = $data['alertesBenevolesVehicules_lecture'];
 	$_SESSION['alertesBenevolesVehicules_affectation']     = $data['alertesBenevolesVehicules_affectation'];
 	$_SESSION['alertesBenevolesVehicules_affectationTier'] = $data['alertesBenevolesVehicules_affectationTier'];
+	$_SESSION['consommationLots_lecture']                  = $data['consommationLots_lecture'];
+	$_SESSION['consommationLots_affectation']              = $data['consommationLots_affectation'];
+	$_SESSION['consommationLots_supression']               = $data['consommationLots_supression'];
 	$_SESSION['codeBarre_lecture']                         = $data['codeBarre_lecture'];
 	$_SESSION['codeBarre_ajout']                           = $data['codeBarre_ajout'];
 	$_SESSION['codeBarre_modification']                    = $data['codeBarre_modification'];

@@ -319,22 +319,46 @@ require_once('logCheck.php');
 			                <br/>
                             <table class="table table-bordered">
                                 <tr>
-                                    <th>ALERTES BENEVOLES</th>
+                                    <th></th>
                                     <th>Lecture</th>
                                     <th>Traitement</th>
                                     <th>Affecter à un tier</th>
+                                    <th>Suppression</th>
+                                </tr>
+                                <tr>
+                                    <th>ALERTES BENEVOLES</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                                 <tr>
                                     <td>Lots</td>
                                     <td><?php if($_SESSION['alertesBenevolesLots_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($_SESSION['alertesBenevolesLots_affectation'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($_SESSION['alertesBenevolesLots_affectationTier'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Véhicules</td>
                                     <td><?php if($_SESSION['alertesBenevolesVehicules_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($_SESSION['alertesBenevolesVehicules_affectation'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
                                     <td><?php if($_SESSION['alertesBenevolesVehicules_affectationTier'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>CONSOMMATION DES BENEVOLES</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <td>Rapports de consommation</td>
+                                    <td><?php if($_SESSION['consommationLots_lecture'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($_SESSION['consommationLots_affectation'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td><?php if($_SESSION['consommationLots_supression'] == 1) { echo '<i class="fa fa-check"></i>'; }else{ echo '<i class="fa fa-close"></i>'; } ?></td>
+                                    <td></td>
                                 </tr>
                             </table>
                             <br/>

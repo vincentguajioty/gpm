@@ -312,22 +312,46 @@ if ($_SESSION['profils_lecture']==0 OR $_SESSION['annuaire_lecture']==0)
                 <div class="box-body">
                     <table class="table table-bordered">
                         <tr>
-                            <th>ALERTES BENEVOLES</th>
+                            <th></th>
                             <th>Lecture</th>
                             <th>Traitement</th>
                             <th>Affecter à un tier</th>
+                            <th>Suppression</th>
+                        </tr>
+                        <tr>
+                            <th>ALERTES BENEVOLES</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                         </tr>
                         <tr>
                             <td>Lots</td>
                             <td><?php foreach($users as $user){if($user['alertesBenevolesLots_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['alertesBenevolesLots_affectation']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['alertesBenevolesLots_affectationTier']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>Véhicules</td>
                             <td><?php foreach($users as $user){if($user['alertesBenevolesVehicules_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['alertesBenevolesVehicules_affectation']){echo $user['identifiant'].'<br/>';}} ?></td>
                             <td><?php foreach($users as $user){if($user['alertesBenevolesVehicules_affectationTier']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>CONSOMMATION DES BENEVOLES</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>Rapports de consommation</td>
+                            <td><?php foreach($users as $user){if($user['consommationLots_lecture']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td><?php foreach($users as $user){if($user['consommationLots_affectation']){echo $user['identifiant'].'<br/>';}} ?></td>
+                            <td></td>
+                            <td><?php foreach($users as $user){if($user['consommationLots_supression']){echo $user['identifiant'].'<br/>';}} ?></td>
                         </tr>
                     </table>
                 </div>
