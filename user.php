@@ -321,7 +321,7 @@ require_once('logCheck.php');
                                 <tr>
                                     <th>ALERTES BENEVOLES</th>
                                     <th>Lecture</th>
-                                    <th>Etre en charge</th>
+                                    <th>Traitement</th>
                                     <th>Affecter à un tier</th>
                                 </tr>
                                 <tr>

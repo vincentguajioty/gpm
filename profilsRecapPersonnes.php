@@ -314,7 +314,7 @@ if ($_SESSION['profils_lecture']==0 OR $_SESSION['annuaire_lecture']==0)
                         <tr>
                             <th>ALERTES BENEVOLES</th>
                             <th>Lecture</th>
-                            <th>Etre en charge</th>
+                            <th>Traitement</th>
                             <th>Affecter à un tier</th>
                         </tr>
                         <tr>
