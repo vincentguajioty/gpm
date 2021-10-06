@@ -87,17 +87,25 @@ require_once 'verrouIPcheck.php';
 						                </div>
 						                <div class="box-body">
 						                	<div class="row">
-						                		<div class="col-md-4">
+						                		<div class="col-md-3">
 								                	<div class="form-group">
 							                            <input type="text" class="form-control" placeholder="Nom Prénom" name="nomDeclarantConsommation" required>
 							                        </div>
 							                    </div>
-							                    <div class="col-md-4">
+							                    <div class="col-md-3">
 							                        <div class="form-group">
-							                            <input type="text" class="form-control" placeholder="Evènement, poste de secours, manoeuvre, ..." name="evenementConsommation" required>
+							                            <input type="text" class="form-control" placeholder="Libellé de l'évènement, poste de secours, manoeuvre, ..." name="evenementConsommation" required>
 							                        </div>
 							                    </div>
-							                    <div class="col-md-4">
+							                    <div class="col-md-3">
+							                        <div class="input-group">
+				                                        <div class="input-group-addon">
+				                                            <i class="fa fa-calendar"></i>
+				                                        </div>
+				                                        <input class="input-datepicker form-control" placeholder="Date de l'évènement" name="dateConsommation" required>
+				                                    </div>
+							                    </div>
+							                    <div class="col-md-3">
 							                        <div class="form-group">
 							                            <input type="email" class="form-control" name="ipDeclarant" value="<?=$_SERVER['REMOTE_ADDR']?>" disabled>
 							                            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" >

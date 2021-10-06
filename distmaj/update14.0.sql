@@ -4,7 +4,7 @@ UPDATE CONFIG set consommation_benevoles = false;
 CREATE TABLE LOTS_CONSOMMATION(
 	idConsommation INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	nomDeclarantConsommation TEXT,
-	dateConsommation DATETIME,
+	dateConsommation DATE,
 	evenementConsommation TEXT,
 	commentairesConsommation TEXT,
 	ipDeclarantConsommation TEXT

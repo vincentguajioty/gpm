@@ -42,9 +42,10 @@ else
 	
     $_POST['nomDeclarantConsommation']    = str_replace($XSS_SECURITY, "", $_POST['nomDeclarantConsommation']);
     $_POST['evenementConsommation']       = str_replace($XSS_SECURITY, "", $_POST['evenementConsommation']);
+    $_POST['dateConsommation']            = str_replace($XSS_SECURITY, "", $_POST['dateConsommation']);
 	
     $_SESSION['nomDeclarantConsommation'] = $_POST['nomDeclarantConsommation'];
-    $_SESSION['dateConsommation']         = date('Y-m-d H:i:s');
+    $_SESSION['dateConsommation']         = $_POST['dateConsommation'];
     $_SESSION['evenementConsommation']    = $_POST['evenementConsommation'];
     $_SESSION['ipDeclarantConsommation']  = $_SERVER['REMOTE_ADDR'];
     
