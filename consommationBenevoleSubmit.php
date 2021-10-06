@@ -59,7 +59,8 @@ else
 				idMaterielCatalogue  = :idMaterielCatalogue,
 				idLot                = :idLot,
 				quantiteConsommation = :quantiteConsommation,
-				idConteneur          = :idConteneur
+				idConteneur          = :idConteneur,
+				traiteOperateur      = false
 		');
 		$query->execute(array(
 			'idConsommation'       => $idConsommation,

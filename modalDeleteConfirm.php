@@ -366,7 +366,14 @@ switch ($_GET['case']) {
         $contenu = "
             <li>Tous les éléments possendant ce code barre ne seront plus reconnus lors des inventaires.</li>
         ";
-    break;    
+    break;
+
+    case 'lotsConsommationsDelete':
+        $lien = "lotsConsommationsDelete.php?id=".$_GET['id'];
+        $contenu = "
+            <li>Aucun impact collatéral</li>
+        ";
+    break;
 
 }
 

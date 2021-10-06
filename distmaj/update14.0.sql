@@ -17,6 +17,7 @@ CREATE TABLE LOTS_CONSOMMATION_MATERIEL(
 	idLot INT,
 	quantiteConsommation INT,
 	idConteneur INT,
+	traiteOperateur BOOLEAN,
 	CONSTRAINT fk_consoMateriel_conso
 		FOREIGN KEY (idConsommation)
 		REFERENCES LOTS_CONSOMMATION(idConsommation),

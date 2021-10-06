@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	if($_SESSION['EXIT']) {header( "refresh:5;url=logout.php" );}
+	if($_SESSION['EXIT']) {header( "refresh:3;url=logout.php" );}
 ?>
 <!DOCTYPE html>
 <html>
@@ -69,7 +69,7 @@ require_once 'verrouIPcheck.php';
 							
 							echo '<div class="col-md-12">';
 							echo '<div class="alert alert-success">';
-					        echo '<i class="icon fa fa-check"></i> Déclaration enregistrée ! Vous serez redirigé vers l\'accueil dans 5 secondes ...';
+					        echo '<i class="icon fa fa-check"></i> Déclaration enregistrée ! Vous serez redirigé vers l\'accueil dans 3 secondes ...';
 					        echo '</div>';
 					        echo '</div>';
 		        			exit;

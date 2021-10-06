@@ -83,6 +83,15 @@ require_once 'config/bdd.php';
 	                        ?>
 	                        ><a href="materiels.php"><i class="fa fa-stethoscope"></i> <span>Matériel</span></a></li>
 	                    <?php } ?>
+	                    <?php if ($_SESSION['consommationLots_lecture']==1){ ?>
+	                        <li <?php
+	                        if ($_SESSION['page'] == 107)
+	                        {
+	                            echo 'class="active"';
+	                        }
+	                        ?>
+	                        ><a href="lotsConsommations.php"><i class="fa fa-heartbeat"></i> <span>Rapports de consommation</span></a></li>
+	                    <?php } ?>
 	                    <?php if ($_SESSION['alertesBenevolesLots_lecture']==1){ ?>
 	                        <li <?php
 	                        if ($_SESSION['page'] == 105)
