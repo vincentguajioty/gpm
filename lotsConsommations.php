@@ -62,6 +62,8 @@ if ($_SESSION['consommationLots_lecture']==0)
                         LOTS_CONSOMMATION
                     WHERE
                         dateConsommation > DATE_SUB(now(), INTERVAL 6 MONTH)
+                    ORDER BY
+                        dateConsommation DESC
                 ;');
                 while ($data = $query->fetch())
                 { ?>
