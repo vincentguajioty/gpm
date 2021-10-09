@@ -35,8 +35,16 @@ include('logCheck.php');
     		if ($MAINTENANCE)
     		{
     			echo '<div class="alert alert-warning alert-dismissible">';
-		        echo '<i class="icon fa fa-wrench"></i> Mode maintenance activé.';
-		        echo '</div>';
+		      echo '<i class="icon fa fa-wrench"></i> Mode maintenance activé.';
+		      echo '</div>';
+    		}
+    	?>
+    	<?php
+    		if(!(is_writeable("config/config.php")))
+    		{
+    			echo '<div class="alert alert-warning alert-dismissible">';
+		      echo '<i class="icon fa fa-wrench"></i> La configuration système n\'est pas complète. Veuillez ne pas utiliser les fonctionalités de chargement de documents (pièces jointes par exemple).';
+		      echo '</div>';
     		}
     	?>
         <?php include('confirmationBox.php'); ?>
