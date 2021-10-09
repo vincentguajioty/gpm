@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
 <?php
+if (!(file_exists('config/bdd.php')))
+{
+    echo "<script type='text/javascript'>document.location.replace('distmaj/CREATEDB.php');</script>";
+    exit;
+}
 include('headerCaptcha.php');
 require_once 'config/config.php';
 require_once 'verrouIPcheck.php';
@@ -16,7 +21,7 @@ if ($_SESSION['connexion_connexion'] == 1)
         <div class="login-logo">
             <b><?php echo $APPNAME;?></b>
         </div>
-    
+
         <?php
         if (($VERSION != $VERSIONCHECK) AND (file_exists('distmaj/INSTALL.php')))
         {

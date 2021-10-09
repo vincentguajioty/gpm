@@ -1,4 +1,10 @@
 <?php
+if (!(file_exists('config/bdd.php')))
+{
+    echo "<script type='text/javascript'>document.location.replace('distmaj/CREATEDB.php');</script>";
+    exit;
+}
+
 session_start();
 require_once 'config/config.php';
 require_once 'verrouIPcheck.php';
