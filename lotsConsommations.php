@@ -68,11 +68,33 @@ if ($_SESSION['consommationLots_lecture']==0)
                 while ($data = $query->fetch())
                 { ?>
                     
+                    <?php
+                        $query2 = $db->prepare('
+                            SELECT
+                                MAX(CASE
+                                    WHEN conso.idConteneur IS NOT NULL AND r.dateDernierInventaire <= c.dateConsommation THEN true
+                                    WHEN conso.idConteneur IS NULL AND l.dateDernierInventaire <= c.dateConsommation THEN true
+                                    ELSE false
+                                END) as alerte
+                            FROM
+                                LOTS_CONSOMMATION c
+                                LEFT OUTER JOIN LOTS_CONSOMMATION_MATERIEL conso ON c.idConsommation = conso.idConsommation
+                                LEFT OUTER JOIN LOTS_LOTS l ON conso.idLot = l.idLot
+                                LEFT OUTER JOIN RESERVES_CONTENEUR r ON conso.idConteneur = r.idConteneur
+                            WHERE
+                                c.idConsommation = :idConsommation
+                                AND
+                                conso.traiteOperateur = 0
+                        ');
+                        $query2->execute(array('idConsommation' => $data['idConsommation']));
+                        $alerte=$query2->fetch();
+                        $alerte=$alerte['alerte'];
+                    ?>
                     <div class="col-md-12">
-                        <div class="box box-info collapsed-box">
+                        <div class="box box-<?php if($alerte){echo "warning";}else{echo "success";} ?> collapsed-box">
                             <div class="box-header with-border">
                                 <h3 class="box-title">
-                                    <i class="fa fa-heartbeat"></i> <?= $data['dateConsommation'] ?> <?= $data['evenementConsommation'] ?>
+                                    <i class="fa fa-heartbeat"></i> <?= $data['dateConsommation'] ?> <?= $data['evenementConsommation'] ?> <?php if($alerte){echo '<span class="badge bg-orange">Action requise</span>';} ?>
                                 </h3>
                                 <div class="box-tools pull-right">
                                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
