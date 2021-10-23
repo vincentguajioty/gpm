@@ -56,7 +56,7 @@ session_start();
                         <select class="form-control select2" style="width: 100%;" name="idConteneur">
                             <option value="">--- Ce matériel n'a pas pu être reconditionné ---</option>
                             <?php
-                            $query2 = $db->query('SELECT * FROM RESERVES_CONTENEUR ORDER BY libelleConteneur;');
+                            $query2 = $db->query('SELECT * FROM RESERVES_CONTENEUR WHERE dispoBenevoles=1 ORDER BY libelleConteneur;');
                             while ($data2 = $query2->fetch())
                             {
                                 ?>

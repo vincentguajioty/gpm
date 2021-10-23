@@ -14,6 +14,7 @@ if ($_SESSION['reserve_ajout']==0)
 else
 {
     $_POST['idLieu'] = ($_POST['idLieu'] == Null) ? Null : $_POST['idLieu'];
+    $_POST['dispoBenevoles'] = ($_POST['dispoBenevoles'] == 1) ? 1 : 0;
 
     $query = $db->prepare('
         INSERT INTO
@@ -22,13 +23,15 @@ else
             idLieu                = :idLieu,
             libelleConteneur      = :libelleConteneur,
             dateDernierInventaire = :dateDernierInventaire,
-            frequenceInventaire   = :frequenceInventaire
+            frequenceInventaire   = :frequenceInventaire,
+            dispoBenevoles        = :dispoBenevoles
         ;');
     $query->execute(array(
         'idLieu'                => $_POST['idLieu'],
         'libelleConteneur'      => $_POST['libelleConteneur'],
         'dateDernierInventaire' => $_POST['dateDernierInventaire'],
-        'frequenceInventaire'   => $_POST['frequenceInventaire']
+        'frequenceInventaire'   => $_POST['frequenceInventaire'],
+        'dispoBenevoles'        => $_POST['dispoBenevoles'],
     ));
     switch($query->errorCode())
     {

@@ -14,6 +14,7 @@ if ($_SESSION['reserve_modification']==0)
 else
 {
     $_POST['idLieu'] = ($_POST['idLieu'] == Null) ? Null : $_POST['idLieu'];
+    $_POST['dispoBenevoles'] = ($_POST['dispoBenevoles'] == 1) ? 1 : 0;
 
     $query = $db->prepare('
         UPDATE
@@ -22,7 +23,8 @@ else
             idLieu                = :idLieu,
             libelleConteneur      = :libelleConteneur,
             dateDernierInventaire = :dateDernierInventaire,
-            frequenceInventaire   = :frequenceInventaire
+            frequenceInventaire   = :frequenceInventaire,
+            dispoBenevoles        = :dispoBenevoles
         WHERE
             idConteneur = :idConteneur;');
     $query->execute(array(
@@ -30,7 +32,8 @@ else
         'libelleConteneur'      => $_POST['libelleConteneur'],
         'idConteneur'           => $_GET['id'],
         'dateDernierInventaire' => $_POST['dateDernierInventaire'],
-        'frequenceInventaire'   => $_POST['frequenceInventaire']
+        'frequenceInventaire'   => $_POST['frequenceInventaire'],
+        'dispoBenevoles'        => $_POST['dispoBenevoles'],
     ));
     switch($query->errorCode())
     {

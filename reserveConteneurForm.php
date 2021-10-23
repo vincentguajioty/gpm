@@ -61,6 +61,13 @@ if($_SESSION['reserve_ajout']==1 OR $_SESSION['reserve_modification']==1)
                             <label>Fréquence inventaire (jours): <small style="color:grey;">Requis</small></label>
                             <input type="number" class="form-control" value="<?= isset($data['frequenceInventaire']) ? $data['frequenceInventaire'] : '' ?>" name="frequenceInventaire" required>
                         </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="1" name="dispoBenevoles" <?php if($data['dispoBenevoles']){echo "checked";} ?>> Cette réserve est accessible pour le reconditionnement des bénévoles
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fermer</button>
