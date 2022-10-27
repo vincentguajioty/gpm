@@ -53,7 +53,7 @@ if ($_SESSION['typesLots_lecture']==0)
                             <thead>
                             <tr>
                                 <th style="width: 10px">#</th>
-                                <th>Catérogie</th>
+                                <th>Catégorie</th>
                                 <th>Matériel</th>
                                 <th>Quantité exigée</th>
                                 <th>Obligation exigée</th>
