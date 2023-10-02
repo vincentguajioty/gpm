@@ -1,6 +1,8 @@
 # GPM - Gestionnaire de Parc Matériel
 
-## ATTENTION - PROJET DE RE-ECRITURE DE L'APPLICATION EN COURS
+## ATTENTION - PROJET DE RE-ECRITURE DE L'APPLICATION EN COURS (V15)
+
+## ATTENTION - La mise à jour automatique ne fonctionnera qu'à partir de la V14.x . Il est nécessaire de mettre à jour votre GPM jusq'à la V14 avant d'envisager une migration en V15
 
 GPM est un outil développé pour les associations de secourisme ou tout organisme amené à gérer un parc de matériel de secours. GPM se veut être une solution modulable afin de répondre aux besoins spécifiques de chaque structure. Basées sur un principe de modules, les différentes fonctionnalités peuvent être activées ou désactivées.
 
