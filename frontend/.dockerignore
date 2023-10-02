@@ -1,0 +1,7 @@
+node_modules
+Dockerfile
+Dockerfile-UAT
+Dockerfile-PROD
+.git
+.gitignore
+.dockerignore
