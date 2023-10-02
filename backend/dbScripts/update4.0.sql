@@ -1,5 +1,3 @@
-UPDATE CONFIG set version = '4.0';
-
 CREATE TABLE VHF_TYPES_EQUIPEMENTS(
 	idVhfType INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	libelleType VARCHAR(100)
@@ -176,3 +174,4 @@ vhf_equipement_ajout = 0,
 vhf_equipement_modification = 0,
 vhf_equipement_suppression = 0;
 
+UPDATE CONFIG set version = '4.0';

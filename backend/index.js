@@ -82,8 +82,7 @@ schedule.scheduleJob(process.env.CRON_MAIL_QUEUE, async function() {
     }
     else
     {
-        logger.debug('Autorisation refusée dans la conf pour enoyer les mails, truncate de la table');
-        await fonctionsMail.clearMailQueue();
+        logger.debug('Autorisation refusée dans la conf pour enoyer les mails, aucun traitement lancé');
     }
     logger.debug('Fin cron de dépilement des emails en queue');
 });

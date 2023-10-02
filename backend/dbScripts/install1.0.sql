@@ -452,16 +452,6 @@ ALTER TABLE LOGS CHANGE utilisateurApollonEvt utilisateurEvt VARCHAR(100);
 
 ALTER TABLE PERSONNE_REFERENTE ADD derniereConnexion DATETIME;
 
-CREATE TABLE CONFIG(
-	appname VARCHAR(50),
-	sitecolor VARCHAR(50),
-	urlsite VARCHAR(50),
-	version VARCHAR(10),
-	mailserver VARCHAR(50),
-	logouttemp INT
-);
-INSERT INTO CONFIG(appname, sitecolor, urlsite, version, mailserver, logouttemp)VALUES('GPM', 'blue', 'https://gpm.test.fr', '2.2', 'contact@test.fr', 60);
-
 ALTER TABLE PROFILS ADD appli_conf BOOLEAN;
 UPDATE PROFILS set appli_conf = 0;
 
@@ -470,21 +460,21 @@ CREATE TABLE DOCUMENTS_TYPES(
 	idTypeDocument INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	libelleTypeDocument VARCHAR(100)
 );
-INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(1,'Devis');
-INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(2,'Contrat');
-INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(3,'Facture');
-INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(4,'Bon de commande');
-INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(5,'Bon de réception');
-INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(6,'Avis de passage');
-INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(7,'Notice d\'utilisation');
-INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(8,'Bon de retour');
-INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(9,'Compte rendu de SAV');
-INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(10,'Scan de cheque');
-INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(11,'Scan de document officiel');
-INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(12,'Photo');
-INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(13,'Archive');
-INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(14,'Video');
-INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(15,'Bande son');
+INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(1,"Devis");
+INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(2,"Contrat");
+INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(3,"Facture");
+INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(4,"Bon de commande");
+INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(5,"Bon de réception");
+INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(6,"Avis de passage");
+INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(7,"Notice d'utilisation");
+INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(8,"Bon de retour");
+INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(9,"Compte rendu de SAV");
+INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(10,"Scan de cheque");
+INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(11,"Scan de document officiel");
+INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(12,"Photo");
+INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(13,"Archive");
+INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(14,"Video");
+INSERT INTO DOCUMENTS_TYPES (idTypeDocument, libelleTypeDocument)VALUES(15,"Bande son");
 
 CREATE TABLE DOCUMENTS_COMMANDES(
 	idDocCommande INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -500,3 +490,13 @@ CREATE TABLE DOCUMENTS_COMMANDES(
 	CONSTRAINT fk_docCommande_commande
 		FOREIGN KEY (idCommande)
 		REFERENCES COMMANDES(idCommande));
+
+CREATE TABLE CONFIG(
+	appname VARCHAR(50),
+	sitecolor VARCHAR(50),
+	urlsite VARCHAR(50),
+	version VARCHAR(10),
+	mailserver VARCHAR(50),
+	logouttemp INT
+);
+INSERT INTO CONFIG(appname, sitecolor, urlsite, version, mailserver, logouttemp)VALUES('GPM', 'blue', 'https://gpm.test.fr', '2.2', 'contact@test.fr', 60);

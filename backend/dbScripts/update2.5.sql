@@ -1,5 +1,3 @@
-UPDATE CONFIG set version = '2.5';
-
 ALTER TABLE CONFIG ADD mailcopy BOOLEAN;
 UPDATE CONFIG set mailcopy = 0;
 
@@ -89,7 +87,4 @@ notifications_commandes_observateur_savOK = 1,
 notifications_commandes_observateur_cloture = 1,
 notifications_commandes_observateur_abandon = 1;
 
-OPTIMIZE TABLE LOGS;
-OPTIMIZE TABLE COMMANDES_TIMELINE;
-OPTIMIZE TABLE INVENTAIRES_CONTENUS;
-
+UPDATE CONFIG set version = '2.5';

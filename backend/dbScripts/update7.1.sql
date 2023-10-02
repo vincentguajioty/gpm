@@ -1,5 +1,3 @@
-UPDATE CONFIG set version = '7.1';
-
 ALTER TABLE PROFILS ADD cautions_lecture BOOLEAN;
 ALTER TABLE PROFILS ADD cautions_ajout BOOLEAN;
 ALTER TABLE PROFILS ADD cautions_modification BOOLEAN;
@@ -144,3 +142,4 @@ CREATE TABLE PERSONNE_REFERENTE_TEMP(
 	mailCreation BOOLEAN
 );
 
+UPDATE CONFIG set version = '7.1';

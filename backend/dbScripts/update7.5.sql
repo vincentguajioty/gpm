@@ -1,5 +1,3 @@
-UPDATE CONFIG set version = '7.5';
-
 ALTER TABLE PERSONNE_REFERENTE ADD tableRowPerso INT;
 UPDATE PERSONNE_REFERENTE SET tableRowPerso = 25;
 
@@ -126,3 +124,4 @@ INSERT INTO MESSAGES SET
 	titreMessage='Ajout de nouvelles habilitations',
 	corpsMessage='Suite à la mise à jour du module de profils, une nouvelle habilitation liée aux notifications est apparue. Par défault, cette habilitation est activée tous les profils.';
 
+UPDATE CONFIG set version = '7.5';

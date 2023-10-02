@@ -1,5 +1,4 @@
-UPDATE CONFIG set version = '8.1';
-
 ALTER TABLE CENTRE_COUTS DROP FOREIGN KEY fk_couts_responsable;
 ALTER TABLE CENTRE_COUTS DROP idResponsable;
 
+UPDATE CONFIG set version = '8.1';

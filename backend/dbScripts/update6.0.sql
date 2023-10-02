@@ -1,5 +1,3 @@
-UPDATE CONFIG set version = '6.0';
-
 CREATE TABLE PROFILS_PERSONNES(
 	idPersonne INT,
 	idProfil INT,
@@ -40,3 +38,4 @@ CREATE TABLE TODOLIST(
 		REFERENCES PERSONNE_REFERENTE(idPersonne)
 );
 
+UPDATE CONFIG set version = '6.0';

@@ -1,5 +1,3 @@
-UPDATE CONFIG set version = '8.3';
-
 CREATE TABLE TODOLIST_PRIORITES(
 	idTDLpriorite INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	libellePriorite VARCHAR(100),
@@ -23,3 +21,4 @@ UPDATE TODOLIST SET idTDLpriorite = 5 WHERE priorite='5 - Optionel';
 
 ALTER TABLE TODOLIST DROP priorite;
 
+UPDATE CONFIG set version = '8.3';

@@ -1,5 +1,3 @@
-UPDATE CONFIG set version = '7.0';
-
 ALTER TABLE PROFILS ADD tenues_lecture BOOLEAN;
 ALTER TABLE PROFILS ADD tenues_ajout BOOLEAN;
 ALTER TABLE PROFILS ADD tenues_modification BOOLEAN;
@@ -160,3 +158,4 @@ ALTER TABLE PERSONNE_REFERENTE ADD conf_indicateur10Accueil INT AFTER conf_indic
 
 UPDATE PERSONNE_REFERENTE SET notif_tenues_stock = 0, notif_tenues_retours = 0, conf_indicateur9Accueil = 0, conf_indicateur10Accueil = 0;
 
+UPDATE CONFIG set version = '7.0';

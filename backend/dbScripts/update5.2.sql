@@ -1,5 +1,3 @@
-UPDATE CONFIG set version = '5.2';
-
 CREATE TABLE RESERVES_INVENTAIRES(
 	idReserveInventaire INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	idConteneur INT,
@@ -34,3 +32,4 @@ UPDATE RESERVES_CONTENEUR SET frequenceInventaire = 1;
 ALTER TABLE PERSONNE_REFERENTE ADD conf_accueilRefresh INT;
 UPDATE PERSONNE_REFERENTE SET conf_accueilRefresh = 300;
 
+UPDATE CONFIG set version = '5.2';

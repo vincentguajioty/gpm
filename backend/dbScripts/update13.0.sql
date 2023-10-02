@@ -8,7 +8,7 @@ ALTER TABLE CONFIG ADD mailcnil VARCHAR(50) AFTER mailserver;
 UPDATE CONFIG SET mailcnil = mailserver;
 
 ALTER TABLE CONFIG ADD cnilDisclaimer TEXT;
-UPDATE CONFIG SET cnilDisclaimer = 'Aucunes conditions générales actuellement renseignées. Cet écran vous sera représenté dès que l\'administrateur aura saisi les données.';
+UPDATE CONFIG SET cnilDisclaimer = "Aucunes conditions générales actuellement renseignées. Cet écran vous sera représenté dès que l'administrateur aura saisi les données.";
 
 ALTER TABLE PERSONNE_REFERENTE ADD isActiveDirectory BOOLEAN;
 UPDATE PERSONNE_REFERENTE SET isActiveDirectory = FALSE;

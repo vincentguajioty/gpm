@@ -1,7 +1,6 @@
-UPDATE CONFIG set version = '3.1';
-
 UPDATE LOTS_LOTS set idEtat = 2 WHERE idEtat IS NULL;
 
 ALTER TABLE COMMANDES_MATERIEL ADD quantiteAtransferer INT;
 UPDATE COMMANDES_MATERIEL SET quantiteAtransferer=0;
 
+UPDATE CONFIG set version = '3.1';

@@ -174,4 +174,3 @@ INSERT INTO MESSAGES SET
 	corpsMessage='Suite à la mise à jour du module de profils, de nouvelles habilitations de gestion des paramètres > états sont apparues. Par défault, ces habilitations sont décochées sur tous les profils. Merci de les activer sur les profils voulus.';
 
 UPDATE CONFIG set version = '7.4';
-

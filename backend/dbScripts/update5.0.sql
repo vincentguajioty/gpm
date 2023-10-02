@@ -1,5 +1,3 @@
-UPDATE CONFIG set version = '5.0';
-
 CREATE TABLE VEHICULES_TYPES(
 	idVehiculesType INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	libelleType VARCHAR(100)
@@ -128,3 +126,4 @@ ALTER TABLE PERSONNE_REFERENTE ADD conf_indicateur8Accueil INT;
 
 UPDATE PERSONNE_REFERENTE SET conf_indicateur7Accueil = 1, conf_indicateur8Accueil = 1;
 
+UPDATE CONFIG set version = '5.0';

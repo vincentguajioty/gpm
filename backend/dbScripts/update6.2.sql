@@ -1,5 +1,3 @@
-UPDATE CONFIG set version = '6.2';
-		
 CREATE TABLE TODOLIST_PERSONNES(
 	idTache INT,
 	idExecutant INT,
@@ -15,3 +13,4 @@ INSERT INTO TODOLIST_PERSONNES(idTache, idExecutant) SELECT idTache, idExecutant
 ALTER TABLE TODOLIST DROP FOREIGN KEY fk_todolist_executant;
 ALTER TABLE TODOLIST DROP idExecutant;
 
+UPDATE CONFIG set version = '6.2';

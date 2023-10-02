@@ -1,5 +1,3 @@
-UPDATE CONFIG set version = '5.7';
-
 ALTER TABLE CONFIG ADD maintenance BOOLEAN;
 UPDATE CONFIG SET maintenance = 0;
 
@@ -20,3 +18,4 @@ UPDATE PERSONNE_REFERENTE SET notif_lots_manquants = 1, notif_lots_peremptions =
 
 ALTER TABLE PROFILS DROP notifications;
 
+UPDATE CONFIG set version = '5.7';

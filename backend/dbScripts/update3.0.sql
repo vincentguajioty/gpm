@@ -1,5 +1,3 @@
-UPDATE CONFIG set version = '3.0';
-
 CREATE TABLE RESERVES_CONTENEUR(
 	idConteneur INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	idLieu INT,
@@ -38,3 +36,4 @@ ALTER TABLE PROFILS ADD reserve_cmdVersReserve BOOLEAN;
 ALTER TABLE PROFILS ADD reserve_ReserveVersLot BOOLEAN;
 UPDATE PROFILS set reserve_lecture = 0, reserve_ajout = 0, reserve_modification = 0, reserve_suppression = 0, reserve_cmdVersReserve = 0, reserve_ReserveVersLot = 0;
 
+UPDATE CONFIG set version = '3.0';
