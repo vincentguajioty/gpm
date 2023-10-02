@@ -11,6 +11,8 @@ import Error404 from 'pages/errors/Error404';
 import Error500 from 'pages/errors/Error500';
 
 import Landing from 'pages/landing/landing';
+import Login from 'pages/home/login';
+import Logout from 'pages/home/logout';
 
 const FalconRoutes = () => {
   return (
@@ -20,6 +22,8 @@ const FalconRoutes = () => {
       </Route>
 
       <Route element={<AuthSimpleLayout />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
       </Route>
 
       <Route element={<ProtectedRoutes />}>

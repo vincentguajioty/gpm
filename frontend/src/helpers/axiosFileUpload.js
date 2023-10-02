@@ -3,8 +3,6 @@ import { toast } from 'react-toastify';
 import moment from 'moment';
 import HabilitationService from 'services/habilitationsService';
 
-const dotenv = require('dotenv').config();
-
 const instance = axios.create({
     withCredentials: true,
     baseURL: process.env.REACT_APP_BACKEND_URL,

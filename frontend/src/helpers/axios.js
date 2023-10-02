@@ -3,8 +3,6 @@ import { toast } from 'react-toastify';
 import moment from 'moment';
 import HabilitationService from 'services/habilitationsService';
 
-const dotenv = require('dotenv').config();
-
 const dateTransformer: AxiosRequestTransformer = data => {
     if (data instanceof Date) {
       // do your specific formatting here

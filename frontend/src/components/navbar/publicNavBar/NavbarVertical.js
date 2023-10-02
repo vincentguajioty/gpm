@@ -8,7 +8,7 @@ import Flex from 'components/common/Flex';
 import Logo from 'components/common/Logo';
 import NavbarVerticalMenu from './NavbarVerticalMenu';
 import ToggleButton from './ToggleButton';
-import routes from 'routes/siteMaps';
+import routes from 'routes/publicSiteMaps';
 import { capitalize } from 'helpers/utils';
 import bgNavbar from 'assets/img/generic/bg-navbar.png';
 

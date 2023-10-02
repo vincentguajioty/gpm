@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import AppContext from 'context/Context';
 import classNames from 'classnames';
-import NavbarVertical from 'components/navbar/vertical/NavbarVertical';
+import NavbarVertical from 'components/navbar/publicNavBar/NavbarVertical';
 import Footer from 'components/footer/Footer';
 
 const MainLayout = () => {
