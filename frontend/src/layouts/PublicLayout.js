@@ -30,23 +30,16 @@ const MainLayout = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  if(!localStorage.getItem("token"))
-  {
-    return <Navigate to="/login" />
-  }
-  else
-  {
-    return (
-      <div className={isFluid ? 'container-fluid' : 'container'}>
-        <NavbarVertical />
-        <div className={classNames('content', { 'pb-0': isKanban })}>
-          {/*------ Main Routes ------*/}
-          <Outlet />
-          {!isKanban && <Footer />}
-        </div>
+  return (
+    <div className={isFluid ? 'container-fluid' : 'container'}>
+      <NavbarVertical />
+      <div className={classNames('content', { 'pb-0': isKanban })}>
+        {/*------ Main Routes ------*/}
+        <Outlet />
+        {!isKanban && <Footer />}
       </div>
-    );
-  }
+    </div>
+  );
 };
 
 export default MainLayout;

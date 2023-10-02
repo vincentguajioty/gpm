@@ -57,6 +57,7 @@
     "react-dropzone": "^14.2.3",
     "react-error-overlay": "^6.0.11",
     "react-google-recaptcha": "^3.1.0",
+    "react-highlight-words": "^0.20.0",
     "react-hook-form": "^7.40.0",
     "react-icons": "^4.3.1",
     "react-leaflet": "^4.2.0",

@@ -39,11 +39,6 @@ const App = () => {
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <FalconRoutes />
-      <ToastContainer
-        closeButton={CloseButton}
-        icon={false}
-        position={toast.POSITION.BOTTOM_LEFT}
-      />
     </Router>
   );
 };

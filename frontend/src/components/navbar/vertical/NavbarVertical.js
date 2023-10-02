@@ -10,7 +10,6 @@ import NavbarVerticalMenu from './NavbarVerticalMenu';
 import ToggleButton from './ToggleButton';
 import routes from 'routes/siteMaps';
 import { capitalize } from 'helpers/utils';
-import NavbarTopDropDownMenus from 'components/navbar/top/NavbarTopDropDownMenus';
 import PurchaseCard from './PurchaseCard';
 import bgNavbar from 'assets/img/generic/bg-navbar.png';
 
@@ -100,16 +99,6 @@ const NavbarVertical = () => {
           </Nav>
 
           <>
-            {navbarPosition === 'combo' && (
-              <div className={`d-${topNavbarBreakpoint}-none`}>
-                <div className="navbar-vertical-divider">
-                  <hr className="navbar-vertical-hr my-2" />
-                </div>
-                <Nav navbar>
-                  <NavbarTopDropDownMenus />
-                </Nav>
-              </div>
-            )}
             <PurchaseCard />
           </>
         </div>
