@@ -719,6 +719,7 @@ exports.getCurrentSessionsOneUser = async (req, res) => {
 
 exports.dropSession = async (req, res) => {
     try {
+        logger.info('Déconnexion', {idPersonne: 'SYSTEM'});
         const deleteQuery = await db.query(
             'DELETE FROM JWT_SESSIONS WHERE jwtToken = :jwtToken',
         {

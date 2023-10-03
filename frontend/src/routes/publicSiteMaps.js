@@ -1,3 +1,5 @@
+import HabilitationService from 'services/habilitationsService';
+
 export const publicRoutes = {
     label: 'Accès libre',
     labelDisable: false,
@@ -31,8 +33,8 @@ export const loginRoutes = {
     labelDisable: false,
     children: [
         {
-            name: 'Se connecter',
-            to: '/login',
+            name: HabilitationService.habilitations ? 'Accéder à l\'interface' : 'Se connecter',
+            to: HabilitationService.habilitations ? '/home' : '/login',
             icon: 'user',
             exact: true,
             active: true

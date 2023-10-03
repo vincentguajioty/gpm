@@ -1,5 +1,4 @@
 import HabilitationService from 'services/habilitationsService';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const dashboardRoutes = {
     label: 'Accueil',
