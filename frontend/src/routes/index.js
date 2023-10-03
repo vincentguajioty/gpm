@@ -17,6 +17,8 @@ import TracerConso from 'pages/publicAccess/tracerConso';
 import Home from 'pages/home/home';
 import Login from 'pages/home/login';
 import Logout from 'pages/home/logout';
+import LoginPwdForgotten from 'pages/home/loginPwdForgotten';
+import LoginPwdChange from '../pages/home/loginPwdChange';
 
 import Lots from 'pages/internalApp/lots/lots';
 import Sacs from 'pages/internalApp/lots/sacs';
@@ -75,7 +77,12 @@ const FalconRoutes = () => {
       <Route element={<AuthSimpleLayout />}>
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
+        
       </Route>
+
+      <Route path="/mdpOublie" element={<LoginPwdForgotten />} />
+      <Route path="/mdpOublie/:token" element={<LoginPwdForgotten />} />
+      <Route path="/changePwdAtLogin" element={<LoginPwdChange />} />
 
       <Route element={<ProtectedRoutes />}>
         <Route element={<MainLayout />}>

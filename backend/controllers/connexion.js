@@ -407,7 +407,7 @@ exports.pwdReinitRequest = async (req, res)=>{
             SET
                 idPersonne = :idPersonne,
                 tokenReset = :tokenReset,
-                dateGeneration = CURRENT_TIMESTAMP,
+                dateDemande = CURRENT_TIMESTAMP,
                 dateValidite = DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 30 MINUTE)
             ;`,
             {
