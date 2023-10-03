@@ -225,6 +225,7 @@ exports.login = async (req, res)=>{
                         tokenValidity: moment(tokenValidUntil).format('YYYY-MM-DD HH:mm:ss'),
                         refreshValidity: moment(refreshTokenValidUntil).format('YYYY-MM-DD HH:mm:ss'),
                     });
+                    await fonctionsMetiers.updateLastConnexion(selectedUser.idPersonne);
                     res.json({auth: true, token: token, tokenValidUntil: tokenValidUntil, refreshToken: refreshToken, habilitations: selectedUser});
                 }
                 else
@@ -335,6 +336,7 @@ exports.login = async (req, res)=>{
                             tokenValidity: moment(tokenValidUntil).format('YYYY-MM-DD HH:mm:ss'),
                             refreshValidity: moment(refreshTokenValidUntil).format('YYYY-MM-DD HH:mm:ss'),
                         });
+                        await fonctionsMetiers.updateLastConnexion(newUser.idPersonne);
                         res.json({auth: true, token: token, tokenValidUntil: tokenValidUntil, refreshToken: refreshToken, habilitations: newUser});
                     }
                     else
@@ -567,6 +569,7 @@ exports.refreshToken = async (req, res)=>{
                                 tokenValidity: moment(tokenValidUntil).format('YYYY-MM-DD HH:mm:ss'),
                                 refreshValidity: moment(refreshTokenValidUntil).format('YYYY-MM-DD HH:mm:ss'),
                             });
+                            await fonctionsMetiers.updateLastConnexion(tokenInDb[0].idPersonne);
                             res.json({auth: true, token: newToken, tokenValidUntil: tokenValidUntil, refreshToken: refreshToken, habilitations: oldTokenContent});
                         }
                         else

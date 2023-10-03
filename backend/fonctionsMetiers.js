@@ -141,10 +141,28 @@ const deconnecterToutLeMonde = async () => {
     }
 }
 
+const updateLastConnexion = async (idPersonne) => {
+    try {
+        const update = await db.query(`
+            UPDATE
+                PERSONNE_REFERENTE
+            SET
+                derniereConnexion = CURRENT_TIMESTAMP
+            WHERE
+                idPersonne = :idPersonne
+        `,{
+            idPersonne : idPersonne,
+        });
+    } catch (error) {
+        logger.error(error);
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
     deconnecterUtilisateur,
     deconnecterProfil,
     deconnecterToutLeMonde,
+    updateLastConnexion,
 };

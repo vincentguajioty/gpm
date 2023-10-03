@@ -1,5 +1,5 @@
 export const publicRoutes = {
-    label: 'Interface Publique',
+    label: 'Accès libre',
     labelDisable: false,
     children: [
         {
@@ -20,6 +20,13 @@ export const publicRoutes = {
             exact: true,
             active: true
         },
+    ]
+};
+
+export const loginRoutes = {
+    label: 'Equipe Logistique',
+    labelDisable: false,
+    children: [
         {
             name: 'Se connecter',
             to: '/login',
@@ -31,5 +38,6 @@ export const publicRoutes = {
   
 export default [
     publicRoutes,
+    loginRoutes,
 ];
   
