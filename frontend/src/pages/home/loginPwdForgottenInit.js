@@ -71,6 +71,10 @@ const LoginPwdForgottenInit = () => {
             return <IconAlert variant="warning">Une demande de réinitialisation est déjà en cours pour ce compte.</IconAlert> ;
         break;
 
+        case 'userAD':
+            return <IconAlert variant="warning">Votre compte est lié à un AD/LDAP, vous ne pouvez réinitialiser le mot de passe directement dans l'application. Merci de contacter votre administrateur.</IconAlert> ;
+        break;
+
         case 'chargement':
             return <LoaderInfiniteLoop />
         break;

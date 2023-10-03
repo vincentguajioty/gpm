@@ -377,7 +377,7 @@ exports.pwdReinitRequest = async (req, res)=>{
         );
 
         let getUser = await db.query(
-            'SELECT idPersonne FROM PERSONNE_REFERENTE WHERE identifiant = :identifiant AND mailPersonne = :mailPersonne;',
+            'SELECT idPersonne, isActiveDirectory FROM PERSONNE_REFERENTE WHERE identifiant = :identifiant AND mailPersonne = :mailPersonne;',
             {
                 identifiant : req.body.identifiant,
                 mailPersonne : req.body.mailPersonne,
@@ -386,6 +386,11 @@ exports.pwdReinitRequest = async (req, res)=>{
         if(getUser.length != 1)
         {
             return res.json({handleResult: 'userInconnu'});
+        }
+
+        if(getUser[0].isActiveDirectory == true)
+        {
+            return res.json({handleResult: 'userAD'});
         }
         
         let alreadyExistingRequests = await db.query(
