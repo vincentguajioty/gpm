@@ -10,7 +10,9 @@ import ProtectedRoutes from '../components/connexion/protectedRoutes';
 import Error404 from 'pages/errors/Error404';
 import Error500 from 'pages/errors/Error500';
 
-import Landing from 'pages/landing/landing';
+import Landing from 'pages/publicAccess/landing';
+import DeclarationIncident from 'pages/publicAccess/declarationIncident';
+import TracerConso from 'pages/publicAccess/tracerConso';
 import Login from 'pages/home/login';
 import Logout from 'pages/home/logout';
 
@@ -21,6 +23,8 @@ const FalconRoutes = () => {
     <Routes>
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Landing />} />
+        <Route path="/incidentPublic" element={<DeclarationIncident />} />
+        <Route path="/consoPublic" element={<TracerConso />} />
       </Route>
 
       <Route element={<AuthSimpleLayout />}>

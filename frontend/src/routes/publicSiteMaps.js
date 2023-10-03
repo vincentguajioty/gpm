@@ -5,18 +5,21 @@ export const publicRoutes = {
         {
             name: 'Accueil',
             to: '/',
+            icon: 'home',
             exact: true,
             active: true
         },
         {
             name: 'Tracer une consommation',
-            to: '/',
+            to: '/consoPublic',
+            icon: 'notes-medical',
             exact: true,
             active: true
         },
         {
             name: 'Déclarer un incident',
-            to: '/',
+            to: '/incidentPublic',
+            icon: 'exclamation-triangle',
             exact: true,
             active: true
         },
@@ -30,6 +33,7 @@ export const loginRoutes = {
         {
             name: 'Se connecter',
             to: '/login',
+            icon: 'user',
             exact: true,
             active: true
         }

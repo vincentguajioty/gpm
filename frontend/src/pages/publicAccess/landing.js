@@ -6,7 +6,7 @@ import { faHome } from '@fortawesome/free-solid-svg-icons';
 
 const Landing = () => {
   return (
-    'La page publique'
+    'La page publique qui fait un peu de pub avec trois gros boutons: Tracer la conso / Déclarer un INC / se connecter'
   );
 };
 
