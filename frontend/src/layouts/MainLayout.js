@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import AppContext from 'context/Context';
 import classNames from 'classnames';
+import NavbarTop from 'components/navbar/top/NavbarTop';
 import NavbarVertical from 'components/navbar/vertical/NavbarVertical';
 import Footer from 'components/footer/Footer';
 
@@ -40,6 +41,7 @@ const MainLayout = () => {
       <div className={isFluid ? 'container-fluid' : 'container'}>
         <NavbarVertical />
         <div className={classNames('content', { 'pb-0': isKanban })}>
+          <NavbarTop />
           {/*------ Main Routes ------*/}
           <Outlet />
           {!isKanban && <Footer />}

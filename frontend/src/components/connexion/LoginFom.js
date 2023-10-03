@@ -130,7 +130,7 @@ const LoginForm = ({ hasLabel }) => {
         </Button>
       </Form.Group>
       
-      {loginStatus && <Navigate replace to="/" />}
+      {loginStatus && <Navigate replace to="/home" />}
       {redirectToChgPwd && <Navigate replace to="/changePwdAtLogin" />}
     </Form>
     <center><Link to="/mdpOublie">Mot de passe oublié</Link></center>

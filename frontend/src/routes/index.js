@@ -14,6 +14,8 @@ import Landing from 'pages/landing/landing';
 import Login from 'pages/home/login';
 import Logout from 'pages/home/logout';
 
+import Home from 'pages/home/home';
+
 const FalconRoutes = () => {
   return (
     <Routes>
@@ -28,6 +30,7 @@ const FalconRoutes = () => {
 
       <Route element={<ProtectedRoutes />}>
         <Route element={<MainLayout />}>
+          <Route path="/home" element={<Home />} />
         </Route>
       </Route>
 

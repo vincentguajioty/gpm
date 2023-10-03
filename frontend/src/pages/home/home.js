@@ -15,8 +15,6 @@ const Home = () => {
 
     return(<>
 		<h2 className='mb-4'>Bienvenue {HabilitationService.habilitations.prenomPersonne} !</h2>
-
-		
 	</>);
 }
 

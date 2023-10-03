@@ -20,14 +20,14 @@ const LogoutContent = ({ titleTag: TitleTag }) => {
         color="primary"
         size="sm"
         className="mt-3"
-        to={`/login`}
+        to={`/`}
       >
         <FontAwesomeIcon
           icon="chevron-left"
           transform="shrink-4 down-1"
           className="me-1"
         />
-        Se connecter
+        Espace public
       </Button>
     </>
   );
