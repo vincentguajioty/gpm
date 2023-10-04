@@ -1,11 +1,9 @@
 const express = require('express');
 const app = express();
-
 const logger = require('./winstonLogger');
-
 const jwtFunctions = require('./jwt');
-
 const router = express.Router();
+const fonctionsMetiers = require('./fonctionsMetiers');
 
 const connexionCtrl = require('./controllers/connexion');
 
@@ -33,11 +31,11 @@ const suppressionLogger = () => {
 //authentification
 router.post('/login',                      httpLogger(),                                                                                   connexionCtrl.login );
 router.post('/mfaNeeded',                  httpLogger(),                                                                                   connexionCtrl.mfaNeeded );
-router.post('/pwdReinitRequest',           httpLogger(),                                                                                   connexionCtrl.pwdReinitRequest );
-router.post('/pwdReinitValidate',          httpLogger(),                                                                                   connexionCtrl.pwdReinitValidate );
+router.post('/pwdReinitRequest',           httpLogger(), fonctionsMetiers.checkPwdReinitEnable(),                                          connexionCtrl.pwdReinitRequest );
+router.post('/pwdReinitValidate',          httpLogger(), fonctionsMetiers.checkPwdReinitEnable(),                                          connexionCtrl.pwdReinitValidate );
 router.post('/refreshToken',               httpLogger(),                                                                                   connexionCtrl.refreshToken );
 router.post('/dropSession',                httpLogger(),                                                                                   connexionCtrl.dropSession );
-router.get('/getConfig',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                       connexionCtrl.getConfig );
+router.get('/getConfig',                   httpLogger(),                                                                                   connexionCtrl.getConfig );
 router.get('/checkLogin',                  httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                       connexionCtrl.checkLogin );
 router.post('/updatePassword',             httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), modificationLogger(), connexionCtrl.updatePassword );
 router.post('/updatePasswordWithoutCheck', httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), modificationLogger(), connexionCtrl.updatePasswordWithoutCheck );

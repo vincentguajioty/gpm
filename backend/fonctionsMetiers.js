@@ -158,6 +158,26 @@ const updateLastConnexion = async (idPersonne) => {
     }
 }
 
+const checkPwdReinitEnable = () => {
+    return async function(req, res, next) {
+        const result = await db.query(
+            `SELECT
+                resetPassword
+            FROM
+                CONFIG
+        `);
+        if(result[0].resetPassword == true)
+        {
+            next();
+        }
+        else
+        {
+            res.status(401);
+            res.json({auth: false, message: "La fonction est désactivée"});
+        }
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -165,4 +185,5 @@ module.exports = {
     deconnecterProfil,
     deconnecterToutLeMonde,
     updateLastConnexion,
+    checkPwdReinitEnable,
 };

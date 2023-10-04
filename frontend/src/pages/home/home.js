@@ -8,6 +8,7 @@ import IconAlert from 'components/common/IconAlert';
 
 import {Axios} from 'helpers/axios';
 import HabilitationService from 'services/habilitationsService';
+import ConfigurationService from 'services/configurationService';
 
 import moment from 'moment-timezone';
 
@@ -20,8 +21,16 @@ const Home = () => {
 			location.reload();
 		}
 	}
+	const reloadForConfig = async () => {
+		if(localStorage.getItem("configNeedRefresh") != 0  || !ConfigurationService.appname)
+		{
+			localStorage.setItem("configNeedRefresh", 0);
+			location.reload();
+		}
+	}
 	useEffect(() => {
 		reloadForNavBar();
+		reloadForConfig();
 	}, [])
 	
 

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {  Link, Navigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import ReCAPTCHA from 'react-google-recaptcha';
+import getConfigAndSave from 'helpers/getConfigAndSave';
 
 import HabilitationService from 'services/habilitationsService';
+import ConfigurationService from 'services/configurationService';
 
 import {Axios} from 'helpers/axios';
 
@@ -71,6 +73,10 @@ const LoginForm = ({ hasLabel }) => {
     }
   }
 
+  useEffect(() => {
+		getConfigAndSave();
+	}, [])
+
   return (
     <>
     <Form onSubmit={handleSubmit} className="mb-3">
@@ -133,7 +139,10 @@ const LoginForm = ({ hasLabel }) => {
       {loginStatus && <Navigate replace to="/home" />}
       {redirectToChgPwd && <Navigate replace to="/changePwdAtLogin" />}
     </Form>
-    <center><Link to="/mdpOublie">Mot de passe oublié</Link></center>
+
+    {ConfigurationService.resetPassword ?
+      <center><Link to="/mdpOublie">Mot de passe oublié</Link></center>
+    : null}
     </>
   );
 };
