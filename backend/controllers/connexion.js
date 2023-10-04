@@ -46,7 +46,8 @@ const ldapUserLogin = async (identifiant, motDePasse) => {
 }
 
 const localUserLogin = async (motDePasse, selectedUser) => {
-    const check = await brcypt.compare(motDePasse, selectedUser.motDePasse);
+    const mdpAvecSels = process.env.LOCAL_SELS_PRE + motDePasse + process.env.LOCAL_SELS_POST;
+    const check = await brcypt.compare(mdpAvecSels, selectedUser.motDePasse);
     if(check){return true};
 
     return false;
@@ -478,7 +479,8 @@ exports.pwdReinitValidate = async (req, res, next)=>{
             idPersonne : resetRequest[0].idPersonne,
         });
 
-        brcypt.hash(user[0].identifiant, saltRounds, async (err, hash) => {
+        let newPasswordWithSalt = process.env.LOCAL_SELS_PRE + user[0].identifiant + process.env.LOCAL_SELS_POST;
+        brcypt.hash(newPasswordWithSalt, saltRounds, async (err, hash) => {
             if(err){logger.error(err);}
     
             const update = await db.query(
@@ -620,10 +622,12 @@ exports.updatePassword = async (req, res) => {
         if(results.length == 1)
         {
             const result = results[0];
-            brcypt.compare(oldPwd, result.motDePasse, (err, response) => {
+            let oldPasswordWithSalt = process.env.LOCAL_SELS_PRE + oldPwd + process.env.LOCAL_SELS_POST;
+            brcypt.compare(oldPasswordWithSalt, result.motDePasse, (err, response) => {
                 if(response)
                 {
-                    brcypt.hash(newPwd, saltRounds, async (err, hash) => {
+                    let newPasswordWithSalt = process.env.LOCAL_SELS_PRE + newPwd + process.env.LOCAL_SELS_POST;
+                    brcypt.hash(newPasswordWithSalt, saltRounds, async (err, hash) => {
                         if(err){logger.error(err);}
                 
                         const update = await db.query(
@@ -664,7 +668,8 @@ exports.updatePasswordWithoutCheck = async (req, res) => {
 
         const saltRounds = parseInt(process.env.BCRYPT_SALTROUND);
 
-        brcypt.hash(newPwd, saltRounds, async (err, hash) => {
+        let newPasswordWithSalt = process.env.LOCAL_SELS_PRE + newPwd + process.env.LOCAL_SELS_POST;
+        brcypt.hash(newPasswordWithSalt, saltRounds, async (err, hash) => {
             if(err){logger.error(err);}
     
             const update = await db.query(
@@ -692,7 +697,13 @@ exports.getConfig = async (req, res) => {
     try {
         const result = await db.query(
             `SELECT
-                *
+                appname,
+                urlsite,
+                maintenance,
+                resetPassword,
+                alertes_benevoles_lots,
+                alertes_benevoles_vehicules,
+                consommation_benevoles
             FROM
                 CONFIG
         `);
