@@ -4,12 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 
-const EtatsSettings = () => {
+const TransmissionsSettings = () => {
     return (
-        'tableau des EtatsSettings'
+        'Tous les settings liés aux transmissions'
     );
 };
 
-EtatsSettings.propTypes = {};
+TransmissionsSettings.propTypes = {};
 
-export default EtatsSettings;
+export default TransmissionsSettings;

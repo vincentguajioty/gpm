@@ -392,6 +392,8 @@ if(HabilitationService.habilitations)
         HabilitationService.habilitations['vehicules_types_lecture']
         ||
         HabilitationService.habilitations['etats_lecture']
+        ||
+        HabilitationService.habilitations['appli_conf']
     )
     {
         let tempChildrens=[];
@@ -431,12 +433,12 @@ if(HabilitationService.habilitations)
                 active: true
             })
         }
-        if(HabilitationService.habilitations['etats_lecture'])
+        if(HabilitationService.habilitations['appli_conf'])
         {
             tempChildrens.push({
-                name: 'Etats',
-                to: '/settingsEtats',
-                icon: 'adjust',
+                name: 'Transmissions',
+                to: '/settingsTransmissions',
+                icon: 'wifi',
                 exact: true,
                 active: true
             })

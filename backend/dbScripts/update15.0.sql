@@ -90,4 +90,7 @@ ALTER TABLE PERSONNE_REFERENTE ADD COLUMN mfaEnabled BOOLEAN AFTER notifications
 UPDATE PERSONNE_REFERENTE SET mfaEnabled = false;
 UPDATE PERSONNE_REFERENTE SET mfaEnabled = true WHERE mfaSecret IS NOT NULL AND mfaSecret <> "";
 
+ALTER TABLE LIEUX CHANGE adresseLieu adresseLieu TEXT;
+ALTER TABLE LIEUX CHANGE detailsLieu detailsLieu TEXT;
+
 UPDATE CONFIG SET version = '15.0';

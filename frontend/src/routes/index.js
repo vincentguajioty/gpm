@@ -52,7 +52,7 @@ import ReferentielsSettings from 'pages/internalApp/settings/referentiels/refere
 import LotsReservesSettings from 'pages/internalApp/settings/lotsReserves/lotsReserves';
 import LieuxSettings from 'pages/internalApp/settings/lieux/lieux';
 import VehiculesSettings from 'pages/internalApp/settings/vehicules/vehicules';
-import EtatsSettings from 'pages/internalApp/settings/etats/etats';
+import TransmissionsSettings from 'pages/internalApp/settings/transmissions/transmissions';
 
 import Utilisateurs from 'pages/internalApp/settings/utilisateurs/utilisateurs';
 import Profils from 'pages/internalApp/settings/profils/profils';
@@ -120,7 +120,7 @@ const FalconRoutes = () => {
           <Route path="/settingsLotsReserves" element={<LotsReservesSettings />} />
           <Route path="/settingsLieux" element={<LieuxSettings />} />
           <Route path="/settingsVehicules" element={<VehiculesSettings />} />
-          <Route path="/settingsEtats" element={<EtatsSettings />} />
+          <Route path="/settingsTransmissions" element={<TransmissionsSettings />} />
 
           <Route path="/teamUtilisateurs" element={<Utilisateurs />} />
           <Route path="/teamProfils" element={<Profils />} />
