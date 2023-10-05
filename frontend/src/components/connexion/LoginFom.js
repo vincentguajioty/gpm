@@ -140,7 +140,7 @@ const LoginForm = ({ hasLabel }) => {
       {redirectToChgPwd && <Navigate replace to="/changePwdAtLogin" />}
     </Form>
 
-    {ConfigurationService.resetPassword ?
+    {ConfigurationService.config['resetPassword'] ?
       <center><Link to="/mdpOublie">Mot de passe oublié</Link></center>
     : null}
     </>
