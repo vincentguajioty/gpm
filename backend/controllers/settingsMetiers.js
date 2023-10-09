@@ -25,7 +25,7 @@ exports.addCategoriesMateriels = async (req, res)=>{
         {
             libelleCategorie : req.body.libelleCategorie || null,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -45,7 +45,7 @@ exports.updateCategoriesMateriels = async (req, res)=>{
             libelleCategorie : req.body.libelleCategorie || null,
             idCategorie      : req.body.idCategorie || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -84,7 +84,7 @@ exports.addLieux = async (req, res)=>{
             detailsLieu   : req.body.detailsLieu || null,
             accessReserve : req.body.accessReserve || false,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -110,7 +110,7 @@ exports.updateLieux = async (req, res)=>{
             accessReserve : req.body.accessReserve || false,
             idLieu        : req.body.idLieu || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -143,7 +143,7 @@ exports.addTypesVehicules = async (req, res)=>{
         {
             libelleType : req.body.libelleType || null,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -163,7 +163,7 @@ exports.updateTypesVehicules = async (req, res)=>{
             libelleType     : req.body.libelleType || null,
             idVehiculesType : req.body.idVehiculesType || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -198,7 +198,7 @@ exports.addTypesDesinfections = async (req, res)=>{
             libelleVehiculesDesinfectionsType : req.body.libelleVehiculesDesinfectionsType || null,
             affichageSynthese                 : req.body.affichageSynthese || false,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -220,7 +220,7 @@ exports.updateTypesDesinfections = async (req, res)=>{
             affichageSynthese                 : req.body.affichageSynthese || false,
             idVehiculesDesinfectionsType      : req.body.idVehiculesDesinfectionsType || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -255,7 +255,7 @@ exports.addTypesMaintenancesRegulieresVehicules = async (req, res)=>{
             libelleHealthType : req.body.libelleHealthType || null,
             affichageSynthese : req.body.affichageSynthese || false,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -277,7 +277,7 @@ exports.updateTypesMaintenancesRegulieresVehicules = async (req, res)=>{
             affichageSynthese : req.body.affichageSynthese || false,
             idHealthType      : req.body.idHealthType || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -310,7 +310,7 @@ exports.addTypesMaintenancesPonctuellesVehicules = async (req, res)=>{
         {
             libelleTypeMaintenance : req.body.libelleTypeMaintenance || null,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -330,7 +330,7 @@ exports.updateTypesMaintenancesPonctuellesVehicules = async (req, res)=>{
             libelleTypeMaintenance : req.body.libelleTypeMaintenance || null,
             idTypeMaintenance      : req.body.idTypeMaintenance || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -363,7 +363,7 @@ exports.addCarburants = async (req, res)=>{
         {
             libelleCarburant : req.body.libelleCarburant || null,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -383,7 +383,7 @@ exports.updateCarburants = async (req, res)=>{
             libelleCarburant : req.body.libelleCarburant || null,
             idCarburant      : req.body.idCarburant || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -416,7 +416,7 @@ exports.addEtatsLots = async (req, res)=>{
         {
             libelleLotsEtat : req.body.libelleLotsEtat || null,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -436,7 +436,7 @@ exports.updateEtatsLots = async (req, res)=>{
             libelleLotsEtat : req.body.libelleLotsEtat || null,
             idLotsEtat      : req.body.idLotsEtat || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -469,7 +469,7 @@ exports.addEtatsMateriels = async (req, res)=>{
         {
             libelleMaterielsEtat : req.body.libelleMaterielsEtat || null,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -489,7 +489,7 @@ exports.updateEtatsMateriels = async (req, res)=>{
             libelleMaterielsEtat : req.body.libelleMaterielsEtat || null,
             idMaterielsEtat      : req.body.idMaterielsEtat || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -522,7 +522,7 @@ exports.addEtatsVehicules = async (req, res)=>{
         {
             libelleVehiculesEtat : req.body.libelleVehiculesEtat || null,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -542,7 +542,7 @@ exports.updateEtatsVehicules = async (req, res)=>{
             libelleVehiculesEtat : req.body.libelleVehiculesEtat || null,
             idVehiculesEtat      : req.body.idVehiculesEtat || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -575,7 +575,7 @@ exports.addTypesDocuments = async (req, res)=>{
         {
             libelleTypeDocument : req.body.libelleTypeDocument || null,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -595,7 +595,7 @@ exports.updateTypesDocuments = async (req, res)=>{
             libelleTypeDocument : req.body.libelleTypeDocument || null,
             idTypeDocument      : req.body.idTypeDocument || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -644,7 +644,7 @@ exports.addCatalogueMateriel = async (req, res)=>{
             peremptionAnticipationOpe : req.body.peremptionAnticipationOpe || null,
             peremptionAnticipationRes : req.body.peremptionAnticipationRes || null,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -680,7 +680,7 @@ exports.updateCatalogueMateriel = async (req, res)=>{
             peremptionAnticipationRes : req.body.peremptionAnticipationRes || null,
             idMaterielCatalogue       : req.body.idMaterielCatalogue || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -713,7 +713,7 @@ exports.addVHFTypesAccessoires = async (req, res)=>{
         {
             libelleVhfAccessoireType : req.body.libelleVhfAccessoireType || null,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -733,7 +733,7 @@ exports.updateVHFTypesAccessoires = async (req, res)=>{
             libelleVhfAccessoireType : req.body.libelleVhfAccessoireType || null,
             idVhfAccessoireType      : req.body.idVhfAccessoireType || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -766,7 +766,7 @@ exports.addEtatsVHF = async (req, res)=>{
         {
             libelleVhfEtat : req.body.libelleVhfEtat || null,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -786,7 +786,7 @@ exports.updateEtatsVHF = async (req, res)=>{
             libelleVhfEtat : req.body.libelleVhfEtat || null,
             idVhfEtat      : req.body.idVhfEtat || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -819,7 +819,7 @@ exports.addTechnologiesVHF = async (req, res)=>{
         {
             libelleTechno : req.body.libelleTechno || null,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -839,7 +839,7 @@ exports.updateTechnologiesVHF = async (req, res)=>{
             libelleTechno    : req.body.libelleTechno || null,
             idVhfTechno      : req.body.idVhfTechno || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -872,7 +872,7 @@ exports.addTechnologiesVHF = async (req, res)=>{
         {
             libelleType : req.body.libelleType || null,
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -892,7 +892,7 @@ exports.updateTechnologiesVHF = async (req, res)=>{
             libelleType    : req.body.libelleType || null,
             idVhfType      : req.body.idVhfType || null
         });
-        res.send(results);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
