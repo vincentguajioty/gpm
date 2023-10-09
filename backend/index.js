@@ -5,6 +5,7 @@ const processMAJ = require('./processMAJ');
 const dotenv = require('dotenv').config();
 const fonctionsMetiers = require('./fonctionsMetiers')
 const fonctionsMail = require('./fonctionsMail')
+const fonctionsLDAP = require('./fonctionsLDAP')
 
 const logger = require('./winstonLogger');
 
@@ -85,4 +86,56 @@ schedule.scheduleJob(process.env.CRON_MAIL_QUEUE, async function() {
         logger.debug('Autorisation refusée dans la conf pour enoyer les mails, aucun traitement lancé');
     }
     logger.debug('Fin cron de dépilement des emails en queue');
+});
+
+//Cron journalier
+schedule.scheduleJob(process.env.CRON_DAILY, async function() {
+    logger.info('CRON - Début du CRON');
+
+    //Mise à jour des users AD
+    logger.debug("CRON - Début de la mise à jour des users AD");
+    await fonctionsLDAP.updateAllUsersFromAD();
+    logger.debug("CRON - Fin de la mise à jour des users AD");
+
+    //Kill de tous les tokens pour utilisateurs sans profils
+    logger.debug("CRON - Début de suppression de token pour utilisateurs sans profils");
+    await fonctionsLDAP.killTokensForNoProfils();
+    logger.debug("CRON - Fin de suppression de token pour utilisateurs sans profils");
+
+    //Mise à jour des conditions de notifications
+    logger.debug("CRON - Début de la vérification des conditions de notification");
+    await fonctionsMetiers.notificationsConditionsMAJ();
+    await fonctionsMetiers.notificationsMAJpersonne();
+    logger.debug("CRON - Fin de la vérification des conditions de notification");
+
+    //Mise à jour des anticipations de péremption
+    logger.debug("CRON - Début de la mise à jour des anticipations de péremption");
+    await fonctionsMetiers.updatePeremptionsAnticipations();
+    logger.debug("CRON - Fin de la mise à jour des anticipations de péremption");
+
+    //Déverrouillage des locks sur les lots et réserves
+    logger.debug("CRON - Début du déveouillage des locks d'inventaire des lots et des reserves");
+    await fonctionsMetiers.unlockLotsInventaires();
+    await fonctionsMetiers.unlockReservesInventaires();
+    logger.debug("CRON - Fin du déveouillage des locks d'inventaire des lots et des reserves");
+
+    //Analyse complète des lots
+    logger.debug("CRON - Début de la vérification de conformité de tous les lots");
+    await fonctionsMetiers.checkAllConf();
+    logger.debug("CRON - Fin de la vérification de conformité de tous les lots");
+
+    //Analyse complète des désinfections de véhicules
+    logger.debug("CRON - Début de la vérification des désinfections de tous les véhicules");
+    await fonctionsMetiers.checkAllDesinfection();
+    logger.debug("CRON - Fin de la vérification des désinfections de tous les véhicule");
+
+    //Analyse complète des maintenances de véhicules
+    logger.debug("CRON - Début de la vérification des maintenances de tous les véhicules");
+    await fonctionsMetiers.checkAllMaintenance();
+    logger.debug("CRON - Fin de la vérification des maintenances de tous les véhicule");
+
+    logger.debug("CRON - Vidage de la table de tocken de reset de mots de passe");
+    await fonctionsMetiers.clearPwdReinitTable();
+    
+    logger.info('CRON - Fin du CRON');
 });
