@@ -158,9 +158,87 @@ const updateProfilsFromAd = async (idPersonne) => {
     return true;
 }
 
+const updateAllUsersFromAD = async () => {
+    try {
+        let allPersonnes = await db.query(`
+            SELECT * FROM PERSONNE_REFERENTE WHERE isActiveDirectory = 1 AND cnil_anonyme = 0;
+        `);
+        for(const personne of allPersonnes)
+        {
+            update = await updateProfilsFromAd(personne.idPersonne);
+            if(update)
+            {
+                logger.info("Mise à jour LDAP avec succès de l'utilisateur "+personne.idPersonne);
+            }
+            else
+            {
+                logger.error("Mise à jour LDAP en echec de l'utilisateur "+personne.idPersonne);
+            }
+        }
+    } catch (error) {
+        logger.error(error);
+    }
+}
+
+const killTokensForNoProfils = async () => {
+    try {
+        const utilisateursToBeKilled = await db.query(`
+            SELECT
+                pr.idPersonne
+            FROM
+                PERSONNE_REFERENTE pr
+                LEFT OUTER JOIN VIEW_HABILITATIONS vh ON pr.idPersonne = vh.idPersonne
+            WHERE
+                vh.connexion_connexion = false
+        `);
+        for(const user of utilisateursToBeKilled)
+        {
+            const sessionToBlacklist = await db.query(
+                'SELECT * FROM JWT_SESSIONS WHERE idPersonne = :idPersonne',
+            {
+                idPersonne : user.idPersonne,
+            });
+    
+            for(const toBlackList of sessionToBlacklist)
+            {
+                let insertRequest = await db.query(
+                    `INSERT INTO JWT_SESSIONS_BLACKLIST SET 
+                        blockedDateTime = CURRENT_TIMESTAMP,
+                        jwtToken = :token
+                    ;`,
+                {
+                    token        : toBlackList.jwtToken,
+                });
+            }
+            
+            for(const toBlackList of sessionToBlacklist)
+            {
+                insertRequest = await db.query(
+                    `INSERT INTO JWT_SESSIONS_BLACKLIST SET 
+                        blockedDateTime = CURRENT_TIMESTAMP,
+                        jwtToken = :refreshtoken
+                    ;`,
+                {
+                    refreshtoken : toBlackList.jwtRefreshToken,
+                });
+            }
+    
+            const deleteFromCurrentList = await db.query(
+                'DELETE FROM JWT_SESSIONS WHERE idPersonne = :idPersonne',
+            {
+                idPersonne : user.idPersonne,
+            });
+        }
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     createClient,
     bindLdapClient,
     seachLdapClient,
     updateProfilsFromAd,
+    updateAllUsersFromAD,
+    killTokensForNoProfils,
 };
