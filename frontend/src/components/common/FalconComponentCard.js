@@ -84,16 +84,6 @@ const FalconComponentCardHeader = ({
           )}
           {children}
         </Col>
-        {!noPreview && (
-          <Col
-            className={classNames({
-              'col-auto': !children,
-              'col-md-auto col-12': children
-            })}
-          >
-            <PreviewCode />
-          </Col>
-        )}
       </Row>
     </Card.Header>
   );

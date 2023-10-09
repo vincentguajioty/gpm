@@ -6,7 +6,7 @@ const logger = require('../winstonLogger');
 exports.getCategoriesMateriels = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM MATERIEL_CATEGORIES ORDER BY libelleCategorie;'
+            `SELECT * FROM MATERIEL_CATEGORIES ORDER BY libelleCategorie;`
         );
         res.send(results);
     } catch (error) {
@@ -59,7 +59,7 @@ exports.deleteCategoriesMateriels = async (req, res)=>{
 exports.getLieux = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM LIEUX ORDER BY libelleLieu;'
+            `SELECT * FROM LIEUX ORDER BY libelleLieu;`
         );
         res.send(results);
     } catch (error) {
@@ -76,13 +76,13 @@ exports.addLieux = async (req, res)=>{
                 libelleLieu   = :libelleLieu,
                 adresseLieu   = :adresseLieu,
                 detailsLieu   = :detailsLieu,
-                accessReserve = :accessReserve
+                accesReserve = :accesReserve
             ;`,
         {
             libelleLieu   : req.body.libelleLieu || null,
             adresseLieu   : req.body.adresseLieu || null,
             detailsLieu   : req.body.detailsLieu || null,
-            accessReserve : req.body.accessReserve || false,
+            accesReserve : req.body.accesReserve || false,
         });
         res.sendStatus(201);
     } catch (error) {
@@ -99,7 +99,7 @@ exports.updateLieux = async (req, res)=>{
                 libelleLieu   = :libelleLieu,
                 adresseLieu   = :adresseLieu,
                 detailsLieu   = :detailsLieu,
-                accessReserve = :accessReserve
+                accesReserve  = :accesReserve
             WHERE
                 idLieu = :idLieu
             ;`,
@@ -107,7 +107,7 @@ exports.updateLieux = async (req, res)=>{
             libelleLieu   : req.body.libelleLieu || null,
             adresseLieu   : req.body.adresseLieu || null,
             detailsLieu   : req.body.detailsLieu || null,
-            accessReserve : req.body.accessReserve || false,
+            accesReserve  : req.body.accesReserve || false,
             idLieu        : req.body.idLieu || null
         });
         res.sendStatus(201);
@@ -124,7 +124,7 @@ exports.deleteLieux = async (req, res)=>{
 exports.getTypesVehicules = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM VEHICULES_TYPES ORDER BY libelleType;'
+            `SELECT * FROM VEHICULES_TYPES ORDER BY libelleType;`
         );
         res.send(results);
     } catch (error) {
@@ -177,7 +177,7 @@ exports.deleteTypesVehicules = async (req, res)=>{
 exports.getTypesDesinfections = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM VEHICULES_DESINFECTIONS_TYPES ORDER BY libelleVehiculesDesinfectionsType;'
+            `SELECT * FROM VEHICULES_DESINFECTIONS_TYPES ORDER BY libelleVehiculesDesinfectionsType;`
         );
         res.send(results);
     } catch (error) {
@@ -234,7 +234,7 @@ exports.deleteTypesDesinfections = async (req, res)=>{
 exports.getTypesMaintenancesRegulieresVehicules = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM VEHICULES_HEALTH_TYPES ORDER BY libelleHealthType;'
+            `SELECT * FROM VEHICULES_HEALTH_TYPES ORDER BY libelleHealthType;`
         );
         res.send(results);
     } catch (error) {
@@ -291,7 +291,7 @@ exports.deleteTypesMaintenancesRegulieresVehicules = async (req, res)=>{
 exports.getTypesMaintenancesPonctuellesVehicules = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM VEHICULES_MAINTENANCE_TYPES ORDER BY libelleTypeMaintenance;'
+            `SELECT * FROM VEHICULES_MAINTENANCE_TYPES ORDER BY libelleTypeMaintenance;`
         );
         res.send(results);
     } catch (error) {
@@ -344,7 +344,7 @@ exports.deleteTypesMaintenancesPonctuellesVehicules = async (req, res)=>{
 exports.getCarburants = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM CARBURANTS ORDER BY libelleCarburant;'
+            `SELECT * FROM CARBURANTS ORDER BY libelleCarburant;`
         );
         res.send(results);
     } catch (error) {
@@ -397,7 +397,7 @@ exports.deleteCarburants = async (req, res)=>{
 exports.getEtatsLots = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM LOTS_ETATS ORDER BY libelleLotsEtat;'
+            `SELECT * FROM LOTS_ETATS ORDER BY libelleLotsEtat;`
         );
         res.send(results);
     } catch (error) {
@@ -450,7 +450,7 @@ exports.deleteEtatsLots = async (req, res)=>{
 exports.getEtatsMateriels = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM MATERIEL_ETATS ORDER BY libelleMaterielsEtat;'
+            `SELECT * FROM MATERIEL_ETATS ORDER BY libelleMaterielsEtat;`
         );
         res.send(results);
     } catch (error) {
@@ -503,7 +503,7 @@ exports.deleteEtatsMateriels = async (req, res)=>{
 exports.getEtatsVehicules = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM VEHICULES_ETATS ORDER BY libelleVehiculesEtat;'
+            `SELECT * FROM VEHICULES_ETATS ORDER BY libelleVehiculesEtat;`
         );
         res.send(results);
     } catch (error) {
@@ -556,7 +556,7 @@ exports.deleteEtatsVehicules = async (req, res)=>{
 exports.getTypesDocuments = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM DOCUMENTS_TYPES ORDER BY libelleTypeDocument;'
+            `SELECT * FROM DOCUMENTS_TYPES ORDER BY libelleTypeDocument;`
         );
         res.send(results);
     } catch (error) {
@@ -609,7 +609,21 @@ exports.deleteTypesDocuments = async (req, res)=>{
 exports.getCatalogueMateriel = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM MATERIEL_CATALOGUE ORDER BY libelleMateriel;'
+            `SELECT
+                cat.*,
+                mc.libelleCategorie,
+                f.nomFournisseur,
+                COUNT(cb.idCode) as nbCodesBarre
+            FROM
+                MATERIEL_CATALOGUE cat
+                LEFT OUTER JOIN MATERIEL_CATEGORIES mc ON cat.idCategorie = mc.idCategorie
+                LEFT OUTER JOIN FOURNISSEURS f ON cat.idFournisseur = f.idFournisseur
+                LEFT OUTER JOIN CODES_BARRE cb ON cat.idMaterielCatalogue = cb.idMaterielCatalogue
+            GROUP BY
+                cat.idMaterielCatalogue
+            ORDER BY
+                libelleMateriel
+            ;`
         );
         res.send(results);
     } catch (error) {
@@ -641,8 +655,8 @@ exports.addCatalogueMateriel = async (req, res)=>{
             conditionnementMultiple   : req.body.conditionnementMultiple || null,
             commentairesMateriel      : req.body.commentairesMateriel || null,
             idFournisseur             : req.body.idFournisseur || null,
-            peremptionAnticipationOpe : req.body.peremptionAnticipationOpe || null,
-            peremptionAnticipationRes : req.body.peremptionAnticipationRes || null,
+            peremptionAnticipationOpe : req.body.sterilite ? (req.body.peremptionAnticipationOpe > 0 ? req.body.peremptionAnticipationOpe : null) : null,
+            peremptionAnticipationRes : req.body.sterilite ? (req.body.peremptionAnticipationRes > 0 ? req.body.peremptionAnticipationRes : null) : null,
         });
         res.sendStatus(201);
     } catch (error) {
@@ -676,8 +690,8 @@ exports.updateCatalogueMateriel = async (req, res)=>{
             conditionnementMultiple   : req.body.conditionnementMultiple || null,
             commentairesMateriel      : req.body.commentairesMateriel || null,
             idFournisseur             : req.body.idFournisseur || null,
-            peremptionAnticipationOpe : req.body.peremptionAnticipationOpe || null,
-            peremptionAnticipationRes : req.body.peremptionAnticipationRes || null,
+            peremptionAnticipationOpe : req.body.sterilite ? (req.body.peremptionAnticipationOpe > 0 ? req.body.peremptionAnticipationOpe : null) : null,
+            peremptionAnticipationRes : req.body.sterilite ? (req.body.peremptionAnticipationRes > 0 ? req.body.peremptionAnticipationRes : null) : null,
             idMaterielCatalogue       : req.body.idMaterielCatalogue || null
         });
         res.sendStatus(201);
@@ -690,11 +704,11 @@ exports.deleteCatalogueMateriel = async (req, res)=>{
     
 }
 
-/*--- Types d'accessoires VHF --- */
+/*--- Types d`accessoires VHF --- */
 exports.getVHFTypesAccessoires = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM VHF_ACCESSOIRES_TYPES ORDER BY libelleVhfAccessoireType;'
+            `SELECT * FROM VHF_ACCESSOIRES_TYPES ORDER BY libelleVhfAccessoireType;`
         );
         res.send(results);
     } catch (error) {
@@ -747,7 +761,7 @@ exports.deleteVHFTypesAccessoires = async (req, res)=>{
 exports.getEtatsVHF = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM VHF_ETATS ORDER BY libelleVhfEtat;'
+            `SELECT * FROM VHF_ETATS ORDER BY libelleVhfEtat;`
         );
         res.send(results);
     } catch (error) {
@@ -800,7 +814,7 @@ exports.deleteEtatsVHF = async (req, res)=>{
 exports.getTechnologiesVHF = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM VHF_TECHNOLOGIES ORDER BY libelleTechno;'
+            `SELECT * FROM VHF_TECHNOLOGIES ORDER BY libelleTechno;`
         );
         res.send(results);
     } catch (error) {
@@ -850,10 +864,10 @@ exports.deleteTechnologiesVHF = async (req, res)=>{
 }
 
 /*--- Types équipements VHF --- */
-exports.getTechnologiesVHF = async (req, res)=>{
+exports.getVHFTypesEquipements = async (req, res)=>{
     try {
         let results = await db.query(
-            'SELECT * FROM VHF_TYPES_EQUIPEMENTS ORDER BY libelleType;'
+            `SELECT * FROM VHF_TYPES_EQUIPEMENTS ORDER BY libelleType;`
         );
         res.send(results);
     } catch (error) {
@@ -861,7 +875,7 @@ exports.getTechnologiesVHF = async (req, res)=>{
         res.sendStatus(500);
     }
 }
-exports.addTechnologiesVHF = async (req, res)=>{
+exports.addVHFTypesEquipements = async (req, res)=>{
     try {
         let results = await db.query(
             `INSERT INTO
@@ -878,7 +892,7 @@ exports.addTechnologiesVHF = async (req, res)=>{
         res.sendStatus(500);
     }
 }
-exports.updateTechnologiesVHF = async (req, res)=>{
+exports.updateVHFTypesEquipements = async (req, res)=>{
     try {
         let results = await db.query(
             `UPDATE
@@ -898,6 +912,6 @@ exports.updateTechnologiesVHF = async (req, res)=>{
         res.sendStatus(500);
     }
 }
-exports.deleteTechnologiesVHF = async (req, res)=>{
+exports.deleteVHFTypesEquipements = async (req, res)=>{
     
 }

@@ -34,3 +34,78 @@ export const utilisateurPasswordChangeWithoutCheck = Yup.object().shape({
         .required(champObligatoire)
         .oneOf([Yup.ref('newPwd'), null], 'Les mots de passe correspondent pas'),
 });
+
+export const categoriesMateriels = Yup.object().shape({
+    libelleCategorie: Yup.string()
+        .required(champObligatoire),
+});
+
+export const etatsLots = Yup.object().shape({
+    libelleLotsEtat: Yup.string()
+        .required(champObligatoire),
+});
+
+export const etatsMateriels = Yup.object().shape({
+    libelleMaterielsEtat: Yup.string()
+        .required(champObligatoire),
+});
+
+export const vhfTypes = Yup.object().shape({
+    libelleType: Yup.string()
+        .required(champObligatoire),
+});
+
+export const vhfAccessoiresTypes = Yup.object().shape({
+    libelleVhfAccessoireType: Yup.string()
+        .required(champObligatoire),
+});
+
+export const vhfEtats = Yup.object().shape({
+    libelleVhfEtat: Yup.string()
+        .required(champObligatoire),
+});
+
+export const vhfTechnologies = Yup.object().shape({
+    libelleTechno: Yup.string()
+        .required(champObligatoire),
+});
+
+export const lieuxSettings = Yup.object().shape({
+    libelleLieu: Yup.string()
+        .required(champObligatoire),
+});
+
+export const etatsVehicules = Yup.object().shape({
+    libelleVehiculesEtat: Yup.string()
+        .required(champObligatoire)
+});
+
+export const typesVehicules = Yup.object().shape({
+    libelleType: Yup.string()
+        .required(champObligatoire)
+});
+
+export const typesDesinfections = Yup.object().shape({
+    libelleVehiculesDesinfectionsType: Yup.string()
+        .required(champObligatoire)
+});
+
+export const typesHealthVehicules = Yup.object().shape({
+    libelleHealthType: Yup.string()
+        .required(champObligatoire)
+});
+
+export const typesMaintenanceVehicules = Yup.object().shape({
+    libelleTypeMaintenance: Yup.string()
+        .required(champObligatoire)
+});
+
+export const carburants = Yup.object().shape({
+    libelleCarburant: Yup.string()
+        .required(champObligatoire)
+});
+
+export const catalogueForm = Yup.object().shape({
+    libelleMateriel: Yup.string()
+        .required(champObligatoire)
+});

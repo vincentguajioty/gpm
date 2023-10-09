@@ -1,13 +1,53 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { Row, Col } from 'react-bootstrap';
+import PageHeader from 'components/common/PageHeader';
+import SettingsMetierCRUD from 'components/settings/settingsMetierCRUD';
+
+import HabilitationService from 'services/habilitationsService';
 
 const LieuxSettings = () => {
-    return (
-        'tableau des lieuxSettings'
-    );
+    const listeParametres = [
+        {
+            cardTitle: "Lieux",
+            idAccessorForDb: "idLieu",
+            fields: [
+                {dbName:"idLieu", type:"int", displayName:"idLieu", showInTable: false, showInForm: false,},
+                {dbName:"libelleLieu", type:"text", displayName:"Libellé", showInTable: true, showInForm: true,},
+                {dbName:"adresseLieu", type:"textLong", displayName:"Adresse", showInTable: true, showInForm: true,},
+                {dbName:"detailsLieu", type:"textLong", displayName:"Détails", showInTable: true, showInForm: true,},
+                {dbName:"accesReserve", type:"boolean", displayName:"Accès Réservé", showInTable: true, showInForm: true,},
+            ],
+            yupSchema: "lieuxSettings",
+            boGetRoute: "/settingsMetiers/getLieux",
+            boAddRoute: "/settingsMetiers/addLieux",
+            boUpdateRoute: "/settingsMetiers/updateLieux",
+            boDeleteRoute: "/settingsMetiers/deleteLieux",
+            profilGet: "appli_conf",
+            profilAdd: "appli_conf",
+            profilUpdate: "appli_conf",
+            profilDelete: "appli_conf",
+        },
+    ];
+
+    return (<>
+        <PageHeader
+            preTitle="Attention - Zone de paramétrage"
+            title="Lieux de stockage"
+            className="mb-3"
+        />
+
+        <Row>
+            {listeParametres.map((param, i) => {
+                if(HabilitationService.habilitations[param.profilGet])
+                {
+                    return(
+                    <Col md={12}>
+                        <SettingsMetierCRUD parametre={param} />
+                    </Col>);
+                }
+            })}
+        </Row>
+    </>);
 };
 
 LieuxSettings.propTypes = {};

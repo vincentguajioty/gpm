@@ -8,6 +8,8 @@ const fonctionsMetiers = require('./fonctionsMetiers');
 const connexionCtrl = require('./controllers/connexion');
 const settingsMetiersCtrl = require('./controllers/settingsMetiers');
 
+const commandesCtrl = require('./controllers/commandes');
+
 const httpLogger = () => {
     return function(req, res, next) {
         logger.http(req.body);
@@ -42,6 +44,9 @@ router.post('/updatePassword',             httpLogger(), jwtFunctions.verifyJWTa
 router.post('/updatePasswordWithoutCheck', httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), modificationLogger(), connexionCtrl.updatePasswordWithoutCheck );
 router.post('/getCurrentSessionsOneUser',  httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                       connexionCtrl.getCurrentSessionsOneUser );
 router.post('/blackListSession',           httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), suppressionLogger(),  connexionCtrl.blackListSession );
+
+//commandes
+router.get('/commandes/getFournisseurs',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),                                    commandesCtrl.getFournisseurs);
 
 //settings Métiers
 router.get('/settingsMetiers/getCategoriesMateriels',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['categories_lecture']),                                    settingsMetiersCtrl.getCategoriesMateriels);
@@ -104,10 +109,10 @@ router.get('/settingsMetiers/getTechnologiesVHF',                           http
 router.post('/settingsMetiers/addTechnologiesVHF',                          httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      modificationLogger(), settingsMetiersCtrl.addTechnologiesVHF);
 router.post('/settingsMetiers/updateTechnologiesVHF',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      modificationLogger(), settingsMetiersCtrl.updateTechnologiesVHF);
 router.post('/settingsMetiers/deleteTechnologiesVHF',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      suppressionLogger(),  settingsMetiersCtrl.deleteTechnologiesVHF);
-router.get('/settingsMetiers/getTechnologiesVHF',                           httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                                            settingsMetiersCtrl.getTechnologiesVHF);
-router.post('/settingsMetiers/addTechnologiesVHF',                          httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      modificationLogger(), settingsMetiersCtrl.addTechnologiesVHF);
-router.post('/settingsMetiers/updateTechnologiesVHF',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      modificationLogger(), settingsMetiersCtrl.updateTechnologiesVHF);
-router.post('/settingsMetiers/deleteTechnologiesVHF',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      suppressionLogger(),  settingsMetiersCtrl.deleteTechnologiesVHF);
+router.get('/settingsMetiers/getVHFTypesEquipements',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                                            settingsMetiersCtrl.getVHFTypesEquipements);
+router.post('/settingsMetiers/addVHFTypesEquipements',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      modificationLogger(), settingsMetiersCtrl.addVHFTypesEquipements);
+router.post('/settingsMetiers/updateVHFTypesEquipements',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      modificationLogger(), settingsMetiersCtrl.updateVHFTypesEquipements);
+router.post('/settingsMetiers/deleteVHFTypesEquipements',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      suppressionLogger(),  settingsMetiersCtrl.deleteVHFTypesEquipements);
 
 
 
