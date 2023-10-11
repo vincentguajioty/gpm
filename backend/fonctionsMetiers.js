@@ -801,6 +801,261 @@ const cnilAnonymeCron = async () => {
     }
 }
 
+const replaceString = async (string, replacementArray) => {
+    try {
+        Object.keys(replacementArray).forEach(key => {
+            let toSearch = ":"+key;
+            string = string.replaceAll(toSearch, replacementArray[key]);
+        })
+        return string;
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const figeInventaireLot = async (idLot, idInventaire) => {
+    try {
+        let fige = await db.query(`
+            INSERT INTO
+                INVENTAIRES_CONTENUS(idInventaire, idMaterielCatalogue, quantiteInventaire, peremptionInventaire)
+            SELECT
+                :idInventaire as idInventaire,
+                e.idMaterielCatalogue as idMaterielCatalogue,
+                SUM(e.quantite) as quantiteInventaire,
+                MIN(e.peremption) as peremptionInventaire
+            FROM
+                MATERIEL_ELEMENT e
+                LEFT OUTER JOIN MATERIEL_EMPLACEMENT emp ON e.idEmplacement = emp.idEmplacement
+                LEFT OUTER JOIN MATERIEL_SAC s ON emp.idSac = s.idSac
+            WHERE
+                s.idLot = :idLot
+            GROUP BY
+                e.idMaterielCatalogue
+        `,{
+            idInventaire: idInventaire,
+            idLot:        idLot,
+        });
+                
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const figeInventaireReserve = async (idConteneur, idReserveInventaire) => {
+    try {
+        let fige = await db.query(`
+            INSERT INTO
+                RESERVES_INVENTAIRES_CONTENUS(idReserveInventaire, idMaterielCatalogue, quantiteInventaire, peremptionInventaire)
+            SELECT
+                :idReserveInventaire as idReserveInventaire,
+                idMaterielCatalogue as idMaterielCatalogue,
+                SUM(quantiteReserve) as quantiteInventaire,
+                MIN(peremptionReserve) as peremptionInventaire
+            FROM
+                RESERVES_MATERIEL
+            WHERE
+                idConteneur = :idConteneur
+            GROUP BY
+                idMaterielCatalogue
+        `,{
+            idConteneur:         idConteneur,
+            idReserveInventaire: idReserveInventaire,
+        });
+                
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const majIndicateursPersonne = async (idPersonne, enableLog) => {
+    try {
+        let personne = await db.query(`
+            SELECT * FROM PERSONNE_REFERENTE p JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE p.idPersonne = :idPersonne;
+        `,{
+            idPersonne: idPersonne,
+        });
+        personne = personne[0];
+
+        conf_indicateur1Accueil = (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.conf_indicateur1Accueil);
+        conf_indicateur2Accueil = (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.conf_indicateur2Accueil);
+        conf_indicateur3Accueil = (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.conf_indicateur3Accueil);
+        conf_indicateur4Accueil = (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.conf_indicateur4Accueil);
+        conf_indicateur5Accueil = (personne.reserve_lecture) && (personne.conf_indicateur5Accueil);
+        conf_indicateur6Accueil = (personne.reserve_lecture) && (personne.conf_indicateur6Accueil);
+        conf_indicateur9Accueil = (personne.tenues_lecture || personne.tenuesCatalogue_lecture) && (personne.conf_indicateur9Accueil);
+        conf_indicateur10Accueil = (personne.tenues_lecture || personne.tenuesCatalogue_lecture) && (personne.conf_indicateur10Accueil);
+        conf_indicateur11Accueil = (personne.desinfections_lecture) && (personne.conf_indicateur11Accueil);
+        conf_indicateur12Accueil = (personne.vehiculeHealth_lecture) && (personne.conf_indicateur12Accueil);
+
+        let update = await db.query(`
+            UPDATE
+                PERSONNE_REFERENTE
+            SET
+                conf_indicateur1Accueil  = :conf_indicateur1Accueil,
+                conf_indicateur2Accueil  = :conf_indicateur2Accueil,
+                conf_indicateur3Accueil  = :conf_indicateur3Accueil,
+                conf_indicateur4Accueil  = :conf_indicateur4Accueil,
+                conf_indicateur5Accueil  = :conf_indicateur5Accueil,
+                conf_indicateur6Accueil  = :conf_indicateur6Accueil,
+                conf_indicateur9Accueil  = :conf_indicateur9Accueil,
+                conf_indicateur10Accueil = :conf_indicateur10Accueil,
+                conf_indicateur11Accueil = :conf_indicateur11Accueil,
+                conf_indicateur12Accueil = :conf_indicateur12Accueil
+            WHERE
+                idPersonne = :idPersonne
+        `,{
+            idPersonne              : idPersonne,
+            conf_indicateur1Accueil : conf_indicateur1Accueil,
+            conf_indicateur2Accueil : conf_indicateur2Accueil,
+            conf_indicateur3Accueil : conf_indicateur3Accueil,
+            conf_indicateur4Accueil : conf_indicateur4Accueil,
+            conf_indicateur5Accueil : conf_indicateur5Accueil,
+            conf_indicateur6Accueil : conf_indicateur6Accueil,
+            conf_indicateur9Accueil : conf_indicateur9Accueil,
+            conf_indicateur10Accueil: conf_indicateur10Accueil,
+            conf_indicateur11Accueil: conf_indicateur11Accueil,
+            conf_indicateur12Accueil: conf_indicateur12Accueil,
+        });
+
+        if(enableLog)
+        {
+            logger.info("Revue des indicateurs d'accueil pour la personne "+idPersonne, {idPersonne: 'SYSTEM'})
+        }
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const majIndicateursProfil = async (idProfil) => {
+    try {
+        logger.info("Revue des indicateurs d'accueil pour le profil "+idProfil, {idPersonne: 'SYSTEM'})
+
+        let personnes = await db.query(`
+            SELECT idPersonne FROM PROFILS_PERSONNES WHERE idProfil = :idProfil;
+        `,{
+            idProfil: idProfil,
+        });
+        for(const personne of personnes)
+        {
+            await majIndicateursPersonne(personne.idPersonne, false);
+        }
+        
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const majNotificationsPersonne = async (idPersonne, enableLog) => {
+    try {
+        let personne = await db.query(`
+            SELECT * FROM PERSONNE_REFERENTE p JOIN VIEW_HABILITATIONS h ON p.idPersonne = h.idPersonne WHERE p.idPersonne = :idPersonne;
+        `,{
+            idPersonne: idPersonne,
+        });
+        personne = personne[0];
+
+        notif_lots_manquants = personne.notifications && (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.notif_lots_manquants);
+        notif_lots_peremptions = personne.notifications && (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.notif_lots_peremptions);
+        notif_lots_inventaires = personne.notifications && (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.notif_lots_inventaires);
+        notif_lots_conformites = personne.notifications && (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.notif_lots_conformites);
+        notif_reserves_manquants = personne.notifications && (personne.reserve_lecture) && (personne.notif_reserves_manquants);
+        notif_reserves_peremptions = personne.notifications && (personne.reserve_lecture) && (personne.notif_reserves_peremptions);
+        notif_reserves_inventaires = personne.notifications && (personne.reserve_lecture) && (personne.notif_reserves_inventaires);
+        notif_vehicules_desinfections = personne.notifications && (personne.desinfections_lecture) && (personne.notif_vehicules_desinfections);
+        notif_vehicules_health = personne.notifications && (personne.vehiculeHealth_lecture) && (personne.notif_vehicules_health);
+        notif_tenues_stock = personne.notifications && (personne.tenuesCatalogue_lecture) && (personne.notif_tenues_stock);
+        notif_tenues_retours = personne.notifications && (personne.tenues_lecture) && (personne.notif_tenues_retours);
+        notif_benevoles_lots = personne.notifications && (personne.alertesBenevolesLots_lecture) && (personne.notif_benevoles_lots);
+        notif_benevoles_vehicules = personne.notifications && (personne.alertesBenevolesVehicules_lecture) && (personne.notif_benevoles_vehicules);
+
+        let update = await db.query(`
+            UPDATE
+                PERSONNE_REFERENTE
+            SET
+                notif_lots_manquants          = :notif_lots_manquants,
+                notif_lots_peremptions        = :notif_lots_peremptions,
+                notif_lots_inventaires        = :notif_lots_inventaires,
+                notif_lots_conformites        = :notif_lots_conformites,
+                notif_reserves_manquants      = :notif_reserves_manquants,
+                notif_reserves_peremptions    = :notif_reserves_peremptions,
+                notif_reserves_inventaires    = :notif_reserves_inventaires,
+                notif_vehicules_health        = :notif_vehicules_health,
+                notif_vehicules_desinfections = :notif_vehicules_desinfections,
+                notif_tenues_stock            = :notif_tenues_stock,
+                notif_tenues_retours          = :notif_tenues_retours,
+                notif_benevoles_lots          = :notif_benevoles_lots,
+                notif_benevoles_vehicules     = :notif_benevoles_vehicules
+            WHERE
+                idPersonne                    = :idPersonne
+        `,{
+            idPersonne                   : idPersonne,
+            notif_lots_manquants         : notif_lots_manquants,
+            notif_lots_peremptions       : notif_lots_peremptions,
+            notif_lots_inventaires       : notif_lots_inventaires,
+            notif_lots_conformites       : notif_lots_conformites,
+            notif_reserves_manquants     : notif_reserves_manquants,
+            notif_reserves_peremptions   : notif_reserves_peremptions,
+            notif_reserves_inventaires   : notif_reserves_inventaires,
+            notif_vehicules_desinfections: notif_vehicules_desinfections,
+            notif_vehicules_health       : notif_vehicules_health,
+            notif_tenues_stock           : notif_tenues_stock,
+            notif_tenues_retours         : notif_tenues_retours,
+            notif_benevoles_lots         : notif_benevoles_lots,
+            notif_benevoles_vehicules    : notif_benevoles_vehicules,
+        });
+
+        if(enableLog)
+        {
+            logger.info("Revue des notifications pour la personne "+idPersonne, {idPersonne: 'SYSTEM'})
+        }
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const majNotificationsProfil = async (idProfil) => {
+    try {
+        logger.info("Revue des notifications pour le profil "+idProfil, {idPersonne: 'SYSTEM'})
+
+        let personnes = await db.query(`
+            SELECT idPersonne FROM PROFILS_PERSONNES WHERE idProfil = :idProfil;
+        `,{
+            idProfil: idProfil,
+        });
+        for(const personne of personnes)
+        {
+            await majNotificationsPersonne(personne.idPersonne, false);
+        }
+        
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const majValideursPersonne = async (enableLog) => {
+    try {
+
+        let cleanQuery = await db.query(`
+            DELETE
+                CENTRE_COUTS_PERSONNES
+            FROM
+                CENTRE_COUTS_PERSONNES
+                INNER JOIN VIEW_HABILITATIONS ON CENTRE_COUTS_PERSONNES.idPersonne = VIEW_HABILITATIONS.idPersonne
+            WHERE
+                VIEW_HABILITATIONS.cout_etreEnCharge = 0
+                OR
+                VIEW_HABILITATIONS.cout_etreEnCharge IS NULL;
+        `);
+        
+        if (enableLog)
+        {
+            logger.info("Nettoyage des personnes des valideurs par défaut des commandes", {idPersonne: 'SYSTEM'})
+        }
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -826,4 +1081,12 @@ module.exports = {
     checkAllConf,
     cnilAnonyme,
     cnilAnonymeCron,
+    replaceString,
+    figeInventaireLot,
+    figeInventaireReserve,
+    majIndicateursPersonne,
+    majIndicateursProfil,
+    majNotificationsPersonne,
+    majNotificationsProfil,
+    majValideursPersonne,
 };
