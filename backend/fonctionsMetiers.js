@@ -698,6 +698,109 @@ const checkAllConf = async () => {
     }
 }
 
+const cnilAnonyme = async (idPersonne) => {
+    try {
+        let personne = await db.query(`
+            SELECT
+                *
+            FROM
+                PERSONNE_REFERENTE
+            WHERE
+                idPersonne = :idPersonne
+        `,{
+            idPersonne: idPersonne
+        });
+        personne = personne[0];
+
+        let disableAD = await db.query(`
+            UPDATE
+                PERSONNE_REFERENTE
+            SET
+                isActiveDirectory = false
+            WHERE
+                idPersonne = :idPersonne
+        `,{
+            idPersonne: idPersonne
+        });
+
+        let profilCleaning = await db.query(`
+            DELETE FROM PROFILS_PERSONNES WHERE idPersonne = :idPersonne
+        `,{
+            idPersonne: idPersonne
+        });
+
+        let cmdTimeLineCleaning = await db.query(`
+            UPDATE
+                COMMANDES_TIMELINE
+            SET
+                detailsEvtCommande = REPLACE(detailsEvtCommande, :identifiant, :anonyme)
+        `,{
+            identifiant: personne.identifiant,
+            anonyme: "ANONYME "+personne.idPersonne,
+        });
+
+        let updateUser = await db.query(`
+            UPDATE
+                PERSONNE_REFERENTE
+            SET
+                identifiant = CONCAT("ANONYME ", idPersonne),
+                nomPersonne = "ANONYME",
+                prenomPersonne = "ANONYME",
+                mailPersonne = Null,
+                telPersonne = Null,
+                cnil_anonyme = true
+            WHERE
+                idPersonne = :idPersonne
+        `,{
+            idPersonne: idPersonne
+        });
+
+        // TODO
+        // majIndicateursPersonne($idPersonne,1);
+        // majNotificationsPersonne($idPersonne,1);
+        // majValideursPersonne(1);
+
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const cnilAnonymeCron = async () => {
+    try {
+
+        let users = await db.query(`
+            SELECT
+                vue.*
+            FROM
+                (SELECT
+                    p.idPersonne,
+                    p.identifiant,
+                    p.derniereConnexion,
+                    COUNT(pp.idProfil) as nbProfil
+                FROM
+                    PERSONNE_REFERENTE p
+                    LEFT OUTER JOIN PROFILS_PERSONNES pp ON p.idPersonne = pp.idPersonne
+                WHERE
+                    p.cnil_anonyme = false
+                GROUP BY
+                    p.idPersonne
+                ) vue
+            WHERE
+                vue.nbProfil = 0
+                AND
+                DATE_ADD(vue.derniereConnexion, INTERVAL 3 YEAR) <= NOW()
+        `);
+        for(const user of users)
+        {
+            logger.info("CRON - Anonymisation de l'utilisateur "+user.idPersonne+" - "+user.identifiant, {idPersonne: 'SYSTEM'})
+            await cnilAnonyme(user.idPersonne);
+        }
+        
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -721,4 +824,6 @@ module.exports = {
     checkLotsConf,
     checkOneConf,
     checkAllConf,
+    cnilAnonyme,
+    cnilAnonymeCron,
 };

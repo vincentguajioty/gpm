@@ -134,8 +134,14 @@ schedule.scheduleJob(process.env.CRON_DAILY, async function() {
     await fonctionsMetiers.checkAllMaintenance();
     logger.debug("CRON - Fin de la vérification des maintenances de tous les véhicule");
 
-    logger.debug("CRON - Vidage de la table de tocken de reset de mots de passe");
+    //Clean table de reset des tokens
+    logger.debug("CRON - Vidage de la table de token de reset de mots de passe");
     await fonctionsMetiers.clearPwdReinitTable();
+
+    //CNIL - Anonymisation des comptes qui doivent l'être
+    logger.debug("CRON - Début de l'anonymisation des comptes CNIL");
+    await fonctionsMetiers.cnilAnonymeCron();
+    logger.debug("CRON - Fin de l'anonymisation des comptes CNIL");
     
     logger.info('CRON - Fin du CRON');
 });
