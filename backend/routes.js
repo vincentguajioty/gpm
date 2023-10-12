@@ -10,6 +10,8 @@ const settingsMetiersCtrl = require('./controllers/settingsMetiers');
 
 const commandesCtrl = require('./controllers/commandes');
 
+const serveDocumentsCtrl       = require('./controllers/serveDocuments');
+
 const httpLogger = () => {
     return function(req, res, next) {
         logger.http(req.body);
@@ -114,9 +116,13 @@ router.post('/settingsMetiers/addVHFTypesEquipements',                      http
 router.post('/settingsMetiers/updateVHFTypesEquipements',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      modificationLogger(), settingsMetiersCtrl.updateVHFTypesEquipements);
 router.post('/settingsMetiers/deleteVHFTypesEquipements',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      suppressionLogger(),  settingsMetiersCtrl.deleteVHFTypesEquipements);
 
-
-
-
+//get images and documents from secured backend
+router.post('/getSecureFile/centresCouts',   httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_lecture',]),           serveDocumentsCtrl.centresCouts);
+router.post('/getSecureFile/commandes',      httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture',]),       serveDocumentsCtrl.commandes);
+router.post('/getSecureFile/vehicules',      httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_lecture',]),      serveDocumentsCtrl.vehicules);
+router.post('/getSecureFile/vhfCanaux',      httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_lecture',]),      serveDocumentsCtrl.vhfCanaux);
+router.post('/getSecureFile/vhfEquipements', httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_lecture',]), serveDocumentsCtrl.vhfEquipements);
+router.post('/getSecureFile/vhfPlans',       httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_plan_lecture',]),       serveDocumentsCtrl.vhfPlans);
 
 
 router.get('/', connexionCtrl.alive );

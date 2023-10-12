@@ -93,4 +93,11 @@ UPDATE PERSONNE_REFERENTE SET mfaEnabled = true WHERE mfaSecret IS NOT NULL AND 
 ALTER TABLE LIEUX CHANGE adresseLieu adresseLieu TEXT;
 ALTER TABLE LIEUX CHANGE detailsLieu detailsLieu TEXT;
 
+UPDATE DOCUMENTS_CENTRE_COUTS SET urlFichierDocCouts    = REPLACE(urlFichierDocCouts,    'documents/centresCouts/', '');
+UPDATE DOCUMENTS_COMMANDES    SET urlFichierDocCommande = REPLACE(urlFichierDocCommande, 'documents/commandes/', '');
+UPDATE DOCUMENTS_VEHICULES    SET urlFichierDocVehicule = REPLACE(urlFichierDocVehicule, 'documents/vehicules/', '');
+UPDATE DOCUMENTS_CANAL_VHF    SET urlFichierDocCanalVHF = REPLACE(urlFichierDocCanalVHF, 'documents/vhfCanaux/', '');
+UPDATE DOCUMENTS_VHF          SET urlFichierDocVHF      = REPLACE(urlFichierDocVHF,      'documents/vhfEquipements/', '');
+UPDATE DOCUMENTS_PLAN_VHF     SET urlFichierDocPlanVHF  = REPLACE(urlFichierDocPlanVHF,  'documents/vhfPlans/', '');
+
 UPDATE CONFIG SET version = '15.0';
