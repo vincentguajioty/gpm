@@ -21,7 +21,7 @@ const ProfileDropdown = () => {
 
       <Dropdown.Menu className="dropdown-menu-card  dropdown-menu-end">
         <div className="bg-white rounded-2 py-2 dark__bg-1000">
-          <Dropdown.Item as={Link} to="/settings/monCompte">
+          <Dropdown.Item as={Link} to="/monCompte">
             Mon compte
           </Dropdown.Item>
           <Dropdown.Item as={Link} to="/logout">

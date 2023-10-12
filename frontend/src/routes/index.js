@@ -57,6 +57,7 @@ import TransmissionsSettings from 'pages/internalApp/settings/transmissions/tran
 
 import Utilisateurs from 'pages/internalApp/settings/utilisateurs/utilisateurs';
 import Profils from 'pages/internalApp/settings/profils/profils';
+import Moncompte from 'pages/internalApp/settings/utilisateurs/monCompte';
 import MessagesGeneraux from 'pages/internalApp/settings/messagesGeneraux/messagesGeneraux';
 import EnvoiMailEquipe from 'pages/internalApp/settings/envoiMailEquipe/envoiMailEquipe';
 import ToDoList from 'pages/internalApp/settings/todolist/todolist';
@@ -127,6 +128,7 @@ const FalconRoutes = () => {
 
           <Route path="/teamUtilisateurs" element={<Utilisateurs />} />
           <Route path="/teamProfils" element={<Profils />} />
+          <Route path="/monCompte" element={<Moncompte />} />
           <Route path="/teamMessages" element={<MessagesGeneraux />} />
           <Route path="/teamMail" element={<EnvoiMailEquipe />} />
           <Route path="/teamToDoList" element={<ToDoList />} />

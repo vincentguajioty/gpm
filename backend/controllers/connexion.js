@@ -629,7 +629,7 @@ exports.updatePassword = async (req, res) => {
         const saltRounds = parseInt(process.env.BCRYPT_SALTROUND);
 
         const results = await db.query(
-            'SELECT * FROM VIEW_HABILITATIONS WHERE idPersonne = :idPersonne AND connexion_connexion = 1;',
+            'SELECT * FROM PERSONNE_REFERENTE WHERE idPersonne = :idPersonne;',
         {
             idPersonne : idPersonne,
         });
@@ -659,7 +659,7 @@ exports.updatePassword = async (req, res) => {
                 }
                 else
                 {
-                    logger.warn('Erreur de validation de l\'ancien pwd ' + idPersonne, {idPersonne: idPersonne});
+                    logger.warn('Erreur de validation de l\'ancien pwd pour ' + idPersonne, {idPersonne: idPersonne});
                     res.sendStatus(403);
                 }
             })

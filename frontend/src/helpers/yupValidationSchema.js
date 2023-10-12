@@ -109,3 +109,10 @@ export const catalogueForm = Yup.object().shape({
     libelleMateriel: Yup.string()
         .required(champObligatoire)
 });
+
+export const mfaInit = Yup.object().shape({
+    confirmation: Yup
+        .string()
+        .required(champObligatoire)
+        .length(6, "6 chiffres sont requis"),
+});

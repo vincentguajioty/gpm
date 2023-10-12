@@ -44,6 +44,7 @@ import {
   faEdit as farEdit
 } from '@fortawesome/free-regular-svg-icons';
 import {
+  faSave,
   faEject,
   faPen,
   faMinusCircle,
@@ -256,6 +257,7 @@ import {
 
 library.add(
   // Solid
+  faSave,
   faEject,
   faPen,
   faMinusCircle,

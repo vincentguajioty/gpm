@@ -33,6 +33,7 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		p.cnil_anonyme,
 		p.disclaimerAccept,
 		p.isActiveDirectory,
+		p.mfaEnabled,
 		MAX(connexion_connexion)                       as connexion_connexion,
 		MAX(annuaire_lecture)                          as annuaire_lecture,
 		MAX(annuaire_ajout)                            as annuaire_ajout,

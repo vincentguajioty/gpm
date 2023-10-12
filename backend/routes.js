@@ -7,6 +7,7 @@ const fonctionsMetiers = require('./fonctionsMetiers');
 
 const connexionCtrl = require('./controllers/connexion');
 const settingsMetiersCtrl = require('./controllers/settingsMetiers');
+const settingsUtilisateursCtrl = require('./controllers/settingsUtilisateurs');
 
 const commandesCtrl = require('./controllers/commandes');
 
@@ -117,6 +118,13 @@ router.get('/settingsMetiers/getVHFTypesEquipements',                       http
 router.post('/settingsMetiers/addVHFTypesEquipements',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      modificationLogger(), settingsMetiersCtrl.addVHFTypesEquipements);
 router.post('/settingsMetiers/updateVHFTypesEquipements',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      modificationLogger(), settingsMetiersCtrl.updateVHFTypesEquipements);
 router.post('/settingsMetiers/deleteVHFTypesEquipements',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      suppressionLogger(),  settingsMetiersCtrl.deleteVHFTypesEquipements);
+
+//settings utilisateurs
+router.post('/settingsUtilisateurs/getOneUser',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,                           settingsUtilisateursCtrl.getOneUser);
+router.post('/settingsUtilisateurs/getProfilsOneUser',               httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,                           settingsUtilisateursCtrl.getProfilsOneUser);
+router.post('/settingsUtilisateurs/getMfaUrl',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,                           settingsUtilisateursCtrl.getMfaUrl);
+router.post('/settingsUtilisateurs/enableMfa',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,     modificationLogger(), settingsUtilisateursCtrl.enableMfa);
+router.post('/settingsUtilisateurs/disableMfa',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,     modificationLogger(), settingsUtilisateursCtrl.disableMfa);
 
 //get images and documents from secured backend
 router.post('/getSecureFile/centresCouts',   httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_lecture',]),           serveDocumentsCtrl.centresCouts);
