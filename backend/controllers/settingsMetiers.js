@@ -55,8 +55,8 @@ exports.updateCategoriesMateriels = async (req, res)=>{
 }
 exports.deleteCategoriesMateriels = async (req, res)=>{
     try {
-        await fonctionsDelete.categoriesDelete(req.verifyJWTandProfile.idPersonne , req.body.idCategorie);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.categoriesDelete(req.verifyJWTandProfile.idPersonne , req.body.idCategorie);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -126,8 +126,8 @@ exports.updateLieux = async (req, res)=>{
 }
 exports.deleteLieux = async (req, res)=>{
     try {
-        await fonctionsDelete.lieuxDelete(req.verifyJWTandProfile.idPersonne , req.body.idLieu);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.lieuxDelete(req.verifyJWTandProfile.idPersonne , req.body.idLieu);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -185,8 +185,8 @@ exports.updateTypesVehicules = async (req, res)=>{
 }
 exports.deleteTypesVehicules = async (req, res)=>{
     try {
-        await fonctionsDelete.vehiculesTypesDelete(req.verifyJWTandProfile.idPersonne , req.body.idVehiculesType);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.vehiculesTypesDelete(req.verifyJWTandProfile.idPersonne , req.body.idVehiculesType);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -248,8 +248,8 @@ exports.updateTypesDesinfections = async (req, res)=>{
 }
 exports.deleteTypesDesinfections = async (req, res)=>{
     try {
-        await fonctionsDelete.vehiculesTypesDesinfectionsDelete(req.verifyJWTandProfile.idPersonne , req.body.idVehiculesDesinfectionsType);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.vehiculesTypesDesinfectionsDelete(req.verifyJWTandProfile.idPersonne , req.body.idVehiculesDesinfectionsType);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -311,8 +311,8 @@ exports.updateTypesMaintenancesRegulieresVehicules = async (req, res)=>{
 }
 exports.deleteTypesMaintenancesRegulieresVehicules = async (req, res)=>{
     try {
-        await fonctionsDelete.vehiculesTypesMaintenanceReguliereDelete(req.verifyJWTandProfile.idPersonne , req.body.idHealthType);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.vehiculesTypesMaintenanceReguliereDelete(req.verifyJWTandProfile.idPersonne , req.body.idHealthType);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -370,8 +370,8 @@ exports.updateTypesMaintenancesPonctuellesVehicules = async (req, res)=>{
 }
 exports.deleteTypesMaintenancesPonctuellesVehicules = async (req, res)=>{
     try {
-        await fonctionsDelete.vehiculesTypesMaintenancesPonctuellesDelete(req.verifyJWTandProfile.idPersonne , req.body.idTypeMaintenance);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.vehiculesTypesMaintenancesPonctuellesDelete(req.verifyJWTandProfile.idPersonne , req.body.idTypeMaintenance);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -429,8 +429,8 @@ exports.updateCarburants = async (req, res)=>{
 }
 exports.deleteCarburants = async (req, res)=>{
     try {
-        await fonctionsDelete.vehiculesCarburantsDelete(req.verifyJWTandProfile.idPersonne , req.body.idCarburant);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.vehiculesCarburantsDelete(req.verifyJWTandProfile.idPersonne , req.body.idCarburant);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -488,8 +488,8 @@ exports.updateEtatsLots = async (req, res)=>{
 }
 exports.deleteEtatsLots = async (req, res)=>{
     try {
-        await fonctionsDelete.etatsLotsDelete(req.verifyJWTandProfile.idPersonne , req.body.idLotsEtat);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.etatsLotsDelete(req.verifyJWTandProfile.idPersonne , req.body.idLotsEtat);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -547,8 +547,8 @@ exports.updateEtatsMateriels = async (req, res)=>{
 }
 exports.deleteEtatsMateriels = async (req, res)=>{
     try {
-        await fonctionsDelete.etatsMaterielsDelete(req.verifyJWTandProfile.idPersonne , req.body.idMaterielsEtat);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.etatsMaterielsDelete(req.verifyJWTandProfile.idPersonne , req.body.idMaterielsEtat);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -606,8 +606,8 @@ exports.updateEtatsVehicules = async (req, res)=>{
 }
 exports.deleteEtatsVehicules = async (req, res)=>{
     try {
-        await fonctionsDelete.etatsVehiculesDelete(req.verifyJWTandProfile.idPersonne , req.body.idVehiculesEtat);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.etatsVehiculesDelete(req.verifyJWTandProfile.idPersonne , req.body.idVehiculesEtat);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -665,8 +665,8 @@ exports.updateTypesDocuments = async (req, res)=>{
 }
 exports.deleteTypesDocuments = async (req, res)=>{
     try {
-        await fonctionsDelete.typeDocumentsDelete(req.verifyJWTandProfile.idPersonne , req.body.idTypeDocument);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.typeDocumentsDelete(req.verifyJWTandProfile.idPersonne , req.body.idTypeDocument);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -778,8 +778,8 @@ exports.updateCatalogueMateriel = async (req, res)=>{
 }
 exports.deleteCatalogueMateriel = async (req, res)=>{
     try {
-        await fonctionsDelete.catalogueDelete(req.verifyJWTandProfile.idPersonne , req.body.idMaterielCatalogue);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.catalogueDelete(req.verifyJWTandProfile.idPersonne , req.body.idMaterielCatalogue);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -837,8 +837,8 @@ exports.updateVHFTypesAccessoires = async (req, res)=>{
 }
 exports.deleteVHFTypesAccessoires = async (req, res)=>{
     try {
-        await fonctionsDelete.vhfTypesAccessoiresDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfAccessoireType);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.vhfTypesAccessoiresDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfAccessoireType);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -896,8 +896,8 @@ exports.updateEtatsVHF = async (req, res)=>{
 }
 exports.deleteEtatsVHF = async (req, res)=>{
     try {
-        await fonctionsDelete.vhfEtatsDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfEtat);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.vhfEtatsDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfEtat);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -955,8 +955,8 @@ exports.updateTechnologiesVHF = async (req, res)=>{
 }
 exports.deleteTechnologiesVHF = async (req, res)=>{
     try {
-        await fonctionsDelete.vhfTechnologiesDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfTechno);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.vhfTechnologiesDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfTechno);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -1014,8 +1014,8 @@ exports.updateVHFTypesEquipements = async (req, res)=>{
 }
 exports.deleteVHFTypesEquipements = async (req, res)=>{
     try {
-        await fonctionsDelete.vhfTypesEquipementsDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfType);
-        res.sendStatus(201);
+        const deleteResult = await fonctionsDelete.vhfTypesEquipementsDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfType);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

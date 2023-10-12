@@ -156,9 +156,11 @@ const annuaireDelete = async (idLogger, idPersonne) => {
         });
 
         logger.info("Suppression réussie de l'utilisateur "+idPersonne, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'utilisateur "+idPersonne, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -180,9 +182,11 @@ const alerteBenevoleLotDelete = async (idLogger, idAlerte) => {
         });
 
         logger.info("Suppression réussie de l'alerte bénévoles sur les lots "+idAlerte, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'alerte bénévoles sur les lots "+idAlerte, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -204,9 +208,11 @@ const alerteBenevoleVehiculeDelete = async (idLogger, idAlerte) => {
         });
 
         logger.info("Suppression réussie de l'alerte bénévoles sur les véhicules "+idAlerte, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'alerte bénévoles sur les véhicules "+idAlerte, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -275,9 +281,11 @@ const catalogueDelete = async (idLogger, idMaterielCatalogue) => {
         });
 
         logger.info("Suppression réussie de l'entrée du catalogue matériel "+idMaterielCatalogue, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'entrée du catalogue matériel "+idMaterielCatalogue, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -307,9 +315,11 @@ const categoriesDelete = async (idLogger, idCategorie) => {
         });
 
         logger.info("Suppression réussie de la catégorie "+idCategorie, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de la catégorie "+idCategorie, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -331,9 +341,11 @@ const cautionsDelete = async (idLogger, idCaution) => {
         });
 
         logger.info("Suppression réussie de la caution "+idCaution, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de la caution "+idCaution, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -387,9 +399,11 @@ const centreCoutsDelete = async (idLogger, idCentreDeCout) => {
         });
 
         logger.info("Suppression réussie du centre de couts "+idCentreDeCout, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du centre de couts "+idCentreDeCout, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -421,9 +435,11 @@ const centreCoutsDocDelete = async (idLogger, idDocCouts) => {
         });
 
         logger.info("Suppression réussie du document de centre de couts "+idDocCouts, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du document de centre de couts "+idDocCouts, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -445,9 +461,11 @@ const centreCoutsGerantDelete = async (idLogger, idGerant) => {
         });
 
         logger.info("Suppression réussie du gérant "+idGerant, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du gérant "+idGerant, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -479,9 +497,11 @@ const centreCoutsOperationsDelete = async (idLogger, idOperations) => {
         });
 
         logger.info("Suppression réussie l'opération "+idOperations, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'opération "+idOperations, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -503,9 +523,11 @@ const codesBarreDelete = async (idLogger, idCode) => {
         });
 
         logger.info("Suppression réussie du code barre "+idCode, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du code barre "+idCode, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -537,9 +559,11 @@ const commandeDocDelete = async (idLogger, idDocCommande) => {
         });
 
         logger.info("Suppression réussie du document de commande "+idDocCommande, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du document de commande "+idDocCommande, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -592,9 +616,11 @@ const commandeItemDelete = async (idLogger, idCommande, idMaterielCatalogue) => 
         }
 
         logger.info("Suppression réussie de l'entrée commande idCommande: "+idCommande+" idMaterielCatalogue:"+idMaterielCatalogue, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'entrée commande idCommande: "+idCommande+" idMaterielCatalogue:"+idMaterielCatalogue, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -663,9 +689,11 @@ const commandesDelete = async (idLogger, idCommande) => {
         });
 
         logger.info("Suppression réussie de la commande "+idCommande, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de la commande "+idCommande, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -699,9 +727,11 @@ const emplacementsDelete = async (idLogger, idEmplacement) => {
         });
 
         logger.info("Suppression réussie de l'emplacement "+idEmplacement, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'emplacement "+idEmplacement, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -730,9 +760,11 @@ const etatsLotsDelete = async (idLogger, idLotsEtat) => {
         });
 
         logger.info("Suppression réussie de l'état de lot "+idLotsEtat, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'état de lot "+idLotsEtat, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -761,9 +793,11 @@ const etatsMaterielsDelete = async (idLogger, idMaterielsEtat) => {
         });
 
         logger.info("Suppression réussie de l'état matériel "+idMaterielsEtat, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'état matériel "+idMaterielsEtat, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -792,9 +826,11 @@ const etatsVehiculesDelete = async (idLogger, idVehiculesEtat) => {
         });
 
         logger.info("Suppression réussie de l'état de véhicule "+idVehiculesEtat, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'état de véhicule "+idVehiculesEtat, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -848,9 +884,11 @@ const fournisseursDelete = async (idLogger, idFournisseur) => {
         });
 
         logger.info("Suppression réussie du fournisseur "+idFournisseur, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du fournisseur "+idFournisseur, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -872,7 +910,7 @@ const lieuxDelete = async (idLogger, idLieu) => {
             idLieu : idLieu,
         });
         updateQuery = await db.query(`
-            UPDATE COMMANDES SET idLieuLivraison = Null WHERE idLieuLivraison = :idLieuLivraison
+            UPDATE COMMANDES SET idLieuLivraison = Null WHERE idLieuLivraison = :idLieu
         ;`,{
             idLieu : idLieu,
         });
@@ -894,9 +932,11 @@ const lieuxDelete = async (idLogger, idLieu) => {
         });
 
         logger.info("Suppression réussie du lieu "+idLieu, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du lieu "+idLieu, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -924,9 +964,11 @@ const lotsConsommationsDelete = async (idLogger, idConsommation) => {
         });
 
         logger.info("Suppression réussie du rapport de consommation de consommables bénévoles "+idConsommation, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du rapport de consommation de consommables bénévoles "+idConsommation, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -970,9 +1012,11 @@ const lotsDelete = async (idLogger, idLot) => {
         });
 
         logger.info("Suppression réussie du lot "+idLot, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du lot "+idLot, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1000,9 +1044,11 @@ const lotsInventaireDelete = async (idLogger, idInventaire) => {
         });
 
         logger.info("Suppression réussie de l'inventaire de lot "+idInventaire, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'inventaire de lot "+idInventaire, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1024,9 +1070,11 @@ const materielsDelete = async (idLogger, idElement) => {
         });
 
         logger.info("Suppression réussie de l'élément matériel "+idElement, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'élément matériel "+idElement, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1048,9 +1096,11 @@ const messagesDelete = async (idLogger, idMessage) => {
         });
 
         logger.info("Suppression réussie du message "+idMessage, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du message "+idMessage, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1090,9 +1140,11 @@ const profilsDelete = async (idLogger, idProfil) => {
         });
 
         logger.info("Suppression réussie du profil "+idProfil, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du profil "+idProfil, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1126,9 +1178,11 @@ const referentielsDelete = async (idLogger, idTypeLot) => {
         });
 
         logger.info("Suppression réussie du référentiel "+idTypeLot, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du référentiel "+idTypeLot, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1169,9 +1223,11 @@ const reserveConteneurDelete = async (idLogger, idConteneur) => {
         });
 
         logger.info("Suppression réussie du conteneur de réserve "+idConteneur, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du conteneur de réserve "+idConteneur, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1199,9 +1255,11 @@ const reserveInventaireDelete = async (idLogger, idReserveInventaire) => {
         });
 
         logger.info("Suppression réussie de l'inventaire de reserve "+idReserveInventaire, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'inventaire de reserve "+idReserveInventaire, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1223,9 +1281,11 @@ const reserveMaterielDelete = async (idLogger, idReserveElement) => {
         });
 
         logger.info("Suppression réussie du matériel de reserve "+idReserveElement, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du matériel de reserve "+idReserveElement, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1254,9 +1314,11 @@ const sacsDelete = async (idLogger, idSac) => {
         });
 
         logger.info("Suppression réussie du sac "+idSac, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du sac "+idSac, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1285,9 +1347,11 @@ const tenuesAffectationsDelete = async (idLogger, idTenue) => {
         });
 
         logger.info("Suppression réussie de l'affecation de la tenue "+idTenue, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'affecation de la tenue "+idTenue, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1316,9 +1380,11 @@ const tenuesCatalogueDelete = async (idLogger, idCatalogueTenue) => {
         });
 
         logger.info("Suppression réussie d'une entrée dans le catalogue des tenues "+idCatalogueTenue, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec d'une entrée dans le catalogue des tenues "+idCatalogueTenue, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1346,9 +1412,11 @@ const todolistDelete = async (idLogger, idTache) => {
         });
 
         logger.info("Suppression réussie de la tache "+idTache, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de la tache "+idTache, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1377,9 +1445,11 @@ const vehiculesCarburantsDelete = async (idLogger, idCarburant) => {
         });
 
         logger.info("Suppression réussie du carburant "+idCarburant, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du carburant "+idCarburant, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1461,9 +1531,11 @@ const vehiculesDelete = async (idLogger, idVehicule) => {
         });
 
         logger.info("Suppression réussie du véhicule "+idVehicule, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du véhicule "+idVehicule, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1485,9 +1557,11 @@ const vehiculesDesinfectionsDelete = async (idLogger, idVehiculesDesinfection) =
         });
 
         logger.info("Suppression réussie d'une itération de désinfection de véhicule "+idVehiculesDesinfection, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec d'une itération de désinfection de véhicule "+idVehiculesDesinfection, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1519,9 +1593,11 @@ const vehiculesDocDelete = async (idLogger, idDocVehicules) => {
         });
 
         logger.info("Suppression réussie du document de véhicule "+idDocVehicules, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du document de véhicule "+idDocVehicules, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1549,9 +1625,11 @@ const vehiculesHealthDelete = async (idLogger, idVehiculeHealth) => {
         });
 
         logger.info("Suppression réussie de maintenance régulière de véhicule "+idVehiculeHealth, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de maintenance régulière de véhicule "+idVehiculeHealth, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1573,9 +1651,11 @@ const vehiculesMaintenanceDelete = async (idLogger, idMaintenance) => {
         });
 
         logger.info("Suppression réussie d'une maintenance "+idMaintenance, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec d'une maintenance "+idMaintenance, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1597,9 +1677,11 @@ const vehiculesReleveDelete = async (idLogger, idReleve) => {
         });
 
         logger.info("Suppression réussie d'un relevé kilométrique "+idReleve, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec d'un relevé kilométrique "+idReleve, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1628,9 +1710,11 @@ const vehiculesTypesDelete = async (idLogger, idVehiculesType) => {
         });
 
         logger.info("Suppression réussie du type de véhicule "+idVehiculesType, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du type de véhicule "+idVehiculesType, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1665,9 +1749,11 @@ const vehiculesTypesDesinfectionsDelete = async (idLogger, idVehiculesDesinfecti
         });
 
         logger.info("Suppression réussie du type de désinfection "+idVehiculesDesinfectionsType, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du type de désinfection "+idVehiculesDesinfectionsType, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1702,9 +1788,11 @@ const vehiculesTypesMaintenanceReguliereDelete = async (idLogger, idHealthType) 
         });
 
         logger.info("Suppression réussie du type de maintenance régulière "+idHealthType, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du type de maintenance régulière "+idHealthType, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1732,9 +1820,11 @@ const vehiculesTypesMaintenancesPonctuellesDelete = async (idLogger, idTypeMaint
         });
 
         logger.info("Suppression réussie du type de maintenance ponctuelle "+idTypeMaintenance, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du type de maintenance ponctuelle "+idTypeMaintenance, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1770,9 +1860,11 @@ const vhfCanauxDelete = async (idLogger, idVhfCanal) => {
         });
 
         logger.info("Suppression réussie du canal de fréquence VHF "+idVhfCanal, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du canal de fréquence VHF "+idVhfCanal, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1804,9 +1896,11 @@ const vhfCanauxDocDelete = async (idLogger, idDocCanalVHF) => {
         });
 
         logger.info("Suppression réussie du document de canal VHF "+idDocCanalVHF, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du document de canal VHF "+idDocCanalVHF, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1828,9 +1922,11 @@ const vhfEquipementsAccessoiresDelete = async (idLogger, idVhfAccessoire) => {
         });
 
         logger.info("Suppression réussie de l'accessoire VHF "+idVhfAccessoire, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'accessoire VHF "+idVhfAccessoire, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1866,9 +1962,11 @@ const vhfEquipementsDelete = async (idLogger, idVhfEquipement) => {
         });
 
         logger.info("Suppression réussie de l'accessoire VHF "+idVhfEquipement, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'accessoire VHF "+idVhfEquipement, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1900,9 +1998,11 @@ const vhfEquipementsDocDelete = async (idLogger, idDocVHF) => {
         });
 
         logger.info("Suppression réussie du document d'équipement VHF "+idDocVHF, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du document d'équipement VHF "+idDocVHF, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1926,9 +2026,11 @@ const vhfPlansCanauxDelete = async (idLogger, idVhfPlan, idVhfCanal) => {
         });
 
         logger.info("Suppression réussie de l'association du plan "+idVhfPlan+" au canal "+idVhfCanal, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'association du plan "+idVhfPlan+" au canal "+idVhfCanal, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -1970,9 +2072,11 @@ const vhfPlansDelete = async (idLogger, idVhfPlan) => {
         });
 
         logger.info("Suppression réussie du plan de fréquence "+idVhfPlan, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du plan de fréquence "+idVhfPlan, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -2004,9 +2108,11 @@ const vhfPlansDocDelete = async (idLogger, idDocPlanVHF) => {
         });
 
         logger.info("Suppression réussie du document de plans "+idDocPlanVHF, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du document de plans "+idDocPlanVHF, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -2034,9 +2140,11 @@ const vhfTypesAccessoiresDelete = async (idLogger, idVhfAccessoireType) => {
         });
 
         logger.info("Suppression réussie du type d'accessoire VHF "+idVhfAccessoireType, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du type d'accessoire VHF "+idVhfAccessoireType, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -2064,9 +2172,11 @@ const vhfEtatsDelete = async (idLogger, idVhfEtat) => {
         });
 
         logger.info("Suppression réussie de l'état d'équipement VHF "+idVhfEtat, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de l'état d'équipement VHF "+idVhfEtat, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -2100,9 +2210,11 @@ const vhfTechnologiesDelete = async (idLogger, idVhfTechno) => {
         });
 
         logger.info("Suppression réussie de la technologie VHF "+idVhfTechno, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec de la technologie VHF "+idVhfTechno, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -2130,9 +2242,11 @@ const vhfTypesEquipementsDelete = async (idLogger, idVhfType) => {
         });
 
         logger.info("Suppression réussie du type d'equipements VHF "+idVhfType, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du type d'equipements VHF "+idVhfType, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
@@ -2185,9 +2299,11 @@ const typeDocumentsDelete = async (idLogger, idTypeDocument) => {
         });
 
         logger.info("Suppression réussie du type de document "+idTypeDocument, {idPersonne: idLogger})
+        return true;
     } catch (error) {
         logger.info("Suppression en échec du type de document "+idTypeDocument, {idPersonne: idLogger})
         logger.error(error)
+        return false;
     }
 }
 
