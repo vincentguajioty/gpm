@@ -772,6 +772,7 @@ exports.acceptCGU = async (req, res) => {
         {
             idPersonne : req.verifyJWTandProfile.idPersonne
         });
+        await fonctionsMetiers.deconnecterUtilisateur(req.verifyJWTandProfile.idPersonne);
         res.sendStatus(201);
     } catch (error) {
         logger.error(error);

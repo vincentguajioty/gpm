@@ -27,7 +27,7 @@ const LoginCGU = () => {
             const accept = await Axios.post('/acceptCGU');
             if(accept.status == 201)
             {
-                navigate('/home');
+                navigate('/logout');
             }
         } catch (error) {
             console.log(error)
@@ -49,7 +49,7 @@ const LoginCGU = () => {
                     className="mb-1"
                     onClick={acceptCGU}
                 >
-                    J'accepte les CGU
+                    J'accepte les CGU (reconnexion nécessaire)
                 </IconButton>
                 <IconButton
                     icon='eject'
