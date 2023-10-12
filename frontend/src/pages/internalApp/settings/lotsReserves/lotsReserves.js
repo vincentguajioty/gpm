@@ -69,6 +69,12 @@ const LotsReservesSettings = () => {
         />
 
         <Row>
+            {HabilitationService.habilitations['catalogue_lecture'] ? 
+                <Col md={12}>
+                    <Catalogue />    
+                </Col>
+            :null}
+
             {listeParametres.map((param, i) => {
                 if(HabilitationService.habilitations[param.profilGet])
                 {
@@ -78,12 +84,6 @@ const LotsReservesSettings = () => {
                     </Col>);
                 }
             })}
-
-            {HabilitationService.habilitations['catalogue_lecture'] ? 
-                <Col md={12}>
-                    <Catalogue />    
-                </Col>
-            :null}
         </Row>
     </>);
 };

@@ -1,6 +1,8 @@
 const db = require('../db');
 const dotenv = require('dotenv').config();
 const logger = require('../winstonLogger');
+const fonctionsMetiers = require('../fonctionsMetiers');
+const fonctionsDelete = require('../fonctionsDelete');
 
 /*--- Catégories de matériels ---*/
 exports.getCategoriesMateriels = async (req, res)=>{
@@ -52,7 +54,13 @@ exports.updateCategoriesMateriels = async (req, res)=>{
     }
 }
 exports.deleteCategoriesMateriels = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.categoriesDelete(req.verifyJWTandProfile.idPersonne , req.body.idCategorie);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }
 
 /*--- Lieux de stockage --- */
@@ -117,7 +125,13 @@ exports.updateLieux = async (req, res)=>{
     }
 }
 exports.deleteLieux = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.lieuxDelete(req.verifyJWTandProfile.idPersonne , req.body.idLieu);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }
 
 /*--- Types de vehicules --- */
@@ -170,7 +184,13 @@ exports.updateTypesVehicules = async (req, res)=>{
     }
 }
 exports.deleteTypesVehicules = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.vehiculesTypesDelete(req.verifyJWTandProfile.idPersonne , req.body.idVehiculesType);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }
 
 /*--- Désinfections véhicules --- */
@@ -227,7 +247,13 @@ exports.updateTypesDesinfections = async (req, res)=>{
     }
 }
 exports.deleteTypesDesinfections = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.vehiculesTypesDesinfectionsDelete(req.verifyJWTandProfile.idPersonne , req.body.idVehiculesDesinfectionsType);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }
 
 /*--- Maintenances régulières --- */
@@ -284,7 +310,13 @@ exports.updateTypesMaintenancesRegulieresVehicules = async (req, res)=>{
     }
 }
 exports.deleteTypesMaintenancesRegulieresVehicules = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.vehiculesTypesMaintenanceReguliereDelete(req.verifyJWTandProfile.idPersonne , req.body.idHealthType);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }
 
 /*--- Maintenances ponctuelles --- */
@@ -337,7 +369,13 @@ exports.updateTypesMaintenancesPonctuellesVehicules = async (req, res)=>{
     }
 }
 exports.deleteTypesMaintenancesPonctuellesVehicules = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.vehiculesTypesMaintenancesPonctuellesDelete(req.verifyJWTandProfile.idPersonne , req.body.idTypeMaintenance);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }
 
 /*--- Carburants --- */
@@ -390,7 +428,13 @@ exports.updateCarburants = async (req, res)=>{
     }
 }
 exports.deleteCarburants = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.vehiculesCarburantsDelete(req.verifyJWTandProfile.idPersonne , req.body.idCarburant);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }
 
 /*--- Etats lots --- */
@@ -443,7 +487,13 @@ exports.updateEtatsLots = async (req, res)=>{
     }
 }
 exports.deleteEtatsLots = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.etatsLotsDelete(req.verifyJWTandProfile.idPersonne , req.body.idLotsEtat);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }
 
 /*--- Etats matériels --- */
@@ -496,7 +546,13 @@ exports.updateEtatsMateriels = async (req, res)=>{
     }
 }
 exports.deleteEtatsMateriels = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.etatsMaterielsDelete(req.verifyJWTandProfile.idPersonne , req.body.idMaterielsEtat);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }
 
 /*--- Etats des véhicules --- */
@@ -549,7 +605,13 @@ exports.updateEtatsVehicules = async (req, res)=>{
     }
 }
 exports.deleteEtatsVehicules = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.etatsVehiculesDelete(req.verifyJWTandProfile.idPersonne , req.body.idVehiculesEtat);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }
 
 /*--- Types de documents --- */
@@ -602,7 +664,13 @@ exports.updateTypesDocuments = async (req, res)=>{
     }
 }
 exports.deleteTypesDocuments = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.typeDocumentsDelete(req.verifyJWTandProfile.idPersonne , req.body.idTypeDocument);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }
 
 /*--- Catalogue de matériel --- */
@@ -658,6 +726,10 @@ exports.addCatalogueMateriel = async (req, res)=>{
             peremptionAnticipationOpe : req.body.sterilite ? (req.body.peremptionAnticipationOpe > 0 ? req.body.peremptionAnticipationOpe : null) : null,
             peremptionAnticipationRes : req.body.sterilite ? (req.body.peremptionAnticipationRes > 0 ? req.body.peremptionAnticipationRes : null) : null,
         });
+
+        await fonctionsMetiers.updatePeremptionsAnticipations();
+        await fonctionsMetiers.checkAllConf();
+
         res.sendStatus(201);
     } catch (error) {
         logger.error(error);
@@ -694,6 +766,10 @@ exports.updateCatalogueMateriel = async (req, res)=>{
             peremptionAnticipationRes : req.body.sterilite ? (req.body.peremptionAnticipationRes > 0 ? req.body.peremptionAnticipationRes : null) : null,
             idMaterielCatalogue       : req.body.idMaterielCatalogue || null
         });
+
+        await fonctionsMetiers.updatePeremptionsAnticipations();
+        await fonctionsMetiers.checkAllConf();
+        
         res.sendStatus(201);
     } catch (error) {
         logger.error(error);
@@ -701,7 +777,13 @@ exports.updateCatalogueMateriel = async (req, res)=>{
     }
 }
 exports.deleteCatalogueMateriel = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.catalogueDelete(req.verifyJWTandProfile.idPersonne , req.body.idMaterielCatalogue);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }
 
 /*--- Types d`accessoires VHF --- */
@@ -754,7 +836,13 @@ exports.updateVHFTypesAccessoires = async (req, res)=>{
     }
 }
 exports.deleteVHFTypesAccessoires = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.vhfTypesAccessoiresDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfAccessoireType);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }
 
 /*--- Etats VHF --- */
@@ -807,7 +895,13 @@ exports.updateEtatsVHF = async (req, res)=>{
     }
 }
 exports.deleteEtatsVHF = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.vhfEtatsDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfEtat);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }
 
 /*--- Technologies VHF --- */
@@ -860,7 +954,13 @@ exports.updateTechnologiesVHF = async (req, res)=>{
     }
 }
 exports.deleteTechnologiesVHF = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.vhfTechnologiesDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfTechno);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }
 
 /*--- Types équipements VHF --- */
@@ -913,5 +1013,11 @@ exports.updateVHFTypesEquipements = async (req, res)=>{
     }
 }
 exports.deleteVHFTypesEquipements = async (req, res)=>{
-    
+    try {
+        await fonctionsDelete.vhfTypesEquipementsDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfType);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
 }

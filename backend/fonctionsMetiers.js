@@ -755,10 +755,9 @@ const cnilAnonyme = async (idPersonne) => {
             idPersonne: idPersonne
         });
 
-        // TODO
-        // majIndicateursPersonne($idPersonne,1);
-        // majNotificationsPersonne($idPersonne,1);
-        // majValideursPersonne(1);
+        majIndicateursPersonne(idPersonne,true);
+        majNotificationsPersonne(idPersonne,true);
+        majValideursPersonne(true);
 
     } catch (error) {
         logger.error(error)
