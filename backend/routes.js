@@ -42,6 +42,8 @@ router.post('/refreshToken',               httpLogger(),                        
 router.post('/dropSession',                httpLogger(),                                                                                   connexionCtrl.dropSession );
 router.get('/getConfig',                   httpLogger(),                                                                                   connexionCtrl.getConfig );
 router.get('/checkLogin',                  httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                       connexionCtrl.checkLogin );
+router.get('/getCGU',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                       connexionCtrl.getCGU );
+router.post('/acceptCGU',                  httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                       connexionCtrl.acceptCGU );
 router.post('/updatePassword',             httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), modificationLogger(), connexionCtrl.updatePassword );
 router.post('/updatePasswordWithoutCheck', httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), modificationLogger(), connexionCtrl.updatePasswordWithoutCheck );
 router.post('/getCurrentSessionsOneUser',  httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                       connexionCtrl.getCurrentSessionsOneUser );

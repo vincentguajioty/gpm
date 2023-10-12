@@ -198,6 +198,8 @@ exports.login = async (req, res)=>{
                     delete selectedUser.motDePasse;
                     delete selectedUser.mfaSecret;
 
+                    let disclaimerAccept = selectedUser.disclaimerAccept == null ? 'false' : true;
+
                     const tokenValidUntil = moment(new Date()).add(jwtExpirySeconds, 'seconds');
                     const token = jwt.sign(selectedUser, process.env.JWT_TOKEN, {
                         expiresIn: jwtExpirySeconds,
@@ -227,7 +229,7 @@ exports.login = async (req, res)=>{
                         refreshValidity: moment(refreshTokenValidUntil).format('YYYY-MM-DD HH:mm:ss'),
                     });
                     await fonctionsMetiers.updateLastConnexion(selectedUser.idPersonne);
-                    res.json({auth: true, token: token, tokenValidUntil: tokenValidUntil, refreshToken: refreshToken, habilitations: selectedUser});
+                    res.json({auth: true, disclaimerAccept: disclaimerAccept, token: token, tokenValidUntil: tokenValidUntil, refreshToken: refreshToken, habilitations: selectedUser});
                 }
                 else
                 {
@@ -338,7 +340,7 @@ exports.login = async (req, res)=>{
                             refreshValidity: moment(refreshTokenValidUntil).format('YYYY-MM-DD HH:mm:ss'),
                         });
                         await fonctionsMetiers.updateLastConnexion(newUser.idPersonne);
-                        res.json({auth: true, token: token, tokenValidUntil: tokenValidUntil, refreshToken: refreshToken, habilitations: newUser});
+                        res.json({auth: true, disclaimerAccept: false, token: token, tokenValidUntil: tokenValidUntil, refreshToken: refreshToken, habilitations: newUser});
                     }
                     else
                     {
@@ -542,6 +544,19 @@ exports.refreshToken = async (req, res)=>{
 
                         if(tokenInDb.length > 0)
                         {
+                            let personne = await db.query(`
+                                SELECT
+                                    *
+                                FROM
+                                    VIEW_HABILITATIONS
+                                WHERE
+                                    idPersonne = :idPersonne
+                            `,
+                            {
+                                idPersonne: tokenInDb[0].idPersonne,
+                            });
+                            let disclaimerAccept = personne[0].disclaimerAccept == null ? 'false' : true;
+                            
                             const jwtExpirySeconds = parseInt(process.env.JWT_EXPIRATION);
                             const jwtRefreshExpirySeconds = parseInt(process.env.JWT_REFRESH_EXPIRATION);
 
@@ -577,7 +592,7 @@ exports.refreshToken = async (req, res)=>{
                                 refreshValidity: moment(refreshTokenValidUntil).format('YYYY-MM-DD HH:mm:ss'),
                             });
                             await fonctionsMetiers.updateLastConnexion(tokenInDb[0].idPersonne);
-                            res.json({auth: true, token: newToken, tokenValidUntil: tokenValidUntil, refreshToken: refreshToken, habilitations: oldTokenContent});
+                            res.json({auth: true, disclaimerAccept: disclaimerAccept, token: newToken, tokenValidUntil: tokenValidUntil, refreshToken: refreshToken, habilitations: oldTokenContent});
                         }
                         else
                         {
@@ -680,7 +695,20 @@ exports.updatePasswordWithoutCheck = async (req, res) => {
             });
 
             logger.info('Modification du mot de passe avec succès pour ' + idPersonne, {idPersonne: idPersonne});
-            res.sendStatus(201);
+
+            const getUser = await db.query(
+                'SELECT * FROM VIEW_HABILITATIONS WHERE idPersonne = :idPersonne;',
+            {
+                idPersonne : idPersonne,
+            });
+            if(getUser[0].disclaimerAccept == null)
+            {
+                res.json({auth: true, disclaimerAccept:false})
+            }
+            else
+            {
+                res.sendStatus(201);
+            }
         });
 
     } catch (error) {
@@ -703,11 +731,48 @@ exports.getConfig = async (req, res) => {
                 resetPassword,
                 alertes_benevoles_lots,
                 alertes_benevoles_vehicules,
-                consommation_benevoles
+                consommation_benevoles,
+                mailserver,
+                mailcnil
             FROM
                 CONFIG
         `);
         res.send(result);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getCGU = async (req, res) => {
+    try {
+        const result = await db.query(
+            `SELECT
+                cnilDisclaimer
+            FROM
+                CONFIG
+        `);
+        res.send(result);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.acceptCGU = async (req, res) => {
+    try {
+        let results = await db.query(
+            `UPDATE
+                PERSONNE_REFERENTE
+            SET
+                disclaimerAccept = CURRENT_TIMESTAMP
+            WHERE
+                idPersonne = :idPersonne
+            ;`,
+        {
+            idPersonne : req.verifyJWTandProfile.idPersonne
+        });
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

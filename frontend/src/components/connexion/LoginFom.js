@@ -19,6 +19,7 @@ const LoginForm = ({ hasLabel }) => {
 
   const [loginStatus, setLoginStatus] = useState(false);
   const [redirectToChgPwd, setRedirectToChgPwd] = useState(false);
+  const [redirectToCGU, setRedirectToCGU] = useState(false);
   const [erreurDeConnexion, setErreurDeConnexion] = useState(false);
   const [showFMA, setShowMFA] = useState(false);
 
@@ -42,8 +43,6 @@ const LoginForm = ({ hasLabel }) => {
         HabilitationService.setTokenValidUntil(response.data.tokenValidUntil);
         HabilitationService.setRefreshToken(response.data.refreshToken);
         HabilitationService.setHabilitations(response.data.habilitations);
-        
-        
 
         if(identifiant == motDePasse)
         {
@@ -51,7 +50,14 @@ const LoginForm = ({ hasLabel }) => {
         }
         else
         {
-          setLoginStatus(true);
+          if(response.data.disclaimerAccept == true)
+          {
+            setLoginStatus(true);
+          }
+          else
+          {
+            setRedirectToCGU(true);
+          }
         }
         
       }
@@ -138,6 +144,7 @@ const LoginForm = ({ hasLabel }) => {
       
       {loginStatus && <Navigate replace to="/home" />}
       {redirectToChgPwd && <Navigate replace to="/changePwdAtLogin" />}
+      {redirectToCGU && <Navigate replace to="/cguAtLogin" />}
     </Form>
 
     {ConfigurationService.config['resetPassword'] ?

@@ -47,6 +47,13 @@ const Password = ({checkOldPassword = true, layout, redirectTarget = false}) => 
 					navigate(redirectTarget);
 				}
 			}
+			else
+			{
+				if(requeteUpdate.data.disclaimerAccept == false)
+				{
+					navigate('/cguAtLogin');
+				}
+			}
 
 			setLoading(false);
 		} catch (e) {
