@@ -87,10 +87,12 @@ const MFA = () => {
 				{loading ? 'Chargement en cours' : 
                     utilisateur.mfaEnabled ? <Button onClick={disableMfa}>Désactiver le MFA</Button> : 
                         <>
-                            <QRCode
-                                value={enableUrl}
-                                style={{ height: "auto", maxWidth: "50%", width: "50%"}}
-                            />
+                            <center>
+                                <QRCode
+                                    value={enableUrl}
+                                    style={{ height: "auto", maxWidth: "50%", width: "50%"}}
+                                />
+                            </center>
                             
                             <Form onSubmit={handleSubmit(enableMfa)} autoComplete="off">
                                 <Form.Group className="mb-3">
