@@ -166,7 +166,7 @@ exports.updateReferentiel = async (req, res)=>{
             });
         }
 
-        //await fonctionsMetiers.checkAllConf();
+        await fonctionsMetiers.checkAllConf();
         
         res.sendStatus(201);
     } catch (error) {
