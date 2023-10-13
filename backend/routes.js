@@ -35,6 +35,22 @@ const suppressionLogger = () => {
     }
 }
 
+const himself = () => {
+    return function(req, res, next) {
+        if(req.verifyJWTandProfile.idPersonne != req.body.idPersonne && !req.verifyJWTandProfile.annuaire_lecture)
+        {
+            logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
+            res.status(403);
+            res.send('Accès refusé par le contrôle de profile');
+        }
+        else
+        {
+            next();
+        }
+        
+    }
+}
+
 //authentification
 router.post('/login',                      httpLogger(),                                                                                   connexionCtrl.login );
 router.post('/mfaNeeded',                  httpLogger(),                                                                                   connexionCtrl.mfaNeeded );
@@ -129,7 +145,7 @@ router.post('/settingsMetiers/updateVHFTypesEquipements',                   http
 router.post('/settingsMetiers/deleteVHFTypesEquipements',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      suppressionLogger(),  settingsMetiersCtrl.deleteVHFTypesEquipements);
 
 //settings utilisateurs
-router.post('/settingsUtilisateurs/getOneUser',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,                           settingsUtilisateursCtrl.getOneUser);
+router.post('/settingsUtilisateurs/getOneUser',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) , himself(),                settingsUtilisateursCtrl.getOneUser);
 router.post('/settingsUtilisateurs/getProfilsOneUser',               httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,                           settingsUtilisateursCtrl.getProfilsOneUser);
 router.post('/settingsUtilisateurs/getMfaUrl',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,                           settingsUtilisateursCtrl.getMfaUrl);
 router.post('/settingsUtilisateurs/enableMfa',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,     modificationLogger(), settingsUtilisateursCtrl.enableMfa);

@@ -7,6 +7,7 @@ import HabilitationService from 'services/habilitationsService';
 import Password from './password';
 import MFA from './mfa';
 import UserInfo from './userInfo';
+import ProfilRecapDroitsUtilisateurBox from '../profils/profilRecapDroitsUtilisateurBox';
 
 const Moncompte = () => {
     return(<>
@@ -18,17 +19,15 @@ const Moncompte = () => {
         />
 
         <Row>
-			<Col md={4}>
+			<Col md={8}>
 				<UserInfo />
 			</Col>
 			<Col md={4}>
 				<Password checkOldPassword={true} layout="box" />
-			</Col>
-			<Col md={4}>
 				<MFA />
 			</Col>
 			<Col md={12}>
-				TODO: Fentre qui récapitule le profil
+				<ProfilRecapDroitsUtilisateurBox idPersonne={HabilitationService.habilitations['idPersonne']} />
 			</Col>
 		</Row>
     </>);

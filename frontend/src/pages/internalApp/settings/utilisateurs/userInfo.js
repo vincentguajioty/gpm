@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import FalconComponentCard from 'components/common/FalconComponentCard';
-import { Form, Button } from 'react-bootstrap'; 
+import { Form, Button, Row, Col } from 'react-bootstrap'; 
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -132,55 +132,64 @@ const UserInfo = () => {
 							<Form.Control type="text" name="fonction" id="fonction" {...register("fonction")}/>
 							<small className="text-danger">{errors.fonction?.message}</small>
 						</Form.Group>
-                        <Form.Group className="mb-3">
-							<Form.Label>Adresse email</Form.Label>
-							<Form.Check
-                                type='switch'
-                                id='desincriptionMail'
-                                name='desincriptionMail'
-                                label='Je ne souhaite pas recevoir de notifications par email'
-                                checked={watch("desincriptionMail")}
-                                onClick={(e)=>{
-									setValue("desincriptionMail", !watch("desincriptionMail"));
-									setValue("mailPersonne", null);
-								}}
-                            />
-							{!watch("desincriptionMail") ?
-								<>
-									<Form.Control type="email" name="mailPersonne" id="mailPersonne" {...register("mailPersonne")} disabled={watch("desincriptionMail")}/>
-									<small className="text-danger">{errors.mailPersonne?.message}</small>
 
-									<Form.Label className='mt-3'>Abonnement aux notifications journalières:</Form.Label>
-                                    {notificationsDisponibles.map((notif, i) => {return(
+                        <Row>
+                            <Col md={6}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Indicateurs sur la page d'accueil</Form.Label>
+                                    {indicateursDisponibles.map((indicateur, i) => {return(
                                         <Form.Check
                                             type='switch'
-                                            id={notif.config}
-                                            name={notif.config}
-                                            label={notif.label}
-                                            checked={watch(notif.config)}
+                                            id={indicateur.config}
+                                            name={indicateur.config}
+                                            label={indicateur.label}
+                                            checked={watch(indicateur.config)}
                                             onClick={(e)=>{
-                                                setValue(notif.config, !watch(notif.config));
+                                                setValue(indicateur.config, !watch(indicateur.config));
                                             }}
                                         />
                                     )})}
-								</>
-							: null}
-						</Form.Group>
-                        <Form.Group className="mb-3">
-							<Form.Label>Indicateurs sur la page d'accueil</Form.Label>
-							{indicateursDisponibles.map((indicateur, i) => {return(
-                                <Form.Check
-                                    type='switch'
-                                    id={indicateur.config}
-                                    name={indicateur.config}
-                                    label={indicateur.label}
-                                    checked={watch(indicateur.config)}
-                                    onClick={(e)=>{
-                                        setValue(indicateur.config, !watch(indicateur.config));
-                                    }}
-                                />
-                            )})}
-						</Form.Group>
+                                </Form.Group>
+                            </Col>
+
+                            <Col md={6}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Adresse email</Form.Label>
+                                    <Form.Check
+                                        type='switch'
+                                        id='desincriptionMail'
+                                        name='desincriptionMail'
+                                        label='Je ne souhaite pas recevoir de notifications par email'
+                                        checked={watch("desincriptionMail")}
+                                        onClick={(e)=>{
+                                            setValue("desincriptionMail", !watch("desincriptionMail"));
+                                            setValue("mailPersonne", null);
+                                        }}
+                                    />
+                                    {!watch("desincriptionMail") ?
+                                        <>
+                                            <Form.Control type="email" name="mailPersonne" id="mailPersonne" {...register("mailPersonne")} disabled={watch("desincriptionMail")}/>
+                                            <small className="text-danger">{errors.mailPersonne?.message}</small>
+
+                                            <Form.Label className='mt-3'>Abonnement aux notifications journalières:</Form.Label>
+                                            {notificationsDisponibles.map((notif, i) => {return(
+                                                <Form.Check
+                                                    type='switch'
+                                                    id={notif.config}
+                                                    name={notif.config}
+                                                    label={notif.label}
+                                                    checked={watch(notif.config)}
+                                                    onClick={(e)=>{
+                                                        setValue(notif.config, !watch(notif.config));
+                                                    }}
+                                                />
+                                            )})}
+                                        </>
+                                    : null}
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        
                         <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Enregistrer'}</Button>
                     </Form>
                 ) : "Chargement en cours"}
