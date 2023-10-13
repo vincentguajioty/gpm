@@ -4,9 +4,7 @@ import { Card, Row, Col } from 'react-bootstrap';
 import IconButton from 'components/common/IconButton';
 import HabilitationService from 'services/habilitationsService';
 import ConfigurationService from 'services/configurationService';
-import getConfigAndSave from 'helpers/getConfigAndSave';
 
-import { Axios } from 'helpers/axios';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 
 const Landing = () => {
@@ -21,19 +19,6 @@ const Landing = () => {
 	const goBackEnd = () => {
 		navigate(HabilitationService.habilitations ? '/home' : '/login');
 	}
-
-	const reloadForConfig = async () => {
-		if(localStorage.getItem("configNeedRefresh") != 0 || !ConfigurationService.config)
-		{
-			await getConfigAndSave();
-			localStorage.setItem("configNeedRefresh", 0);
-			location.reload();
-		}
-	}
-
-	useEffect(() => {
-		reloadForConfig();
-	}, [])
 
 	if(ConfigurationService.config)
 	{

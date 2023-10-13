@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {  Link, Navigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import ReCAPTCHA from 'react-google-recaptcha';
-import getConfigAndSave from 'helpers/getConfigAndSave';
 
 import HabilitationService from 'services/habilitationsService';
 import ConfigurationService from 'services/configurationService';
@@ -44,6 +43,7 @@ const LoginForm = ({ hasLabel }) => {
         HabilitationService.setRefreshToken(response.data.refreshToken);
         HabilitationService.setHabilitations(response.data.habilitations);
 
+
         if(identifiant == motDePasse)
         {
           setRedirectToChgPwd(true);
@@ -78,10 +78,6 @@ const LoginForm = ({ hasLabel }) => {
       console.log(error)
     }
   }
-
-  useEffect(() => {
-		getConfigAndSave();
-	}, [])
 
   return (
     <>

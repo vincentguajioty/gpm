@@ -21,16 +21,9 @@ const Home = () => {
 			location.reload();
 		}
 	}
-	const reloadForConfig = async () => {
-		if(localStorage.getItem("configNeedRefresh") != 0  || !ConfigurationService.config)
-		{
-			localStorage.setItem("configNeedRefresh", 0);
-			location.reload();
-		}
-	}
+
 	useEffect(() => {
 		reloadForNavBar();
-		reloadForConfig();
 	}, [])
 	
 

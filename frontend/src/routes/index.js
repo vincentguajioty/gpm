@@ -6,6 +6,7 @@ import MainLayout from '../layouts/MainLayout';
 import ErrorLayout from '../layouts/ErrorLayout';
 
 import ProtectedRoutes from '../components/connexion/protectedRoutes';
+import ConfigNeededRoute from '../components/connexion/configNeededRoute';
 
 import Error404 from 'pages/errors/Error404';
 import Error500 from 'pages/errors/Error500';
@@ -14,7 +15,8 @@ import Landing from 'pages/publicAccess/landing';
 import DeclarationIncident from 'pages/publicAccess/declarationIncident';
 import TracerConso from 'pages/publicAccess/tracerConso';
 
-import Home from 'pages/home/home';
+import Home from 'pages/internalApp/home/home';
+import LoadingConfig from 'pages/home/loadingConfig';
 import Login from 'pages/home/login';
 import Logout from 'pages/home/logout';
 import LoginCGU from 'pages/home/loginCGU';
@@ -70,84 +72,93 @@ import APropos from 'pages/internalApp/settings/aPropos/aPropos';
 const FalconRoutes = () => {
   return (
     <Routes>
-      <Route element={<PublicLayout />}>
-        <Route path="/" element={<Landing />} />
-        <Route path="/incidentPublic" element={<DeclarationIncident />} />
-        <Route path="/consoPublic" element={<TracerConso />} />
+      <Route element={<ErrorLayout />}>
+        <Route path="/loadingConfig" element={<LoadingConfig />} />
       </Route>
 
       <Route element={<AuthSimpleLayout />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/logout" element={<Logout />} />
-      </Route>
-
-      <Route path="/mdpOublie" element={<LoginPwdForgotten />} />
-      <Route path="/mdpOublie/:token" element={<LoginPwdForgotten />} />
-      
-
-      <Route element={<ProtectedRoutes />}>
-        <Route path="/cguAtLogin" element={<LoginCGU />} />
-        <Route path="/changePwdAtLogin" element={<LoginPwdChange />} />
-
-        <Route element={<MainLayout />}>
-          <Route path="/home" element={<Home />} />
-
-          <Route path="/lots" element={<Lots />} />
-          <Route path="/sacs" element={<Sacs />} />
-          <Route path="/emplacements" element={<Emplacements />} />
-          <Route path="/lotsMateriel" element={<Materiels />} />
-          <Route path="/lotsAlertesBenevoles" element={<AlertesBenevolesLots />} />
-          <Route path="/rapportsConso" element={<RapportsConso />} />
-
-          <Route path="/reservesConteneurs" element={<Reserves />} />
-          <Route path="/reservesMateriels" element={<MaterielsReserve />} />
-
-          <Route path="/commandes" element={<Commandes />} />
-          <Route path="/couts" element={<CentresDeCouts />} />
-          <Route path="/fournisseurs" element={<Fournisseurs />} />
-
-          <Route path="/vhfFrequences" element={<Frequences />} />
-          <Route path="/vhfPlans" element={<Plans />} />
-          <Route path="/vhfEquipements" element={<Equipements />} />
-
-          <Route path="/vehicules" element={<Vehicules />} />
-          <Route path="/vehiculesDesinfections" element={<SuiviDesinfections />} />
-          <Route path="/vehiculesMaintenances" element={<SuiviMaintenances />} />
-          <Route path="/vehiculesKilometres" element={<GraphiquesKilometriques />} />
-          <Route path="/vehiculesAlertesBenevoles" element={<AlertesBenevolesVehicules />} />
-
-          <Route path="/tenuesCatalogue" element={<Tenues />} />
-          <Route path="/tenuesAffectation" element={<AffectationsTenues />} />
-          <Route path="/tenuesCautions" element={<Cautions />} />
-
-          <Route path="/settingsReferentiels" element={<ReferentielsSettings />} />
-          <Route path="/settingsLotsReserves" element={<LotsReservesSettings />} />
-          <Route path="/settingsLieux" element={<LieuxSettings />} />
-          <Route path="/settingsVehicules" element={<VehiculesSettings />} />
-          <Route path="/settingsTransmissions" element={<TransmissionsSettings />} />
-
-          <Route path="/teamUtilisateurs" element={<Utilisateurs />} />
-          <Route path="/teamProfils" element={<Profils />} />
-          <Route path="/monCompte" element={<Moncompte />} />
-          <Route path="/teamMessages" element={<MessagesGeneraux />} />
-          <Route path="/teamMail" element={<EnvoiMailEquipe />} />
-          <Route path="/teamToDoList" element={<ToDoList />} />
-
-          <Route path="/settingsGeneraux" element={<ConfigGenerale />} />
-          <Route path="/settingsActionsMassives" element={<ActionsMassives />} />
-          <Route path="/settingsAide" element={<ManuelAide />} />
-          <Route path="/settingsFAQ" element={<APropos />} />
-
+          <Route path="/logout" element={<Logout />} />
         </Route>
-      </Route>
+      
+      <Route element={<ConfigNeededRoute />}>
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Landing />} />
+          <Route path="/incidentPublic" element={<DeclarationIncident />} />
+          <Route path="/consoPublic" element={<TracerConso />} />
+        </Route>
 
-      <Route element={<ErrorLayout />}>
-        <Route path="errors/404" element={<Error404 />} />
-        <Route path="errors/500" element={<Error500 />} />
-      </Route>
+        <Route element={<AuthSimpleLayout />}>
+          <Route path="/login" element={<Login />} />
+        </Route>
 
-      {/* <Navigate to="/errors/404" /> */}
-      <Route path="*" element={<Navigate to="/errors/404" replace />} />
+        <Route path="/mdpOublie" element={<LoginPwdForgotten />} />
+        <Route path="/mdpOublie/:token" element={<LoginPwdForgotten />} />
+        
+
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/cguAtLogin" element={<LoginCGU />} />
+          <Route path="/changePwdAtLogin" element={<LoginPwdChange />} />
+
+          <Route element={<MainLayout />}>
+            <Route path="/home" element={<Home />} />
+
+            <Route path="/lots" element={<Lots />} />
+            <Route path="/sacs" element={<Sacs />} />
+            <Route path="/emplacements" element={<Emplacements />} />
+            <Route path="/lotsMateriel" element={<Materiels />} />
+            <Route path="/lotsAlertesBenevoles" element={<AlertesBenevolesLots />} />
+            <Route path="/rapportsConso" element={<RapportsConso />} />
+
+            <Route path="/reservesConteneurs" element={<Reserves />} />
+            <Route path="/reservesMateriels" element={<MaterielsReserve />} />
+
+            <Route path="/commandes" element={<Commandes />} />
+            <Route path="/couts" element={<CentresDeCouts />} />
+            <Route path="/fournisseurs" element={<Fournisseurs />} />
+
+            <Route path="/vhfFrequences" element={<Frequences />} />
+            <Route path="/vhfPlans" element={<Plans />} />
+            <Route path="/vhfEquipements" element={<Equipements />} />
+
+            <Route path="/vehicules" element={<Vehicules />} />
+            <Route path="/vehiculesDesinfections" element={<SuiviDesinfections />} />
+            <Route path="/vehiculesMaintenances" element={<SuiviMaintenances />} />
+            <Route path="/vehiculesKilometres" element={<GraphiquesKilometriques />} />
+            <Route path="/vehiculesAlertesBenevoles" element={<AlertesBenevolesVehicules />} />
+
+            <Route path="/tenuesCatalogue" element={<Tenues />} />
+            <Route path="/tenuesAffectation" element={<AffectationsTenues />} />
+            <Route path="/tenuesCautions" element={<Cautions />} />
+
+            <Route path="/settingsReferentiels" element={<ReferentielsSettings />} />
+            <Route path="/settingsLotsReserves" element={<LotsReservesSettings />} />
+            <Route path="/settingsLieux" element={<LieuxSettings />} />
+            <Route path="/settingsVehicules" element={<VehiculesSettings />} />
+            <Route path="/settingsTransmissions" element={<TransmissionsSettings />} />
+
+            <Route path="/teamUtilisateurs" element={<Utilisateurs />} />
+            <Route path="/teamProfils" element={<Profils />} />
+            <Route path="/monCompte" element={<Moncompte />} />
+            <Route path="/teamMessages" element={<MessagesGeneraux />} />
+            <Route path="/teamMail" element={<EnvoiMailEquipe />} />
+            <Route path="/teamToDoList" element={<ToDoList />} />
+
+            <Route path="/settingsGeneraux" element={<ConfigGenerale />} />
+            <Route path="/settingsActionsMassives" element={<ActionsMassives />} />
+            <Route path="/settingsAide" element={<ManuelAide />} />
+            <Route path="/settingsFAQ" element={<APropos />} />
+
+          </Route>
+        </Route>
+
+        <Route element={<ErrorLayout />}>
+          <Route path="errors/404" element={<Error404 />} />
+          <Route path="errors/500" element={<Error500 />} />
+        </Route>
+
+        {/* <Navigate to="/errors/404" /> */}
+        <Route path="*" element={<Navigate to="/errors/404" replace />} />
+      </Route>
     </Routes>
   );
 };
