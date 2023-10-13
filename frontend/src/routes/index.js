@@ -52,6 +52,7 @@ import AffectationsTenues from 'pages/internalApp/tenues/affectations';
 import Cautions from 'pages/internalApp/tenues/cautions';
 
 import ReferentielsSettings from 'pages/internalApp/settings/referentiels/referentiels';
+import ReferentielDetails from 'pages/internalApp/settings/referentiels/referentielDetails';
 import LotsReservesSettings from 'pages/internalApp/settings/lotsReserves/lotsReserves';
 import LieuxSettings from 'pages/internalApp/settings/lieux/lieux';
 import VehiculesSettings from 'pages/internalApp/settings/vehicules/vehicules';
@@ -131,6 +132,7 @@ const FalconRoutes = () => {
             <Route path="/tenuesCautions" element={<Cautions />} />
 
             <Route path="/settingsReferentiels" element={<ReferentielsSettings />} />
+            <Route path="/settingsReferentiels/:idTypeLot" element={<ReferentielDetails />} />
             <Route path="/settingsLotsReserves" element={<LotsReservesSettings />} />
             <Route path="/settingsLieux" element={<LieuxSettings />} />
             <Route path="/settingsVehicules" element={<VehiculesSettings />} />

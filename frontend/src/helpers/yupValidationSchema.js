@@ -116,3 +116,13 @@ export const mfaInit = Yup.object().shape({
         .required(champObligatoire)
         .length(6, "6 chiffres sont requis"),
 });
+
+export const referentielAddForm = Yup.object().shape({
+    libelleTypeLot: Yup.string()
+        .required(champObligatoire)
+});
+
+export const referentielUpdateForm = Yup.object().shape({
+    libelleTypeLot: Yup.string()
+        .required(champObligatoire)
+});

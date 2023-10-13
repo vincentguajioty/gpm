@@ -8,7 +8,7 @@ export const dashboardRoutes = {
             name: 'Accueil',
             to: '/home',
             icon: 'home',
-            exact: true,
+            exact: false,
             active: true
         },
     ]
@@ -50,7 +50,7 @@ if(HabilitationService.habilitations)
                 name: 'Lots',
                 to: '/lots',
                 icon: 'hospital',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -60,7 +60,7 @@ if(HabilitationService.habilitations)
                 name: 'Sacs',
                 to: '/sacs',
                 icon: 'briefcase-medical',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -70,7 +70,7 @@ if(HabilitationService.habilitations)
                 name: 'Emplacements',
                 to: '/emplacements',
                 icon: 'cubes',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -80,7 +80,7 @@ if(HabilitationService.habilitations)
                 name: 'Matériel',
                 to: '/lotsMateriel',
                 icon: 'stethoscope',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -90,7 +90,7 @@ if(HabilitationService.habilitations)
                 name: 'Rapports de consommation',
                 to: '/rapportsConso',
                 icon: 'heartbeat',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -100,7 +100,7 @@ if(HabilitationService.habilitations)
                 name: 'Alertes des bénévoles',
                 to: '/lotsAlertesBenevoles',
                 icon: 'comment',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -125,14 +125,14 @@ if(HabilitationService.habilitations)
                     name: 'Conteneurs',
                     to: '/reservesConteneurs',
                     icon: 'cube',
-                    exact: true,
+                    exact: false,
                     active: true
                 },
                 {
                     name: 'Matériels',
                     to: '/reservesMateriels',
                     icon: 'stethoscope',
-                    exact: true,
+                    exact: false,
                     active: true
                 }
             ]
@@ -155,7 +155,7 @@ if(HabilitationService.habilitations)
                 name: 'Commandes',
                 to: '/commandes',
                 icon: 'shopping-cart',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -165,7 +165,7 @@ if(HabilitationService.habilitations)
                 name: 'Centres de couts',
                 to: '/couts',
                 icon: 'euro-sign',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -175,7 +175,7 @@ if(HabilitationService.habilitations)
                 name: 'Fournisseurs',
                 to: '/fournisseurs',
                 icon: 'store',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -204,7 +204,7 @@ if(HabilitationService.habilitations)
                 name: 'Fréquences',
                 to: '/vhfFrequences',
                 icon: 'tty',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -214,7 +214,7 @@ if(HabilitationService.habilitations)
                 name: 'Plans de fréquences',
                 to: '/vhfPlans',
                 icon: 'sort-numeric-down',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -224,7 +224,7 @@ if(HabilitationService.habilitations)
                 name: 'Equipements radio',
                 to: '/vhfEquipements',
                 icon: 'mobile',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -255,7 +255,7 @@ if(HabilitationService.habilitations)
                 name: 'Véhicules',
                 to: '/vehicules',
                 icon: 'ambulance',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -265,7 +265,7 @@ if(HabilitationService.habilitations)
                 name: 'Suivi des désinfections',
                 to: '/vehiculesDesinfections',
                 icon: 'recycle',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -275,7 +275,7 @@ if(HabilitationService.habilitations)
                 name: 'Suivi des maintenances',
                 to: '/vehiculesMaintenances',
                 icon: 'wrench',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -285,7 +285,7 @@ if(HabilitationService.habilitations)
                 name: 'Graphiques kilométriques',
                 to: '/vehiculesKilometres',
                 icon: 'chart-line',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -295,7 +295,7 @@ if(HabilitationService.habilitations)
                 name: 'Alertes des bénévoles',
                 to: '/vehiculesAlertesBenevoles',
                 icon: 'comment',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -324,7 +324,7 @@ if(HabilitationService.habilitations)
                 name: 'Catalogue des tenues',
                 to: '/tenuesCatalogue',
                 icon: 'tshirt',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -334,7 +334,7 @@ if(HabilitationService.habilitations)
                 name: 'Affectations des tenues',
                 to: '/tenuesAffectation',
                 icon: 'street-view',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -344,7 +344,7 @@ if(HabilitationService.habilitations)
                 name: 'Cautions',
                 to: '/tenuesCautions',
                 icon: 'money-bill',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -372,7 +372,7 @@ if(HabilitationService.habilitations)
                     name: 'Référentiels',
                     to: '/settingsReferentiels',
                     icon: 'landmark',
-                    exact: true,
+                    exact: false,
                     active: true
                 }
             ]
@@ -409,7 +409,7 @@ if(HabilitationService.habilitations)
                 name: 'Lots et réserves',
                 to: '/settingsLotsReserves',
                 icon: 'briefcase-medical',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -419,7 +419,7 @@ if(HabilitationService.habilitations)
                 name: 'Lieux',
                 to: '/settingsLieux',
                 icon: 'street-view',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -429,7 +429,7 @@ if(HabilitationService.habilitations)
                 name: 'Véhicules',
                 to: '/settingsVehicules',
                 icon: 'ambulance',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -439,7 +439,7 @@ if(HabilitationService.habilitations)
                 name: 'Transmissions',
                 to: '/settingsTransmissions',
                 icon: 'wifi',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -474,7 +474,7 @@ if(HabilitationService.habilitations)
                 name: 'Utilisateurs',
                 to: '/teamUtilisateurs',
                 icon: 'user',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -484,7 +484,7 @@ if(HabilitationService.habilitations)
                 name: 'Profils',
                 to: '/teamProfils',
                 icon: 'users',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -494,7 +494,7 @@ if(HabilitationService.habilitations)
                 name: 'Messages généraux',
                 to: '/teamMessages',
                 icon: 'bullhorn',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -504,7 +504,7 @@ if(HabilitationService.habilitations)
                 name: 'Envoyer un mail',
                 to: '/teamMail',
                 icon: 'mail-bulk',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -514,7 +514,7 @@ if(HabilitationService.habilitations)
                 name: 'ToDoList',
                 to: '/teamToDoList',
                 icon: 'check-square',
-                exact: true,
+                exact: false,
                 active: true
             })
         }
@@ -535,7 +535,7 @@ if(HabilitationService.habilitations)
             name: 'Configuration générale',
             to: '/settingsGeneraux',
             icon: 'wrench',
-            exact: true,
+            exact: false,
             active: true
         })
     }
@@ -545,7 +545,7 @@ if(HabilitationService.habilitations)
             name: 'Actions massives',
             to: '/settingsActionsMassives',
             icon: 'minus-circle',
-            exact: true,
+            exact: false,
             active: true
         })
     }
@@ -553,14 +553,14 @@ if(HabilitationService.habilitations)
         name: 'Manuel et aide',
         to: '/settingsAide',
         icon: 'question-circle',
-        exact: true,
+        exact: false,
         active: true
     })
     tempChildrens.push({
         name: 'A propos',
         to: '/settingsFAQ',
         icon: 'info',
-        exact: true,
+        exact: false,
         active: true
     })
 

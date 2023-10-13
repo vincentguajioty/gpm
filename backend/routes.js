@@ -10,6 +10,7 @@ const settingsMetiersCtrl = require('./controllers/settingsMetiers');
 const settingsUtilisateursCtrl = require('./controllers/settingsUtilisateurs');
 
 const commandesCtrl = require('./controllers/commandes');
+const referentielsCtrl = require('./controllers/referentiels');
 
 const serveDocumentsCtrl       = require('./controllers/serveDocuments');
 
@@ -52,6 +53,14 @@ router.post('/blackListSession',           httpLogger(), jwtFunctions.verifyJWTa
 
 //commandes
 router.get('/commandes/getFournisseurs',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),                                    commandesCtrl.getFournisseurs);
+
+//referentiels
+router.get('/referentiels/getReferentiels',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_lecture']),                                                 referentielsCtrl.getReferentiels);
+router.post('/referentiels/getOneReferentiel',                httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_lecture']),                                                 referentielsCtrl.getOneReferentiel);
+router.post('/referentiels/addReferentiel',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_ajout']),                             modificationLogger(), referentielsCtrl.addReferentiel);
+router.post('/referentiels/getCatalogueForReferentielForm',   httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_modification', 'catalogue_lecture']),                       referentielsCtrl.getCatalogueForReferentielForm);
+router.post('/referentiels/updateReferentiel',                httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_modification']),                      modificationLogger(), referentielsCtrl.updateReferentiel);
+router.post('/referentiels/deleteReferentiel',                httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_suppression']),                       suppressionLogger(), referentielsCtrl.deleteReferentiel);
 
 //settings Métiers
 router.get('/settingsMetiers/getCategoriesMateriels',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['categories_lecture']),                                    settingsMetiersCtrl.getCategoriesMateriels);

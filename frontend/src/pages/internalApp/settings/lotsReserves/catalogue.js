@@ -308,7 +308,20 @@ const Catalogue = () => {
                     </FalconComponentCard.Body>
                 </FalconComponentCard>
             </>
-        : <LoaderInfiniteLoop />
+        :
+            <FalconComponentCard noGuttersBottom className="mb-3">
+                <FalconComponentCard.Header
+                    title="Catalogue du matériel"
+                >
+                </FalconComponentCard.Header>
+                <FalconComponentCard.Body
+                    scope={{ ActionButton }}
+                    noLight
+                    className="p-0"
+                >
+                    <LoaderInfiniteLoop />
+                </FalconComponentCard.Body>
+            </FalconComponentCard>
     );
 
 };
