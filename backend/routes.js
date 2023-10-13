@@ -134,6 +134,8 @@ router.post('/settingsUtilisateurs/getProfilsOneUser',               httpLogger(
 router.post('/settingsUtilisateurs/getMfaUrl',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,                           settingsUtilisateursCtrl.getMfaUrl);
 router.post('/settingsUtilisateurs/enableMfa',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,     modificationLogger(), settingsUtilisateursCtrl.enableMfa);
 router.post('/settingsUtilisateurs/disableMfa',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,     modificationLogger(), settingsUtilisateursCtrl.disableMfa);
+router.post('/settingsUtilisateurs/updateMonCompte',                 httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,     modificationLogger(), settingsUtilisateursCtrl.updateMonCompte);
+
 
 //get images and documents from secured backend
 router.post('/getSecureFile/centresCouts',   httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_lecture',]),           serveDocumentsCtrl.centresCouts);

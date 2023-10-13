@@ -126,3 +126,12 @@ export const referentielUpdateForm = Yup.object().shape({
     libelleTypeLot: Yup.string()
         .required(champObligatoire)
 });
+
+export const userInfoForm = Yup.object().shape({
+    nomPersonne: Yup
+        .string()
+        .required(champObligatoire),
+    prenomPersonne: Yup
+        .string()
+        .required(champObligatoire),
+});

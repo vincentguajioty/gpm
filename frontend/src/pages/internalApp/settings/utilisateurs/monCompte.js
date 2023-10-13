@@ -19,13 +19,16 @@ const Moncompte = () => {
 
         <Row>
 			<Col md={4}>
-				{/* <UserInfo /> */}
+				<UserInfo />
 			</Col>
 			<Col md={4}>
 				<Password checkOldPassword={true} layout="box" />
 			</Col>
 			<Col md={4}>
 				<MFA />
+			</Col>
+			<Col md={12}>
+				TODO: Fentre qui récapitule le profil
 			</Col>
 		</Row>
     </>);
