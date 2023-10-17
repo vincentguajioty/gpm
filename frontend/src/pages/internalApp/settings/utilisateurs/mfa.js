@@ -83,10 +83,13 @@ const MFA = () => {
 			>
 			</FalconComponentCard.Header>
 			<FalconComponentCard.Body>
-                <center><i>Changer ce paramètre va déconnecter toutes vos sessions</i></center>
+                <center className='mb-2'><i>Changer ce paramètre va déconnecter toutes vos sessions</i></center>
 				{loading ? 'Chargement en cours' : 
                     utilisateur.mfaEnabled ? <Button onClick={disableMfa}>Désactiver le MFA</Button> : 
                         <>
+                            <Form.Label>1 - Téléchargez sur votre appareil mobile une application MFA (Google Authenticator, Microsoft Authenticator, ...)</Form.Label>
+                            <Form.Label>2 - Dans l'application mobile, scannez le QRCode ci-dessous pour ajouter le compte (ou ajoutez le code manuellement):</Form.Label>
+                            
                             <center>
                                 <QRCode
                                     value={enableUrl}
@@ -96,7 +99,7 @@ const MFA = () => {
                             
                             <Form onSubmit={handleSubmit(enableMfa)} autoComplete="off">
                                 <Form.Group className="mb-3">
-                                    <Form.Label>Confirmation d'activation</Form.Label>
+                                    <Form.Label>3 - Saisissez le code de sécurité obtenu:</Form.Label>
                                     <InputGroup className="mb-3">
                                         <Form.Control
                                             id="confirmation"

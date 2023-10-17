@@ -15,32 +15,32 @@ const UserInfo = () => {
     const [readyToDisplay, setReadyToDisplay] = useState(false);
 
     const notificationsDisponibles = [
-        {config: 'notif_lots_manquants'         , label:'Matériels manquants (lots)'},
-        {config: 'notif_lots_peremptions'       , label:'Matériels périmés (lots)'},
-        {config: 'notif_lots_inventaires'       , label:'Inventaires (lots)'},
-        {config: 'notif_lots_conformites'       , label:'Lots non conformes'},
-        {config: 'notif_reserves_manquants'     , label:'Matériels manquants (réserve)'},
-        {config: 'notif_reserves_peremptions'   , label:'Matériels périmés (réserve)'},
-        {config: 'notif_reserves_inventaires'   , label:'Inventaires (réserve)'},
-        {config: 'notif_vehicules_desinfections', label:'Désinfections véhicules'},
-        {config: 'notif_vehicules_health'       , label:'Maintenance régulière des véhicules'},
-        {config: 'notif_tenues_stock'           , label:'Stock des tenues'},
-        {config: 'notif_tenues_retours'         , label:'Non retour de tenues'},
-        {config: 'notif_benevoles_lots'         , label:'Alertes de bénévoles sur les lots'},
-        {config: 'notif_benevoles_vehicules'    , label:'Alertes de bénévoles sur les véhicules'},
+        {config: 'notif_lots_manquants'         , label:'Matériels manquants (lots)'            , profilNeeded: 'lots_lecture',},
+        {config: 'notif_lots_peremptions'       , label:'Matériels périmés (lots)'              , profilNeeded: 'lots_lecture',},
+        {config: 'notif_lots_inventaires'       , label:'Inventaires (lots)'                    , profilNeeded: 'lots_lecture',},
+        {config: 'notif_lots_conformites'       , label:'Lots non conformes'                    , profilNeeded: 'lots_lecture',},
+        {config: 'notif_reserves_manquants'     , label:'Matériels manquants (réserve)'         , profilNeeded: 'reserve_lecture',},
+        {config: 'notif_reserves_peremptions'   , label:'Matériels périmés (réserve)'           , profilNeeded: 'reserve_lecture',},
+        {config: 'notif_reserves_inventaires'   , label:'Inventaires (réserve)'                 , profilNeeded: 'reserve_lecture',},
+        {config: 'notif_vehicules_desinfections', label:'Désinfections véhicules'               , profilNeeded: 'desinfections_lecture',},
+        {config: 'notif_vehicules_health'       , label:'Maintenance régulière des véhicules'   , profilNeeded: 'vehiculeHealth_lecture',},
+        {config: 'notif_tenues_stock'           , label:'Stock des tenues'                      , profilNeeded: 'tenues_lecture',},
+        {config: 'notif_tenues_retours'         , label:'Non retour de tenues'                  , profilNeeded: 'tenues_lecture',},
+        {config: 'notif_benevoles_lots'         , label:'Alertes de bénévoles sur les lots'     , profilNeeded: 'alertesBenevolesLots_lecture',},
+        {config: 'notif_benevoles_vehicules'    , label:'Alertes de bénévoles sur les véhicules', profilNeeded: 'alertesBenevolesVehicules_lecture',},
     ];
 
     const indicateursDisponibles = [
-        {config: 'conf_indicateur1Accueil' , label: "Matériels périmés (lots)"},
-        {config: 'conf_indicateur2Accueil' , label: "Matériels manquants (lots)"},
-        {config: 'conf_indicateur3Accueil' , label: "Lots en attente d'inventaire"},
-        {config: 'conf_indicateur4Accueil' , label: "Lots non conformes"},
-        {config: 'conf_indicateur5Accueil' , label: "Matériels périmés (réserve)"},
-        {config: 'conf_indicateur6Accueil' , label: "Matériels manquants (réserve)"},
-        {config: 'conf_indicateur9Accueil' , label: "Stock des tenues"},
-        {config: 'conf_indicateur10Accueil', label: "Non retour de tenues"},
-        {config: 'conf_indicateur11Accueil', label: "Désinfections des véhicules"},
-        {config: 'conf_indicateur12Accueil', label: "Maintenance régulière des véhicules"},
+        {config: 'conf_indicateur1Accueil' , label: "Matériels périmés (lots)",            profilNeeded: 'lots_lecture',},
+        {config: 'conf_indicateur2Accueil' , label: "Matériels manquants (lots)",          profilNeeded: 'lots_lecture',},
+        {config: 'conf_indicateur3Accueil' , label: "Lots en attente d'inventaire",        profilNeeded: 'lots_lecture',},
+        {config: 'conf_indicateur4Accueil' , label: "Lots non conformes",                  profilNeeded: 'lots_lecture',},
+        {config: 'conf_indicateur5Accueil' , label: "Matériels périmés (réserve)",         profilNeeded: 'reserve_lecture',},
+        {config: 'conf_indicateur6Accueil' , label: "Matériels manquants (réserve)",       profilNeeded: 'reserve_lecture',},
+        {config: 'conf_indicateur9Accueil' , label: "Stock des tenues",                    profilNeeded: 'tenues_lecture',},
+        {config: 'conf_indicateur10Accueil', label: "Non retour de tenues",                profilNeeded: 'tenues_lecture',},
+        {config: 'conf_indicateur11Accueil', label: "Désinfections des véhicules",         profilNeeded: 'desinfections_lecture',},
+        {config: 'conf_indicateur12Accueil', label: "Maintenance régulière des véhicules", profilNeeded: 'vehiculeHealth_lecture',},
     ];
 
 	const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm({
@@ -144,6 +144,7 @@ const UserInfo = () => {
                                             name={indicateur.config}
                                             label={indicateur.label}
                                             checked={watch(indicateur.config)}
+                                            disabled={!HabilitationService.habilitations[indicateur.profilNeeded]}
                                             onClick={(e)=>{
                                                 setValue(indicateur.config, !watch(indicateur.config));
                                             }}
@@ -179,6 +180,7 @@ const UserInfo = () => {
                                                     name={notif.config}
                                                     label={notif.label}
                                                     checked={watch(notif.config)}
+                                                    disabled={!HabilitationService.habilitations[notif.profilNeeded]}
                                                     onClick={(e)=>{
                                                         setValue(notif.config, !watch(notif.config));
                                                     }}

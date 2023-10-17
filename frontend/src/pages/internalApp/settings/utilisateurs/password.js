@@ -73,7 +73,7 @@ const Password = ({checkOldPassword = true, layout, redirectTarget = false}) => 
 					<FalconComponentCard.Body>
 						{HabilitationService.habilitations.isActiveDirectory ? "Merci de mettre à jour votre mot de passe dans l'AD" : (
 							<>
-								<center><i>Changer ce paramètre va déconnecter toutes vos sessions</i></center>
+								<center className='mb-2'><i>Changer ce paramètre va déconnecter toutes vos sessions</i></center>
 								<Form onSubmit={handleSubmit(savePassword)} autoComplete="off">
 									{checkOldPassword ? (
 										<Form.Group className="mb-3">
