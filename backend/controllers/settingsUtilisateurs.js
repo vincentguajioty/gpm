@@ -1,7 +1,6 @@
 const db = require('../db');
 const fonctionsMetiers = require('../fonctionsMetiers');
 const dotenv = require('dotenv').config();
-const brcypt = require('bcryptjs');
 const authenticator = require('authenticator');
 const logger = require('../winstonLogger');
 

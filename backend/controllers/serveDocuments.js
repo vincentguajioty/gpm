@@ -1,6 +1,4 @@
-const { unlink } = require('fs');
 const path = require('path');
-const sharp = require('sharp');
 const logger = require('../winstonLogger');
 
 exports.centresCouts = async (req, res, next)=>{

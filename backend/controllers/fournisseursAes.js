@@ -1,13 +1,8 @@
 const db = require('../db');
-const brcypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const jwtFunctions = require('../jwt');
 const dotenv = require('dotenv').config();
 const logger = require('../winstonLogger');
-const axios = require('axios');
 const moment = require('moment');
-const fonctionsMetiers = require('../fonctionsMetiers');
-const fonctionsLDAP = require('../fonctionsLDAP');
 
 const checkIfFeatureIsSetup = async () => {
     try {

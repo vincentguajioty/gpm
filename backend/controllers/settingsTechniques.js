@@ -2,7 +2,6 @@ const db = require('../db');
 const dotenv = require('dotenv').config();
 const logger = require('../winstonLogger');
 const fonctionsMetiers = require('../fonctionsMetiers');
-const fonctionsDelete = require('../fonctionsDelete');
 
 exports.getConfigForAdmin = async (req, res) => {
     try {
