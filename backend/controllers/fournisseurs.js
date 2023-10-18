@@ -66,7 +66,43 @@ exports.getOneFournisseur = async (req, res)=>{
             {
                 fournisseur.aesFournisseur = null;
             }
+
+            const commandes = await db.query(`
+                SELECT
+                    c.dateCreation,
+                    c.nomCommande,
+                    ce.libelleEtat,
+                    c.numCommandeFournisseur
+                FROM
+                    COMMANDES c
+                    LEFT OUTER JOIN COMMANDES_ETATS ce ON c.idEtat = ce.idEtat
+                WHERE
+                    idFournisseur = :idFournisseur
+                ;`,
+                {
+                    idFournisseur: fournisseur.idFournisseur,
+                }
+            );
+            fournisseur.commandes = commandes;
+
+            const catalogue = await db.query(`
+                SELECT
+                    mc.libelleMateriel,
+                    cat.libelleCategorie,
+                    mc.commentairesMateriel
+                FROM
+                    MATERIEL_CATALOGUE mc
+                    LEFT OUTER JOIN MATERIEL_CATEGORIES cat ON mc.idCategorie = cat.idCategorie
+                WHERE
+                    idFournisseur = :idFournisseur
+                ;`,
+                {
+                    idFournisseur: fournisseur.idFournisseur,
+                }
+            );
+            fournisseur.catalogue = catalogue;
         }
+
         res.send(results);
     } catch (error) {
         logger.error(error);

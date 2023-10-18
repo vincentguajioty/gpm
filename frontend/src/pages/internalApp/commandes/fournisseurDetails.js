@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
-import { Row, Col, Card, Form } from 'react-bootstrap';
+import { Row, Col, Card, Form, Tabs, Tab, Table } from 'react-bootstrap';
 import Flex from 'components/common/Flex';
 import PageHeader from 'components/common/PageHeader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,6 +13,8 @@ import AesFournisseursService from 'services/aesFournisseursService';
 
 import { Axios } from 'helpers/axios';
 
+import moment from 'moment-timezone';
+
 const FournisseurDetails = () => {
     let {idFournisseur} = useParams();
 
@@ -20,6 +22,7 @@ const FournisseurDetails = () => {
 
     const [readyToDisplay, setReadyToDisplay] = useState(false);
     const [fournisseur, setFournisseur] = useState([]);
+    console.log(fournisseur);
 
     const initPage = async () => {
         try {
@@ -45,6 +48,7 @@ const FournisseurDetails = () => {
         }
     }, [pageNeedsRefresh])
 
+    const nl2br = require('react-nl2br');
     if(readyToDisplay)
     {
         return(<>
@@ -65,7 +69,54 @@ const FournisseurDetails = () => {
                         setPageNeedsRefresh={setPageNeedsRefresh}
                     />
                 </Col>
-                <Col md={8}>Une boite avec deux tabs pour les produits référencés et les commandes passées</Col>
+                <Col md={8}>
+                    <Card>
+                        <Tabs defaultActiveKey="produits" id="uncontrolled-tab-example">
+                            <Tab eventKey="produits" title="Produits référencés" className='border-bottom border-x p-3'>
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <th>Libellé</th>
+                                            <th>Catégorie</th>
+                                            <th>Commentaires</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {fournisseur.catalogue.map((item, i) => {return(
+                                            <tr>
+                                                <td>{item.libelleMateriel}</td>
+                                                <td>{item.libelleCategorie}</td>
+                                                <td>{nl2br(item.commentairesMateriel)}</td>
+                                            </tr>
+                                        )})}
+                                    </tbody>
+                                </Table>
+                            </Tab>
+                            <Tab eventKey="commandes" title="Commandes" className='border-bottom border-x p-3'>
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <th>Date de création</th>
+                                            <th>Nom</th>
+                                            <th>Etat</th>
+                                            <th>Référence fournisseur</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {fournisseur.commandes.map((item, i) => {return(
+                                            <tr>
+                                                <td>{moment(item.dateCreation).format('DD/MM/YYYY')}</td>
+                                                <td>{item.nomCommande}</td>
+                                                <td>{item.libelleEtat}</td>
+                                                <td>{item.numCommandeFournisseur}</td>
+                                            </tr>
+                                        )})}
+                                    </tbody>
+                                </Table>
+                            </Tab>
+                        </Tabs>
+                    </Card>
+                </Col>
             </Row>
         </>);
     }else{
