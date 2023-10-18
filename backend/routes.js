@@ -8,6 +8,7 @@ const fonctionsMetiers = require('./fonctionsMetiers');
 const connexionCtrl = require('./controllers/connexion');
 const settingsMetiersCtrl = require('./controllers/settingsMetiers');
 const settingsUtilisateursCtrl = require('./controllers/settingsUtilisateurs');
+const settingsTechniquesCtrl = require('./controllers/settingsTechniques');
 
 const commandesCtrl = require('./controllers/commandes');
 const referentielsCtrl = require('./controllers/referentiels');
@@ -151,6 +152,13 @@ router.post('/settingsUtilisateurs/getMfaUrl',                       httpLogger(
 router.post('/settingsUtilisateurs/enableMfa',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,     modificationLogger(), settingsUtilisateursCtrl.enableMfa);
 router.post('/settingsUtilisateurs/disableMfa',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,     modificationLogger(), settingsUtilisateursCtrl.disableMfa);
 router.post('/settingsUtilisateurs/updateMonCompte',                 httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,     modificationLogger(), settingsUtilisateursCtrl.updateMonCompte);
+
+//settings techniques
+router.get('/settingsTechniques/getConfigForAdmin',            httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) ,                       settingsTechniquesCtrl.getConfigForAdmin);
+router.post('/settingsTechniques/saveGlobalConfig',            httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) , modificationLogger(), settingsTechniquesCtrl.saveGlobalConfig);
+router.post('/settingsTechniques/saveCnilConfig',              httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) , modificationLogger(), settingsTechniquesCtrl.saveCnilConfig);
+router.post('/settingsTechniques/saveAlertesConfig',           httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) , modificationLogger(), settingsTechniquesCtrl.saveAlertesConfig);
+router.post('/settingsTechniques/saveNotifsCommandesConfig',   httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) , modificationLogger(), settingsTechniquesCtrl.saveNotifsCommandesConfig);
 
 
 //get images and documents from secured backend

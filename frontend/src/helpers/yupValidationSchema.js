@@ -135,3 +135,28 @@ export const userInfoForm = Yup.object().shape({
         .string()
         .required(champObligatoire),
 });
+
+export const configGeneraleForm = Yup.object().shape({
+    appname: Yup
+        .string()
+        .required(champObligatoire),
+    urlsite: Yup
+        .string()
+        .required(champObligatoire),
+    mailserver: Yup
+        .string()
+        .email(champMail)
+        .required(champObligatoire),
+});
+
+export const configCnilForm = Yup.object().shape({
+    mailcnil: Yup
+        .string()
+        .email(champMail),
+});
+
+export const configAlertesBenevolesForm = Yup.object().shape({
+});
+
+export const configNotifCommandesForm = Yup.object().shape({
+});

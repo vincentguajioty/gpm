@@ -38,7 +38,7 @@ const verifyJWTandProfile = (role) => {
     
             if(tokenBlackListeCheck)
             {
-                jwt.verify(token, process.env.JWT_TOKEN, (err, decoded) => {
+                jwt.verify(token, process.env.JWT_TOKEN, async (err, decoded) => {
                     if(err){
                         logger.http('Connexion avec un mauvais token');
                         res.status(401);
@@ -58,10 +58,22 @@ const verifyJWTandProfile = (role) => {
                         }
                         else
                         {
-                            logger.http('Requete authentifiée ' + req.originalUrl + ' de l\'utilisateur ' + decoded.identifiant)
-                            req.idPersonne = decoded.idPersonne;
-                            req.verifyJWTandProfile = decoded;
-                            next();
+                            const maintenanceConfig = await db.query(
+                                'SELECT maintenance FROM CONFIG;'
+                            );
+                            if(maintenanceConfig[0].maintenance && !decoded['maintenance'])
+                            {
+                                logger.info('Accès refusé par le dispositif de maintenance', {idPersonne: 'SYSTEM'});
+                                res.status(403);
+                                res.send('Accès refusé par le dispositif de maintenance');
+                            }
+                            else
+                            {
+                                logger.http('Requete authentifiée ' + req.originalUrl + ' de l\'utilisateur ' + decoded.identifiant)
+                                req.idPersonne = decoded.idPersonne;
+                                req.verifyJWTandProfile = decoded;
+                                next();
+                            }
                         }
                     }
                 });
