@@ -30,13 +30,13 @@ const checkIfKeyIsValid = async (key) => {
     try {
         const getDecryptedChain = await db.query(`
             SELECT
-                AES_DECRYPT(aesFournisseurTemoin, :key) as temoinDecrypte
+                CAST(AES_DECRYPT(aesFournisseurTemoin, :key) AS CHAR) as temoinDecrypte
             FROM CONFIG
             ;`,{
                 key : key,
             }
         );
-
+        
         if(getDecryptedChain[0].temoinDecrypte == 'temoin')
         {
             return true;
@@ -127,7 +127,7 @@ exports.updateAesKey = async (req, res, next) => {
             UPDATE
                 FOURNISSEURS
             SET
-                aesFournisseur = AES_ENCRYPT(AES_DECRYPT(aesFournisseur, :aesOld), :aesNew)
+                aesFournisseur = AES_ENCRYPT(CAST(AES_DECRYPT(aesFournisseur, :aesOld) AS CHAR), :aesNew)
             ;`,{
                 aesOld : oldKey,
                 aesNew: newKey,
@@ -145,6 +145,39 @@ exports.updateAesKey = async (req, res, next) => {
         );
 
         next();
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateFournisseurAesData = async (req, res, next) => {
+    try {
+        const checkKey = await checkIfKeyIsValid(req.aesKey);
+
+        if(checkKey)
+        {
+            const changeEncryptionFournisseur = await db.query(`
+                UPDATE
+                    FOURNISSEURS
+                SET
+                    aesFournisseur = AES_ENCRYPT(:aesFournisseur, :aesKey)
+                WHERE
+                    idFournisseur = :idFournisseur
+                ;`,{
+                    aesFournisseur : req.body.aesFournisseur || null,
+                    idFournisseur : req.body.idFournisseur || null,
+                    aesKey: req.aesKey,
+                }
+            );
+
+            res.sendStatus(201);
+        }
+        else
+        {
+            res.sendStatus(500);
+        }
+
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

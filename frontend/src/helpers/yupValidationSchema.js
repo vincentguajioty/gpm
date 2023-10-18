@@ -2,6 +2,7 @@ import * as Yup from "yup";
 
 const champObligatoire = "Ce champ est obligatoire";
 const champMail = "Adresse email valide requise";
+const champURL = "Adresse internet valide requise";
 
 export const utilisateurPasswordChange = Yup.object().shape({
     oldPwd: Yup
@@ -185,4 +186,23 @@ export const aesFournisseursKeyInitModalForm = Yup.object().shape({
         .string()
         .required(champObligatoire)
         .oneOf([Yup.ref('aesKey'), null], 'Les clefs ne correspondent pas'),
+});
+
+export const fournisseurAddForm = Yup.object().shape({
+    nomFournisseur: Yup.string()
+        .required(champObligatoire)
+});
+
+export const fournisseurUpdateForm = Yup.object().shape({
+    nomFournisseur: Yup.string()
+        .required(champObligatoire),
+    mailFournisseur: Yup
+        .string()
+        .email(champMail),
+    siteWebFournisseur: Yup
+        .string()
+        .url(champURL),
+});
+
+export const fournisseurUpdateAesDataForm = Yup.object().shape({
 });

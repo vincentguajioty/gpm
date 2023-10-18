@@ -11,6 +11,7 @@ const settingsUtilisateursCtrl = require('./controllers/settingsUtilisateurs');
 const settingsTechniquesCtrl = require('./controllers/settingsTechniques');
 
 const commandesCtrl = require('./controllers/commandes');
+const fournisseursCtrl = require('./controllers/fournisseurs');
 const fournisseursAesCtrl = require('./controllers/fournisseursAes');
 const referentielsCtrl = require('./controllers/referentiels');
 
@@ -70,13 +71,20 @@ router.post('/getCurrentSessionsOneUser',  httpLogger(), jwtFunctions.verifyJWTa
 router.post('/blackListSession',           httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), suppressionLogger(),  connexionCtrl.blackListSession );
 
 //commandes
-router.get('/commandes/getFournisseurs',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),                                    commandesCtrl.getFournisseurs);
 
+//Fournisseurs - Informations de base
+router.get('/fournisseurs/getFournisseurs',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),      jwtFunctions.decryptAesToken(),  fournisseursCtrl.getFournisseurs);
+router.post('/fournisseurs/getOneFournisseur',                httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),      jwtFunctions.decryptAesToken(),  fournisseursCtrl.getOneFournisseur);
+router.post('/fournisseurs/addFournisseur',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_ajout']),        modificationLogger(),            fournisseursCtrl.addFournisseur);
+router.post('/fournisseurs/updateFournisseur',                httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_modification']), modificationLogger(),            fournisseursCtrl.updateFournisseur);
+router.post('/fournisseurs/deleteFournisseur',                httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_suppression']),  suppressionLogger(),             fournisseursCtrl.deleteFournisseur);
 //Fournisseurs - Gestion des informations chiffrées
-router.post('/fournisseurs/authenticateForAES',                httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),                                                            fournisseursAesCtrl.authenticateForAES);
-router.post('/fournisseurs/initKey',                           httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_modification']), modificationLogger(),                                 fournisseursAesCtrl.initKey, fournisseursAesCtrl.authenticateForAES);
-router.post('/fournisseurs/changeKey',                         httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_modification']), jwtFunctions.decryptAesToken(), modificationLogger(), fournisseursAesCtrl.updateAesKey, fournisseursAesCtrl.authenticateForAES);
-router.post('/fournisseurs/disableAesAndDelete',               httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_modification']), jwtFunctions.decryptAesToken(), suppressionLogger(),  fournisseursAesCtrl.disableAesAndDelete);
+router.post('/fournisseurs/authenticateForAES',       httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),                                                            fournisseursAesCtrl.authenticateForAES);
+router.post('/fournisseurs/initKey',                  httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                                                modificationLogger(), fournisseursAesCtrl.initKey, fournisseursAesCtrl.authenticateForAES);
+router.post('/fournisseurs/changeKey',                httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                jwtFunctions.decryptAesToken(), modificationLogger(), fournisseursAesCtrl.updateAesKey, fournisseursAesCtrl.authenticateForAES);
+router.post('/fournisseurs/disableAesAndDelete',      httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                jwtFunctions.decryptAesToken(), suppressionLogger(),  fournisseursAesCtrl.disableAesAndDelete);
+router.post('/fournisseurs/updateFournisseurAesData', httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_modification']), jwtFunctions.decryptAesToken(), modificationLogger(), fournisseursAesCtrl.updateFournisseurAesData);
+
 
 //referentiels
 router.get('/referentiels/getReferentiels',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_lecture']),                                                 referentielsCtrl.getReferentiels);

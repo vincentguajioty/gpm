@@ -19,7 +19,7 @@ const tokenNotInBlacklist = async (token) => {
         }
         return false;
     } catch (error) {
-        console.log(error)
+        logger.error(error)
     }
     return (true);
 }
@@ -93,9 +93,7 @@ const decryptAesToken = () => {
     return async function(req, res, next) {
         const token = req.body.aesToken;
         if(!token){
-            logger.http('Demande de decodage AES sans token');
-            res.status(401);
-            res.json({auth: false, message: "We need a token, please send it next time !"});
+            next();
         }
         else
         {
@@ -121,7 +119,7 @@ const cleanSessionTable = async () => {
         const deleteQuery = await db.query(
             'DELETE FROM JWT_SESSIONS WHERE refreshValidity < CURRENT_TIMESTAMP');
     } catch (error) {
-        console.log(error)
+        logger.error(error)
     }
 }
 
@@ -130,7 +128,7 @@ const cleanOldBlacklist = async () => {
         const deleteQuery = await db.query(
             'DELETE FROM JWT_SESSIONS_BLACKLIST WHERE blockedDateTime < DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 365 DAY)');
     } catch (error) {
-        console.log(error)
+        logger.error(error)
     }
 }
 

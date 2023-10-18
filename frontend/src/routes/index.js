@@ -36,6 +36,7 @@ import MaterielsReserve from 'pages/internalApp/reserves/materielsReserve';
 import Commandes from 'pages/internalApp/commandes/commandes';
 import CentresDeCouts from 'pages/internalApp/centresDeCouts/centresDeCouts';
 import Fournisseurs from 'pages/internalApp/commandes/fournisseurs';
+import FournisseurDetails from 'pages/internalApp/commandes/fournisseurDetails';
 
 import Frequences from 'pages/internalApp/transmissions/frequences';
 import Plans from 'pages/internalApp/transmissions/plans';
@@ -116,6 +117,7 @@ const FalconRoutes = () => {
             <Route path="/commandes" element={<Commandes />} />
             <Route path="/couts" element={<CentresDeCouts />} />
             <Route path="/fournisseurs" element={<Fournisseurs />} />
+            <Route path="/fournisseurs/:idFournisseur" element={<FournisseurDetails />} />
 
             <Route path="/vhfFrequences" element={<Frequences />} />
             <Route path="/vhfPlans" element={<Plans />} />

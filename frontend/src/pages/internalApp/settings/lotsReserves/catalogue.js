@@ -29,7 +29,7 @@ const Catalogue = () => {
             getFromDb = await Axios.get('/settingsMetiers/getCategoriesMateriels');
             setCategories(getFromDb.data);
 
-            getFromDb = await Axios.get('/commandes/getFournisseurs');
+            getFromDb = await Axios.get('/fournisseurs/getFournisseurs');
             setFournisseurs(getFromDb.data);
             
             setReadyToDisplay(true);
