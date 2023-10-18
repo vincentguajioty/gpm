@@ -89,6 +89,33 @@ const verifyJWTandProfile = (role) => {
     }
 }
 
+const decryptAesToken = () => {
+    return async function(req, res, next) {
+        const token = req.body.aesToken;
+        if(!token){
+            logger.http('Demande de decodage AES sans token');
+            res.status(401);
+            res.json({auth: false, message: "We need a token, please send it next time !"});
+        }
+        else
+        {
+            jwt.verify(token, process.env.JWT_AESFOURNISSEURS_TOKEN, async (err, decoded) => {
+                if(err){
+                    logger.http('Demande de decodage AES avec un mauvais token');
+                    res.status(401);
+                    res.json({auth: false, message: "You failed to authenticate with your rubish token"});
+                }
+                else
+                {
+                    logger.http('Demande de decodage AES réussi');
+                    req.aesKey = decoded.aesKey;
+                    next();
+                }
+            });
+        }
+    }
+}
+
 const cleanSessionTable = async () => {
     try {
         const deleteQuery = await db.query(
@@ -112,4 +139,5 @@ module.exports = {
     tokenNotInBlacklist,
     cleanSessionTable,
     cleanOldBlacklist,
+    decryptAesToken,
 };

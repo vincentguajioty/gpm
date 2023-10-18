@@ -160,3 +160,29 @@ export const configAlertesBenevolesForm = Yup.object().shape({
 
 export const configNotifCommandesForm = Yup.object().shape({
 });
+
+export const aesFournisseursUnlockModalForm = Yup.object().shape({
+    aesKey: Yup
+        .string()
+        .required(champObligatoire),
+});
+
+export const aesFournisseursKeyUpdateModalForm = Yup.object().shape({
+    aesKey: Yup
+        .string()
+        .required(champObligatoire),
+    aesKeyConfirmed: Yup
+        .string()
+        .required(champObligatoire)
+        .oneOf([Yup.ref('aesKey'), null], 'Les clefs ne correspondent pas'),
+});
+
+export const aesFournisseursKeyInitModalForm = Yup.object().shape({
+    aesKey: Yup
+        .string()
+        .required(champObligatoire),
+    aesKeyConfirmed: Yup
+        .string()
+        .required(champObligatoire)
+        .oneOf([Yup.ref('aesKey'), null], 'Les clefs ne correspondent pas'),
+});

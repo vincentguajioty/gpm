@@ -11,6 +11,7 @@ const settingsUtilisateursCtrl = require('./controllers/settingsUtilisateurs');
 const settingsTechniquesCtrl = require('./controllers/settingsTechniques');
 
 const commandesCtrl = require('./controllers/commandes');
+const fournisseursAesCtrl = require('./controllers/fournisseursAes');
 const referentielsCtrl = require('./controllers/referentiels');
 
 const serveDocumentsCtrl       = require('./controllers/serveDocuments');
@@ -70,6 +71,12 @@ router.post('/blackListSession',           httpLogger(), jwtFunctions.verifyJWTa
 
 //commandes
 router.get('/commandes/getFournisseurs',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),                                    commandesCtrl.getFournisseurs);
+
+//Fournisseurs - Gestion des informations chiffrées
+router.post('/fournisseurs/authenticateForAES',                httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),                                                            fournisseursAesCtrl.authenticateForAES);
+router.post('/fournisseurs/initKey',                           httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_modification']), modificationLogger(),                                 fournisseursAesCtrl.initKey, fournisseursAesCtrl.authenticateForAES);
+router.post('/fournisseurs/changeKey',                         httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_modification']), jwtFunctions.decryptAesToken(), modificationLogger(), fournisseursAesCtrl.updateAesKey, fournisseursAesCtrl.authenticateForAES);
+router.post('/fournisseurs/disableAesAndDelete',               httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_modification']), jwtFunctions.decryptAesToken(), suppressionLogger(),  fournisseursAesCtrl.disableAesAndDelete);
 
 //referentiels
 router.get('/referentiels/getReferentiels',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_lecture']),                                                 referentielsCtrl.getReferentiels);
