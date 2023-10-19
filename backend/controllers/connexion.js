@@ -9,61 +9,7 @@ const axios = require('axios');
 const moment = require('moment');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 const fonctionsLDAP = require('../helpers/fonctionsLDAP');
-
-const ldapUserLogin = async (identifiant, motDePasse) => {
-    try {
-        const LDAP_DOMAIN = process.env.LDAP_DOMAIN;
-        const LDAP_BASEDN = process.env.LDAP_BASEDN;
-        const LDAP_ISWINAD = process.env.LDAP_ISWINAD;
-
-        let username;
-
-        if(LDAP_ISWINAD == 1)
-        { username = identifiant+"@"+LDAP_DOMAIN}
-        else
-        { username = "uid="+identifiant+",cn=users,"+LDAP_BASEDN }
-
-        logger.debug("ldapUserLogin - LDAP_DOMAIN : "+LDAP_DOMAIN);
-        logger.debug("ldapUserLogin - LDAP_BASEDN : "+LDAP_BASEDN);
-        logger.debug("ldapUserLogin - LDAP_ISWINAD : "+LDAP_ISWINAD);
-        logger.debug("ldapUserLogin - username : "+username);
-
-        let client = await fonctionsLDAP.createClient();
-
-        logger.debug("ldapUserLogin - Client: "+client);
-        client = await fonctionsLDAP.bindLdapClient(client, username, motDePasse);
-        if(client === false)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    } catch (error) {
-        logger.error(error)
-    }
-}
-
-const localUserLogin = async (motDePasse, selectedUser) => {
-    const mdpAvecSels = process.env.LOCAL_SELS_PRE + motDePasse + process.env.LOCAL_SELS_POST;
-    const check = await brcypt.compare(mdpAvecSels, selectedUser.motDePasse);
-    if(check){return true};
-
-    return false;
-}
-
-const checkCaptcha = async (reCaptchaToken) => {
-    const URL = process.env.RECAPTCHA_CHECKURL + '?secret='+process.env.RECAPTCHA_SECRET+'&response='+reCaptchaToken;
-            
-    const checkGoogle = await axios.post(URL);
-
-    if(checkGoogle.data.success != true)
-    {
-        return false;
-    }
-    return true;
-}
+const fonctionsAuthentification = require('../helpers/fonctionsAuthentification');
 
 exports.mfaNeeded = async (req, res)=>{
     try {
@@ -110,7 +56,7 @@ exports.login = async (req, res)=>{
                 return res.json({auth: false, message:"reCaptcha manquant"});
             }
             
-            let googleCheckResult = await checkCaptcha(reCaptchaToken);
+            let googleCheckResult = await fonctionsAuthentification.checkCaptcha(reCaptchaToken);
 
             if(googleCheckResult === true)
             {
@@ -150,11 +96,11 @@ exports.login = async (req, res)=>{
             logger.debug("On vérifie son mot de passe");
             if(selectedUser.isActiveDirectory && process.env.LDAP_ENABLED == "1")
             {
-                passwordCheckIsOk = await ldapUserLogin(identifiant, motDePasse);
+                passwordCheckIsOk = await fonctionsAuthentification.ldapUserLogin(identifiant, motDePasse);
             }
             else
             {
-                passwordCheckIsOk = await localUserLogin(req.body.motDePasse, selectedUser);
+                passwordCheckIsOk = await fonctionsAuthentification.localUserLogin(req.body.motDePasse, selectedUser);
             }
 
             logger.debug("Retour de la verif mdp: "+passwordCheckIsOk);
@@ -262,7 +208,7 @@ exports.login = async (req, res)=>{
 
                 //Vérification que le mot de passe est bon
                 logger.debug("Vérification que le mot de passe est bon");
-                passwordCheckIsOk = await ldapUserLogin(identifiant, motDePasse);
+                passwordCheckIsOk = await fonctionsAuthentification.ldapUserLogin(identifiant, motDePasse);
 
                 if(passwordCheckIsOk == true)
                 {
