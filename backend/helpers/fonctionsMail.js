@@ -1,13 +1,13 @@
-const db = require('./db');
+const db = require('../db');
 const dotenv = require('dotenv').config();
-const logger = require('./winstonLogger');
+const logger = require('../winstonLogger');
 const fonctionsMetiers = require('./fonctionsMetiers');
 const fs = require('fs');
 
 const hbs = require('nodemailer-express-handlebars');
 const nodemailer = require('nodemailer');
 const path = require('path');
-const hbsHelpers = require('./helpers/handlebarsHelpers');
+const hbsHelpers = require('./handlebarsHelpers');
 
 const handlebarOptions = {
     viewEngine: {

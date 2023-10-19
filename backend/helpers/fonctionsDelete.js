@@ -1,5 +1,5 @@
-const db = require('./db');
-const logger = require('./winstonLogger');
+const db = require('../db');
+const logger = require('../winstonLogger');
 const dotenv = require('dotenv').config();
 const moment = require('moment');
 const fonctionsMetiers = require('./fonctionsMetiers');

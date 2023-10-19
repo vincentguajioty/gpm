@@ -1,5 +1,5 @@
 const db = require('../db');
-const fonctionsMetiers = require('../fonctionsMetiers');
+const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 const dotenv = require('dotenv').config();
 const authenticator = require('authenticator');
 const logger = require('../winstonLogger');

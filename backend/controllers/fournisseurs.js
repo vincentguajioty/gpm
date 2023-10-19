@@ -6,7 +6,7 @@ const dotenv = require('dotenv').config();
 const logger = require('../winstonLogger');
 const axios = require('axios');
 const moment = require('moment');
-const fonctionsDelete = require('../fonctionsDelete')
+const fonctionsDelete = require('../helpers/fonctionsDelete')
 
 exports.getFournisseurs = async (req, res)=>{
     try {

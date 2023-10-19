@@ -7,8 +7,8 @@ const dotenv = require('dotenv').config();
 const logger = require('../winstonLogger');
 const axios = require('axios');
 const moment = require('moment');
-const fonctionsMetiers = require('../fonctionsMetiers');
-const fonctionsLDAP = require('../fonctionsLDAP');
+const fonctionsMetiers = require('../helpers/fonctionsMetiers');
+const fonctionsLDAP = require('../helpers/fonctionsLDAP');
 
 const ldapUserLogin = async (identifiant, motDePasse) => {
     try {

@@ -1,7 +1,7 @@
 const db = require('./db');
 const fs = require('fs');
 const logger = require('./winstonLogger');
-const fonctionsMetiers = require('./fonctionsMetiers');
+const fonctionsMetiers = require('./helpers/fonctionsMetiers');
 
 const BACKEND_VERSION = '15.0';
 

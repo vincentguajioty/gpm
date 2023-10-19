@@ -3,7 +3,7 @@ const app = express();
 const logger = require('./winstonLogger');
 const jwtFunctions = require('./jwt');
 const router = express.Router();
-const fonctionsMetiers = require('./fonctionsMetiers');
+const fonctionsMetiers = require('./helpers/fonctionsMetiers');
 
 const connexionCtrl = require('./controllers/connexion');
 const settingsMetiersCtrl = require('./controllers/settingsMetiers');

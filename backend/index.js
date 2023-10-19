@@ -3,9 +3,9 @@ const app = express();
 const http = require('http').Server(app);
 const processMAJ = require('./processMAJ');
 const dotenv = require('dotenv').config();
-const fonctionsMetiers = require('./fonctionsMetiers')
-const fonctionsMail = require('./fonctionsMail')
-const fonctionsLDAP = require('./fonctionsLDAP')
+const fonctionsMetiers = require('./helpers/fonctionsMetiers')
+const fonctionsMail = require('./helpers/fonctionsMail')
+const fonctionsLDAP = require('./helpers/fonctionsLDAP')
 
 const logger = require('./winstonLogger');
 
