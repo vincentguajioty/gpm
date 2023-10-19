@@ -206,3 +206,9 @@ export const fournisseurUpdateForm = Yup.object().shape({
 
 export const fournisseurUpdateAesDataForm = Yup.object().shape({
 });
+
+export const actionsMassivesUnlockModalForm = Yup.object().shape({
+    motDePasse: Yup
+        .string()
+        .required(champObligatoire),
+});

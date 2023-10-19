@@ -13,7 +13,10 @@ const settingsTechniquesCtrl = require('./controllers/settingsTechniques');
 const commandesCtrl = require('./controllers/commandes');
 const fournisseursCtrl = require('./controllers/fournisseurs');
 const fournisseursAesCtrl = require('./controllers/fournisseursAes');
+
 const referentielsCtrl = require('./controllers/referentiels');
+
+const actionsMassivesCtrl = require('./controllers/actionsMassives');
 
 const serveDocumentsCtrl       = require('./controllers/serveDocuments');
 
@@ -174,6 +177,19 @@ router.post('/settingsTechniques/saveGlobalConfig',            httpLogger(), jwt
 router.post('/settingsTechniques/saveCnilConfig',              httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) , modificationLogger(), settingsTechniquesCtrl.saveCnilConfig);
 router.post('/settingsTechniques/saveAlertesConfig',           httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) , modificationLogger(), settingsTechniquesCtrl.saveAlertesConfig);
 router.post('/settingsTechniques/saveNotifsCommandesConfig',   httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) , modificationLogger(), settingsTechniquesCtrl.saveNotifsCommandesConfig);
+
+//Actions massives
+router.post('/actionsmassives/authenticateForAM',   httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]),                                actionsMassivesCtrl.authenticateForAM);
+router.post('/actionsmassives/getAvailableActions', httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]), jwtFunctions.decryptAMToken(), actionsMassivesCtrl.getAvailableActions);
+router.post('/actionsmassives/action11',            httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]), jwtFunctions.decryptAMToken(), actionsMassivesCtrl.action11);
+router.post('/actionsmassives/action12',            httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]), jwtFunctions.decryptAMToken(), actionsMassivesCtrl.action12);
+router.post('/actionsmassives/action13',            httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]), jwtFunctions.decryptAMToken(), actionsMassivesCtrl.action13);
+router.post('/actionsmassives/action21',            httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]), jwtFunctions.decryptAMToken(), actionsMassivesCtrl.action21);
+router.post('/actionsmassives/action22',            httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]), jwtFunctions.decryptAMToken(), actionsMassivesCtrl.action22);
+router.post('/actionsmassives/action31',            httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]), jwtFunctions.decryptAMToken(), actionsMassivesCtrl.action31);
+router.post('/actionsmassives/action32',            httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]), jwtFunctions.decryptAMToken(), actionsMassivesCtrl.action32);
+router.post('/actionsmassives/action33',            httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]), jwtFunctions.decryptAMToken(), actionsMassivesCtrl.action33);
+router.post('/actionsmassives/action41',            httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]), jwtFunctions.decryptAMToken(), actionsMassivesCtrl.action41);
 
 
 //get images and documents from secured backend

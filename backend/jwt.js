@@ -100,13 +100,37 @@ const decryptAesToken = () => {
             jwt.verify(token, process.env.JWT_AESFOURNISSEURS_TOKEN, async (err, decoded) => {
                 if(err){
                     logger.http('Demande de decodage AES avec un mauvais token');
-                    res.status(401);
+                    res.status(403);
                     res.json({auth: false, message: "You failed to authenticate with your rubish token"});
                 }
                 else
                 {
                     logger.http('Demande de decodage AES réussi');
                     req.aesKey = decoded.aesKey;
+                    next();
+                }
+            });
+        }
+    }
+}
+
+const decryptAMToken = () => {
+    return async function(req, res, next) {
+        const token = req.body.amToken;
+        if(!token){
+            next();
+        }
+        else
+        {
+            jwt.verify(token, process.env.JWT_ACTIONSMASSIVES_TOKEN, async (err, decoded) => {
+                if(err){
+                    logger.http('Demande de decodage ActionsMassives avec un mauvais token');
+                    res.status(403);
+                    res.json({auth: false, message: "You failed to authenticate with your rubish token"});
+                }
+                else
+                {
+                    logger.http('Demande de decodage ActionsMassives réussi');
                     next();
                 }
             });
@@ -138,4 +162,5 @@ module.exports = {
     cleanSessionTable,
     cleanOldBlacklist,
     decryptAesToken,
+    decryptAMToken,
 };

@@ -22,7 +22,6 @@ const FournisseurDetails = () => {
 
     const [readyToDisplay, setReadyToDisplay] = useState(false);
     const [fournisseur, setFournisseur] = useState([]);
-    console.log(fournisseur);
 
     const initPage = async () => {
         try {
@@ -44,7 +43,7 @@ const FournisseurDetails = () => {
         if(pageNeedsRefresh)
         {
             setPageNeedsRefresh(false);
-            initPage();
+            location.reload();
         }
     }, [pageNeedsRefresh])
 

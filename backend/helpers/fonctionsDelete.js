@@ -714,11 +714,6 @@ const emplacementsDelete = async (idLogger, idEmplacement) => {
         ;`,{
             idEmplacement : idEmplacement,
         });
-        updateQuery = await db.query(`
-            UPDATE LOTS_CONSOMMATION_MATERIEL SET idEmplacement = Null WHERE idEmplacement = :idEmplacement
-        ;`,{
-            idEmplacement : idEmplacement,
-        });
 
         let finalDeleteQuery = await db.query(`
             DELETE FROM MATERIEL_EMPLACEMENT WHERE idEmplacement = :idEmplacement
