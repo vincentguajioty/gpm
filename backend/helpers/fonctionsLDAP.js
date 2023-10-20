@@ -42,6 +42,7 @@ const bindLdapClient = async (client, username, password) => {
             client.bind(username, password, async (err, result) => {
                 if(err){
                     logger.error("Erreur de connexion AD avec l'utilisateur "+username)
+                    logger.debug(err);
                     reject(false);
                 }
                 if(result)

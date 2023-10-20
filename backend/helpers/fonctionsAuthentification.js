@@ -25,18 +25,23 @@ const ldapUserLogin = async (identifiant, motDePasse) => {
 
         let client = await fonctionsLDAP.createClient();
 
-        logger.debug("ldapUserLogin - Client: "+client);
+        logger.debug("ldapUserLogin - Client: ");
+        logger.debug(client);
         client = await fonctionsLDAP.bindLdapClient(client, username, motDePasse);
+        logger.debug(client);
         if(client === false)
         {
+            logger.debug('Retour de la connexion client en FALSE');
             return false;
         }
         else
         {
+            logger.debug('Retour de la connexion client en TRUE');
             return true;
         }
     } catch (error) {
         logger.error(error)
+        return false;
     }
 }
 
