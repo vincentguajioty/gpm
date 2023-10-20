@@ -21,7 +21,7 @@
     "express-session": "^1.17.3",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.0",
-    "ldapjs": "^3.0.5",
+    "ldapjs": "^2.3.3",
     "mariadb": "^3.0.1",
     "moment": "^2.29.4",
     "multer": "^1.4.5-lts.1",
