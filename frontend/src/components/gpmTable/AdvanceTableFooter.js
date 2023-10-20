@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import Flex from '../Flex';
+import Flex from 'components/common/Flex';
+import IconButton from 'components/common/IconButton';
 
 export const AdvanceTableFooter = ({
   page,
@@ -20,7 +21,7 @@ export const AdvanceTableFooter = ({
   perPage,
   rowsPerPageSelection,
   navButtons,
-  rowsPerPageOptions = [5, 10, 15],
+  rowsPerPageOptions = [10, 25, 75, 100],
   className
 }) => {
   const [isAllVisible, setIsAllVisible] = useState(false);
@@ -35,8 +36,8 @@ export const AdvanceTableFooter = ({
         {rowInfo && (
           <p className="mb-0">
             <span className="d-none d-sm-inline-block me-2">
-              {pageSize * pageIndex + 1} to {pageSize * pageIndex + page.length}{' '}
-              of {rowCount}
+              {pageSize * pageIndex + 1} à {pageSize * pageIndex + page.length}{' '}
+              sur {rowCount}
             </span>
             {viewAllBtn && (
               <>
@@ -50,7 +51,7 @@ export const AdvanceTableFooter = ({
                     setPageSize(isAllVisible ? perPage : rowCount);
                   }}
                 >
-                  View {isAllVisible ? 'less' : 'all'}
+                  Voir {isAllVisible ? 'moins' : 'tout'}
                   <FontAwesomeIcon
                     icon="chevron-right"
                     className="ms-1 fs--2"
@@ -62,7 +63,7 @@ export const AdvanceTableFooter = ({
         )}
         {rowsPerPageSelection && (
           <>
-            <p className="mb-0 mx-2">Rows per page:</p>
+            <p className="mb-0 mx-2">Lignes par pages:</p>
             <Form.Select
               size="sm"
               className="w-auto"
@@ -80,24 +81,20 @@ export const AdvanceTableFooter = ({
       </Flex>
       {navButtons && (
         <Flex>
-          <Button
+          <IconButton
             size="sm"
             variant={canPreviousPage ? 'primary' : 'light'}
             onClick={() => previousPage()}
-            className={classNames({ disabled: !canPreviousPage })}
-          >
-            Previous
-          </Button>
-          <Button
+            className={classNames({ disabled: !canPreviousPage }, 'me-1')}
+            icon='chevron-left'
+          />
+          <IconButton
             size="sm"
             variant={canNextPage ? 'primary' : 'light'}
-            className={classNames('px-4 ms-2', {
-              disabled: !canNextPage
-            })}
+            className={classNames({disabled: !canNextPage})}
             onClick={() => nextPage()}
-          >
-            Next
-          </Button>
+            icon='chevron-right'
+          />
         </Flex>
       )}
     </Flex>

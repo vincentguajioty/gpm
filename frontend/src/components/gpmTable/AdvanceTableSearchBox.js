@@ -8,7 +8,7 @@ import { useAsyncDebounce } from 'react-table';
 const AdvanceTableSearchBox = ({
   globalFilter,
   setGlobalFilter,
-  placeholder = 'Search...',
+  placeholder = 'Recherche ...',
   className
 }) => {
   const [value, setValue] = useState(globalFilter);
