@@ -18,6 +18,7 @@ import { Axios } from 'helpers/axios';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { referentielAddForm } from 'helpers/yupValidationSchema';
+import GPMtable from 'components/gpmTable/gpmTable';
 
 const ReferentielsSettings = () => {
     const [readyToDisplay, setReadyToDisplay] = useState(false);
@@ -39,6 +40,51 @@ const ReferentielsSettings = () => {
     useEffect(() => {
         initPage();
     }, [])
+
+    const colonnes = [
+        {accessor: 'libelleTypeLot', Header: 'Libellé'},
+        {accessor: 'lotsRattaches' , Header: 'Lots rattachés'},
+        {accessor: 'actions'       , Header: 'Actions'},
+    ];
+    const [lignes, setLignes] = useState([]);
+    const initTableau = () => {
+        let tempTable  = [];
+        for(const item of referentiels)
+        {
+            tempTable.push({
+                libelleTypeLot: <Link to={'/settingsReferentiels/'+item.idTypeLot}>{item.libelleTypeLot}</Link>,
+                lotsRattaches: 
+                    <>
+                        {item.lotsRattaches.map((lot, j) => {return(
+                            <SoftBadge bg={lot.alerteConfRef ? 'danger' : 'success'} className='me-1'>{lot.libelleLot}</SoftBadge>
+                        )})}
+                    </>,
+                actions:
+                    <>
+                        <IconButton
+                            icon='eye'
+                            size = 'sm'
+                            variant="outline-primary"
+                            className="me-1"
+                            onClick={()=>{navigate('/settingsReferentiels/'+item.idTypeLot)}}
+                        />
+                        {HabilitationService.habilitations['typesLots_suppression'] ? 
+                            <IconButton
+                                icon='trash'
+                                size = 'sm'
+                                variant="outline-danger"
+                                className="me-1"
+                                onClick={()=>{handleShowDeleteModal(item.idTypeLot)}}
+                            />
+                        : null}
+                    </>,
+            })
+        }
+        setLignes(tempTable);
+    }
+    useEffect(() => {
+        initTableau();
+    }, [referentiels])
 
     //formulaire d'ajout
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -149,57 +195,20 @@ const ReferentielsSettings = () => {
             <FalconComponentCard.Body
                 scope={{ ActionButton }}
                 noLight
-                className="p-0"
             >
+                {HabilitationService.habilitations['typesLots_ajout'] ?
+                    <IconButton
+                        icon='plus'
+                        size = 'sm'
+                        variant="outline-success"
+                        onClick={handleShowOffCanevas}
+                    >Nouveau référentiel</IconButton>
+                : null}
                 {readyToDisplay ?
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th scope="col">Libellé</th>
-                                <th scope="col">Lots rattachés</th>
-                                <th scope="col">
-                                    {HabilitationService.habilitations['typesLots_ajout'] ?
-                                        <IconButton
-                                            icon='plus'
-                                            size = 'sm'
-                                            variant="outline-success"
-                                            onClick={handleShowOffCanevas}
-                                        />
-                                    : null}
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {referentiels.map((ref, i) => {return(
-                                <tr>
-                                    <td><Link to={'/settingsReferentiels/'+ref.idTypeLot}>{ref.libelleTypeLot}</Link></td>
-                                    <td>
-                                        {ref.lotsRattaches.map((lot, j) => {return(
-                                            <SoftBadge bg={lot.alerteConfRef ? 'danger' : 'success'} className='me-1'>{lot.libelleLot}</SoftBadge>
-                                        )})}
-                                    </td>
-                                    <td>
-                                        <IconButton
-                                            icon='eye'
-                                            size = 'sm'
-                                            variant="outline-primary"
-                                            className="me-1"
-                                            onClick={()=>{navigate('/settingsReferentiels/'+ref.idTypeLot)}}
-                                        />
-                                        {HabilitationService.habilitations['typesLots_suppression'] ? 
-                                            <IconButton
-                                                icon='trash'
-                                                size = 'sm'
-                                                variant="outline-danger"
-                                                className="me-1"
-                                                onClick={()=>{handleShowDeleteModal(ref.idTypeLot)}}
-                                            />
-                                        : null}
-                                    </td>
-                                </tr>
-                            )})}
-                        </tbody>
-                    </Table>
+                    <GPMtable
+                        columns={colonnes}
+                        data={lignes}
+                    />
                 : <LoaderInfiniteLoop />}
             </FalconComponentCard.Body>
         </FalconComponentCard>

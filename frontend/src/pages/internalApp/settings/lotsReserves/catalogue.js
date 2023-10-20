@@ -6,6 +6,7 @@ import ActionButton from 'components/common/ActionButton';
 import SimpleBarReact from 'simplebar-react';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import IconButton from 'components/common/IconButton';
 
 import HabilitationService from 'services/habilitationsService';
 import { Axios } from 'helpers/axios';
@@ -13,6 +14,7 @@ import { Axios } from 'helpers/axios';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { catalogueForm } from 'helpers/yupValidationSchema';
+import GPMtable from 'components/gpmTable/gpmTable';
 
 const Catalogue = () => {
     /*PAGE BASICS*/
@@ -41,6 +43,46 @@ const Catalogue = () => {
     useEffect(() => {
 		initTable();
 	}, [])
+
+    /* TABLE FOR DISPLAY */
+    const colonnes = [
+        {accessor: 'libelleMateriel'          , Header: 'Libellé'},
+        {accessor: 'libelleCategorie'         , Header: 'Catégorie'},
+        {accessor: 'nomFournisseur'           , Header: 'Fournisseur de prédilection'},
+        {accessor: 'peremptionAnticipationOpe', Header: 'Anticipation de péremption lots/réserves'},
+        {accessor: 'commentairesMateriel'     , Header: 'Commentaires'},
+        {accessor: 'nbCodesBarre'             , Header: 'Codes barre liés'},
+        {accessor: 'actions'                  , Header: 'Actions'},
+    ];
+    const [lignes, setLignes] = useState([]);
+    const nl2br = require('react-nl2br');
+    const initTableau = () => {
+        let tempTable  = [];
+        for(const item of catalogue)
+        {
+            tempTable.push({
+                libelleMateriel          : item.libelleMateriel,
+                libelleCategorie         : item.libelleCategorie,
+                nomFournisseur           : item.nomFournisseur,
+                peremptionAnticipationOpe: <>{item.peremptionAnticipationOpe} / {item.peremptionAnticipationRes}</>,
+                commentairesMateriel     : nl2br(item.commentairesMateriel),
+                nbCodesBarre             : item.nbCodesBarre,
+                actions                  :
+                    <>
+                        {HabilitationService.habilitations['catalogue_modification'] ? 
+                            <ActionButton onClick={() => handleShowOffCanevas(item.idMaterielCatalogue)} icon="pen" title="Modifier" variant="action" className="p-0 me-2" />
+                        : null }
+                        {HabilitationService.habilitations['catalogue_suppression'] ? 
+                            <ActionButton onClick={() => handleShowDeleteModal(item.idMaterielCatalogue)} icon="trash" title="Supprimer" variant="action" className="p-0" />
+                        : null }
+                    </>,
+            })
+        }
+        setLignes(tempTable);
+    }
+    useEffect(() => {
+		initTableau();
+	}, [catalogue])
 
     /* FORM */
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -152,7 +194,6 @@ const Catalogue = () => {
 
 
     /* RENDER */
-    const nl2br = require('react-nl2br');
     return (
         readyToDisplay ?
             <>
@@ -261,50 +302,19 @@ const Catalogue = () => {
                     <FalconComponentCard.Body
                         scope={{ ActionButton }}
                         noLight
-                        className="p-0"
                     >
-                        <SimpleBarReact style={{ height: '26rem' }}>
-                            <Table size='sm' responsive striped>
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Libellé</th>
-                                        <th scope="col">Catégorie</th>
-                                        <th scope="col">Fournisseur de prédilection</th>
-                                        <th scope="col">Anticipation de péremption lots/réserves</th>
-                                        <th scope="col">Commentaires</th>
-                                        <th scope="col">Codes barre liés</th>
-                                        <th className="text-end" scope="col">
-                                            {HabilitationService.habilitations['catalogue_ajout'] ? 
-                                                <ActionButton onClick={() => handleShowOffCanevas(0)} icon="plus" title="Ajouter" variant="action" className="p-0 me-2" />
-                                            : null }
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {catalogue.map((data, i) => {
-                                        return(
-                                            <tr>
-                                                <td>{data.libelleMateriel}</td>
-                                                <td>{data.libelleCategorie}</td>
-                                                <td>{data.nomFournisseur}</td>
-                                                <td>{data.peremptionAnticipationOpe} / {data.peremptionAnticipationRes}</td>
-                                                <td>{nl2br(data.commentairesMateriel)}</td>
-                                                <td>{data.nbCodesBarre}</td>
-                                                <td className="text-end">
-                                                    {HabilitationService.habilitations['catalogue_modification'] ? 
-                                                        <ActionButton onClick={() => handleShowOffCanevas(data.idMaterielCatalogue)} icon="pen" title="Modifier" variant="action" className="p-0 me-2" />
-                                                    : null }
-                                                    {HabilitationService.habilitations['catalogue_suppression'] ? 
-                                                        <ActionButton onClick={() => handleShowDeleteModal(data.idMaterielCatalogue)} icon="trash" title="Supprimer" variant="action" className="p-0" />
-                                                    : null }
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </Table>
-                        </SimpleBarReact>
-
+                        {HabilitationService.habilitations['catalogue_ajout'] ? 
+                            <IconButton
+                                icon='plus'
+                                size = 'sm'
+                                variant="outline-success"
+                                onClick={() => handleShowOffCanevas(0)}
+                            >Nouvel élément</IconButton>
+                        : null }
+                        <GPMtable
+                            columns={colonnes}
+                            data={lignes}
+                        />
                     </FalconComponentCard.Body>
                 </FalconComponentCard>
             </>
