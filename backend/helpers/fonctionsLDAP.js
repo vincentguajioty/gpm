@@ -6,11 +6,24 @@ const logger = require('../winstonLogger');
 const createClient = async () => {
     return new Promise((resolve, reject) => {
         try {
+            const LDAP_DOMAIN = process.env.LDAP_DOMAIN;
             const LDAP_URL = process.env.LDAP_URL;
             const LDAP_SSL = process.env.LDAP_SSL;
+            
+            let opts = {
+                rejectUnauthorized: false,
+                hostname: LDAP_DOMAIN,
+            }
 
             let client = ldap.createClient({
-                url: [LDAP_URL]
+                url: LDAP_URL,
+                reconnect: true,
+                tlsOptions: opts,
+            });
+
+            client.on('error', err=>{
+                logger.error('Connexion en échec');
+                logger.error(err);
             });
 
             logger.debug('createClient:');
@@ -18,16 +31,26 @@ const createClient = async () => {
 
             if(LDAP_SSL == 1)
             {
-                logger.debug('SSL nécessaire');
-                client.starttls({}, (err, res) => {
+                logger.debug('SSL demandé par la configuration LDAP_SSL: '+LDAP_SSL);
+                client.starttls(opts, undefined, function(err, res) {
+                    logger.debug("Callback de starttls");
+
+                    if(res)
+                    { logger.debug('starttls remonte dans res: '); logger.debug(res); }
+                    else
+                    { logger.debug('starttls ne remonte rien dans res'); }
+
                     if(err)
-                    {logger.debug('Erreur au step SSL');
-                    logger.error(err);}
+                    { logger.debug('starttls remonte dans err: '); logger.error(err); }
+                    else
+                    { logger.debug('starttls ne remonte rien dans err'); }
                 });
+                logger.debug("Client en sortie de Starttls:");
+                logger.debug(client);
             }
 
             logger.debug(client);
-
+            logger.debug('Log avant la sortie de createClient')
             resolve(client);
         } catch (error) {
             logger.error(error)
@@ -164,6 +187,8 @@ const updateProfilsFromAd = async (idPersonne) => {
             }
         }
     }
+
+    client.destroy();
     return true;
 }
 
