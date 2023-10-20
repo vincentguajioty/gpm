@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PageHeader from 'components/common/PageHeader';
 import SoftBadge from 'components/common/SoftBadge';
 import IconButton from 'components/common/IconButton';
+import GPMtable from 'components/gpmTable/gpmTable';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -18,7 +19,7 @@ import { Axios } from 'helpers/axios';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { referentielAddForm } from 'helpers/yupValidationSchema';
-import GPMtable from 'components/gpmTable/gpmTable';
+
 
 const ReferentielsSettings = () => {
     const [readyToDisplay, setReadyToDisplay] = useState(false);

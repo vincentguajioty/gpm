@@ -10,6 +10,8 @@ const settingsMetiersCtrl = require('./controllers/settingsMetiers');
 const settingsUtilisateursCtrl = require('./controllers/settingsUtilisateurs');
 const settingsTechniquesCtrl = require('./controllers/settingsTechniques');
 
+const materielsCtrl = require('./controllers/materiels');
+
 const commandesCtrl = require('./controllers/commandes');
 const fournisseursCtrl = require('./controllers/fournisseurs');
 const fournisseursAesCtrl = require('./controllers/fournisseursAes');
@@ -72,6 +74,9 @@ router.post('/updatePassword',             httpLogger(), jwtFunctions.verifyJWTa
 router.post('/updatePasswordWithoutCheck', httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), modificationLogger(), connexionCtrl.updatePasswordWithoutCheck );
 router.post('/getCurrentSessionsOneUser',  httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                       connexionCtrl.getCurrentSessionsOneUser );
 router.post('/blackListSession',           httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), suppressionLogger(),  connexionCtrl.blackListSession );
+
+//OPERATIONNEL - Matériels
+router.get('/materiels/getMateriels',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),  materielsCtrl.getMateriels);
 
 //commandes
 
