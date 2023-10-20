@@ -6,19 +6,27 @@ const logger = require('../winstonLogger');
 const createClient = async () => {
     return new Promise((resolve, reject) => {
         try {
-            const LDAP_DOMAIN = process.env.LDAP_DOMAIN;
+            const LDAP_URL = process.env.LDAP_URL;
             const LDAP_SSL = process.env.LDAP_SSL;
 
             let client = ldap.createClient({
-                url: [LDAP_DOMAIN]
+                url: [LDAP_URL]
             });
+
+            logger.debug('createClient:');
+            logger.debug(client);
 
             if(LDAP_SSL == 1)
             {
+                logger.debug('SSL nécessaire');
                 client.starttls({}, (err, res) => {
-                    logger.error(err);
+                    if(err)
+                    {logger.debug('Erreur au step SSL');
+                    logger.error(err);}
                 });
             }
+
+            logger.debug(client);
 
             resolve(client);
         } catch (error) {

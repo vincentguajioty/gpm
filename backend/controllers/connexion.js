@@ -96,10 +96,12 @@ exports.login = async (req, res)=>{
             logger.debug("On vérifie son mot de passe");
             if(selectedUser.isActiveDirectory && process.env.LDAP_ENABLED == "1")
             {
+                logger.debug("On lance une vérification LDAP");
                 passwordCheckIsOk = await fonctionsAuthentification.ldapUserLogin(identifiant, motDePasse);
             }
             else
             {
+                logger.debug("On lance une vérification Locale");
                 passwordCheckIsOk = await fonctionsAuthentification.localUserLogin(req.body.motDePasse, selectedUser);
             }
 
