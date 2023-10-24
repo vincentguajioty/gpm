@@ -4,7 +4,7 @@ const dotenv = require('dotenv').config();
 const logger = require('../winstonLogger');
 
 const createClient = async () => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             const LDAP_DOMAIN = process.env.LDAP_DOMAIN;
             const LDAP_URL = process.env.LDAP_URL;
@@ -32,19 +32,9 @@ const createClient = async () => {
             if(LDAP_SSL == 1)
             {
                 logger.debug('SSL demandé par la configuration LDAP_SSL: '+LDAP_SSL);
-                client.starttls(opts, undefined, function(err, res) {
-                    logger.debug("Callback de starttls");
 
-                    if(res)
-                    { logger.debug('starttls remonte dans res: '); logger.debug(res); }
-                    else
-                    { logger.debug('starttls ne remonte rien dans res'); }
-
-                    if(err)
-                    { logger.debug('starttls remonte dans err: '); logger.error(err); }
-                    else
-                    { logger.debug('starttls ne remonte rien dans err'); }
-                });
+                client = await enableSSL(client);
+                
                 logger.debug("Client en sortie de Starttls:");
                 logger.debug(client);
             }
@@ -52,6 +42,28 @@ const createClient = async () => {
             logger.debug(client);
             logger.debug('Log avant la sortie de createClient')
             resolve(client);
+        } catch (error) {
+            logger.error(error)
+            reject();
+        }
+    })
+}
+
+const enableSSL = async (client) => {
+    return new Promise((resolve, reject) => {
+        try {
+            const LDAP_DOMAIN = process.env.LDAP_DOMAIN;
+            
+            let opts = {
+                rejectUnauthorized: false,
+                hostname: LDAP_DOMAIN,
+            }
+
+            client.starttls(opts, undefined, (err, res) => {
+                logger.debug("Callback de starttls");
+
+                resolve(client);
+            });
         } catch (error) {
             logger.error(error)
             reject();
@@ -81,30 +93,64 @@ const bindLdapClient = async (client, username, password) => {
     })
 }
 
-const seachLdapClient = async (client, usernameUser, opts) => {
+const seachLdapClientAD = async (client, opts, LDAP_BASEDN) => {
     return new Promise((resolve, reject) => {
         try {
-            client.search(usernameUser, opts, async (err, res) => {
-                if(err){
+            client.search(LDAP_BASEDN, opts,(err,res) => {
+                if(err)
+                {
+                    logger.error("Recherche dans l'AD version WINAD en echec")
                     logger.error(err);
                     reject(false);
                 }
                 else
                 {
-                    logger.debug("Recherche dans l'AD réussie")
+                    logger.debug("Recherche dans l'AD version AD réussie")
+                    
+                    res.on('searchEntry', entry => {
+                        logger.debug("Utilisateur trouvé dans l'AD version WINAD.")
+                        resolve(entry);
+                    });
+                    res.on('error', err => {
+                        logger.debug("Utilisateur non-trouvé dans l'AD version WINAD.")
+                            reject();
+                    });
+                }
+            });
+        } catch (error) {
+            logger.error("Erreur dans la fonction seachLdapClientAD")
+            logger.error(error)
+            reject();
+        }
+    })
+}
+
+const seachLdapClientLDAP = async (client, usernameUser, opts) => {
+    return new Promise((resolve, reject) => {
+        try {
+            client.search(usernameUser, opts, async (err, res) => {
+                if(err){
+                    logger.error("Recherche dans l'AD version LDAP en echec")
+                    logger.error(err);
+                    reject(false);
+                }
+                else
+                {
+                    logger.debug("Recherche dans l'AD version LDAP réussie")
                     
                     res.on('error', async function() {
-                        logger.debug("Utilisateur non-trouvé dans l'AD.")
+                        logger.debug("Utilisateur non-trouvé dans l'AD version LDAP.")
                         reject();
                     });
 
                     res.on('searchEntry', async function (data) {
-                        logger.debug("Utilisateur trouvé dans l'AD.")
+                        logger.debug("Utilisateur trouvé dans l'AD version LDAP.")
                         resolve(data);
                     })
                 }
             })
         } catch (error) {
+            logger.error("Erreur dans la fonction seachLdapClientLDAP")
             logger.error(error)
             reject();
         }
@@ -112,84 +158,109 @@ const seachLdapClient = async (client, usernameUser, opts) => {
 }
 
 const updateProfilsFromAd = async (idPersonne) => {
-    const LDAP_DOMAIN = process.env.LDAP_DOMAIN;
-    const LDAP_BASEDN = process.env.LDAP_BASEDN;
-    const LDAP_ISWINAD = process.env.LDAP_ISWINAD;
-    const LDAP_USER = process.env.LDAP_USER;
-    const LDAP_PASSWORD = process.env.LDAP_PASSWORD;
+    try {
+        const LDAP_DOMAIN = process.env.LDAP_DOMAIN;
+        const LDAP_BASEDN = process.env.LDAP_BASEDN;
+        const LDAP_ISWINAD = process.env.LDAP_ISWINAD;
+        const LDAP_USER = process.env.LDAP_USER;
+        const LDAP_PASSWORD = process.env.LDAP_PASSWORD;
 
-    const userToHandle = await db.query(
-        'SELECT idPersonne, identifiant FROM PERSONNE_REFERENTE WHERE idPersonne = :idPersonne;',
-        {
-            idPersonne : idPersonne,
-        }
-    );
-
-    const profilsListe = await db.query(
-        'SELECT * FROM PROFILS WHERE LDAP_BINDDN IS NOT NULL;');
-
-    let usernameAD;
-    let usernameUser;
-
-    if(LDAP_ISWINAD == 1)
-    {
-        usernameAD = LDAP_USER+"@"+LDAP_DOMAIN;
-        usernameUser = userToHandle[0].identifiant+"@"+LDAP_DOMAIN;
-    }
-    else
-    {
-        usernameAD = "uid="+LDAP_USER+",cn=users,"+LDAP_BASEDN;
-        usernameUser = "uid="+userToHandle[0].identifiant+",cn=users,"+LDAP_BASEDN;
-    }
-
-    logger.debug('updateProfilsFromAd - LDAP_DOMAIN : '+LDAP_DOMAIN);
-    logger.debug('updateProfilsFromAd - LDAP_BASEDN : '+LDAP_BASEDN);
-    logger.debug('updateProfilsFromAd - LDAP_ISWINAD : '+LDAP_ISWINAD);
-    logger.debug('updateProfilsFromAd - usernameAD : '+usernameAD);
-
-    let client = await createClient();
-
-    logger.debug("updateProfilsFromAd - Client: "+client);
-
-    client = await bindLdapClient(client, usernameAD, LDAP_PASSWORD);
-
-    logger.debug("updateProfilsFromAd - Nettoyage des profils existants");
-    const cleanProfiles = await db.query(
-        'DELETE FROM PROFILS_PERSONNES WHERE idPersonne = :idPersonne',
-        {
-            idPersonne : idPersonne,
-        }
-    );
-    
-    const opts = {};
-    let searchRes = await seachLdapClient(client, usernameUser, opts);
-
-    for(const oneGroupFromAd of searchRes.object.memberOf)
-    {
-        logger.debug('Groupe AD trouvé: '+oneGroupFromAd);
-        for(const profil of profilsListe)
-        {
-            if(oneGroupFromAd.includes(profil.LDAP_BINDDN))
+        const userToHandle = await db.query(
+            'SELECT idPersonne, identifiant FROM PERSONNE_REFERENTE WHERE idPersonne = :idPersonne;',
             {
-                logger.debug('Match entre le groupe AD trouvé: '+oneGroupFromAd+' et le BIND_DN du profil '+profil.LDAP_BINDDN);
-                const addProfile = await db.query(
-                    'INSERT INTO PROFILS_PERSONNES SET idPersonne = :idPersonne, idProfil = :idProfil',
-                    {
-                        idPersonne : idPersonne,
-                        idProfil: profil.idProfil,
-                    }
-                );
-                logger.debug('Match inséré en base');
+                idPersonne : idPersonne,
             }
-            else
+        );
+
+        const profilsListe = await db.query(
+            'SELECT * FROM PROFILS WHERE LDAP_BINDDN IS NOT NULL;');
+
+        let usernameAD;
+        let usernameUser;
+        let opts = {};
+
+        if(LDAP_ISWINAD == 1)
+        {
+            usernameAD = LDAP_USER+"@"+LDAP_DOMAIN;
+            usernameUser = userToHandle[0].identifiant+"@"+LDAP_DOMAIN;
+            opts = {
+                scope: "sub",
+                filter: `(userPrincipalName=${usernameUser})`
+
+            };
+        }
+        else
+        {
+            usernameAD = "uid="+LDAP_USER+",cn=users,"+LDAP_BASEDN;
+            usernameUser = "uid="+userToHandle[0].identifiant+",cn=users,"+LDAP_BASEDN;
+        }
+
+        logger.debug('updateProfilsFromAd - LDAP_DOMAIN : '+LDAP_DOMAIN);
+        logger.debug('updateProfilsFromAd - LDAP_BASEDN : '+LDAP_BASEDN);
+        logger.debug('updateProfilsFromAd - LDAP_ISWINAD : '+LDAP_ISWINAD);
+        logger.debug('updateProfilsFromAd - usernameAD : '+usernameAD);
+
+        let client = await createClient();
+
+        logger.debug("updateProfilsFromAd - Client: ");
+        logger.debug(client);
+        
+        client = await bindLdapClient(client, usernameAD, LDAP_PASSWORD);
+
+        logger.debug('Client après bindLDAP demandé par la fonction updateProfilsFromAd');
+        logger.debug(client);
+
+        logger.debug("updateProfilsFromAd - Nettoyage des profils existants");
+        const cleanProfiles = await db.query(
+            'DELETE FROM PROFILS_PERSONNES WHERE idPersonne = :idPersonne',
             {
-                logger.debug('Pas de match entre le groupe AD '+oneGroupFromAd+' et le BIND_DN du profil '+profil.LDAP_BINDDN);
+                idPersonne : idPersonne,
+            }
+        );
+        
+        
+        logger.debug('seachLdapClient - usernameUser : '+usernameUser);
+        let searchRes;
+        if(LDAP_ISWINAD == 1)
+        {
+            searchRes = await seachLdapClientAD(client, opts, LDAP_BASEDN);
+        }else{
+            searchRes = await seachLdapClientLDAP(client, usernameUser, opts);
+        }
+        
+        logger.debug("Résultat du searchLDAPClient:");
+        logger.debug(searchRes);
+
+        for(const oneGroupFromAd of searchRes.object.memberOf)
+        {
+            logger.debug('Groupe AD trouvé: '+oneGroupFromAd);
+            for(const profil of profilsListe)
+            {
+                if(oneGroupFromAd.includes(profil.LDAP_BINDDN))
+                {
+                    logger.debug('Match entre le groupe AD trouvé: '+oneGroupFromAd+' et le BIND_DN du profil '+profil.LDAP_BINDDN);
+                    const addProfile = await db.query(
+                        'INSERT INTO PROFILS_PERSONNES SET idPersonne = :idPersonne, idProfil = :idProfil',
+                        {
+                            idPersonne : idPersonne,
+                            idProfil: profil.idProfil,
+                        }
+                    );
+                    logger.debug('Match inséré en base');
+                }
+                else
+                {
+                    logger.debug('Pas de match entre le groupe AD '+oneGroupFromAd+' et le BIND_DN du profil '+profil.LDAP_BINDDN);
+                }
             }
         }
-    }
 
-    client.destroy();
-    return true;
+        client.destroy();
+        return true;
+    } catch (error) {
+        logger.error(error)
+        return(false);
+    }
 }
 
 const updateAllUsersFromAD = async () => {
@@ -271,7 +342,8 @@ const killTokensForNoProfils = async () => {
 module.exports = {
     createClient,
     bindLdapClient,
-    seachLdapClient,
+    seachLdapClientAD,
+    seachLdapClientLDAP,
     updateProfilsFromAd,
     updateAllUsersFromAD,
     killTokensForNoProfils,
