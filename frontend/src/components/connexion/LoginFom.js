@@ -22,10 +22,13 @@ const LoginForm = ({ hasLabel }) => {
   const [erreurDeConnexion, setErreurDeConnexion] = useState(false);
   const [showFMA, setShowMFA] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   // Handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       const response = await Axios.post('login', {
         identifiant: identifiant,
         motDePasse: motDePasse,
@@ -37,6 +40,7 @@ const LoginForm = ({ hasLabel }) => {
         setLoginStatus(false);
         setRedirectToChgPwd(false);
         setErreurDeConnexion(true);
+        setIsLoading(false);
       }else{
         HabilitationService.setToken(response.data.token);
         HabilitationService.setTokenValidUntil(response.data.tokenValidUntil);
@@ -64,16 +68,19 @@ const LoginForm = ({ hasLabel }) => {
 
     } catch (e) {
       setErreurDeConnexion(true);
+      setIsLoading(false);
       console.log(e);
     }
   };
 
   const checkMFAneeded = async () => {
     try {
+      setIsLoading(true);
       const response = await Axios.post('mfaNeeded', {
         identifiant: identifiant,
       });
       setShowMFA(response.data.mfaNeeded);
+      setIsLoading(false);
     } catch (error) {
       console.log(error)
     }
@@ -132,9 +139,9 @@ const LoginForm = ({ hasLabel }) => {
           type="submit"
           color="primary"
           className="mt-3 w-100"
-          disabled={!identifiant || !motDePasse}
+          disabled={!identifiant || !motDePasse || isLoading}
         >
-          Se connecter
+          {isLoading ? 'Chargement ...' : 'Se connecter'}
         </Button>
       </Form.Group>
       
