@@ -48,26 +48,25 @@ const ProfilRecapDroitsUtilisateur = ({idPersonne}) => {
             return(<>
                 <h6>Connexion à l'application:</h6>
                 <p>
-                    <FontAwesomeIcon icon={profil['connexion_connexion'] ? 'check' : 'ban'} /> Autorisé à se connecter
+                    <FontAwesomeIcon icon={profil['connexion_connexion'] ? 'check' : 'ban'}/> Autorisé à se connecter
                 </p>
                 
                 <hr/>
 
                 <h6>Administration de l'application:</h6>
                 <p>
-                    <FontAwesomeIcon icon={profil['connexion_connexion'] ? 'check' : 'ban'} /> Modifier la configuration générale de GPM VG<br/>
-                    <FontAwesomeIcon icon={profil['connexion_connexion'] ? 'check' : 'ban'} /> Réinitialiser les mots de passe des autres utilisateurs<br/>
-                    <FontAwesomeIcon icon={profil['connexion_connexion'] ? 'check' : 'ban'} /> Se connecter entant qu'autre utilisateur<br/>
-                    <FontAwesomeIcon icon={profil['connexion_connexion'] ? 'check' : 'ban'} /> Se connecter même en mode maitenance<br/>
-                    <FontAwesomeIcon icon={profil['connexion_connexion'] ? 'check' : 'ban'} /> Gérer les adresses IP bloquées<br/>
-                    <FontAwesomeIcon icon={profil['connexion_connexion'] ? 'check' : 'ban'} /> Mener des actions massives directement en base<br/>
+                    <FontAwesomeIcon icon={profil['appli_conf'] ? 'check' : 'ban'}/> Modifier la configuration générale de GPM VG<br/>
+                    <FontAwesomeIcon icon={profil['annuaire_mdp'] ? 'check' : 'ban'}/> Réinitialiser les mots de passe des autres utilisateurs<br/>
+                    <FontAwesomeIcon icon={profil['delegation'] ? 'check' : 'ban'}/> Se connecter entant qu'autre utilisateur<br/>
+                    <FontAwesomeIcon icon={profil['maintenance'] ? 'check' : 'ban'}/> Se connecter même en mode maitenance<br/>
+                    <FontAwesomeIcon icon={profil['actionsMassives'] ? 'check' : 'ban'}/> Mener des actions massives directement en base<br/>
                 </p>
                 
                 <hr/>
 
                 <h6>Notifications journalières par mail:</h6>
                 <p>
-                    <FontAwesomeIcon icon={profil['connexion_connexion'] ? 'check' : 'ban'} /> Autorisé à recevoir les notifications journalières par mail<br/>
+                    <FontAwesomeIcon icon={profil['notifications'] ? 'check' : 'ban'}/> Autorisé à recevoir les notifications journalières par mail<br/>
                 </p>
 
                 <hr/>
@@ -398,12 +397,12 @@ const ProfilRecapDroitsUtilisateur = ({idPersonne}) => {
                     <tbody>
                         <tr>
                             <td>Réserve:</td>
-                            <td><FontAwesomeIcon icon={profil['reserve_lecture'] ? 'check' : 'ban'} /></td>
-                            <td><FontAwesomeIcon icon={profil['reserve_ajout'] ? 'check' : 'ban'} /></td>
-                            <td><FontAwesomeIcon icon={profil['reserve_modification'] ? 'check' : 'ban'} /></td>
-                            <td><FontAwesomeIcon icon={profil['reserve_suppression'] ? 'check' : 'ban'} /></td>
-                            <td><FontAwesomeIcon icon={profil['reserve_cmdVersReserve'] ? 'check' : 'ban'} /></td>
-                            <td><FontAwesomeIcon icon={profil['reserve_ReserveVersLot'] ? 'check' : 'ban'} /></td>
+                            <td><FontAwesomeIcon icon={profil['reserve_lecture'] ? 'check' : 'ban'}/></td>
+                            <td><FontAwesomeIcon icon={profil['reserve_ajout'] ? 'check' : 'ban'}/></td>
+                            <td><FontAwesomeIcon icon={profil['reserve_modification'] ? 'check' : 'ban'}/></td>
+                            <td><FontAwesomeIcon icon={profil['reserve_suppression'] ? 'check' : 'ban'}/></td>
+                            <td><FontAwesomeIcon icon={profil['reserve_cmdVersReserve'] ? 'check' : 'ban'}/></td>
+                            <td><FontAwesomeIcon icon={profil['reserve_ReserveVersLot'] ? 'check' : 'ban'}/></td>
                         </tr>
                     </tbody>
                 </Table>
@@ -425,42 +424,42 @@ const ProfilRecapDroitsUtilisateur = ({idPersonne}) => {
                     <tbody>
                         <tr>
                             <td>Annuaire</td>
-                            <td><FontAwesomeIcon icon={profil['annuaire_lecture'] ? 'check' : 'ban'} /></td>
-                            <td><FontAwesomeIcon icon={profil['annuaire_ajout'] ? 'check' : 'ban'} /></td>
-                            <td><FontAwesomeIcon icon={profil['annuaire_modification'] ? 'check' : 'ban'} /></td>
+                            <td><FontAwesomeIcon icon={profil['annuaire_lecture'] ? 'check' : 'ban'}/></td>
+                            <td><FontAwesomeIcon icon={profil['annuaire_ajout'] ? 'check' : 'ban'}/></td>
+                            <td><FontAwesomeIcon icon={profil['annuaire_modification'] ? 'check' : 'ban'}/></td>
                             <td></td>
-                            <td><FontAwesomeIcon icon={profil['annuaire_suppression'] ? 'check' : 'ban'} /></td>
+                            <td><FontAwesomeIcon icon={profil['annuaire_suppression'] ? 'check' : 'ban'}/></td>
                         </tr>
                         <tr>
                             <td>Profils</td>
-                            <td><FontAwesomeIcon icon={profil['profils_lecture'] ? 'check' : 'ban'} /></td>
-                            <td><FontAwesomeIcon icon={profil['profils_ajout'] ? 'check' : 'ban'} /></td>
-                            <td><FontAwesomeIcon icon={profil['profils_modification'] ? 'check' : 'ban'} /></td>
+                            <td><FontAwesomeIcon icon={profil['profils_lecture'] ? 'check' : 'ban'}/></td>
+                            <td><FontAwesomeIcon icon={profil['profils_ajout'] ? 'check' : 'ban'}/></td>
+                            <td><FontAwesomeIcon icon={profil['profils_modification'] ? 'check' : 'ban'}/></td>
                             <td></td>
-                            <td><FontAwesomeIcon icon={profil['profils_suppression'] ? 'check' : 'ban'} /></td>
+                            <td><FontAwesomeIcon icon={profil['profils_suppression'] ? 'check' : 'ban'}/></td>
                         </tr>
                         <tr>
                             <td>Messages généraux</td>
                             <td></td>
-                            <td><FontAwesomeIcon icon={profil['messages_ajout'] ? 'check' : 'ban'} /></td>
+                            <td><FontAwesomeIcon icon={profil['messages_ajout'] ? 'check' : 'ban'}/></td>
                             <td></td>
                             <td></td>
-                            <td><FontAwesomeIcon icon={profil['messages_suppression'] ? 'check' : 'ban'} /></td>
+                            <td><FontAwesomeIcon icon={profil['messages_suppression'] ? 'check' : 'ban'}/></td>
                         </tr>
                         <tr>
                             <td>Messages mails</td>
                             <td></td>
-                            <td><FontAwesomeIcon icon={profil['contactMailGroupe'] ? 'check' : 'ban'} /></td>
+                            <td><FontAwesomeIcon icon={profil['contactMailGroupe'] ? 'check' : 'ban'}/></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
                         <tr>
                             <td>ToDoList</td>
-                            <td><FontAwesomeIcon icon={profil['todolist_lecture'] ? 'check' : 'ban'} /></td>
+                            <td><FontAwesomeIcon icon={profil['todolist_lecture'] ? 'check' : 'ban'}/></td>
                             <td></td>
-                            <td><FontAwesomeIcon icon={profil['todolist_modification'] ? 'check' : 'ban'} /></td>
-                            <td><FontAwesomeIcon icon={profil['todolist_perso'] ? 'check' : 'ban'} /></td>
+                            <td><FontAwesomeIcon icon={profil['todolist_modification'] ? 'check' : 'ban'}/></td>
+                            <td><FontAwesomeIcon icon={profil['todolist_perso'] ? 'check' : 'ban'}/></td>
                             <td></td>
                         </tr>
                     </tbody>

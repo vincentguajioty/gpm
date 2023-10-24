@@ -212,3 +212,9 @@ export const actionsMassivesUnlockModalForm = Yup.object().shape({
         .string()
         .required(champObligatoire),
 });
+
+export const profilForm = Yup.object().shape({
+    libelleProfil: Yup
+        .string()
+        .required(champObligatoire),
+});

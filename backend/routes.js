@@ -9,6 +9,7 @@ const connexionCtrl = require('./controllers/connexion');
 const settingsMetiersCtrl = require('./controllers/settingsMetiers');
 const settingsUtilisateursCtrl = require('./controllers/settingsUtilisateurs');
 const settingsTechniquesCtrl = require('./controllers/settingsTechniques');
+const profilsCtrl = require('./controllers/profils');
 
 const materielsCtrl = require('./controllers/materiels');
 
@@ -167,6 +168,13 @@ router.get('/settingsMetiers/getVHFTypesEquipements',                       http
 router.post('/settingsMetiers/addVHFTypesEquipements',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      modificationLogger(), settingsMetiersCtrl.addVHFTypesEquipements);
 router.post('/settingsMetiers/updateVHFTypesEquipements',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      modificationLogger(), settingsMetiersCtrl.updateVHFTypesEquipements);
 router.post('/settingsMetiers/deleteVHFTypesEquipements',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                      suppressionLogger(),  settingsMetiersCtrl.deleteVHFTypesEquipements);
+
+//settings techniques
+router.get('/profils/getProfils',    httpLogger(), jwtFunctions.verifyJWTandProfile(['profils_lecture',]) ,                            profilsCtrl.getProfils);
+router.post('/profils/getOneProfil', httpLogger(), jwtFunctions.verifyJWTandProfile(['profils_lecture',]) ,                            profilsCtrl.getOneProfil);
+router.post('/profils/addProfil',    httpLogger(), jwtFunctions.verifyJWTandProfile(['profils_ajout',]) ,        modificationLogger(), profilsCtrl.addProfil);
+router.post('/profils/updateProfil', httpLogger(), jwtFunctions.verifyJWTandProfile(['profils_modification',]) , modificationLogger(), profilsCtrl.updateProfil);
+router.post('/profils/deleteProfil', httpLogger(), jwtFunctions.verifyJWTandProfile(['profils_modification',]) , suppressionLogger(),  profilsCtrl.deleteProfil);
 
 //settings utilisateurs
 router.post('/settingsUtilisateurs/getOneUser',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) , himself(),                settingsUtilisateursCtrl.getOneUser);

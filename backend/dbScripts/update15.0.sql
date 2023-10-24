@@ -123,6 +123,8 @@ UPDATE DOCUMENTS_CANAL_VHF    SET urlFichierDocCanalVHF = REPLACE(urlFichierDocC
 UPDATE DOCUMENTS_VHF          SET urlFichierDocVHF      = REPLACE(urlFichierDocVHF,      'documents/vhfEquipements/', '');
 UPDATE DOCUMENTS_PLAN_VHF     SET urlFichierDocPlanVHF  = REPLACE(urlFichierDocPlanVHF,  'documents/vhfPlans/', '');
 
+ALTER TABLE PROFILS CHANGE descriptifProfil descriptifProfil TEXT;
+
 CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 	SELECT
 		p.idPersonne,
