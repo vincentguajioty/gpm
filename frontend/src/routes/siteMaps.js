@@ -245,7 +245,7 @@ if(HabilitationService.habilitations)
         ||
         HabilitationService.habilitations['vehiculeHealth_lecture']
         ||
-        HabilitationService.habilitations['alertesBenevolesLots_lecture']
+        HabilitationService.habilitations['alertesBenevolesVehicules_lecture']
     )
     {
         let tempChildrens=[];
@@ -289,7 +289,7 @@ if(HabilitationService.habilitations)
                 active: true
             })
         }
-        if(HabilitationService.habilitations['alertesBenevolesLots_lecture'])
+        if(HabilitationService.habilitations['alertesBenevolesVehicules_lecture'])
         {
             tempChildrens.push({
                 name: 'Alertes des bénévoles',
