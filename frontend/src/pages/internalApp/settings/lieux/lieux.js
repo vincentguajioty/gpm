@@ -22,10 +22,10 @@ const LieuxSettings = () => {
             boAddRoute: "/settingsMetiers/addLieux",
             boUpdateRoute: "/settingsMetiers/updateLieux",
             boDeleteRoute: "/settingsMetiers/deleteLieux",
-            profilGet: "appli_conf",
-            profilAdd: "appli_conf",
-            profilUpdate: "appli_conf",
-            profilDelete: "appli_conf",
+            profilGet: "lieux_lecture",
+            profilAdd: "lieux_ajout",
+            profilUpdate: "lieux_modification",
+            profilDelete: "lieux_suppression",
         },
     ];
 
