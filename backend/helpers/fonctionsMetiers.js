@@ -755,9 +755,9 @@ const cnilAnonyme = async (idPersonne) => {
             idPersonne: idPersonne
         });
 
-        majIndicateursPersonne(idPersonne,true);
-        majNotificationsPersonne(idPersonne,true);
-        majValideursPersonne(true);
+        await majIndicateursPersonne(idPersonne,true);
+        await majNotificationsPersonne(idPersonne,true);
+        await majValideursPersonne(true);
 
     } catch (error) {
         logger.error(error)

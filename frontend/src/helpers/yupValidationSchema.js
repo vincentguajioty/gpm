@@ -218,3 +218,9 @@ export const profilForm = Yup.object().shape({
         .string()
         .required(champObligatoire),
 });
+
+export const userAddForm = Yup.object().shape({
+    identifiant: Yup
+        .string()
+        .required(champObligatoire),
+});

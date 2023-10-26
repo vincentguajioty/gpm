@@ -2,17 +2,16 @@ import React, {useState, useEffect} from 'react';
 import FalconComponentCard from 'components/common/FalconComponentCard';
 import { Form, Button, Row, Col } from 'react-bootstrap'; 
 
-import HabilitationService from 'services/habilitationsService';
-
 import {Axios} from 'helpers/axios';
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { userInfoForm } from 'helpers/yupValidationSchema';
 
-const UserInfo = () => {
+const UserInfo = ({idPersonne, pageNeedsRefresh}) => {
 	const [isLoading, setLoading] = useState(false);
     const [readyToDisplay, setReadyToDisplay] = useState(false);
+    const [personne, setPersonne] = useState([]);
 
     const notificationsDisponibles = [
         {config: 'notif_lots_manquants'         , label:'Matériels manquants (lots)'            , profilNeeded: 'lots_lecture',},
@@ -50,8 +49,9 @@ const UserInfo = () => {
     const initValue = async () => {
         try {
             const response = await Axios.post('/settingsUtilisateurs/getOneUser',{
-                idPersonne: HabilitationService.habilitations.idPersonne,
+                idPersonne: idPersonne,
             });
+            setPersonne( response.data[0]);
             
             setValue("nomPersonne", response.data[0].nomPersonne);
             setValue("prenomPersonne", response.data[0].prenomPersonne);
@@ -86,7 +86,7 @@ const UserInfo = () => {
 		try {
             console.log(data);
             const requeteUpdate = await Axios.post('settingsUtilisateurs/updateMonCompte',{
-                idPersonne: HabilitationService.habilitations.idPersonne,
+                idPersonne: idPersonne,
                 data: data,
             });
 
@@ -101,6 +101,10 @@ const UserInfo = () => {
     useEffect(() => {
         initValue();
     }, [])
+
+    useEffect(() => {
+        if(pageNeedsRefresh){initValue()};
+    }, [pageNeedsRefresh])
 
 	return (
 		<>
@@ -144,7 +148,7 @@ const UserInfo = () => {
                                             name={indicateur.config}
                                             label={indicateur.label}
                                             checked={watch(indicateur.config)}
-                                            disabled={!HabilitationService.habilitations[indicateur.profilNeeded]}
+                                            disabled={!personne[indicateur.profilNeeded]}
                                             onClick={(e)=>{
                                                 setValue(indicateur.config, !watch(indicateur.config));
                                             }}
@@ -180,7 +184,7 @@ const UserInfo = () => {
                                                     name={notif.config}
                                                     label={notif.label}
                                                     checked={watch(notif.config)}
-                                                    disabled={!HabilitationService.habilitations[notif.profilNeeded]}
+                                                    disabled={!personne[notif.profilNeeded]}
                                                     onClick={(e)=>{
                                                         setValue(notif.config, !watch(notif.config));
                                                     }}

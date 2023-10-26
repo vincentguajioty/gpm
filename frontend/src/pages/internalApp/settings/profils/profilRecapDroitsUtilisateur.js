@@ -8,7 +8,7 @@ import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import HabilitationService from 'services/habilitationsService';
 import { Axios } from 'helpers/axios';
 
-const ProfilRecapDroitsUtilisateur = ({idPersonne}) => {
+const ProfilRecapDroitsUtilisateur = ({idPersonne, pageNeedsRefresh}) => {
     const [readyToDisplay, setReadyToDisplay] = useState(false);
     const [displayForbiddenMessage, setDisplayForbiddenMessage] = useState(false);
 
@@ -36,6 +36,10 @@ const ProfilRecapDroitsUtilisateur = ({idPersonne}) => {
     useEffect(()=>{
         initComponent();
     },[])
+
+    useEffect(()=>{
+        if(pageNeedsRefresh){initComponent();}
+    },[pageNeedsRefresh])
 
     if(displayForbiddenMessage)
     {

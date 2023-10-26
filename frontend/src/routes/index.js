@@ -60,6 +60,7 @@ import VehiculesSettings from 'pages/internalApp/settings/vehicules/vehicules';
 import TransmissionsSettings from 'pages/internalApp/settings/transmissions/transmissions';
 
 import Utilisateurs from 'pages/internalApp/settings/utilisateurs/utilisateurs';
+import UtilisateurDetails from 'pages/internalApp/settings/utilisateurs/utilisateurDetails';
 import Profils from 'pages/internalApp/settings/profils/profils';
 import Moncompte from 'pages/internalApp/settings/utilisateurs/monCompte';
 import MessagesGeneraux from 'pages/internalApp/settings/messagesGeneraux/messagesGeneraux';
@@ -141,6 +142,7 @@ const FalconRoutes = () => {
             <Route path="/settingsTransmissions" element={<TransmissionsSettings />} />
 
             <Route path="/teamUtilisateurs" element={<Utilisateurs />} />
+            <Route path="/teamUtilisateurs/:idPersonne" element={<UtilisateurDetails />} />
             <Route path="/teamProfils" element={<Profils />} />
             <Route path="/monCompte" element={<Moncompte />} />
             <Route path="/teamMessages" element={<MessagesGeneraux />} />

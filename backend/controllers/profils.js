@@ -9,7 +9,9 @@ exports.getProfils = async (req, res, next)=>{
     try {
         let result = await db.query(`
             SELECT
-                *
+                *,
+                idProfil as value,
+                libelleProfil as label
             FROM
                 PROFILS
         `);

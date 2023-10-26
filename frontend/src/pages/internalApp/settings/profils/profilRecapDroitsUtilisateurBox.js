@@ -3,7 +3,7 @@ import FalconComponentCard from 'components/common/FalconComponentCard';
 
 import ProfilRecapDroitsUtilisateur from './profilRecapDroitsUtilisateur';
 
-const ProfilRecapDroitsUtilisateurBox = ({idPersonne}) => {
+const ProfilRecapDroitsUtilisateurBox = ({idPersonne, pageNeedsRefresh}) => {
     return(
         <FalconComponentCard>
             <FalconComponentCard.Header
@@ -11,7 +11,7 @@ const ProfilRecapDroitsUtilisateurBox = ({idPersonne}) => {
             >
             </FalconComponentCard.Header>
             <FalconComponentCard.Body>
-                <ProfilRecapDroitsUtilisateur idPersonne={idPersonne} />
+                <ProfilRecapDroitsUtilisateur idPersonne={idPersonne} pageNeedsRefresh={pageNeedsRefresh} />
             </FalconComponentCard.Body>
         </FalconComponentCard>
     );

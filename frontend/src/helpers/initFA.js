@@ -44,6 +44,8 @@ import {
   faEdit as farEdit
 } from '@fortawesome/free-regular-svg-icons';
 import {
+  faUserSecret,
+  faUnlink,
   faSave,
   faEject,
   faPen,
@@ -252,11 +254,13 @@ import {
   faCommentDollar,
   faHandHoldingWater,
   faCameraRetro,
-  faUtensils
+  faUtensils,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
   // Solid
+  faUserSecret,
+  faUnlink,
   faSave,
   faEject,
   faPen,

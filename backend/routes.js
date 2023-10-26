@@ -44,9 +44,24 @@ const suppressionLogger = () => {
     }
 }
 
-const himself = () => {
+const himselfRead = () => {
     return function(req, res, next) {
         if(req.verifyJWTandProfile.idPersonne != req.body.idPersonne && !req.verifyJWTandProfile.annuaire_lecture)
+        {
+            logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
+            res.status(403);
+            res.send('Accès refusé par le contrôle de profile');
+        }
+        else
+        {
+            next();
+        }
+        
+    }
+}
+const himselfWrite = () => {
+    return function(req, res, next) {
+        if(req.verifyJWTandProfile.idPersonne != req.body.idPersonne && !req.verifyJWTandProfile.annuaire_modification)
         {
             logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
             res.status(403);
@@ -177,12 +192,21 @@ router.post('/profils/updateProfil', httpLogger(), jwtFunctions.verifyJWTandProf
 router.post('/profils/deleteProfil', httpLogger(), jwtFunctions.verifyJWTandProfile(['profils_modification',]) , suppressionLogger(),  profilsCtrl.deleteProfil);
 
 //settings utilisateurs
-router.post('/settingsUtilisateurs/getOneUser',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) , himself(),                settingsUtilisateursCtrl.getOneUser);
-router.post('/settingsUtilisateurs/getProfilsOneUser',               httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,                           settingsUtilisateursCtrl.getProfilsOneUser);
-router.post('/settingsUtilisateurs/getMfaUrl',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,                           settingsUtilisateursCtrl.getMfaUrl);
-router.post('/settingsUtilisateurs/enableMfa',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,     modificationLogger(), settingsUtilisateursCtrl.enableMfa);
-router.post('/settingsUtilisateurs/disableMfa',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,     modificationLogger(), settingsUtilisateursCtrl.disableMfa);
-router.post('/settingsUtilisateurs/updateMonCompte',                 httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,     modificationLogger(), settingsUtilisateursCtrl.updateMonCompte);
+router.get('/settingsUtilisateurs/getAllUsers',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['annuaire_lecture',]) ,                                              settingsUtilisateursCtrl.getAllUsers);
+router.post('/settingsUtilisateurs/getOneUser',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) , himselfRead(),                            settingsUtilisateursCtrl.getOneUser);
+router.post('/settingsUtilisateurs/getProfilsOneUser',               httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,                                           settingsUtilisateursCtrl.getProfilsOneUser);
+router.post('/settingsUtilisateurs/getMfaUrl',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) ,                                           settingsUtilisateursCtrl.getMfaUrl);
+router.post('/settingsUtilisateurs/enableMfa',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) , himselfWrite(), modificationLogger(),     settingsUtilisateursCtrl.enableMfa);
+router.post('/settingsUtilisateurs/disableMfa',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) , himselfWrite(), modificationLogger(),     settingsUtilisateursCtrl.disableMfa);
+router.post('/settingsUtilisateurs/updateMonCompte',                 httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]) , himselfWrite(), modificationLogger(),     settingsUtilisateursCtrl.updateMonCompte);
+router.post('/settingsUtilisateurs/addUser',                         httpLogger(), jwtFunctions.verifyJWTandProfile(['annuaire_ajout',]) ,                      modificationLogger(),     settingsUtilisateursCtrl.addUser);
+router.post('/settingsUtilisateurs/unlinkAD',                        httpLogger(), jwtFunctions.verifyJWTandProfile(['annuaire_modification',]) ,               modificationLogger(),     settingsUtilisateursCtrl.unlinkAD);
+router.post('/settingsUtilisateurs/linkAD',                          httpLogger(), jwtFunctions.verifyJWTandProfile(['annuaire_modification',]) ,               modificationLogger(),     settingsUtilisateursCtrl.linkAD);
+router.post('/settingsUtilisateurs/updateProfils',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['annuaire_modification',]) ,               modificationLogger(),     settingsUtilisateursCtrl.updateProfils);
+router.post('/settingsUtilisateurs/pwdReinitRequest',                httpLogger(), jwtFunctions.verifyJWTandProfile(['annuaire_mdp',]) ,                        modificationLogger(),     connexionCtrl.pwdReinitRequest);
+router.post('/settingsUtilisateurs/anonymiserUser',                  httpLogger(), jwtFunctions.verifyJWTandProfile(['annuaire_suppression',]) ,                suppressionLogger(),      settingsUtilisateursCtrl.anonymiserUser);
+router.post('/settingsUtilisateurs/deleteUser',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['annuaire_suppression',]) ,                suppressionLogger(),      settingsUtilisateursCtrl.deleteUser);
+
 
 //settings techniques
 router.get('/settingsTechniques/getConfigForAdmin',            httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) ,                       settingsTechniquesCtrl.getConfigForAdmin);

@@ -20,14 +20,14 @@ const Moncompte = () => {
 
         <Row>
 			<Col md={8}>
-				<UserInfo />
+				<UserInfo idPersonne={HabilitationService.habilitations.idPersonne} />
 			</Col>
 			<Col md={4}>
 				<Password checkOldPassword={true} layout="box" />
 				<MFA />
 			</Col>
 			<Col md={12}>
-				<ProfilRecapDroitsUtilisateurBox idPersonne={HabilitationService.habilitations['idPersonne']} />
+				<ProfilRecapDroitsUtilisateurBox idPersonne={HabilitationService.habilitations.idPersonne} />
 			</Col>
 		</Row>
     </>);

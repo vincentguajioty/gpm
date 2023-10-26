@@ -82,7 +82,7 @@ const annuaireDelete = async (idLogger, idPersonne) => {
         });
 
         let delierTDLcreateur = await db.query(`
-            UPDATE CENTRE_COUTS_OPERATIONS SET idCreateur = Null WHERE idCreateur = :idPersonne
+            UPDATE CENTRE_COUTS_OPERATIONS SET idPersonne = Null WHERE idPersonne = :idPersonne
         ;`,{
             idPersonne : idPersonne,
         });
@@ -94,23 +94,23 @@ const annuaireDelete = async (idLogger, idPersonne) => {
         });
 
         let deleteCommandes = await db.query(`
-            DELETE FROM COMMANDES_AFFECTEES WHERE idPersonne = :idPersonne
+            DELETE FROM COMMANDES_AFFECTEES WHERE idAffectee = :idPersonne
         ;`,{
             idPersonne : idPersonne,
         });
         deleteCommandes = await db.query(`
-            DELETE FROM COMMANDES_OBSERVATEURS WHERE idPersonne = :idPersonne
+            DELETE FROM COMMANDES_OBSERVATEURS WHERE idObservateur = :idPersonne
         ;`,{
             idPersonne : idPersonne,
         });
         deleteCommandes = await db.query(`
-            DELETE FROM COMMANDES_DEMANDEURS WHERE idPersonne = :idPersonne
+            DELETE FROM COMMANDES_DEMANDEURS WHERE idDemandeur = :idPersonne
         ;`,{
             idPersonne : idPersonne,
         });
 
         let deleteTDLaffectations = await db.query(`
-            DELETE FROM TODOLIST_PERSONNES WHERE idPersonne = :idPersonne
+            DELETE FROM TODOLIST_PERSONNES WHERE idExecutant = :idPersonne
         ;`,{
             idPersonne : idPersonne,
         });

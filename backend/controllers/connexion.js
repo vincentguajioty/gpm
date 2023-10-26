@@ -328,10 +328,9 @@ exports.pwdReinitRequest = async (req, res)=>{
         );
 
         let getUser = await db.query(
-            'SELECT idPersonne, isActiveDirectory FROM PERSONNE_REFERENTE WHERE identifiant = :identifiant AND mailPersonne = :mailPersonne;',
+            'SELECT idPersonne, isActiveDirectory, mailPersonne FROM PERSONNE_REFERENTE WHERE identifiant = :identifiant;',
             {
                 identifiant : req.body.identifiant,
-                mailPersonne : req.body.mailPersonne,
             }
         );
         if(getUser.length != 1)
@@ -384,15 +383,24 @@ exports.pwdReinitRequest = async (req, res)=>{
             }
         );
 
-        let sendMailToUser = await db.query(
-            `INSERT INTO MAIL_QUEUE SET typeMail = 'autoResetPwd', idObject = :idReset, idSecondaire = :idPersonne;`,
-            {
-                idPersonne : getUser[0].idPersonne,
-                idReset : generateToken[0].idReset,
-            }
-        );
+        if(getUser[0].mailPersonne != null && getUser[0].mailPersonne != '' && getUser[0].mailPersonne == req.body.mailPersonne)
+        {
+            let sendMailToUser = await db.query(
+                `INSERT INTO MAIL_QUEUE SET typeMail = 'autoResetPwd', idObject = :idReset, idSecondaire = :idPersonne;`,
+                {
+                    idPersonne : getUser[0].idPersonne,
+                    idReset : generateToken[0].idReset,
+                }
+            );
+    
+            return res.json({handleResult: 'mailEnvoye'});
+        }
+        else
+        {
+            return res.json({handleResult: 'resetSansMail'});
+        }
 
-        return res.json({handleResult: 'mailEnvoye'});
+        
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
