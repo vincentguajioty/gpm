@@ -236,18 +236,21 @@ const MessagesGeneraux = () => {
                 scope={{ ActionButton }}
                 noLight
             >
-                {HabilitationService.habilitations['messages_ajout'] ?
-                    <IconButton
-                        icon='plus'
-                        size = 'sm'
-                        variant="outline-success"
-                        onClick={()=>{handleShowOffCanevas(0)}}
-                    >Nouveau message</IconButton>
-                : null}
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
                         data={lignes}
+                        topButtonShow={true}
+                        topButton={
+                            HabilitationService.habilitations['messages_ajout'] ?
+                                <IconButton
+                                    icon='plus'
+                                    size = 'sm'
+                                    variant="outline-success"
+                                    onClick={()=>{handleShowOffCanevas(0)}}
+                                >Nouveau message</IconButton>
+                            : null
+                        }
                     />
                 : <LoaderInfiniteLoop />}
             </FalconComponentCard.Body>

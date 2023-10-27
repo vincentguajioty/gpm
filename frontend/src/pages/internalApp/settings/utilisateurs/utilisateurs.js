@@ -150,26 +150,26 @@ const Utilisateurs = () => {
                 scope={{ ActionButton }}
                 noLight
             >
-                {readyToDisplay ?
+                {readyToDisplay ? <>
                     <UtilisateursFilter
                         personnes={personnes}
                         setPersonnesFiltered={setPersonnesFiltered}
                     />
-                : null }
-
-                {HabilitationService.habilitations['annuaire_ajout'] ?
-                    <IconButton
-                        icon='plus'
-                        size = 'sm'
-                        variant="outline-success"
-                        onClick={handleShowOffCanevas}
-                    >Nouvel utilisateur</IconButton>
-                : null}
-
-                {readyToDisplay ? <>
+                    
                     <GPMtable
                         columns={colonnes}
                         data={lignes}
+                        topButtonShow={true}
+                        topButton={
+                            HabilitationService.habilitations['annuaire_ajout'] ?
+                                <IconButton
+                                    icon='plus'
+                                    size = 'sm'
+                                    variant="outline-success"
+                                    onClick={handleShowOffCanevas}
+                                >Nouvel utilisateur</IconButton>
+                            : null
+                        }
                     />
                 </> : <LoaderInfiniteLoop />}
             </FalconComponentCard.Body>

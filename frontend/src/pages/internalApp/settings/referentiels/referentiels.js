@@ -189,26 +189,25 @@ const ReferentielsSettings = () => {
         </Modal>
 
         <FalconComponentCard noGuttersBottom className="mb-3">
-            <FalconComponentCard.Header
-                title="Référentiels existants"
-            >
-            </FalconComponentCard.Header>
             <FalconComponentCard.Body
                 scope={{ ActionButton }}
                 noLight
             >
-                {HabilitationService.habilitations['typesLots_ajout'] ?
-                    <IconButton
-                        icon='plus'
-                        size = 'sm'
-                        variant="outline-success"
-                        onClick={handleShowOffCanevas}
-                    >Nouveau référentiel</IconButton>
-                : null}
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
                         data={lignes}
+                        topButtonShow={true}
+                        topButton={
+                            HabilitationService.habilitations['typesLots_ajout'] ?
+                                <IconButton
+                                    icon='plus'
+                                    size = 'sm'
+                                    variant="outline-success"
+                                    onClick={handleShowOffCanevas}
+                                >Nouveau référentiel</IconButton>
+                            : null
+                        }
                     />
                 : <LoaderInfiniteLoop />}
             </FalconComponentCard.Body>

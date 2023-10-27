@@ -3083,26 +3083,25 @@ const Profils = () => {
         </Modal>
 
         <FalconComponentCard noGuttersBottom className="mb-3">
-            <FalconComponentCard.Header
-                title="Profils"
-            >
-            </FalconComponentCard.Header>
             <FalconComponentCard.Body
                 scope={{ ActionButton }}
                 noLight
             >
-                {HabilitationService.habilitations['profils_ajout'] ?
-                    <IconButton
-                        icon='plus'
-                        size = 'sm'
-                        variant="outline-success"
-                        onClick={()=>{handleShowEditModal(0)}}
-                    >Nouveau profil</IconButton>
-                : null}
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
                         data={lignes}
+                        topButtonShow={true}
+                        topButton={
+                            HabilitationService.habilitations['profils_ajout'] ?
+                                <IconButton
+                                    icon='plus'
+                                    size = 'sm'
+                                    variant="outline-success"
+                                    onClick={()=>{handleShowEditModal(0)}}
+                                >Nouveau profil</IconButton>
+                            : null
+                        }
                     />
                 : <LoaderInfiniteLoop />}
             </FalconComponentCard.Body>

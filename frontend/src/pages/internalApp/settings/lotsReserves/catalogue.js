@@ -303,17 +303,20 @@ const Catalogue = () => {
                         scope={{ ActionButton }}
                         noLight
                     >
-                        {HabilitationService.habilitations['catalogue_ajout'] ? 
-                            <IconButton
-                                icon='plus'
-                                size = 'sm'
-                                variant="outline-success"
-                                onClick={() => handleShowOffCanevas(0)}
-                            >Nouvel élément</IconButton>
-                        : null }
                         <GPMtable
                             columns={colonnes}
                             data={lignes}
+                            topButtonShow={true}
+                            topButton={
+                                HabilitationService.habilitations['catalogue_ajout'] ? 
+                                    <IconButton
+                                        icon='plus'
+                                        size = 'sm'
+                                        variant="outline-success"
+                                        onClick={() => handleShowOffCanevas(0)}
+                                    >Nouvel élément</IconButton>
+                                : null
+                            }
                         />
                     </FalconComponentCard.Body>
                 </FalconComponentCard>

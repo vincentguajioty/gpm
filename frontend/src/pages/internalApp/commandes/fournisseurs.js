@@ -186,18 +186,22 @@ const Fournisseurs = () => {
                 scope={{ ActionButton }}
                 noLight
             >
-                {HabilitationService.habilitations['fournisseurs_ajout'] ?
-                    <IconButton
-                        icon='plus'
-                        size = 'sm'
-                        variant="outline-success"
-                        onClick={handleShowOffCanevas}
-                    >Nouveau fournisseur</IconButton>
-                : null}
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
                         data={lignes}
+                        topButtonShow={true}
+                        topButton={
+                            HabilitationService.habilitations['fournisseurs_ajout'] ?
+                                <IconButton
+                                    icon='plus'
+                                    size = 'sm'
+                                    variant="outline-success"
+                                    onClick={handleShowOffCanevas}
+                                >Nouveau fournisseur</IconButton>
+                            : null
+                        }
+                        
                     />
                 : <LoaderInfiniteLoop />}
             </FalconComponentCard.Body>

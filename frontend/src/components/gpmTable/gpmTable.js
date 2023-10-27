@@ -8,6 +8,8 @@ import AdvanceTableFooter from './AdvanceTableFooter';
 const GPMtable = ({
     columns,
     data,
+    topButton,
+    topButtonShow = false,
 }) => {
     return (
         <AdvanceTableWrapper
@@ -18,6 +20,9 @@ const GPMtable = ({
             pagination
         >
             <Row className="flex-end-center mb-3">
+                <Col xs="auto" sm={6} lg={8}>
+                    {topButtonShow ? topButton : null}
+                </Col>
                 <Col xs="auto" sm={6} lg={4}>
                     <AdvanceTableSearchBox table/>
                 </Col>
