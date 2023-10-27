@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PageHeader from 'components/common/PageHeader';
 import SoftBadge from 'components/common/SoftBadge';
 import IconButton from 'components/common/IconButton';
+import GPMtable from 'components/gpmTable/gpmTable';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -33,6 +34,47 @@ const Fournisseurs = () => {
             console.log(error)
         }
     }
+
+    const colonnes = [
+        {accessor: 'nomFournisseur'       , Header: 'Nom'},
+        {accessor: 'siteWebFournisseur'   , Header: 'Site'},
+        {accessor: 'telephoneFournisseur' , Header: 'Téléphone'},
+        {accessor: 'actions'              , Header: 'Actions'},
+    ];
+    const [lignes, setLignes] = useState([]);
+    const initTableau = () => {
+        let tempTable  = [];
+        for(const item of fournisseurs)
+        {
+            tempTable.push({
+                nomFournisseur: <Link to={'/fournisseurs/'+item.idFournisseur}>{item.nomFournisseur}</Link>,
+                siteWebFournisseur: <Link to={item.siteWebFournisseur}>{item.siteWebFournisseur}</Link>,
+                telephoneFournisseur: item.telephoneFournisseur,
+                actions: <>
+                    <IconButton
+                        icon='eye'
+                        size = 'sm'
+                        variant="outline-primary"
+                        className="me-1"
+                        onClick={()=>{navigate('/fournisseurs/'+item.idFournisseur)}}
+                    />
+                    {HabilitationService.habilitations['fournisseurs_suppression'] ? 
+                        <IconButton
+                            icon='trash'
+                            size = 'sm'
+                            variant="outline-danger"
+                            className="me-1"
+                            onClick={()=>{handleShowDeleteModal(item.idFournisseur)}}
+                        />
+                    : null}
+                </>,
+            })
+        }
+        setLignes(tempTable);
+    }
+    useEffect(() => {
+        initTableau();
+    }, [fournisseurs])
 
     useEffect(() => {
         initPage();
@@ -143,55 +185,20 @@ const Fournisseurs = () => {
             <FalconComponentCard.Body
                 scope={{ ActionButton }}
                 noLight
-                className="p-0"
             >
+                {HabilitationService.habilitations['fournisseurs_ajout'] ?
+                    <IconButton
+                        icon='plus'
+                        size = 'sm'
+                        variant="outline-success"
+                        onClick={handleShowOffCanevas}
+                    >Nouveau fournisseur</IconButton>
+                : null}
                 {readyToDisplay ?
-                    <Table responsive>
-                        <thead>
-                            <tr>
-                                <th scope="col">Nom</th>
-                                <th scope="col">Site</th>
-                                <th scope="col">Téléphone</th>
-                                <th scope="col">
-                                    {HabilitationService.habilitations['fournisseurs_ajout'] ?
-                                        <IconButton
-                                            icon='plus'
-                                            size = 'sm'
-                                            variant="outline-success"
-                                            onClick={handleShowOffCanevas}
-                                        />
-                                    : null}
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {fournisseurs.map((four, i) => {return(
-                                <tr>
-                                    <td><Link to={'/fournisseurs/'+four.idFournisseur}>{four.nomFournisseur}</Link></td>
-                                    <td><Link to={four.siteWebFournisseur}>{four.siteWebFournisseur}</Link></td>
-                                    <td>{four.telephoneFournisseur}</td>
-                                    <td>
-                                        <IconButton
-                                            icon='eye'
-                                            size = 'sm'
-                                            variant="outline-primary"
-                                            className="me-1"
-                                            onClick={()=>{navigate('/fournisseurs/'+four.idFournisseur)}}
-                                        />
-                                        {HabilitationService.habilitations['fournisseurs_suppression'] ? 
-                                            <IconButton
-                                                icon='trash'
-                                                size = 'sm'
-                                                variant="outline-danger"
-                                                className="me-1"
-                                                onClick={()=>{handleShowDeleteModal(four.idFournisseur)}}
-                                            />
-                                        : null}
-                                    </td>
-                                </tr>
-                            )})}
-                        </tbody>
-                    </Table>
+                    <GPMtable
+                        columns={colonnes}
+                        data={lignes}
+                    />
                 : <LoaderInfiniteLoop />}
             </FalconComponentCard.Body>
         </FalconComponentCard>
