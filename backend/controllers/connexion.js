@@ -11,6 +11,9 @@ const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 const fonctionsLDAP = require('../helpers/fonctionsLDAP');
 const fonctionsAuthentification = require('../helpers/fonctionsAuthentification');
 
+const jwtExpirySeconds = parseInt(process.env.JWT_EXPIRATION);
+const jwtRefreshExpirySeconds = parseInt(process.env.JWT_REFRESH_EXPIRATION);
+
 exports.mfaNeeded = async (req, res)=>{
     try {
         let results = await db.query(
@@ -40,9 +43,6 @@ exports.login = async (req, res)=>{
         const identifiant = req.body.identifiant;
         const motDePasse = req.body.motDePasse;
         const reCaptchaToken = req.body.reCaptchaToken;
-
-        const jwtExpirySeconds = parseInt(process.env.JWT_EXPIRATION);
-        const jwtRefreshExpirySeconds = parseInt(process.env.JWT_REFRESH_EXPIRATION);
 
         let passwordCheckIsOk;
 
@@ -513,9 +513,6 @@ exports.refreshToken = async (req, res)=>{
                             });
                             let disclaimerAccept = personne[0].disclaimerAccept == null ? 'false' : true;
                             
-                            const jwtExpirySeconds = parseInt(process.env.JWT_EXPIRATION);
-                            const jwtRefreshExpirySeconds = parseInt(process.env.JWT_REFRESH_EXPIRATION);
-
                             const oldTokenContent = jwt.decode(token);
                             delete oldTokenContent.iat;
                             delete oldTokenContent.exp;
@@ -806,6 +803,67 @@ exports.blackListSession = async (req, res) => {
 
         res.sendStatus(201);
 
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.delegate = async (req, res, next)=>{
+    try {
+        let targetUser = await db.query(
+            'SELECT * FROM VIEW_HABILITATIONS WHERE idPersonne = :idPersonne AND connexion_connexion = 1;',
+            {
+                idPersonne : req.body.idPersonne,
+            }
+        );
+
+        if(targetUser.length == 1)
+        {
+            //L'utilisateur a bien ses droits, on le connecte
+            logger.debug("[DELEGATION] L'utilisateur a bien ses droits, on le connecte");
+            selectedUser = targetUser[0];
+            delete selectedUser.motDePasse;
+            delete selectedUser.mfaSecret;
+
+            const tokenValidUntil = moment(new Date()).add(jwtExpirySeconds, 'seconds');
+            const token = jwt.sign(selectedUser, process.env.JWT_TOKEN, {
+                expiresIn: jwtExpirySeconds,
+            });
+            const refreshTokenValidUntil = moment(new Date()).add(jwtRefreshExpirySeconds, 'seconds');
+            const refreshToken = jwt.sign(selectedUser, process.env.JWT_REFRESH, {
+                expiresIn: jwtRefreshExpirySeconds,
+            });                    
+            req.session.utilisateur = selectedUser;
+            logger.info('[DELEGATION] Connexion en succès de ' + selectedUser.identifiant, {idPersonne: selectedUser.idPersonne});
+            const sessionInDB = await db.query(`
+                INSERT INTO
+                    JWT_SESSIONS
+                SET
+                    idPersonne = :idPersonne,
+                    createdDateTime = CURRENT_TIMESTAMP,
+                    jwtToken = :jwtToken,
+                    jwtRefreshToken = :jwtRefreshToken,
+                    tokenValidity = :tokenValidity,
+                    refreshValidity = :refreshValidity
+            `,
+            {
+                idPersonne: selectedUser.idPersonne,
+                jwtToken: token,
+                jwtRefreshToken: refreshToken,
+                tokenValidity: moment(tokenValidUntil).format('YYYY-MM-DD HH:mm:ss'),
+                refreshValidity: moment(refreshTokenValidUntil).format('YYYY-MM-DD HH:mm:ss'),
+            });
+            await fonctionsMetiers.updateLastConnexion(selectedUser.idPersonne);
+            res.json({auth: true, disclaimerAccept: true, token: token, tokenValidUntil: tokenValidUntil, refreshToken: refreshToken, habilitations: selectedUser});
+        }
+        else
+        {
+            //L'utilisateur existe mais n'a pas de droits
+            logger.debug("[DELEGATION] L'utilisateur existe mais n'a pas de droits");
+            logger.warn('[DELEGATION] Connexion de l\'utilisateur rejetée car droits insuffisants', {idPersonne: selectedUser.idPersonne});
+            return res.json({auth: false, message:"Droits insuffisants"});
+        }
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

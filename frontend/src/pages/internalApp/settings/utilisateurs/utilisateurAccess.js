@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import FalconComponentCard from 'components/common/FalconComponentCard';
 import { Form, Button, Row, Col, Alert } from 'react-bootstrap';
 import Select from 'react-select';
@@ -9,6 +10,10 @@ import {Axios} from 'helpers/axios';
 import HabilitationService from 'services/habilitationsService';
 
 import { useForm } from "react-hook-form";
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 const UtilisateurAccess = ({personne, setPageNeedsRefresh}) => {
 
@@ -145,6 +150,41 @@ const UtilisateurAccess = ({personne, setPageNeedsRefresh}) => {
         }
     }
 
+    const navigate = useNavigate();
+    const [delegationLoading, setDelegationLoading] = useState(false);
+    const delegation = async () => {
+        try {
+            setDelegationLoading(true);
+            HabilitationService.saveBeforeDelegate();
+
+            const response = await Axios.post('settingsUtilisateurs/delegate',
+            {
+                idPersonne: personne.idPersonne,
+            });
+
+            if(!response.data.auth==true) {
+                HabilitationService.backToInitialSession();
+                setDelegationLoading(false);
+            }else{
+                HabilitationService.setToken(response.data.token);
+                HabilitationService.setTokenValidUntil(response.data.tokenValidUntil);
+                HabilitationService.setRefreshToken(response.data.refreshToken);
+                HabilitationService.setHabilitations(response.data.habilitations);
+                
+                localStorage.setItem("homeNeedRefresh", 1);
+                
+                await sleep(1000);
+                navigate('/home');
+            }
+
+        } catch (error) {
+            console.log(error)
+            HabilitationService.backToInitialSession();
+            setDelegationLoading(false);
+            location.reload();
+        }
+    }
+
 	return (
 		<>
             <FalconComponentCard>
@@ -225,6 +265,21 @@ const UtilisateurAccess = ({personne, setPageNeedsRefresh}) => {
                             </Form>
                         </>
                     }
+
+                    {HabilitationService.habilitations['delegation'] && !HabilitationService.delegationActive ?
+                        <>
+                            <hr/>
+                            <IconButton
+                                icon='user-secret'
+                                variant='outline-warning'
+                                onClick={delegation}
+                                className='me-1 mb-1'
+                                disabled={delegationLoading}
+                            >
+                                {delegationLoading ? 'Chargement ...' : 'Se connecter entant que'}
+                            </IconButton>
+                        </>
+                    : null}
                 </FalconComponentCard.Body>
             </FalconComponentCard>
 		</>

@@ -206,6 +206,8 @@ router.post('/settingsUtilisateurs/updateProfils',                   httpLogger(
 router.post('/settingsUtilisateurs/pwdReinitRequest',                httpLogger(), jwtFunctions.verifyJWTandProfile(['annuaire_mdp',]) ,                        modificationLogger(),     connexionCtrl.pwdReinitRequest);
 router.post('/settingsUtilisateurs/anonymiserUser',                  httpLogger(), jwtFunctions.verifyJWTandProfile(['annuaire_suppression',]) ,                suppressionLogger(),      settingsUtilisateursCtrl.anonymiserUser);
 router.post('/settingsUtilisateurs/deleteUser',                      httpLogger(), jwtFunctions.verifyJWTandProfile(['annuaire_suppression',]) ,                suppressionLogger(),      settingsUtilisateursCtrl.deleteUser);
+router.post('/settingsUtilisateurs/delegate',                        httpLogger(), jwtFunctions.verifyJWTandProfile(['delegation',]) ,                          suppressionLogger(),      connexionCtrl.delegate);
+
 
 
 //settings techniques

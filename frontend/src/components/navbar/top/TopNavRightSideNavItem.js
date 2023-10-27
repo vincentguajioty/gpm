@@ -1,14 +1,23 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import IconButton from 'components/common/IconButton';
 import ProfileDropdown from 'components/navbar/top/ProfileDropdown';
 import AppContext from 'context/Context';
 import React, { useContext } from 'react';
 import { Nav, OverlayTrigger, Tooltip } from 'react-bootstrap';
+
+import HabilitationService from 'services/habilitationsService';
 
 const TopNavRightSideNavItem = () => {
   const {
     config: { isDark, isRTL },
     setConfig
   } = useContext(AppContext);
+
+  const backToInitialSession = () => {
+		HabilitationService.backToInitialSession();
+    location.reload();
+	}
+
   return (
     <Nav
       navbar
@@ -38,8 +47,16 @@ const TopNavRightSideNavItem = () => {
           </OverlayTrigger>
         </Nav.Link>
       </Nav.Item>
-
-      <ProfileDropdown />
+      
+      {HabilitationService.delegationActive && HabilitationService.delegationActive == 1 ?
+        <IconButton
+          variant='outline-danger'
+          onClick={backToInitialSession}
+          icon='user-secret'
+        >
+          Retour à la session initiale
+        </IconButton>
+      : <ProfileDropdown />}
     </Nav>
   );
 };
