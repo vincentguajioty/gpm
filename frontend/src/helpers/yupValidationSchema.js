@@ -224,3 +224,12 @@ export const userAddForm = Yup.object().shape({
         .string()
         .required(champObligatoire),
 });
+
+export const messagesGenerauxForm = Yup.object().shape({
+    corpsMessage: Yup
+        .string()
+        .required(champObligatoire),
+    idMessageType: Yup
+        .number()
+        .required(champObligatoire),
+});

@@ -288,4 +288,10 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		p.idPersonne
 ;
 
+ALTER TABLE MESSAGES ADD isPublic BOOLEAN DEFAULT FALSE;
+ALTER TABLE MESSAGES_TYPES DROP COLUMN iconMessageType;
+UPDATE MESSAGES_TYPES SET couleurMessageType = 'info' WHERE idMessageType = 1;
+UPDATE MESSAGES_TYPES SET couleurMessageType = 'warning' WHERE idMessageType = 2;
+UPDATE MESSAGES_TYPES SET couleurMessageType = 'danger' WHERE idMessageType = 3;
+
 UPDATE CONFIG SET version = '15.0';

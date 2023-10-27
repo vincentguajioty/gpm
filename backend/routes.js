@@ -18,6 +18,7 @@ const fournisseursCtrl = require('./controllers/fournisseurs');
 const fournisseursAesCtrl = require('./controllers/fournisseursAes');
 
 const referentielsCtrl = require('./controllers/referentiels');
+const messagesGenerauxCtrl = require('./controllers/messagesGeneraux');
 
 const actionsMassivesCtrl = require('./controllers/actionsMassives');
 
@@ -116,7 +117,15 @@ router.post('/referentiels/getOneReferentiel',                httpLogger(), jwtF
 router.post('/referentiels/addReferentiel',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_ajout']),                             modificationLogger(), referentielsCtrl.addReferentiel);
 router.post('/referentiels/getCatalogueForReferentielForm',   httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_modification', 'catalogue_lecture']),                       referentielsCtrl.getCatalogueForReferentielForm);
 router.post('/referentiels/updateReferentiel',                httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_modification']),                      modificationLogger(), referentielsCtrl.updateReferentiel);
-router.post('/referentiels/deleteReferentiel',                httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_suppression']),                       suppressionLogger(), referentielsCtrl.deleteReferentiel);
+router.post('/referentiels/deleteReferentiel',                httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_suppression']),                       suppressionLogger(),  referentielsCtrl.deleteReferentiel);
+
+//Messages généraux
+router.get('/messagesGeneraux/getMessagesPublics',            httpLogger(),                                                                                    messagesGenerauxCtrl.getMessagesPublics);
+router.get('/messagesGeneraux/getAllMessages',                httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),                         messagesGenerauxCtrl.getAllMessages);
+router.get('/messagesGeneraux/getMessagesTypes',              httpLogger(),                                                                                    messagesGenerauxCtrl.getMessagesTypes);
+router.post('/messagesGeneraux/addMessage',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['messages_ajout']),       modificationLogger(),  messagesGenerauxCtrl.addMessage);
+router.post('/messagesGeneraux/updateMessage',                httpLogger(), jwtFunctions.verifyJWTandProfile(['messages_ajout']),       modificationLogger(),  messagesGenerauxCtrl.updateMessage);
+router.post('/messagesGeneraux/deleteMessage',                httpLogger(), jwtFunctions.verifyJWTandProfile(['messages_suppression']), suppressionLogger(),   messagesGenerauxCtrl.deleteMessage);
 
 //settings Métiers
 router.get('/settingsMetiers/getCategoriesMateriels',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['categories_lecture']),                                    settingsMetiersCtrl.getCategoriesMateriels);
