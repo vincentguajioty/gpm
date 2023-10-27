@@ -5,6 +5,8 @@ import classNames from 'classnames';
 import NavbarTop from 'components/navbar/top/NavbarTop';
 import NavbarVertical from 'components/navbar/vertical/NavbarVertical';
 import Footer from 'components/footer/Footer';
+import HabilitationService from 'services/habilitationsService';
+import { Alert } from 'react-bootstrap';
 
 const MainLayout = () => {
   const { hash, pathname } = useLocation();
@@ -42,9 +44,11 @@ const MainLayout = () => {
         <NavbarVertical />
         <div className={classNames('content', { 'pb-0': isKanban })}>
           <NavbarTop />
-          {/*------ Main Routes ------*/}
+          {HabilitationService.delegationActive && HabilitationService.delegationActive == 1 ?
+            <Alert variant='warning'>Attention, vous agissez entant que {HabilitationService.habilitations.identifiant}, les actions menées via cette session restent de votre responsabilité et restent tracées en votre nom ({HabilitationService.habilitationsInitial.identifiant}).</Alert>
+          : null}
           <Outlet />
-          {!isKanban && <Footer />}
+          <Footer />
         </div>
       </div>
     );
