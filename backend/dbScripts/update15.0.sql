@@ -294,4 +294,6 @@ UPDATE MESSAGES_TYPES SET couleurMessageType = 'info' WHERE idMessageType = 1;
 UPDATE MESSAGES_TYPES SET couleurMessageType = 'warning' WHERE idMessageType = 2;
 UPDATE MESSAGES_TYPES SET couleurMessageType = 'danger' WHERE idMessageType = 3;
 
+ALTER TABLE TODOLIST DROP COLUMN realisee;
+
 UPDATE CONFIG SET version = '15.0';

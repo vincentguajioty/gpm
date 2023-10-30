@@ -233,3 +233,9 @@ export const messagesGenerauxForm = Yup.object().shape({
         .number()
         .required(champObligatoire),
 });
+
+export const todolistEditForm = Yup.object().shape({
+    titre: Yup
+        .string()
+        .required(champObligatoire),
+});

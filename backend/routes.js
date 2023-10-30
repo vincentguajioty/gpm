@@ -1,4 +1,5 @@
 const express = require('express');
+const db = require('./db');
 const app = express();
 const logger = require('./winstonLogger');
 const jwtFunctions = require('./jwt');
@@ -19,6 +20,7 @@ const fournisseursAesCtrl = require('./controllers/fournisseursAes');
 
 const referentielsCtrl = require('./controllers/referentiels');
 const messagesGenerauxCtrl = require('./controllers/messagesGeneraux');
+const toDoListCtrl = require('./controllers/toDoList');
 
 const actionsMassivesCtrl = require('./controllers/actionsMassives');
 
@@ -76,6 +78,98 @@ const himselfWrite = () => {
     }
 }
 
+const hisOwnTdlArray = () => {
+    return async function(req, res, next) {
+        if(req.body.idPersonne == req.verifyJWTandProfile.idPersonne || req.verifyJWTandProfile.todolist_lecture)
+        {
+            next();
+        }
+        else
+        {
+            logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
+            res.status(403);
+            res.send('Accès refusé par le contrôle de profile');
+        }
+        
+    }
+}
+
+const hisOwnTdl = () => {
+    return async function(req, res, next) {
+        let result = await db.query(`
+            SELECT
+                COUNT(*) as nb
+            FROM
+                TODOLIST_PERSONNES
+            WHERE
+                idExecutant = :idPersonne
+                AND
+                idTache = :idTache
+        `,{
+            idPersonne: req.verifyJWTandProfile.idPersonne,
+            idTache: req.body.idTache,
+        });
+
+        if(result[0].nb > 0 || req.verifyJWTandProfile.todolist_lecture)
+        {
+            next();
+        }
+        else
+        {
+            logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
+            res.status(403);
+            res.send('Accès refusé par le contrôle de profile');
+        }
+        
+    }
+}
+
+const editHisOwnTdl = () => {
+    return async function(req, res, next) {
+        let result = await db.query(`
+            SELECT
+                COUNT(*) as nb
+            FROM
+                TODOLIST_PERSONNES
+            WHERE
+                idExecutant = :idPersonne
+                AND
+                idTache = :idTache
+        `,{
+            idPersonne: req.verifyJWTandProfile.idPersonne,
+            idTache: req.body.idTache,
+        });
+
+        if((result[0].nb > 0 && req.verifyJWTandProfile.todolist_perso) || req.verifyJWTandProfile.todolist_modification)
+        {
+            next();
+        }
+        else
+        {
+            logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
+            res.status(403);
+            res.send('Accès refusé par le contrôle de profile');
+        }
+        
+    }
+}
+
+const addToHimself = () => {
+    return function(req, res, next) {
+        if((req.verifyJWTandProfile.idPersonne == req.body.idExecutant && req.verifyJWTandProfile.todolist_perso) || req.verifyJWTandProfile.todolist_modification)
+        {
+            next();
+        }
+        else
+        {
+            logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
+            res.status(403);
+            res.send('Accès refusé par le contrôle de profile');
+        }
+        
+    }
+}
+
 //authentification
 router.post('/login',                      httpLogger(),                                                                                   connexionCtrl.login );
 router.post('/mfaNeeded',                  httpLogger(),                                                                                   connexionCtrl.mfaNeeded );
@@ -126,6 +220,22 @@ router.get('/messagesGeneraux/getMessagesTypes',              httpLogger(),     
 router.post('/messagesGeneraux/addMessage',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['messages_ajout']),       modificationLogger(),  messagesGenerauxCtrl.addMessage);
 router.post('/messagesGeneraux/updateMessage',                httpLogger(), jwtFunctions.verifyJWTandProfile(['messages_ajout']),       modificationLogger(),  messagesGenerauxCtrl.updateMessage);
 router.post('/messagesGeneraux/deleteMessage',                httpLogger(), jwtFunctions.verifyJWTandProfile(['messages_suppression']), suppressionLogger(),   messagesGenerauxCtrl.deleteMessage);
+
+//ToDoList
+router.get('/todolist/getPersonsForTDL',      httpLogger(), jwtFunctions.verifyJWTandProfile(['todolist_lecture']),                                                    toDoListCtrl.getPersonsForTDL);
+router.get('/todolist/getPioritesForTDL',     httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),                                                 toDoListCtrl.getPioritesForTDL);
+router.get('/todolist/getAllTDL',             httpLogger(), jwtFunctions.verifyJWTandProfile(['todolist_lecture']),                                                    toDoListCtrl.getAllTDL);
+router.post('/todolist/getOneTDL',            httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),   hisOwnTdl(),                                  toDoListCtrl.getOneTDL);
+router.get('/todolist/getUnaffectedTDL',      httpLogger(), jwtFunctions.verifyJWTandProfile(['todolist_lecture']),                                                    toDoListCtrl.getUnaffectedTDL);
+router.get('/todolist/getClosedTDL',          httpLogger(), jwtFunctions.verifyJWTandProfile(['todolist_lecture']),                                                    toDoListCtrl.getClosedTDL);
+router.post('/todolist/getTDLonePerson',      httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),   hisOwnTdlArray(),                             toDoListCtrl.getTDLonePerson);
+router.post('/todolist/addTDL',               httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),   addToHimself(),        modificationLogger(),  toDoListCtrl.addTDL);
+router.post('/todolist/updateTDLAffectation', httpLogger(), jwtFunctions.verifyJWTandProfile(['todolist_modification']),                        modificationLogger(),  toDoListCtrl.updateTDLAffectation);
+router.post('/todolist/updateTDL',            httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),   editHisOwnTdl(),       modificationLogger(),  toDoListCtrl.updateTDL);
+router.post('/todolist/completedTDL',         httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),   editHisOwnTdl(),       modificationLogger(),  toDoListCtrl.completedTDL);
+router.post('/todolist/unCompletedTDL',       httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),   editHisOwnTdl(),       modificationLogger(),  toDoListCtrl.unCompletedTDL);
+router.post('/todolist/duplicateTDL',         httpLogger(), jwtFunctions.verifyJWTandProfile(['todolist_modification']),                        modificationLogger(),  toDoListCtrl.duplicateTDL);
+router.post('/todolist/deleteTDL',            httpLogger(), jwtFunctions.verifyJWTandProfile(['todolist_modification']),                        suppressionLogger(),   toDoListCtrl.deleteTDL);
 
 //settings Métiers
 router.get('/settingsMetiers/getCategoriesMateriels',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['categories_lecture']),                                    settingsMetiersCtrl.getCategoriesMateriels);
