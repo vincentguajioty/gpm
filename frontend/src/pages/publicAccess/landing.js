@@ -30,7 +30,7 @@ const Landing = () => {
 					<Row className="justify-content-center">
 						<Col xs={11} sm={10}>
 							<h4 className="fw-normal mb-0 fs-1 fs-md-2">
-								Bienvenue sur {process.env.REACT_APP_NAME}
+								Bienvenue sur {window.__ENV__.APP_NAME}
 							</h4>
 	
 							<Row className="gx-2 my-4">

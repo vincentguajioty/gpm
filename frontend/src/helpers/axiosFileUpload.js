@@ -5,7 +5,7 @@ import HabilitationService from 'services/habilitationsService';
 
 const instance = axios.create({
     withCredentials: true,
-    baseURL: process.env.REACT_APP_BACKEND_URL,
+    baseURL: window.__ENV__.APP_BACKEND_URL,
 });
 
 /// Request interceptor to add useful headers
@@ -14,7 +14,7 @@ const onRequestFulfilled = async (config) => {
     {
         if(moment(HabilitationService.tokenValidUntil).subtract(1, 'second') <= moment(new Date()))
         {
-            const response = await axios.post(process.env.REACT_APP_BACKEND_URL+'/refreshToken', {
+            const response = await axios.post(window.__ENV__.APP_BACKEND_URL+'/refreshToken', {
                 expiredToken: HabilitationService.token,
                 refreshToken: HabilitationService.refreshToken,
             });

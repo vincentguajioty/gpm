@@ -27,7 +27,7 @@ const Logo = ({ at, width, className, textClass, ...rest }) => {
         )}
       >
         <img className="me-2" src={logo} alt="Logo" width={width} />
-        <span className={classNames('font-sans-serif', textClass)}>{process.env.REACT_APP_NAME}</span>
+        <span className={classNames('font-sans-serif', textClass)}>{window.__ENV__.APP_NAME}</span>
       </div>
     </Link>
   );

@@ -41,7 +41,7 @@ const AuthPwdForgotten = ({ leftSideContent, children, footer = true }) => {
                                                 className="link-light mb-4 font-sans-serif fw-bolder fs-4 d-inline-block"
                                                 to="/"
                                             >
-                                                {process.env.REACT_APP_NAME}
+                                                {window.__ENV__.APP_NAME}
                                             </Link>
                                             <p className="opacity-75 text-white">
                                                 Mot de passe oublié, procédure de réinitialisation du mot de passe en autonomie

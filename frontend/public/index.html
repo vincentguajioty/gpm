@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <script src="%PUBLIC_URL%/env.js"></script>
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,7 +13,12 @@
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700|Poppins:100,200,300,400,500,600,700,800,900&display=swap"
     />
 
-    <title>%REACT_APP_NAME%</title>
+    <title id="title_APP_NAME"></title>
+    <script type="text/javascript">
+      window.onload = function f() {
+        document.getElementById('title_APP_NAME').innerHTML = window.__ENV__.APP_NAME;
+      }
+    </script>
   </head>
 
   <body>

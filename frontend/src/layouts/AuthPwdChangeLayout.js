@@ -41,7 +41,7 @@ const AuthPwdChangeLayout = ({ leftSideContent, children, footer = true }) => {
                         className="link-light mb-4 font-sans-serif fw-bolder fs-4 d-inline-block"
                         to="/"
                       >
-                        {process.env.REACT_APP_NAME}
+                        {window.__ENV__.APP_NAME}
                       </Link>
                       <p className="opacity-75 text-white">
                         Il s'agit de votre première connexion ? Ou votre mot de passe a été réinitialisé ? Merci d'en définir un nouveau !

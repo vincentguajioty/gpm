@@ -125,9 +125,9 @@ const LoginForm = ({ hasLabel }) => {
         </Form.Group>
       : null}
 
-      {process.env.REACT_APP_RECAPTCHA_ENABLED === "1" ? (
+      {window.__ENV__.APP_RECAPTCHA_ENABLED === "1" ? (
         <ReCAPTCHA
-          sitekey={process.env.REACT_APP_RECAPTCHA_SITEKEY}
+          sitekey={window.__ENV__.APP_RECAPTCHA_SITEKEY}
           onChange={token => setReCaptchaToken(token)}
           onExpired={e => setReCaptchaToken("")}
         />

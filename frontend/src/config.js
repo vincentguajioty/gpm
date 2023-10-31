@@ -1,4 +1,4 @@
-export const version = process.env.REACT_APP_VERSION;
+export const version = window.__ENV__.APP_VERSION;
 export const navbarBreakPoint = 'xl'; // Vertical navbar breakpoint
 export const topNavbarBreakpoint = 'lg';
 export const settings = {
