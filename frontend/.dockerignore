@@ -5,3 +5,4 @@ Dockerfile-PROD
 .git
 .gitignore
 .dockerignore
+public/env.js
