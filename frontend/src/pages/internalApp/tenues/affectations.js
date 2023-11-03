@@ -147,6 +147,7 @@ const AffectationsTenues = () => {
         else
         {
             setValue("dateAffectation", new Date());
+            setValue("idPersonne", 0);
         }
 
         let getData = await Axios.get('/tenues/getCatalogue');

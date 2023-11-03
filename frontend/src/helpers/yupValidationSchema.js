@@ -261,11 +261,13 @@ export const affectationsTenuesForm = Yup.object().shape({
     personneNonGPM: Yup
         .string()
         .nullable(true)
-        .when("idPersonne", {
-            is: "0",
-            then: Yup
-                .string()
-                .nullable(true)
-                .required(champObligatoire),
-        }),
+        .test('isExternal', champObligatoire,
+            function(value){
+                if(idPersonne.value == 0)
+                {
+                    if(value == null || value == ''){return false;}
+                }
+                return true;
+            }
+        ),
 });
