@@ -64,7 +64,7 @@ const Tenues = () => {
                             <SoftBadge bg='success'>{item.stockCatalogueTenue}</SoftBadge>
                 ,
                 affectations: <>{item.affectations.map((affect, i)=>{return(
-                    <SoftBadge bg='info'>{affect.personneNonGPM}{affect.identifiant}</SoftBadge>
+                    <SoftBadge bg='info' className='me-1'>{affect.personneNonGPM}{affect.identifiant}</SoftBadge>
                 )})}</>,
                 actions:
                     <>

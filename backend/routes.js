@@ -205,10 +205,18 @@ router.post('/fournisseurs/disableAesAndDelete',      httpLogger(), jwtFunctions
 router.post('/fournisseurs/updateFournisseurAesData', httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_modification']), jwtFunctions.decryptAesToken(), modificationLogger(), fournisseursAesCtrl.updateFournisseurAesData);
 
 //Tenues - Catalogue
-router.get('/tenues/getCatalogue',     httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_lecture']),                            tenuesCtrl.getCatalogue);
-router.post('/tenues/addCatalogue',    httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_ajout']),        modificationLogger(), tenuesCtrl.addCatalogue);
-router.post('/tenues/updateCatalogue', httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_modification']), modificationLogger(), tenuesCtrl.updateCatalogue);
-router.post('/tenues/deleteCatalogue', httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_suppression']),  suppressionLogger(),  tenuesCtrl.deleteCatalogue);
+
+router.get('/tenues/getPersonnesSuggested',     httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_lecture']),                            tenuesCtrl.getPersonnesSuggested);
+router.get('/tenues/getCatalogue',              httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_lecture']),                            tenuesCtrl.getCatalogue);
+router.post('/tenues/addCatalogue',             httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_ajout']),        modificationLogger(), tenuesCtrl.addCatalogue);
+router.post('/tenues/updateCatalogue',          httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_modification']), modificationLogger(), tenuesCtrl.updateCatalogue);
+router.post('/tenues/deleteCatalogue',          httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_suppression']),  suppressionLogger(),  tenuesCtrl.deleteCatalogue);
+//Tenues - Affectations
+router.get('/tenues/getAffectations',     httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_lecture']),                            tenuesCtrl.getAffectations);
+router.get('/tenues/getAffectationsRow',  httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_lecture']),                            tenuesCtrl.getAffectationsRow);
+router.post('/tenues/addAffectations',    httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_ajout']),        modificationLogger(), tenuesCtrl.addAffectations);
+router.post('/tenues/updateAffectations', httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_modification']), modificationLogger(), tenuesCtrl.updateAffectations);
+router.post('/tenues/deleteAffectations', httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_suppression']),  suppressionLogger(),  tenuesCtrl.deleteAffectations);
 
 //referentiels
 router.get('/referentiels/getReferentiels',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_lecture']),                                                 referentielsCtrl.getReferentiels);

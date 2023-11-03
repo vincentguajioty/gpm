@@ -245,3 +245,27 @@ export const catalogueTenuesForm = Yup.object().shape({
         .string()
         .required(champObligatoire),
 });
+
+export const affectationsTenuesForm = Yup.object().shape({
+    idCatalogueTenue: Yup
+        .number()
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    dateAffectation: Yup
+        .date()
+        .required(champObligatoire),
+    idPersonne: Yup
+        .number()
+        .min(0, champObligatoire)
+        .required(champObligatoire),
+    personneNonGPM: Yup
+        .string()
+        .nullable(true)
+        .when("idPersonne", {
+            is: "0",
+            then: Yup
+                .string()
+                .nullable(true)
+                .required(champObligatoire),
+        }),
+});
