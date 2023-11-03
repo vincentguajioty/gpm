@@ -205,7 +205,6 @@ router.post('/fournisseurs/disableAesAndDelete',      httpLogger(), jwtFunctions
 router.post('/fournisseurs/updateFournisseurAesData', httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_modification']), jwtFunctions.decryptAesToken(), modificationLogger(), fournisseursAesCtrl.updateFournisseurAesData);
 
 //Tenues - Catalogue
-
 router.get('/tenues/getPersonnesSuggested',     httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_lecture']),                            tenuesCtrl.getPersonnesSuggested);
 router.get('/tenues/getCatalogue',              httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_lecture']),                            tenuesCtrl.getCatalogue);
 router.post('/tenues/addCatalogue',             httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_ajout']),        modificationLogger(), tenuesCtrl.addCatalogue);
@@ -217,6 +216,12 @@ router.get('/tenues/getAffectationsRow',  httpLogger(), jwtFunctions.verifyJWTan
 router.post('/tenues/addAffectations',    httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_ajout']),        modificationLogger(), tenuesCtrl.addAffectations);
 router.post('/tenues/updateAffectations', httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_modification']), modificationLogger(), tenuesCtrl.updateAffectations);
 router.post('/tenues/deleteAffectations', httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_suppression']),  suppressionLogger(),  tenuesCtrl.deleteAffectations);
+//Tenues - Cautions
+router.get('/tenues/getCautions',     httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_lecture']),                            tenuesCtrl.getCautions);
+router.get('/tenues/getCautionsRow',  httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_lecture']),                            tenuesCtrl.getCautionsRow);
+router.post('/tenues/addCautions',    httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_ajout']),        modificationLogger(), tenuesCtrl.addCautions);
+router.post('/tenues/updateCautions', httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_modification']), modificationLogger(), tenuesCtrl.updateCautions);
+router.post('/tenues/deleteCautions', httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_suppression']),  suppressionLogger(),  tenuesCtrl.deleteCautions);
 
 //referentiels
 router.get('/referentiels/getReferentiels',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_lecture']),                                                 referentielsCtrl.getReferentiels);

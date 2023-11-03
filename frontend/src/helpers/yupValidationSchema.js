@@ -271,3 +271,29 @@ export const affectationsTenuesForm = Yup.object().shape({
             }
         ),
 });
+
+export const cautionsForm = Yup.object().shape({
+    dateEmissionCaution: Yup
+        .date()
+        .required(champObligatoire),
+    montantCaution: Yup
+        .number()
+        .min(0, champObligatoire)
+        .required(champObligatoire),
+    idPersonne: Yup
+        .number()
+        .min(0, champObligatoire)
+        .required(champObligatoire),
+    personneNonGPM: Yup
+        .string()
+        .nullable(true)
+        .test('isExternal', champObligatoire,
+            function(value){
+                if(idPersonne.value == 0)
+                {
+                    if(value == null || value == ''){return false;}
+                }
+                return true;
+            }
+        ),
+});

@@ -147,7 +147,7 @@ exports.getAffectations = async (req, res)=>{
     try {
         let results = await db.query(`
             (
-                SELECT
+                SELECT DISTINCT
                     'interne' as type,
                     pr.idPersonne as idPersonne,
                     CONCAT(nomPersonne, " ", prenomPersonne) as nomPrenom
@@ -327,6 +327,158 @@ exports.updateAffectations = async (req, res)=>{
 exports.deleteAffectations = async (req, res)=>{
     try {
         const deleteResult = await fonctionsDelete.tenuesAffectationsDelete(req.verifyJWTandProfile.idPersonne , req.body.idTenue);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getCautions = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            (
+                SELECT DISTINCT
+                    'interne' as type,
+                    pr.idPersonne as idPersonne,
+                    CONCAT(nomPersonne, " ", prenomPersonne) as nomPrenom
+                FROM
+                    PERSONNE_REFERENTE pr
+                    LEFT OUTER JOIN CAUTIONS ta ON pr.idPersonne = ta.idPersonne
+                WHERE
+                    ta.idCaution IS NOT NULL
+            )
+            UNION
+            (
+                SELECT DISTINCT
+                    'externe' as type,
+                    null as idPersonne,
+                    personneNonGPM as nomPrenom
+                FROM
+                    CAUTIONS ta
+                WHERE
+                    personneNonGPM IS NOT NULL
+                    AND
+                    idPersonne IS NULL
+            )
+        ;`);
+
+        for(const personne of results)
+        {
+            if(personne.idPersonne > 0)
+            {
+                let cautions = await db.query(`
+                    SELECT
+                        ta.*
+                    FROM
+                        CAUTIONS ta
+                    WHERE
+                        ta.idPersonne = :idPersonne
+                ;`,{
+                    idPersonne: personne.idPersonne,
+                });
+                personne.cautions = cautions;
+            }
+            else
+            {
+                let cautions = await db.query(`
+                    SELECT
+                        ta.*
+                    FROM
+                        CAUTIONS ta
+                    WHERE
+                        ta.personneNonGPM = :personneNonGPM
+                ;`,{
+                    personneNonGPM: personne.nomPrenom,
+                });
+                personne.cautions = cautions;
+            }
+        }
+
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getCautionsRow = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                *
+            FROM
+                CAUTIONS
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.addCautions = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                CAUTIONS
+            SET
+                idPersonne = :idPersonne,
+                personneNonGPM = :personneNonGPM,
+                montantCaution = :montantCaution,
+                dateEmissionCaution = :dateEmissionCaution,
+                dateExpirationCaution = :dateExpirationCaution,
+                detailsMoyenPaiement = :detailsMoyenPaiement
+        `,{
+            idPersonne: req.body.idPersonne || null,
+            personneNonGPM: req.body.personneNonGPM || null,
+            montantCaution: req.body.montantCaution || null,
+            dateEmissionCaution: req.body.dateEmissionCaution || null,
+            dateExpirationCaution: req.body.dateExpirationCaution || null,
+            detailsMoyenPaiement: req.body.detailsMoyenPaiement || null,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateCautions = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                CAUTIONS
+            SET
+                idPersonne = :idPersonne,
+                personneNonGPM = :personneNonGPM,
+                montantCaution = :montantCaution,
+                dateEmissionCaution = :dateEmissionCaution,
+                dateExpirationCaution = :dateExpirationCaution,
+                detailsMoyenPaiement = :detailsMoyenPaiement
+            WHERE
+                idCaution = :idCaution
+        `,{
+            idPersonne: req.body.idPersonne || null,
+            personneNonGPM: req.body.personneNonGPM || null,
+            montantCaution: req.body.montantCaution || null,
+            dateEmissionCaution: req.body.dateEmissionCaution || null,
+            dateExpirationCaution: req.body.dateExpirationCaution || null,
+            detailsMoyenPaiement: req.body.detailsMoyenPaiement || null,
+            idCaution: req.body.idCaution,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.deleteCautions = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.cautionsDelete(req.verifyJWTandProfile.idPersonne , req.body.idCaution);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
