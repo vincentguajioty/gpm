@@ -18,6 +18,8 @@ const commandesCtrl = require('./controllers/commandes');
 const fournisseursCtrl = require('./controllers/fournisseurs');
 const fournisseursAesCtrl = require('./controllers/fournisseursAes');
 
+const tenuesCtrl = require('./controllers/tenues');
+
 const referentielsCtrl = require('./controllers/referentiels');
 const messagesGenerauxCtrl = require('./controllers/messagesGeneraux');
 const toDoListCtrl = require('./controllers/toDoList');
@@ -189,8 +191,6 @@ router.post('/blackListSession',           httpLogger(), jwtFunctions.verifyJWTa
 //OPERATIONNEL - Matériels
 router.get('/materiels/getMateriels',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),  materielsCtrl.getMateriels);
 
-//commandes
-
 //Fournisseurs - Informations de base
 router.get('/fournisseurs/getFournisseurs',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),      jwtFunctions.decryptAesToken(),  fournisseursCtrl.getFournisseurs);
 router.post('/fournisseurs/getOneFournisseur',                httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),      jwtFunctions.decryptAesToken(),  fournisseursCtrl.getOneFournisseur);
@@ -204,6 +204,11 @@ router.post('/fournisseurs/changeKey',                httpLogger(), jwtFunctions
 router.post('/fournisseurs/disableAesAndDelete',      httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                jwtFunctions.decryptAesToken(), suppressionLogger(),  fournisseursAesCtrl.disableAesAndDelete);
 router.post('/fournisseurs/updateFournisseurAesData', httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_modification']), jwtFunctions.decryptAesToken(), modificationLogger(), fournisseursAesCtrl.updateFournisseurAesData);
 
+//Tenues - Catalogue
+router.get('/tenues/getCatalogue',     httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_lecture']),                            tenuesCtrl.getCatalogue);
+router.post('/tenues/addCatalogue',    httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_ajout']),        modificationLogger(), tenuesCtrl.addCatalogue);
+router.post('/tenues/updateCatalogue', httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_modification']), modificationLogger(), tenuesCtrl.updateCatalogue);
+router.post('/tenues/deleteCatalogue', httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_suppression']),  suppressionLogger(),  tenuesCtrl.deleteCatalogue);
 
 //referentiels
 router.get('/referentiels/getReferentiels',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_lecture']),                                                 referentielsCtrl.getReferentiels);

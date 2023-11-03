@@ -239,3 +239,9 @@ export const todolistEditForm = Yup.object().shape({
         .string()
         .required(champObligatoire),
 });
+
+export const catalogueTenuesForm = Yup.object().shape({
+    libelleCatalogueTenue: Yup
+        .string()
+        .required(champObligatoire),
+});

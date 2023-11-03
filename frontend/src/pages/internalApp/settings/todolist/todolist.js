@@ -68,12 +68,6 @@ const ToDoList = () => {
                     componentsHaveToReload={componentsHaveToReload}
                     setComponentsHaveToReload={setComponentsHaveToReload}
                 />
-                <ToDoListTable
-                    titreBox='BOX POUR TEST'
-                    filtre='all'
-                    componentsHaveToReload={componentsHaveToReload}
-                    setComponentsHaveToReload={setComponentsHaveToReload}
-                />
             </Col>
         </Row>
     </>);
