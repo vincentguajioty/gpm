@@ -208,7 +208,7 @@ const Tenues = () => {
             </Offcanvas.Header>
             <Offcanvas.Body>
                 <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
-                <Form.Group className="mb-3">
+                    <Form.Group className="mb-3">
                         <Form.Label>Libellé</Form.Label>
                         <Form.Control size="sm" type="text" name='libelleCatalogueTenue' id='libelleCatalogueTenue' {...register('libelleCatalogueTenue')}/>
                         <small className="text-danger">{errors.libelleCatalogueTenue?.message}</small>

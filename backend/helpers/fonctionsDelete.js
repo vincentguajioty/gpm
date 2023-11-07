@@ -1885,7 +1885,7 @@ const vhfCanauxDocDelete = async (idLogger, idDocCanalVHF) => {
         }
 
         let finalDeleteQuery = await db.query(`
-            SELECT * FROM DOCUMENTS_CANAL_VHF WHERE idDocCanalVHF = :idDocCanalVHF
+            DELETE FROM DOCUMENTS_CANAL_VHF WHERE idDocCanalVHF = :idDocCanalVHF
         ;`,{
             idDocCanalVHF : idDocCanalVHF,
         });

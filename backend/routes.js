@@ -19,6 +19,7 @@ const fournisseursCtrl = require('./controllers/fournisseurs');
 const fournisseursAesCtrl = require('./controllers/fournisseursAes');
 
 const tenuesCtrl = require('./controllers/tenues');
+const vhfCtrl = require('./controllers/vhf');
 
 const referentielsCtrl = require('./controllers/referentiels');
 const messagesGenerauxCtrl = require('./controllers/messagesGeneraux');
@@ -222,6 +223,17 @@ router.get('/tenues/getCautionsRow',  httpLogger(), jwtFunctions.verifyJWTandPro
 router.post('/tenues/addCautions',    httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_ajout']),        modificationLogger(), tenuesCtrl.addCautions);
 router.post('/tenues/updateCautions', httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_modification']), modificationLogger(), tenuesCtrl.updateCautions);
 router.post('/tenues/deleteCautions', httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_suppression']),  suppressionLogger(),  tenuesCtrl.deleteCautions);
+
+//VHF Canaux
+router.get('/vhf/getFrequences',     httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_lecture']),                            vhfCtrl.getFrequences);
+router.post('/vhf/addCanal',         httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_ajout']),        modificationLogger(), vhfCtrl.addCanal);
+router.post('/vhf/updateCanal',      httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_modification']), modificationLogger(), vhfCtrl.updateCanal);
+router.post('/vhf/deleteCanal',      httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_suppression']),  suppressionLogger(),  vhfCtrl.deleteCanal);
+//VHF Canaux Attachements
+router.post('/vhf/getAllDocumentsOneCanal', httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_lecture',]),                            vhfCtrl.getAllDocumentsOneCanal);
+router.post('/vhf/uploadCanalAttached',     httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_modification',]), modificationLogger(), vhfCtrl.uploadCanalAttachedMulter, vhfCtrl.uploadCanalAttached);
+router.post('/vhf/updateMetaDataCanal',     httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_modification',]), modificationLogger(), vhfCtrl.updateMetaDataCanal);
+router.post('/vhf/dropCanalDocument',       httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_suppression',]) , suppressionLogger(),  vhfCtrl.dropCanalDocument);
 
 //referentiels
 router.get('/referentiels/getReferentiels',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_lecture']),                                                 referentielsCtrl.getReferentiels);

@@ -297,3 +297,15 @@ export const cautionsForm = Yup.object().shape({
             }
         ),
 });
+
+export const frequencesForm = Yup.object().shape({
+    chName: Yup
+        .string()
+        .required(champObligatoire),
+});
+
+export const frequencesAttachedForm = Yup.object().shape({
+    nomDocCanalVHF: Yup
+        .string()
+        .required(champObligatoire),
+});
