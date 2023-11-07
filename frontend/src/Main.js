@@ -1,10 +1,15 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import AppContext from 'context/Context';
 import { settings } from './config';
 import { getColor, getItemFromStore } from 'helpers/utils';
 import { configReducer } from './reducers/configReducer';
 import useToggleStyle from './hooks/useToggleStyle';
+import { Card } from 'react-bootstrap';
+import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
+
+import ConfigurationService from 'services/configurationService';
+import { Axios } from 'helpers/axios';
 
 import { Chart as ChartJS, registerables } from 'chart.js';
 ChartJS.register(...registerables);
@@ -28,6 +33,7 @@ const Main = props => {
   };
 
   const [config, configDispatch] = useReducer(configReducer, configState);
+  const [configFromBO, setConfigFromBO] = useState(false);
 
   const { isLoaded } = useToggleStyle(
     config.isRTL,
@@ -53,7 +59,21 @@ const Main = props => {
     });
   };
 
-  if (!isLoaded) {
+  const getConfigFromBO = async () => {
+    try {
+      const response = await Axios.get('getConfig');
+      ConfigurationService.setConfig(response.data[0]);
+      setConfigFromBO(true);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(()=>{
+    getConfigFromBO();
+  },[])
+
+  if (!isLoaded || !configFromBO) {
     return (
       <div
         style={{
