@@ -6,12 +6,12 @@ import HabilitationService from 'services/habilitationsService';
 
 const Logout = () => {
     const clean = async () => {
+		const tokenToClean = HabilitationService.token;
+		localStorage.clear();
 		const dropSession = await Axios.post('dropSession',
 		{
-			jwtToken: HabilitationService.token,
+			jwtToken: tokenToClean,
 		});
-
-		localStorage.clear();
 	}
 	
 	useEffect(() => {

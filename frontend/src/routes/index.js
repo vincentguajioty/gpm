@@ -15,7 +15,6 @@ import DeclarationIncident from 'pages/publicAccess/declarationIncident';
 import TracerConso from 'pages/publicAccess/tracerConso';
 
 import Home from 'pages/internalApp/home/home';
-import LoadingConfig from 'pages/home/loadingConfig';
 import Login from 'pages/home/login';
 import Logout from 'pages/home/logout';
 import LoginCGU from 'pages/home/loginCGU';
@@ -74,13 +73,9 @@ import APropos from 'pages/internalApp/settings/aPropos/aPropos';
 const FalconRoutes = () => {
   return (
     <Routes>
-      <Route element={<ErrorLayout />}>
-        <Route path="/loadingConfig" element={<LoadingConfig />} />
-      </Route>
-
       <Route element={<AuthSimpleLayout />}>
-          <Route path="/logout" element={<Logout />} />
-        </Route>
+        <Route path="/logout" element={<Logout />} />
+      </Route>
       
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Landing />} />
