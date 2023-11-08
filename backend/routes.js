@@ -246,7 +246,16 @@ router.post('/vhf/dropPlanDocument',        httpLogger(), jwtFunctions.verifyJWT
 //VHF Plans canaux affecation
 router.post('/vhf/getCanauxOnePlan',         httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_plan_lecture']),                            vhfCtrl.getCanauxOnePlan);
 router.post('/vhf/updateCanauxOnePlan',      httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_plan_modification']), modificationLogger(), vhfCtrl.updateCanauxOnePlan);
-
+//VHF Equipements
+router.get('/vhf/getEquipementsVhf',         httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_lecture']),                             vhfCtrl.getEquipementsVhf);
+router.post('/vhf/getOneEquipement',         httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_lecture']),                             vhfCtrl.getOneEquipement);
+router.post('/vhf/addEquipement',            httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_ajout']),         modificationLogger(), vhfCtrl.addEquipement);
+router.post('/vhf/updateEquipement',         httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_modification']),  modificationLogger(), vhfCtrl.updateEquipement);
+router.post('/vhf/deleteEquipement',         httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_suppression',]) , suppressionLogger(),  vhfCtrl.deleteEquipement);
+//VHF Equipements Accessoires
+router.post('/vhf/addAccessoire',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_ajout']),         modificationLogger(), vhfCtrl.addAccessoire);
+router.post('/vhf/updateAccessoire',                httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_modification']),  modificationLogger(), vhfCtrl.updateAccessoire);
+router.post('/vhf/vhfEquipementsAccessoiresDelete', httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_suppression',]) , suppressionLogger(),  vhfCtrl.vhfEquipementsAccessoiresDelete);
 
 //referentiels
 router.get('/referentiels/getReferentiels',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_lecture']),                                                 referentielsCtrl.getReferentiels);

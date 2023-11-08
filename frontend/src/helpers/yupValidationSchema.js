@@ -324,3 +324,21 @@ export const planAttachedForm = Yup.object().shape({
 
 export const planCanauxForm = Yup.object().shape({
 });
+
+export const vhfEquipementsAddForm = Yup.object().shape({
+    vhfIndicatif: Yup
+        .string()
+        .required(champObligatoire),
+});
+
+export const vhfEquipementsUpdateForm = Yup.object().shape({
+    vhfIndicatif: Yup
+        .string()
+        .required(champObligatoire),
+});
+
+export const vhfAccessoiresForm = Yup.object().shape({
+    libelleVhfAccessoire: Yup
+        .string()
+        .required(champObligatoire),
+});

@@ -8,7 +8,7 @@ import HabilitationService from 'services/habilitationsService';
 
 import { Axios } from 'helpers/axios';
 
-const PlansCanaux = ({vhfPlan}) => {
+const PlansCanaux = ({vhfPlan, lockEdit = false, displayNameInButton = false}) => {
     const[readyToDisplay, setReadyToDisplay] = useState(false);
     const[canauxOnePlan, setCanauxOnePlan] = useState([]);
     const[frequences, setFrequences] = useState([]);
@@ -93,7 +93,7 @@ const PlansCanaux = ({vhfPlan}) => {
             variant="outline-success"
             className="me-1"
             onClick={handleShowCanauxModal}
-        >Voir la programmation</IconButton>
+        >{displayNameInButton ? vhfPlan.libellePlan : 'Voir la programmation'}</IconButton>
 
         <Modal show={showCanauxModal} onHide={handleCloseCanauxModal} backdrop="static" keyboard={false}>
             <Modal.Header>
@@ -115,12 +115,12 @@ const PlansCanaux = ({vhfPlan}) => {
                                 <tr key={i}>
                                     <td>
                                         <Form.Group className="mb-3">
-                                            <Form.Control type="number" min="1" value={prog.numeroCanal} onChange={(e) => {updateNumeroCanal(i, e.target.value)}} disabled={!HabilitationService.habilitations['vhf_plan_modification']} />
+                                            <Form.Control type="number" min="1" value={prog.numeroCanal} onChange={(e) => {updateNumeroCanal(i, e.target.value)}} disabled={!HabilitationService.habilitations['vhf_plan_modification'] || lockEdit} />
                                         </Form.Group>
                                     </td>
                                     <td>
                                         <Form.Group className="mb-3">
-                                            <Form.Select size="sm" value={prog.idVhfCanal} onChange={(e) => {updateFrequence(i, e.target.value)}} disabled={!HabilitationService.habilitations['vhf_plan_modification']}>
+                                            <Form.Select size="sm" value={prog.idVhfCanal} onChange={(e) => {updateFrequence(i, e.target.value)}} disabled={!HabilitationService.habilitations['vhf_plan_modification'] || lockEdit}>
                                                 <option key="0" value="">--- Aucune fréquence programmée ---</option>
                                                 {frequences.map((freq, i) => {
                                                     return (<option key={freq.idVhfCanal} value={freq.idVhfCanal}>{freq.chName}</option>);
@@ -130,17 +130,19 @@ const PlansCanaux = ({vhfPlan}) => {
                                     </td>
                                 </tr>
                             )})}
-                            <tr key={0}>
-                                <td>
-                                    <Form.Group className="mb-3">
-                                        <Form.Control type="number" min="1" value='' placeholder='Nouvelle entrée' onChange={(e) => {addFromNumeroCanal(e.target.value)}} disabled={!HabilitationService.habilitations['vhf_plan_modification']} />
-                                    </Form.Group>
-                                </td>
-                                <td></td>
-                            </tr>
+                            {HabilitationService.habilitations['vhf_plan_modification'] && !lockEdit ?
+                                <tr key={0}>
+                                    <td>
+                                        <Form.Group className="mb-3">
+                                            <Form.Control type="number" min="1" value='' placeholder='Nouvelle entrée' onChange={(e) => {addFromNumeroCanal(e.target.value)}} disabled={!HabilitationService.habilitations['vhf_plan_modification'] || lockEdit} />
+                                        </Form.Group>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            : null}
                         </tbody>
                     </Table>
-                    <Button variant='primary' className='me-2 mb-1' onClick={updateProg} disabled={!readyToDisplay}>{!readyToDisplay ? 'Patientez...' : 'Enregistrer les étapes'}</Button>
+                    {HabilitationService.habilitations['vhf_plan_modification'] && !lockEdit ? <Button variant='primary' className='me-2 mb-1' onClick={updateProg} disabled={!readyToDisplay}>{!readyToDisplay ? 'Patientez...' : 'Enregistrer les étapes'}</Button> : null}
                 </>
             : <LoaderInfiniteLoop/>}
             </Modal.Body>

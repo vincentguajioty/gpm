@@ -477,3 +477,245 @@ exports.updateCanauxOnePlan = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+//Equipements VHF
+exports.getEquipementsVhf = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                e.*,
+                ve.libelleVhfEtat,
+                p.libellePlan,
+                pr.nomPersonne,
+                pr.prenomPersonne,
+                pr.identifiant,
+                t.libelleTechno,
+                te.libelleType,
+                COUNT(a.idVhfAccessoire) as nbAccessoires
+            FROM
+                VHF_EQUIPEMENTS e
+                LEFT OUTER JOIN VHF_ETATS ve ON e.idVhfEtat = ve.idVhfEtat
+                LEFT OUTER JOIN VHF_PLAN p ON e.idVhfPlan = p.idVhfPlan
+                LEFT OUTER JOIN PERSONNE_REFERENTE pr ON e.idResponsable = pr.idPersonne
+                LEFT OUTER JOIN VHF_TECHNOLOGIES t ON e.idVhfTechno = t.idVhfTechno
+                LEFT OUTER JOIN VHF_TYPES_EQUIPEMENTS te ON e.idVhfType = te.idVhfType
+                LEFT OUTER JOIN VHF_ACCESSOIRES a ON e.idVhfEquipement = a.idVhfEquipement
+            GROUP BY
+                e.idVhfEquipement
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getOneEquipement = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                e.*,
+                ve.libelleVhfEtat,
+                p.libellePlan,
+                pr.nomPersonne,
+                pr.prenomPersonne,
+                pr.identifiant,
+                t.libelleTechno,
+                te.libelleType,
+                COUNT(a.idVhfAccessoire) as nbAccessoires
+            FROM
+                VHF_EQUIPEMENTS e
+                LEFT OUTER JOIN VHF_ETATS ve ON e.idVhfEtat = ve.idVhfEtat
+                LEFT OUTER JOIN VHF_PLAN p ON e.idVhfPlan = p.idVhfPlan
+                LEFT OUTER JOIN PERSONNE_REFERENTE pr ON e.idResponsable = pr.idPersonne
+                LEFT OUTER JOIN VHF_TECHNOLOGIES t ON e.idVhfTechno = t.idVhfTechno
+                LEFT OUTER JOIN VHF_TYPES_EQUIPEMENTS te ON e.idVhfType = te.idVhfType
+                LEFT OUTER JOIN VHF_ACCESSOIRES a ON e.idVhfEquipement = a.idVhfEquipement
+            WHERE
+                e.idVhfEquipement = :idVhfEquipement
+            GROUP BY
+                e.idVhfEquipement
+        ;`,{
+            idVhfEquipement: req.body.idVhfEquipement,
+        });
+
+        for(const device of results)
+        {
+            let accessoires = await db.query(`
+                SELECT
+                    a.*,
+                    t.libelleVhfAccessoireType
+                FROM
+                    VHF_ACCESSOIRES a
+                    LEFT OUTER JOIN VHF_ACCESSOIRES_TYPES t ON a.idVhfAccessoireType = t.idVhfAccessoireType
+                WHERE
+                    a.idVhfEquipement = :idVhfEquipement
+            ;`,{
+                idVhfEquipement: device.idVhfEquipement,
+            });
+            device.accessoires = accessoires;
+        }
+
+        for(const device of results)
+        {
+            let documents = await db.query(`
+                SELECT
+                    *
+                FROM
+                    VIEW_DOCUMENTS_VHF
+                WHERE
+                    idVhfEquipement = :idVhfEquipement
+                ORDER BY
+                    nomDocVHF ASC
+            ;`,{
+                idVhfEquipement: device.idVhfEquipement,
+            });
+            device.documents = documents;
+        }
+
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.addEquipement = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                VHF_EQUIPEMENTS
+            SET
+                vhfIndicatif = :vhfIndicatif
+        `,{
+            vhfIndicatif: req.body.vhfIndicatif || null,
+        });
+        
+        let selectLast = await db.query(
+            'SELECT MAX(idVhfEquipement) as idVhfEquipement FROM VHF_EQUIPEMENTS;'
+        );
+
+        res.status(201);
+        res.json({idVhfEquipement: selectLast[0].idVhfEquipement});
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateEquipement = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VHF_EQUIPEMENTS
+            SET
+                vhfMarqueModele = :vhfMarqueModele,
+                vhfSN = :vhfSN,
+                vhfIndicatif = :vhfIndicatif,
+                idVhfEtat = :idVhfEtat,
+                idVhfType = :idVhfType,
+                idVhfTechno = :idVhfTechno,
+                idVhfPlan = :idVhfPlan,
+                dateDerniereProg = :dateDerniereProg,
+                idResponsable = :idResponsable,
+                remarquesVhfEquipement = :remarquesVhfEquipement
+            WHERE
+                idVhfEquipement = :idVhfEquipement
+        `,{
+            vhfMarqueModele: req.body.vhfMarqueModele || null,
+            vhfSN: req.body.vhfSN || null,
+            vhfIndicatif: req.body.vhfIndicatif || null,
+            idVhfEtat: req.body.idVhfEtat || null,
+            idVhfType: req.body.idVhfType || null,
+            idVhfTechno: req.body.idVhfTechno || null,
+            idVhfPlan: req.body.idVhfPlan || null,
+            dateDerniereProg: req.body.dateDerniereProg || null,
+            idResponsable: req.body.idResponsable || null,
+            remarquesVhfEquipement: req.body.remarquesVhfEquipement || null,
+            idVhfEquipement: req.body.idVhfEquipement,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.deleteEquipement = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.vhfEquipementsDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfEquipement);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//Accessoires Equipements VHF
+exports.addAccessoire = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                VHF_ACCESSOIRES
+            SET
+                libelleVhfAccessoire = :libelleVhfAccessoire,
+                marqueModeleVhfAccessoire = :marqueModeleVhfAccessoire,
+                idVhfAccessoireType = :idVhfAccessoireType,
+                SnVhfAccessoire = :SnVhfAccessoire,
+                remarquesVhfAccessoire = :remarquesVhfAccessoire,
+                idVhfEquipement = :idVhfEquipement
+        `,{
+            libelleVhfAccessoire: req.body.libelleVhfAccessoire || null,
+            marqueModeleVhfAccessoire: req.body.marqueModeleVhfAccessoire || null,
+            idVhfAccessoireType: req.body.idVhfAccessoireType || null,
+            SnVhfAccessoire: req.body.SnVhfAccessoire || null,
+            remarquesVhfAccessoire: req.body.remarquesVhfAccessoire || null,
+            idVhfEquipement: req.body.idVhfEquipement || null,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateAccessoire = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VHF_ACCESSOIRES
+            SET
+                libelleVhfAccessoire = :libelleVhfAccessoire,
+                marqueModeleVhfAccessoire = :marqueModeleVhfAccessoire,
+                idVhfAccessoireType = :idVhfAccessoireType,
+                SnVhfAccessoire = :SnVhfAccessoire,
+                remarquesVhfAccessoire = :remarquesVhfAccessoire
+            WHERE
+                idVhfAccessoire = :idVhfAccessoire
+        `,{
+            libelleVhfAccessoire: req.body.libelleVhfAccessoire || null,
+            marqueModeleVhfAccessoire: req.body.marqueModeleVhfAccessoire || null,
+            idVhfAccessoireType: req.body.idVhfAccessoireType || null,
+            SnVhfAccessoire: req.body.SnVhfAccessoire || null,
+            remarquesVhfAccessoire: req.body.remarquesVhfAccessoire || null,
+            idVhfAccessoire: req.body.idVhfAccessoire || null,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.vhfEquipementsAccessoiresDelete = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.vhfEquipementsAccessoiresDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfAccessoire);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
