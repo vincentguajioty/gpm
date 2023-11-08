@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Offcanvas, Button, Form, FloatingLabel, Table, Modal } from 'react-bootstrap';
+import { Offcanvas, Button, Form, Modal } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 import FalconComponentCard from 'components/common/FalconComponentCard';
 import ActionButton from 'components/common/ActionButton';
-import SimpleBarReact from 'simplebar-react';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PageHeader from 'components/common/PageHeader';
-import SoftBadge from 'components/common/SoftBadge';
 import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
 

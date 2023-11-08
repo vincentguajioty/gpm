@@ -99,10 +99,7 @@ const ConfigGenerale = () => {
                 </Tabs>
             </Card>
 
-        </>:null}
-
-        
-
+        </>:<LoaderInfiniteLoop/>}
         
     </>);
 };

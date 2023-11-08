@@ -1,4 +1,4 @@
-import axios, { AxiosRequestTransformer } from 'axios';
+import axios from 'axios';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import HabilitationService from 'services/habilitationsService';

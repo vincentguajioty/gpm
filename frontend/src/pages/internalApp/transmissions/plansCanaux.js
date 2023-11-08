@@ -1,27 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Offcanvas, Button, Form, FloatingLabel, Table, Modal, Row, Col, Dropdown } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Button, Form, Table, Modal, } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
-import FalconComponentCard from 'components/common/FalconComponentCard';
-import ActionButton from 'components/common/ActionButton';
-import SimpleBarReact from 'simplebar-react';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import PageHeader from 'components/common/PageHeader';
-import SoftBadge from 'components/common/SoftBadge';
 import IconButton from 'components/common/IconButton';
-import GPMtable from 'components/gpmTable/gpmTable';
-
-import CardDropdown from 'components/common/CardDropdown';
-import moment from 'moment-timezone';
 
 import HabilitationService from 'services/habilitationsService';
 
 import { Axios } from 'helpers/axios';
-
-import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
-import { planCanauxForm } from 'helpers/yupValidationSchema';
 
 const PlansCanaux = ({vhfPlan}) => {
     const[readyToDisplay, setReadyToDisplay] = useState(false);

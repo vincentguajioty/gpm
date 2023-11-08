@@ -1,14 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import FalconComponentCard from 'components/common/FalconComponentCard';
-import { Form, Button, Row, Col, Alert } from 'react-bootstrap';
-import Select from 'react-select';
+import { Alert } from 'react-bootstrap';
 import IconButton from 'components/common/IconButton';
-import moment from 'moment-timezone';
 
 import {Axios} from 'helpers/axios';
-import HabilitationService from 'services/habilitationsService';
 
-import { useForm } from "react-hook-form";
 
 const UtilisateurMFA = ({personne, setPageNeedsRefresh}) => {
 

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
-import { Row, Col, Card, Form } from 'react-bootstrap';
+import { Card, Form } from 'react-bootstrap';
 import Flex from 'components/common/Flex';
 import PageHeader from 'components/common/PageHeader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

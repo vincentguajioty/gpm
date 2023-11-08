@@ -1,10 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Row, Col, Card, Form, Table, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Card, Form, Table, Button } from 'react-bootstrap';
 import Flex from 'components/common/Flex';
-import PageHeader from 'components/common/PageHeader';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 
 import HabilitationService from 'services/habilitationsService';
 

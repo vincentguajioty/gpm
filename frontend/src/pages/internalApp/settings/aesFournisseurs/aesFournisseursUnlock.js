@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Offcanvas, Button, Form, Table, Modal, Alert } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Button, Form, Modal, Alert } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 import IconButton from 'components/common/IconButton';
 

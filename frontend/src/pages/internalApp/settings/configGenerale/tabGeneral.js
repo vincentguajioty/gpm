@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Card, Tabs, Tab, Form, Button, } from 'react-bootstrap';
+import { Form, Button, } from 'react-bootstrap';
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';

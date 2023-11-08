@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Tabs, Tab, Alert } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 import moment from 'moment-timezone';
 
 import AesFournisseursService from 'services/aesFournisseursService';

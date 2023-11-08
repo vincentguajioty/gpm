@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import AuthCGULayout from 'layouts/AuthCGULayout';
-import Password from 'pages/internalApp/settings/utilisateurs/password';
 import IconButton from 'components/common/IconButton';
 import { useNavigate } from 'react-router-dom';
 

@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 
 import HabilitationService from 'services/habilitationsService';

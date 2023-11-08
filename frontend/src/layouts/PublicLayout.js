@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import AppContext from 'context/Context';
 import classNames from 'classnames';
 import NavbarTop from 'components/navbar/publicTop/NavbarTop';

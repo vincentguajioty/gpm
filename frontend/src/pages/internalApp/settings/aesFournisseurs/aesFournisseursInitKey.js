@@ -1,11 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Offcanvas, Button, Form, Table, Modal, Alert } from 'react-bootstrap';
+import React, { useState, } from 'react';
+import { Button, Form, Modal, } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
-import FalconComponentCard from 'components/common/FalconComponentCard';
-import ActionButton from 'components/common/ActionButton';
-import SimpleBarReact from 'simplebar-react';
-import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import IconButton from 'components/common/IconButton';
 
 import { useForm } from "react-hook-form";

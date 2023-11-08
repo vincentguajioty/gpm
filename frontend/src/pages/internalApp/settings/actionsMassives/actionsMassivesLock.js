@@ -1,7 +1,6 @@
 import React from 'react';
 import IconButton from 'components/common/IconButton';
 
-
 const ActionsMassivesLock = ({setPageNeedsRefresh}) => {
     const lockAccess = async () => {
         try {
@@ -12,7 +11,6 @@ const ActionsMassivesLock = ({setPageNeedsRefresh}) => {
             console.log(e);
         }
     }
-
 
     return (<>
         <IconButton

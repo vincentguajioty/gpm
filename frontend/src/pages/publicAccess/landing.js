@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Card, Row, Col } from 'react-bootstrap';
 import IconButton from 'components/common/IconButton';

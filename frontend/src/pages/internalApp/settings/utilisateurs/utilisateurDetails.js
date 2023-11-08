@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
-import { Row, Col, Card, Form } from 'react-bootstrap';
-import Flex from 'components/common/Flex';
+import { Row, Col,} from 'react-bootstrap';
 import PageHeader from 'components/common/PageHeader';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import HabilitationService from 'services/habilitationsService';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 
 import UserInfo from './userInfo';
@@ -15,7 +12,6 @@ import UtilisateurCnilDelete from './utilisateurCnilDelete';
 import ProfilRecapDroitsUtilisateurBox from '../profils/profilRecapDroitsUtilisateurBox';
 
 import { Axios } from 'helpers/axios';
-
 
 const UtilisateurDetails = () => {
     let {idPersonne} = useParams();
