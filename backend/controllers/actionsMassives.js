@@ -1,6 +1,5 @@
 const db = require('../db');
 const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv').config();
 const logger = require('../winstonLogger');
 const moment = require('moment');
 const fonctionsAuthentification = require('../helpers/fonctionsAuthentification');

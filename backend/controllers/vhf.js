@@ -1,11 +1,6 @@
 const db = require('../db');
-const fonctionsMetiers = require('../helpers/fonctionsMetiers');
-const fonctionsLDAP = require('../helpers/fonctionsLDAP');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
-const dotenv = require('dotenv').config();
-const authenticator = require('authenticator');
 const logger = require('../winstonLogger');
-const brcypt = require('bcryptjs');
 const multer = require('multer');
 
 //Canaux

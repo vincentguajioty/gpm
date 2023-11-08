@@ -1,7 +1,5 @@
 const mariadb = require('mariadb');
 const dotenv = require('dotenv').config();
-const logger = require('./winstonLogger');
-
 const db = mariadb.createPool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,

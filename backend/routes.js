@@ -1,6 +1,5 @@
 const express = require('express');
 const db = require('./db');
-const app = express();
 const logger = require('./winstonLogger');
 const jwtFunctions = require('./jwt');
 const router = express.Router();

@@ -1,6 +1,4 @@
-const db = require('../db');
 const brcypt = require('bcryptjs');
-const dotenv = require('dotenv').config();
 const logger = require('../winstonLogger');
 const axios = require('axios');
 const fonctionsLDAP = require('../helpers/fonctionsLDAP');

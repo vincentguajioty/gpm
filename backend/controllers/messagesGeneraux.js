@@ -1,7 +1,5 @@
 const db = require('../db');
-const dotenv = require('dotenv').config();
 const logger = require('../winstonLogger');
-const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
 
 exports.getMessagesPublics = async (req, res)=>{

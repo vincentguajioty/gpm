@@ -1,8 +1,5 @@
-const dotenv = require('dotenv').config();
-
 const { format, createLogger, transports } = require('winston');
 const { timestamp, combine, errors, json } = format;
-const LEVEL = Symbol.for('level');
 
 const logger = createLogger({
     level: process.env.LOG_LEVEL,

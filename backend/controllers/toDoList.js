@@ -1,8 +1,5 @@
 const db = require('../db');
-const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
-const dotenv = require('dotenv').config();
-const authenticator = require('authenticator');
 const logger = require('../winstonLogger');
 
 exports.getPersonsForTDL = async (req, res, next)=>{

@@ -1,6 +1,3 @@
-const express = require('express');
-const app = express();
-const dotenv = require('dotenv').config();
 const logger = require('./winstonLogger');
 const db = require('./db');
 const jwt = require('jsonwebtoken');
