@@ -234,6 +234,20 @@ router.post('/vhf/getAllDocumentsOneCanal', httpLogger(), jwtFunctions.verifyJWT
 router.post('/vhf/uploadCanalAttached',     httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_modification',]), modificationLogger(), vhfCtrl.uploadCanalAttachedMulter, vhfCtrl.uploadCanalAttached);
 router.post('/vhf/updateMetaDataCanal',     httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_modification',]), modificationLogger(), vhfCtrl.updateMetaDataCanal);
 router.post('/vhf/dropCanalDocument',       httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_suppression',]) , suppressionLogger(),  vhfCtrl.dropCanalDocument);
+//VHF Plans
+router.get('/vhf/getPlans',         httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_plan_lecture']),                            vhfCtrl.getPlans);
+router.post('/vhf/addPlan',         httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_plan_ajout']),        modificationLogger(), vhfCtrl.addPlan);
+router.post('/vhf/updatePlan',      httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_plan_modification']), modificationLogger(), vhfCtrl.updatePlan);
+router.post('/vhf/deletePlan',      httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_plan_suppression']),  suppressionLogger(),  vhfCtrl.deletePlan);
+//VHF Plans Attachements
+router.post('/vhf/getAllDocumentsOnePlan', httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_plan_lecture',]),                             vhfCtrl.getAllDocumentsOnePlan);
+router.post('/vhf/uploadPlanAttached',      httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_plan_modification',]), modificationLogger(), vhfCtrl.uploadPlanAttachedMulter, vhfCtrl.uploadPlanAttached);
+router.post('/vhf/updateMetaDataPlan',      httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_plan_modification',]), modificationLogger(), vhfCtrl.updateMetaDataPlan);
+router.post('/vhf/dropPlanDocument',        httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_plan_suppression',]) , suppressionLogger(),  vhfCtrl.dropPlanDocument);
+//VHF Plans canaux affecation
+router.post('/vhf/getCanauxOnePlan',         httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_plan_lecture']),                            vhfCtrl.getCanauxOnePlan);
+router.post('/vhf/updateCanauxOnePlan',      httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_plan_modification']), modificationLogger(), vhfCtrl.updateCanauxOnePlan);
+
 
 //referentiels
 router.get('/referentiels/getReferentiels',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_lecture']),                                                 referentielsCtrl.getReferentiels);

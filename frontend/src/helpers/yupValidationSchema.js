@@ -309,3 +309,18 @@ export const frequencesAttachedForm = Yup.object().shape({
         .string()
         .required(champObligatoire),
 });
+
+export const planVHFForm = Yup.object().shape({
+    libellePlan: Yup
+        .string()
+        .required(champObligatoire),
+});
+
+export const planAttachedForm = Yup.object().shape({
+    nomDocPlanVHF: Yup
+        .string()
+        .required(champObligatoire),
+});
+
+export const planCanauxForm = Yup.object().shape({
+});

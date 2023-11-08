@@ -2097,7 +2097,7 @@ const vhfPlansDocDelete = async (idLogger, idDocPlanVHF) => {
         }
 
         let finalDeleteQuery = await db.query(`
-            DELETE DOCUMENTS_PLAN_VHF WHERE idDocPlanVHF = :idDocPlanVHF
+            DELETE FROM DOCUMENTS_PLAN_VHF WHERE idDocPlanVHF = :idDocPlanVHF
         ;`,{
             idDocPlanVHF : idDocPlanVHF,
         });
