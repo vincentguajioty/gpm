@@ -18,7 +18,7 @@ const handlebarOptions = {
     viewPath: path.resolve('./templates/'),
 };
 
-const transporter = nodemailer.createTransport(
+const transporterWithDKIM = nodemailer.createTransport(
     {
         host: process.env.SMTP_SERVER,
         port: process.env.SMTP_PORT,
@@ -32,6 +32,18 @@ const transporter = nodemailer.createTransport(
             keySelector: process.env.DKIM_KEYSELECTOR,
             privateKey: fs.readFileSync('./privateDKIM.pem', "utf8"),
         }
+    }
+);
+
+const transporterWithoutDKIM = nodemailer.createTransport(
+    {
+        host: process.env.SMTP_SERVER,
+        port: process.env.SMTP_PORT,
+        secure: process.env.SMTP_SECURE == 1 ? true : false,
+        auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASSWORD,
+        },
     }
 );
 
