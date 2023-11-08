@@ -337,6 +337,12 @@ export const vhfEquipementsUpdateForm = Yup.object().shape({
         .required(champObligatoire),
 });
 
+export const vhfEquipementsAttachedForm = Yup.object().shape({
+    nomDocVHF: Yup
+        .string()
+        .required(champObligatoire),
+});
+
 export const vhfAccessoiresForm = Yup.object().shape({
     libelleVhfAccessoire: Yup
         .string()

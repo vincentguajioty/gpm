@@ -719,3 +719,91 @@ exports.vhfEquipementsAccessoiresDelete = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+//Equipements VHF PJ
+const multerConfigVHF = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, 'uploads/vhfEquipements');
+    },
+    filename: (req, file, callback) => {
+        const ext = file.mimetype.split('/')[1];
+        callback(null, `vhfEquipements-${Date.now()}.${ext}`);
+    }
+});
+
+const uploadVHF = multer({
+    storage: multerConfigVHF,
+});
+
+exports.uploadEquipementsAttachedMulter = uploadVHF.single('file');
+
+exports.uploadEquipementsAttached = async (req, res, next)=>{
+    try {
+        const newFileToDB = await db.query(
+            `INSERT INTO
+                DOCUMENTS_VHF
+            SET
+                urlFichierDocVHF = :filename,
+                idVhfEquipement  = :idVhfEquipement
+        `,{
+            filename : req.file.filename,
+            idVhfEquipement : req.query.idVhfEquipement,
+        });
+
+        const lastSelect = await db.query(`SELECT MAX(idDocVHF) as idDocVHF FROM DOCUMENTS_VHF`);
+
+        res.status(200);
+        res.json({idDocVHF: lastSelect[0].idDocVHF})
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateMetaDataEquipements = async (req, res, next)=>{
+    try {
+        const document = await db.query(
+            `SELECT
+                *
+            FROM
+                DOCUMENTS_VHF
+            WHERE
+                idDocVHF = :idDocVHF
+        `,{
+            idDocVHF : req.body.idDocVHF,
+        });
+
+        const update = await db.query(
+            `UPDATE
+                DOCUMENTS_VHF
+            SET
+                nomDocVHF   = :nomDocVHF,
+                formatDocVHF = :formatDocVHF,
+                dateDocVHF   = :dateDocVHF,
+                idTypeDocument = :idTypeDocument
+            WHERE
+                idDocVHF        = :idDocVHF
+        `,{
+            nomDocVHF    : req.body.nomDocVHF || null,
+            formatDocVHF : document[0].urlFichierDocVHF.split('.')[1],
+            dateDocVHF   : req.body.dateDocVHF || new Date(),
+            idDocVHF     : req.body.idDocVHF,
+            idTypeDocument    : req.body.idTypeDocument || null,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.dropEquipementsDocument = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.vhfEquipementsDocDelete(req.verifyJWTandProfile.idPersonne , req.body.idDocVHF);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}

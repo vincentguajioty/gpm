@@ -3,7 +3,6 @@ import { Button, Form, Modal, Row, Col, Dropdown } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
-
 import CardDropdown from 'components/common/CardDropdown';
 import moment from 'moment-timezone';
 

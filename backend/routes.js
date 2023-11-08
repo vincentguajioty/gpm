@@ -256,6 +256,10 @@ router.post('/vhf/deleteEquipement',         httpLogger(), jwtFunctions.verifyJW
 router.post('/vhf/addAccessoire',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_ajout']),         modificationLogger(), vhfCtrl.addAccessoire);
 router.post('/vhf/updateAccessoire',                httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_modification']),  modificationLogger(), vhfCtrl.updateAccessoire);
 router.post('/vhf/vhfEquipementsAccessoiresDelete', httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_suppression',]) , suppressionLogger(),  vhfCtrl.vhfEquipementsAccessoiresDelete);
+//VHF Equipements Attachements
+router.post('/vhf/uploadEquipementsAttached',     httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_modification',]), modificationLogger(), vhfCtrl.uploadEquipementsAttachedMulter, vhfCtrl.uploadEquipementsAttached);
+router.post('/vhf/updateMetaDataEquipements',     httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_modification',]), modificationLogger(), vhfCtrl.updateMetaDataEquipements);
+router.post('/vhf/dropEquipementsDocument',       httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_suppression',]) , suppressionLogger(),  vhfCtrl.dropEquipementsDocument);
 
 //referentiels
 router.get('/referentiels/getReferentiels',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_lecture']),                                                 referentielsCtrl.getReferentiels);
