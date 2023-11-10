@@ -308,7 +308,8 @@ const checkVehiculeMaintenance = async (idVehicule) => {
         {
             let last = await db.query(`
                 SELECT
-                    MAX(dateHealth) as dateHealth
+                    MAX(dateHealth) as dateHealth,
+                    DATE_ADD(MAX(dateHealth), INTERVAL :frequenceHealth DAY) as nextMaintenance
                 FROM
                     VEHICULES_HEALTH_CHECKS c
                     LEFT OUTER JOIN VEHICULES_HEALTH h ON c.idVehiculeHealth = h.idVehiculeHealth
@@ -319,13 +320,12 @@ const checkVehiculeMaintenance = async (idVehicule) => {
             `,{
                 idVehicule: idVehicule,
                 idHealthType: alerte.idHealthType,
+                frequenceHealth: alerte.frequenceHealth,
             });
 
             if(last.length > 0 && last[0].dateHealth != null)
             {
-                let lastDateHealt = new Date(last.dateHealth);
-                let alertDate = lastDateHealt.getDate() + alerte.frequenceHealth;
-                if(alertDate <= new Date())
+                if(new Date(last[0].nextMaintenance) <= new Date())
                 {
                     erreurs += 1;
                 }
@@ -430,7 +430,8 @@ const checkVehiculeDesinfection = async (idVehicule) => {
         {
             let last = await db.query(`
                 SELECT
-                    MAX(dateDesinfection) as dateDesinfection
+                    MAX(dateDesinfection) as dateDesinfection,
+                    DATE_ADD(MAX(dateDesinfection), INTERVAL :frequenceDesinfection DAY) as nextDesinfection
                 FROM
                     VEHICULES_DESINFECTIONS
                 WHERE
@@ -440,13 +441,12 @@ const checkVehiculeDesinfection = async (idVehicule) => {
             `,{
                 idVehicule: idVehicule,
                 idVehiculesDesinfectionsType: alerte.idVehiculesDesinfectionsType,
+                frequenceDesinfection: alerte.frequenceDesinfection,
             });
 
             if(last.length > 0 && last[0].dateDesinfection != null)
             {
-                let lastDateHealt = new Date(last.dateDesinfection);
-                let alertDate = lastDateHealt.getDate() + alerte.frequenceDesinfection;
-                if(alertDate <= new Date())
+                if(new Date(last[0].nextDesinfection) <= new Date())
                 {
                     erreurs += 1;
                 }
