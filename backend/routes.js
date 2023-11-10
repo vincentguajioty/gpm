@@ -17,6 +17,8 @@ const commandesCtrl = require('./controllers/commandes');
 const fournisseursCtrl = require('./controllers/fournisseurs');
 const fournisseursAesCtrl = require('./controllers/fournisseursAes');
 
+const vehiculesCtrl = require('./controllers/vehicules');
+
 const tenuesCtrl = require('./controllers/tenues');
 const vhfCtrl = require('./controllers/vhf');
 
@@ -203,6 +205,12 @@ router.post('/fournisseurs/initKey',                  httpLogger(), jwtFunctions
 router.post('/fournisseurs/changeKey',                httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                jwtFunctions.decryptAesToken(), modificationLogger(), fournisseursAesCtrl.updateAesKey, fournisseursAesCtrl.authenticateForAES);
 router.post('/fournisseurs/disableAesAndDelete',      httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf']),                jwtFunctions.decryptAesToken(), suppressionLogger(),  fournisseursAesCtrl.disableAesAndDelete);
 router.post('/fournisseurs/updateFournisseurAesData', httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_modification']), jwtFunctions.decryptAesToken(), modificationLogger(), fournisseursAesCtrl.updateFournisseurAesData);
+
+//Véhicules
+router.get('/vehicules/getAllVehicules',  httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_lecture']),                           vehiculesCtrl.getAllVehicules);
+router.post('/vehicules/getOneVehicule',  httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_lecture']),                           vehiculesCtrl.getOneVehicule);
+router.post('/vehicules/addVehicule',     httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_ajout']), modificationLogger(),       vehiculesCtrl.addVehicule);
+router.post('/vehicules/deleteVehicule',  httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_suppression']), suppressionLogger(),  vehiculesCtrl.deleteVehicule);
 
 //Tenues - Catalogue
 router.get('/tenues/getPersonnesSuggested',     httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_lecture']),                            tenuesCtrl.getPersonnesSuggested);

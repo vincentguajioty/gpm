@@ -427,7 +427,7 @@ const centreCoutsDocDelete = async (idLogger, idDocCouts) => {
         }
 
         let finalDeleteQuery = await db.query(`
-            SELECT * FROM DOCUMENTS_CENTRE_COUTS WHERE idDocCouts = :idDocCouts
+            DELETE FROM DOCUMENTS_CENTRE_COUTS WHERE idDocCouts = :idDocCouts
         ;`,{
             idDocCouts : idDocCouts,
         });
@@ -551,7 +551,7 @@ const commandeDocDelete = async (idLogger, idDocCommande) => {
         }
 
         let finalDeleteQuery = await db.query(`
-            SELECT * FROM DOCUMENTS_COMMANDES WHERE idDocCommande = :idDocCommande
+            DELETE FROM DOCUMENTS_COMMANDES WHERE idDocCommande = :idDocCommande
         ;`,{
             idDocCommande : idDocCommande,
         });
@@ -681,7 +681,7 @@ const commandesDelete = async (idLogger, idCommande) => {
 
 
         let finalDeleteQuery = await db.query(`
-            SELECT * FROM COMMANDES WHERE idCommande = :idCommande
+            DELETE FROM COMMANDES WHERE idCommande = :idCommande
         ;`,{
             idCommande : idCommande,
         });
@@ -1580,7 +1580,7 @@ const vehiculesDocDelete = async (idLogger, idDocVehicules) => {
         }
 
         let finalDeleteQuery = await db.query(`
-            SELECT * FROM DOCUMENTS_VEHICULES WHERE idDocVehicules = :idDocVehicules
+            DELETE FROM DOCUMENTS_VEHICULES WHERE idDocVehicules = :idDocVehicules
         ;`,{
             idDocVehicules : idDocVehicules,
         });
