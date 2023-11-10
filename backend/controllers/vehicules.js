@@ -41,6 +41,7 @@ exports.getOneVehicule = async (req, res)=>{
         let results = await db.query(`
             SELECT
                 v.*,
+                car.libelleCarburant,
                 ve.libelleVehiculesEtat,
                 t.libelleType,
                 p.identifiant,
@@ -56,6 +57,7 @@ exports.getOneVehicule = async (req, res)=>{
                 LEFT OUTER JOIN PERSONNE_REFERENTE p ON v.idResponsable = p.idPersonne
                 LEFT OUTER JOIN ETATS e ON v.idEtat = e.idEtat
                 LEFT OUTER JOIN LIEUX l ON v.idLieu = l.idLieu
+                LEFT OUTER JOIN CARBURANTS car ON v.idCarburant = car.idCarburant
                 LEFT OUTER JOIN (SELECT * FROM VEHICULES_ALERTES WHERE dateResolutionAlerte IS NULL) a ON a.idVehicule = v.idVehicule
             WHERE
                 v.idVehicule = :idVehicule
@@ -248,6 +250,8 @@ exports.getOneVehicule = async (req, res)=>{
                     LEFT OUTER JOIN PERSONNE_REFERENTE p ON km.idPersonne = p.idPersonne
                 WHERE
                     idVehicule = :idVehicule
+                ORDER BY
+                    km.dateReleve DESC
             ;`,{
                 idVehicule: vehicule.idVehicule
             });
@@ -264,6 +268,17 @@ exports.getOneVehicule = async (req, res)=>{
                 idVehicule: vehicule.idVehicule
             });
 
+            let documents = await db.query(`
+                SELECT
+                    *
+                FROM
+                    VIEW_DOCUMENTS_VEHICULES
+                WHERE
+                    idVehicule = :idVehicule
+            ;`,{
+                idVehicule: vehicule.idVehicule
+            });
+
             vehicule.maintenancesPonctuelles = maintenancesPonctuelles;
             vehicule.maintenancesRegulieres = maintenancesRegulieres;
             vehicule.maintenancesRegulieresAlertes = maintenancesRegulieresAlertes;
@@ -272,6 +287,7 @@ exports.getOneVehicule = async (req, res)=>{
             vehicule.alertesBenevoles = alertesBenevoles;
             vehicule.relevesKM = relevesKM;
             vehicule.lots = lots;
+            vehicule.documents = documents;
         }
 
         res.send(results);
@@ -312,6 +328,94 @@ exports.addVehicule = async (req, res)=>{
 exports.deleteVehicule = async (req, res)=>{
     try {
         const deleteResult = await fonctionsDelete.vehiculesDelete(req.verifyJWTandProfile.idPersonne , req.body.idVehicule);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//Véhicules PJ
+const multerConfigVehicules = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, 'uploads/vehicules');
+    },
+    filename: (req, file, callback) => {
+        const ext = file.mimetype.split('/')[1];
+        callback(null, `vehicules-${Date.now()}.${ext}`);
+    }
+});
+
+const uploadVehicules = multer({
+    storage: multerConfigVehicules,
+});
+
+exports.uploadVehiculeAttachedMulter = uploadVehicules.single('file');
+
+exports.uploadVehiculeAttached = async (req, res, next)=>{
+    try {
+        const newFileToDB = await db.query(
+            `INSERT INTO
+                DOCUMENTS_VEHICULES
+            SET
+                urlFichierDocVehicule = :filename,
+                idVehicule            = :idVehicule
+        `,{
+            filename : req.file.filename,
+            idVehicule : req.query.idVehicule,
+        });
+
+        const lastSelect = await db.query(`SELECT MAX(idDocVehicules) as idDocVehicules FROM DOCUMENTS_VEHICULES`);
+
+        res.status(200);
+        res.json({idDocVehicules: lastSelect[0].idDocVehicules})
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateMetaDataVehicule = async (req, res, next)=>{
+    try {
+        const document = await db.query(
+            `SELECT
+                *
+            FROM
+                DOCUMENTS_VEHICULES
+            WHERE
+                idDocVehicules = :idDocVehicules
+        `,{
+            idDocVehicules : req.body.idDocVehicules,
+        });
+
+        const update = await db.query(
+            `UPDATE
+                DOCUMENTS_VEHICULES
+            SET
+                nomDocVehicule   = :nomDocVehicule,
+                formatDocVehicule = :formatDocVehicule,
+                dateDocVehicule   = :dateDocVehicule,
+                idTypeDocument = :idTypeDocument
+            WHERE
+                idDocVehicules        = :idDocVehicules
+        `,{
+            nomDocVehicule    : req.body.nomDocVehicule || null,
+            formatDocVehicule : document[0].urlFichierDocVehicule.split('.')[1],
+            dateDocVehicule   : req.body.dateDocVehicule || new Date(),
+            idDocVehicules     : req.body.idDocVehicules,
+            idTypeDocument    : req.body.idTypeDocument || null,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.dropVehiculeDocument = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.vehiculesDocDelete(req.verifyJWTandProfile.idPersonne , req.body.idDocVehicules);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
