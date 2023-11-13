@@ -82,6 +82,8 @@ exports.getOneVehicule = async (req, res)=>{
                     LEFT OUTER JOIN VEHICULES_MAINTENANCE_TYPES t ON mnt.idTypeMaintenance = t.idTypeMaintenance
                 WHERE
                     mnt.idVehicule = :idVehicule
+                ORDER BY
+                    mnt.dateMaintenance DESC
             ;`,{
                 idVehicule: vehicule.idVehicule
             });
@@ -97,6 +99,8 @@ exports.getOneVehicule = async (req, res)=>{
                     LEFT OUTER JOIN PERSONNE_REFERENTE p ON mnt.idPersonne = p.idPersonne
                 WHERE
                     idVehicule = :idVehicule
+                ORDER BY
+                    mnt.dateHealth DESC
             ;`,{
                 idVehicule: vehicule.idVehicule
             });
@@ -175,6 +179,8 @@ exports.getOneVehicule = async (req, res)=>{
                     LEFT OUTER JOIN PERSONNE_REFERENTE p ON d.idExecutant = p.idPersonne
                 WHERE
                     idVehicule = :idVehicule
+                ORDER BY
+                    d.dateDesinfection DESC
             ;`,{
                 idVehicule: vehicule.idVehicule
             });
@@ -235,6 +241,8 @@ exports.getOneVehicule = async (req, res)=>{
                     LEFT OUTER JOIN PERSONNE_REFERENTE p ON a.idTraitant = p.idPersonne
                 WHERE
                     idVehicule = :idVehicule
+                ORDER BY
+                    a.dateCreationAlerte DESC
             ;`,{
                 idVehicule: vehicule.idVehicule
             });
@@ -554,6 +562,74 @@ exports.updateReleveKM = async (req, res)=>{
 exports.deleteReleveKM = async (req, res)=>{
     try {
         const deleteResult = await fonctionsDelete.vehiculesReleveDelete(req.verifyJWTandProfile.idPersonne , req.body.idReleve);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//Maintenances ponctuelles
+exports.addMaintenancePonctuelle = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                VEHICULES_MAINTENANCE
+            SET
+                dateMaintenance = :dateMaintenance,
+                idTypeMaintenance = :idTypeMaintenance,
+                idExecutant = :idExecutant,
+                detailsMaintenance = :detailsMaintenance,
+                releveKilometrique = :releveKilometrique,
+                idVehicule = :idVehicule
+        `,{
+            dateMaintenance: req.body.dateMaintenance || null,
+            idTypeMaintenance: req.body.idTypeMaintenance || null,
+            idExecutant: req.body.idExecutant || null,
+            detailsMaintenance: req.body.detailsMaintenance || null,
+            releveKilometrique: req.body.releveKilometrique || null,
+            idVehicule: req.body.idVehicule || null,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateMaintenancePonctuelle = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VEHICULES_MAINTENANCE
+            SET
+                dateMaintenance = :dateMaintenance,
+                idTypeMaintenance = :idTypeMaintenance,
+                idExecutant = :idExecutant,
+                detailsMaintenance = :detailsMaintenance,
+                releveKilometrique = :releveKilometrique
+            WHERE
+                idMaintenance = :idMaintenance
+        `,{
+            dateMaintenance: req.body.dateMaintenance || null,
+            idTypeMaintenance: req.body.idTypeMaintenance || null,
+            idExecutant: req.body.idExecutant || null,
+            detailsMaintenance: req.body.detailsMaintenance || null,
+            releveKilometrique: req.body.releveKilometrique || null,
+            idMaintenance: req.body.idMaintenance || null,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.deleteMaintenancePonctuelle = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.vehiculesMaintenanceDelete(req.verifyJWTandProfile.idPersonne , req.body.idMaintenance);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);

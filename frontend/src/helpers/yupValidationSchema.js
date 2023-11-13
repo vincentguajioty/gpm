@@ -378,3 +378,21 @@ export const releveKM = Yup.object().shape({
         .min(1, champObligatoire)
         .required(champObligatoire),
 });
+
+export const maintenancePonctuelle = Yup.object().shape({
+    dateMaintenance: Yup
+        .date()
+        .required(champObligatoire),
+    releveKilometrique: Yup
+        .number()
+        .min(0, champObligatoire)
+        .required(champObligatoire),
+    idExecutant: Yup
+        .number()
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    idTypeMaintenance: Yup
+        .number()
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+});

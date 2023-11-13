@@ -249,6 +249,10 @@ router.post('/vehicules/dropVehiculeDocument',       httpLogger(), jwtFunctions.
 router.post('/vehicules/addReleveKM',     httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), modificationLogger(), vehiculesCtrl.addReleveKM);
 router.post('/vehicules/updateReleveKM',  httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), modificationLogger(), vehiculesCtrl.updateReleveKM);
 router.post('/vehicules/deleteReleveKM',  httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), suppressionLogger(),  vehiculesCtrl.deleteReleveKM);
+//Maintenances ponctuelles
+router.post('/vehicules/addMaintenancePonctuelle',     httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), modificationLogger(), vehiculesCtrl.addMaintenancePonctuelle);
+router.post('/vehicules/updateMaintenancePonctuelle',  httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), modificationLogger(), vehiculesCtrl.updateMaintenancePonctuelle);
+router.post('/vehicules/deleteMaintenancePonctuelle',  httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), suppressionLogger(),  vehiculesCtrl.deleteMaintenancePonctuelle);
 
 //Tenues - Catalogue
 router.get('/tenues/getPersonnesSuggested',     httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_lecture']),                            tenuesCtrl.getPersonnesSuggested);
