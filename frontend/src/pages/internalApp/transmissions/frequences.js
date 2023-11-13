@@ -136,7 +136,7 @@ const Frequences = () => {
             setValue("remarquesCanal", oneItemFromArray.remarquesCanal);
         }
 
-        const getData = await Axios.get('/settingsMetiers/getTechnologiesVHF');
+        const getData = await Axios.get('/select/getTechnologiesVHF');
         setTechnologies(getData.data);
 
         setShowOffCanevas(true);
@@ -243,8 +243,8 @@ const Frequences = () => {
                         <Form.Label>Technologie Radio</Form.Label>
                         <Form.Select size="sm" name="idVhfTechno" id="idVhfTechno" {...register("idVhfTechno")}>
                             <option key="0" value="">--- Aucune technologie ---</option>
-                            {technologies.map((tech, i) => {
-                                return (<option key={tech.idVhfTechno} value={tech.idVhfTechno}>{tech.libelleTechno}</option>);
+                            {technologies.map((item, i) => {
+                                return (<option key={item.value} value={item.value}>{item.label}</option>);
                             })}
                         </Form.Select>
                         <small className="text-danger">{errors.idVhfTechno?.message}</small>

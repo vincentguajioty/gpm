@@ -26,10 +26,10 @@ const Catalogue = () => {
             let getFromDb = await Axios.get('/settingsMetiers/getCatalogueMateriel');
             setCatalogue(getFromDb.data);
 
-            getFromDb = await Axios.get('/settingsMetiers/getCategoriesMateriels');
+            getFromDb = await Axios.get('/select/getCategoriesMateriels');
             setCategories(getFromDb.data);
 
-            getFromDb = await Axios.get('/fournisseurs/getFournisseurs');
+            getFromDb = await Axios.get('/select/getFournisseurs');
             setFournisseurs(getFromDb.data);
             
             setReadyToDisplay(true);
@@ -227,8 +227,8 @@ const Catalogue = () => {
                                 <Form.Label>Catégorie</Form.Label>
                                 <Form.Select size="sm" name="idCategorie" id="idCategorie" {...register("idCategorie")}>
                                     <option key="0" value="">--- Aucune Catégorie ---</option>
-                                    {categories.map((cat, i) => {
-                                        return (<option key={cat.idCategorie} value={cat.idCategorie}>{cat.libelleCategorie}</option>);
+                                    {categories.map((item, i) => {
+                                        return (<option key={item.value} value={item.value}>{item.label}</option>);
                                     })}
                                 </Form.Select>
                                 <small className="text-danger">{errors.idCategorie?.message}</small>
@@ -274,8 +274,8 @@ const Catalogue = () => {
                                 <Form.Label>Fournisseur de prédilection</Form.Label>
                                 <Form.Select size="sm" name="idFournisseur" id="idFournisseur" {...register("idFournisseur")}>
                                     <option key="0" value="">--- Aucun fournisseur ---</option>
-                                    {fournisseurs.map((four, i) => {
-                                        return (<option key={four.idFournisseur} value={four.idFournisseur}>{four.nomFournisseur}</option>);
+                                    {fournisseurs.map((item, i) => {
+                                        return (<option key={item.value} value={item.value}>{item.label}</option>);
                                     })}
                                 </Form.Select>
                                 <small className="text-danger">{errors.idFournisseur?.message}</small>

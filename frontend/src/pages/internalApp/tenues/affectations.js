@@ -147,13 +147,13 @@ const AffectationsTenues = () => {
             setValue("idPersonne", 0);
         }
 
-        let getData = await Axios.get('/tenues/getCatalogue');
+        let getData = await Axios.get('/select/getTenuesCatalogue');
         setCatalogue(getData.data);
 
         getData = await Axios.get('/tenues/getPersonnesSuggested');
         setPersonnesExternes(getData.data);
 
-        getData = await Axios.get('/settingsUtilisateurs/getAllUsers');
+        getData = await Axios.get('/select/getPersonnes');
         setPersonnesInternes(getData.data);
 
         setShowOffCanevas(true);
@@ -239,8 +239,8 @@ const AffectationsTenues = () => {
                         <Form.Label>Element de tenue</Form.Label>
                         <Form.Select size="sm" name="idCatalogueTenue" id="idCatalogueTenue" {...register("idCatalogueTenue")}>
                             <option key="0" value="">--- Choisir un élément ---</option>
-                            {catalogue.map((cat, i) => {
-                                return (<option key={cat.idCatalogueTenue} value={cat.idCatalogueTenue}>{cat.libelleCatalogueTenue} (Taille: {cat.tailleCatalogueTenue})</option>);
+                            {catalogue.map((item, i) => {
+                                return (<option key={item.value} value={item.value}>{item.label}</option>);
                             })}
                         </Form.Select>
                         <small className="text-danger">{errors.idCatalogueTenue?.message}</small>
@@ -249,8 +249,8 @@ const AffectationsTenues = () => {
                         <Form.Label>Affecté à</Form.Label>
                         <Form.Select size="sm" name="idPersonne" id="idPersonne" {...register("idPersonne")}>
                             <option key="0" value="0">--- Affecté à un externe ---</option>
-                            {personnesInternes.map((perso, i) => {
-                                return (<option key={perso.idPersonne} value={perso.idPersonne}>{perso.identifiant}</option>);
+                            {personnesInternes.map((item, i) => {
+                                return (<option key={item.value} value={item.value}>{item.label}</option>);
                             })}
                         </Form.Select>
                         <small className="text-danger">{errors.idPersonne?.message}</small>

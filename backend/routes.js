@@ -29,6 +29,7 @@ const toDoListCtrl = require('./controllers/toDoList');
 const actionsMassivesCtrl = require('./controllers/actionsMassives');
 
 const serveDocumentsCtrl       = require('./controllers/serveDocuments');
+const selectForListsCtrl = require('./controllers/selectForLists')
 
 const httpLogger = () => {
     return function(req, res, next) {
@@ -190,6 +191,34 @@ router.post('/updatePasswordWithoutCheck', httpLogger(), jwtFunctions.verifyJWTa
 router.post('/getCurrentSessionsOneUser',  httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                       connexionCtrl.getCurrentSessionsOneUser );
 router.post('/blackListSession',           httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), suppressionLogger(),  connexionCtrl.blackListSession );
 
+//select routes for forms and lists
+router.get('/select/getPersonnes',                             httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getPersonnes);
+router.get('/select/getActivePersonnes',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getActivePersonnes);
+router.get('/select/getNonAnonymesPersonnes',                  httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getNonAnonymesPersonnes);
+router.get('/select/getNotificationsEnabled',                  httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getNotificationsEnabled);
+router.get('/select/getCategoriesMateriels',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCategoriesMateriels);
+router.get('/select/getLieux',                                 httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getLieux);
+router.get('/select/getTypesVehicules',                        httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getTypesVehicules);
+router.get('/select/getTypesDesinfections',                    httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getTypesDesinfections);
+router.get('/select/getTypesMaintenancesRegulieresVehicules',  httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getTypesMaintenancesRegulieresVehicules);
+router.get('/select/getTypesMaintenancesPonctuellesVehicules', httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getTypesMaintenancesPonctuellesVehicules);
+router.get('/select/getCarburants',                            httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCarburants);
+router.get('/select/getEtatsLots',                             httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getEtatsLots);
+router.get('/select/getEtatsMateriels',                        httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getEtatsMateriels);
+router.get('/select/getEtatsVehicules',                        httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getEtatsVehicules);
+router.get('/select/getTypesDocuments',                        httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getTypesDocuments);
+router.get('/select/getCatalogueMateriel',                     httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCatalogueMateriel);
+router.get('/select/getVHFTypesAccessoires',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVHFTypesAccessoires);
+router.get('/select/getEtatsVHF',                              httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getEtatsVHF);
+router.get('/select/getTechnologiesVHF',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getTechnologiesVHF);
+router.get('/select/getVHFTypesEquipements',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVHFTypesEquipements);
+router.get('/select/getFournisseurs',                          httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getFournisseurs);
+router.get('/select/getMessagesTypes',                         httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getMessagesTypes);
+router.get('/select/getPioritesForTDL',                        httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getPioritesForTDL);
+router.get('/select/getTenuesCatalogue',                       httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getTenuesCatalogue);
+router.get('/select/getVhfPlans',                              httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVhfPlans);
+router.get('/select/getVhfFrequences',                         httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVhfFrequences);
+
 //OPERATIONNEL - Matériels
 router.get('/materiels/getMateriels',                   httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),  materielsCtrl.getMateriels);
 
@@ -207,10 +236,11 @@ router.post('/fournisseurs/disableAesAndDelete',      httpLogger(), jwtFunctions
 router.post('/fournisseurs/updateFournisseurAesData', httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_modification']), jwtFunctions.decryptAesToken(), modificationLogger(), fournisseursAesCtrl.updateFournisseurAesData);
 
 //Véhicules
-router.get('/vehicules/getAllVehicules',  httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_lecture']),                           vehiculesCtrl.getAllVehicules);
-router.post('/vehicules/getOneVehicule',  httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_lecture']),                           vehiculesCtrl.getOneVehicule);
-router.post('/vehicules/addVehicule',     httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_ajout']), modificationLogger(),       vehiculesCtrl.addVehicule);
-router.post('/vehicules/deleteVehicule',  httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_suppression']), suppressionLogger(),  vehiculesCtrl.deleteVehicule);
+router.get('/vehicules/getAllVehicules',  httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_lecture']),                            vehiculesCtrl.getAllVehicules);
+router.post('/vehicules/getOneVehicule',  httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_lecture']),                            vehiculesCtrl.getOneVehicule);
+router.post('/vehicules/addVehicule',     httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_ajout']),        modificationLogger(), vehiculesCtrl.addVehicule);
+router.post('/vehicules/updateVehicule',  httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), modificationLogger(), vehiculesCtrl.updateVehicule);
+router.post('/vehicules/deleteVehicule',  httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_suppression']),  suppressionLogger(),  vehiculesCtrl.deleteVehicule);
 //Vehicules Attachements
 router.post('/vehicules/uploadVehiculeAttached',     httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification',]), modificationLogger(), vehiculesCtrl.uploadVehiculeAttachedMulter, vehiculesCtrl.uploadVehiculeAttached);
 router.post('/vehicules/updateMetaDataVehicule',     httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification',]), modificationLogger(), vehiculesCtrl.updateMetaDataVehicule);

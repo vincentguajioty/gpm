@@ -55,15 +55,15 @@ const EquipementVhfProprietes = ({equipement, setPageNeedsRefresh}) => {
             setValue("idResponsable", equipement.idResponsable);
             setValue("remarquesVhfEquipement", equipement.remarquesVhfEquipement);
 
-            let getData = await Axios.get('/settingsMetiers/getEtatsVHF');
+            let getData = await Axios.get('/select/getEtatsVHF');
             setEtats(getData.data);
-            getData = await Axios.get('/settingsMetiers/getVHFTypesEquipements');
+            getData = await Axios.get('/select/getVHFTypesEquipements');
             setTypes(getData.data);
-            getData = await Axios.get('/settingsMetiers/getTechnologiesVHF');
+            getData = await Axios.get('/select/getTechnologiesVHF');
             setTechnologies(getData.data);
-            getData = await Axios.get('/vhf/getPlans');
+            getData = await Axios.get('/select/getVhfPlans');
             setPlans(getData.data);
-            getData = await Axios.get('/settingsUtilisateurs/getAllUsers');
+            getData = await Axios.get('/select/getPersonnes');
             setPersonnes(getData.data);
 
             setFormReady(true);
@@ -152,7 +152,7 @@ const EquipementVhfProprietes = ({equipement, setPageNeedsRefresh}) => {
                                             <Form.Select size="sm" name="idVhfEtat" id="idVhfEtat" {...register("idVhfEtat")}>
                                                 <option key="0" value="">--- Aucun état ---</option>
                                                 {etats.map((item, i) => {
-                                                    return (<option key={item.idVhfEtat} value={item.idVhfEtat}>{item.libelleVhfEtat}</option>);
+                                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
                                                 })}
                                             </Form.Select>
                                             <small className="text-danger">{errors.idVhfEtat?.message}</small>
@@ -164,7 +164,7 @@ const EquipementVhfProprietes = ({equipement, setPageNeedsRefresh}) => {
                                             <Form.Select size="sm" name="idVhfType" id="idVhfType" {...register("idVhfType")}>
                                                 <option key="0" value="">--- Aucun type ---</option>
                                                 {types.map((item, i) => {
-                                                    return (<option key={item.idVhfType} value={item.idVhfType}>{item.libelleType}</option>);
+                                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
                                                 })}
                                             </Form.Select>
                                             <small className="text-danger">{errors.idVhfType?.message}</small>
@@ -176,7 +176,7 @@ const EquipementVhfProprietes = ({equipement, setPageNeedsRefresh}) => {
                                             <Form.Select size="sm" name="idVhfTechno" id="idVhfTechno" {...register("idVhfTechno")}>
                                                 <option key="0" value="">--- Aucune technologie ---</option>
                                                 {technologies.map((item, i) => {
-                                                    return (<option key={item.idVhfTechno} value={item.idVhfTechno}>{item.libelleTechno}</option>);
+                                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
                                                 })}
                                             </Form.Select>
                                             <small className="text-danger">{errors.idVhfTechno?.message}</small>
@@ -188,7 +188,7 @@ const EquipementVhfProprietes = ({equipement, setPageNeedsRefresh}) => {
                                             <Form.Select size="sm" name="idVhfPlan" id="idVhfPlan" {...register("idVhfPlan")}>
                                                 <option key="0" value="">--- Aucune technologie ---</option>
                                                 {plans.map((item, i) => {
-                                                    return (<option key={item.idVhfPlan} value={item.idVhfPlan}>{item.libellePlan}</option>);
+                                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
                                                 })}
                                             </Form.Select>
                                             <small className="text-danger">{errors.idVhfPlan?.message}</small>
@@ -216,7 +216,7 @@ const EquipementVhfProprietes = ({equipement, setPageNeedsRefresh}) => {
                                             <Form.Select size="sm" name="idResponsable" id="idResponsable" {...register("idResponsable")}>
                                                 <option key="0" value="">--- Aucun responsable ---</option>
                                                 {personnes.map((item, i) => {
-                                                    return (<option key={item.idPersonne} value={item.idPersonne}>{item.identifiant}</option>);
+                                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
                                                 })}
                                             </Form.Select>
                                             <small className="text-danger">{errors.idResponsable?.message}</small>

@@ -15,7 +15,7 @@ exports.getAllVehicules = async (req, res)=>{
                 p.identifiant,
                 p.prenomPersonne,
                 p.nomPersonne,
-                e.libelleEtat as notifications,
+                e.libelleNotificationEnabled,
                 l.libelleLieu,
                 COUNT(a.idAlerte) as nbAlertesEnCours
             FROM
@@ -23,7 +23,7 @@ exports.getAllVehicules = async (req, res)=>{
                 LEFT OUTER JOIN VEHICULES_ETATS ve ON v.idVehiculesEtat = ve.idVehiculesEtat
                 LEFT OUTER JOIN VEHICULES_TYPES t ON v.idVehiculesType = t.idVehiculesType
                 LEFT OUTER JOIN PERSONNE_REFERENTE p ON v.idResponsable = p.idPersonne
-                LEFT OUTER JOIN ETATS e ON v.idEtat = e.idEtat
+                LEFT OUTER JOIN NOTIFICATIONS_ENABLED e ON v.idNotificationEnabled = e.idNotificationEnabled
                 LEFT OUTER JOIN LIEUX l ON v.idLieu = l.idLieu
                 LEFT OUTER JOIN (SELECT * FROM VEHICULES_ALERTES WHERE dateResolutionAlerte IS NULL) a ON a.idVehicule = v.idVehicule
             GROUP BY
@@ -47,7 +47,7 @@ exports.getOneVehicule = async (req, res)=>{
                 p.identifiant,
                 p.prenomPersonne,
                 p.nomPersonne,
-                e.libelleEtat as notifications,
+                e.libelleNotificationEnabled,
                 l.libelleLieu,
                 COUNT(a.idAlerte) as nbAlertesEnCours
             FROM
@@ -55,7 +55,7 @@ exports.getOneVehicule = async (req, res)=>{
                 LEFT OUTER JOIN VEHICULES_ETATS ve ON v.idVehiculesEtat = ve.idVehiculesEtat
                 LEFT OUTER JOIN VEHICULES_TYPES t ON v.idVehiculesType = t.idVehiculesType
                 LEFT OUTER JOIN PERSONNE_REFERENTE p ON v.idResponsable = p.idPersonne
-                LEFT OUTER JOIN ETATS e ON v.idEtat = e.idEtat
+                LEFT OUTER JOIN NOTIFICATIONS_ENABLED e ON v.idNotificationEnabled = e.idNotificationEnabled
                 LEFT OUTER JOIN LIEUX l ON v.idLieu = l.idLieu
                 LEFT OUTER JOIN CARBURANTS car ON v.idCarburant = car.idCarburant
                 LEFT OUTER JOIN (SELECT * FROM VEHICULES_ALERTES WHERE dateResolutionAlerte IS NULL) a ON a.idVehicule = v.idVehicule
@@ -319,6 +319,84 @@ exports.addVehicule = async (req, res)=>{
 
         res.status(201);
         res.json({idVehicule: selectLast[0].idVehicule});
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateVehicule = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VEHICULES
+            SET
+                libelleVehicule = :libelleVehicule,
+                immatriculation = :immatriculation,
+                marqueModele = :marqueModele,
+                idLieu = :idLieu,
+                nbPlaces = :nbPlaces,
+                dimensions = :dimensions,
+                idVehiculesType = :idVehiculesType,
+                idNotificationEnabled = :idNotificationEnabled,
+                idResponsable = :idResponsable,
+                dateAchat = :dateAchat,
+                assuranceNumero = :assuranceNumero,
+                pneusAVhivers = :pneusAVhivers,
+                pneusARhivers = :pneusARhivers,
+                climatisation = :climatisation,
+                signaletiqueOrange = :signaletiqueOrange,
+                signaletiqueBleue = :signaletiqueBleue,
+                signaletique2tons = :signaletique2tons,
+                signaletique3tons = :signaletique3tons,
+                pmv = :pmv,
+                fleche = :fleche,
+                nbCones = :nbCones,
+                poidsVehicule = :poidsVehicule,
+                priseAlimentation220 = :priseAlimentation220,
+                remarquesVehicule = :remarquesVehicule,
+                idVehiculesEtat = :idVehiculesEtat,
+                idCarburant = :idCarburant,
+                affichageSyntheseDesinfections = :affichageSyntheseDesinfections,
+                affichageSyntheseHealth = :affichageSyntheseHealth
+            WHERE
+                idVehicule = :idVehicule
+        `,{
+            libelleVehicule : req.body.libelleVehicule || null,
+            immatriculation : req.body.immatriculation || null,
+            marqueModele : req.body.marqueModele || null,
+            idLieu : req.body.idLieu || null,
+            nbPlaces : req.body.nbPlaces || null,
+            dimensions : req.body.dimensions || null,
+            idVehiculesType : req.body.idVehiculesType || null,
+            idNotificationEnabled : req.body.idNotificationEnabled || null,
+            idResponsable : req.body.idResponsable || null,
+            dateAchat : req.body.dateAchat || null,
+            assuranceNumero : req.body.assuranceNumero || null,
+            pneusAVhivers : req.body.pneusAVhivers || null,
+            pneusARhivers : req.body.pneusARhivers || null,
+            climatisation : req.body.climatisation || null,
+            signaletiqueOrange : req.body.signaletiqueOrange || null,
+            signaletiqueBleue : req.body.signaletiqueBleue || null,
+            signaletique2tons : req.body.signaletique2tons || null,
+            signaletique3tons : req.body.signaletique3tons || null,
+            pmv : req.body.pmv || null,
+            fleche : req.body.fleche || null,
+            nbCones : req.body.nbCones || null,
+            poidsVehicule : req.body.poidsVehicule || null,
+            priseAlimentation220 : req.body.priseAlimentation220 || null,
+            remarquesVehicule : req.body.remarquesVehicule || null,
+            idVehiculesEtat : req.body.idVehiculesEtat || null,
+            idCarburant : req.body.idCarburant || null,
+            affichageSyntheseDesinfections : req.body.affichageSyntheseDesinfections || null,
+            affichageSyntheseHealth : req.body.affichageSyntheseHealth || null,
+            idVehicule: req.body.idVehicule,
+        });
+
+        await fonctionsMetiers.checkOneMaintenance(req.body.idVehicule);
+        await fonctionsMetiers.checkOneDesinfection(req.body.idVehicule);
+
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

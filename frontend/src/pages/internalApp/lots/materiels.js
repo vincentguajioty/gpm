@@ -82,7 +82,7 @@ const Materiels = () => {
                         null
                 ,
                 libelleMaterielsEtat: item.libelleMaterielsEtat,
-                notif               : item.idEtat != 1 ? 'non' : 'oui',
+                notif               : item.idNotificationEnabled != 1 ? 'non' : 'oui',
                 actions             : <></>,
             })
         }

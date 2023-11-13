@@ -68,7 +68,7 @@ const EquipementVhfPJ = ({equipement, setPageNeedsRefresh}) => {
         setLoading(false);
     }
     const handleShowOffCanevas = async () => {
-        const types = await Axios.get('/settingsMetiers/getTypesDocuments');
+        const types = await Axios.get('/select/getTypesDocuments');
         setTypesDocuments(types.data);
 
         setShowOffCanevas(true);
@@ -215,8 +215,8 @@ const EquipementVhfPJ = ({equipement, setPageNeedsRefresh}) => {
                         <Form.Label>Type de document</Form.Label>
                         <Form.Select size="sm" name="idTypeDocument" id="idTypeDocument" {...register("idTypeDocument")}>
                             <option key="0" value="">--- Merci de selectionner un type ---</option>
-                            {typesDocuments.map((type, i) => {
-                                return (<option key={type.idTypeDocument} value={type.idTypeDocument}>{type.libelleTypeDocument}</option>);
+                            {typesDocuments.map((item, i) => {
+                                return (<option key={item.value} value={item.value}>{item.label}</option>);
                             })}
                         </Form.Select>
                         <small className="text-danger">{errors.idTypeDocument?.message}</small>

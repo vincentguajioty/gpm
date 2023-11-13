@@ -89,7 +89,7 @@ const EquipementVhfAccessoires = ({equipement, setPageNeedsRefresh}) => {
             setValue("remarquesVhfAccessoire", oneItemFromArray.remarquesVhfAccessoire);
         }
 
-        const getData = await Axios.get('/settingsMetiers/getVHFTypesAccessoires');
+        const getData = await Axios.get('/select/getVHFTypesAccessoires');
         setTypes(getData.data);
 
         setShowOffCanevas(true);
@@ -205,8 +205,8 @@ const EquipementVhfAccessoires = ({equipement, setPageNeedsRefresh}) => {
                         <Form.Label>Type</Form.Label>
                         <Form.Select size="sm" name="idVhfAccessoireType" id="idVhfAccessoireType" {...register("idVhfAccessoireType")}>
                             <option key="0" value="">--- Aucun type ---</option>
-                            {types.map((type, i) => {
-                                return (<option key={type.idVhfAccessoireType} value={type.idVhfAccessoireType}>{type.libelleVhfAccessoireType}</option>);
+                            {types.map((item, i) => {
+                                return (<option key={item.value} value={item.value}>{item.label}</option>);
                             })}
                         </Form.Select>
                         <small className="text-danger">{errors.idVhfAccessoireType?.message}</small>

@@ -42,22 +42,22 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
         try {
             setLoading(true);
 
-            let getData = await Axios.get('/settingsMetiers/getLieux');
+            let getData = await Axios.get('/select/getLieux');
             setLieux(getData.data);
 
-            getData = await Axios.get('/settingsMetiers/getTypesVehicules');
+            getData = await Axios.get('/select/getTypesVehicules');
             setVehiculesType(getData.data);
 
             getData = await Axios.get('/select/getNotificationsEnabled');
             setNotifications(getData.data);
 
-            getData = await Axios.get('/settingsUtilisateurs/getAllUsers');
+            getData = await Axios.get('/select/getPersonnes');
             setPersonnes(getData.data);
 
-            getData = await Axios.get('/settingsMetiers/getEtatsVehicules');
+            getData = await Axios.get('/select/getEtatsVehicules');
             setVehiculesEtat(getData.data);
 
-            getData = await Axios.get('/settingsMetiers/getCarburants');
+            getData = await Axios.get('/select/getCarburants');
             setCarburants(getData.data);
             
             setValue("libelleVehicule", vehicule.libelleVehicule);
@@ -163,12 +163,24 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
                         </td>
                     </tr>
                     <tr>
+                        <td className="bg-100" style={{ width: '30%' }}>Etat</td>
+                        <td>
+                            <Form.Select size="sm" name="idVehiculesEtat" id="idVehiculesEtat" {...register("idVehiculesEtat")}>
+                                <option key="0" value="">--- Aucune selection ---</option>
+                                {vehiculesEtat.map((item, i) => {
+                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
+                                })}
+                            </Form.Select>
+                            <small className="text-danger">{errors.idVehiculesEtat?.message}</small>
+                        </td>
+                    </tr>
+                    <tr>
                         <td className="bg-100" style={{ width: '30%' }}>Carburant</td>
                         <td>
                             <Form.Select size="sm" name="idCarburant" id="idCarburant" {...register("idCarburant")}>
                                 <option key="0" value="">--- Aucune selection ---</option>
                                 {carburants.map((item, i) => {
-                                    return (<option key={item.idCarburant} value={item.idCarburant}>{item.libelleCarburant}</option>);
+                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
                                 })}
                             </Form.Select>
                             <small className="text-danger">{errors.idCarburant?.message}</small>
@@ -187,7 +199,7 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
                             <Form.Select size="sm" name="idVehiculesType" id="idVehiculesType" {...register("idVehiculesType")}>
                                 <option key="0" value="">--- Aucune selection ---</option>
                                 {vehiculesType.map((item, i) => {
-                                    return (<option key={item.idVehiculesType} value={item.idVehiculesType}>{item.libelleType}</option>);
+                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
                                 })}
                             </Form.Select>
                             <small className="text-danger">{errors.idVehiculesType?.message}</small>
@@ -198,7 +210,7 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
                         <td>
                             <Form.Select size="sm" name="idNotificationEnabled" id="idNotificationEnabled" {...register("idNotificationEnabled")}>
                                 {notifications.map((item, i) => {
-                                    return (<option key={item.idNotificationEnabled} value={item.idNotificationEnabled}>{item.libelleNotificationEnabled}</option>);
+                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
                                 })}
                             </Form.Select>
                             <small className="text-danger">{errors.idNotificationEnabled?.message}</small>
@@ -210,7 +222,7 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
                             <Form.Select size="sm" name="idLieu" id="idLieu" {...register("idLieu")}>
                                 <option key="0" value="">--- Aucune selection ---</option>
                                 {lieux.map((item, i) => {
-                                    return (<option key={item.idLieu} value={item.idLieu}>{item.libelleLieu}</option>);
+                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
                                 })}
                             </Form.Select>
                             <small className="text-danger">{errors.idLieu?.message}</small>
@@ -243,7 +255,7 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
                             <Form.Select size="sm" name="idResponsable" id="idResponsable" {...register("idResponsable")}>
                                 <option key="0" value="">--- Aucune selection ---</option>
                                 {personnes.map((item, i) => {
-                                    return (<option key={item.idPersonne} value={item.idPersonne}>{item.identifiant}</option>);
+                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
                                 })}
                             </Form.Select>
                             <small className="text-danger">{errors.idResponsable?.message}</small>

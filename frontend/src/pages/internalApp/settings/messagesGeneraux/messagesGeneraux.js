@@ -106,7 +106,7 @@ const MessagesGeneraux = () => {
             setValue('idMessageType', tempArray[0].idMessageType);
             setValue('isPublic', tempArray[0].isPublic);
         }
-        let result = await Axios.get('/messagesGeneraux/getMessagesTypes');
+        let result = await Axios.get('/select/getMessagesTypes');
         setTypesMessages(result.data);
 
         setShowOffCanevas(true);
@@ -182,11 +182,11 @@ const MessagesGeneraux = () => {
             </Offcanvas.Header>
             <Offcanvas.Body>
                 <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
-                <Form.Group className="mb-3">
+                    <Form.Group className="mb-3">
                         <Form.Label>Type</Form.Label>
                         <Form.Select size="sm" name="idMessageType" id="idMessageType" {...register("idMessageType")}>
-                            {typesMessages.map((type, i) => {
-                                return (<option key={type.idMessageType} value={type.idMessageType}>{type.libelleMessageType}</option>);
+                            {typesMessages.map((item, i) => {
+                                return (<option key={item.value} value={item.value}>{item.label}</option>);
                             })}
                         </Form.Select>
                         <small className="text-danger">{errors.idMessageType?.message}</small>

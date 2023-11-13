@@ -149,7 +149,7 @@ const Cautions = () => {
         let getData = await Axios.get('/tenues/getPersonnesSuggested');
         setPersonnesExternes(getData.data);
 
-        getData = await Axios.get('/settingsUtilisateurs/getAllUsers');
+        getData = await Axios.get('/select/getPersonnes');
         setPersonnesInternes(getData.data);
 
         setShowOffCanevas(true);
@@ -237,8 +237,8 @@ const Cautions = () => {
                         <Form.Label>Emise par</Form.Label>
                         <Form.Select size="sm" name="idPersonne" id="idPersonne" {...register("idPersonne")}>
                             <option key="0" value="0">--- Un externe ---</option>
-                            {personnesInternes.map((perso, i) => {
-                                return (<option key={perso.idPersonne} value={perso.idPersonne}>{perso.identifiant}</option>);
+                            {personnesInternes.map((item, i) => {
+                                return (<option key={item.value} value={item.value}>{item.label}</option>);
                             })}
                         </Form.Select>
                         <small className="text-danger">{errors.idPersonne?.message}</small>

@@ -120,7 +120,7 @@ const Tenues = () => {
             setValue("stockAlerteCatalogueTenue", oneItemFromArray.stockAlerteCatalogueTenue);
         }
 
-        const getData = await Axios.get('/fournisseurs/getFournisseurs');
+        const getData = await Axios.get('/select/getFournisseurs');
         setFournisseurs(getData.data);
 
         setShowOffCanevas(true);
@@ -239,8 +239,8 @@ const Tenues = () => {
                         <Form.Label>Fournisseur de prédilection</Form.Label>
                         <Form.Select size="sm" name="idFournisseur" id="idFournisseur" {...register("idFournisseur")}>
                             <option key="0" value="">--- Aucun Fournisseur ---</option>
-                            {fournisseurs.map((four, i) => {
-                                return (<option key={four.idFournisseur} value={four.idFournisseur}>{four.nomFournisseur}</option>);
+                            {fournisseurs.map((item, i) => {
+                                return (<option key={item.value} value={item.value}>{item.label}</option>);
                             })}
                         </Form.Select>
                         <small className="text-danger">{errors.idFournisseur?.message}</small>

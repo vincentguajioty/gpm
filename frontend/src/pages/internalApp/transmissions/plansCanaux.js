@@ -28,7 +28,7 @@ const PlansCanaux = ({vhfPlan, lockEdit = false, displayNameInButton = false}) =
             });
             setCanauxOnePlan(response.data);
 
-            const frequences = await Axios.get('/vhf/getFrequences');
+            const frequences = await Axios.get('/select/getVhfFrequences');
             setFrequences(frequences.data);
             
             setReadyToDisplay(true);
@@ -122,8 +122,8 @@ const PlansCanaux = ({vhfPlan, lockEdit = false, displayNameInButton = false}) =
                                         <Form.Group className="mb-3">
                                             <Form.Select size="sm" value={prog.idVhfCanal} onChange={(e) => {updateFrequence(i, e.target.value)}} disabled={!HabilitationService.habilitations['vhf_plan_modification'] || lockEdit}>
                                                 <option key="0" value="">--- Aucune fréquence programmée ---</option>
-                                                {frequences.map((freq, i) => {
-                                                    return (<option key={freq.idVhfCanal} value={freq.idVhfCanal}>{freq.chName}</option>);
+                                                {frequences.map((item, i) => {
+                                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
                                                 })}
                                             </Form.Select>
                                         </Form.Group>

@@ -33,7 +33,7 @@ const ToDoListForm = ({
     const [showEditOffCanevas, setShowEditOffCanevas] = useState(false);
     const [editOffCanevasIdTache, setEditOffCanevasIdTache] = useState();
     const [isLoading, setLoading] = useState(false);
-    const [priorites, setPriotes] = useState([]);
+    const [priorites, setPriorites] = useState([]);
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm({
         resolver: yupResolver(todolistEditForm),
     });
@@ -47,8 +47,8 @@ const ToDoListForm = ({
         try {
             setEditOffCanevasIdTache(idTache);
 
-            let prio = await Axios.get('todolist/getPioritesForTDL');
-            setPriotes(prio.data);
+            let prio = await Axios.get('/select/getPioritesForTDL');
+            setPriorites(prio.data);
 
             if(idTache > 0)
             {
@@ -312,8 +312,8 @@ const ToDoListForm = ({
                     <Form.Group className="mb-3">
                         <Form.Label>Priorité</Form.Label>
                         <Form.Select size="sm" name="idTDLpriorite" id="idTDLpriorite" {...register("idTDLpriorite")}>
-                            {priorites.map((prio, i) => {
-                                return (<option key={prio.idTDLpriorite} value={prio.idTDLpriorite}>{prio.libellePriorite}</option>);
+                            {priorites.map((item, i) => {
+                                return (<option key={item.value} value={item.value}>{item.label}</option>);
                             })}
                         </Form.Select>
                         <small className="text-danger">{errors.idTDLpriorite?.message}</small>

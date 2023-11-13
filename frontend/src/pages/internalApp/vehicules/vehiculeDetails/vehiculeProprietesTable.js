@@ -21,6 +21,10 @@ const VehiculeProprietesTable = ({vehicule, setPageNeedsRefresh}) => {
                     <td>{vehicule.marqueModele}</td>
                 </tr>
                 <tr>
+                    <td className="bg-100" style={{ width: '30%' }}>Etat</td>
+                    <td>{vehicule.libelleVehiculesEtat}</td>
+                </tr>
+                <tr>
                     <td className="bg-100" style={{ width: '30%' }}>Carburant</td>
                     <td>{vehicule.libelleCarburant}</td>
                 </tr>
