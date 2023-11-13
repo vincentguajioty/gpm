@@ -12,6 +12,7 @@ import { Axios } from 'helpers/axios';
 
 const VehiculeMaintenancesRegulieres = ({idVehicule, maintenancesRegulieres, setPageNeedsRefresh}) => {
     return (<>
+        En entête: softbadges des maintenances avec coloration pour avoir d'un coup d'oeil l'état des maintenances
         Tableau des maintenances régulières et gestion des alertes/paramétrage
     </>);
 };

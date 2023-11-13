@@ -354,6 +354,11 @@ export const vehiculeAddForm = Yup.object().shape({
         .required(champObligatoire)
 });
 
+export const vehiculeUpdateForm = Yup.object().shape({
+    libelleVehicule: Yup.string()
+        .required(champObligatoire)
+});
+
 export const vehiculeAttachedForm = Yup.object().shape({
     nomDocVehicule: Yup
         .string()

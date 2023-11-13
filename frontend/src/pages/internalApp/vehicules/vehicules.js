@@ -41,16 +41,16 @@ const Vehicules = () => {
     }, [])
 
     const colonnes = [
-        {accessor: 'libelleVehicule'     , Header: 'Libellé'},
-        {accessor: 'libelleType'         , Header: 'Type'},
-        {accessor: 'libelleVehiculesEtat', Header: 'Etat'},
-        {accessor: 'identifiant'         , Header: 'Responsable'},
-        {accessor: 'immatriculation'     , Header: 'Immatriculation'},
-        {accessor: 'marqueModele'        , Header: 'Marque/Modèle'},
-        {accessor: 'controles'           , Header: 'Contrôles'},
-        {accessor: 'nbAlertesEnCours'    , Header: 'Alertes bénévoles'},
-        {accessor: 'notifications'       , Header: 'Notifications'},
-        {accessor: 'actions'             , Header: 'Actions'},
+        {accessor: 'libelleVehicule'              , Header: 'Libellé'},
+        {accessor: 'libelleType'                  , Header: 'Type'},
+        {accessor: 'libelleVehiculesEtat'         , Header: 'Etat'},
+        {accessor: 'identifiant'                  , Header: 'Responsable'},
+        {accessor: 'immatriculation'              , Header: 'Immatriculation'},
+        {accessor: 'marqueModele'                 , Header: 'Marque/Modèle'},
+        {accessor: 'controles'                    , Header: 'Contrôles'},
+        {accessor: 'nbAlertesEnCours'             , Header: 'Alertes bénévoles'},
+        {accessor: 'libelleNotificationEnabled'   , Header: 'Notifications'},
+        {accessor: 'actions'                      , Header: 'Actions'},
     ];
     const [lignes, setLignes] = useState([]);
     const initTableau = () => {
@@ -69,7 +69,7 @@ const Vehicules = () => {
                     <SoftBadge className='me-1' bg={item.alerteMaintenance == null ? 'secondary' : item.alerteMaintenance == 0 ? 'success' : 'danger'}>Maintenance</SoftBadge>
                 </>,
                 nbAlertesEnCours: item.nbAlertesEnCours > 0 ? <SoftBadge>{item.nbAlertesEnCours}</SoftBadge> : null,
-                notifications: item.notifications > 0 ? <FontAwesomeIcon icon='bell' /> : <FontAwesomeIcon icon='bell-slash'/>,
+                libelleNotificationEnabled: item.libelleNotificationEnabled > 0 ? <FontAwesomeIcon icon='bell' /> : <FontAwesomeIcon icon='bell-slash'/>,
                 actions:
                     <>
                         <IconButton

@@ -62,7 +62,7 @@ const VehiculeDetails = () => {
                 </Col>
                 <Col md={8}>
                     <Card>
-                        <Tabs defaultActiveKey="mntPonct" transition={true}>
+                        <Tabs defaultActiveKey="mntReg" transition={true}>
                             <Tab eventKey="mntPonct" title="Maintenance ponctuelle" className='border-bottom border-x p-3'>
                                 <VehiculeMaintenancesPonctuelles
                                     idVehicule={idVehicule}
