@@ -45,7 +45,6 @@ import Vehicules from 'pages/internalApp/vehicules/vehicules';
 import VehiculeDetails from 'pages/internalApp/vehicules/vehiculeDetails';
 import SuiviDesinfections from 'pages/internalApp/vehicules/suiviDesinfections';
 import SuiviMaintenances from 'pages/internalApp/vehicules/suiviMaintenances';
-import GraphiquesKilometriques from 'pages/internalApp/vehicules/graphiquesKilometriques';
 import AlertesBenevolesVehicules from 'pages/internalApp/vehicules/alertesBenevolesVehicules';
 
 import Tenues from 'pages/internalApp/tenues/tenues';
@@ -124,7 +123,6 @@ const FalconRoutes = () => {
           <Route path="/vehicules/:idVehicule" element={<VehiculeDetails />} />
           <Route path="/vehiculesDesinfections" element={<SuiviDesinfections />} />
           <Route path="/vehiculesMaintenances" element={<SuiviMaintenances />} />
-          <Route path="/vehiculesKilometres" element={<GraphiquesKilometriques />} />
           <Route path="/vehiculesAlertesBenevoles" element={<AlertesBenevolesVehicules />} />
 
           <Route path="/tenuesCatalogue" element={<Tenues />} />

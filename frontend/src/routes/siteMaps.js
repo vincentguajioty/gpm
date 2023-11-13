@@ -279,16 +279,6 @@ if(HabilitationService.habilitations)
                 active: true
             })
         }
-        if(HabilitationService.habilitations['vehicules_lecture'])
-        {
-            tempChildrens.push({
-                name: 'Graphiques kilométriques',
-                to: '/vehiculesKilometres',
-                icon: 'chart-line',
-                exact: false,
-                active: true
-            })
-        }
         if(HabilitationService.habilitations['alertesBenevolesVehicules_lecture'])
         {
             tempChildrens.push({
