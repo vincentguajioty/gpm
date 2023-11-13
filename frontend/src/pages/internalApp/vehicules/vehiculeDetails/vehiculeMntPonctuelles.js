@@ -201,7 +201,7 @@ const VehiculeMaintenancesPonctuelles = ({idVehicule, maintenancesPonctuelles, s
                     <Form.Group className="mb-3">
                         <Form.Label>Personne ayant fait le relevé</Form.Label>
                         <Form.Select size="sm" name="idExecutant" id="idExecutant" {...register("idExecutant")}>
-                            <option key="0" value="">--- Aucune technologie ---</option>
+                            <option key="0" value="">--- Renseigner une personne ---</option>
                             {personnes.map((item, i) => {
                                 return (<option key={item.value} value={item.value}>{item.label}</option>);
                             })}
@@ -256,7 +256,7 @@ const VehiculeMaintenancesPonctuelles = ({idVehicule, maintenancesPonctuelles, s
                         size = 'sm'
                         variant="outline-success"
                         onClick={()=>{handleShowOffCanevas(0)}}
-                    >Nouveau relevé</IconButton>
+                    >Nouvelle maintenance ponctuelle</IconButton>
                 : null
             }
         />

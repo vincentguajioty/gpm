@@ -75,13 +75,7 @@ const VehiculeDetails = () => {
                                     idVehicule={idVehicule}
                                     setPageNeedsRefresh={setPageNeedsRefresh}
                                     maintenancesRegulieres={vehicule.maintenancesRegulieres}
-                                />
-                            </Tab>
-                            <Tab eventKey="km" title="Relevés Kilométriques" className='border-bottom border-x p-3'>
-                                <VehiculeRelevesKM
-                                    idVehicule={idVehicule}
-                                    setPageNeedsRefresh={setPageNeedsRefresh}
-                                    relevesKM={vehicule.relevesKM}
+                                    maintenancesRegulieresAlertes={vehicule.maintenancesRegulieresAlertes}
                                 />
                             </Tab>
                             <Tab eventKey="desinf" title="Désinfections" className='border-bottom border-x p-3'>
@@ -89,6 +83,13 @@ const VehiculeDetails = () => {
                                     idVehicule={idVehicule}
                                     setPageNeedsRefresh={setPageNeedsRefresh}
                                     desinfections={vehicule.desinfections}
+                                />
+                            </Tab>
+                            <Tab eventKey="km" title="Relevés Kilométriques" className='border-bottom border-x p-3'>
+                                <VehiculeRelevesKM
+                                    idVehicule={idVehicule}
+                                    setPageNeedsRefresh={setPageNeedsRefresh}
+                                    relevesKM={vehicule.relevesKM}
                                 />
                             </Tab>
                             <Tab eventKey="alertes" title="Alertes de bénévoles" className='border-bottom border-x p-3'>

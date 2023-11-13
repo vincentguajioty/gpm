@@ -396,3 +396,7 @@ export const maintenancePonctuelle = Yup.object().shape({
         .min(1, champObligatoire)
         .required(champObligatoire),
 });
+
+export const maintenanceReguliere = Yup.object().shape({
+
+});

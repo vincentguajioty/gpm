@@ -120,6 +120,21 @@ exports.getOneVehicule = async (req, res)=>{
                     idVehiculeHealth: health.idVehiculeHealth
                 });
                 health.checks = checks;
+
+                let remainingChecks = await db.query(`
+                    SELECT
+                        t.idHealthType,
+                        t.libelleHealthType
+                    FROM
+                        VEHICULES_HEALTH_TYPES t
+                        LEFT OUTER JOIN (SELECT * FROM VEHICULES_HEALTH_CHECKS WHERE idVehiculeHealth = :idVehiculeHealth) hc ON t.idHealthType = hc.idHealthType
+                    WHERE
+                        hc.idVehiculeHealth IS NULL
+                ;`,{
+                    idVehiculeHealth: health.idVehiculeHealth
+                });
+                health.remainingChecks = remainingChecks;
+
             }
 
             let maintenancesRegulieresAlertes = await db.query(`
@@ -630,6 +645,119 @@ exports.updateMaintenancePonctuelle = async (req, res)=>{
 exports.deleteMaintenancePonctuelle = async (req, res)=>{
     try {
         const deleteResult = await fonctionsDelete.vehiculesMaintenanceDelete(req.verifyJWTandProfile.idPersonne , req.body.idMaintenance);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//Maintenances régulières
+exports.addMaintenanceReguliere = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                VEHICULES_HEALTH
+            SET
+                dateHealth = :dateHealth,
+                idPersonne = :idPersonne,
+                releveKilometrique = :releveKilometrique,
+                idVehicule = :idVehicule
+        `,{
+            dateHealth: req.body.dateHealth || null,
+            idPersonne: req.body.idPersonne || null,
+            releveKilometrique: req.body.releveKilometrique || null,
+            idVehicule: req.body.idVehicule || null,
+        });
+
+        const getLast = await db.query(`SELECT MAX(idVehiculeHealth) as idVehiculeHealth FROM VEHICULES_HEALTH`);
+
+        for(const check of req.body.checks)
+        {
+            if(check.idHealthType && check.idHealthType > 0)
+            {
+                let insert = await db.query(`
+                    INSERT INTO
+                        VEHICULES_HEALTH_CHECKS
+                    SET
+                        idVehiculeHealth = :idVehiculeHealth,
+                        idHealthType = :idHealthType,
+                        remarquesCheck = :remarquesCheck
+                ;`,{
+                    idVehiculeHealth: getLast[0].idVehiculeHealth,
+                    idHealthType: check.idHealthType || null,
+                    remarquesCheck: check.remarquesCheck || null,
+                });
+            }
+        }
+
+        await fonctionsMetiers.checkOneMaintenance(req.body.idVehicule);
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateMaintenanceReguliere = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VEHICULES_HEALTH
+            SET
+                dateHealth = :dateHealth,
+                idPersonne = :idPersonne,
+                releveKilometrique = :releveKilometrique
+            WHERE
+                idVehiculeHealth = :idVehiculeHealth
+        `,{
+            dateHealth: req.body.dateHealth || null,
+            idPersonne: req.body.idPersonne || null,
+            releveKilometrique: req.body.releveKilometrique || null,
+            idVehiculeHealth: req.body.idVehiculeHealth || null,
+        });
+
+        let clean = await db.query(`
+            DELETE FROM
+                VEHICULES_HEALTH_CHECKS
+            WHERE
+                idVehiculeHealth = :idVehiculeHealth
+        ;`,{
+            idVehiculeHealth: req.body.idVehiculeHealth,
+        });
+
+        for(const check of req.body.checks)
+        {
+            if(check.idHealthType && check.idHealthType > 0)
+            {
+                let insert = await db.query(`
+                    INSERT INTO
+                        VEHICULES_HEALTH_CHECKS
+                    SET
+                        idVehiculeHealth = :idVehiculeHealth,
+                        idHealthType = :idHealthType,
+                        remarquesCheck = :remarquesCheck
+                ;`,{
+                    idVehiculeHealth: req.body.idVehiculeHealth,
+                    idHealthType: check.idHealthType || null,
+                    remarquesCheck: check.remarquesCheck || null,
+                });
+            }
+        }
+
+        await fonctionsMetiers.checkOneMaintenance(req.body.idVehicule);
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.deleteMaintenanceReguliere = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.vehiculesHealthDelete(req.verifyJWTandProfile.idPersonne , req.body.idVehiculeHealth);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
