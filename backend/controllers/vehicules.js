@@ -500,3 +500,63 @@ exports.dropVehiculeDocument = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+//Releves Kilométriques
+exports.addReleveKM = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                VEHICULES_RELEVES
+            SET
+                dateReleve = :dateReleve,
+                releveKilometrique = :releveKilometrique,
+                idPersonne = :idPersonne,
+                idVehicule = :idVehicule
+        `,{
+            dateReleve: req.body.dateReleve || null,
+            releveKilometrique: req.body.releveKilometrique || null,
+            idPersonne: req.body.idPersonne || null,
+            idVehicule: req.body.idVehicule || null,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateReleveKM = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VEHICULES_RELEVES
+            SET
+                dateReleve = :dateReleve,
+                releveKilometrique = :releveKilometrique,
+                idPersonne = :idPersonne
+            WHERE
+                idReleve = :idReleve
+        `,{
+            dateReleve: req.body.dateReleve || null,
+            releveKilometrique: req.body.releveKilometrique || null,
+            idPersonne: req.body.idPersonne || null,
+            idReleve: req.body.idReleve || null,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.deleteReleveKM = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.vehiculesReleveDelete(req.verifyJWTandProfile.idPersonne , req.body.idReleve);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
