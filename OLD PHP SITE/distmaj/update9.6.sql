@@ -1,7 +1,0 @@
-CREATE TABLE COMMANDES_VALIDEURS_DEFAULT(
-	idPersonne INT,
-	CONSTRAINT fk_valideurs_default
-		FOREIGN KEY (idPersonne)
-		REFERENCES PERSONNE_REFERENTE(idPersonne));
-
-UPDATE CONFIG set version = '9.6';

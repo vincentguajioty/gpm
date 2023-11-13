@@ -1,4 +1,0 @@
-UPDATE CONFIG set version = '2.6';
-
-ALTER TABLE MATERIEL_SAC CHANGE couleur couleur VARCHAR(50);
-
