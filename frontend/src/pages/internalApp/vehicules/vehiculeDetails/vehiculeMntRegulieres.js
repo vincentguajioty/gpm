@@ -20,6 +20,8 @@ import fr from 'date-fns/locale/fr';
 registerLocale('fr', fr);
 setDefaultLocale('fr');
 
+import VehiculeMaintenancesRegulieresAlertes from './vehiculeMntRegulieresAlertes';
+
 const VehiculeMaintenancesRegulieres = ({idVehicule, maintenancesRegulieres, maintenancesRegulieresAlertes, setPageNeedsRefresh}) => {
     const nl2br = require('react-nl2br');
     const colonnes = [
@@ -383,8 +385,15 @@ const VehiculeMaintenancesRegulieres = ({idVehicule, maintenancesRegulieres, mai
                             icon='plus'
                             size = 'sm'
                             variant="outline-success"
+                            className="me-1"
                             onClick={()=>{handleShowEditModal(0)}}
                         >Nouvelle maintenance régulière</IconButton>
+
+                        <VehiculeMaintenancesRegulieresAlertes
+                            idVehicule={idVehicule}
+                            maintenancesRegulieresAlertes={maintenancesRegulieresAlertes}
+                            setPageNeedsRefresh={setPageNeedsRefresh}
+                        />
                     </>
                 : null
             }

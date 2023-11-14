@@ -764,3 +764,43 @@ exports.deleteMaintenanceReguliere = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+exports.updateMaintenanceReguliereAlertes = async (req, res)=>{
+    try {
+        let clean = await db.query(`
+            DELETE FROM
+                VEHICULES_HEALTH_ALERTES
+            WHERE
+                idVehicule = :idVehicule
+        ;`,{
+            idVehicule: req.body.idVehicule,
+        });
+
+        for(const alerte of req.body.typesMaintenance)
+        {
+            
+            if(alerte.frequenceHealth && alerte.frequenceHealth > 0)
+            {
+                let insert = await db.query(`
+                    INSERT INTO
+                        VEHICULES_HEALTH_ALERTES
+                    SET
+                        idVehicule = :idVehicule,
+                        frequenceHealth = :frequenceHealth,
+                        idHealthType = :idHealthType
+                ;`,{
+                    idVehicule: req.body.idVehicule,
+                    frequenceHealth: alerte.frequenceHealth || null,
+                    idHealthType: alerte.value || null,
+                });
+            }
+        }
+
+        await fonctionsMetiers.checkOneMaintenance(req.body.idVehicule);
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
