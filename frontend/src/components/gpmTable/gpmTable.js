@@ -21,7 +21,7 @@ const GPMtable = ({
         >
             <Row className="flex-end-center mb-3">
                 <Col xs="auto" sm={6} lg={8}>
-                    {topButtonShow ? topButton : null}
+                    {topButtonShow == true ? <>{topButton}</> : null}
                 </Col>
                 <Col xs="auto" sm={6} lg={4}>
                     <AdvanceTableSearchBox table/>

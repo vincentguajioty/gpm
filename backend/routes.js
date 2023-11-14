@@ -110,15 +110,15 @@ router.post('/vehicules/addMaintenancePonctuelle',     loggerMiddleware.httpLogg
 router.post('/vehicules/updateMaintenancePonctuelle',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateMaintenancePonctuelle);
 router.post('/vehicules/deleteMaintenancePonctuelle',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.suppressionLogger(),  vehiculesCtrl.deleteMaintenancePonctuelle);
 //Maintenances régulières
-router.post('/vehicules/addMaintenanceReguliere',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.addMaintenanceReguliere);
-router.post('/vehicules/updateMaintenanceReguliere',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateMaintenanceReguliere);
-router.post('/vehicules/deleteMaintenanceReguliere',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.suppressionLogger(),  vehiculesCtrl.deleteMaintenanceReguliere);
-router.post('/vehicules/updateMaintenanceReguliereAlertes',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateMaintenanceReguliereAlertes);
+router.post('/vehicules/addMaintenanceReguliere',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehiculeHealth_ajout']),        loggerMiddleware.modificationLogger(), vehiculesCtrl.addMaintenanceReguliere);
+router.post('/vehicules/updateMaintenanceReguliere',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehiculeHealth_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateMaintenanceReguliere);
+router.post('/vehicules/deleteMaintenanceReguliere',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehiculeHealth_modification']), loggerMiddleware.suppressionLogger(),  vehiculesCtrl.deleteMaintenanceReguliere);
+router.post('/vehicules/updateMaintenanceReguliereAlertes',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehiculeHealth_suppression']),  loggerMiddleware.modificationLogger(), vehiculesCtrl.updateMaintenanceReguliereAlertes);
 //Désinfections
-router.post('/vehicules/addDesinfection',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.addDesinfection);
-router.post('/vehicules/updateDesinfection',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateDesinfection);
-router.post('/vehicules/deleteDesinfection',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.suppressionLogger(),  vehiculesCtrl.deleteDesinfection);
-router.post('/vehicules/updateDesinfectionAlertes',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateDesinfectionAlertes);
+router.post('/vehicules/addDesinfection',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_ajout']),        loggerMiddleware.modificationLogger(), vehiculesCtrl.addDesinfection);
+router.post('/vehicules/updateDesinfection',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateDesinfection);
+router.post('/vehicules/deleteDesinfection',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_modification']), loggerMiddleware.suppressionLogger(),  vehiculesCtrl.deleteDesinfection);
+router.post('/vehicules/updateDesinfectionAlertes',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_suppression']),  loggerMiddleware.modificationLogger(), vehiculesCtrl.updateDesinfectionAlertes);
 
 //Tenues - Catalogue
 router.get('/tenues/getPersonnesSuggested',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_lecture']),                                             tenuesCtrl.getPersonnesSuggested);

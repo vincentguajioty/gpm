@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Row, Col, Card, Form, Table, Modal, Button } from 'react-bootstrap';
-import FalconCloseButton from 'components/common/FalconCloseButton';
+import { Row, Col, Form, Table, Modal, Button } from 'react-bootstrap';
 import moment from 'moment-timezone';
 import SoftBadge from 'components/common/SoftBadge';
 import GPMtable from 'components/gpmTable/gpmTable';
@@ -57,7 +56,7 @@ const VehiculeMaintenancesRegulieres = ({idVehicule, maintenancesRegulieres, mai
                 </>,
                 identifiant: item.identifiant,
                 actions:<>
-                    {HabilitationService.habilitations['vehicules_modification'] ? 
+                    {HabilitationService.habilitations['vehiculeHealth_modification'] ? 
                         <IconButton
                             icon='pen'
                             size = 'sm'
@@ -67,7 +66,7 @@ const VehiculeMaintenancesRegulieres = ({idVehicule, maintenancesRegulieres, mai
                         />
                     : null}
 
-                    {HabilitationService.habilitations['vehicules_modification'] ? 
+                    {HabilitationService.habilitations['vehiculeHealth_suppression'] ? 
                         <IconButton
                             icon='trash'
                             size = 'sm'
@@ -378,24 +377,25 @@ const VehiculeMaintenancesRegulieres = ({idVehicule, maintenancesRegulieres, mai
             columns={colonnes}
             data={lignes}
             topButtonShow={true}
-            topButton={
-                HabilitationService.habilitations['vehicules_modification'] ?
-                    <>
-                        <IconButton
-                            icon='plus'
-                            size = 'sm'
-                            variant="outline-success"
-                            className="me-1"
-                            onClick={()=>{handleShowEditModal(0)}}
-                        >Nouvelle maintenance régulière</IconButton>
-
-                        <VehiculeMaintenancesRegulieresAlertes
-                            idVehicule={idVehicule}
-                            maintenancesRegulieresAlertes={maintenancesRegulieresAlertes}
-                            setPageNeedsRefresh={setPageNeedsRefresh}
-                        />
-                    </>
-                : null
+            topButton={<>
+                {HabilitationService.habilitations['vehiculeHealth_ajout'] ?
+                    <IconButton
+                        icon='plus'
+                        size = 'sm'
+                        variant="outline-success"
+                        className="me-1"
+                        onClick={()=>{handleShowEditModal(0)}}
+                    >Nouvelle maintenance régulière</IconButton>
+                : ''}
+                
+                {HabilitationService.habilitations['vehicules_modification'] ?
+                    <VehiculeMaintenancesRegulieresAlertes
+                        idVehicule={idVehicule}
+                        maintenancesRegulieresAlertes={maintenancesRegulieresAlertes}
+                        setPageNeedsRefresh={setPageNeedsRefresh}
+                    />
+                : ''}
+            </>
             }
         />
     </>);

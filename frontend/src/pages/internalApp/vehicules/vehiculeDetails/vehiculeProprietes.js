@@ -39,7 +39,7 @@ const VehiculeProprietes = ({vehicule, setPageNeedsRefresh}) => {
                             label='Modifier'
                             onClick={handleEdition}
                             checked={modeEdition}
-                            disabled={!HabilitationService.habilitations['vhf_equipement_modification']}
+                            disabled={!HabilitationService.habilitations['vehicules_modification']}
                         />
                     </div>
                 </Flex>

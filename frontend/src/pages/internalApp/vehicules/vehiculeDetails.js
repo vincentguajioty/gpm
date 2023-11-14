@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
-import { Row, Col, Card, Form, Tabs, Tab, } from 'react-bootstrap';
-import Flex from 'components/common/Flex';
+import { Row, Col, Card, Tabs, Tab, } from 'react-bootstrap';
 import PageHeader from 'components/common/PageHeader';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 
 import HabilitationService from 'services/habilitationsService';
@@ -62,7 +60,7 @@ const VehiculeDetails = () => {
                 </Col>
                 <Col md={8}>
                     <Card>
-                        <Tabs defaultActiveKey="mntReg" transition={true}>
+                        <Tabs defaultActiveKey="mntPonct" transition={true}>
                             <Tab eventKey="mntPonct" title="Maintenance ponctuelle" className='border-bottom border-x p-3'>
                                 <VehiculeMaintenancesPonctuelles
                                     idVehicule={idVehicule}
@@ -70,22 +68,26 @@ const VehiculeDetails = () => {
                                     maintenancesPonctuelles={vehicule.maintenancesPonctuelles}
                                 />
                             </Tab>
-                            <Tab eventKey="mntReg" title="Maintenance régulière" className='border-bottom border-x p-3'>
-                                <VehiculeMaintenancesRegulieres
-                                    idVehicule={idVehicule}
-                                    setPageNeedsRefresh={setPageNeedsRefresh}
-                                    maintenancesRegulieres={vehicule.maintenancesRegulieres}
-                                    maintenancesRegulieresAlertes={vehicule.maintenancesRegulieresAlertes}
-                                />
-                            </Tab>
-                            <Tab eventKey="desinf" title="Désinfections" className='border-bottom border-x p-3'>
-                                <VehiculeDesinfections
-                                    idVehicule={idVehicule}
-                                    setPageNeedsRefresh={setPageNeedsRefresh}
-                                    desinfections={vehicule.desinfections}
-                                    desinfectionsAlertes={vehicule.desinfectionsAlertes}
-                                />
-                            </Tab>
+                            {HabilitationService.habilitations.vehiculeHealth_lecture ?
+                                <Tab eventKey="mntReg" title="Maintenance régulière" className='border-bottom border-x p-3'>
+                                    <VehiculeMaintenancesRegulieres
+                                        idVehicule={idVehicule}
+                                        setPageNeedsRefresh={setPageNeedsRefresh}
+                                        maintenancesRegulieres={vehicule.maintenancesRegulieres}
+                                        maintenancesRegulieresAlertes={vehicule.maintenancesRegulieresAlertes}
+                                    />
+                                </Tab>
+                            : null}
+                            {HabilitationService.habilitations.desinfections_lecture ?
+                                <Tab eventKey="desinf" title="Désinfections" className='border-bottom border-x p-3'>
+                                    <VehiculeDesinfections
+                                        idVehicule={idVehicule}
+                                        setPageNeedsRefresh={setPageNeedsRefresh}
+                                        desinfections={vehicule.desinfections}
+                                        desinfectionsAlertes={vehicule.desinfectionsAlertes}
+                                    />
+                                </Tab>
+                            : null}
                             <Tab eventKey="km" title="Relevés Kilométriques" className='border-bottom border-x p-3'>
                                 <VehiculeRelevesKM
                                     idVehicule={idVehicule}
@@ -93,13 +95,15 @@ const VehiculeDetails = () => {
                                     relevesKM={vehicule.relevesKM}
                                 />
                             </Tab>
-                            <Tab eventKey="alertes" title="Alertes de bénévoles" className='border-bottom border-x p-3'>
-                                <VehiculeAlertesBenevoles
-                                    idVehicule={idVehicule}
-                                    setPageNeedsRefresh={setPageNeedsRefresh}
-                                    alertesBenevoles={vehicule.alertesBenevoles}
-                                />
-                            </Tab>
+                            {HabilitationService.habilitations.alertesBenevolesVehicules_lecture ?
+                                <Tab eventKey="alertes" title="Alertes de bénévoles" className='border-bottom border-x p-3'>
+                                    <VehiculeAlertesBenevoles
+                                        idVehicule={idVehicule}
+                                        setPageNeedsRefresh={setPageNeedsRefresh}
+                                        alertesBenevoles={vehicule.alertesBenevoles}
+                                    />
+                                </Tab>
+                            : null}
                         </Tabs>
                     </Card>
                 </Col>

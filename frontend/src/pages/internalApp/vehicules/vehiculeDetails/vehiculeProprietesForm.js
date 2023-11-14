@@ -1,16 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Offcanvas, Button, Form, Modal, Table } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import FalconCloseButton from 'components/common/FalconCloseButton';
-import FalconComponentCard from 'components/common/FalconComponentCard';
-import ActionButton from 'components/common/ActionButton';
+import { Button, Form, Table } from 'react-bootstrap';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
-import PageHeader from 'components/common/PageHeader';
-import IconButton from 'components/common/IconButton';
-import GPMtable from 'components/gpmTable/gpmTable';
-import moment from 'moment-timezone';
-
-import HabilitationService from 'services/habilitationsService';
 
 import DatePicker from 'react-datepicker';
 import { registerLocale, setDefaultLocale } from  "react-datepicker";

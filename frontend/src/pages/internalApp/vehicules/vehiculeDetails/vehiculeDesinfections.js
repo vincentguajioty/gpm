@@ -39,7 +39,7 @@ const VehiculeDesinfections = ({idVehicule, desinfections, desinfectionsAlertes,
                 desinfections: item.libelleVehiculesDesinfectionsType,
                 identifiant: item.identifiant,
                 actions:<>
-                    {HabilitationService.habilitations['vehicules_modification'] ? 
+                    {HabilitationService.habilitations['desinfections_modification'] ? 
                         <IconButton
                             icon='pen'
                             size = 'sm'
@@ -49,7 +49,7 @@ const VehiculeDesinfections = ({idVehicule, desinfections, desinfectionsAlertes,
                         />
                     : null}
 
-                    {HabilitationService.habilitations['vehicules_modification'] ? 
+                    {HabilitationService.habilitations['desinfections_suppression'] ? 
                         <IconButton
                             icon='trash'
                             size = 'sm'
@@ -254,25 +254,25 @@ const VehiculeDesinfections = ({idVehicule, desinfections, desinfectionsAlertes,
             columns={colonnes}
             data={lignes}
             topButtonShow={true}
-            topButton={
-                HabilitationService.habilitations['vehicules_modification'] ?
-                    <>
-                        <IconButton
-                            icon='plus'
-                            size = 'sm'
-                            variant="outline-success"
-                            className="me-1"
-                            onClick={()=>{handleShowEditModal(0)}}
-                        >Nouvelle désinfection</IconButton>
+            topButton={<>
+                {HabilitationService.habilitations['desinfections_ajout'] ? 
+                    <IconButton
+                        icon='plus'
+                        size = 'sm'
+                        variant="outline-success"
+                        className="me-1"
+                        onClick={()=>{handleShowEditModal(0)}}
+                    >Nouvelle désinfection</IconButton>
+                : ''}
 
-                        <VehiculeDesinfectionsAlertes
-                            idVehicule={idVehicule}
-                            desinfectionsAlertes={desinfectionsAlertes}
-                            setPageNeedsRefresh={setPageNeedsRefresh}
-                        />
-                    </>
-                : null
-            }
+                {HabilitationService.habilitations['vehicules_modification'] ? 
+                    <VehiculeDesinfectionsAlertes
+                        idVehicule={idVehicule}
+                        desinfectionsAlertes={desinfectionsAlertes}
+                        setPageNeedsRefresh={setPageNeedsRefresh}
+                    />
+                : ''}
+            </>}
         />
     </>);
 };

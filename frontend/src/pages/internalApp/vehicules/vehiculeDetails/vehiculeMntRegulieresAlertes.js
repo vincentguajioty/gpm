@@ -1,22 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import { Row, Col, Card, Form, Table, Modal, Button } from 'react-bootstrap';
-import FalconCloseButton from 'components/common/FalconCloseButton';
-import moment from 'moment-timezone';
-import SoftBadge from 'components/common/SoftBadge';
-import GPMtable from 'components/gpmTable/gpmTable';
+import React, {useState} from 'react';
+import { Form, Table, Modal, Button } from 'react-bootstrap';
 import IconButton from 'components/common/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import HabilitationService from 'services/habilitationsService';
+import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 
 import { Axios } from 'helpers/axios';
-
-import DatePicker from 'react-datepicker';
-import { registerLocale, setDefaultLocale } from  "react-datepicker";
-import fr from 'date-fns/locale/fr';
-import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
-registerLocale('fr', fr);
-setDefaultLocale('fr');
 
 const VehiculeMaintenancesRegulieresAlertes = ({idVehicule, maintenancesRegulieresAlertes, setPageNeedsRefresh}) => {
     

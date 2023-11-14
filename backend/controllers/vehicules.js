@@ -303,11 +303,11 @@ exports.getOneVehicule = async (req, res)=>{
             });
 
             vehicule.maintenancesPonctuelles = maintenancesPonctuelles;
-            vehicule.maintenancesRegulieres = maintenancesRegulieres;
-            vehicule.maintenancesRegulieresAlertes = maintenancesRegulieresAlertes;
-            vehicule.desinfections = desinfections;
-            vehicule.desinfectionsAlertes = desinfectionsAlertes;
-            vehicule.alertesBenevoles = alertesBenevoles;
+            vehicule.maintenancesRegulieres = req.verifyJWTandProfile.vehiculeHealth_lecture ? maintenancesRegulieres : [];
+            vehicule.maintenancesRegulieresAlertes = req.verifyJWTandProfile.vehiculeHealth_lecture ? maintenancesRegulieresAlertes : [];
+            vehicule.desinfections = req.verifyJWTandProfile.desinfections_lecture ? desinfections : [];
+            vehicule.desinfectionsAlertes = req.verifyJWTandProfile.desinfections_lecture ? desinfectionsAlertes : [];
+            vehicule.alertesBenevoles = req.verifyJWTandProfile.alertesBenevolesVehicules_lecture ? alertesBenevoles : [];
             vehicule.relevesKM = relevesKM;
             vehicule.lots = lots;
             vehicule.documents = documents;
