@@ -4,10 +4,12 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import logo from 'assets/img/logo.png';
 
+import HabilitationService from 'services/habilitationsService';
+
 const Logo = ({ at, width, className, textClass, ...rest }) => {
   return (
     <Link
-      to="/"
+      to={HabilitationService.habilitations ? "/home" : "/"}
       className={classNames(
         'text-decoration-none',
         { 'navbar-brand text-left': at === 'navbar-vertical' },

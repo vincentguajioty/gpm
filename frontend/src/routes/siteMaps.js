@@ -1,3 +1,4 @@
+import ConfigurationService from 'services/configurationService';
 import HabilitationService from 'services/habilitationsService';
 
 export const dashboardRoutes = {
@@ -25,6 +26,26 @@ export const parametresRoutes = {
     labelDisable: false,
     children: []
 };
+
+if(ConfigurationService.config)
+{
+    if(
+        ConfigurationService.config['alertes_benevoles_lots']
+        ||
+        ConfigurationService.config['alertes_benevoles_vehicules']
+        ||
+        ConfigurationService.config['consommation_benevoles']
+    )
+    {
+        dashboardRoutes.children.push({
+            name: 'Espace public',
+            to: '/',
+            icon: 'arrow-left',
+            exact: false,
+            active: true
+        })
+    }
+}
 
 if(HabilitationService.habilitations)
 {
