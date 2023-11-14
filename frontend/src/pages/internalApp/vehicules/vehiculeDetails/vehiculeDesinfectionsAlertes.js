@@ -18,7 +18,7 @@ import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 registerLocale('fr', fr);
 setDefaultLocale('fr');
 
-const VehiculeMaintenancesRegulieresAlertes = ({idVehicule, maintenancesRegulieresAlertes, setPageNeedsRefresh}) => {
+const VehiculeDesinfectionsAlertes = ({idVehicule, desinfectionsAlertes, setPageNeedsRefresh}) => {
     
     const [showAlerteModal, setShowAlerteModal] = useState(false);
     const [isLoading, setLoading] = useState(false);
@@ -27,27 +27,27 @@ const VehiculeMaintenancesRegulieresAlertes = ({idVehicule, maintenancesRegulier
         setLoading(false);
     };
     
-    const [typesMaintenance, setTypesMaintenance] = useState([]);
+    const [typesDesinfection, setTypesDesinfection] = useState([]);
     const handleShowAlerteModal = async () => {
         try {
             setShowAlerteModal(true);
             setLoading(true);
 
-            let getData = await Axios.get('/select/getTypesMaintenancesRegulieresVehicules');
-            for(const mnt of getData.data)
+            let getData = await Axios.get('/select/getTypesDesinfections');
+            for(const desinf of getData.data)
             {
-                let selectedMnt = maintenancesRegulieresAlertes.filter(oneAlerte => oneAlerte.idHealthType == mnt.value)
-                if(selectedMnt.length > 0)
+                let selectedDesinf = desinfectionsAlertes.filter(oneAlerte => oneAlerte.idVehiculesDesinfectionsType == desinf.value)
+                if(selectedDesinf.length > 0)
                 {
-                    mnt.frequenceHealth = selectedMnt[0].frequenceHealth
+                    desinf.frequenceDesinfection = selectedDesinf[0].frequenceDesinfection
                 }
                 else
                 {
-                    mnt.frequenceHealth = null
+                    desinf.frequenceDesinfection = null
                 }
             }
             
-            setTypesMaintenance(getData.data);
+            setTypesDesinfection(getData.data);
             
             setLoading(false);
         } catch (error) {
@@ -59,9 +59,9 @@ const VehiculeMaintenancesRegulieresAlertes = ({idVehicule, maintenancesRegulier
         try {
             setLoading(true);
 
-            const response = await Axios.post('/vehicules/updateMaintenanceReguliereAlertes',{
+            const response = await Axios.post('/vehicules/updateDesinfectionAlertes',{
                 idVehicule: idVehicule,
-                typesMaintenance: typesMaintenance,
+                typesDesinfection: typesDesinfection,
             });
             
             setPageNeedsRefresh(true);
@@ -72,18 +72,18 @@ const VehiculeMaintenancesRegulieresAlertes = ({idVehicule, maintenancesRegulier
         }
     }
 
-    const updateFrequenceHealth = (index, frequenceHealth) => {
-        const newState = typesMaintenance.map((mnt, i) => {
+    const updateFrequenceDesinfection = (index, frequenceDesinfection) => {
+        const newState = typesDesinfection.map((desinf, i) => {
             if(i === index)
             {
-                return {...mnt, frequenceHealth: frequenceHealth}
+                return {...desinf, frequenceDesinfection: frequenceDesinfection}
             }
             else
             {
-                return mnt;
+                return desinf;
             }
         })
-        setTypesMaintenance(newState);
+        setTypesDesinfection(newState);
     }
     
     return (<>
@@ -96,27 +96,27 @@ const VehiculeMaintenancesRegulieresAlertes = ({idVehicule, maintenancesRegulier
 
         <Modal show={showAlerteModal} onHide={handleCloseAlerteModal} size="lg" backdrop="static" keyboard={false}>
             <Modal.Header closeButton >
-                <Modal.Title>Gestion des alertes et récurrences pour les maintenances régulières</Modal.Title>
+                <Modal.Title>Gestion des alertes et récurrences pour les désinfections</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {isLoading ? <LoaderInfiniteLoop/> :
                     <Table>
                         <thead>
                             <tr>
-                                <th>Maintenance</th>
+                                <th>Désinfection</th>
                                 <th>Alerte active</th>
                                 <th>Jours de récurrence</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {typesMaintenance.map((type, i)=>{return(
+                            {typesDesinfection.map((type, i)=>{return(
                                 <tr>
                                     <td>{type.label}</td>
-                                    <td>{type.frequenceHealth > 0 ?
+                                    <td>{type.frequenceDesinfection > 0 ?
                                         <FontAwesomeIcon icon='check' />
                                     : null}</td>
                                     <td>
-                                        <Form.Control size="sm" type="number" min="0" name="frequenceHealth" id="frequenceHealth" value={type.frequenceHealth} onChange={(e) => {updateFrequenceHealth(i, e.target.value)}}/>
+                                        <Form.Control size="sm" type="number" min="0" name="frequenceDesinfection" id="frequenceDesinfection" value={type.frequenceDesinfection} onChange={(e) => {updateFrequenceDesinfection(i, e.target.value)}}/>
                                     </td>
                                 </tr>
                             )})}
@@ -134,6 +134,6 @@ const VehiculeMaintenancesRegulieresAlertes = ({idVehicule, maintenancesRegulier
     </>);
 };
 
-VehiculeMaintenancesRegulieresAlertes.propTypes = {};
+VehiculeDesinfectionsAlertes.propTypes = {};
 
-export default VehiculeMaintenancesRegulieresAlertes;
+export default VehiculeDesinfectionsAlertes;

@@ -398,5 +398,25 @@ export const maintenancePonctuelle = Yup.object().shape({
 });
 
 export const maintenanceReguliere = Yup.object().shape({
+    dateHealth: Yup
+        .date()
+        .required(champObligatoire),
+    idPersonne: Yup
+        .number()
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+});
 
+export const desinfectionForm = Yup.object().shape({
+    dateDesinfection: Yup
+        .date()
+        .required(champObligatoire),
+    idExecutant: Yup
+        .number()
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    idVehiculesDesinfectionsType: Yup
+        .number()
+        .min(1, champObligatoire)
+        .required(champObligatoire),
 });

@@ -114,6 +114,11 @@ router.post('/vehicules/addMaintenanceReguliere',            loggerMiddleware.ht
 router.post('/vehicules/updateMaintenanceReguliere',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateMaintenanceReguliere);
 router.post('/vehicules/deleteMaintenanceReguliere',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.suppressionLogger(),  vehiculesCtrl.deleteMaintenanceReguliere);
 router.post('/vehicules/updateMaintenanceReguliereAlertes',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateMaintenanceReguliereAlertes);
+//Désinfections
+router.post('/vehicules/addDesinfection',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.addDesinfection);
+router.post('/vehicules/updateDesinfection',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateDesinfection);
+router.post('/vehicules/deleteDesinfection',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.suppressionLogger(),  vehiculesCtrl.deleteDesinfection);
+router.post('/vehicules/updateDesinfectionAlertes',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateDesinfectionAlertes);
 
 //Tenues - Catalogue
 router.get('/tenues/getPersonnesSuggested',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_lecture']),                                             tenuesCtrl.getPersonnesSuggested);

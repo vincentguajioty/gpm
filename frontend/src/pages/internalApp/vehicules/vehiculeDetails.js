@@ -83,6 +83,7 @@ const VehiculeDetails = () => {
                                     idVehicule={idVehicule}
                                     setPageNeedsRefresh={setPageNeedsRefresh}
                                     desinfections={vehicule.desinfections}
+                                    desinfectionsAlertes={vehicule.desinfectionsAlertes}
                                 />
                             </Tab>
                             <Tab eventKey="km" title="Relevés Kilométriques" className='border-bottom border-x p-3'>

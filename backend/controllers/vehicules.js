@@ -804,3 +804,110 @@ exports.updateMaintenanceReguliereAlertes = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+//Maintenances désinfections
+exports.addDesinfection = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                VEHICULES_DESINFECTIONS
+            SET
+                dateDesinfection = :dateDesinfection,
+                idExecutant = :idExecutant,
+                remarquesDesinfection = :remarquesDesinfection,
+                idVehicule = :idVehicule,
+                idVehiculesDesinfectionsType = :idVehiculesDesinfectionsType
+        `,{
+            dateDesinfection: req.body.dateDesinfection || null,
+            idExecutant: req.body.idExecutant || null,
+            remarquesDesinfection: req.body.remarquesDesinfection || null,
+            idVehicule: req.body.idVehicule || null,
+            idVehiculesDesinfectionsType: req.body.idVehiculesDesinfectionsType || null,
+        });
+
+        await fonctionsMetiers.checkOneDesinfection(req.body.idVehicule);
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateDesinfection = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VEHICULES_DESINFECTIONS
+            SET
+                dateDesinfection = :dateDesinfection,
+                idExecutant = :idExecutant,
+                remarquesDesinfection = :remarquesDesinfection,
+                idVehiculesDesinfectionsType = :idVehiculesDesinfectionsType
+            WHERE
+                idVehiculesDesinfection = :idVehiculesDesinfection
+        `,{
+            dateDesinfection: req.body.dateDesinfection || null,
+            idExecutant: req.body.idExecutant || null,
+            remarquesDesinfection: req.body.remarquesDesinfection || null,
+            idVehiculesDesinfectionsType: req.body.idVehiculesDesinfectionsType || null,
+            idVehiculesDesinfection: req.body.idVehiculesDesinfection || null,
+        });
+        
+        await fonctionsMetiers.checkOneDesinfection(req.body.idVehicule);
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.deleteDesinfection = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.vehiculesDesinfectionsDelete(req.verifyJWTandProfile.idPersonne , req.body.idVehiculesDesinfection);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateDesinfectionAlertes = async (req, res)=>{
+    try {
+        let clean = await db.query(`
+            DELETE FROM
+                VEHICULES_DESINFECTIONS_ALERTES
+            WHERE
+                idVehicule = :idVehicule
+        ;`,{
+            idVehicule: req.body.idVehicule,
+        });
+
+        for(const alerte of req.body.typesDesinfection)
+        {
+            if(alerte.frequenceDesinfection && alerte.frequenceDesinfection > 0)
+            {
+                let insert = await db.query(`
+                    INSERT INTO
+                        VEHICULES_DESINFECTIONS_ALERTES
+                    SET
+                        idVehicule = :idVehicule,
+                        frequenceDesinfection = :frequenceDesinfection,
+                        idVehiculesDesinfectionsType = :idVehiculesDesinfectionsType
+                ;`,{
+                    idVehicule: req.body.idVehicule,
+                    frequenceDesinfection: alerte.frequenceDesinfection || null,
+                    idVehiculesDesinfectionsType: alerte.value || null,
+                });
+            }
+        }
+
+        await fonctionsMetiers.checkOneDesinfection(req.body.idVehicule);
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
