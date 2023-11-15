@@ -30,6 +30,7 @@ const actionsMassivesCtrl = require('./controllers/actionsMassives');
 
 const serveDocumentsCtrl       = require('./controllers/serveDocuments');
 const selectForListsCtrl = require('./controllers/selectForLists')
+const calendrierCtrl = require('./controllers/calendrier');
 
 //authentification
 router.post('/login',                      loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.login );
@@ -75,6 +76,26 @@ router.get('/select/getTenuesCatalogue',                       loggerMiddleware.
 router.get('/select/getVhfPlans',                              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVhfPlans);
 router.get('/select/getVhfFrequences',                         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVhfFrequences);
 
+//Composant Calendrier
+router.get('/calendrier/peremptionsLots',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),       calendrierCtrl.peremptionsLots);
+router.get('/calendrier/peremptionsReserves',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_lecture']),        calendrierCtrl.peremptionsReserves);
+router.get('/calendrier/inventairesPassesLots',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_lecture']),           calendrierCtrl.inventairesPassesLots);
+router.get('/calendrier/inventairesPassesReserves',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_lecture']),        calendrierCtrl.inventairesPassesReserves);
+router.get('/calendrier/inventairesFutursLots',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_lecture']),           calendrierCtrl.inventairesFutursLots);
+router.get('/calendrier/inventairesFutursReserves',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_lecture']),        calendrierCtrl.inventairesFutursReserves);
+router.get('/calendrier/commandesLivraisons',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture']),       calendrierCtrl.commandesLivraisons);
+router.get('/calendrier/vehiculesMntPonctuelles',       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_lecture']),      calendrierCtrl.vehiculesMntPonctuelles);
+router.get('/calendrier/vehiculesMntRegPassees',        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehiculeHealth_lecture']), calendrierCtrl.vehiculesMntRegPassees);
+router.get('/calendrier/vehiculesMntRegFutures',        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehiculeHealth_lecture']), calendrierCtrl.vehiculesMntRegFutures);
+router.get('/calendrier/vehiculesDesinfectionsPassees', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_lecture']), calendrierCtrl.vehiculesDesinfectionsPassees);
+router.get('/calendrier/vehiculesDesinfectionsFutures', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_lecture']), calendrierCtrl.vehiculesDesinfectionsFutures);
+router.get('/calendrier/tenuesAffectations',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_lecture']),         calendrierCtrl.tenuesAffectations);
+router.get('/calendrier/tenuesRetours',                 loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_lecture']),         calendrierCtrl.tenuesRetours);
+router.get('/calendrier/cautionsEmissions',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_lecture']),       calendrierCtrl.cautionsEmissions);
+router.get('/calendrier/cautionsExpirations',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_lecture']),       calendrierCtrl.cautionsExpirations);
+router.get('/calendrier/toDoListOwn',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),    calendrierCtrl.toDoListOwn);
+router.get('/calendrier/toDoListAll',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['todolist_lecture']),       calendrierCtrl.toDoListAll);
+
 //OPERATIONNEL - Matériels
 router.get('/materiels/getMateriels',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),  materielsCtrl.getMateriels);
 
@@ -115,6 +136,7 @@ router.post('/vehicules/updateMaintenanceReguliere',         loggerMiddleware.ht
 router.post('/vehicules/deleteMaintenanceReguliere',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehiculeHealth_modification']), loggerMiddleware.suppressionLogger(),  vehiculesCtrl.deleteMaintenanceReguliere);
 router.post('/vehicules/updateMaintenanceReguliereAlertes',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehiculeHealth_suppression']),  loggerMiddleware.modificationLogger(), vehiculesCtrl.updateMaintenanceReguliereAlertes);
 //Désinfections
+router.get('/vehicules/getDesinfectionsDashoard',    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_lecture']),                                             vehiculesCtrl.getDesinfectionsDashoard);
 router.post('/vehicules/addDesinfection',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_ajout']),        loggerMiddleware.modificationLogger(), vehiculesCtrl.addDesinfection);
 router.post('/vehicules/updateDesinfection',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateDesinfection);
 router.post('/vehicules/deleteDesinfection',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_modification']), loggerMiddleware.suppressionLogger(),  vehiculesCtrl.deleteDesinfection);
