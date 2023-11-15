@@ -805,7 +805,7 @@ exports.updateMaintenanceReguliereAlertes = async (req, res)=>{
     }
 }
 
-//Maintenances désinfections
+//Désinfections
 exports.addDesinfection = async (req, res)=>{
     try {
         const result = await db.query(`
@@ -906,6 +906,98 @@ exports.updateDesinfectionAlertes = async (req, res)=>{
         await fonctionsMetiers.checkOneDesinfection(req.body.idVehicule);
         
         res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getDesinfectionsDashoard = async (req, res)=>{
+    try {
+        let vehicules = await db.query(`
+            SELECT
+                idVehicule,
+                libelleVehicule
+            FROM
+                VEHICULES
+            WHERE
+                affichageSyntheseDesinfections = true
+        ;`);
+
+        let desinfections = await db.query(`
+            SELECT
+                *
+            FROM
+                VEHICULES_DESINFECTIONS_TYPES
+            WHERE
+                affichageSynthese = true
+            ORDER BY
+                libelleVehiculesDesinfectionsType ASC
+        ;`);
+
+        for(const vehicule of vehicules)
+        {
+            vehicule.desinfDashboard = [];
+            for(const desinfection of desinfections)
+            {
+                let alerte = await db.query(`
+                    SELECT
+                        *
+                    FROM
+                        VEHICULES_DESINFECTIONS_ALERTES
+                    WHERE
+                        idVehicule = :idVehicule
+                        AND
+                        idVehiculesDesinfectionsType = :idVehiculesDesinfectionsType
+                ;`,{
+                    idVehicule: vehicule.idVehicule,
+                    idVehiculesDesinfectionsType: desinfection.idVehiculesDesinfectionsType,
+                });
+
+                let getLast = await db.query(`
+                    SELECT
+                        MAX(dateDesinfection) as dateDesinfection,
+                        DATE_ADD(MAX(dateDesinfection), INTERVAL :frequenceDesinfection DAY) as nextDesinfection
+                    FROM
+                        VEHICULES_DESINFECTIONS
+                    WHERE
+                        idVehicule = :idVehicule
+                        AND
+                        idVehiculesDesinfectionsType = :idVehiculesDesinfectionsType
+                ;`,{
+                    idVehicule: vehicule.idVehicule,
+                    idVehiculesDesinfectionsType: desinfection.idVehiculesDesinfectionsType,
+                    frequenceDesinfection: alerte.length == 1 ? alerte[0].frequenceDesinfection : null,
+                });
+
+                vehicule.desinfDashboard.push({
+                    idVehiculesDesinfectionsType: desinfection.idVehiculesDesinfectionsType,
+                    dateDesinfection: getLast[0].dateDesinfection,
+                    nextDesinfection: getLast[0].nextDesinfection,
+                    alerte: alerte.length == 1 ? alerte[0] : null,
+                })
+            }
+        }
+
+        let lastThreeMonths = await db.query(`
+            SELECT
+                d.*,
+                t.libelleVehiculesDesinfectionsType,
+                p.nomPersonne,
+                p.prenomPersonne,
+                v.libelleVehicule
+            FROM
+                VEHICULES_DESINFECTIONS d
+                LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON d.idVehiculesDesinfectionsType = t.idVehiculesDesinfectionsType
+                LEFT OUTER JOIN PERSONNE_REFERENTE p ON d.idExecutant = p.idPersonne
+                LEFT OUTER JOIN VEHICULES v ON d.idVehicule = v.idVehicule
+            WHERE
+                dateDesinfection >= DATE_SUB(CURRENT_DATE, INTERVAL 90 DAY)
+            ORDER BY
+                dateDesinfection DESC
+        ;`);
+
+        res.send({vehicules: vehicules, desinfections: desinfections, lastThreeMonths: lastThreeMonths});
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
