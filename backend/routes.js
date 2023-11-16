@@ -131,6 +131,7 @@ router.post('/vehicules/addMaintenancePonctuelle',     loggerMiddleware.httpLogg
 router.post('/vehicules/updateMaintenancePonctuelle',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateMaintenancePonctuelle);
 router.post('/vehicules/deleteMaintenancePonctuelle',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.suppressionLogger(),  vehiculesCtrl.deleteMaintenancePonctuelle);
 //Maintenances régulières
+router.get('/vehicules/getMaintenancesRegulieresDashoard',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehiculeHealth_lecture']),                                             vehiculesCtrl.getMaintenancesRegulieresDashoard);
 router.post('/vehicules/addMaintenanceReguliere',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehiculeHealth_ajout']),        loggerMiddleware.modificationLogger(), vehiculesCtrl.addMaintenanceReguliere);
 router.post('/vehicules/updateMaintenanceReguliere',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehiculeHealth_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateMaintenanceReguliere);
 router.post('/vehicules/deleteMaintenanceReguliere',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehiculeHealth_modification']), loggerMiddleware.suppressionLogger(),  vehiculesCtrl.deleteMaintenanceReguliere);

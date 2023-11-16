@@ -16,9 +16,13 @@ import fr from 'date-fns/locale/fr';
 registerLocale('fr', fr);
 setDefaultLocale('fr');
 
-const VehiculeDesinfectionsForm = ({idVehicule, desinfection, idVehiculesDesinfection = 0, setPageNeedsRefresh, buttonSize}) => {
-    
-    //formulaire d'ajout
+const VehiculeDesinfectionsForm = ({
+    idVehicule,
+    desinfection,
+    idVehiculesDesinfection = 0,
+    setPageNeedsRefresh,
+    buttonSize
+}) => {
     const [showEditModal, setShowEditModal] = useState(false);
     const [isLoading, setLoading] = useState(false);
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm({

@@ -805,6 +805,157 @@ exports.updateMaintenanceReguliereAlertes = async (req, res)=>{
     }
 }
 
+exports.getMaintenancesRegulieresDashoard = async (req, res)=>{
+    try {
+        let vehicules = await db.query(`
+            SELECT
+                idVehicule,
+                libelleVehicule
+            FROM
+                VEHICULES
+            WHERE
+                affichageSyntheseHealth = true
+        ;`);
+
+        let maintenances = await db.query(`
+            SELECT
+                *
+            FROM
+                VEHICULES_HEALTH_TYPES
+            WHERE
+                affichageSynthese = true
+            ORDER BY
+                libelleHealthType ASC
+        ;`);
+
+        for(const vehicule of vehicules)
+        {
+            vehicule.mntDashboard = [];
+            for(const mnt of maintenances)
+            {
+                let alerte = await db.query(`
+                    SELECT
+                        *
+                    FROM
+                        VEHICULES_HEALTH_ALERTES
+                    WHERE
+                        idVehicule = :idVehicule
+                        AND
+                        idHealthType = :idHealthType
+                ;`,{
+                    idVehicule: vehicule.idVehicule,
+                    idHealthType: mnt.idHealthType,
+                });
+
+                let getLast = await db.query(`
+                    SELECT
+                        MAX(dateHealth) as dateHealth,
+                        DATE_ADD(MAX(dateHealth), INTERVAL :frequenceHealth DAY) as nextMaintenance
+                    FROM
+                        VEHICULES_HEALTH h
+                        LEFT OUTER JOIN VEHICULES_HEALTH_CHECKS c ON h.idVehiculeHealth = c.idVehiculeHealth
+                    WHERE
+                        idVehicule = :idVehicule
+                        AND
+                        idHealthType = :idHealthType
+                ;`,{
+                    idVehicule: vehicule.idVehicule,
+                    idHealthType: mnt.idHealthType,
+                    frequenceHealth: alerte.length == 1 ? alerte[0].frequenceHealth : null,
+                });
+
+                vehicule.mntDashboard.push({
+                    idHealthType: mnt.idHealthType,
+                    dateHealth: getLast[0].dateHealth,
+                    nextMaintenance: getLast[0].nextMaintenance,
+                    alerte: alerte.length == 1 ? alerte[0] : null,
+                })
+            }
+
+            //Ajout des alertes de maintenance
+            let maintenancesRegulieresAlertes = await db.query(`
+                SELECT
+                    alertes.*,
+                    t.affichageSynthese,
+                    t.libelleHealthType
+                FROM
+                    VEHICULES_HEALTH_ALERTES alertes
+                    LEFT OUTER JOIN VEHICULES_HEALTH_TYPES t ON alertes.idHealthType = t.idHealthType
+                WHERE
+                    idVehicule = :idVehicule
+            ;`,{
+                idVehicule: vehicule.idVehicule
+            });
+            for(const alerte of maintenancesRegulieresAlertes)
+            {
+                let getLast = await db.query(`
+                    SELECT
+                        MAX(h.dateHealth) as derniereMaintenance,
+                        DATE_ADD(MAX(h.dateHealth), INTERVAL :frequenceHealth DAY) as nextMaintenance
+                    FROM
+                        VEHICULES_HEALTH_CHECKS c
+                        LEFT OUTER JOIN VEHICULES_HEALTH h ON c.idVehiculeHealth = h.idVehiculeHealth
+                    WHERE
+                        h.idVehicule = :idVehicule
+                        AND
+                        idHealthType = :idHealthType
+                ;`,{
+                    idVehicule: vehicule.idVehicule,
+                    idHealthType: alerte.idHealthType,
+                    frequenceHealth: alerte.frequenceHealth,
+                });
+                alerte.derniereMaintenance = getLast[0].derniereMaintenance;
+                alerte.nextMaintenance = getLast[0].nextMaintenance;
+
+                let isInAlert = false;
+                if(new Date(getLast[0].nextMaintenance) <= new Date())
+                {
+                    isInAlert = true;
+                }
+
+                alerte.isInAlert = isInAlert;
+            }
+            vehicule.maintenancesRegulieresAlertes = maintenancesRegulieresAlertes;
+        }
+
+        let lastThreeMonths = await db.query(`
+            SELECT
+                h.*,
+                p.nomPersonne,
+                p.prenomPersonne,
+                v.libelleVehicule
+            FROM
+                VEHICULES_HEALTH h
+                LEFT OUTER JOIN PERSONNE_REFERENTE p ON h.idPersonne = p.idPersonne
+                LEFT OUTER JOIN VEHICULES v ON h.idVehicule = v.idVehicule
+            WHERE
+                dateHealth >= DATE_SUB(CURRENT_DATE, INTERVAL 90 DAY)
+            ORDER BY
+                dateHealth DESC
+        ;`);
+        for(const mnt of lastThreeMonths)
+        {
+            let details = await db.query(`
+                SELECT
+                    t.libelleHealthType
+                FROM
+                    VEHICULES_HEALTH_CHECKS c
+                    LEFT OUTER JOIN VEHICULES_HEALTH_TYPES t ON c.idHealthType = t.idHealthType
+                WHERE
+                    c.idVehiculeHealth = :idVehiculeHealth
+            ;`,{
+                idVehiculeHealth: mnt.idVehiculeHealth,
+            });
+            mnt.details = details;
+        }
+
+        res.send({vehicules: vehicules, maintenances: maintenances, lastThreeMonths: lastThreeMonths});
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 //Désinfections
 exports.addDesinfection = async (req, res)=>{
     try {

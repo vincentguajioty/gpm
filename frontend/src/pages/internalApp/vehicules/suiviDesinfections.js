@@ -1,23 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Row, Col, Offcanvas, Button, Form, Modal, Card, Table, } from 'react-bootstrap';
-import FalconCloseButton from 'components/common/FalconCloseButton';
-import FalconComponentCard from 'components/common/FalconComponentCard';
-import ActionButton from 'components/common/ActionButton';
+import { Row, Col, Card, Table, } from 'react-bootstrap';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import PageHeader from 'components/common/PageHeader';
 import SoftBadge from 'components/common/SoftBadge';
-import IconButton from 'components/common/IconButton';
-import GPMtable from 'components/gpmTable/gpmTable';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment-timezone';
 
-import HabilitationService from 'services/habilitationsService';
-
 import VehiculeDesinfectionsForm from './vehiculeDetails/vehiculeDesinfectionsForm';
+import Calendar from '../home/calendrierGeneral';
 
 import { Axios } from 'helpers/axios';
-import Calendar from '../home/calendrierGeneral';
 
 const SuiviDesinfections = () => {
     const [readyToDisplay, setReadyToDisplay] = useState(false);
@@ -79,8 +70,8 @@ const SuiviDesinfections = () => {
                                                     desinfUnitaire = desinfUnitaire[0];
 
                                                     let derniereDesinfLabel = 'Aucune';
-                                                    let prochaineDesingLabel = 'Aucune';
-                                                    let derniereDesingColor = 'secondary';
+                                                    let prochaineDesinfLabel = 'Aucune';
+                                                    let derniereDesinfColor = 'secondary';
 
                                                     if(desinfUnitaire.dateDesinfection != null)
                                                     {
@@ -90,28 +81,28 @@ const SuiviDesinfections = () => {
                                                     {
                                                         if(desinfUnitaire.dateDesinfection == null)
                                                         {
-                                                            derniereDesingColor = 'danger';
-                                                            prochaineDesingLabel = 'Au plus vite';
+                                                            derniereDesinfColor = 'danger';
+                                                            prochaineDesinfLabel = 'Au plus vite';
                                                         }
                                                         else
                                                         {
                                                             if(new Date(desinfUnitaire.nextDesinfection) > new Date())
                                                             {
-                                                                derniereDesingColor = 'success';
-                                                                prochaineDesingLabel = desinfUnitaire.nextDesinfection;
+                                                                derniereDesinfColor = 'success';
+                                                                prochaineDesinfLabel = desinfUnitaire.nextDesinfection;
                                                             }
                                                             else
                                                             {
-                                                                derniereDesingColor = 'warning';
-                                                                prochaineDesingLabel = 'Au plus vite';
+                                                                derniereDesinfColor = 'warning';
+                                                                prochaineDesinfLabel = 'Au plus vite';
                                                             }
                                                         }
                                                     }
 
                                                     return(
                                                         <td>
-                                                            <SoftBadge bg={derniereDesingColor} className='me-1'>Dernièrement: {derniereDesinfLabel}</SoftBadge>
-                                                            <SoftBadge bg={derniereDesingColor} className='me-1'>Prochaine: {prochaineDesingLabel}</SoftBadge>
+                                                            <SoftBadge bg={derniereDesinfColor} className='me-1'>Dernièrement: {derniereDesinfLabel}</SoftBadge><br/>
+                                                            {derniereDesinfLabel != 'Aucune' ? <SoftBadge bg={derniereDesinfColor} className='me-1'>Prochaine: {derniereDesinfLabel}</SoftBadge> : null}
                                                         </td>
                                                     )
                                                 }
