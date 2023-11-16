@@ -421,7 +421,7 @@ exports.getTenuesCatalogue = async (req, res)=>{
         let results = await db.query(`
             SELECT
                 idCatalogueTenue as value,
-                CONCAT(libelleCatalogueTenue," (Taille:",tailleCatalogueTenue,")") as label
+                CONCAT(COALESCE(libelleCatalogueTenue,'')," (Taille:",COALESCE(tailleCatalogueTenue,''),")") as label
             FROM
                 TENUES_CATALOGUE
             ORDER BY
