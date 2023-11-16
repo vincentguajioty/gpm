@@ -124,6 +124,32 @@ const addToHimself = () => {
     }
 }
 
+const alerteVehiculeOwned = () => {
+    return async function(req, res, next) {
+        const alerte = await db.query(`
+            SELECT
+                idTraitant
+            FROM
+                VEHICULES_ALERTES
+            WHERE
+                idAlerte = :idAlerte
+        `,{
+            idAlerte : req.body.idAlerte,
+        });
+        if(alerte.length == 1 && (alerte[0].idTraitant == null || alerte[0].idTraitant == req.verifyJWTandProfile.idPersonne))
+        {
+            next();
+        }
+        else
+        {
+            logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
+            res.status(403);
+            res.send('Accès refusé par le contrôle de profile');
+        }
+        
+    }
+}
+
 module.exports = {
     himselfRead,
     himselfWrite,
@@ -131,4 +157,5 @@ module.exports = {
     hisOwnTdl,
     editHisOwnTdl,
     addToHimself,
+    alerteVehiculeOwned,
 };

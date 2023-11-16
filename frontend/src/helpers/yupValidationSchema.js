@@ -420,3 +420,10 @@ export const desinfectionForm = Yup.object().shape({
         .min(1, champObligatoire)
         .required(champObligatoire),
 });
+
+export const alerteVehiculeAffectation = Yup.object().shape({
+    idTraitant: Yup
+        .number()
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+});

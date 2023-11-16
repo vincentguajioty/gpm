@@ -311,4 +311,13 @@ ALTER TABLE VEHICULES ADD CONSTRAINT fk_vehicules_notif FOREIGN KEY(idNotificati
 
 ALTER TABLE VEHICULES DROP couleurGraph;
 
+UPDATE VEHICULES_ALERTES_ETATS SET couleurVehiuclesAlertesEtat = 'danger' WHERE couleurVehiuclesAlertesEtat = 'red';
+UPDATE VEHICULES_ALERTES_ETATS SET couleurVehiuclesAlertesEtat = 'info' WHERE couleurVehiuclesAlertesEtat = 'blue';
+UPDATE VEHICULES_ALERTES_ETATS SET couleurVehiuclesAlertesEtat = 'success' WHERE couleurVehiuclesAlertesEtat = 'green';
+UPDATE VEHICULES_ALERTES_ETATS SET couleurVehiuclesAlertesEtat = 'secondary' WHERE couleurVehiuclesAlertesEtat = 'gray';
+UPDATE LOTS_ALERTES_ETATS SET couleurLotsAlertesEtat = 'danger' WHERE couleurLotsAlertesEtat = 'red';
+UPDATE LOTS_ALERTES_ETATS SET couleurLotsAlertesEtat = 'info' WHERE couleurLotsAlertesEtat = 'blue';
+UPDATE LOTS_ALERTES_ETATS SET couleurLotsAlertesEtat = 'success' WHERE couleurLotsAlertesEtat = 'green';
+UPDATE LOTS_ALERTES_ETATS SET couleurLotsAlertesEtat = 'secondary' WHERE couleurLotsAlertesEtat = 'gray';
+
 UPDATE CONFIG SET version = '15.0';

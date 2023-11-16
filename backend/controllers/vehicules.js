@@ -1154,3 +1154,100 @@ exports.getDesinfectionsDashoard = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+//Alertes des bénévoles
+exports.getVehiculesAlertes = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                a.*,
+                e.libelleVehiculesAlertesEtat,
+                e.couleurVehiuclesAlertesEtat,
+                v.libelleVehicule,
+                p.nomPersonne,
+                p.prenomPersonne
+            FROM
+                VEHICULES_ALERTES a
+                LEFT OUTER JOIN VEHICULES_ALERTES_ETATS e ON a.idVehiculesAlertesEtat = e.idVehiculesAlertesEtat
+                LEFT OUTER JOIN VEHICULES v ON a.idVehicule = v.idVehicule
+                LEFT OUTER JOIN PERSONNE_REFERENTE p ON a.idTraitant = p.idPersonne
+            ORDER BY
+                a.dateCreationAlerte DESC
+        ;`);
+
+        if(req.body.idVehicule && req.body.idVehicule != null && req.body.idVehicule > 0)
+        {
+            results = results.filter(alerte => alerte.idVehicule == req.body.idVehicule)
+        }
+
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.autoAffect = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VEHICULES_ALERTES
+            SET
+                idTraitant = :idTraitant,
+                idVehiculesAlertesEtat = 2
+            WHERE
+                idAlerte = :idAlerte
+        `,{
+            idTraitant : req.verifyJWTandProfile.idPersonne,
+            idAlerte: req.body.idAlerte,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.affectationTier = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VEHICULES_ALERTES
+            SET
+                idTraitant = :idTraitant,
+                idVehiculesAlertesEtat = 2
+            WHERE
+                idAlerte = :idAlerte
+        `,{
+            idTraitant : req.body.idTraitant,
+            idAlerte: req.body.idAlerte,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.udpateStatut = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VEHICULES_ALERTES
+            SET
+                idVehiculesAlertesEtat = :idVehiculesAlertesEtat
+            WHERE
+                idAlerte = :idAlerte
+        `,{
+            idAlerte: req.body.idAlerte,
+            idVehiculesAlertesEtat: req.body.idVehiculesAlertesEtat,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}

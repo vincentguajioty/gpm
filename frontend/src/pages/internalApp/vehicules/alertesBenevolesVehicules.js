@@ -1,13 +1,27 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import FalconComponentCard from 'components/common/FalconComponentCard';
+import ActionButton from 'components/common/ActionButton';
+import PageHeader from 'components/common/PageHeader';
+
+import AlertesBenevolesVehiculesTable from './alertesBenevolesTable';
 
 const AlertesBenevolesVehicules = () => {
-    return (
-        'Les alertes des bénévoles sur les vehicules'
-    );
+    return (<>
+        <PageHeader
+            preTitle="Véhicules"
+            title="Alertes remontées par les bénévoles"
+            className="mb-3"
+        />
+
+        <FalconComponentCard noGuttersBottom className="mb-3">
+            <FalconComponentCard.Body
+                scope={{ ActionButton }}
+                noLight
+            >
+                <AlertesBenevolesVehiculesTable />
+            </FalconComponentCard.Body>
+        </FalconComponentCard>
+    </>);
 };
 
 AlertesBenevolesVehicules.propTypes = {};

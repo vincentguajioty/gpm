@@ -44,6 +44,7 @@ import {
   faEdit as farEdit
 } from '@fortawesome/free-regular-svg-icons';
 import {
+  faUserShield,
   faBellSlash,
   faUserSecret,
   faUnlink,
@@ -260,6 +261,7 @@ import {
 
 library.add(
   // Solid
+  faUserShield,
   faBellSlash,
   faUserSecret,
   faUnlink,

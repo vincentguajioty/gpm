@@ -142,6 +142,11 @@ router.post('/vehicules/addDesinfection',            loggerMiddleware.httpLogger
 router.post('/vehicules/updateDesinfection',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateDesinfection);
 router.post('/vehicules/deleteDesinfection',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_modification']), loggerMiddleware.suppressionLogger(),  vehiculesCtrl.deleteDesinfection);
 router.post('/vehicules/updateDesinfectionAlertes',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_suppression']),  loggerMiddleware.modificationLogger(), vehiculesCtrl.updateDesinfectionAlertes);
+//Alertes bénévoles
+router.post('/vehicules/getVehiculesAlertes', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['alertesBenevolesVehicules_lecture']),                                                                                              vehiculesCtrl.getVehiculesAlertes);
+router.post('/vehicules/autoAffect',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['alertesBenevolesVehicules_affectation']),                                                 loggerMiddleware.modificationLogger(),   vehiculesCtrl.autoAffect);
+router.post('/vehicules/affectationTier',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['alertesBenevolesVehicules_affectationTier']),                                             loggerMiddleware.modificationLogger(),   vehiculesCtrl.affectationTier);
+router.post('/vehicules/udpateStatut',        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),                       middlewaresFunctions.alerteVehiculeOwned(), loggerMiddleware.modificationLogger(),   vehiculesCtrl.udpateStatut);
 
 //Tenues - Catalogue
 router.get('/tenues/getPersonnesSuggested',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_lecture']),                                             tenuesCtrl.getPersonnesSuggested);

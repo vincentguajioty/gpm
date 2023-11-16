@@ -8,11 +8,12 @@ import HabilitationService from 'services/habilitationsService';
 import { Axios } from 'helpers/axios';
 
 import VehiculeProprietes from './vehiculeDetails/vehiculeProprietes';
-import VehiculeAlertesBenevoles from './vehiculeDetails/vehiculeAlertesBenevoles';
 import VehiculeDesinfections from './vehiculeDetails/vehiculeDesinfections';
 import VehiculeMaintenancesRegulieres from './vehiculeDetails/vehiculeMntRegulieres';
 import VehiculeMaintenancesPonctuelles from './vehiculeDetails/vehiculeMntPonctuelles';
 import VehiculeRelevesKM from './vehiculeDetails/vehiculeRelevesKM';
+
+import AlertesBenevolesVehiculesTable from './alertesBenevolesTable';
 
 const VehiculeDetails = () => {
     let {idVehicule} = useParams();
@@ -97,11 +98,7 @@ const VehiculeDetails = () => {
                             </Tab>
                             {HabilitationService.habilitations.alertesBenevolesVehicules_lecture ?
                                 <Tab eventKey="alertes" title="Alertes de bénévoles" className='border-bottom border-x p-3'>
-                                    <VehiculeAlertesBenevoles
-                                        idVehicule={idVehicule}
-                                        setPageNeedsRefresh={setPageNeedsRefresh}
-                                        alertesBenevoles={vehicule.alertesBenevoles}
-                                    />
+                                    <AlertesBenevolesVehiculesTable idVehicule={idVehicule} />
                                 </Tab>
                             : null}
                         </Tabs>
