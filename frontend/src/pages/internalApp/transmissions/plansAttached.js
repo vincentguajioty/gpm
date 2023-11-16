@@ -3,6 +3,7 @@ import { Button, Form, Modal, Row, Col, Dropdown } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
+import Select from 'react-select';
 
 import CardDropdown from 'components/common/CardDropdown';
 import moment from 'moment-timezone';
@@ -246,12 +247,20 @@ const PlansAttached = ({vhfPlan}) => {
                                 </Form.Group>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Type de document</Form.Label>
-                                    <Form.Select size="sm" name="idTypeDocument" id="idTypeDocument" {...register("idTypeDocument")}>
-                                        <option key="0" value="">--- Merci de selectionner un type ---</option>
-                                        {typesDocuments.map((item, i) => {
-                                            return (<option key={item.value} value={item.value}>{item.label}</option>);
-                                        })}
-                                    </Form.Select>
+                                    <Select
+                                        id="idTypeDocument"
+                                        name="idTypeDocument"
+                                        size="sm"
+                                        classNamePrefix="react-select"
+                                        closeMenuOnSelect={true}
+                                        isClearable={true}
+                                        isSearchable={true}
+                                        isDisabled={isLoading}
+                                        placeholder='Aucun type selectionné'
+                                        options={typesDocuments}
+                                        value={typesDocuments.find(c => c.value === watch("idTypeDocument"))}
+                                        onChange={val => val != null ? setValue("idTypeDocument", val.value) : setValue("idTypeDocument", null)}
+                                    />
                                     <small className="text-danger">{errors.idTypeDocument?.message}</small>
                                 </Form.Group>
                                 

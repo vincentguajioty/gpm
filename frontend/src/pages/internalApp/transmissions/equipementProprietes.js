@@ -6,6 +6,7 @@ import SoftBadge from 'components/common/SoftBadge';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import { Axios } from 'helpers/axios';
 import HabilitationService from 'services/habilitationsService';
+import Select from 'react-select';
 
 import PlansCanaux from './plansCanaux';
 
@@ -149,48 +150,80 @@ const EquipementVhfProprietes = ({equipement, setPageNeedsRefresh}) => {
                                     <tr>
                                         <td className="bg-100" style={{ width: '30%' }}>Etat</td>
                                         <td>
-                                            <Form.Select size="sm" name="idVhfEtat" id="idVhfEtat" {...register("idVhfEtat")}>
-                                                <option key="0" value="">--- Aucun état ---</option>
-                                                {etats.map((item, i) => {
-                                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
-                                                })}
-                                            </Form.Select>
+                                            <Select
+                                                id="idVhfEtat"
+                                                name="idVhfEtat"
+                                                size="sm"
+                                                classNamePrefix="react-select"
+                                                closeMenuOnSelect={true}
+                                                isClearable={true}
+                                                isSearchable={true}
+                                                isDisabled={isLoading}
+                                                placeholder='Aucun état selectionné'
+                                                options={etats}
+                                                value={etats.find(c => c.value === watch("idVhfEtat"))}
+                                                onChange={val => val != null ? setValue("idVhfEtat", val.value) : setValue("idVhfEtat", null)}
+                                            />
                                             <small className="text-danger">{errors.idVhfEtat?.message}</small>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td className="bg-100" style={{ width: '30%' }}>Type</td>
                                         <td>
-                                            <Form.Select size="sm" name="idVhfType" id="idVhfType" {...register("idVhfType")}>
-                                                <option key="0" value="">--- Aucun type ---</option>
-                                                {types.map((item, i) => {
-                                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
-                                                })}
-                                            </Form.Select>
+                                            <Select
+                                                id="idVhfType"
+                                                name="idVhfType"
+                                                size="sm"
+                                                classNamePrefix="react-select"
+                                                closeMenuOnSelect={true}
+                                                isClearable={true}
+                                                isSearchable={true}
+                                                isDisabled={isLoading}
+                                                placeholder='Aucun type selectionné'
+                                                options={types}
+                                                value={types.find(c => c.value === watch("idVhfType"))}
+                                                onChange={val => val != null ? setValue("idVhfType", val.value) : setValue("idVhfType", null)}
+                                            />
                                             <small className="text-danger">{errors.idVhfType?.message}</small>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td className="bg-100" style={{ width: '30%' }}>Technologie</td>
                                         <td>
-                                            <Form.Select size="sm" name="idVhfTechno" id="idVhfTechno" {...register("idVhfTechno")}>
-                                                <option key="0" value="">--- Aucune technologie ---</option>
-                                                {technologies.map((item, i) => {
-                                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
-                                                })}
-                                            </Form.Select>
+                                            <Select
+                                                id="idVhfTechno"
+                                                name="idVhfTechno"
+                                                size="sm"
+                                                classNamePrefix="react-select"
+                                                closeMenuOnSelect={true}
+                                                isClearable={true}
+                                                isSearchable={true}
+                                                isDisabled={isLoading}
+                                                placeholder='Aucune technologie selectionnée'
+                                                options={technologies}
+                                                value={technologies.find(c => c.value === watch("idVhfTechno"))}
+                                                onChange={val => val != null ? setValue("idVhfTechno", val.value) : setValue("idVhfTechno", null)}
+                                            />
                                             <small className="text-danger">{errors.idVhfTechno?.message}</small>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td className="bg-100" style={{ width: '30%' }}>Plan de programmation</td>
                                         <td>
-                                            <Form.Select size="sm" name="idVhfPlan" id="idVhfPlan" {...register("idVhfPlan")}>
-                                                <option key="0" value="">--- Aucune technologie ---</option>
-                                                {plans.map((item, i) => {
-                                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
-                                                })}
-                                            </Form.Select>
+                                            <Select
+                                                id="idVhfPlan"
+                                                name="idVhfPlan"
+                                                size="sm"
+                                                classNamePrefix="react-select"
+                                                closeMenuOnSelect={true}
+                                                isClearable={true}
+                                                isSearchable={true}
+                                                isDisabled={isLoading}
+                                                placeholder='Aucun plan selectionné'
+                                                options={plans}
+                                                value={plans.find(c => c.value === watch("idVhfPlan"))}
+                                                onChange={val => val != null ? setValue("idVhfPlan", val.value) : setValue("idVhfPlan", null)}
+                                            />
                                             <small className="text-danger">{errors.idVhfPlan?.message}</small>
                                         </td>
                                     </tr>
@@ -213,12 +246,20 @@ const EquipementVhfProprietes = ({equipement, setPageNeedsRefresh}) => {
                                     <tr>
                                         <td className="bg-100" style={{ width: '30%' }}>Responsable</td>
                                         <td>
-                                            <Form.Select size="sm" name="idResponsable" id="idResponsable" {...register("idResponsable")}>
-                                                <option key="0" value="">--- Aucun responsable ---</option>
-                                                {personnes.map((item, i) => {
-                                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
-                                                })}
-                                            </Form.Select>
+                                            <Select
+                                                id="idResponsable"
+                                                name="idResponsable"
+                                                size="sm"
+                                                classNamePrefix="react-select"
+                                                closeMenuOnSelect={true}
+                                                isClearable={true}
+                                                isSearchable={true}
+                                                isDisabled={isLoading}
+                                                placeholder='Aucun responsable selectionné'
+                                                options={personnes}
+                                                value={personnes.find(c => c.value === watch("idResponsable"))}
+                                                onChange={val => val != null ? setValue("idResponsable", val.value) : setValue("idResponsable", null)}
+                                            />
                                             <small className="text-danger">{errors.idResponsable?.message}</small>
                                         </td>
                                     </tr>

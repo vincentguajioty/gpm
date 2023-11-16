@@ -9,6 +9,7 @@ import SoftBadge from 'components/common/SoftBadge';
 import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
 import moment from 'moment-timezone';
+import Select from 'react-select';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -150,6 +151,7 @@ const Cautions = () => {
         setPersonnesExternes(getData.data);
 
         getData = await Axios.get('/select/getPersonnes');
+        getData.data.unshift({value: 0, label: '--- Un externe ---'})
         setPersonnesInternes(getData.data);
 
         setShowOffCanevas(true);
@@ -235,16 +237,24 @@ const Cautions = () => {
                 <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
                     <Form.Group className="mb-3">
                         <Form.Label>Emise par</Form.Label>
-                        <Form.Select size="sm" name="idPersonne" id="idPersonne" {...register("idPersonne")}>
-                            <option key="0" value="0">--- Un externe ---</option>
-                            {personnesInternes.map((item, i) => {
-                                return (<option key={item.value} value={item.value}>{item.label}</option>);
-                            })}
-                        </Form.Select>
+                        <Select
+                            id="idPersonne"
+                            name="idPersonne"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            isDisabled={isLoading}
+                            placeholder='Aucune personne selectionnée'
+                            options={personnesInternes}
+                            value={personnesInternes.find(c => c.value === watch("idPersonne"))}
+                            onChange={val => val != null ? setValue("idPersonne", val.value) : setValue("idPersonne", null)}
+                        />
                         <small className="text-danger">{errors.idPersonne?.message}</small>
 
                         {watch("idPersonne") == 0 ? <>
-                            <Form.Control list='suggestionsExternes' size="sm" type="text" name='personneNonGPM' id='personneNonGPM' {...register('personneNonGPM')}/>
+                            <Form.Control className='mt-2' list='suggestionsExternes' size="sm" type="text" name='personneNonGPM' id='personneNonGPM' {...register('personneNonGPM')}/>
                             <datalist id='suggestionsExternes'>
                                 {personnesExternes.map((perso, i) => {
                                     return (<option key={i}>{perso.personneNonGPM}</option>);

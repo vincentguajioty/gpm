@@ -10,6 +10,7 @@ import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
 import { Alert } from 'react-bootstrap';
 import nl2br from 'react-nl2br';
+import Select from 'react-select';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -184,11 +185,20 @@ const MessagesGeneraux = () => {
                 <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
                     <Form.Group className="mb-3">
                         <Form.Label>Type</Form.Label>
-                        <Form.Select size="sm" name="idMessageType" id="idMessageType" {...register("idMessageType")}>
-                            {typesMessages.map((item, i) => {
-                                return (<option key={item.value} value={item.value}>{item.label}</option>);
-                            })}
-                        </Form.Select>
+                        <Select
+                            id="idMessageType"
+                            name="idMessageType"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={false}
+                            isDisabled={isLoading}
+                            placeholder='Selectionner un type'
+                            options={typesMessages}
+                            value={typesMessages.find(c => c.value === watch("idMessageType"))}
+                            onChange={val => val != null ? setValue("idMessageType", val.value) : setValue("idMessageType", null)}
+                        />
                         <small className="text-danger">{errors.idMessageType?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">

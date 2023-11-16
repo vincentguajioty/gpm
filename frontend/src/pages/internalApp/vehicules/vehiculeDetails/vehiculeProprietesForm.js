@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Table } from 'react-bootstrap';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
+import Select from 'react-select';
 
 import DatePicker from 'react-datepicker';
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
@@ -155,24 +156,40 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
                     <tr>
                         <td className="bg-100" style={{ width: '30%' }}>Etat</td>
                         <td>
-                            <Form.Select size="sm" name="idVehiculesEtat" id="idVehiculesEtat" {...register("idVehiculesEtat")}>
-                                <option key="0" value="">--- Aucune selection ---</option>
-                                {vehiculesEtat.map((item, i) => {
-                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
-                                })}
-                            </Form.Select>
+                            <Select
+                                id="idVehiculesEtat"
+                                name="idVehiculesEtat"
+                                size="sm"
+                                classNamePrefix="react-select"
+                                closeMenuOnSelect={true}
+                                isClearable={true}
+                                isSearchable={true}
+                                isDisabled={isLoading}
+                                placeholder='Aucun état selectionné'
+                                options={vehiculesEtat}
+                                value={vehiculesEtat.find(c => c.value === watch("idVehiculesEtat"))}
+                                onChange={val => val != null ? setValue("idVehiculesEtat", val.value) : setValue("idVehiculesEtat", null)}
+                            />
                             <small className="text-danger">{errors.idVehiculesEtat?.message}</small>
                         </td>
                     </tr>
                     <tr>
                         <td className="bg-100" style={{ width: '30%' }}>Carburant</td>
                         <td>
-                            <Form.Select size="sm" name="idCarburant" id="idCarburant" {...register("idCarburant")}>
-                                <option key="0" value="">--- Aucune selection ---</option>
-                                {carburants.map((item, i) => {
-                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
-                                })}
-                            </Form.Select>
+                            <Select
+                                id="idCarburant"
+                                name="idCarburant"
+                                size="sm"
+                                classNamePrefix="react-select"
+                                closeMenuOnSelect={true}
+                                isClearable={true}
+                                isSearchable={true}
+                                isDisabled={isLoading}
+                                placeholder='Aucun carburant selectionné'
+                                options={carburants}
+                                value={carburants.find(c => c.value === watch("idCarburant"))}
+                                onChange={val => val != null ? setValue("idCarburant", val.value) : setValue("idCarburant", null)}
+                            />
                             <small className="text-danger">{errors.idCarburant?.message}</small>
                         </td>
                     </tr>
@@ -186,35 +203,60 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
                     <tr>
                         <td className="bg-100" style={{ width: '30%' }}>Type</td>
                         <td>
-                            <Form.Select size="sm" name="idVehiculesType" id="idVehiculesType" {...register("idVehiculesType")}>
-                                <option key="0" value="">--- Aucune selection ---</option>
-                                {vehiculesType.map((item, i) => {
-                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
-                                })}
-                            </Form.Select>
+                            <Select
+                                id="idVehiculesType"
+                                name="idVehiculesType"
+                                size="sm"
+                                classNamePrefix="react-select"
+                                closeMenuOnSelect={true}
+                                isClearable={true}
+                                isSearchable={true}
+                                isDisabled={isLoading}
+                                placeholder='Aucun type selectionné'
+                                options={vehiculesType}
+                                value={vehiculesType.find(c => c.value === watch("idVehiculesType"))}
+                                onChange={val => val != null ? setValue("idVehiculesType", val.value) : setValue("idVehiculesType", null)}
+                            />
                             <small className="text-danger">{errors.idVehiculesType?.message}</small>
                         </td>
                     </tr>
                     <tr>
                         <td className="bg-100" style={{ width: '30%' }}>Notifications</td>
                         <td>
-                            <Form.Select size="sm" name="idNotificationEnabled" id="idNotificationEnabled" {...register("idNotificationEnabled")}>
-                                {notifications.map((item, i) => {
-                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
-                                })}
-                            </Form.Select>
+                            <Select
+                                id="idNotificationEnabled"
+                                name="idNotificationEnabled"
+                                size="sm"
+                                classNamePrefix="react-select"
+                                closeMenuOnSelect={true}
+                                isClearable={true}
+                                isSearchable={true}
+                                isDisabled={isLoading}
+                                placeholder='Aucune notification selectionnée'
+                                options={notifications}
+                                value={notifications.find(c => c.value === watch("idNotificationEnabled"))}
+                                onChange={val => val != null ? setValue("idNotificationEnabled", val.value) : setValue("idNotificationEnabled", null)}
+                            />
                             <small className="text-danger">{errors.idNotificationEnabled?.message}</small>
                         </td>
                     </tr>
                     <tr>
                         <td className="bg-100" style={{ width: '30%' }}>Lieu de parking</td>
                         <td>
-                            <Form.Select size="sm" name="idLieu" id="idLieu" {...register("idLieu")}>
-                                <option key="0" value="">--- Aucune selection ---</option>
-                                {lieux.map((item, i) => {
-                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
-                                })}
-                            </Form.Select>
+                            <Select
+                                id="idLieu"
+                                name="idLieu"
+                                size="sm"
+                                classNamePrefix="react-select"
+                                closeMenuOnSelect={true}
+                                isClearable={true}
+                                isSearchable={true}
+                                isDisabled={isLoading}
+                                placeholder='Aucun lieu selectionné'
+                                options={lieux}
+                                value={lieux.find(c => c.value === watch("idLieu"))}
+                                onChange={val => val != null ? setValue("idLieu", val.value) : setValue("idLieu", null)}
+                            />
                             <small className="text-danger">{errors.idLieu?.message}</small>
                         </td>
                     </tr>
@@ -242,12 +284,20 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
                     <tr>
                         <td className="bg-100" style={{ width: '30%' }}>Responsable</td>
                         <td>
-                            <Form.Select size="sm" name="idResponsable" id="idResponsable" {...register("idResponsable")}>
-                                <option key="0" value="">--- Aucune selection ---</option>
-                                {personnes.map((item, i) => {
-                                    return (<option key={item.value} value={item.value}>{item.label}</option>);
-                                })}
-                            </Form.Select>
+                            <Select
+                                id="idResponsable"
+                                name="idResponsable"
+                                size="sm"
+                                classNamePrefix="react-select"
+                                closeMenuOnSelect={true}
+                                isClearable={true}
+                                isSearchable={true}
+                                isDisabled={isLoading}
+                                placeholder='Aucune personne selectionnée'
+                                options={personnes}
+                                value={personnes.find(c => c.value === watch("idResponsable"))}
+                                onChange={val => val != null ? setValue("idResponsable", val.value) : setValue("idResponsable", null)}
+                            />
                             <small className="text-danger">{errors.idResponsable?.message}</small>
                         </td>
                     </tr>

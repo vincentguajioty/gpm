@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import { Dropdown, DropdownButton, Modal, Button, Form, } from 'react-bootstrap';
-import FalconCloseButton from 'components/common/FalconCloseButton';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import moment from 'moment-timezone';
 import GPMtable from 'components/gpmTable/gpmTable';
 import SoftBadge from 'components/common/SoftBadge';
 import IconButton from 'components/common/IconButton';
+import Select from 'react-select';
 
 import { Axios } from 'helpers/axios';
 import HabilitationService from 'services/habilitationsService';
@@ -215,12 +215,20 @@ const AlertesBenevolesVehiculesTable = ({idVehicule = 0}) => {
                 <Modal.Body>
                     <Form.Group className="mb-3">
                         <Form.Label>Affecter le traitement de l'alerte à:</Form.Label>
-                        <Form.Select size="sm" name="idTraitant" id="idTraitant" {...register("idTraitant")}>
-                            <option key="0" value="">--- Aucune selection ---</option>
-                            {personnes.map((item, i) => {
-                                return (<option key={item.value} value={item.value}>{item.label}</option>);
-                            })}
-                        </Form.Select>
+                        <Select
+                            id="idTraitant"
+                            name="idTraitant"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            isDisabled={isLoading}
+                            placeholder='Aucune personne selectionnée'
+                            options={personnes}
+                            value={personnes.find(c => c.value === watch("idTraitant"))}
+                            onChange={val => val != null ? setValue("idTraitant", val.value) : setValue("idTraitant", null)}
+                        />
                         <small className="text-danger">{errors.idTraitant?.message}</small>
                     </Form.Group>
                 </Modal.Body>

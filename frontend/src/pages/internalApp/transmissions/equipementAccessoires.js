@@ -4,6 +4,7 @@ import Flex from 'components/common/Flex';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 import GPMtable from 'components/gpmTable/gpmTable';
 import IconButton from 'components/common/IconButton';
+import Select from 'react-select';
 
 import HabilitationService from 'services/habilitationsService';
 import { Axios } from 'helpers/axios';
@@ -203,12 +204,20 @@ const EquipementVhfAccessoires = ({equipement, setPageNeedsRefresh}) => {
 
                     <Form.Group className="mb-3">
                         <Form.Label>Type</Form.Label>
-                        <Form.Select size="sm" name="idVhfAccessoireType" id="idVhfAccessoireType" {...register("idVhfAccessoireType")}>
-                            <option key="0" value="">--- Aucun type ---</option>
-                            {types.map((item, i) => {
-                                return (<option key={item.value} value={item.value}>{item.label}</option>);
-                            })}
-                        </Form.Select>
+                        <Select
+                            id="idVhfAccessoireType"
+                            name="idVhfAccessoireType"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            isDisabled={isLoading}
+                            placeholder='Aucun type selectionné'
+                            options={types}
+                            value={types.find(c => c.value === watch("idVhfAccessoireType"))}
+                            onChange={val => val != null ? setValue("idVhfAccessoireType", val.value) : setValue("idVhfAccessoireType", null)}
+                        />
                         <small className="text-danger">{errors.idVhfAccessoireType?.message}</small>
                     </Form.Group>
 

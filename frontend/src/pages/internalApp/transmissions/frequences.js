@@ -7,6 +7,7 @@ import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import PageHeader from 'components/common/PageHeader';
 import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
+import Select from 'react-select';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -241,12 +242,20 @@ const Frequences = () => {
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Technologie Radio</Form.Label>
-                        <Form.Select size="sm" name="idVhfTechno" id="idVhfTechno" {...register("idVhfTechno")}>
-                            <option key="0" value="">--- Aucune technologie ---</option>
-                            {technologies.map((item, i) => {
-                                return (<option key={item.value} value={item.value}>{item.label}</option>);
-                            })}
-                        </Form.Select>
+                        <Select
+                            id="idVhfTechno"
+                            name="idVhfTechno"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            isDisabled={isLoading}
+                            placeholder='Aucune technologie selectionnée'
+                            options={technologies}
+                            value={technologies.find(c => c.value === watch("idVhfTechno"))}
+                            onChange={val => val != null ? setValue("idVhfTechno", val.value) : setValue("idVhfTechno", null)}
+                        />
                         <small className="text-danger">{errors.idVhfTechno?.message}</small>
                     </Form.Group>
 

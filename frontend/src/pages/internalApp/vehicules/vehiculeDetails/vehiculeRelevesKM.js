@@ -4,6 +4,7 @@ import FalconCloseButton from 'components/common/FalconCloseButton';
 import GPMtable from 'components/gpmTable/gpmTable';
 import moment from 'moment-timezone';
 import IconButton from 'components/common/IconButton';
+import Select from 'react-select';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -189,12 +190,20 @@ const VehiculeRelevesKM = ({idVehicule, relevesKM, setPageNeedsRefresh}) => {
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Personne ayant fait le relevé</Form.Label>
-                        <Form.Select size="sm" name="idPersonne" id="idPersonne" {...register("idPersonne")}>
-                            <option key="0" value="">--- Aucune technologie ---</option>
-                            {personnes.map((item, i) => {
-                                return (<option key={item.value} value={item.value}>{item.label}</option>);
-                            })}
-                        </Form.Select>
+                        <Select
+                            id="idPersonne"
+                            name="idPersonne"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            isDisabled={isLoading}
+                            placeholder='Aucun personne selectionnée'
+                            options={personnes}
+                            value={personnes.find(c => c.value === watch("idPersonne"))}
+                            onChange={val => val != null ? setValue("idPersonne", val.value) : setValue("idPersonne", null)}
+                        />
                         <small className="text-danger">{errors.idPersonne?.message}</small>
                     </Form.Group>
                     

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { Form, Modal, Button } from 'react-bootstrap';
 import IconButton from 'components/common/IconButton';
+import Select from 'react-select';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -142,22 +143,38 @@ const VehiculeDesinfectionsForm = ({
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Personne ayant fait le relevé</Form.Label>
-                        <Form.Select size="sm" name="idExecutant" id="idExecutant" {...register("idExecutant")}>
-                            <option key="0" value="">--- Renseigner une personne ---</option>
-                            {personnes.map((item, i) => {
-                                return (<option key={item.value} value={item.value}>{item.label}</option>);
-                            })}
-                        </Form.Select>
+                        <Select
+                            id="idExecutant"
+                            name="idExecutant"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            isDisabled={isLoading}
+                            placeholder='Aucune personne selectionnée'
+                            options={personnes}
+                            value={personnes.find(c => c.value === watch("idExecutant"))}
+                            onChange={val => val != null ? setValue("idExecutant", val.value) : setValue("idExecutant", null)}
+                        />
                         <small className="text-danger">{errors.idExecutant?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Type de désinfection</Form.Label>
-                        <Form.Select size="sm" name="idVehiculesDesinfectionsType" id="idVehiculesDesinfectionsType" {...register("idVehiculesDesinfectionsType")}>
-                            <option key="0" value="">--- Renseigner un type ---</option>
-                            {typesDesinfections.map((item, i) => {
-                                return (<option key={item.value} value={item.value}>{item.label}</option>);
-                            })}
-                        </Form.Select>
+                        <Select
+                            id="idVehiculesDesinfectionsType"
+                            name="idVehiculesDesinfectionsType"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            isDisabled={isLoading}
+                            placeholder='Aucun type selectionné'
+                            options={typesDesinfections}
+                            value={typesDesinfections.find(c => c.value === watch("idVehiculesDesinfectionsType"))}
+                            onChange={val => val != null ? setValue("idVehiculesDesinfectionsType", val.value) : setValue("idVehiculesDesinfectionsType", null)}
+                        />
                         <small className="text-danger">{errors.idVehiculesDesinfectionsType?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">

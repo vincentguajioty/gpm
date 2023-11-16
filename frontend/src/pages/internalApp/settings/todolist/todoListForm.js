@@ -311,11 +311,20 @@ const ToDoListForm = ({
 
                     <Form.Group className="mb-3">
                         <Form.Label>Priorité</Form.Label>
-                        <Form.Select size="sm" name="idTDLpriorite" id="idTDLpriorite" {...register("idTDLpriorite")}>
-                            {priorites.map((item, i) => {
-                                return (<option key={item.value} value={item.value}>{item.label}</option>);
-                            })}
-                        </Form.Select>
+                        <Select
+                            id="idTDLpriorite"
+                            name="idTDLpriorite"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            isDisabled={isLoading}
+                            placeholder='Aucune priorité selectionnée'
+                            options={priorites}
+                            value={priorites.find(c => c.value === watch("idTDLpriorite"))}
+                            onChange={val => val != null ? setValue("idTDLpriorite", val.value) : setValue("idTDLpriorite", null)}
+                        />
                         <small className="text-danger">{errors.idTDLpriorite?.message}</small>
                     </Form.Group>
 

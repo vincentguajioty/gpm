@@ -8,6 +8,7 @@ import PageHeader from 'components/common/PageHeader';
 import SoftBadge from 'components/common/SoftBadge';
 import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
+import Select from 'react-select';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -237,12 +238,20 @@ const Tenues = () => {
 
                     <Form.Group className="mb-3">
                         <Form.Label>Fournisseur de prédilection</Form.Label>
-                        <Form.Select size="sm" name="idFournisseur" id="idFournisseur" {...register("idFournisseur")}>
-                            <option key="0" value="">--- Aucun Fournisseur ---</option>
-                            {fournisseurs.map((item, i) => {
-                                return (<option key={item.value} value={item.value}>{item.label}</option>);
-                            })}
-                        </Form.Select>
+                        <Select
+                            id="idFournisseur"
+                            name="idFournisseur"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            isDisabled={isLoading}
+                            placeholder='Aucun fournisseur sélectionné'
+                            options={fournisseurs}
+                            value={fournisseurs.find(c => c.value === watch("idFournisseur"))}
+                            onChange={val => val != null ? setValue("idFournisseur", val.value) : setValue("idFournisseur", null)}
+                        />
                         <small className="text-danger">{errors.idFournisseur?.message}</small>
                     </Form.Group>
                     <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Enregistrer'}</Button>

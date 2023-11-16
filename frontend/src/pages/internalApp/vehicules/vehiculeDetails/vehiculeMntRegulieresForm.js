@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import { Row, Col, Form, Table, Modal, Button } from 'react-bootstrap';
 import IconButton from 'components/common/IconButton';
+import Select from 'react-select';
 
 import HabilitationService from 'services/habilitationsService';
-
 import { Axios } from 'helpers/axios';
 
 import { useForm } from "react-hook-form";
@@ -208,12 +208,20 @@ const VehiculeMaintenancesRegulieresForm = ({
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>Personne ayant fait le relevé</Form.Label>
-                                <Form.Select size="sm" name="idPersonne" id="idPersonne" {...register("idPersonne")}>
-                                    <option key="0" value="">--- Renseigner une personne ---</option>
-                                    {personnes.map((item, i) => {
-                                        return (<option key={item.value} value={item.value}>{item.label}</option>);
-                                    })}
-                                </Form.Select>
+                                <Select
+                                    id="idPersonne"
+                                    name="idPersonne"
+                                    size="sm"
+                                    classNamePrefix="react-select"
+                                    closeMenuOnSelect={true}
+                                    isClearable={true}
+                                    isSearchable={true}
+                                    isDisabled={isLoading}
+                                    placeholder='Aucune personne selectionnée'
+                                    options={personnes}
+                                    value={personnes.find(c => c.value === watch("idPersonne"))}
+                                    onChange={val => val != null ? setValue("idPersonne", val.value) : setValue("idPersonne", null)}
+                                />
                                 <small className="text-danger">{errors.idPersonne?.message}</small>
                             </Form.Group>
                         </Col>

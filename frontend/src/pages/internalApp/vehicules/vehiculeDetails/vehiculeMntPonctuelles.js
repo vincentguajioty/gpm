@@ -4,9 +4,10 @@ import FalconCloseButton from 'components/common/FalconCloseButton';
 import GPMtable from 'components/gpmTable/gpmTable';
 import moment from 'moment-timezone';
 import IconButton from 'components/common/IconButton';
+import Select from 'react-select';
+
 
 import HabilitationService from 'services/habilitationsService';
-
 import { Axios } from 'helpers/axios';
 
 import { useForm } from "react-hook-form";
@@ -200,22 +201,38 @@ const VehiculeMaintenancesPonctuelles = ({idVehicule, maintenancesPonctuelles, s
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Personne ayant fait le relevé</Form.Label>
-                        <Form.Select size="sm" name="idExecutant" id="idExecutant" {...register("idExecutant")}>
-                            <option key="0" value="">--- Renseigner une personne ---</option>
-                            {personnes.map((item, i) => {
-                                return (<option key={item.value} value={item.value}>{item.label}</option>);
-                            })}
-                        </Form.Select>
+                        <Select
+                            id="idExecutant"
+                            name="idExecutant"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            isDisabled={isLoading}
+                            placeholder='Aucune prsonne selectionnée'
+                            options={personnes}
+                            value={personnes.find(c => c.value === watch("idExecutant"))}
+                            onChange={val => val != null ? setValue("idExecutant", val.value) : setValue("idExecutant", null)}
+                        />
                         <small className="text-danger">{errors.idExecutant?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Maintenance effectuée</Form.Label>
-                        <Form.Select size="sm" name="idTypeMaintenance" id="idTypeMaintenance" {...register("idTypeMaintenance")}>
-                            <option key="0" value="">--- Selectionner un type ---</option>
-                            {typesMaintenance.map((item, i) => {
-                                return (<option key={item.value} value={item.value}>{item.label}</option>);
-                            })}
-                        </Form.Select>
+                        <Select
+                            id="idTypeMaintenance"
+                            name="idTypeMaintenance"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            isDisabled={isLoading}
+                            placeholder='Aucun type selectionné'
+                            options={typesMaintenance}
+                            value={typesMaintenance.find(c => c.value === watch("idTypeMaintenance"))}
+                            onChange={val => val != null ? setValue("idTypeMaintenance", val.value) : setValue("idTypeMaintenance", null)}
+                        />
                         <small className="text-danger">{errors.idTypeMaintenance?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">

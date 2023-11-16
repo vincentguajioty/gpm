@@ -5,6 +5,7 @@ import FalconComponentCard from 'components/common/FalconComponentCard';
 import ActionButton from 'components/common/ActionButton';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import IconButton from 'components/common/IconButton';
+import Select from 'react-select';
 
 import HabilitationService from 'services/habilitationsService';
 import { Axios } from 'helpers/axios';
@@ -225,12 +226,20 @@ const Catalogue = () => {
 
                             <Form.Group className="mb-3">
                                 <Form.Label>Catégorie</Form.Label>
-                                <Form.Select size="sm" name="idCategorie" id="idCategorie" {...register("idCategorie")}>
-                                    <option key="0" value="">--- Aucune Catégorie ---</option>
-                                    {categories.map((item, i) => {
-                                        return (<option key={item.value} value={item.value}>{item.label}</option>);
-                                    })}
-                                </Form.Select>
+                                <Select
+                                    id="idCategorie"
+                                    name="idCategorie"
+                                    size="sm"
+                                    classNamePrefix="react-select"
+                                    closeMenuOnSelect={true}
+                                    isClearable={true}
+                                    isSearchable={true}
+                                    isDisabled={isLoading}
+                                    placeholder='Aucune catégorie selectionnée'
+                                    options={categories}
+                                    value={categories.find(c => c.value === watch("idCategorie"))}
+                                    onChange={val => val != null ? setValue("idCategorie", val.value) : setValue("idCategorie", null)}
+                                />
                                 <small className="text-danger">{errors.idCategorie?.message}</small>
                             </Form.Group>
 
@@ -272,12 +281,20 @@ const Catalogue = () => {
 
                             <Form.Group className="mb-3">
                                 <Form.Label>Fournisseur de prédilection</Form.Label>
-                                <Form.Select size="sm" name="idFournisseur" id="idFournisseur" {...register("idFournisseur")}>
-                                    <option key="0" value="">--- Aucun fournisseur ---</option>
-                                    {fournisseurs.map((item, i) => {
-                                        return (<option key={item.value} value={item.value}>{item.label}</option>);
-                                    })}
-                                </Form.Select>
+                                <Select
+                                    id="idFournisseur"
+                                    name="idFournisseur"
+                                    size="sm"
+                                    classNamePrefix="react-select"
+                                    closeMenuOnSelect={true}
+                                    isClearable={true}
+                                    isSearchable={false}
+                                    isDisabled={isLoading}
+                                    placeholder='Aucun fournisseur selectionné'
+                                    options={fournisseurs}
+                                    value={fournisseurs.find(c => c.value === watch("idFournisseur"))}
+                                    onChange={val => val != null ? setValue("idFournisseur", val.value) : setValue("idFournisseur", null)}
+                                />
                                 <small className="text-danger">{errors.idFournisseur?.message}</small>
                             </Form.Group>
 
