@@ -1062,6 +1062,11 @@ const materielsDelete = async (idLogger, idElement) => {
             idElement : idElement,
         });
 
+        if(getInitialData[0].idLot > 0)
+        {
+            await fonctionsMetiers.checkOneConf(getInitialData[0].idLot)
+        }
+
         logger.info("Suppression réussie de l'élément matériel "+idElement, {idPersonne: idLogger})
         return true;
     } catch (error) {

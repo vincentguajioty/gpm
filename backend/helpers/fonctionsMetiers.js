@@ -696,6 +696,41 @@ const checkAllConf = async () => {
     }
 }
 
+const updateConformiteMaterielOpe = async (idElement) => {
+    try {
+        let materiel = await db.query(`
+            SELECT
+                *
+            FROM
+                MATERIEL_ELEMENT m
+                LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+            WHERE
+                idElement = :idElement
+        ;`,{
+            idElement : idElement
+        });
+        materiel = materiel[0];
+
+        if(materiel.peremptionAnticipationOpe != null)
+        {
+            let updateAnticipation = await db.query(`
+                UPDATE
+                    MATERIEL_ELEMENT
+                SET
+                    peremptionAnticipation = :peremptionAnticipation
+                WHERE
+                    idElement = :idElement
+            ;`,{
+                idElement : idElement,
+                peremptionAnticipation: materiel.peremptionAnticipationOpe,
+            });
+        }
+        
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 const cnilAnonyme = async (idPersonne) => {
     try {
         let personne = await db.query(`
@@ -1076,6 +1111,7 @@ module.exports = {
     checkLotsConf,
     checkOneConf,
     checkAllConf,
+    updateConformiteMaterielOpe,
     cnilAnonyme,
     cnilAnonymeCron,
     replaceString,

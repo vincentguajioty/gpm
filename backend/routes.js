@@ -65,6 +65,7 @@ router.get('/select/getEtatsMateriels',                        loggerMiddleware.
 router.get('/select/getEtatsVehicules',                        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getEtatsVehicules);
 router.get('/select/getTypesDocuments',                        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getTypesDocuments);
 router.get('/select/getCatalogueMateriel',                     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCatalogueMateriel);
+router.get('/select/getCatalogueMaterielFull',                 loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCatalogueMaterielFull);
 router.get('/select/getVHFTypesAccessoires',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVHFTypesAccessoires);
 router.get('/select/getEtatsVHF',                              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getEtatsVHF);
 router.get('/select/getTechnologiesVHF',                       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getTechnologiesVHF);
@@ -75,6 +76,8 @@ router.get('/select/getPioritesForTDL',                        loggerMiddleware.
 router.get('/select/getTenuesCatalogue',                       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getTenuesCatalogue);
 router.get('/select/getVhfPlans',                              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVhfPlans);
 router.get('/select/getVhfFrequences',                         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVhfFrequences);
+router.get('/select/getEmplacements',                          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getEmplacements);
+router.get('/select/getEmplacementsFull',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getEmplacementsFull);
 
 //Composant Calendrier
 router.get('/calendrier/peremptionsLots',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),       calendrierCtrl.peremptionsLots);
@@ -97,7 +100,11 @@ router.get('/calendrier/toDoListOwn',                   loggerMiddleware.httpLog
 router.get('/calendrier/toDoListAll',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['todolist_lecture']),       calendrierCtrl.toDoListAll);
 
 //OPERATIONNEL - Matériels
-router.get('/materiels/getMateriels',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),  materielsCtrl.getMateriels);
+router.get('/materiels/getMateriels',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),                                             materielsCtrl.getMateriels);
+router.post('/materiels/getOneMateriel',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),                                             materielsCtrl.getOneMateriel);
+router.post('/materiels/addMateriels',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_ajout']),        loggerMiddleware.modificationLogger(), materielsCtrl.addMateriels);
+router.post('/materiels/updateMateriels',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_modification']), loggerMiddleware.modificationLogger(), materielsCtrl.updateMateriels);
+router.post('/materiels/materielsDelete',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_suppression']),  loggerMiddleware.suppressionLogger(),  materielsCtrl.materielsDelete);
 
 //Fournisseurs - Informations de base
 router.get('/fournisseurs/getFournisseurs',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),      jwtFunctions.decryptAesToken(),        fournisseursCtrl.getFournisseurs);

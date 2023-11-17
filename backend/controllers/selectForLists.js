@@ -290,6 +290,27 @@ exports.getCatalogueMateriel = async (req, res)=>{
     }
 }
 
+exports.getCatalogueMaterielFull = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idMaterielCatalogue as value,
+                libelleMateriel as label,
+                sterilite,
+                peremptionAnticipationOpe,
+                peremptionAnticipationRes
+            FROM
+                MATERIEL_CATALOGUE
+            ORDER BY
+                libelleMateriel
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.getVHFTypesAccessoires = async (req, res)=>{
     try {
         let results = await db.query(`
@@ -462,6 +483,47 @@ exports.getVhfFrequences = async (req, res)=>{
                 VHF_CANAL
             ORDER BY
                 chName
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getEmplacements = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idEmplacement as value,
+                libelleEmplacement as label
+            FROM
+                MATERIEL_EMPLACEMENT
+            ORDER BY
+                libelleEmplacement
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getEmplacementsFull = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idEmplacement as value,
+                CONCAT_WS(' > ',l.libelleLot,s.libelleSac,e.libelleEmplacement) as label,
+                l.inventaireEnCours
+            FROM
+                MATERIEL_EMPLACEMENT e
+                LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac
+                LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot
+            ORDER BY
+                l.libelleLot,
+                s.libelleSac,
+                e.libelleEmplacement
         ;`);
         res.send(results);
     } catch (error) {

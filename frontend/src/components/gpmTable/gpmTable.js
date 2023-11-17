@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Row, Col } from 'react-bootstrap';
 import AdvanceTable from './AdvanceTable';
 import AdvanceTableSearchBox from './AdvanceTableSearchBox';
@@ -11,9 +11,29 @@ const GPMtable = ({
     topButton,
     topButtonShow = false,
 }) => {
+    const [finalColumns, setFinalColumns] = useState([]);
+    const hideColumns = () => {
+        let tempColumns = [];
+        for(const colonne of columns)
+        {
+            if(colonne.isHidden != true)
+            {
+                tempColumns.push(colonne);
+            }
+        }
+        setFinalColumns(tempColumns);
+    }
+
+    useEffect(()=>{
+        hideColumns();
+    },[])
+    useEffect(()=>{
+        hideColumns();
+    },[columns])
+
     return (
         <AdvanceTableWrapper
-            columns={columns}
+            columns={finalColumns}
             data={data}
             sortable={true}
             selection={false}

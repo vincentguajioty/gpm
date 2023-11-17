@@ -427,3 +427,22 @@ export const alerteVehiculeAffectation = Yup.object().shape({
         .min(1, champObligatoire)
         .required(champObligatoire),
 });
+
+export const materielsForm = Yup.object().shape({
+    idMaterielCatalogue: Yup
+        .number()
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    idMaterielsEtat: Yup
+        .number()
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    quantite: Yup
+        .number()
+        .min(0, champObligatoire)
+        .required(champObligatoire),
+    quantiteAlerte: Yup
+        .number()
+        .min(0, champObligatoire)
+        .required(champObligatoire),
+});
