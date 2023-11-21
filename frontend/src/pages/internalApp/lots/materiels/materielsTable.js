@@ -10,6 +10,7 @@ import HabilitationService from 'services/habilitationsService';
 
 import MaterielsForm from './materielsForm';
 import MaterielsDeleteModal from './materielsDeleteModal';
+import TransfertsMaterielsOpe from '../transferts/transfertsMaterielsOpe';
 
 const MaterielsTable = ({
     displayLibelleMateriel = true,
@@ -101,6 +102,9 @@ const MaterielsTable = ({
                         <SoftBadge bg='danger'>INVENTAIRE EN COURS</SoftBadge>    
                     :
                         <>
+                            {HabilitationService.habilitations['reserve_ReserveVersLot'] ? 
+                                <TransfertsMaterielsOpe idElement={item.idElement} setPageNeedsRefresh={setPageNeedsRefresh} />
+                            : null}
                             {HabilitationService.habilitations['materiel_modification'] ? 
                                 <MaterielsForm idElement={item.idElement} element={item} setPageNeedsRefresh={setPageNeedsRefresh} />
                             : null}

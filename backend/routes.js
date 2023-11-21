@@ -13,6 +13,8 @@ const profilsCtrl = require('./controllers/profils');
 
 const materielsCtrl = require('./controllers/materiels');
 
+const transfertsCtrl = require('./controllers/transferts');
+
 const commandesCtrl = require('./controllers/commandes');
 const fournisseursCtrl = require('./controllers/fournisseurs');
 const fournisseursAesCtrl = require('./controllers/fournisseursAes');
@@ -105,6 +107,10 @@ router.post('/materiels/getOneMateriel',   loggerMiddleware.httpLogger(), jwtFun
 router.post('/materiels/addMateriels',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_ajout']),        loggerMiddleware.modificationLogger(), materielsCtrl.addMateriels);
 router.post('/materiels/updateMateriels',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_modification']), loggerMiddleware.modificationLogger(), materielsCtrl.updateMateriels);
 router.post('/materiels/materielsDelete',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_suppression']),  loggerMiddleware.suppressionLogger(),  materielsCtrl.materielsDelete);
+
+//TRANSFERTS - Lots
+router.post('/transferts/getReservesForOneTransfert', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_ReserveVersLot']),                                         transfertsCtrl.getReservesForOneTransfert);
+router.post('/transferts/opererTransfertReserveLot',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_ReserveVersLot']),  loggerMiddleware.modificationLogger(), transfertsCtrl.opererTransfertReserveLot);
 
 //Fournisseurs - Informations de base
 router.get('/fournisseurs/getFournisseurs',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),      jwtFunctions.decryptAesToken(),        fournisseursCtrl.getFournisseurs);

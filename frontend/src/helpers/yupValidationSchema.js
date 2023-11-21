@@ -446,3 +446,36 @@ export const materielsForm = Yup.object().shape({
         .min(0, champObligatoire)
         .required(champObligatoire),
 });
+
+export const transfertReservesLotsStep = [
+    Yup.object().shape({
+        idReserveElement: Yup
+            .number()
+            .min(1, champObligatoire)
+            .required(champObligatoire),
+    }),
+
+    Yup.object().shape({
+        idReserveElement: Yup
+            .number()
+            .min(1, champObligatoire)
+            .required(champObligatoire),
+        qttTransfert: Yup
+            .number()
+            .typeError(champObligatoire)
+            .min(1, champObligatoire)
+            .test({
+                name: 'max',
+                exclusive: false,
+                params: {},
+                message: 'Stock insuffisant',
+                test: function (value) {
+                    return value <= parseInt(this.parent.quantiteReserve)
+                },
+            })
+            .required(champObligatoire),
+    }),
+
+    Yup.object().shape({
+    }),
+];
