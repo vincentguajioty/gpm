@@ -85,16 +85,6 @@ if(HabilitationService.habilitations)
                 active: true
             })
         }
-        if(HabilitationService.habilitations['sac2_lecture'])
-        {
-            tempChildrens.push({
-                name: 'Emplacements',
-                to: '/emplacements',
-                icon: 'cubes',
-                exact: false,
-                active: true
-            })
-        }
         if(HabilitationService.habilitations['materiel_lecture'])
         {
             tempChildrens.push({

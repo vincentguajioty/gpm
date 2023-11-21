@@ -23,7 +23,6 @@ import LoginPwdChange from '../pages/home/loginPwdChange';
 
 import Lots from 'pages/internalApp/lots/lots';
 import Sacs from 'pages/internalApp/lots/sacs';
-import Emplacements from 'pages/internalApp/lots/emplacements';
 import Materiels from 'pages/internalApp/lots/materiels';
 import AlertesBenevolesLots from 'pages/internalApp/lots/alertesBenevolesLots';
 import RapportsConso from 'pages/internalApp/lots/rapportsConso';
@@ -101,7 +100,6 @@ const FalconRoutes = () => {
 
           <Route path="/lots" element={<Lots />} />
           <Route path="/sacs" element={<Sacs />} />
-          <Route path="/emplacements" element={<Emplacements />} />
           <Route path="/lotsMateriel" element={<Materiels />} />
           <Route path="/lotsAlertesBenevoles" element={<AlertesBenevolesLots />} />
           <Route path="/rapportsConso" element={<RapportsConso />} />
