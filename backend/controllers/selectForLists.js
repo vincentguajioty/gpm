@@ -531,3 +531,21 @@ exports.getEmplacementsFull = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+exports.getConteneurs = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idConteneur as value,
+                libelleConteneur as label
+            FROM
+                RESERVES_CONTENEUR
+            ORDER BY
+                libelleConteneur
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}

@@ -1,15 +1,29 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import FalconComponentCard from 'components/common/FalconComponentCard';
+import ActionButton from 'components/common/ActionButton';
+import PageHeader from 'components/common/PageHeader';
 
-const MaterielsReserve = () => {
-    return (
-        'Le tableau des matériels en réserve'
-    );
+import ReservesMaterielsTable from './materiels/materielsTable';
+
+const ReservesMateriels = () => {
+    return (<>
+        <PageHeader
+            preTitle="Réserves"
+            title="Gestion du matériel et des consommables"
+            className="mb-3"
+        />
+
+        <FalconComponentCard noGuttersBottom className="mb-3">
+            <FalconComponentCard.Body
+                scope={{ ActionButton }}
+                noLight
+            >
+                <ReservesMaterielsTable/>
+            </FalconComponentCard.Body>
+        </FalconComponentCard>
+    </>);
 };
 
-MaterielsReserve.propTypes = {};
+ReservesMateriels.propTypes = {};
 
-export default MaterielsReserve;
+export default ReservesMateriels;

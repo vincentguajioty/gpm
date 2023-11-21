@@ -586,3 +586,21 @@ export const transfertReservesLotsStep = [
     Yup.object().shape({
     }),
 ];
+
+export const reservesMaterielsForm = Yup.object().shape({
+    idMaterielCatalogue: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    quantiteReserve: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(0, champObligatoire)
+        .required(champObligatoire),
+    quantiteAlerteReserve: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(0, champObligatoire)
+        .required(champObligatoire),
+});

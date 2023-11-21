@@ -13,6 +13,8 @@ const profilsCtrl = require('./controllers/profils');
 
 const materielsCtrl = require('./controllers/materiels');
 
+const reservesMaterielsCtrl = require('./controllers/reservesMateriels');
+
 const transfertsCtrl = require('./controllers/transferts');
 
 const commandesCtrl = require('./controllers/commandes');
@@ -80,6 +82,7 @@ router.get('/select/getVhfPlans',                              loggerMiddleware.
 router.get('/select/getVhfFrequences',                         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVhfFrequences);
 router.get('/select/getEmplacements',                          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getEmplacements);
 router.get('/select/getEmplacementsFull',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getEmplacementsFull);
+router.get('/select/getConteneurs',                            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getConteneurs);
 
 //Composant Calendrier
 router.get('/calendrier/peremptionsLots',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),       calendrierCtrl.peremptionsLots);
@@ -107,6 +110,13 @@ router.post('/materiels/getOneMateriel',   loggerMiddleware.httpLogger(), jwtFun
 router.post('/materiels/addMateriels',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_ajout']),        loggerMiddleware.modificationLogger(), materielsCtrl.addMateriels);
 router.post('/materiels/updateMateriels',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_modification']), loggerMiddleware.modificationLogger(), materielsCtrl.updateMateriels);
 router.post('/materiels/materielsDelete',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_suppression']),  loggerMiddleware.suppressionLogger(),  materielsCtrl.materielsDelete);
+
+//RESERVES - Matériels
+router.get('/reserves/getReservesMateriels',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_lecture']),                                             reservesMaterielsCtrl.getReservesMateriels);
+router.post('/reserves/getOneReservesMateriel',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_lecture']),                                             reservesMaterielsCtrl.getOneReservesMateriel);
+router.post('/reserves/addReservesMateriels',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_ajout']),        loggerMiddleware.modificationLogger(), reservesMaterielsCtrl.addReservesMateriels);
+router.post('/reserves/updateReservesMateriels',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_modification']), loggerMiddleware.modificationLogger(), reservesMaterielsCtrl.updateReservesMateriels);
+router.post('/reserves/materielsReservesDelete',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_suppression']),  loggerMiddleware.suppressionLogger(),  reservesMaterielsCtrl.materielsReservesDelete);
 
 //TRANSFERTS - Lots
 router.post('/transferts/getReservesForOneTransfert', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_ReserveVersLot']),                                         transfertsCtrl.getReservesForOneTransfert);

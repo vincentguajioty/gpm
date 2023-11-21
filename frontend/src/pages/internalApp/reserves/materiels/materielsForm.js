@@ -7,7 +7,7 @@ import { Axios } from 'helpers/axios';
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { materielsForm } from 'helpers/yupValidationSchema';
+import { reservesMaterielsForm } from 'helpers/yupValidationSchema';
 
 import DatePicker from 'react-datepicker';
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
@@ -15,9 +15,9 @@ import fr from 'date-fns/locale/fr';
 registerLocale('fr', fr);
 setDefaultLocale('fr');
 
-const MaterielsForm = ({
-    idElement = 0,
-    idEmplacement = null,
+const ReservesMaterielsForm = ({
+    idReserveElement = 0,
+    idConteneur = null,
     element = null,
     setPageNeedsRefresh
 }) => {
@@ -25,7 +25,7 @@ const MaterielsForm = ({
     const [showOffCanevas, setShowOffCanevas] = useState(false);
     const [isLoading, setLoading] = useState(false);
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm({
-        resolver: yupResolver(materielsForm),
+        resolver: yupResolver(reservesMaterielsForm),
     });
     const handleCloseOffCanevas = () => {
         setShowOffCanevas(false);
@@ -33,46 +33,42 @@ const MaterielsForm = ({
         setLoading(false);
     }
     const[catalogue, setCatalogue] = useState([]);
-    const[emplacements, setEmplacements] = useState([]);
+    const[conteneurs, setConteneurs] = useState([]);
     const[fournisseurs, setFournisseurs] = useState([]);
-    const[etats, setEtats] = useState([]);
     const[lockAnticipation, setLockAnticipation] = useState(false);
     const handleShowOffCanevas = async () => {
 
-        if(idElement > 0)
+        if(idReserveElement > 0)
         {
             if(element == null)
             {
-                let getElement = await Axios.post('/materiels/getOneMateriel',{
-                    idElement: idElement
+                let getElement = await Axios.post('/reserves/getOneReservesMateriel',{
+                    idReserveElement: idReserveElement
                 })
                 element= getElement.data[0];
             }
             console.log(element);
             setValue("idMaterielCatalogue", element.idMaterielCatalogue);
-            setValue("idEmplacement", element.idEmplacement);
+            setValue("idConteneur", element.idConteneur);
             setValue("idFournisseur", element.idFournisseur);
-            setValue("quantite", element.quantite);
-            setValue("quantiteAlerte", element.quantiteAlerte);
-            setValue("peremption", element.peremption ? new Date(element.peremption) : null);
-            setValue("peremptionAnticipation", element.peremptionAnticipation);
-            setValue("commentairesElement", element.commentairesElement);
-            setValue("idMaterielsEtat", element.idMaterielsEtat);
+            setValue("quantiteReserve", element.quantiteReserve);
+            setValue("quantiteAlerteReserve", element.quantiteAlerteReserve);
+            setValue("peremptionReserve", element.peremptionReserve ? new Date(element.peremptionReserve) : null);
+            setValue("peremptionReserveAnticipation", element.peremptionReserveAnticipation);
+            setValue("commentairesReserveElement", element.commentairesReserveElement);
         }
 
-        if(idEmplacement != null && idEmplacement > 0)
+        if(idConteneur != null && idConteneur > 0)
         {
-            setValue("idEmplacement", idEmplacement);
+            setValue("idConteneur", idConteneur);
         }
 
         let getForSelect = await Axios.get('/select/getCatalogueMaterielFull');
         setCatalogue(getForSelect.data);
-        getForSelect = await Axios.get('/select/getEmplacementsFull');
-        setEmplacements(getForSelect.data);
+        getForSelect = await Axios.get('/select/getConteneurs');
+        setConteneurs(getForSelect.data);
         getForSelect = await Axios.get('/select/getFournisseurs');
         setFournisseurs(getForSelect.data);
-        getForSelect = await Axios.get('/select/getEtatsMateriels');
-        setEtats(getForSelect.data);
 
         setShowOffCanevas(true);
     }
@@ -80,33 +76,31 @@ const MaterielsForm = ({
         try {
             setLoading(true);
 
-            if(idElement > 0)    
+            if(idReserveElement > 0)    
             {
-                const response = await Axios.post('/materiels/updateMateriels',{
-                    idElement: idElement,
+                const response = await Axios.post('/reserves/updateReservesMateriels',{
+                    idReserveElement: idReserveElement,
                     idMaterielCatalogue : data.idMaterielCatalogue,
-                    idEmplacement : data.idEmplacement,
+                    idConteneur : data.idConteneur,
                     idFournisseur : data.idFournisseur,
-                    quantite : data.quantite,
-                    quantiteAlerte : data.quantiteAlerte,
-                    peremption : data.peremption,
-                    peremptionAnticipation : data.peremptionAnticipation,
-                    commentairesElement : data.commentairesElement,
-                    idMaterielsEtat : data.idMaterielsEtat,
+                    quantiteReserve : data.quantiteReserve,
+                    quantiteAlerteReserve : data.quantiteAlerteReserve,
+                    peremptionReserve : data.peremptionReserve,
+                    peremptionReserveAnticipation : data.peremptionReserveAnticipation,
+                    commentairesReserveElement : data.commentairesReserveElement,
                 });
             }
             else
             {
-                const response = await Axios.post('/materiels/addMateriels',{
+                const response = await Axios.post('/reserves/addReservesMateriels',{
                     idMaterielCatalogue : data.idMaterielCatalogue,
-                    idEmplacement : data.idEmplacement,
+                    idConteneur : data.idConteneur,
                     idFournisseur : data.idFournisseur,
-                    quantite : data.quantite,
-                    quantiteAlerte : data.quantiteAlerte,
-                    peremption : data.peremption,
-                    peremptionAnticipation : data.peremptionAnticipation,
-                    commentairesElement : data.commentairesElement,
-                    idMaterielsEtat : data.idMaterielsEtat,
+                    quantiteReserve : data.quantiteReserve,
+                    quantiteAlerteReserve : data.quantiteAlerteReserve,
+                    peremptionReserve : data.peremptionReserve,
+                    peremptionReserveAnticipation : data.peremptionReserveAnticipation,
+                    commentairesReserveElement : data.commentairesReserveElement,
                 });
             }
 
@@ -122,14 +116,14 @@ const MaterielsForm = ({
         if(watch("idMaterielCatalogue") > 0 && catalogue.length>0)
         {
             let itemFromCatalogue = catalogue.find(item => item.value == watch("idMaterielCatalogue"));
-            setLockAnticipation(itemFromCatalogue.peremptionAnticipationOpe && itemFromCatalogue.peremptionAnticipationOpe != null ? true : false)
-            setValue("peremptionAnticipation", itemFromCatalogue.peremptionAnticipationOpe && itemFromCatalogue.peremptionAnticipationOpe != null ? itemFromCatalogue.peremptionAnticipationOpe : null)
+            setLockAnticipation(itemFromCatalogue.peremptionAnticipationRes && itemFromCatalogue.peremptionAnticipationRes != null ? true : false)
+            setValue("peremptionAnticipation", itemFromCatalogue.peremptionAnticipationRes && itemFromCatalogue.peremptionAnticipationRes != null ? itemFromCatalogue.peremptionAnticipationRes : null)
         }
     },[watch("idMaterielCatalogue"), catalogue])
 
     return (
     <>
-        {idElement > 0 ?
+        {idReserveElement > 0 ?
             <IconButton
                 icon='pen'
                 size = 'sm'
@@ -149,7 +143,7 @@ const MaterielsForm = ({
         
         <Offcanvas show={showOffCanevas} onHide={handleCloseOffCanevas} placement='end'>
             <Offcanvas.Header closeButton >
-                <Offcanvas.Title>{idElement > 0 ? "Modification" : "Ajout"} d'un élément de matériel</Offcanvas.Title>
+                <Offcanvas.Title>{idReserveElement > 0 ? "Modification" : "Ajout"} d'un élément de matériel</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
                 <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
@@ -173,23 +167,23 @@ const MaterielsForm = ({
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <Form.Label>Emplacement</Form.Label>
+                        <Form.Label>Conteneur</Form.Label>
                         <Select
-                            id="idEmplacement"
-                            name="idEmplacement"
+                            id="idConteneur"
+                            name="idConteneur"
                             size="sm"
                             classNamePrefix="react-select"
                             closeMenuOnSelect={true}
                             isClearable={true}
                             isSearchable={true}
-                            isDisabled={isLoading || idEmplacement > 0}
+                            isDisabled={isLoading || idConteneur > 0}
                             placeholder='Aucun emplacement selectionné'
-                            options={emplacements}
+                            options={conteneurs}
                             isOptionDisabled={(option) => option.inventaireEnCours}
-                            value={emplacements.find(c => c.value === watch("idEmplacement"))}
-                            onChange={val => val != null ? setValue("idEmplacement", val.value) : setValue("idEmplacement", null)}
+                            value={conteneurs.find(c => c.value === watch("idConteneur"))}
+                            onChange={val => val != null ? setValue("idConteneur", val.value) : setValue("idConteneur", null)}
                         />
-                        <small className="text-danger">{errors.idEmplacement?.message}</small>
+                        <small className="text-danger">{errors.idConteneur?.message}</small>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
@@ -220,8 +214,8 @@ const MaterielsForm = ({
                                     label="Quantité présente"
                                     className="mb-3"
                                 >
-                                    <Form.Control size="sm" type="number" min="0" step="1" name='quantite' id='quantite' {...register('quantite')}/>
-                                    <small className="text-danger">{errors.quantite?.message}</small>
+                                    <Form.Control size="sm" type="number" min="0" step="1" name='quantiteReserve' id='quantiteReserve' {...register('quantiteReserve')}/>
+                                    <small className="text-danger">{errors.quantiteReserve?.message}</small>
                                 </FloatingLabel>
                             </Col>
                             <Col md={6}>
@@ -230,8 +224,8 @@ const MaterielsForm = ({
                                     label="Quantité d'alerte"
                                     className="mb-3"
                                 >
-                                    <Form.Control size="sm" type="number" min="0" step="1" name='quantiteAlerte' id='quantiteAlerte' {...register('quantiteAlerte')}/>
-                                    <small className="text-danger">{errors.quantiteAlerte?.message}</small>
+                                    <Form.Control size="sm" type="number" min="0" step="1" name='quantiteAlerteReserve' id='quantiteAlerteReserve' {...register('quantiteAlerteReserve')}/>
+                                    <small className="text-danger">{errors.quantiteAlerteReserve?.message}</small>
                                 </FloatingLabel>
                             </Col>
                         </Row>
@@ -240,8 +234,8 @@ const MaterielsForm = ({
                     <Form.Group className="mb-3">
                         <Form.Label>Date de péremption</Form.Label>
                         <DatePicker
-                            selected={watch("peremption")}
-                            onChange={(date)=>setValue("peremption", date)}
+                            selected={watch("peremptionReserve")}
+                            onChange={(date)=>setValue("peremptionReserve", date)}
                             formatWeekDay={day => day.slice(0, 3)}
                             className='form-control'
                             placeholderText="Choisir une date"
@@ -249,38 +243,19 @@ const MaterielsForm = ({
                             fixedHeight
                             locale="fr"
                         />
-                        <small className="text-danger">{errors.peremption?.message}</small>
+                        <small className="text-danger">{errors.peremptionReserve?.message}</small>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
                         <Form.Label>Anticipation de la notification (j)</Form.Label>
-                        <Form.Control size="sm" type="number" min="0" step="1" name='peremptionAnticipation' id='peremptionAnticipation' {...register('peremptionAnticipation')} disabled={lockAnticipation}/>
-                        <small className="text-danger">{errors.peremptionAnticipation?.message}</small>
-                    </Form.Group>
-                    
-                    <Form.Group className="mb-3">
-                        <Form.Label>Etat</Form.Label>
-                        <Select
-                            id="idMaterielsEtat"
-                            name="idMaterielsEtat"
-                            size="sm"
-                            classNamePrefix="react-select"
-                            closeMenuOnSelect={true}
-                            isClearable={true}
-                            isSearchable={true}
-                            isDisabled={isLoading}
-                            placeholder='Aucun emplacement selectionné'
-                            options={etats}
-                            value={etats.find(c => c.value === watch("idMaterielsEtat"))}
-                            onChange={val => val != null ? setValue("idMaterielsEtat", val.value) : setValue("idMaterielsEtat", null)}
-                        />
-                        <small className="text-danger">{errors.idMaterielsEtat?.message}</small>
+                        <Form.Control size="sm" type="number" min="0" step="1" name='peremptionReserveAnticipation' id='peremptionReserveAnticipation' {...register('peremptionReserveAnticipation')} disabled={lockAnticipation}/>
+                        <small className="text-danger">{errors.peremptionReserveAnticipation?.message}</small>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
                         <Form.Label>Remarques</Form.Label>
-                        <Form.Control size="sm" as="textarea" rows={3} name={"commentairesElement"} id={"commentairesElement"} {...register("commentairesElement")}/>
-                        <small className="text-danger">{errors.commentairesElement?.message}</small>
+                        <Form.Control size="sm" as="textarea" rows={3} name={"commentairesReserveElement"} id={"commentairesReserveElement"} {...register("commentairesReserveElement")}/>
+                        <small className="text-danger">{errors.commentairesReserveElement?.message}</small>
                     </Form.Group>
                     
                     <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Enregistrer'}</Button>
@@ -290,6 +265,6 @@ const MaterielsForm = ({
     </>);
 };
 
-MaterielsForm.propTypes = {};
+ReservesMaterielsForm.propTypes = {};
 
-export default MaterielsForm;
+export default ReservesMaterielsForm;
