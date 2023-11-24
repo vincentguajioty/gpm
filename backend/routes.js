@@ -11,6 +11,7 @@ const settingsUtilisateursCtrl = require('./controllers/settingsUtilisateurs');
 const settingsTechniquesCtrl = require('./controllers/settingsTechniques');
 const profilsCtrl = require('./controllers/profils');
 
+const sacsCtrl = require('./controllers/sacs');
 const materielsCtrl = require('./controllers/materiels');
 
 const reservesMaterielsCtrl = require('./controllers/reservesMateriels');
@@ -104,6 +105,12 @@ router.get('/calendrier/cautionsExpirations',           loggerMiddleware.httpLog
 router.get('/calendrier/toDoListOwn',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),    calendrierCtrl.toDoListOwn);
 router.get('/calendrier/toDoListAll',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['todolist_lecture']),       calendrierCtrl.toDoListAll);
 
+//OPERATIONNEL - Sacs
+router.get('/sacs/getSacs',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_lecture']),                                             sacsCtrl.getSacs);
+router.post('/sacs/getOneSac',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_lecture']),                                             sacsCtrl.getOneSac);
+router.post('/sacs/addSacs',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_ajout']),        loggerMiddleware.modificationLogger(), sacsCtrl.addSacs);
+router.post('/sacs/updateSacs',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_modification']), loggerMiddleware.modificationLogger(), sacsCtrl.updateSacs);
+router.post('/sacs/sacDelete',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_suppression']),  loggerMiddleware.suppressionLogger(),  sacsCtrl.sacDelete);
 //OPERATIONNEL - Matériels
 router.get('/materiels/getMateriels',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),                                             materielsCtrl.getMateriels);
 router.post('/materiels/getOneMateriel',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),                                             materielsCtrl.getOneMateriel);

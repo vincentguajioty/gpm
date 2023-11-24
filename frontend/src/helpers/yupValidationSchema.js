@@ -604,3 +604,10 @@ export const reservesMaterielsForm = Yup.object().shape({
         .min(0, champObligatoire)
         .required(champObligatoire),
 });
+
+export const sacsForm = Yup.object().shape({
+    libelleSac: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});

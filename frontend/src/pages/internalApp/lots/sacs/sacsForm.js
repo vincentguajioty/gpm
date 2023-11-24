@@ -7,7 +7,7 @@ import { Axios } from 'helpers/axios';
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { materielsForm } from 'helpers/yupValidationSchema';
+import { sacsForm } from 'helpers/yupValidationSchema';
 
 import DatePicker from 'react-datepicker';
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
@@ -15,9 +15,9 @@ import fr from 'date-fns/locale/fr';
 registerLocale('fr', fr);
 setDefaultLocale('fr');
 
-const MaterielsForm = ({
-    idElement = 0,
-    idEmplacement = null,
+const SacsForm = ({
+    idSac = 0,
+    idLot = null,
     element = null,
     setPageNeedsRefresh
 }) => {
@@ -25,7 +25,7 @@ const MaterielsForm = ({
     const [showOffCanevas, setShowOffCanevas] = useState(false);
     const [isLoading, setLoading] = useState(false);
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm({
-        resolver: yupResolver(materielsForm),
+        resolver: yupResolver(sacsForm),
     });
     const handleCloseOffCanevas = () => {
         setShowOffCanevas(false);
@@ -39,17 +39,17 @@ const MaterielsForm = ({
     const[lockAnticipation, setLockAnticipation] = useState(false);
     const handleShowOffCanevas = async () => {
 
-        if(idElement > 0)
+        if(idSac > 0)
         {
             if(element == null)
             {
-                let getElement = await Axios.post('/materiels/getOneMateriel',{
-                    idElement: idElement
+                let getElement = await Axios.post('/sacs/getOneSac',{
+                    idSac: idSac
                 })
                 element= getElement.data[0];
             }
             setValue("idMaterielCatalogue", element.idMaterielCatalogue);
-            setValue("idEmplacement", element.idEmplacement);
+            setValue("idLot", element.idLot);
             setValue("idFournisseur", element.idFournisseur);
             setValue("quantite", element.quantite);
             setValue("quantiteAlerte", element.quantiteAlerte);
@@ -59,9 +59,9 @@ const MaterielsForm = ({
             setValue("idMaterielsEtat", element.idMaterielsEtat);
         }
 
-        if(idEmplacement != null && idEmplacement > 0)
+        if(idLot != null && idLot > 0)
         {
-            setValue("idEmplacement", idEmplacement);
+            setValue("idLot", idLot);
         }
 
         let getForSelect = await Axios.get('/select/getCatalogueMaterielFull');
@@ -79,12 +79,12 @@ const MaterielsForm = ({
         try {
             setLoading(true);
 
-            if(idElement > 0)    
+            if(idSac > 0)    
             {
                 const response = await Axios.post('/materiels/updateMateriels',{
-                    idElement: idElement,
+                    idSac: idSac,
                     idMaterielCatalogue : data.idMaterielCatalogue,
-                    idEmplacement : data.idEmplacement,
+                    idLot : data.idLot,
                     idFournisseur : data.idFournisseur,
                     quantite : data.quantite,
                     quantiteAlerte : data.quantiteAlerte,
@@ -98,7 +98,7 @@ const MaterielsForm = ({
             {
                 const response = await Axios.post('/materiels/addMateriels',{
                     idMaterielCatalogue : data.idMaterielCatalogue,
-                    idEmplacement : data.idEmplacement,
+                    idLot : data.idLot,
                     idFournisseur : data.idFournisseur,
                     quantite : data.quantite,
                     quantiteAlerte : data.quantiteAlerte,
@@ -128,7 +128,7 @@ const MaterielsForm = ({
 
     return (
     <>
-        {idElement > 0 ?
+        {idSac > 0 ?
             <IconButton
                 icon='pen'
                 size = 'sm'
@@ -148,7 +148,7 @@ const MaterielsForm = ({
         
         <Offcanvas show={showOffCanevas} onHide={handleCloseOffCanevas} placement='end'>
             <Offcanvas.Header closeButton >
-                <Offcanvas.Title>{idElement > 0 ? "Modification" : "Ajout"} d'un élément de matériel</Offcanvas.Title>
+                <Offcanvas.Title>{idSac > 0 ? "Modification" : "Ajout"} d'un élément de matériel</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
                 <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
@@ -174,21 +174,21 @@ const MaterielsForm = ({
                     <Form.Group className="mb-3">
                         <Form.Label>Emplacement</Form.Label>
                         <Select
-                            id="idEmplacement"
-                            name="idEmplacement"
+                            id="idLot"
+                            name="idLot"
                             size="sm"
                             classNamePrefix="react-select"
                             closeMenuOnSelect={true}
                             isClearable={true}
                             isSearchable={true}
-                            isDisabled={isLoading || idEmplacement > 0}
+                            isDisabled={isLoading || idLot > 0}
                             placeholder='Aucun emplacement selectionné'
                             options={emplacements}
                             isOptionDisabled={(option) => option.inventaireEnCours}
-                            value={emplacements.find(c => c.value === watch("idEmplacement"))}
-                            onChange={val => val != null ? setValue("idEmplacement", val.value) : setValue("idEmplacement", null)}
+                            value={emplacements.find(c => c.value === watch("idLot"))}
+                            onChange={val => val != null ? setValue("idLot", val.value) : setValue("idLot", null)}
                         />
-                        <small className="text-danger">{errors.idEmplacement?.message}</small>
+                        <small className="text-danger">{errors.idLot?.message}</small>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
@@ -289,6 +289,6 @@ const MaterielsForm = ({
     </>);
 };
 
-MaterielsForm.propTypes = {};
+SacsForm.propTypes = {};
 
-export default MaterielsForm;
+export default SacsForm;

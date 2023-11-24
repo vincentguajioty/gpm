@@ -47,7 +47,6 @@ const ReservesMaterielsForm = ({
                 })
                 element= getElement.data[0];
             }
-            console.log(element);
             setValue("idMaterielCatalogue", element.idMaterielCatalogue);
             setValue("idConteneur", element.idConteneur);
             setValue("idFournisseur", element.idFournisseur);
