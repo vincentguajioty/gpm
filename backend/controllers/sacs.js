@@ -146,3 +146,26 @@ exports.sacDelete = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+//emplacements
+exports.getEmplacementsOneSac = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                *
+            FROM
+                MATERIEL_EMPLACEMENT
+            WHERE
+                idSac = :idSac
+            ORDER BY
+                libelleEmplacement ASC
+        ;`,{
+            idSac: req.body.idSac,
+        });
+
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}

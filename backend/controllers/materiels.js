@@ -34,7 +34,7 @@ exports.getMateriels = async (req, res)=>{
 
         if(req.body.filterIdEmplacement > 0)
         {
-            results = results.filter(item => item.idEmplacement == filterIdEmplacement)
+            results = results.filter(item => item.idEmplacement == req.body.filterIdEmplacement)
         }
 
         res.send(results);

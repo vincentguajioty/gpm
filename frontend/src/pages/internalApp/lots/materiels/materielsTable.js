@@ -31,7 +31,7 @@ const MaterielsTable = ({
 
     const initPage = async () => {
         try {
-            const getData = await Axios.get('/materiels/getMateriels',{
+            const getData = await Axios.post('/materiels/getMateriels',{
                 filterIdEmplacement: filterIdEmplacement
             });
             setMateriels(getData.data);  
@@ -46,9 +46,14 @@ const MaterielsTable = ({
         initPage();
     }, [])
     useEffect(() => {
+        setReadyToDisplay(false);
+        initPage();
+    }, [filterIdEmplacement])
+    useEffect(() => {
         if(pageNeedsRefresh)
         {
             setPageNeedsRefresh(false);
+            setReadyToDisplay(false);
             initPage();
         }
     }, [pageNeedsRefresh])

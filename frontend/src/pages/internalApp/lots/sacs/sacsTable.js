@@ -10,12 +10,12 @@ import HabilitationService from 'services/habilitationsService';
 
 import SacsDeleteModal from './sacsDeleteModal';
 import SacsForm from './sacsForm';
+import SacsContentModal from './sacsContentModal';
 
 const SacsTable = ({
     displayLibelleSac = true,
     displayLibelleLot = true,
-    displayQuantiteEmplacements = true,
-    displayQuantiteMateriels = true,
+    displayContenu = true,
     displayActions = true,
     filterIdLot = null,
 }) => {
@@ -51,8 +51,7 @@ const SacsTable = ({
     const colonnes = [
         {accessor: 'libelleSac'          , Header: 'Libellé'                 , isHidden: !displayLibelleSac},
         {accessor: 'libelleLot'          , Header: 'Lot'                     , isHidden: !displayLibelleLot},
-        {accessor: 'quantiteEmplacements', Header: 'Quantité d\'emplacements', isHidden: !displayQuantiteEmplacements},
-        {accessor: 'quantiteMateriels'   , Header: 'Quantité de materiels'   , isHidden: !displayQuantiteMateriels},
+        {accessor: 'contenu'             , Header: 'Contenu'                 , isHidden: !displayContenu},
         {accessor: 'actions'             , Header: 'Actions'                 , isHidden: !displayActions},
     ];
     const [lignes, setLignes] = useState([]);
@@ -63,7 +62,12 @@ const SacsTable = ({
             tempTable.push({
                 libelleSac          : item.libelleSac,
                 libelleLot          : item.libelleLot,
-                quantiteEmplacements: item.quantiteEmplacements,
+                contenu             :
+                    <SacsContentModal
+                        idSac={item.idSac}
+                        libelleSac={item.libelleSac}
+                    />
+                ,
                 quantiteMateriels   : item.quantiteMateriels,
                 actions             : <>
                     {item.inventaireEnCours ?

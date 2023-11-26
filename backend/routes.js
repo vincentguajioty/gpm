@@ -108,13 +108,15 @@ router.get('/calendrier/toDoListOwn',                   loggerMiddleware.httpLog
 router.get('/calendrier/toDoListAll',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['todolist_lecture']),       calendrierCtrl.toDoListAll);
 
 //OPERATIONNEL - Sacs
-router.get('/sacs/getSacs',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_lecture']),                                             sacsCtrl.getSacs);
-router.post('/sacs/getOneSac',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_lecture']),                                             sacsCtrl.getOneSac);
-router.post('/sacs/addSacs',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_ajout']),        loggerMiddleware.modificationLogger(), sacsCtrl.addSacs);
-router.post('/sacs/updateSacs',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_modification']), loggerMiddleware.modificationLogger(), sacsCtrl.updateSacs);
-router.post('/sacs/sacDelete',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_suppression']),  loggerMiddleware.suppressionLogger(),  sacsCtrl.sacDelete);
+router.get('/sacs/getSacs',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_lecture']),                                             sacsCtrl.getSacs);
+router.post('/sacs/getOneSac',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_lecture']),                                             sacsCtrl.getOneSac);
+router.post('/sacs/addSacs',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_ajout']),        loggerMiddleware.modificationLogger(), sacsCtrl.addSacs);
+router.post('/sacs/updateSacs',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_modification']), loggerMiddleware.modificationLogger(), sacsCtrl.updateSacs);
+router.post('/sacs/sacDelete',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_suppression']),  loggerMiddleware.suppressionLogger(),  sacsCtrl.sacDelete);
+//OPERATIONNEL - Emplacements
+router.post('/sacs/getEmplacementsOneSac', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_lecture']),                                             sacsCtrl.getEmplacementsOneSac);
 //OPERATIONNEL - Matériels
-router.get('/materiels/getMateriels',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),                                             materielsCtrl.getMateriels);
+router.post('/materiels/getMateriels',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),                                             materielsCtrl.getMateriels);
 router.post('/materiels/getOneMateriel',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),                                             materielsCtrl.getOneMateriel);
 router.post('/materiels/addMateriels',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_ajout']),        loggerMiddleware.modificationLogger(), materielsCtrl.addMateriels);
 router.post('/materiels/updateMateriels',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_modification']), loggerMiddleware.modificationLogger(), materielsCtrl.updateMateriels);
