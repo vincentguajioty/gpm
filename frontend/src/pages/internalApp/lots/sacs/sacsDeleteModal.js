@@ -23,7 +23,7 @@ const SacsDeleteModal = ({
         try {
             setLoading(true);
 
-            const response = await Axios.post('/sacs/sacsDelete',{
+            const response = await Axios.post('/sacs/sacDelete',{
                 idSac: idSac,
             });
             

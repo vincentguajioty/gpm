@@ -11,12 +11,12 @@ exports.getSacs = async (req, res)=>{
                 l.libelleLot,
                 l.inventaireEnCours,
                 f.nomFournisseur,
-                COUNT(emp.idEmplacement) as quantiteEmplacements,
-                COUNT(matos.idElement) as quantiteMateriels
+                COUNT(DISTINCT(emp.idEmplacement)) as quantiteEmplacements,
+                COUNT(DISTINCT(matos.idElement)) as quantiteMateriels
             FROM
                 MATERIEL_SAC s
                 LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot
-                LEFT OUTER JOIN FOURNISSEURS f ON s.idFournisseur = s.idFournisseur
+                LEFT OUTER JOIN FOURNISSEURS f ON f.idFournisseur = s.idFournisseur
                 LEFT OUTER JOIN MATERIEL_EMPLACEMENT emp ON s.idSac = emp.idSac
                 LEFT OUTER JOIN MATERIEL_ELEMENT matos ON emp.idEmplacement = matos.idEmplacement
             GROUP BY
@@ -83,8 +83,22 @@ exports.addSacs = async (req, res)=>{
             libelleSac: req.body.libelleSac || null,
             idLot: req.body.idLot || null,
             taille: req.body.taille || null,
-            couleur: req.body.couleur || 0,
-            idFournisseur: req.body.idFournisseur || 0,
+            couleur: req.body.couleur || null,
+            idFournisseur: req.body.idFournisseur || null,
+        });
+
+        let selectLast = await db.query(
+            'SELECT MAX(idSac) as idSac FROM MATERIEL_SAC;'
+        );
+
+        let defaultEmpl = await db.query(`
+            INSERT INTO
+                MATERIEL_EMPLACEMENT
+            SET
+                libelleEmplacement = "Défaut",
+                idSac = :idSac
+        ;`,{
+            idSac: selectLast[0].idSac,
         });
 
         res.sendStatus(201);
@@ -111,8 +125,8 @@ exports.updateSacs = async (req, res)=>{
             libelleSac: req.body.libelleSac || null,
             idLot: req.body.idLot || null,
             taille: req.body.taille || null,
-            couleur: req.body.couleur || 0,
-            idFournisseur: req.body.idFournisseur || 0,
+            couleur: req.body.couleur || null,
+            idFournisseur: req.body.idFournisseur || null,
             idSac: req.body.idSac || null,
         });
         

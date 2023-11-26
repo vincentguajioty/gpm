@@ -1,4 +1,5 @@
 const db = require('../db');
+const logger = require('../winstonLogger');
 
 exports.getPersonnes = async (req, res)=>{
     try {
@@ -542,6 +543,44 @@ exports.getConteneurs = async (req, res)=>{
                 RESERVES_CONTENEUR
             ORDER BY
                 libelleConteneur
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getLots = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idLot as value,
+                libelleLot as label
+            FROM
+                LOTS_LOTS
+            ORDER BY
+                libelleLot
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getLotsFull = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idLot as value,
+                libelleLot as label,
+                inventaireEnCours
+            FROM
+                LOTS_LOTS
+            ORDER BY
+                libelleLot
+            
         ;`);
         res.send(results);
     } catch (error) {

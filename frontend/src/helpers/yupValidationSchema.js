@@ -605,7 +605,7 @@ export const reservesMaterielsForm = Yup.object().shape({
         .required(champObligatoire),
 });
 
-export const sacsForm = Yup.object().shape({
+export const sacsFormSchema = Yup.object().shape({
     libelleSac: Yup
         .string()
         .typeError(champObligatoire)
