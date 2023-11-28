@@ -5,6 +5,7 @@ import IconButton from 'components/common/IconButton';
 import { Axios } from 'helpers/axios';
 import MaterielsTable from '../materiels/materielsTable';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
+import SacsContent from './sacsContent';
 
 const SacsContentModal = ({
     idSac,
@@ -13,29 +14,10 @@ const SacsContentModal = ({
     const [showContentModal, setShowContentModal] = useState(false);
     const handleCloseContentModal = () => {
         setShowContentModal(false);
-        setIdEmplacement();
     };
     const handleShowContentModal = () => {
         setShowContentModal(true);
-        getEmplacements();
     };
-
-    const [idEmplacement, setIdEmplacement] = useState();
-    const [emplacements, setEmplacements] = useState([]);
-
-    const [isLoading, setLoading] = useState(true);
-    const getEmplacements = async () => {
-        try {
-            const getData = await Axios.post('/sacs/getEmplacementsOneSac',{
-                idSac: idSac
-            });
-            setEmplacements(getData.data);  
-            
-            setLoading(false);
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     return (
     <>
@@ -47,40 +29,14 @@ const SacsContentModal = ({
             onClick={handleShowContentModal}
         >Voir la composition</IconButton>
         
-        <Modal show={showContentModal} onHide={handleCloseContentModal} backdrop="static" keyboard={false} size='lg'>
+        <Modal show={showContentModal} onHide={handleCloseContentModal} backdrop="static" keyboard={false} fullscreen>
             <Modal.Header closeButton >
                 <Modal.Title>Contenu du sac {libelleSac}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {isLoading ? <LoaderInfiniteLoop/> : 
-                    <ButtonGroup>
-                        {emplacements.map((empl, idx) => (
-                            <ToggleButton
-                                key={empl.idEmplacement}
-                                id={`radio-${idx}`}
-                                type="radio"
-                                variant='outline-info'
-                                name="radio"
-                                value={idEmplacement}
-                                checked={idEmplacement === empl.idEmplacement}
-                                onChange={(e) => {setIdEmplacement(empl.idEmplacement)}}
-                                size='sm'
-                            >
-                                {empl.libelleEmplacement}
-                            </ToggleButton>
-                        ))}
-                    </ButtonGroup>
-                }
-                
-                {idEmplacement && idEmplacement != null && idEmplacement > 0 ? 
-                    <MaterielsTable
-                        filterIdEmplacement={idEmplacement}
-                        displayLibelleLot={false}
-                        displayLibelleSac={false}
-                        displayLibelleEmplacement={false}
-                        displayNotif={false}
-                    />
-                : null }
+                <SacsContent
+                    idSac={idSac}
+                />
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseContentModal}>

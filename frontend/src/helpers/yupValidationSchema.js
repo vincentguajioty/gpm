@@ -611,3 +611,10 @@ export const sacsFormSchema = Yup.object().shape({
         .typeError(champObligatoire)
         .required(champObligatoire),
 });
+
+export const emplacementsFormSchema = Yup.object().shape({
+    libelleEmplacement: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});

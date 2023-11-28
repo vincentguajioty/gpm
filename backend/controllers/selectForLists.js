@@ -588,3 +588,42 @@ exports.getLotsFull = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+exports.getSacs = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idSac as value,
+                libelleSac as label
+            FROM
+                MATERIEL_SAC
+            ORDER BY
+                libelleSac
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getSacsFull = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idSac as value,
+                CONCAT_WS(' > ',l.libelleLot,s.libelleSac) as label,
+                l.inventaireEnCours
+            FROM
+                MATERIEL_SAC s
+                LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot
+            ORDER BY
+                l.libelleLot,
+                s.libelleSac
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}

@@ -86,6 +86,8 @@ router.get('/select/getEmplacementsFull',                      loggerMiddleware.
 router.get('/select/getConteneurs',                            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getConteneurs);
 router.get('/select/getLots',                                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getLots);
 router.get('/select/getLotsFull',                              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getLotsFull);
+router.get('/select/getSacs',                                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getSacs);
+router.get('/select/getSacsFull',                              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getSacsFull);
 
 //Composant Calendrier
 router.get('/calendrier/peremptionsLots',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),       calendrierCtrl.peremptionsLots);
@@ -115,6 +117,9 @@ router.post('/sacs/updateSacs',            loggerMiddleware.httpLogger(), jwtFun
 router.post('/sacs/sacDelete',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_suppression']),  loggerMiddleware.suppressionLogger(),  sacsCtrl.sacDelete);
 //OPERATIONNEL - Emplacements
 router.post('/sacs/getEmplacementsOneSac', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_lecture']),                                             sacsCtrl.getEmplacementsOneSac);
+router.post('/sacs/addEmplacement',        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_ajout']),        loggerMiddleware.modificationLogger(), sacsCtrl.addEmplacement);
+router.post('/sacs/updateEmplacement',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_modification']), loggerMiddleware.modificationLogger(), sacsCtrl.updateEmplacement);
+router.post('/sacs/emplacementDelete',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_suppression']),  loggerMiddleware.suppressionLogger(),  sacsCtrl.emplacementDelete);
 //OPERATIONNEL - Matériels
 router.post('/materiels/getMateriels',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),                                             materielsCtrl.getMateriels);
 router.post('/materiels/getOneMateriel',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),                                             materielsCtrl.getOneMateriel);

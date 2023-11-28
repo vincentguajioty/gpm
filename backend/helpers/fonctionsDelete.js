@@ -1298,12 +1298,13 @@ const sacsDelete = async (idLogger, idSac) => {
         });
         logger.info("Sauvegarde avant suppression", {idPersonne: idLogger, backupBeforeDrop: getInitialData[0]});
 
-        let updateQuery;
-        updateQuery = await db.query(`
-            UPDATE MATERIEL_EMPLACEMENT SET idSac = Null WHERE idSac = :idSac
+
+        let emplacementsASupprimer = await db.query(`
+            SELECT * FROM MATERIEL_EMPLACEMENT WHERE idSac = :idSac
         ;`,{
             idSac : idSac,
         });
+        for(const emp of emplacementsASupprimer){await emplacementsDelete('SYSTEM', emp.idEmplacement);}
 
         let finalDeleteQuery = await db.query(`
             DELETE FROM MATERIEL_SAC WHERE idSac = :idSac

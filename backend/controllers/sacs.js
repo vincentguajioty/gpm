@@ -1,6 +1,7 @@
 const db = require('../db');
 const logger = require('../winstonLogger');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
+const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 
 //sacs
 exports.getSacs = async (req, res)=>{
@@ -110,6 +111,18 @@ exports.addSacs = async (req, res)=>{
 
 exports.updateSacs = async (req, res)=>{
     try {
+        let oldRecord = await db.query(`
+            SELECT
+                *
+            FROM
+                MATERIEL_SAC
+            WHERE
+                idSac = :idSac
+        ;`,{
+            idSac: req.body.idSac
+        });
+        oldRecord = oldRecord[0];
+        
         let update = await db.query(`
             UPDATE
                 MATERIEL_SAC
@@ -129,6 +142,18 @@ exports.updateSacs = async (req, res)=>{
             idFournisseur: req.body.idFournisseur || null,
             idSac: req.body.idSac || null,
         });
+
+        if(oldRecord.idLot != req.body.idLot)
+        {
+            if(oldRecord.idLot != null)
+            {
+                await fonctionsMetiers.checkOneConf(oldRecord.idLot);
+            }
+            if(req.body.idLot != null)
+            {
+                await fonctionsMetiers.checkOneConf(req.body.idLot);
+            }
+        }
         
         res.sendStatus(201);
     } catch (error) {
@@ -164,6 +189,97 @@ exports.getEmplacementsOneSac = async (req, res)=>{
         });
 
         res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.addEmplacement = async (req, res)=>{
+    try {
+        let insert = await db.query(`
+            INSERT INTO
+                MATERIEL_EMPLACEMENT
+            SET
+                libelleEmplacement = :libelleEmplacement,
+                idSac = :idSac
+        ;`,{
+            libelleEmplacement: req.body.libelleEmplacement || null,
+            idSac: req.body.idSac || null,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateEmplacement = async (req, res)=>{
+    try {
+        let oldRecord = await db.query(`
+            SELECT
+                *
+            FROM
+                MATERIEL_EMPLACEMENT e
+                LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac
+            WHERE
+                idEmplacement = :idEmplacement
+        ;`,{
+            idEmplacement: req.body.idEmplacement
+        });
+        oldRecord = oldRecord[0];
+        
+        let update = await db.query(`
+            UPDATE
+                MATERIEL_EMPLACEMENT
+            SET
+                libelleEmplacement = :libelleEmplacement,
+                idSac = :idSac
+            WHERE
+                idEmplacement = :idEmplacement
+        ;`,{
+            libelleEmplacement: req.body.libelleEmplacement || null,
+            idSac: req.body.idSac || null,
+            idEmplacement: req.body.idEmplacement || null,
+        });
+
+        if(oldRecord.idSac != req.body.idSac)
+        {
+            let newRecord = await db.query(`
+                SELECT
+                    *
+                FROM
+                    MATERIEL_EMPLACEMENT e
+                    LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac
+                WHERE
+                    idEmplacement = :idEmplacement
+            ;`,{
+                idEmplacement: req.body.idEmplacement
+            });
+            newRecord = newRecord[0];
+
+            if(oldRecord.idLot != null && oldRecord.idLot != newRecord.idLot)
+            {
+                await fonctionsMetiers.checkOneConf(oldRecord.idLot);
+            }
+            if(newRecord.idLot != null)
+            {
+                await fonctionsMetiers.checkOneConf(newRecord.idLot);
+            }
+        }
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.emplacementDelete = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.emplacementsDelete(req.verifyJWTandProfile.idPersonne , req.body.idEmplacement);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

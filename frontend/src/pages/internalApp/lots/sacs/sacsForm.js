@@ -142,13 +142,12 @@ const SacsForm = ({
                             closeMenuOnSelect={true}
                             isClearable={true}
                             isSearchable={true}
-                            isDisabled={isLoading}
+                            isDisabled={isLoading || idLot > 0}
                             placeholder='Aucun lot selectionné'
                             options={lots}
                             isOptionDisabled={(option) => option.inventaireEnCours}
                             value={lots.find(c => c.value === watch("idLot"))}
                             onChange={val => val != null ? setValue("idLot", val.value) : setValue("idLot", null)}
-                            disabled={idLot > 0 ? true : false}
                         />
                         <small className="text-danger">{errors.idLot?.message}</small>
                     </Form.Group>
