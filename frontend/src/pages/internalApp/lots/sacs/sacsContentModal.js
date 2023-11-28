@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import { Modal, Button, ButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Modal, Button, } from 'react-bootstrap';
 import IconButton from 'components/common/IconButton';
 
-import { Axios } from 'helpers/axios';
-import MaterielsTable from '../materiels/materielsTable';
-import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import SacsContent from './sacsContent';
 
 const SacsContentModal = ({
     idSac,
     libelleSac,
+    inventaireEnCours = false,
 }) => {
     const [showContentModal, setShowContentModal] = useState(false);
     const handleCloseContentModal = () => {
@@ -36,6 +34,7 @@ const SacsContentModal = ({
             <Modal.Body>
                 <SacsContent
                     idSac={idSac}
+                    inventaireEnCours={inventaireEnCours}
                 />
             </Modal.Body>
             <Modal.Footer>

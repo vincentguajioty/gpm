@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import SoftBadge from 'components/common/SoftBadge';
 import GPMtable from 'components/gpmTable/gpmTable';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import moment from 'moment-timezone';
 
 import { Axios } from 'helpers/axios';
 import HabilitationService from 'services/habilitationsService';
@@ -66,6 +64,7 @@ const SacsTable = ({
                     <SacsContentModal
                         idSac={item.idSac}
                         libelleSac={item.libelleSac}
+                        inventaireEnCours={item.inventaireEnCours}
                     />
                 ,
                 quantiteMateriels   : item.quantiteMateriels,

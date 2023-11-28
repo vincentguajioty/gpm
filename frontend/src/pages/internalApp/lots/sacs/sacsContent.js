@@ -16,6 +16,7 @@ import { emplacementsFormSchema } from 'helpers/yupValidationSchema';
 const SacsContent = ({
     idSac,
     lockIdSac = null,
+    inventaireEnCours = false,
 }) => {
     const [idEmplacement, setIdEmplacement] = useState();
     const [emplacements, setEmplacements] = useState([]);
@@ -139,7 +140,7 @@ const SacsContent = ({
         </Modal>
         
         <Row>
-            <Col md="auto">
+            <Col md="auto" className="mb-2">
                 {isLoading ? <LoaderInfiniteLoop/> : 
                     <ButtonGroup>
                         {emplacements.map((empl, idx) => (
@@ -167,14 +168,15 @@ const SacsContent = ({
                             checked={idEmplacement === 0}
                             onChange={(e) => {setIdEmplacement(0)}}
                             size='sm'
+                            disabled={inventaireEnCours || !HabilitationService.habilitations['sac_ajout']}
                         >
                             <FontAwesomeIcon icon="plus" />
                         </ToggleButton>
                     </ButtonGroup>
                 }
             </Col>
-            <Col md="auto">
-                {idEmplacement != null && HabilitationService.habilitations['sac_modification'] ? 
+            <Col md="auto" className="mb-2">
+                {idEmplacement != null && HabilitationService.habilitations['sac_modification'] && !inventaireEnCours ? 
                     <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
                         <Row className="align-items-center g-3">
                             <Col xs="auto">
@@ -214,7 +216,7 @@ const SacsContent = ({
                     </Form>
                 : null }
             </Col>
-            <Col md={12}>
+            <Col md={12} className="mb-2">
                 {idEmplacement && idEmplacement != null && idEmplacement > 0 ? 
                     <MaterielsTable
                         filterIdEmplacement={idEmplacement}
@@ -222,6 +224,7 @@ const SacsContent = ({
                         displayLibelleSac={false}
                         displayLibelleEmplacement={false}
                         displayNotif={false}
+                        hideAddButton={inventaireEnCours}
                     />
                 : null }
             </Col>

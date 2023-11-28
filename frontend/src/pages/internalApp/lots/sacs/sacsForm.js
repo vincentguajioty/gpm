@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Offcanvas, Button, Form, Row, Col, FloatingLabel, } from 'react-bootstrap';
+import React, { useState, } from 'react';
+import { Offcanvas, Button, Form, } from 'react-bootstrap';
 import IconButton from 'components/common/IconButton';
 import Select from 'react-select';
 
@@ -8,12 +8,6 @@ import { Axios } from 'helpers/axios';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { sacsFormSchema } from 'helpers/yupValidationSchema';
-
-import DatePicker from 'react-datepicker';
-import { registerLocale, setDefaultLocale } from  "react-datepicker";
-import fr from 'date-fns/locale/fr';
-registerLocale('fr', fr);
-setDefaultLocale('fr');
 
 const SacsForm = ({
     idSac = 0,

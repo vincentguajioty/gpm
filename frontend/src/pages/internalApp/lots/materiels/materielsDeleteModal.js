@@ -4,7 +4,6 @@ import IconButton from 'components/common/IconButton';
 
 import { Axios } from 'helpers/axios';
 
-
 const MaterielsDeleteModal = ({
     idElement,
     setPageNeedsRefresh

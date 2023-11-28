@@ -23,6 +23,7 @@ const MaterielsTable = ({
     displayNotif = true,
     displayActions = true,
     filterIdEmplacement = null,
+    hideAddButton = false,
 }) => {
     const [pageNeedsRefresh, setPageNeedsRefresh] = useState(false);
     
@@ -133,7 +134,7 @@ const MaterielsTable = ({
             <GPMtable
                 columns={colonnes}
                 data={lignes}
-                topButtonShow={true}
+                topButtonShow={true && !hideAddButton}
                 topButton={
                     HabilitationService.habilitations['materiel_ajout'] ?
                         <MaterielsForm setPageNeedsRefresh={setPageNeedsRefresh} />
