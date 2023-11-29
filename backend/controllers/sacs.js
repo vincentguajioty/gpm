@@ -208,7 +208,12 @@ exports.addEmplacement = async (req, res)=>{
             idSac: req.body.idSac || null,
         });
 
-        res.sendStatus(201);
+        let selectLast = await db.query(
+            'SELECT MAX(idEmplacement) as idEmplacement FROM MATERIEL_EMPLACEMENT;'
+        );
+
+        res.status(201);
+        res.json({idEmplacement: selectLast[0].idEmplacement});
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

@@ -77,6 +77,7 @@ const SacsContent = ({
                     libelleEmplacement: data.libelleEmplacement,
                     idSac: data.idSac,
                 });
+                await getEmplacements();
             }
             else
             {
@@ -84,11 +85,11 @@ const SacsContent = ({
                     libelleEmplacement: data.libelleEmplacement,
                     idSac: idSac,
                 });
+
+                await getEmplacements();
+                setIdEmplacement(response.data.idEmplacement);
             }
 
-            getEmplacements();
-            reset();
-            setIdEmplacement();
             setLoading(false);
         } catch (error) {
             console.error(error)
@@ -140,7 +141,7 @@ const SacsContent = ({
         </Modal>
         
         <Row>
-            <Col md="auto" className="mb-2">
+            <Col md="12" className="mb-2">
                 {isLoading ? <LoaderInfiniteLoop/> : 
                     <ButtonGroup>
                         {emplacements.map((empl, idx) => (
@@ -158,24 +159,28 @@ const SacsContent = ({
                                 {empl.libelleEmplacement}
                             </ToggleButton>
                         ))}
-                        <ToggleButton
-                            key="add"
-                            id={`radio-0`}
-                            type="radio"
-                            variant='outline-info'
-                            name="radio"
-                            value="0"
-                            checked={idEmplacement === 0}
-                            onChange={(e) => {setIdEmplacement(0)}}
-                            size='sm'
-                            disabled={inventaireEnCours || !HabilitationService.habilitations['sac_ajout']}
-                        >
-                            <FontAwesomeIcon icon="plus" />
-                        </ToggleButton>
+                        {idEmplacement != 0 ?
+                            <ToggleButton
+                                key="add"
+                                id={`radio-0`}
+                                type="radio"
+                                variant='outline-info'
+                                name="radio"
+                                value="0"
+                                checked={idEmplacement === 0}
+                                onChange={(e) => {setIdEmplacement(0)}}
+                                size='sm'
+                                disabled={inventaireEnCours || !HabilitationService.habilitations['sac_ajout']}
+                            >
+                                <FontAwesomeIcon icon="plus" />
+                            </ToggleButton>
+                        : null }
                     </ButtonGroup>
                 }
             </Col>
-            <Col md="auto" className="mb-2">
+            <Col md="12" className="mb-2">
+                {idEmplacement > 0 ? <h5>Propriétés de l'emplacement:</h5> : null}
+                {idEmplacement == 0 ? <h5>Créer un emplacement:</h5> : null}
                 {idEmplacement != null && HabilitationService.habilitations['sac_modification'] && !inventaireEnCours ? 
                     <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
                         <Row className="align-items-center g-3">
@@ -217,7 +222,8 @@ const SacsContent = ({
                 : null }
             </Col>
             <Col md={12} className="mb-2">
-                {idEmplacement && idEmplacement != null && idEmplacement > 0 ? 
+                {idEmplacement && idEmplacement != null && idEmplacement > 0 ?  <>
+                    <h5>Matériels de l'emplacement:</h5>
                     <MaterielsTable
                         filterIdEmplacement={idEmplacement}
                         displayLibelleLot={false}
@@ -226,7 +232,7 @@ const SacsContent = ({
                         displayNotif={false}
                         hideAddButton={inventaireEnCours}
                     />
-                : null }
+                </>: null }
             </Col>
         </Row>
     </>);
