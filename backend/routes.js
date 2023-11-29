@@ -11,6 +11,7 @@ const settingsUtilisateursCtrl = require('./controllers/settingsUtilisateurs');
 const settingsTechniquesCtrl = require('./controllers/settingsTechniques');
 const profilsCtrl = require('./controllers/profils');
 
+const lotsCtrl = require('./controllers/lots');
 const sacsCtrl = require('./controllers/sacs');
 const materielsCtrl = require('./controllers/materiels');
 
@@ -88,6 +89,7 @@ router.get('/select/getLots',                                  loggerMiddleware.
 router.get('/select/getLotsFull',                              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getLotsFull);
 router.get('/select/getSacs',                                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getSacs);
 router.get('/select/getSacsFull',                              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getSacsFull);
+router.get('/select/getTypesLots',                             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getTypesLots);
 
 //Composant Calendrier
 router.get('/calendrier/peremptionsLots',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),       calendrierCtrl.peremptionsLots);
@@ -109,6 +111,11 @@ router.get('/calendrier/cautionsExpirations',           loggerMiddleware.httpLog
 router.get('/calendrier/toDoListOwn',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),    calendrierCtrl.toDoListOwn);
 router.get('/calendrier/toDoListAll',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['todolist_lecture']),       calendrierCtrl.toDoListAll);
 
+//OPERATIONNEL - Lots
+router.get('/lots/getLots',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_lecture']),                                             lotsCtrl.getLots);
+router.post('/lots/getOneLot',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_lecture']),                                             lotsCtrl.getOneLot);
+router.post('/lots/addLot',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_ajout']),        loggerMiddleware.modificationLogger(), lotsCtrl.addLot);
+router.post('/lots/lotsDelete',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_suppression']),  loggerMiddleware.suppressionLogger(),  lotsCtrl.lotsDelete);
 //OPERATIONNEL - Sacs
 router.get('/sacs/getSacs',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_lecture']),                                             sacsCtrl.getSacs);
 router.post('/sacs/getOneSac',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_lecture']),                                             sacsCtrl.getOneSac);

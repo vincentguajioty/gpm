@@ -22,6 +22,7 @@ import LoginPwdForgotten from 'pages/home/loginPwdForgotten';
 import LoginPwdChange from '../pages/home/loginPwdChange';
 
 import Lots from 'pages/internalApp/lots/lots';
+import LotDetails from 'pages/internalApp/lots/lotsOpe/lotDetails';
 import Sacs from 'pages/internalApp/lots/sacs';
 import Materiels from 'pages/internalApp/lots/materiels';
 import AlertesBenevolesLots from 'pages/internalApp/lots/alertesBenevolesLots';
@@ -99,6 +100,7 @@ const FalconRoutes = () => {
           <Route path="/home" element={<Home />} />
 
           <Route path="/lots" element={<Lots />} />
+          <Route path="/lots/:idLot" element={<LotDetails />} />
           <Route path="/sacs" element={<Sacs />} />
           <Route path="/lotsMateriel" element={<Materiels />} />
           <Route path="/lotsAlertesBenevoles" element={<AlertesBenevolesLots />} />

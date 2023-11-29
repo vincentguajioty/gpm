@@ -38,7 +38,7 @@ const VehiculeProprietesTable = ({vehicule, setPageNeedsRefresh}) => {
                 </tr>
                 <tr>
                     <td className="bg-100" style={{ width: '30%' }}>Notifications</td>
-                    <td>{vehicule.libelleNotificationEnabled > 0 ? <FontAwesomeIcon icon='bell' /> : <FontAwesomeIcon icon='bell-slash'/>}</td>
+                    <td>{vehicule.notifiationEnabled == true ? <FontAwesomeIcon icon='bell' /> : <FontAwesomeIcon icon='bell-slash'/>}</td>
                 </tr>
                 <tr>
                     <td className="bg-100" style={{ width: '30%' }}>Lieu de parking</td>

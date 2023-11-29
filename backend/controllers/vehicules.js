@@ -16,6 +16,7 @@ exports.getAllVehicules = async (req, res)=>{
                 p.prenomPersonne,
                 p.nomPersonne,
                 e.libelleNotificationEnabled,
+                e.notifiationEnabled,
                 l.libelleLieu,
                 COUNT(a.idAlerte) as nbAlertesEnCours
             FROM
@@ -48,6 +49,7 @@ exports.getOneVehicule = async (req, res)=>{
                 p.prenomPersonne,
                 p.nomPersonne,
                 e.libelleNotificationEnabled,
+                e.notifiationEnabled,
                 l.libelleLieu,
                 COUNT(a.idAlerte) as nbAlertesEnCours
             FROM

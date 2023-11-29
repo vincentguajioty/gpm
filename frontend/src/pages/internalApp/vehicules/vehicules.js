@@ -69,7 +69,7 @@ const Vehicules = () => {
                     <SoftBadge className='me-1' bg={item.alerteMaintenance == null ? 'secondary' : item.alerteMaintenance == 0 ? 'success' : 'danger'}>Maintenance</SoftBadge>
                 </>,
                 nbAlertesEnCours: item.nbAlertesEnCours > 0 ? <SoftBadge>{item.nbAlertesEnCours}</SoftBadge> : null,
-                libelleNotificationEnabled: item.libelleNotificationEnabled > 0 ? <FontAwesomeIcon icon='bell' /> : <FontAwesomeIcon icon='bell-slash'/>,
+                libelleNotificationEnabled: item.notifiationEnabled == true ? <FontAwesomeIcon icon='bell' /> : <FontAwesomeIcon icon='bell-slash'/>,
                 actions:
                     <>
                         <IconButton

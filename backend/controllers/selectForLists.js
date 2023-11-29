@@ -627,3 +627,21 @@ exports.getSacsFull = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+exports.getTypesLots = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idTypeLot as value,
+                libelleTypeLot as label
+            FROM
+                LOTS_TYPES 
+            ORDER BY
+                libelleTypeLot
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
