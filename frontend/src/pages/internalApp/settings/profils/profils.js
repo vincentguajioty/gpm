@@ -138,10 +138,6 @@ const Profils = () => {
             setValue('sac_ajout', selected[0].sac_ajout);
             setValue('sac_modification', selected[0].sac_modification);
             setValue('sac_suppression', selected[0].sac_suppression);
-            setValue('sac2_lecture', selected[0].sac2_lecture);
-            setValue('sac2_ajout', selected[0].sac2_ajout);
-            setValue('sac2_modification', selected[0].sac2_modification);
-            setValue('sac2_suppression', selected[0].sac2_suppression);
             setValue('catalogue_lecture', selected[0].catalogue_lecture);
             setValue('catalogue_ajout', selected[0].catalogue_ajout);
             setValue('catalogue_modification', selected[0].catalogue_modification);
@@ -299,10 +295,6 @@ const Profils = () => {
                     sac_ajout: data.sac_ajout,
                     sac_modification: data.sac_modification,
                     sac_suppression: data.sac_suppression,
-                    sac2_lecture: data.sac2_lecture,
-                    sac2_ajout: data.sac2_ajout,
-                    sac2_modification: data.sac2_modification,
-                    sac2_suppression: data.sac2_suppression,
                     catalogue_lecture: data.catalogue_lecture,
                     catalogue_ajout: data.catalogue_ajout,
                     catalogue_modification: data.catalogue_modification,
@@ -447,10 +439,6 @@ const Profils = () => {
                     sac_ajout: data.sac_ajout,
                     sac_modification: data.sac_modification,
                     sac_suppression: data.sac_suppression,
-                    sac2_lecture: data.sac2_lecture,
-                    sac2_ajout: data.sac2_ajout,
-                    sac2_modification: data.sac2_modification,
-                    sac2_suppression: data.sac2_suppression,
                     catalogue_lecture: data.catalogue_lecture,
                     catalogue_ajout: data.catalogue_ajout,
                     catalogue_modification: data.catalogue_modification,
@@ -857,7 +845,7 @@ const Profils = () => {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Sacs</td>
+                                <td>Sacs et emplacements</td>
                                 <td>
                                     {modeEdition ?
                                         <Form.Check
@@ -919,69 +907,7 @@ const Profils = () => {
                                     }
                                 </td>
                             </tr>
-                            <tr>
-                                <td>Emplacements</td>
-                                <td>
-                                    {modeEdition ?
-                                        <Form.Check
-                                            id='sac2_lecture'
-                                            name='sac2_lecture'
-                                            type='switch'
-                                            checked={watch("sac2_lecture")}
-                                            onClick={(e)=>{
-                                                setValue("sac2_lecture", !watch("sac2_lecture"))
-                                            }}
-                                        />
-                                    :
-                                        <FontAwesomeIcon icon={watch('sac2_lecture') ? 'check' : 'ban'}/>
-                                    }
-                                </td>
-                                <td>
-                                    {modeEdition ?
-                                        <Form.Check
-                                            id='sac2_ajout'
-                                            name='sac2_ajout'
-                                            type='switch'
-                                            checked={watch("sac2_ajout")}
-                                            onClick={(e)=>{
-                                                setValue("sac2_ajout", !watch("sac2_ajout"))
-                                            }}
-                                        />
-                                    :
-                                        <FontAwesomeIcon icon={watch('sac2_ajout') ? 'check' : 'ban'}/>
-                                    }
-                                </td>
-                                <td>
-                                    {modeEdition ?
-                                        <Form.Check
-                                            id='sac2_modification'
-                                            name='sac2_modification'
-                                            type='switch'
-                                            checked={watch("sac2_modification")}
-                                            onClick={(e)=>{
-                                                setValue("sac2_modification", !watch("sac2_modification"))
-                                            }}
-                                        />
-                                    :
-                                        <FontAwesomeIcon icon={watch('sac2_modification') ? 'check' : 'ban'}/>
-                                    }
-                                </td>
-                                <td>
-                                    {modeEdition ?
-                                        <Form.Check
-                                            id='sac2_suppression'
-                                            name='sac2_suppression'
-                                            type='switch'
-                                            checked={watch("sac2_suppression")}
-                                            onClick={(e)=>{
-                                                setValue("sac2_suppression", !watch("sac2_suppression"))
-                                            }}
-                                        />
-                                    :
-                                        <FontAwesomeIcon icon={watch('sac2_suppression') ? 'check' : 'ban'}/>
-                                    }
-                                </td>
-                            </tr>
+                            
                             <tr>
                                 <td>Matériels/Consommables</td>
                                 <td>

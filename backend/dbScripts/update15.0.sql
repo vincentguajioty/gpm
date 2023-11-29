@@ -1,3 +1,5 @@
+DROP VIEW IF EXISTS VIEW_HABILITATIONS;
+
 ALTER TABLE CONFIG DROP SMTPhost;
 ALTER TABLE CONFIG DROP SMTPport;
 ALTER TABLE CONFIG DROP SMTPssl;
@@ -125,6 +127,11 @@ UPDATE DOCUMENTS_PLAN_VHF     SET urlFichierDocPlanVHF  = REPLACE(urlFichierDocP
 
 ALTER TABLE PROFILS CHANGE descriptifProfil descriptifProfil TEXT;
 
+ALTER TABLE PROFILS DROP sac2_lecture;
+ALTER TABLE PROFILS DROP sac2_ajout;
+ALTER TABLE PROFILS DROP sac2_modification;
+ALTER TABLE PROFILS DROP sac2_suppression;
+
 CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 	SELECT
 		p.idPersonne,
@@ -173,10 +180,6 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		MAX(sac_ajout)                                 as sac_ajout,
 		MAX(sac_modification)                          as sac_modification,
 		MAX(sac_suppression)                           as sac_suppression,
-		MAX(sac2_lecture)                              as sac2_lecture,
-		MAX(sac2_ajout)                                as sac2_ajout,
-		MAX(sac2_modification)                         as sac2_modification,
-		MAX(sac2_suppression)                          as sac2_suppression,
 		MAX(catalogue_lecture)                         as catalogue_lecture,
 		MAX(catalogue_ajout)                           as catalogue_ajout,
 		MAX(catalogue_modification)                    as catalogue_modification,

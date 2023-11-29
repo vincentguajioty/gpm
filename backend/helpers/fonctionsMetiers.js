@@ -908,10 +908,10 @@ const majIndicateursPersonne = async (idPersonne, enableLog) => {
         });
         personne = personne[0];
 
-        conf_indicateur1Accueil = (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.conf_indicateur1Accueil);
-        conf_indicateur2Accueil = (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.conf_indicateur2Accueil);
-        conf_indicateur3Accueil = (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.conf_indicateur3Accueil);
-        conf_indicateur4Accueil = (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.conf_indicateur4Accueil);
+        conf_indicateur1Accueil = (personne.lots_lecture || personne.sac_lecture || personne.materiel_lecture) && (personne.conf_indicateur1Accueil);
+        conf_indicateur2Accueil = (personne.lots_lecture || personne.sac_lecture || personne.materiel_lecture) && (personne.conf_indicateur2Accueil);
+        conf_indicateur3Accueil = (personne.lots_lecture || personne.sac_lecture || personne.materiel_lecture) && (personne.conf_indicateur3Accueil);
+        conf_indicateur4Accueil = (personne.lots_lecture || personne.sac_lecture || personne.materiel_lecture) && (personne.conf_indicateur4Accueil);
         conf_indicateur5Accueil = (personne.reserve_lecture) && (personne.conf_indicateur5Accueil);
         conf_indicateur6Accueil = (personne.reserve_lecture) && (personne.conf_indicateur6Accueil);
         conf_indicateur9Accueil = (personne.tenues_lecture || personne.tenuesCatalogue_lecture) && (personne.conf_indicateur9Accueil);
@@ -986,10 +986,10 @@ const majNotificationsPersonne = async (idPersonne, enableLog) => {
         });
         personne = personne[0];
 
-        notif_lots_manquants = personne.notifications && (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.notif_lots_manquants);
-        notif_lots_peremptions = personne.notifications && (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.notif_lots_peremptions);
-        notif_lots_inventaires = personne.notifications && (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.notif_lots_inventaires);
-        notif_lots_conformites = personne.notifications && (personne.lots_lecture || personne.sac_lecture || personne.sac2_lecture || personne.materiel_lecture) && (personne.notif_lots_conformites);
+        notif_lots_manquants = personne.notifications && (personne.lots_lecture || personne.sac_lecture || personne.materiel_lecture) && (personne.notif_lots_manquants);
+        notif_lots_peremptions = personne.notifications && (personne.lots_lecture || personne.sac_lecture || personne.materiel_lecture) && (personne.notif_lots_peremptions);
+        notif_lots_inventaires = personne.notifications && (personne.lots_lecture || personne.sac_lecture || personne.materiel_lecture) && (personne.notif_lots_inventaires);
+        notif_lots_conformites = personne.notifications && (personne.lots_lecture || personne.sac_lecture || personne.materiel_lecture) && (personne.notif_lots_conformites);
         notif_reserves_manquants = personne.notifications && (personne.reserve_lecture) && (personne.notif_reserves_manquants);
         notif_reserves_peremptions = personne.notifications && (personne.reserve_lecture) && (personne.notif_reserves_peremptions);
         notif_reserves_inventaires = personne.notifications && (personne.reserve_lecture) && (personne.notif_reserves_inventaires);

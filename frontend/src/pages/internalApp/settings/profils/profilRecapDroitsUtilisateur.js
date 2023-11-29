@@ -100,18 +100,11 @@ const ProfilRecapDroitsUtilisateur = ({idPersonne, pageNeedsRefresh}) => {
                             <td><FontAwesomeIcon icon={profil['lots_suppression'] ? 'check' : 'ban'}/></td>
                         </tr>
                         <tr>
-                            <td>Sacs</td>
+                            <td>Sacs et emplacements</td>
                             <td><FontAwesomeIcon icon={profil['sac_lecture'] ? 'check' : 'ban'}/></td>
                             <td><FontAwesomeIcon icon={profil['sac_ajout'] ? 'check' : 'ban'}/></td>
                             <td><FontAwesomeIcon icon={profil['sac_modification'] ? 'check' : 'ban'}/></td>
                             <td><FontAwesomeIcon icon={profil['sac_suppression'] ? 'check' : 'ban'}/></td>
-                        </tr>
-                        <tr>
-                            <td>Emplacements</td>
-                            <td><FontAwesomeIcon icon={profil['sac2_lecture'] ? 'check' : 'ban'}/></td>
-                            <td><FontAwesomeIcon icon={profil['sac2_ajout'] ? 'check' : 'ban'}/></td>
-                            <td><FontAwesomeIcon icon={profil['sac2_modification'] ? 'check' : 'ban'}/></td>
-                            <td><FontAwesomeIcon icon={profil['sac2_suppression'] ? 'check' : 'ban'}/></td>
                         </tr>
                         <tr>
                             <td>Matériels/Consommables</td>

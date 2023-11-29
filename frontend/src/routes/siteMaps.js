@@ -55,8 +55,6 @@ if(HabilitationService.habilitations)
         ||
         HabilitationService.habilitations['sac_lecture']
         ||
-        HabilitationService.habilitations['sac2_lecture']
-        ||
         HabilitationService.habilitations['materiel_lecture']
         ||
         HabilitationService.habilitations['consommationLots_lecture']
