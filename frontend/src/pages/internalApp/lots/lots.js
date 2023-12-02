@@ -11,6 +11,7 @@ import GPMtable from 'components/gpmTable/gpmTable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SoftBadge from 'components/common/SoftBadge';
 import Select from 'react-select';
+import moment from 'moment-timezone';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -67,7 +68,11 @@ const Lots = () => {
                     {item.materielsLimites > 0 ? <SoftBadge className='me-1' bg='warning'>{item.materielsLimites}</SoftBadge> : null }
                     {item.materielsAlerte > 0 ? <SoftBadge className='me-1' bg='danger'>{item.materielsAlerte}</SoftBadge> : null }
                 </>,
-                prochainInventaire: <SoftBadge>{item.prochainInventaire != null ? item.prochainInventaire : 'N/A'}</SoftBadge>,
+                prochainInventaire:
+                    item.inventaireEnCours == true ?
+                    <SoftBadge bg="primary">Inventaire en cours</SoftBadge>
+                    : <SoftBadge bg={item.prochainInventaire != null ? (new Date(item.prochainInventaire) < new Date() ? 'danger' : 'success') : 'secondary'}>{item.prochainInventaire != null ? moment(item.prochainInventaire).format('DD/MM/YYYY') : 'N/A'}</SoftBadge>
+                ,
                 alertesBenevoles: item.nbAlertesEnCours > 0 ? <SoftBadge>{item.nbAlertesEnCours}</SoftBadge> : null,
                 libelleNotificationEnabled: item.notifiationEnabled == true ? <FontAwesomeIcon icon='bell' /> : <FontAwesomeIcon icon='bell-slash'/>,
                 actions: <>
@@ -78,7 +83,7 @@ const Lots = () => {
                         className="me-1"
                         onClick={()=>{navigate('/lots/'+item.idLot)}}
                     />
-                    {HabilitationService.habilitations['lots_suppression'] ? 
+                    {HabilitationService.habilitations['lots_suppression'] && item.inventaireEnCours != true ? 
                         <IconButton
                             icon='trash'
                             size = 'sm'

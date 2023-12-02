@@ -644,3 +644,29 @@ export const lotsAddForm = Yup.object().shape({
         .typeError(champObligatoire)
         .required(champObligatoire),
 });
+
+export const lotsUpdateForm = Yup.object().shape({
+    libelleLot: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    idNotificationEnabled: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    idLotsEtat: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    frequenceInventaire: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(0, champObligatoire)
+        .required(champObligatoire),
+    dateDernierInventaire: Yup
+        .date()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});

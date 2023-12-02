@@ -137,7 +137,10 @@ const MaterielsTable = ({
                 topButtonShow={true && !hideAddButton}
                 topButton={
                     HabilitationService.habilitations['materiel_ajout'] ?
-                        <MaterielsForm setPageNeedsRefresh={setPageNeedsRefresh} />
+                        <MaterielsForm
+                            setPageNeedsRefresh={setPageNeedsRefresh}
+                            idEmplacement={filterIdEmplacement}
+                        />
                     : null
                 }
             />

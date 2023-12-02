@@ -123,6 +123,17 @@ const SacsContent = ({
         }
     }
 
+    const toggleButtonGroup = (idEmplacementClicked) => {
+        if(idEmplacementClicked != idEmplacement)
+        {
+            setIdEmplacement(idEmplacementClicked)
+        }
+        else
+        {
+            setIdEmplacement();
+        }
+    }
+
     return (
     <>
         <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} backdrop="static" keyboard={false}>
@@ -148,12 +159,11 @@ const SacsContent = ({
                             <ToggleButton
                                 key={empl.idEmplacement}
                                 id={`radio-${idx+1}`}
-                                type="radio"
-                                variant='outline-info'
+                                variant={idEmplacement === empl.idEmplacement ? 'info' : 'outline-info'}
                                 name="radio"
                                 value={idEmplacement}
                                 checked={idEmplacement === empl.idEmplacement}
-                                onChange={(e) => {setIdEmplacement(empl.idEmplacement)}}
+                                onClick={(e) => {toggleButtonGroup(empl.idEmplacement)}}
                                 size='sm'
                             >
                                 {empl.libelleEmplacement}
@@ -163,12 +173,11 @@ const SacsContent = ({
                             <ToggleButton
                                 key="add"
                                 id={`radio-0`}
-                                type="radio"
                                 variant='outline-info'
                                 name="radio"
                                 value="0"
                                 checked={idEmplacement === 0}
-                                onChange={(e) => {setIdEmplacement(0)}}
+                                onClick={(e) => {toggleButtonGroup(0)}}
                                 size='sm'
                                 disabled={inventaireEnCours || !HabilitationService.habilitations['sac_ajout']}
                             >
@@ -178,10 +187,11 @@ const SacsContent = ({
                     </ButtonGroup>
                 }
             </Col>
-            <Col md="12" className="mb-2">
-                {idEmplacement > 0 ? <h5>Propriétés de l'emplacement:</h5> : null}
-                {idEmplacement == 0 ? <h5>Créer un emplacement:</h5> : null}
-                {idEmplacement != null && HabilitationService.habilitations['sac_modification'] && !inventaireEnCours ? 
+            {idEmplacement != null && HabilitationService.habilitations['sac_modification'] && !inventaireEnCours ? 
+                <Col md="12" className="mb-2">
+                    {idEmplacement > 0 ? <h5>Propriétés de l'emplacement:</h5> : null}
+                    {idEmplacement == 0 ? <h5>Créer un emplacement:</h5> : null}
+                    
                     <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
                         <Row className="align-items-center g-3">
                             <Col xs="auto">
@@ -219,8 +229,8 @@ const SacsContent = ({
                             </Col>
                         </Row>
                     </Form>
-                : null }
-            </Col>
+                </Col>
+            : null }
             <Col md={12} className="mb-2">
                 {idEmplacement && idEmplacement != null && idEmplacement > 0 ?  <>
                     <h5>Matériels de l'emplacement:</h5>

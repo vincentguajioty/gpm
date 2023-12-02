@@ -388,6 +388,62 @@ exports.addLot = async (req, res)=>{
     }
 }
 
+exports.updateLot = async (req, res)=>{
+    try {
+        let oldRecord = await db.query(`
+            SELECT
+                *
+            FROM
+                LOTS_LOTS
+            WHERE
+                idLot = :idLot
+        ;`,{
+            idLot: req.body.idLot
+        });
+        oldRecord = oldRecord[0];
+        
+        const result = await db.query(`
+            UPDATE
+                LOTS_LOTS
+            SET
+                libelleLot = :libelleLot,
+                idTypeLot = :idTypeLot,
+                idNotificationEnabled = :idNotificationEnabled,
+                idLieu = :idLieu,
+                idPersonne = :idPersonne,
+                dateDernierInventaire = :dateDernierInventaire,
+                frequenceInventaire = :frequenceInventaire,
+                commentairesLots = :commentairesLots,
+                idVehicule = :idVehicule,
+                idLotsEtat = :idLotsEtat
+            WHERE
+                idLot = :idLot
+        `,{
+            libelleLot: req.body.libelleLot || null,
+            idTypeLot: req.body.idTypeLot || null,
+            idNotificationEnabled: req.body.idNotificationEnabled || null,
+            idLieu: req.body.idLieu || null,
+            idPersonne: req.body.idPersonne || null,
+            dateDernierInventaire: req.body.dateDernierInventaire || null,
+            frequenceInventaire: req.body.frequenceInventaire || null,
+            commentairesLots: req.body.commentairesLots || null,
+            idVehicule: req.body.idVehicule || null,
+            idLotsEtat: req.body.idLotsEtat || null,
+            idLot: req.body.idLot || null,
+        });
+
+        if(oldRecord.idTypeLot != req.body.idTypeLot)
+        {
+            await fonctionsMetiers.checkOneConf(req.body.idLot);
+        }
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.lotsDelete = async (req, res)=>{
     try {
         const deleteResult = await fonctionsDelete.lotsDelete(req.verifyJWTandProfile.idPersonne , req.body.idLot);

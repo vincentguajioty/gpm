@@ -90,6 +90,7 @@ router.get('/select/getLotsFull',                              loggerMiddleware.
 router.get('/select/getSacs',                                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getSacs);
 router.get('/select/getSacsFull',                              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getSacsFull);
 router.get('/select/getTypesLots',                             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getTypesLots);
+router.get('/select/getVehicules',                             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVehicules);
 
 //Composant Calendrier
 router.get('/calendrier/peremptionsLots',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),       calendrierCtrl.peremptionsLots);
@@ -115,6 +116,7 @@ router.get('/calendrier/toDoListAll',                   loggerMiddleware.httpLog
 router.get('/lots/getLots',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_lecture']),                                             lotsCtrl.getLots);
 router.post('/lots/getOneLot',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_lecture']),                                             lotsCtrl.getOneLot);
 router.post('/lots/addLot',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_ajout']),        loggerMiddleware.modificationLogger(), lotsCtrl.addLot);
+router.post('/lots/updateLot',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_modification']), loggerMiddleware.modificationLogger(), lotsCtrl.updateLot);
 router.post('/lots/lotsDelete',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_suppression']),  loggerMiddleware.suppressionLogger(),  lotsCtrl.lotsDelete);
 //OPERATIONNEL - Sacs
 router.get('/sacs/getSacs',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['sac_lecture']),                                             sacsCtrl.getSacs);

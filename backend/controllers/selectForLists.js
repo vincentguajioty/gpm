@@ -645,3 +645,21 @@ exports.getTypesLots = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+exports.getVehicules = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idVehicule as value,
+                libelleVehicule as label
+            FROM
+                VEHICULES 
+            ORDER BY
+                libelleVehicule
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
