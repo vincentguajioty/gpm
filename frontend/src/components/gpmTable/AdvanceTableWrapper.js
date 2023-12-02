@@ -39,7 +39,7 @@ const AdvanceTableWrapper = ({
   selection,
   selectionColumnWidth,
   pagination,
-  perPage = 10
+  perPage = window.__ENV__.TABLEAUX_LIGNES_DEFAUT
 }) => {
   const {
     getTableProps,

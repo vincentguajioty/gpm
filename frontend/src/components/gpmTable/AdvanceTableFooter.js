@@ -21,7 +21,7 @@ export const AdvanceTableFooter = ({
   perPage,
   rowsPerPageSelection,
   navButtons,
-  rowsPerPageOptions = [10, 25, 75, 100],
+  rowsPerPageOptions = window.__ENV__.TABLEAUX_LIGNES_OPTIONS,
   className
 }) => {
   const [isAllVisible, setIsAllVisible] = useState(false);
