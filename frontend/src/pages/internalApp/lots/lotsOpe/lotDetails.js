@@ -9,6 +9,7 @@ import { Axios } from 'helpers/axios';
 
 import LotProprietes from './lotProprietes';
 import LotSacs from './lotSacs';
+import LotConformiteReferentiel from './lotConfRef';
 
 const LotDetails = () => {
     let {idLot} = useParams();
@@ -70,7 +71,9 @@ const LotDetails = () => {
                             </Tab>
                             {lot.lot.idTypeLot > 0 ?
                                 <Tab eventKey="ref" title="Référentiel" className='border-bottom border-x p-3'>
-                                    Tableau de l'analyse de ref
+                                    <LotConformiteReferentiel
+                                        analyseRef={lot.analyseRef}
+                                    />
                                 </Tab>
                             : null}
                             <Tab eventKey="inventaire" title="Inventaires" className='border-bottom border-x p-3'>

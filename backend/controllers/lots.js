@@ -244,7 +244,7 @@ exports.getOneLot = async (req, res)=>{
             WHERE
                 idLot = :idLot
             ORDER BY
-                libelleSac DESC
+                libelleSac
         ;`,{
             idLot: req.body.idLot || null,
         });
