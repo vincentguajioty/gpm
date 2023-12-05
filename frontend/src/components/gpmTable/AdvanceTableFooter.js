@@ -8,7 +8,7 @@ import IconButton from 'components/common/IconButton';
 
 export const AdvanceTableFooter = ({
   page,
-  pageSize,
+  pageSize = Number(window.__ENV__.TABLEAUX_LIGNES_DEFAUT),
   pageIndex,
   rowCount,
   setPageSize,
