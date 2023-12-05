@@ -17,6 +17,7 @@ const LotSacs = ({sacs, inventaireEnCours, setPageNeedsRefresh}) => {
                             idSac={sac.idSac}
                             lockIdSac={sac.idSac}
                             inventaireEnCours={inventaireEnCours}
+                            fullDisplay={false}
                         />
                     </Accordion.Body>
                 </Accordion.Item>

@@ -17,11 +17,13 @@ const SacsContent = ({
     idSac,
     lockIdSac = null,
     inventaireEnCours = false,
+    fullDisplay = true,
 }) => {
     const [idEmplacement, setIdEmplacement] = useState();
     const [emplacements, setEmplacements] = useState([]);
     const [sacs, setSacs] = useState([]);
 
+    const [showEdit, setShowEdit] = useState(false);
     const [isLoading, setLoading] = useState(true);
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm({
         resolver: yupResolver(emplacementsFormSchema),
@@ -91,6 +93,7 @@ const SacsContent = ({
             }
 
             setLoading(false);
+            setShowEdit(false);
         } catch (error) {
             console.error(error)
         }
@@ -113,6 +116,7 @@ const SacsContent = ({
                 idEmplacement: idEmplacement,
             });
             
+            setShowEdit(false);
             setIdEmplacement();
             reset();
             getEmplacements();
@@ -124,6 +128,7 @@ const SacsContent = ({
     }
 
     const toggleButtonGroup = (idEmplacementClicked) => {
+        setShowEdit(false);
         if(idEmplacementClicked != idEmplacement)
         {
             setIdEmplacement(idEmplacementClicked)
@@ -132,6 +137,11 @@ const SacsContent = ({
         {
             setIdEmplacement();
         }
+        if(idEmplacementClicked == 0){setShowEdit(true)}
+    }
+
+    const toggleShowEdit = () => {
+        setShowEdit(!showEdit)
     }
 
     return (
@@ -172,8 +182,8 @@ const SacsContent = ({
                         {idEmplacement != 0 ?
                             <ToggleButton
                                 key="add"
-                                id={`radio-0`}
-                                variant='outline-info'
+                                id={`radio-a`}
+                                variant='outline-success'
                                 name="radio"
                                 value="0"
                                 checked={idEmplacement === 0}
@@ -184,13 +194,28 @@ const SacsContent = ({
                                 <FontAwesomeIcon icon="plus" />
                             </ToggleButton>
                         : null }
+                        {idEmplacement != null && idEmplacement != 0 ?
+                            <ToggleButton
+                                key="edit"
+                                id={`radio-e`}
+                                variant={showEdit == true ? 'warning' : 'outline-warning'}
+                                name="radio"
+                                value="0"
+                                checked={showEdit == true}
+                                onClick={(e) => toggleShowEdit()}
+                                size='sm'
+                                disabled={inventaireEnCours || !HabilitationService.habilitations['sac_modification']}
+                            >
+                                <FontAwesomeIcon icon="pen" />
+                            </ToggleButton>
+                        : null }
                     </ButtonGroup>
                 }
             </Col>
-            {idEmplacement != null && HabilitationService.habilitations['sac_modification'] && !inventaireEnCours ? 
+            {idEmplacement != null && showEdit == true && HabilitationService.habilitations['sac_modification'] && !inventaireEnCours ? 
                 <Col md="12" className="mb-2">
-                    {idEmplacement > 0 ? <h5>Propriétés de l'emplacement:</h5> : null}
-                    {idEmplacement == 0 ? <h5>Créer un emplacement:</h5> : null}
+                    {idEmplacement > 0 && fullDisplay ? <h5>Propriétés de l'emplacement:</h5> : null}
+                    {idEmplacement == 0 && fullDisplay ? <h5>Créer un emplacement:</h5> : null}
                     
                     <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
                         <Row className="align-items-center g-3">
@@ -233,7 +258,7 @@ const SacsContent = ({
             : null }
             <Col md={12} className="mb-2">
                 {idEmplacement && idEmplacement != null && idEmplacement > 0 ?  <>
-                    <h5>Matériels de l'emplacement:</h5>
+                    {fullDisplay ? <h5>Matériels de l'emplacement:</h5> : null }
                     <MaterielsTable
                         filterIdEmplacement={idEmplacement}
                         displayLibelleLot={false}
