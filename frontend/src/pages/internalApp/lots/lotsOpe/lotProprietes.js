@@ -39,7 +39,7 @@ const LotProprietes = ({lot, setPageNeedsRefresh}) => {
                             label='Modifier'
                             onClick={handleEdition}
                             checked={modeEdition}
-                            disabled={!HabilitationService.habilitations['lots_modification']}
+                            disabled={!HabilitationService.habilitations['lots_modification'] || lot.lot.inventaireEnCours}
                         />
                     </div>
                 </Flex>
