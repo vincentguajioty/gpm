@@ -3,6 +3,7 @@ const logger = require('../winstonLogger');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 
+//LOTS - Gestion générale
 exports.getLots = async (req, res)=>{
     try {
         let results = await db.query(`
@@ -448,6 +449,103 @@ exports.lotsDelete = async (req, res)=>{
     try {
         const deleteResult = await fonctionsDelete.lotsDelete(req.verifyJWTandProfile.idPersonne , req.body.idLot);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//LOTS - Alertes bénévoles
+exports.getLotsAlertes = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                a.*,
+                e.libelleLotsAlertesEtat,
+                e.couleurLotsAlertesEtat,
+                v.libelleLot,
+                p.nomPersonne,
+                p.prenomPersonne
+            FROM
+                LOTS_ALERTES a
+                LEFT OUTER JOIN LOTS_ALERTES_ETATS e ON a.idLotsAlertesEtat = e.idLotsAlertesEtat
+                LEFT OUTER JOIN LOTS_LOTS v ON a.idLot = v.idLot
+                LEFT OUTER JOIN PERSONNE_REFERENTE p ON a.idTraitant = p.idPersonne
+            ORDER BY
+                a.dateCreationAlerte DESC
+        ;`);
+
+        if(req.body.idLot && req.body.idLot != null && req.body.idLot > 0)
+        {
+            results = results.filter(alerte => alerte.idLot == req.body.idLot)
+        }
+
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.autoAffect = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                LOTS_ALERTES
+            SET
+                idTraitant = :idTraitant,
+                idLotsAlertesEtat = 2
+            WHERE
+                idAlerte = :idAlerte
+        `,{
+            idTraitant : req.verifyJWTandProfile.idPersonne,
+            idAlerte: req.body.idAlerte,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.affectationTier = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                LOTS_ALERTES
+            SET
+                idTraitant = :idTraitant,
+                idLotsAlertesEtat = 2
+            WHERE
+                idAlerte = :idAlerte
+        `,{
+            idTraitant : req.body.idTraitant,
+            idAlerte: req.body.idAlerte,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.udpateStatut = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                LOTS_ALERTES
+            SET
+                idLotsAlertesEtat = :idLotsAlertesEtat
+            WHERE
+                idAlerte = :idAlerte
+        `,{
+            idAlerte: req.body.idAlerte,
+            idLotsAlertesEtat: req.body.idLotsAlertesEtat,
+        });
+
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

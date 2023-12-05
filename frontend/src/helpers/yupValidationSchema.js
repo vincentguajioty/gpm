@@ -670,3 +670,11 @@ export const lotsUpdateForm = Yup.object().shape({
         .typeError(champObligatoire)
         .required(champObligatoire),
 });
+
+export const alerteLotAffectation = Yup.object().shape({
+    idTraitant: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+});

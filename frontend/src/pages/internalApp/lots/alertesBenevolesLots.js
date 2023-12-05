@@ -1,15 +1,29 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import FalconComponentCard from 'components/common/FalconComponentCard';
+import ActionButton from 'components/common/ActionButton';
+import PageHeader from 'components/common/PageHeader';
 
-const AlertesBenevolesLots = () => {
-    return (
-        'Les alertes des bénévoles sur les lots'
-    );
+import AlertesBenevolesLotsTable from './alertesBenevolesTable';
+
+const AlertesBenevolesVehicules = () => {
+    return (<>
+        <PageHeader
+            preTitle="Lots opérationnels"
+            title="Alertes remontées par les bénévoles"
+            className="mb-3"
+        />
+
+        <FalconComponentCard noGuttersBottom className="mb-3">
+            <FalconComponentCard.Body
+                scope={{ ActionButton }}
+                noLight
+            >
+                <AlertesBenevolesLotsTable />
+            </FalconComponentCard.Body>
+        </FalconComponentCard>
+    </>);
 };
 
-AlertesBenevolesLots.propTypes = {};
+AlertesBenevolesVehicules.propTypes = {};
 
-export default AlertesBenevolesLots;
+export default AlertesBenevolesVehicules;

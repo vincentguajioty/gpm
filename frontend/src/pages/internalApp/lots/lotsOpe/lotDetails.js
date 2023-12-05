@@ -10,6 +10,7 @@ import { Axios } from 'helpers/axios';
 import LotProprietes from './lotProprietes';
 import LotSacs from './lotSacs';
 import LotConformiteReferentiel from './lotConfRef';
+import AlertesBenevolesLotsTable from '../alertesBenevolesTable';
 
 const LotDetails = () => {
     let {idLot} = useParams();
@@ -81,7 +82,7 @@ const LotDetails = () => {
                             </Tab>
                             {HabilitationService.habilitations.alertesBenevolesLots_lecture ?
                                 <Tab eventKey="alertes" title="Alertes de bénévoles" className='border-bottom border-x p-3'>
-                                    Tableau des alertes bénévoles
+                                    <AlertesBenevolesLotsTable idLot={idLot} />
                                 </Tab>
                             : null}
                         </Tabs>
