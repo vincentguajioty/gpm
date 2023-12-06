@@ -116,6 +116,7 @@ router.get('/calendrier/toDoListAll',                   loggerMiddleware.httpLog
 router.get('/lots/getLots',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_lecture']),                                             lotsCtrl.getLots);
 router.post('/lots/getOneLot',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_lecture']),                                             lotsCtrl.getOneLot);
 router.post('/lots/addLot',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_ajout']),        loggerMiddleware.modificationLogger(), lotsCtrl.addLot);
+router.post('/lots/duplicateLot',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_ajout']),        loggerMiddleware.modificationLogger(), lotsCtrl.duplicateLot);
 router.post('/lots/updateLot',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_modification']), loggerMiddleware.modificationLogger(), lotsCtrl.updateLot);
 router.post('/lots/lotsDelete',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_suppression']),  loggerMiddleware.suppressionLogger(),  lotsCtrl.lotsDelete);
 //OPERATIONNEL - Sacs

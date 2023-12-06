@@ -389,6 +389,170 @@ exports.addLot = async (req, res)=>{
     }
 }
 
+exports.duplicateLot = async (req, res)=>{
+    try {
+        const getInitialLot = await db.query(`
+            SELECT
+                *
+            FROM
+                LOTS_LOTS
+            WHERE
+                idLot = :idLot
+        `,{
+            idLot: req.body.idLot || null,
+        });
+        let lotSource = getInitialLot[0];
+        
+        const result = await db.query(`
+            INSERT INTO LOTS_LOTS (
+                libelleLot,
+                idTypeLot,
+                idNotificationEnabled,
+                idLieu,
+                idPersonne,
+                dateDernierInventaire,
+                frequenceInventaire,
+                commentairesLots,
+                idVehicule,
+                idLotsEtat
+            )
+            SELECT
+                :libelleLot as libelleLot,
+                idTypeLot,
+                idNotificationEnabled,
+                idLieu,
+                idPersonne,
+                dateDernierInventaire,
+                frequenceInventaire,
+                commentairesLots,
+                idVehicule,
+                idLotsEtat
+            FROM
+                LOTS_LOTS
+            WHERE
+                idLot = :idLot
+        `,{
+            idLot     : req.body.idLot || null,
+            libelleLot: req.body.libelleLot || null,
+        });
+        
+        let selectLast = await db.query(
+            'SELECT MAX(idLot) as idLot FROM LOTS_LOTS;'
+        );
+        let idLotDuplicate = selectLast[0].idLot
+
+        const sacs = await db.query(`
+            SELECT
+                *
+            FROM
+                MATERIEL_SAC
+            WHERE
+                idLot = :idLot;
+        `,{
+            idLot: lotSource.idLot,
+        });
+        for(const sac of sacs)
+        {
+            let createSac = await db.query(`
+                INSERT INTO
+                    MATERIEL_SAC
+                SET
+                    libelleSac    = :libelleSac,
+                    idLot         = :idLot,
+                    taille        = :taille,
+                    couleur       = :couleur,
+                    idFournisseur = :idFournisseur
+            `,{
+                libelleSac: sac.libelleSac,
+                idLot: idLotDuplicate,
+                taille: sac.taille,
+                couleur: sac.couleur,
+                idFournisseur: sac.idFournisseur,
+            });
+
+            let createdSac = await db.query(`
+                SELECT MAX(idSac) as idSac FROM MATERIEL_SAC;
+            `);
+            let idSacDuplicate = createdSac[0].idSac;
+
+            const emplacements = await db.query(`
+                SELECT
+                    *
+                FROM
+                    MATERIEL_EMPLACEMENT
+                WHERE
+                    idSac = :idSac;
+            `,{
+                idSac: sac.idSac,
+            });
+            for(const emplacement of emplacements)
+            {
+                let createEmplacement = await db.query(`
+                    INSERT INTO
+                        MATERIEL_EMPLACEMENT
+                    SET
+                        libelleEmplacement = :libelleEmplacement,
+                        idSac = :idSac
+                `,{
+                    libelleEmplacement: emplacement.libelleEmplacement,
+                    idSac: idSacDuplicate,
+                });
+
+                let createdEmplacement = await db.query(`
+                    SELECT MAX(idEmplacement) as idEmplacement FROM MATERIEL_EMPLACEMENT;
+                `);
+                let idEmplacementDuplicate = createdEmplacement[0].idEmplacement;
+
+                const elements = await db.query(`
+                    SELECT
+                        *
+                    FROM
+                        MATERIEL_ELEMENT
+                    WHERE
+                        idEmplacement = :idEmplacement;
+                `,{
+                    idEmplacement: emplacement.idEmplacement,
+                });
+                for(const element of elements)
+                {
+                    let createElement = await db.query(`
+                        INSERT INTO
+                            MATERIEL_ELEMENT
+                        SET
+                            idMaterielCatalogue = :idMaterielCatalogue,
+                            idEmplacement = :idEmplacement,
+                            idFournisseur = :idFournisseur,
+                            quantite = :quantite,
+                            quantiteAlerte = :quantiteAlerte,
+                            peremption = :peremption,
+                            peremptionAnticipation = :peremptionAnticipation,
+                            commentairesElement = :commentairesElement,
+                            idMaterielsEtat = :idMaterielsEtat
+                    `,{
+                        idMaterielCatalogue: element.idMaterielCatalogue,
+                        idEmplacement: idEmplacementDuplicate,
+                        idFournisseur: element.idFournisseur,
+                        quantite: element.quantite,
+                        quantiteAlerte: element.quantiteAlerte,
+                        peremption: element.peremption,
+                        peremptionAnticipation: element.peremptionAnticipation,
+                        commentairesElement: element.commentairesElement,
+                        idMaterielsEtat: element.idMaterielsEtat,
+                    });
+                }
+            }
+        }
+
+        await fonctionsMetiers.checkOneConf(idLotDuplicate);
+
+        res.status(201);
+        res.json({idLot: idLotDuplicate});
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.updateLot = async (req, res)=>{
     try {
         let oldRecord = await db.query(`

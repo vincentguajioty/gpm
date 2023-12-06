@@ -645,6 +645,18 @@ export const lotsAddForm = Yup.object().shape({
         .required(champObligatoire),
 });
 
+export const lotsDuplicateForm = Yup.object().shape({
+    libelleLot: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    idLot: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+});
+
 export const lotsUpdateForm = Yup.object().shape({
     libelleLot: Yup
         .string()
