@@ -82,7 +82,7 @@ const LotDetails = () => {
                             </Tab>
                             {HabilitationService.habilitations.alertesBenevolesLots_lecture ?
                                 <Tab eventKey="alertes" title="Alertes de bénévoles" className='border-bottom border-x p-3'>
-                                    <AlertesBenevolesLotsTable idLot={idLot} />
+                                    <AlertesBenevolesLotsTable idLot={idLot} setPageNeedsRefresh={setPageNeedsRefresh} />
                                 </Tab>
                             : null}
                         </Tabs>

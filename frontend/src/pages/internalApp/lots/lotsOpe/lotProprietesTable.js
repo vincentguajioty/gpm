@@ -63,7 +63,7 @@ const LotProprietesTable = ({lot, setPageNeedsRefresh}) => {
                 </tr>
                 <tr>
                     <td className="bg-100" style={{ width: '30%' }}>Alertes de bénévoles en cours</td>
-                    <td>{lot.lot.nbAlertesEnCours > 0 ? <SoftBadge>{lot.lot.nbAlertesEnCours}</SoftBadge> : null}</td>
+                    <td><SoftBadge bg={lot.lot.nbAlertesEnCours > 0 ? 'warning' : 'success'}>{lot.lot.nbAlertesEnCours}</SoftBadge></td>
                 </tr>
             </tbody>
         </Table>

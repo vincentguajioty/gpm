@@ -14,7 +14,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { alerteVehiculeAffectation } from 'helpers/yupValidationSchema';
 
-const AlertesBenevolesVehiculesTable = ({idVehicule = 0}) => {
+const AlertesBenevolesVehiculesTable = ({
+    idVehicule = 0,
+    setPageNeedsRefresh = null,
+}) => {
     const [readyToDisplay, setReadyToDisplay] = useState(false);
     const [alertes, setAlertes] = useState([]);
 
@@ -143,6 +146,7 @@ const AlertesBenevolesVehiculesTable = ({idVehicule = 0}) => {
                 idVehiculesAlertesEtat: 4
             });
             initTable();
+            if(setPageNeedsRefresh != null){setPageNeedsRefresh(true)};
         } catch (error) {
             console.log(error)
         }
@@ -176,6 +180,7 @@ const AlertesBenevolesVehiculesTable = ({idVehicule = 0}) => {
                 idVehiculesAlertesEtat: 5
             });
             initTable();
+            if(setPageNeedsRefresh != null){setPageNeedsRefresh(true)};
         } catch (error) {
             console.log(error)
         }

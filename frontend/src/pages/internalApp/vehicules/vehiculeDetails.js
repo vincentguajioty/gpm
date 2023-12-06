@@ -98,7 +98,7 @@ const VehiculeDetails = () => {
                             </Tab>
                             {HabilitationService.habilitations.alertesBenevolesVehicules_lecture ?
                                 <Tab eventKey="alertes" title="Alertes de bénévoles" className='border-bottom border-x p-3'>
-                                    <AlertesBenevolesVehiculesTable idVehicule={idVehicule} />
+                                    <AlertesBenevolesVehiculesTable idVehicule={idVehicule} setPageNeedsRefresh={setPageNeedsRefresh} />
                                 </Tab>
                             : null}
                         </Tabs>

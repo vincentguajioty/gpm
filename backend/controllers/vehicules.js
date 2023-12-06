@@ -1196,7 +1196,8 @@ exports.autoAffect = async (req, res)=>{
                 VEHICULES_ALERTES
             SET
                 idTraitant = :idTraitant,
-                idVehiculesAlertesEtat = 2
+                idVehiculesAlertesEtat = 2,
+                datePriseEnCompteAlerte = CURRENT_TIMESTAMP
             WHERE
                 idAlerte = :idAlerte
         `,{
@@ -1218,7 +1219,8 @@ exports.affectationTier = async (req, res)=>{
                 VEHICULES_ALERTES
             SET
                 idTraitant = :idTraitant,
-                idVehiculesAlertesEtat = 2
+                idVehiculesAlertesEtat = 2,
+                datePriseEnCompteAlerte = CURRENT_TIMESTAMP
             WHERE
                 idAlerte = :idAlerte
         `,{
@@ -1246,6 +1248,20 @@ exports.udpateStatut = async (req, res)=>{
             idAlerte: req.body.idAlerte,
             idVehiculesAlertesEtat: req.body.idVehiculesAlertesEtat,
         });
+
+        if(req.body.idVehiculesAlertesEtat == 4 || req.body.idVehiculesAlertesEtat == 5)
+        {
+            const result = await db.query(`
+                UPDATE
+                    VEHICULES_ALERTES
+                SET
+                    dateResolutionAlerte = CURRENT_TIMESTAMP
+                WHERE
+                    idAlerte = :idAlerte
+            `,{
+                idAlerte: req.body.idAlerte,
+            });
+        }
 
         res.sendStatus(201);
     } catch (error) {
