@@ -182,8 +182,8 @@ const VehiculeMaintenancesRegulieresForm = ({
             <Modal.Header closeButton >
                 <Modal.Title>{idVehiculeHealth > 0 ? "Modification" : "Ajout"} d'une maintenance ponctuelle</Modal.Title>
             </Modal.Header>
-            <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
-                <Modal.Body>
+            <Modal.Body>
+                <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
                     <Row>
                         <Col md={3} className='mb-2 border-end'>
                             <h6>Informations génériques</h6>
@@ -280,14 +280,16 @@ const VehiculeMaintenancesRegulieresForm = ({
                             </Table>
                         </Col>
                     </Row>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseEditModal}>
-                        Annuler
-                    </Button>
-                    <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Enregistrer'}</Button>
-                </Modal.Footer>
-            </Form>
+                    <div className="d-grid gap-2 mt-3">
+                        <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Enregistrer'}</Button>
+                    </div>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseEditModal}>
+                    Annuler
+                </Button>
+            </Modal.Footer>
         </Modal>
         
     </>);
