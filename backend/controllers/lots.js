@@ -553,6 +553,44 @@ exports.duplicateLot = async (req, res)=>{
     }
 }
 
+exports.importRef = async (req, res)=>{
+    try {
+        for(const materiel of req.body.importArray)
+        {
+            if(materiel.idEmplacement != null && materiel.quantite != null)
+            {
+                let insert = await db.query(`
+                    INSERT INTO
+                        MATERIEL_ELEMENT
+                    SET
+                        idMaterielCatalogue = :idMaterielCatalogue,
+                        idEmplacement = :idEmplacement,
+                        quantite = :quantite,
+                        quantiteAlerte = :quantiteAlerte,
+                        peremption = :peremption
+                ;`,{
+                    idMaterielCatalogue: materiel.idMaterielCatalogue || null,
+                    idEmplacement: materiel.idEmplacement || null,
+                    quantite: materiel.quantite || 0,
+                    quantiteAlerte: materiel.quantiteAlerte || 0,
+                    peremption: materiel.peremption || null,
+                });
+
+                let selectLast = await db.query(
+                    'SELECT MAX(idElement) as idElement FROM MATERIEL_ELEMENT;'
+                );
+                await fonctionsMetiers.updateConformiteMaterielOpe(selectLast[0].idElement);
+            }
+        }
+
+        await fonctionsMetiers.checkOneConf(req.body.idLot);
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.updateLot = async (req, res)=>{
     try {
         let oldRecord = await db.query(`

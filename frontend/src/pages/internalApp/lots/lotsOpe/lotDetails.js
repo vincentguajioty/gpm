@@ -65,7 +65,10 @@ const LotDetails = () => {
                         <Tabs defaultActiveKey="contenu" transition={true}>
                             <Tab eventKey="contenu" title="Sacs" className='border-bottom border-x p-3'>
                                 <LotSacs
+                                    idLot={idLot}
+                                    idTypeLot={lot.lot.idTypeLot}
                                     sacs={lot.sacs}
+                                    qttMateriel={Number(lot.lot.materielsOK) + Number(lot.lot.materielsLimites) + Number(lot.lot.materielsAlerte)}
                                     inventaireEnCours={lot.lot.inventaireEnCours}
                                     setPageNeedsRefresh={setPageNeedsRefresh}
                                 />

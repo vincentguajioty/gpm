@@ -117,6 +117,7 @@ router.get('/lots/getLots',                loggerMiddleware.httpLogger(), jwtFun
 router.post('/lots/getOneLot',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_lecture']),                                             lotsCtrl.getOneLot);
 router.post('/lots/addLot',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_ajout']),        loggerMiddleware.modificationLogger(), lotsCtrl.addLot);
 router.post('/lots/duplicateLot',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_ajout']),        loggerMiddleware.modificationLogger(), lotsCtrl.duplicateLot);
+router.post('/lots/importRef',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_modification']), loggerMiddleware.modificationLogger(), lotsCtrl.importRef);
 router.post('/lots/updateLot',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_modification']), loggerMiddleware.modificationLogger(), lotsCtrl.updateLot);
 router.post('/lots/lotsDelete',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_suppression']),  loggerMiddleware.suppressionLogger(),  lotsCtrl.lotsDelete);
 //OPERATIONNEL - Sacs

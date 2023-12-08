@@ -126,26 +126,28 @@ const SacsForm = ({
                         <small className="text-danger">{errors.libelleSac?.message}</small>
                     </Form.Group>
                     
-                    <Form.Group className="mb-3">
-                        <Form.Label>Lot de rattachement</Form.Label>
-                        <Select
-                            id="idLot"
-                            name="idLot"
-                            size="sm"
-                            classNamePrefix="react-select"
-                            closeMenuOnSelect={true}
-                            isClearable={true}
-                            isSearchable={true}
-                            isDisabled={isLoading || idLot > 0}
-                            placeholder='Aucun lot selectionné'
-                            options={lots}
-                            isOptionDisabled={(option) => option.inventaireEnCours}
-                            value={lots.find(c => c.value === watch("idLot"))}
-                            onChange={val => val != null ? setValue("idLot", val.value) : setValue("idLot", null)}
-                        />
-                        <small className="text-danger">{errors.idLot?.message}</small>
-                    </Form.Group>
-
+                    {idLot == null ?
+                        <Form.Group className="mb-3">
+                            <Form.Label>Lot de rattachement</Form.Label>
+                            <Select
+                                id="idLot"
+                                name="idLot"
+                                size="sm"
+                                classNamePrefix="react-select"
+                                closeMenuOnSelect={true}
+                                isClearable={true}
+                                isSearchable={true}
+                                isDisabled={isLoading || idLot > 0}
+                                placeholder='Aucun lot selectionné'
+                                options={lots}
+                                isOptionDisabled={(option) => option.inventaireEnCours}
+                                value={lots.find(c => c.value === watch("idLot"))}
+                                onChange={val => val != null ? setValue("idLot", val.value) : setValue("idLot", null)}
+                            />
+                            <small className="text-danger">{errors.idLot?.message}</small>
+                        </Form.Group>
+                    :null}
+                    
                     <Form.Group className="mb-3">
                         <Form.Label>Fournisseur</Form.Label>
                         <Select

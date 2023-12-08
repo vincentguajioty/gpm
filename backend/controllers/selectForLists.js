@@ -516,7 +516,8 @@ exports.getEmplacementsFull = async (req, res)=>{
             SELECT
                 idEmplacement as value,
                 CONCAT_WS(' > ',l.libelleLot,s.libelleSac,e.libelleEmplacement) as label,
-                l.inventaireEnCours
+                l.inventaireEnCours,
+                l.idLot
             FROM
                 MATERIEL_EMPLACEMENT e
                 LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac
