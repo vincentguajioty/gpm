@@ -690,3 +690,35 @@ export const alerteLotAffectation = Yup.object().shape({
         .min(1, champObligatoire)
         .required(champObligatoire),
 });
+
+export const conteneursAddForm = Yup.object().shape({
+    libelleConteneur: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    frequenceInventaire: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(0, champObligatoire)
+        .required(champObligatoire),
+    dateDernierInventaire: Yup
+        .date()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});
+
+export const conteneursUpdateForm = Yup.object().shape({
+    libelleConteneur: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    frequenceInventaire: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(0, champObligatoire)
+        .required(champObligatoire),
+    dateDernierInventaire: Yup
+        .date()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});

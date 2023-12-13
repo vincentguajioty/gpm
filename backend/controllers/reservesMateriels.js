@@ -23,7 +23,7 @@ exports.getReservesMateriels = async (req, res)=>{
 
         if(req.body.filterIdConteneur > 0)
         {
-            results = results.filter(item => item.idConteneur == filterIdConteneur)
+            results = results.filter(item => item.idConteneur == req.body.filterIdConteneur)
         }
 
         res.send(results);

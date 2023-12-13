@@ -25,7 +25,7 @@ const ReservesMaterielsTable = ({
 
     const initPage = async () => {
         try {
-            const getData = await Axios.get('/reserves/getReservesMateriels',{
+            const getData = await Axios.post('/reserves/getReservesMateriels',{
                 filterIdConteneur: filterIdConteneur
             });
             setMateriels(getData.data);  
