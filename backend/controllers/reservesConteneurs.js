@@ -264,7 +264,7 @@ exports.updateConteneur = async (req, res)=>{
             libelleConteneur: req.body.libelleConteneur || null,
             dateDernierInventaire: req.body.dateDernierInventaire || null,
             frequenceInventaire: req.body.frequenceInventaire || null,
-            dispoBenevoles: req.body.dispoBenevoles || null,
+            dispoBenevoles: req.body.dispoBenevoles || false,
             idConteneur: req.body.idConteneur || null,
         });
 

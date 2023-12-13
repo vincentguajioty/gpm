@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Modal, Button, Table } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 import IconButton from 'components/common/IconButton';
@@ -14,6 +15,7 @@ const VehiculeLotsCharges = ({lots}) => {
         setShowModal(true);
     }
 
+    const navigate = useNavigate();
     return (<>
         <IconButton
             icon='briefcase-medical'
@@ -40,7 +42,15 @@ const VehiculeLotsCharges = ({lots}) => {
                         {lots.map((lot, i)=>{return(
                             <tr>
                                 <td>{lot.libelleLot}</td>
-                                <td>{HabilitationService.habilitations['lots_lecture'] ? 'TODO > ALLER SUR LE LOT' : null}</td>
+                                <td>
+                                    <IconButton
+                                        size='sm'
+                                        icon='briefcase-medical'
+                                        variant='outline-primary'
+                                        onClick={()=>{navigate('/lots/'+lot.idLot)}}
+                                        disabled={!HabilitationService.habilitations['lots_lecture']}
+                                    >Accéder au lot</IconButton>
+                                </td>
                             </tr>
                         )})}
                     </tbody>
