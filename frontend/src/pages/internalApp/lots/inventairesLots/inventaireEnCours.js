@@ -14,12 +14,15 @@ import InventaireScanVolee from './scanVolee';
 import InventaireParcoursManuel from './parcoursManuel';
 import { Link } from 'react-router-dom';
 
-const socket = socketIO.connect(window.__ENV__.APP_BACKEND_URL);
+const socket = socketIO.connect(window.__ENV__.APP_BACKEND_URL,{withCredentials: true, extraHeaders: {
+    "token": HabilitationService.token
+}});
 
 const LotInventaireEnCours = () => {
     let {idInventaire} = useParams();
     const [readyToDisplay, setReadyToDisplay] = useState(false);
     const [isClosed, setIsClosed] = useState(false);
+    const [displaySocketError, setDisplaySocketError] = useState(false);
 
     const [demandePopullationPrecedente, setDemandePopullationPrecedente] = useState(false);
 
@@ -83,6 +86,11 @@ const LotInventaireEnCours = () => {
         socket.on("inventaireLotValidate", (data)=>{
             setIsClosed(true);
         })
+
+        socket.on("connect_error", (error)=>{
+            console.log(error);
+            setDisplaySocketError(!socket.connected)
+        })
 	}, [socket, inventaireElements])
 
     useEffect(()=>{
@@ -111,6 +119,14 @@ const LotInventaireEnCours = () => {
                 description={moment(detailsInventaire.dateInventaire).format('DD/MM/YYYY') + " par " + detailsInventaire.prenomPersonne + " " + detailsInventaire.nomPersonne}
                 className="mb-3"
             />
+
+            {displaySocketError ?
+                <Alert variant='danger'>La connexion au serveur est perdue.</Alert>
+            : null}
+
+            {!HabilitationService.habilitations['lots_modification'] ?
+                <Alert variant='warning'>De part vos habilitations, vous ne pouvez pas participer à l'inventaire, mais pouvez le consulter.</Alert>
+            : null}
 
             {isClosed ?
                 <Alert variant='success'>

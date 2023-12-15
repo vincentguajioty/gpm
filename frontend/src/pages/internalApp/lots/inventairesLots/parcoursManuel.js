@@ -4,6 +4,7 @@ import { Card, Form, Accordion, Button, Modal, Alert, } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 
 import { Axios } from 'helpers/axios';
+import HabilitationService from 'services/habilitationsService';
 
 import InventaireParcoursManuelOneEmplacement from './parcoursManuelOneEmp';
 
@@ -121,12 +122,14 @@ const InventaireParcoursManuel = ({
                     )})}
                 </Accordion>
 
-                <div className="d-grid gap-2 mt-3">
-                    <Button variant='primary' disabled={isLoading} onClick={handleShowValidateModal}>{isLoading ? 'Patientez...' : 'Terminer'}</Button>
-                </div>
-                
-                <Button variant='outline-danger' className='me-2 mt-3' disabled={isLoading} onClick={handleShowDeleteModal}>{isLoading ? 'Patientez...' : 'Annuler tout'}</Button>
-                <Button variant='outline-warning' className='me-2 mt-3' disabled={isLoading} onClick={()=>{setDemandePopullationPrecedente(true)}}>{isLoading ? 'Patientez...' : 'Populler avec l\'inventaire précédent'}</Button>
+                {HabilitationService.habilitations['lots_modification'] ? <>
+                    <div className="d-grid gap-2 mt-3">
+                        <Button variant='primary' disabled={isLoading} onClick={handleShowValidateModal}>{isLoading ? 'Patientez...' : 'Terminer'}</Button>
+                    </div>
+                    
+                    <Button variant='outline-danger' className='me-2 mt-3' disabled={isLoading} onClick={handleShowDeleteModal}>{isLoading ? 'Patientez...' : 'Annuler tout'}</Button>
+                    <Button variant='outline-warning' className='me-2 mt-3' disabled={isLoading} onClick={()=>{setDemandePopullationPrecedente(true)}}>{isLoading ? 'Patientez...' : 'Populler avec l\'inventaire précédent'}</Button>
+                </> : null}
             </Card.Body>
         </Card>
     </>);

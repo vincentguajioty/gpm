@@ -153,6 +153,54 @@ const cleanOldBlacklist = async () => {
     }
 }
 
+const verifyJWTforSocketIO = async (token, role) => {
+    try {
+        const tokenBlackListeCheck = await tokenNotInBlacklist(token);
+        
+        if(tokenBlackListeCheck)
+        {
+            try {
+                var decoded = jwt.verify(token, process.env.JWT_TOKEN);
+            } catch (error) {
+                return(false);
+            }
+
+            var acl = true;
+            role.forEach(prerequis => {
+                acl = acl && decoded[prerequis];
+            });
+            if(!acl)
+            {
+                logger.info('Accès refusé par ACL', {idPersonne: 'SYSTEM'});
+                return(false);
+            }
+            else
+            {
+                const maintenanceConfig = await db.query(
+                    'SELECT maintenance FROM CONFIG;'
+                );
+                if(maintenanceConfig[0].maintenance && !decoded['maintenance'])
+                {
+                    logger.info('Accès refusé par le dispositif de maintenance', {idPersonne: 'SYSTEM'});
+                    return(false);
+                }
+                else
+                {
+                    logger.http('Requete authentifiée sur SOKETIO de l\'utilisateur ' + decoded.identifiant)
+                    return(true);
+                }
+            }
+        }
+        else
+        {
+            logger.http('Connexion avec un token blacklisté');
+            return(false);
+        }
+    } catch (error) {
+        logger.error(error);
+    }
+}
+
 module.exports = {
     verifyJWTandProfile,
     tokenNotInBlacklist,
@@ -160,4 +208,5 @@ module.exports = {
     cleanOldBlacklist,
     decryptAesToken,
     decryptAMToken,
+    verifyJWTforSocketIO,
 };

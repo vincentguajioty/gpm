@@ -3,6 +3,7 @@ import { Card, Form, Accordion, FloatingLabel, Table, InputGroup, Dropdown, Drop
 import Flex from 'components/common/Flex';
 import SoftBadge from 'components/common/SoftBadge';
 import moment from 'moment-timezone';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import DatePicker from 'react-datepicker';
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
@@ -10,9 +11,12 @@ import fr from 'date-fns/locale/fr';
 registerLocale('fr', fr);
 setDefaultLocale('fr');
 
+import HabilitationService from 'services/habilitationsService';
+
 import socketIO from 'socket.io-client';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-const socket = socketIO.connect(window.__ENV__.APP_BACKEND_URL);
+const socket = socketIO.connect(window.__ENV__.APP_BACKEND_URL,{withCredentials: true, extraHeaders: {
+    "token": HabilitationService.token
+}});
 
 const InventaireParcoursManuelOneEmplacement = ({
     idInventaire,
@@ -223,18 +227,20 @@ const InventaireParcoursManuelOneEmplacement = ({
                                     id='quantiteInventoriee'
                                     value={elem.quantiteInventoriee}
                                     onChange={(e) => updateQuantite(elem.idElement, e.target.value, false)}
+                                    disabled={!HabilitationService.habilitations['lots_modification']}
                                 />
-
-                                <DropdownButton
-                                    size='sm'
-                                    variant="outline-secondary"
-                                    title="Charg."
-                                    id="input-group-dropdown-2"
-                                    align="end"
-                                >
-                                    <Dropdown.Item onClick={()=>{updateQuantite(elem.idElement, elem.quantiteAvantInventaire, true)}}>Qtt précédente</Dropdown.Item>
-                                    <Dropdown.Item onClick={()=>{updateQuantite(elem.idElement, elem.quantiteAlerte, false)}}>Stock d'alerte</Dropdown.Item>
-                                </DropdownButton>
+                                {HabilitationService.habilitations['lots_modification'] ?
+                                    <DropdownButton
+                                        size='sm'
+                                        variant="outline-secondary"
+                                        title="Charg."
+                                        id="input-group-dropdown-2"
+                                        align="end"
+                                    >
+                                        <Dropdown.Item onClick={()=>{updateQuantite(elem.idElement, elem.quantiteAvantInventaire, true)}}>Qtt précédente</Dropdown.Item>
+                                        <Dropdown.Item onClick={()=>{updateQuantite(elem.idElement, elem.quantiteAlerte, false)}}>Stock d'alerte</Dropdown.Item>
+                                    </DropdownButton>
+                                : null}
                             </InputGroup>
                         </td>
                         <td>
@@ -247,6 +253,7 @@ const InventaireParcoursManuelOneEmplacement = ({
                                 dateFormat="dd/MM/yyyy"
                                 fixedHeight
                                 locale="fr"
+                                disabled={!HabilitationService.habilitations['lots_modification']}
                             />
                         </td>
                     </tr>

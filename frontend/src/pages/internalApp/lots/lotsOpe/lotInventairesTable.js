@@ -53,15 +53,13 @@ const LotInventairesTable = ({
                 commentairesInventaire: nl2br(item.commentairesInventaire),
                 actions: <>
                     {item.inventaireEnCours && inventaireEnCours ?
-                        HabilitationService.habilitations['lots_modification'] ? 
-                            <IconButton
-                                icon='binoculars'
-                                size = 'sm'
-                                variant="warning"
-                                className="me-1"
-                                onClick={()=>{navigate('/inventaireLotEnCours/'+item.idInventaire)}}
-                            >Rejoindre l'inventaire en cours</IconButton>
-                        : null
+                        <IconButton
+                            icon='binoculars'
+                            size = 'sm'
+                            variant="warning"
+                            className="me-1"
+                            onClick={()=>{navigate('/inventaireLotEnCours/'+item.idInventaire)}}
+                        >Rejoindre l'inventaire en cours</IconButton>
                     : <>
                         <IconButton
                             icon='eye'
@@ -343,25 +341,24 @@ const LotInventairesTable = ({
             data={lignes}
             topButtonShow={true}
             topButton={
-                HabilitationService.habilitations['lots_modification'] ?
-                    inventaireEnCours ?
-                        <IconButton
-                            icon='binoculars'
-                            size = 'sm'
-                            variant="warning"
-                            className="me-1"
-                            onClick={()=>{navigate('/inventaireLotEnCours/'+idInventaireEnCours)}}
-                        >Rejoindre l'inventaire en cours</IconButton>    
-                    :
-                    <>
+                inventaireEnCours ?
+                    <IconButton
+                        icon='binoculars'
+                        size = 'sm'
+                        variant="warning"
+                        className="me-1"
+                        onClick={()=>{navigate('/inventaireLotEnCours/'+idInventaireEnCours)}}
+                    >Rejoindre l'inventaire en cours</IconButton>    
+                :
+                
+                    HabilitationService.habilitations['lots_modification'] ?
                         <IconButton
                             icon='binoculars'
                             size = 'sm'
                             variant="outline-success"
                             onClick={handleShowStartModal}
                         >Lancer un nouvel inventaire</IconButton>
-                    </>
-                : null
+                    : null
             }
         />
     </>);

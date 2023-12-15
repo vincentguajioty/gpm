@@ -8,7 +8,9 @@ import HabilitationService from 'services/habilitationsService';
 import filterArrayInArray from 'helpers/filterInArray';
 
 import socketIO from 'socket.io-client';
-const socket = socketIO.connect(window.__ENV__.APP_BACKEND_URL);
+const socket = socketIO.connect(window.__ENV__.APP_BACKEND_URL,{withCredentials: true, extraHeaders: {
+    "token": HabilitationService.token
+}});
 
 const InventaireScanVolee = ({
     idInventaire,
@@ -140,7 +142,7 @@ const InventaireScanVolee = ({
                             id='champScannette'
                             value={champScannette}
                             onChange={(e) => setChampScannette(e.target.value)}
-                            disabled={demandePopullationPrecedente}
+                            disabled={demandePopullationPrecedente || !HabilitationService.habilitations['lots_modification']}
                         />
                     </FloatingLabel>
                 </Form>

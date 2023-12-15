@@ -6,6 +6,7 @@ const dotenv = require('dotenv').config();
 const fonctionsMetiers = require('./helpers/fonctionsMetiers')
 const fonctionsMail = require('./helpers/fonctionsMail')
 const fonctionsLDAP = require('./helpers/fonctionsLDAP')
+const fonctionsSocketIO = require('./socketIO.js');
 
 const logger = require('./winstonLogger');
 
@@ -44,43 +45,7 @@ const startServer = () => {
     http.listen(3001, () => {
         logger.info(`Server listening on `+3001, {idPersonne: 'SYSTEM'});
 
-        const socketIO = require('socket.io')(http, {
-            cors: {
-                origin: [process.env.CORS_ORIGINS],
-                methods: ["GET", "POST"],
-                credentials: true,
-            }
-        });
-
-        socketIO.on('connection', (socket) => {
-            logger.debug(`${socket.id} user just connected!`);
-
-            socket.on('join_inventaire_lot', (data) => {
-                logger.debug('User dans inventaire lot ' + data);
-                socket.join(data);
-            });
-
-            socket.on('inventaireLotUpdate', async (data) => {
-                logger.debug(data);
-                await fonctionsMetiers.updateInventaireLotItem(data);
-                socket.to('lot-'+data.idInventaire).emit("updateYourElement", data);
-            });
-            
-            socket.on('demandePopullationPrecedente', async (data) => {
-                logger.debug(data);
-                socket.to('lot-'+data.idInventaire).emit("demandePopullationPrecedente", data.demandePopullationPrecedente);
-            });
-
-            socket.on('inventaireLotValidate', async (data) => {
-                logger.debug(data);
-                socket.to('lot-'+data.idInventaire).emit("inventaireLotValidate");
-                await fonctionsMetiers.validerInventaireLot(data.idInventaire, data.commentaire);
-            });
-            
-            socket.on('disconnect', () => {
-              logger.debug('A user disconnected');
-            });
-        });
+        fonctionsSocketIO.socketInterface(http);
     });
 }
 
