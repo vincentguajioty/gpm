@@ -163,8 +163,8 @@ const SacsContent = ({
         
         <Row>
             <Col md="12" className="mb-2">
-                {isLoading ? <LoaderInfiniteLoop/> : 
-                    <ButtonGroup>
+                {isLoading ? <LoaderInfiniteLoop/> : <>
+                    <ButtonGroup className='me-2'>
                         {emplacements.map((empl, idx) => (
                             <ToggleButton
                                 key={empl.idEmplacement}
@@ -179,6 +179,8 @@ const SacsContent = ({
                                 {empl.libelleEmplacement}
                             </ToggleButton>
                         ))}
+                    </ButtonGroup>
+                    <ButtonGroup>
                         {idEmplacement != 0 ?
                             <ToggleButton
                                 key="add"
@@ -210,7 +212,7 @@ const SacsContent = ({
                             </ToggleButton>
                         : null }
                     </ButtonGroup>
-                }
+                </>}
             </Col>
             {idEmplacement != null && showEdit == true && HabilitationService.habilitations['sac_modification'] && !inventaireEnCours ? 
                 <Col md="12" className="mb-2">
