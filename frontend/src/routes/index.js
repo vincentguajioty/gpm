@@ -27,6 +27,7 @@ import Sacs from 'pages/internalApp/lots/sacs';
 import Materiels from 'pages/internalApp/lots/materiels';
 import AlertesBenevolesLots from 'pages/internalApp/lots/alertesBenevolesLots';
 import RapportsConso from 'pages/internalApp/lots/rapportsConso';
+import LotInventaireEnCours from 'pages/internalApp/lots/inventairesLots/inventaireEnCours';
 
 import Reserves from 'pages/internalApp/reserves/reserves';
 import ConteneurDetails from 'pages/internalApp/reserves/conteneurs/conteneurDetails';
@@ -106,6 +107,7 @@ const FalconRoutes = () => {
           <Route path="/lotsMateriel" element={<Materiels />} />
           <Route path="/lotsAlertesBenevoles" element={<AlertesBenevolesLots />} />
           <Route path="/rapportsConso" element={<RapportsConso />} />
+          <Route path="/inventaireLotEnCours/:idInventaire" element={<LotInventaireEnCours />} />
 
           <Route path="/reservesConteneurs" element={<Reserves />} />
           <Route path="/reservesConteneurs/:idConteneur" element={<ConteneurDetails />} />

@@ -845,6 +845,108 @@ const replaceString = async (string, replacementArray) => {
     }
 }
 
+const updateInventaireLotItem = async (element) => {
+    try {
+        let updateQuery = await db.query(`
+            UPDATE
+                LOTS_INVENTAIRES_TEMP
+            SET
+                quantiteInventoriee = :quantiteInventoriee,
+                peremptionInventoriee = :peremptionInventoriee
+            WHERE
+                idElement = :idElement
+        `,{
+            quantiteInventoriee : element.quantiteInventoriee || null,
+            peremptionInventoriee : element.peremptionInventoriee || null,
+            idElement : element.idElement || null,
+        });
+
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const validerInventaireLot = async (idInventaire, commentairesInventaire) => {
+    try {
+        let getLot = await db.query(`
+            SELECT
+                idLot
+            FROM
+                INVENTAIRES
+            WHERE
+                idInventaire = :idInventaire
+        `,{
+            idInventaire: idInventaire
+        });
+        idLot = getLot[0].idLot;
+        
+        let elementsDeInventaire = await db.query(`
+            SELECT
+                *
+            FROM
+                LOTS_INVENTAIRES_TEMP
+            WHERE
+                idInventaire = :idInventaire
+        `,{
+            idInventaire: idInventaire
+        });
+        for(const element of elementsDeInventaire)
+        {
+            let updateMateriel = await db.query(`
+                UPDATE
+                    MATERIEL_ELEMENT
+                SET
+                    quantite = :quantite,
+                    peremption = :peremption
+                WHERE
+                    idElement = :idElement
+            `,{
+                idElement: element.idElement,
+                quantite: element.quantiteInventoriee || 0,
+                peremption: element.peremptionInventoriee || null,
+            });
+        }
+
+        await figeInventaireLot(idLot, idInventaire);
+
+        let cleanInventaireTemp = await db.query(`
+            DELETE FROM
+                LOTS_INVENTAIRES_TEMP
+            WHERE
+                idInventaire = :idInventaire
+        `,{
+            idInventaire: idInventaire
+        });
+
+        let unlockInventaire = await db.query(`
+            UPDATE
+                INVENTAIRES
+            SET
+                inventaireEnCours = false,
+                commentairesInventaire = :commentairesInventaire
+            WHERE
+                idInventaire = :idInventaire
+        `,{
+            idInventaire: idInventaire,
+            commentairesInventaire: commentairesInventaire,
+        });
+
+        let unlockLot = await db.query(`
+            UPDATE
+                LOTS_LOTS
+            SET
+                inventaireEnCours = false
+            WHERE
+                idLot = :idLot
+        `,{
+            idLot: idLot,
+        });
+
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 const figeInventaireLot = async (idLot, idInventaire) => {
     try {
         let fige = await db.query(`
@@ -868,6 +970,108 @@ const figeInventaireLot = async (idLot, idInventaire) => {
             idLot:        idLot,
         });
                 
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const updateInventaireReserveItem = async (element) => {
+    try {
+        let updateQuery = await db.query(`
+            UPDATE
+                RESERVES_INVENTAIRES_TEMP
+            SET
+                quantiteInventoriee = :quantiteInventoriee,
+                peremptionInventoriee = :peremptionInventoriee
+            WHERE
+                idReserveElement = :idReserveElement
+        `,{
+            quantiteInventoriee : element.quantiteInventoriee || null,
+            peremptionInventoriee : element.peremptionInventoriee || null,
+            idReserveElement : element.idReserveElement || null,
+        });
+
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const validerInventaireReserve = async (idReserveInventaire, commentairesInventaire) => {
+    try {
+        let getLot = await db.query(`
+            SELECT
+                idConteneur
+            FROM
+                RESERVES_INVENTAIRES
+            WHERE
+                idReserveInventaire = :idReserveInventaire
+        `,{
+            idReserveInventaire: idReserveInventaire
+        });
+        idConteneur = getLot[0].idConteneur;
+        
+        let elementsDeInventaire = await db.query(`
+            SELECT
+                *
+            FROM
+                RESERVES_INVENTAIRES_TEMP
+            WHERE
+                idReserveInventaire = :idReserveInventaire
+        `,{
+            idReserveInventaire: idReserveInventaire
+        });
+        for(const element of elementsDeInventaire)
+        {
+            let updateMateriel = await db.query(`
+                UPDATE
+                    RESERVES_MATERIEL
+                SET
+                    quantiteReserve = :quantiteReserve,
+                    peremptionReserve = :peremptionReserve
+                WHERE
+                    idReserveElement = :idReserveElement
+            `,{
+                idReserveElement: element.idReserveElement,
+                quantiteReserve: element.quantiteInventoriee || 0,
+                peremptionReserve: element.peremptionInventoriee || null,
+            });
+        }
+
+        await figeInventaireReserve(idConteneur, idReserveInventaire);
+
+        let cleanInventaireTemp = await db.query(`
+            DELETE FROM
+                RESERVES_INVENTAIRES_TEMP
+            WHERE
+                idReserveInventaire = :idReserveInventaire
+        `,{
+            idReserveInventaire: idReserveInventaire
+        });
+
+        let unlockInventaire = await db.query(`
+            UPDATE
+                RESERVES_INVENTAIRES
+            SET
+                inventaireEnCours = false,
+                commentairesInventaire = :commentairesInventaire
+            WHERE
+                idReserveInventaire = :idReserveInventaire
+        `,{
+            idReserveInventaire: idReserveInventaire,
+            commentairesInventaire: commentairesInventaire,
+        });
+
+        let unlockLot = await db.query(`
+            UPDATE
+                RESERVES_CONTENEUR
+            SET
+                inventaireEnCours = false
+            WHERE
+                idConteneur = :idConteneur
+        `,{
+            idConteneur: idConteneur,
+        });
+
     } catch (error) {
         logger.error(error)
     }
@@ -1115,7 +1319,11 @@ module.exports = {
     cnilAnonyme,
     cnilAnonymeCron,
     replaceString,
+    updateInventaireLotItem,
+    validerInventaireLot,
     figeInventaireLot,
+    updateInventaireReserveItem,
+    validerInventaireReserve,
     figeInventaireReserve,
     majIndicateursPersonne,
     majIndicateursProfil,

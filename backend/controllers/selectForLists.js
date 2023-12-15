@@ -664,3 +664,26 @@ exports.getVehicules = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+exports.getCodesBarreCatalogue = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                cb.*,
+                mc.libelleMateriel,
+                idCode as value,
+                codeBarre as label
+            FROM
+                CODES_BARRE cb
+                LEFT OUTER JOIN MATERIEL_CATALOGUE mc ON cb.idMaterielCatalogue = mc.idMaterielCatalogue
+            WHERE
+                cb.idMaterielCatalogue IS NOT NULL
+            ORDER BY
+                codeBarre
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}

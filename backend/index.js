@@ -43,6 +43,44 @@ app.use('/', routes);
 const startServer = () => {
     http.listen(3001, () => {
         logger.info(`Server listening on `+3001, {idPersonne: 'SYSTEM'});
+
+        const socketIO = require('socket.io')(http, {
+            cors: {
+                origin: [process.env.CORS_ORIGINS],
+                methods: ["GET", "POST"],
+                credentials: true,
+            }
+        });
+
+        socketIO.on('connection', (socket) => {
+            logger.debug(`${socket.id} user just connected!`);
+
+            socket.on('join_inventaire_lot', (data) => {
+                logger.debug('User dans inventaire lot ' + data);
+                socket.join(data);
+            });
+
+            socket.on('inventaireLotUpdate', async (data) => {
+                logger.debug(data);
+                await fonctionsMetiers.updateInventaireLotItem(data);
+                socket.to('lot-'+data.idInventaire).emit("updateYourElement", data);
+            });
+            
+            socket.on('demandePopullationPrecedente', async (data) => {
+                logger.debug(data);
+                socket.to('lot-'+data.idInventaire).emit("demandePopullationPrecedente", data.demandePopullationPrecedente);
+            });
+
+            socket.on('inventaireLotValidate', async (data) => {
+                logger.debug(data);
+                socket.to('lot-'+data.idInventaire).emit("inventaireLotValidate");
+                await fonctionsMetiers.validerInventaireLot(data.idInventaire, data.commentaire);
+            });
+            
+            socket.on('disconnect', () => {
+              logger.debug('A user disconnected');
+            });
+        });
     });
 }
 
@@ -78,12 +116,12 @@ schedule.scheduleJob(process.env.CRON_MAIL_QUEUE, async function() {
     logger.debug('Lancement cron de dépilement des emails en queue');
     if(process.env.LOCK_ALL_MAIL == 0)
     {
-        logger.debug('Autorisation accordée dans la conf pour enoyer les mails');
+        logger.debug('Autorisation accordée dans la conf pour envoyer les mails');
         await fonctionsMail.sendMailQueue();
     }
     else
     {
-        logger.debug('Autorisation refusée dans la conf pour enoyer les mails, aucun traitement lancé');
+        logger.debug('Autorisation refusée dans la conf pour envoyer les mails, aucun traitement lancé');
     }
     logger.debug('Fin cron de dépilement des emails en queue');
 });
@@ -112,12 +150,6 @@ schedule.scheduleJob(process.env.CRON_DAILY, async function() {
     logger.debug("CRON - Début de la mise à jour des anticipations de péremption");
     await fonctionsMetiers.updatePeremptionsAnticipations();
     logger.debug("CRON - Fin de la mise à jour des anticipations de péremption");
-
-    //Déverrouillage des locks sur les lots et réserves
-    logger.debug("CRON - Début du déveouillage des locks d'inventaire des lots et des reserves");
-    await fonctionsMetiers.unlockLotsInventaires();
-    await fonctionsMetiers.unlockReservesInventaires();
-    logger.debug("CRON - Fin du déveouillage des locks d'inventaire des lots et des reserves");
 
     //Analyse complète des lots
     logger.debug("CRON - Début de la vérification de conformité de tous les lots");

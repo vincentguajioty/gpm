@@ -323,4 +323,38 @@ UPDATE LOTS_ALERTES_ETATS SET couleurLotsAlertesEtat = 'info' WHERE couleurLotsA
 UPDATE LOTS_ALERTES_ETATS SET couleurLotsAlertesEtat = 'success' WHERE couleurLotsAlertesEtat = 'green';
 UPDATE LOTS_ALERTES_ETATS SET couleurLotsAlertesEtat = 'secondary' WHERE couleurLotsAlertesEtat = 'gray';
 
+ALTER TABLE INVENTAIRES ADD inventaireEnCours BOOLEAN DEFAULT FALSE;
+ALTER TABLE RESERVES_INVENTAIRES ADD inventaireEnCours BOOLEAN DEFAULT FALSE;
+
+DROP VIEW IF EXISTS VIEW_SCAN_RESULTS_LOTS;
+DROP VIEW IF EXISTS VIEW_SCAN_RESULTS_RESERVES;
+DROP TABLE LOTS_INVENTAIRES_TEMP;
+DROP TABLE RESERVES_INVENTAIRES_TEMP;
+
+CREATE TABLE LOTS_INVENTAIRES_TEMP(
+	idInventaire INT,
+	idEmplacement INT,
+	idElement INT,
+	idMaterielCatalogue INT,
+	libelleMateriel TEXT,
+	quantiteAvantInventaire INT,
+	quantiteInventoriee INT,
+	quantiteAlerte INT,
+	peremptionAvantInventaire DATE,
+	peremptionInventoriee DATE
+);
+
+CREATE TABLE RESERVES_INVENTAIRES_TEMP(
+	idReserveInventaire INT,
+	idConteneur INT,
+	idReserveElement INT,
+	idMaterielCatalogue INT,
+	libelleMateriel TEXT,
+	quantiteAvantInventaire INT,
+	quantiteInventoriee INT,
+	quantiteAlerte INT,
+	peremptionAvantInventaire DATE,
+	peremptionInventoriee DATE
+);
+
 UPDATE CONFIG SET version = '15.0';

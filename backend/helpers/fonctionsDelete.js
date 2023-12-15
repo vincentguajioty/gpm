@@ -1030,6 +1030,12 @@ const lotsInventaireDelete = async (idLogger, idInventaire) => {
             idInventaire : idInventaire,
         });
 
+        deleteQuery = await db.query(`
+            DELETE FROM LOTS_INVENTAIRES_TEMP WHERE idInventaire = :idInventaire
+        ;`,{
+            idInventaire : idInventaire,
+        });
+
         let finalDeleteQuery = await db.query(`
             DELETE FROM INVENTAIRES WHERE idInventaire = :idInventaire
         ;`,{
@@ -1242,6 +1248,12 @@ const reserveInventaireDelete = async (idLogger, idReserveInventaire) => {
 
         let deleteQuery = await db.query(`
             DELETE FROM RESERVES_INVENTAIRES_CONTENUS WHERE idReserveInventaire = :idReserveInventaire
+        ;`,{
+            idReserveInventaire : idReserveInventaire,
+        });
+
+        deleteQuery = await db.query(`
+            DELETE FROM RESERVES_INVENTAIRES_TEMP WHERE idReserveInventaire = :idReserveInventaire
         ;`,{
             idReserveInventaire : idReserveInventaire,
         });

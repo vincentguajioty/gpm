@@ -769,3 +769,259 @@ exports.udpateStatut = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+//LOTS - Inventaires
+exports.getOneInventaireForDisplay = async (req, res)=>{
+    try {
+        let inventaire = await db.query(`
+            SELECT
+                i.*,
+                l.libelleLot,
+                p.prenomPersonne,
+                p.nomPersonne,
+                p.identifiant
+            FROM
+                INVENTAIRES i
+                LEFT OUTER JOIN LOTS_LOTS l ON i.idLot = l.idLot
+                LEFT OUTER JOIN PERSONNE_REFERENTE p ON i.idPersonne = p.idPersonne
+            WHERE
+                idInventaire = :idInventaire
+        ;`,{
+            idInventaire: req.body.idInventaire,
+        });
+
+        let contenu = await db.query(`
+            SELECT
+                i.*,
+                c.libelleMateriel,
+                cat.libelleCategorie
+            FROM
+                INVENTAIRES_CONTENUS i
+                LEFT OUTER JOIN MATERIEL_CATALOGUE c ON i.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN MATERIEL_CATEGORIES cat ON c.idCategorie = cat.idCategorie
+            WHERE
+                idInventaire = :idInventaire
+            ORDER BY
+                cat.libelleCategorie,
+                c.libelleMateriel
+        ;`,{
+            idInventaire: req.body.idInventaire,
+        });
+
+        res.send({
+            inventaire: inventaire[0],
+            contenu: contenu,
+        });
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.startInventaire = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                INVENTAIRES
+            SET
+                idLot = :idLot,
+                dateInventaire = :dateInventaire,
+                idPersonne = :idPersonne,
+                inventaireEnCours = true
+        `,{
+            idLot: req.body.idLot || null,
+            dateInventaire: req.body.dateInventaire || null,
+            idPersonne: req.body.idPersonne || null,
+        });
+        
+        let selectLast = await db.query(
+            'SELECT MAX(idInventaire) as idInventaire FROM INVENTAIRES;'
+        );
+
+        const updateLotInv = await db.query(`
+            UPDATE
+                LOTS_LOTS
+            SET
+                inventaireEnCours = true
+            WHERE
+                idLot = :idLot
+        `,{
+            idLot: req.body.idLot || null,
+        });
+
+        if(req.body.isLastInventaire && req.body.isLastInventaire == true)
+        {
+            const updateLotDate = await db.query(`
+                UPDATE
+                    LOTS_LOTS
+                SET
+                    dateDernierInventaire = :dateInventaire
+                WHERE
+                    idLot = :idLot
+            `,{
+                idLot: req.body.idLot || null,
+                dateInventaire: req.body.dateInventaire || null,
+            });
+        }
+
+        const intialisationInventaire = await db.query(`
+            INSERT INTO
+                LOTS_INVENTAIRES_TEMP
+            (
+                idInventaire,
+                idEmplacement,
+                idElement,
+                idMaterielCatalogue,
+                libelleMateriel,
+                quantiteAvantInventaire,
+                quantiteInventoriee,
+                quantiteAlerte,
+                peremptionAvantInventaire,
+                peremptionInventoriee
+            )
+            SELECT
+                :idInventaire as idInventaire,
+                e.idEmplacement,
+                e.idElement,
+                e.idMaterielCatalogue,
+                cat.libelleMateriel,
+                e.quantite as quantiteAvantInventaire,
+                0 as quantiteInventoriee,
+                e.quantiteAlerte,
+                e.peremption as peremptionAvantInventaire,
+                null as peremptionInventoriee
+            FROM
+                MATERIEL_ELEMENT e
+                LEFT OUTER JOIN MATERIEL_EMPLACEMENT emp ON e.idEmplacement = emp.idEmplacement
+                LEFT OUTER JOIN MATERIEL_SAC s ON emp.idSac = s.idSac
+                LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON e.idMaterielCatalogue = cat.idMaterielCatalogue
+            WHERE
+                s.idLot = :idLot
+        `,{
+            idInventaire: selectLast[0].idInventaire,
+            idLot: req.body.idLot,
+        });
+
+        res.status(201);
+        res.json({idInventaire: selectLast[0].idInventaire});
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getArborescenceSacs = async (req, res)=>{
+    try {
+        let idLot = await db.query(`
+            SELECT
+                idLot
+            FROM
+                INVENTAIRES
+            WHERE
+                idInventaire = :idInventaire
+        ;`,{
+            idInventaire: req.body.idInventaire || null,
+        });
+        idLot = idLot[0].idLot
+
+        let sacs = await db.query(`
+            SELECT
+                *
+            FROM
+                MATERIEL_SAC
+            WHERE
+                idLot = :idLot
+            ORDER BY
+                libelleSac
+        ;`,{
+            idLot: idLot || null,
+        });
+        for(const sac of sacs)
+        {
+            let emplacements = await db.query(`
+                SELECT
+                    *
+                FROM
+                    MATERIEL_EMPLACEMENT
+                WHERE
+                    idSac = :idSac
+                ORDER BY
+                    libelleEmplacement
+            ;`,{
+                idSac: sac.idSac || null,
+            });
+            sac.emplacements = emplacements;
+        }
+
+        res.send(sacs);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getAllElementsInventaireEnCours = async (req, res)=>{
+    try {
+        let elements = await db.query(`
+            SELECT
+                *
+            FROM
+                LOTS_INVENTAIRES_TEMP
+            WHERE
+                idInventaire = :idInventaire
+        ;`,{
+            idInventaire: req.body.idInventaire || null,
+        });
+
+        res.send(elements);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.lotsInventaireCancel = async (req, res)=>{
+    try {
+        let idLot = await db.query(
+            'SELECT idLot FROM INVENTAIRES WHERE idInventaire = :idInventaire;'
+        ,{
+            idInventaire: req.body.idInventaire,
+        });
+        idLot = idLot[0].idLot;
+
+        const deleteResult = await fonctionsDelete.lotsInventaireDelete(req.verifyJWTandProfile.idPersonne , req.body.idInventaire);
+        
+        if(deleteResult){
+            const updateLotInv = await db.query(`
+                UPDATE
+                    LOTS_LOTS
+                SET
+                    inventaireEnCours = false
+                WHERE
+                    idLot = :idLot
+            `,{
+                idLot: idLot || null,
+            });
+            
+            res.status(201);
+            res.json({idLot: idLot});
+
+        }else{
+            res.sendStatus(500);
+        }
+
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.lotsInventaireDelete = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.lotsInventaireDelete(req.verifyJWTandProfile.idPersonne , req.body.idInventaire);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}

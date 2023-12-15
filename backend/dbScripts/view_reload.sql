@@ -1,5 +1,3 @@
-DROP VIEW IF EXISTS VIEW_SCAN_RESULTS_RESERVES;
-DROP VIEW IF EXISTS VIEW_SCAN_RESULTS_LOTS;
 DROP VIEW IF EXISTS VIEW_VEHICULES_KM;
 DROP VIEW IF EXISTS VIEW_HABILITATIONS;
 DROP VIEW IF EXISTS VIEW_DOCUMENTS_COMMANDES;
@@ -285,37 +283,4 @@ CREATE OR REPLACE VIEW VIEW_VEHICULES_KM AS
 	(SELECT NULL as idReleve, idVehicule, dateMaintenance as dateReleve, releveKilometrique, idExecutant as idPersonne  FROM VEHICULES_MAINTENANCE WHERE releveKilometrique IS NOT NULL)
 	UNION
 	(SELECT NULL as idReleve, idVehicule, dateHealth as dateReleve, releveKilometrique, idPersonne  FROM VEHICULES_HEALTH WHERE releveKilometrique IS NOT NULL)
-;
-
-CREATE OR REPLACE VIEW VIEW_SCAN_RESULTS_LOTS AS
-	SELECT
-		t.idLot,
-		t.idEmplacement,
-	    b.idMaterielCatalogue,
-	    c.libelleMateriel,
-	    MIN(peremptionConsommable) as peremption,
-	    COUNT(t.codeBarre) as quantite
-	FROM
-		LOTS_INVENTAIRES_TEMP t
-	    LEFT OUTER JOIN CODES_BARRE b ON t.codeBarre = b.codeBarre
-	    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON b.idMaterielCatalogue = c.idMaterielCatalogue
-	GROUP BY
-		t.idEmplacement,
-	    b.idMaterielCatalogue
-;
-
-CREATE OR REPLACE VIEW VIEW_SCAN_RESULTS_RESERVES AS
-	SELECT
-		t.idConteneur,
-	    b.idMaterielCatalogue,
-	    c.libelleMateriel,
-	    MIN(peremptionConsommable) as peremption,
-	    COUNT(t.codeBarre) as quantite
-	FROM
-		RESERVES_INVENTAIRES_TEMP t
-	    LEFT OUTER JOIN CODES_BARRE b ON t.codeBarre = b.codeBarre
-	    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON b.idMaterielCatalogue = c.idMaterielCatalogue
-	GROUP BY
-		t.idConteneur,
-	    b.idMaterielCatalogue
 ;

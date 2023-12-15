@@ -11,6 +11,7 @@ import LotProprietes from './lotProprietes';
 import LotSacs from './lotSacs';
 import LotConformiteReferentiel from './lotConfRef';
 import AlertesBenevolesLotsTable from '../alertesBenevolesTable';
+import LotInventairesTable from './lotInventairesTable';
 
 const LotDetails = () => {
     let {idLot} = useParams();
@@ -81,7 +82,12 @@ const LotDetails = () => {
                                 </Tab>
                             : null}
                             <Tab eventKey="inventaire" title="Inventaires" className='border-bottom border-x p-3'>
-                                Tableau des inventaires
+                                <LotInventairesTable
+                                    idLot={idLot}
+                                    inventaireEnCours={lot.lot.inventaireEnCours}
+                                    inventaires={lot.inventaires}
+                                    setPageNeedsRefresh={setPageNeedsRefresh}
+                                />
                             </Tab>
                             {HabilitationService.habilitations.alertesBenevolesLots_lecture ?
                                 <Tab eventKey="alertes" title="Alertes de bénévoles" className='border-bottom border-x p-3'>
