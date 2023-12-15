@@ -158,6 +158,12 @@ router.post('/reserves/getOneConteneur',        loggerMiddleware.httpLogger(), j
 router.post('/reserves/addConteneur',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_ajout']),         loggerMiddleware.modificationLogger(), reservesConteneursCtrl.addConteneur);
 router.post('/reserves/updateConteneur',        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_modification']),  loggerMiddleware.modificationLogger(), reservesConteneursCtrl.updateConteneur);
 router.post('/reserves/reserveConteneurDelete', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_suppression']),   loggerMiddleware.suppressionLogger(),  reservesConteneursCtrl.reserveConteneurDelete);
+//RESERVES - Conteneurs - Inventaires
+router.post('/reserves/getOneInventaireForDisplay',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_lecture']),                                             reservesConteneursCtrl.getOneInventaireForDisplay);
+router.post('/reserves/startInventaire',                 loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_modification']), loggerMiddleware.modificationLogger(), reservesConteneursCtrl.startInventaire);
+router.post('/reserves/getAllElementsInventaireEnCours', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_lecture']),                                             reservesConteneursCtrl.getAllElementsInventaireEnCours);
+router.post('/reserves/reserveInventaireCancel',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_modification']),  loggerMiddleware.suppressionLogger(), reservesConteneursCtrl.reserveInventaireCancel);
+router.post('/reserves/reserveInventaireDelete',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_suppression']),  loggerMiddleware.suppressionLogger(),  reservesConteneursCtrl.reserveInventaireDelete);
 //RESERVES - Matériels
 router.post('/reserves/getReservesMateriels',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_lecture']),                                             reservesMaterielsCtrl.getReservesMateriels);
 router.post('/reserves/getOneReservesMateriel',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_lecture']),                                             reservesMaterielsCtrl.getOneReservesMateriel);

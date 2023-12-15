@@ -89,7 +89,7 @@ const InventaireScanVolee = ({
                                     quantiteAlerte: elem.quantiteAlerte,
                                 };
 
-                                socket.emit("inventaireLotUpdate", newElement);
+                                socket.emit("lot_inventaire_update", newElement);
                             }
                         }
 
@@ -115,7 +115,7 @@ const InventaireScanVolee = ({
     }
 
     useEffect(()=>{
-        socket.emit("join_inventaire_lot", 'lot-'+idInventaire);
+        socket.emit("lot_inventaire_join", 'lot-'+idInventaire);
     },[])
 
     return (<>

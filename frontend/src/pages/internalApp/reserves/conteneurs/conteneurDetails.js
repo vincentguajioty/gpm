@@ -7,6 +7,7 @@ import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import { Axios } from 'helpers/axios';
 
 import ConteneurProprietes from './conteneurProprietes';
+import ConteneurInventairesTable from './conteneurInventairesTable';
 import ReservesMaterielsTable from '../materiels/materielsTable';
 
 const ConteneurDetails = () => {
@@ -67,7 +68,12 @@ const ConteneurDetails = () => {
                             </Tab>
                             
                             <Tab eventKey="inventaire" title="Inventaires" className='border-bottom border-x p-3'>
-                                Tableau des inventaires
+                                <ConteneurInventairesTable
+                                    idConteneur={idConteneur}
+                                    inventaireEnCours={conteneur.conteneur.inventaireEnCours}
+                                    inventaires={conteneur.inventaires}
+                                    setPageNeedsRefresh={setPageNeedsRefresh}
+                                />
                             </Tab>
                         </Tabs>
                     </Card>

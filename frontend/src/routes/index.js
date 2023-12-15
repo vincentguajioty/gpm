@@ -32,6 +32,7 @@ import LotInventaireEnCours from 'pages/internalApp/lots/inventairesLots/inventa
 import Reserves from 'pages/internalApp/reserves/reserves';
 import ConteneurDetails from 'pages/internalApp/reserves/conteneurs/conteneurDetails';
 import MaterielsReserve from 'pages/internalApp/reserves/materielsReserve';
+import ReserveInventaireEnCours from 'pages/internalApp/reserves/inventairesConteneurs/inventaireEnCours';
 
 import Commandes from 'pages/internalApp/commandes/commandes';
 import CentresDeCouts from 'pages/internalApp/centresDeCouts/centresDeCouts';
@@ -112,6 +113,7 @@ const FalconRoutes = () => {
           <Route path="/reservesConteneurs" element={<Reserves />} />
           <Route path="/reservesConteneurs/:idConteneur" element={<ConteneurDetails />} />
           <Route path="/reservesMateriels" element={<MaterielsReserve />} />
+          <Route path="/inventaireReserveEnCours/:idReserveInventaire" element={<ReserveInventaireEnCours />} />
 
           <Route path="/commandes" element={<Commandes />} />
           <Route path="/couts" element={<CentresDeCouts />} />

@@ -734,3 +734,15 @@ export const lotsStartInventaireModal = Yup.object().shape({
         .typeError(champObligatoire)
         .required(champObligatoire),
 });
+
+export const reservesStartInventaireModal = Yup.object().shape({
+    idPersonne: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    dateInventaire: Yup
+        .date()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});

@@ -19,8 +19,8 @@ const socket = socketIO.connect(window.__ENV__.APP_BACKEND_URL,{withCredentials:
 }});
 
 const InventaireParcoursManuelOneEmplacement = ({
-    idInventaire,
-    idEmplacement,
+    idReserveInventaire,
+    idConteneur,
     inventaireElements,
     catalogueCodesBarres,
     demandePopullationPrecedente,
@@ -50,7 +50,7 @@ const InventaireParcoursManuelOneEmplacement = ({
                     let trouve = false;
                     for(const elem of inventaireElements)
                     {
-                        if(elem.idEmplacement == idEmplacement && elem.idMaterielCatalogue == elementScanne.idMaterielCatalogue)
+                        if(elem.idConteneur == idConteneur && elem.idMaterielCatalogue == elementScanne.idMaterielCatalogue)
                         {
                             trouve = true;
 
@@ -68,9 +68,9 @@ const InventaireParcoursManuelOneEmplacement = ({
                             }
 
                             let newElement = {
-                                idElement: elem.idElement,
-                                idEmplacement: elem.idEmplacement,
-                                idInventaire: elem.idInventaire,
+                                idReserveElement: elem.idReserveElement,
+                                idConteneur: elem.idConteneur,
+                                idReserveInventaire: elem.idReserveInventaire,
                                 idMaterielCatalogue: elem.idMaterielCatalogue,
                                 libelleMateriel: elem.libelleMateriel,
                                 peremptionAvantInventaire: elem.peremptionAvantInventaire,
@@ -80,7 +80,7 @@ const InventaireParcoursManuelOneEmplacement = ({
                                 quantiteAlerte: elem.quantiteAlerte,
                             };
 
-                            socket.emit("lot_inventaire_update", newElement);
+                            socket.emit("reserve_inventaire_update", newElement);
                         }
                     }
 
@@ -102,16 +102,16 @@ const InventaireParcoursManuelOneEmplacement = ({
     }
 
     useEffect(()=>{
-        socket.emit("lot_inventaire_join", 'lot-'+idInventaire);
+        socket.emit("reserve_inventaire_join", 'lot-'+idReserveInventaire);
     },[])
 
-    const updateQuantite = (idElement, quantiteInventoriee, updateOldPeremption) => {
-        let oneElement = inventaireElements.filter(elem => elem.idElement == idElement)[0];
+    const updateQuantite = (idReserveElement, quantiteInventoriee, updateOldPeremption) => {
+        let oneElement = inventaireElements.filter(elem => elem.idReserveElement == idReserveElement)[0];
 
         let newElement = {
-            idElement: oneElement.idElement,
-            idEmplacement: oneElement.idEmplacement,
-            idInventaire: oneElement.idInventaire,
+            idReserveElement: oneElement.idReserveElement,
+            idConteneur: oneElement.idConteneur,
+            idReserveInventaire: oneElement.idReserveInventaire,
             idMaterielCatalogue: oneElement.idMaterielCatalogue,
             libelleMateriel: oneElement.libelleMateriel,
             peremptionAvantInventaire: oneElement.peremptionAvantInventaire,
@@ -121,16 +121,16 @@ const InventaireParcoursManuelOneEmplacement = ({
             quantiteAlerte: oneElement.quantiteAlerte,
         };
 
-        socket.emit("lot_inventaire_update", newElement);
+        socket.emit("reserve_inventaire_update", newElement);
     }
 
-    const updatePeremption = (idElement, peremptionInventoriee) => {
-        let oneElement = inventaireElements.filter(elem => elem.idElement == idElement)[0];
+    const updatePeremption = (idReserveElement, peremptionInventoriee) => {
+        let oneElement = inventaireElements.filter(elem => elem.idReserveElement == idReserveElement)[0];
 
         let newElement = {
-            idElement: oneElement.idElement,
-            idEmplacement: oneElement.idEmplacement,
-            idInventaire: oneElement.idInventaire,
+            idReserveElement: oneElement.idReserveElement,
+            idConteneur: oneElement.idConteneur,
+            idReserveInventaire: oneElement.idReserveInventaire,
             idMaterielCatalogue: oneElement.idMaterielCatalogue,
             libelleMateriel: oneElement.libelleMateriel,
             peremptionAvantInventaire: oneElement.peremptionAvantInventaire,
@@ -140,7 +140,7 @@ const InventaireParcoursManuelOneEmplacement = ({
             quantiteAlerte: oneElement.quantiteAlerte,
         };
 
-        socket.emit("lot_inventaire_update", newElement);
+        socket.emit("reserve_inventaire_update", newElement);
     }
 
     useEffect(()=>{
@@ -149,9 +149,9 @@ const InventaireParcoursManuelOneEmplacement = ({
             for(const oneElement of inventaireElements)
             {
                 let newElement = {
-                    idElement: oneElement.idElement,
-                    idEmplacement: oneElement.idEmplacement,
-                    idInventaire: oneElement.idInventaire,
+                    idReserveElement: oneElement.idReserveElement,
+                    idConteneur: oneElement.idConteneur,
+                    idReserveInventaire: oneElement.idReserveInventaire,
                     idMaterielCatalogue: oneElement.idMaterielCatalogue,
                     libelleMateriel: oneElement.libelleMateriel,
                     peremptionAvantInventaire: oneElement.peremptionAvantInventaire,
@@ -161,7 +161,7 @@ const InventaireParcoursManuelOneEmplacement = ({
                     quantiteAlerte: oneElement.quantiteAlerte,
                 };
         
-                socket.emit("lot_inventaire_update", newElement);
+                socket.emit("reserve_inventaire_update", newElement);
             }
         }
     },[demandePopullationPrecedente])
@@ -170,7 +170,7 @@ const InventaireParcoursManuelOneEmplacement = ({
         <Form className='mb-3' onSubmit={validerScannette}>
             <FloatingLabel
                 controlId="floatingInput"
-                label="Scanner ici les matériels de cet emplacement"
+                label="Scanner ici les matériels de ce conteneur"
                 className="mb-3"
             >
                 <Form.Control
@@ -180,7 +180,7 @@ const InventaireParcoursManuelOneEmplacement = ({
                     id='champScannette'
                     value={champScannette}
                     onChange={(e) => setChampScannette(e.target.value)}
-                    disabled={demandePopullationPrecedente || !HabilitationService.habilitations['lots_modification']}
+                    disabled={demandePopullationPrecedente || !HabilitationService.habilitations['reserve_modification']}
                 />
             </FloatingLabel>
         </Form>
@@ -226,10 +226,10 @@ const InventaireParcoursManuelOneEmplacement = ({
                                     name='quantiteInventoriee'
                                     id='quantiteInventoriee'
                                     value={elem.quantiteInventoriee}
-                                    onChange={(e) => updateQuantite(elem.idElement, e.target.value, false)}
-                                    disabled={!HabilitationService.habilitations['lots_modification']}
+                                    onChange={(e) => updateQuantite(elem.idReserveElement, e.target.value, false)}
+                                    disabled={!HabilitationService.habilitations['reserve_modification']}
                                 />
-                                {HabilitationService.habilitations['lots_modification'] ?
+                                {HabilitationService.habilitations['reserve_modification'] ?
                                     <DropdownButton
                                         size='sm'
                                         variant="outline-secondary"
@@ -237,8 +237,8 @@ const InventaireParcoursManuelOneEmplacement = ({
                                         id="input-group-dropdown-2"
                                         align="end"
                                     >
-                                        <Dropdown.Item onClick={()=>{updateQuantite(elem.idElement, elem.quantiteAvantInventaire, true)}}>Qtt précédente</Dropdown.Item>
-                                        <Dropdown.Item onClick={()=>{updateQuantite(elem.idElement, elem.quantiteAlerte, false)}}>Stock d'alerte</Dropdown.Item>
+                                        <Dropdown.Item onClick={()=>{updateQuantite(elem.idReserveElement, elem.quantiteAvantInventaire, true)}}>Qtt précédente</Dropdown.Item>
+                                        <Dropdown.Item onClick={()=>{updateQuantite(elem.idReserveElement, elem.quantiteAlerte, false)}}>Stock d'alerte</Dropdown.Item>
                                     </DropdownButton>
                                 : null}
                             </InputGroup>
@@ -246,14 +246,14 @@ const InventaireParcoursManuelOneEmplacement = ({
                         <td>
                             <DatePicker
                                 selected={elem.peremptionInventoriee ? new Date(elem.peremptionInventoriee) : null}
-                                onChange={(date)=>updatePeremption(elem.idElement, date)}
+                                onChange={(date)=>updatePeremption(elem.idReserveElement, date)}
                                 formatWeekDay={day => day.slice(0, 3)}
                                 className='form-control'
                                 placeholderText="Choisir une date"
                                 dateFormat="dd/MM/yyyy"
                                 fixedHeight
                                 locale="fr"
-                                disabled={!HabilitationService.habilitations['lots_modification']}
+                                disabled={!HabilitationService.habilitations['reserve_modification']}
                             />
                         </td>
                     </tr>
