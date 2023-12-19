@@ -54,7 +54,7 @@ const LotInventaireEnCours = () => {
             
             setReadyToDisplay(true);
 
-            socket.emit("lot_inventaire_join", 'lot-'+idInventaire);
+            await socket.emit("lot_inventaire_join", 'lot-'+idInventaire);
         } catch (error) {
             console.log(error)
         }
@@ -93,17 +93,25 @@ const LotInventaireEnCours = () => {
         })
 	}, [socket, inventaireElements])
 
+    const manageDemandePopullationPrecedente = async () => {
+        try {
+            await socket.emit("lot_inventaire_demandePopullationPrecedente", {idInventaire: idInventaire, demandePopullationPrecedente: demandePopullationPrecedente});
+            location.reload();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(()=>{
         if(demandePopullationPrecedente)
         {
-            socket.emit("lot_inventaire_demandePopullationPrecedente", {idInventaire: idInventaire, demandePopullationPrecedente: demandePopullationPrecedente});
-            location.reload();
+            manageDemandePopullationPrecedente();
         }
     },[demandePopullationPrecedente])
 
     const validerInventaire = async (commentaire) => {
         try {
-            socket.emit("lot_inventaire_validate", {idInventaire: idInventaire, commentaire: commentaire||null});
+            await socket.emit("lot_inventaire_validate", {idInventaire: idInventaire, commentaire: commentaire||null});
             setIsClosed(true);
         } catch (e) {
             console.log(e);

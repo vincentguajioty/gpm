@@ -89,7 +89,7 @@ const InventaireScanVolee = ({
                                     quantiteAlerte: elem.quantiteAlerte,
                                 };
 
-                                socket.emit("lot_inventaire_update", newElement);
+                                await socket.emit("lot_inventaire_update", newElement);
                             }
                         }
 

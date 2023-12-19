@@ -80,7 +80,7 @@ const InventaireParcoursManuelOneEmplacement = ({
                                 quantiteAlerte: elem.quantiteAlerte,
                             };
 
-                            socket.emit("reserve_inventaire_update", newElement);
+                            await socket.emit("reserve_inventaire_update", newElement);
                         }
                     }
 
@@ -105,7 +105,7 @@ const InventaireParcoursManuelOneEmplacement = ({
         socket.emit("reserve_inventaire_join", 'lot-'+idReserveInventaire);
     },[])
 
-    const updateQuantite = (idReserveElement, quantiteInventoriee, updateOldPeremption) => {
+    const updateQuantite = async (idReserveElement, quantiteInventoriee, updateOldPeremption) => {
         let oneElement = inventaireElements.filter(elem => elem.idReserveElement == idReserveElement)[0];
 
         let newElement = {
@@ -121,10 +121,10 @@ const InventaireParcoursManuelOneEmplacement = ({
             quantiteAlerte: oneElement.quantiteAlerte,
         };
 
-        socket.emit("reserve_inventaire_update", newElement);
+        await socket.emit("reserve_inventaire_update", newElement);
     }
 
-    const updatePeremption = (idReserveElement, peremptionInventoriee) => {
+    const updatePeremption = async (idReserveElement, peremptionInventoriee) => {
         let oneElement = inventaireElements.filter(elem => elem.idReserveElement == idReserveElement)[0];
 
         let newElement = {
@@ -140,12 +140,11 @@ const InventaireParcoursManuelOneEmplacement = ({
             quantiteAlerte: oneElement.quantiteAlerte,
         };
 
-        socket.emit("reserve_inventaire_update", newElement);
+        await socket.emit("reserve_inventaire_update", newElement);
     }
 
-    useEffect(()=>{
-        if(demandePopullationPrecedente)
-        {
+    const manageDemandePopullationPrecedente = async () => {
+        try {
             for(const oneElement of inventaireElements)
             {
                 let newElement = {
@@ -161,8 +160,17 @@ const InventaireParcoursManuelOneEmplacement = ({
                     quantiteAlerte: oneElement.quantiteAlerte,
                 };
         
-                socket.emit("reserve_inventaire_update", newElement);
+                await socket.emit("reserve_inventaire_update", newElement);
             }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(()=>{
+        if(demandePopullationPrecedente)
+        {
+            manageDemandePopullationPrecedente();
         }
     },[demandePopullationPrecedente])
 

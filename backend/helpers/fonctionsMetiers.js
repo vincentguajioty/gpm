@@ -942,6 +942,8 @@ const validerInventaireLot = async (idInventaire, commentairesInventaire) => {
             idLot: idLot,
         });
 
+        await checkOneConf(idLot);
+
     } catch (error) {
         logger.error(error)
     }

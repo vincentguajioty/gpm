@@ -49,7 +49,7 @@ const ReserveInventaireEnCours = () => {
             
             setReadyToDisplay(true);
 
-            socket.emit("reserve_inventaire_join", 'reserve-'+idReserveInventaire);
+            await socket.emit("reserve_inventaire_join", 'reserve-'+idReserveInventaire);
         } catch (error) {
             console.log(error)
         }
@@ -88,17 +88,25 @@ const ReserveInventaireEnCours = () => {
         })
 	}, [socket, inventaireElements])
 
+    const manageDemandePopullationPrecedente = async () => {
+        try {
+            await socket.emit("reserve_inventaire_demandePopullationPrecedente", {idReserveInventaire: idReserveInventaire, demandePopullationPrecedente: demandePopullationPrecedente});
+            location.reload();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(()=>{
         if(demandePopullationPrecedente)
         {
-            socket.emit("reserve_inventaire_demandePopullationPrecedente", {idReserveInventaire: idReserveInventaire, demandePopullationPrecedente: demandePopullationPrecedente});
-            location.reload();
+            manageDemandePopullationPrecedente();
         }
     },[demandePopullationPrecedente])
 
     const validerInventaire = async (commentaire) => {
         try {
-            socket.emit("reserve_inventaire_validate", {idReserveInventaire: idReserveInventaire, commentaire: commentaire||null});
+            await socket.emit("reserve_inventaire_validate", {idReserveInventaire: idReserveInventaire, commentaire: commentaire||null});
             setIsClosed(true);
         } catch (e) {
             console.log(e);
