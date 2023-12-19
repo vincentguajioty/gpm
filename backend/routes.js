@@ -99,6 +99,7 @@ router.get('/select/getCodesBarreCatalogue',                   loggerMiddleware.
 router.get('/select/getConsommationsEnCours',                  loggerMiddleware.httpLogger(), selectForListsCtrl.getConsommationsEnCours);
 router.get('/select/getPublicCatalogueMateriel',               loggerMiddleware.httpLogger(), selectForListsCtrl.getCatalogueMateriel);
 router.get('/select/getLotsPublics',                           loggerMiddleware.httpLogger(), selectForListsCtrl.getLotsPublics);
+router.get('/select/getConteneursPublics',                     loggerMiddleware.httpLogger(), selectForListsCtrl.getConteneursPublics);
 
 //Composant Calendrier
 router.get('/calendrier/peremptionsLots',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),       calendrierCtrl.peremptionsLots);

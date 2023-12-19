@@ -1502,6 +1502,83 @@ const supprimerItemConsommation = async (idConsommationMateriel) => {
     }
 }
 
+const terminerSaisieConsommation = async (data) => {
+    try {
+        const getExistingElement = await db.query(`
+            UPDATE
+                LOTS_CONSOMMATION
+            SET
+                commentairesConsommation = :commentairesConsommation,
+                declarationEnCours = true,
+                reapproEnCours = true
+            WHERE
+                idConsommation = :idConsommation
+        `,{
+            idConsommation: data.idConsommation || null,
+            commentairesConsommation: data.commentairesConsommation || null,
+        });
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const updateReconditionnementConsommation = async (element) => {
+    try {
+        const updateElement = await db.query(`
+            UPDATE
+                LOTS_CONSOMMATION_MATERIEL
+            SET
+                idConteneur = :idConteneur
+            WHERE
+                idConsommationMateriel = :idConsommationMateriel
+        `,{
+            idConsommationMateriel: element.idConsommationMateriel || null,
+            idConteneur: element.idConteneur > 0 ? element.idConteneur : null,
+        });
+
+        const getItem = await db.query(`
+            SELECT
+                m.*,
+                l.libelleLot,
+                c.libelleMateriel,
+                res.libelleConteneur
+            FROM
+                LOTS_CONSOMMATION_MATERIEL m
+                LEFT OUTER JOIN LOTS_LOTS l ON m.idLot = l.idLot
+                LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN RESERVES_CONTENEUR res ON m.idConteneur = res.idConteneur
+            WHERE
+                idConsommationMateriel = :idConsommationMateriel
+        `,{
+            idConsommationMateriel: element.idConsommationMateriel || null,
+        });
+        return({toUpdate: getItem[0], toDelete: null});
+
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const terminerReconditionnementConsommation = async (data) => {
+    try {
+        const getExistingElement = await db.query(`
+            UPDATE
+                LOTS_CONSOMMATION
+            SET
+                commentairesConsommation = :commentairesConsommation,
+                declarationEnCours = false,
+                reapproEnCours = false
+            WHERE
+                idConsommation = :idConsommation
+        `,{
+            idConsommation: data.idConsommation || null,
+            commentairesConsommation: data.commentairesConsommation || null,
+        });
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -1543,4 +1620,7 @@ module.exports = {
     ajouterItemConsommation,
     updateItemConsommation,
     supprimerItemConsommation,
+    terminerSaisieConsommation,
+    updateReconditionnementConsommation,
+    terminerReconditionnementConsommation,
 };

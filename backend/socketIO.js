@@ -129,6 +129,21 @@ const socketInterface = async (http) => {
                     await fonctionsMetiers.supprimerItemConsommation(data.idConsommationMateriel);
                     socketIO.to('consommation-'+data.idConsommation).emit("consommation_deleteElement", {idConsommationMateriel: data.idConsommationMateriel});
                 })
+
+                socket.on('consommation_terminerSaisie', async (data) => {
+                    await fonctionsMetiers.terminerSaisieConsommation(data);
+                    socketIO.to('consommation-'+data.idConsommation).emit("consommation_reloadPage");
+                })
+
+                socket.on('consommation_updateRecond', async (data) => {
+                    let result = await fonctionsMetiers.updateReconditionnementConsommation(data);
+                    socketIO.to('consommation-'+data.idConsommation).emit("consommation_updateElement", result);
+                })
+
+                socket.on('consommation_terminerReconditionnement', async (data) => {
+                    await fonctionsMetiers.terminerReconditionnementConsommation(data);
+                    socketIO.to('consommation-'+data.idConsommation).emit("consommation_reloadPage");
+                })
             }
         });
     } catch (error) {

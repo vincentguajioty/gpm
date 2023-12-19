@@ -49,7 +49,8 @@ exports.createConso = async (req, res)=>{
                 nomDeclarantConsommation = :nomDeclarantConsommation,
                 dateConsommation = :dateConsommation,
                 evenementConsommation = :evenementConsommation,
-                declarationEnCours = true
+                declarationEnCours = true,
+                reapproEnCours = false
         `,{
             nomDeclarantConsommation: req.body.nomDeclarantConsommation || null,
             dateConsommation: req.body.dateConsommation || null,

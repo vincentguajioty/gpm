@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Alert, } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
@@ -15,6 +15,7 @@ const socket = socketIO.connect(window.__ENV__.APP_BACKEND_URL,{withCredentials:
 
 import AjouterConsommable from './ajouterConsommable';
 import AfficherConsommable from './afficherConsommation';
+import GestionReappro from './gererReappro';
 
 const GererConsommation = ({
     idConsommation,
@@ -71,6 +72,7 @@ const GererConsommation = ({
         })
 
         socket.on("consommation_updateElement", (data)=>{
+            console.log(data)
             let tempArray = [];
             for(const elem of consommation.elements)
             {
@@ -111,6 +113,10 @@ const GererConsommation = ({
             })
         })
 
+        socket.on("consommation_reloadPage", (data)=>{
+            location.reload();
+        })
+
     },[socket, consommation])
     
     if(isLoading)
@@ -125,22 +131,32 @@ const GererConsommation = ({
                 className="mb-3"
             />
 
-            <Row>
-                <Col md={4}>
-                    <AjouterConsommable
-                        socket={socket}
-                        idConsommation={idConsommation}
-                    />
-                </Col>
-                <Col md={8}>
-                    <AfficherConsommable
-                        socket={socket}
-                        idConsommation={idConsommation}
-                        consommation={consommation}
-                    />
-                </Col>
-            </Row>
-
+            {consommation.consommation.reapproEnCours == true ?
+                <GestionReappro
+                    socket={socket}
+                    idConsommation={idConsommation}
+                    consommation={consommation}
+                />
+            :
+                consommation.consommation.declarationEnCours == true ?
+                    <Row>
+                        <Col md={4}>
+                            <AjouterConsommable
+                                socket={socket}
+                                idConsommation={idConsommation}
+                            />
+                        </Col>
+                        <Col md={8}>
+                            <AfficherConsommable
+                                socket={socket}
+                                idConsommation={idConsommation}
+                                consommation={consommation}
+                            />
+                        </Col>
+                    </Row>
+                :
+                    <Alert variant='danger'>ERREUR - Rapport de consommation clos</Alert>
+            }
         </>);
     }
 };

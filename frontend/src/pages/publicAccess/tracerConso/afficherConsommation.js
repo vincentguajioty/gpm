@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Card, Form, Button, Modal, } from 'react-bootstrap';
+import { Card, Form, Button, Modal, Alert, } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 import moment from 'moment-timezone';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
@@ -156,6 +156,30 @@ const AfficherConsommable = ({
         }
     }
 
+    /* FIN CONSOMMATION */
+    const [showFinishModal, setShowFinishModal] = useState(false);
+    const [commentaire, setCommentaire] = useState();
+    const handleCloseFinishModal = () => {
+        setShowFinishModal(false);
+        setLoading(false);
+    };
+    const handleShowFinishModal = () => {
+        setShowFinishModal(true);
+    };
+
+    const finirLaConso = async () => {
+        try {
+            setLoading(true);
+
+            await socket.emit("consommation_terminerSaisie",{
+                idConsommation: idConsommation,
+                commentairesConsommation: commentaire,
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     return(<>
         <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} backdrop="static" keyboard={false}>
             <Modal.Header>
@@ -170,6 +194,23 @@ const AfficherConsommable = ({
                     Annuler
                 </Button>
                 <Button variant='danger' onClick={supprimerEntree} disabled={isLoading}>{isLoading ? 'Patientez...' : 'Supprimer'}</Button>
+            </Modal.Footer>
+        </Modal>
+
+        <Modal show={showFinishModal} onHide={handleCloseFinishModal} backdrop="static" size='lg' keyboard={false}>
+            <Modal.Header>
+                <Modal.Title>Valider la saisie</Modal.Title>
+                <FalconCloseButton onClick={handleCloseFinishModal}/>
+            </Modal.Header>
+            <Modal.Body>
+                <Alert>Vous êtes sur le point de valider la saisie qui ne pourra plus être modifiée par la suite. Le prochain écran vous permettera de gérer le reconditionnement avec des réserves.</Alert>
+                <Form.Control size="sm" as="textarea" placeholder="Zone de commentaires" rows={5} name={"commentaire"} id={"commentaire"} onChange={(e)=>{setCommentaire(e.target.value)}}/>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseFinishModal}>
+                    Annuler
+                </Button>
+                <Button variant='success' onClick={finirLaConso} disabled={isLoading}>{isLoading ? 'Patientez...' : 'Valider'}</Button>
             </Modal.Footer>
         </Modal>
 
@@ -244,6 +285,9 @@ const AfficherConsommable = ({
                     data={lignes}
                     topButtonShow={false}
                 />
+                <div className="d-grid gap-2 mt-3">
+                    <Button variant='primary' className='me-2 mb-1' onClick={handleShowFinishModal} disabled={isLoading}>{isLoading ? 'Patientez...' : 'Evènement terminé, passer au reconditionnement'}</Button>
+                </div>
             </FalconComponentCard.Body>
         </FalconComponentCard>
     </>);

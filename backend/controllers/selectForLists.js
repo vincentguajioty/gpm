@@ -697,6 +697,8 @@ exports.getConsommationsEnCours = async (req, res)=>{
                 LOTS_CONSOMMATION
             WHERE
                 declarationEnCours = true
+                OR
+                reapproEnCours = true
             ORDER BY
                 dateConsommation
         ;`);
@@ -717,6 +719,26 @@ exports.getLotsPublics = async (req, res)=>{
                 LOTS_LOTS
             WHERE
                 dispoBenevoles = true
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getConteneursPublics = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idConteneur as value,
+                libelleConteneur as label
+            FROM
+                RESERVES_CONTENEUR
+            WHERE
+                dispoBenevoles = true
+            ORDER BY
+                libelleConteneur
         ;`);
         res.send(results);
     } catch (error) {

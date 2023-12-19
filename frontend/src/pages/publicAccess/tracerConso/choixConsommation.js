@@ -85,9 +85,16 @@ const ChoixConsommation = ({
                                 size='sm'    
                                 icon='notes-medical'
                                 className='mb-1 me-1'
-                                variant='outline-primary'
+                                variant={conso.reapproEnCours ? 'outline-warning' : conso.declarationEnCours ? 'outline-info' : 'outline-success'}
                                 onClick={()=>{setIdConsommation(conso.idConsommation)}}
-                                >{moment(conso.dateConsommation).format('DD/MM/YYYY')} {conso.evenementConsommation} par {conso.nomDeclarantConsommation}</IconButton>
+                                >
+                                    {conso.reapproEnCours ? 'RECONDITIONNEMENT' : conso.declarationEnCours ? 'EN COURS' : null}
+                                    <br/>
+                                    {moment(conso.dateConsommation).format('DD/MM/YYYY')}
+                                    <br/>
+                                    {conso.evenementConsommation}
+                                    <br/>
+                                    {conso.nomDeclarantConsommation}</IconButton>
                             )})}
                         </FalconComponentCard.Body>
                     </FalconComponentCard>
