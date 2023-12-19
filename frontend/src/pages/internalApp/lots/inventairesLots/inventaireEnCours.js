@@ -64,6 +64,8 @@ const LotInventaireEnCours = () => {
     },[])
 
     useEffect(() => {
+        socket.removeAllListeners();
+        
         socket.on("lot_inventaire_updateYourElement", (data)=>{
             let tempArray = [];
             for(const elem of inventaireElements)

@@ -59,6 +59,8 @@ const ReserveInventaireEnCours = () => {
     },[])
 
     useEffect(() => {
+        socket.removeAllListeners();
+        
         socket.on("reserve_inventaire_updateYourElement", (data)=>{
             let tempArray = [];
             for(const elem of inventaireElements)
