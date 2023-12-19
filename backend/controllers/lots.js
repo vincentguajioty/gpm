@@ -37,6 +37,23 @@ exports.getLots = async (req, res)=>{
 
         for(const lot of results)
         {
+            let conso = await db.query(`
+                SELECT
+                    COUNT(*) as nb
+                FROM
+                    LOTS_CONSOMMATION_MATERIEL mat
+                    LEFT OUTER JOIN LOTS_CONSOMMATION c ON mat.idConsommation = c.idConsommation
+                WHERE
+                    mat.idLot = :idLot
+                    AND
+                    mat.traiteOperateur = false
+                    AND
+                    c.declarationEnCours = true
+            ;`,{
+                idLot: lot.idLot,
+            });
+            lot.consoEnCours = conso[0].nb > 0 ? true : false;
+            
             let materielsOK = await db.query(`
                 SELECT
                     COUNT(*) as nb
@@ -157,6 +174,20 @@ exports.getOneLot = async (req, res)=>{
             idLot: req.body.idLot || null,
         });
         lot = lot[0];
+
+        let conso = await db.query(`
+            SELECT
+                COUNT(*) as nb
+            FROM
+                LOTS_CONSOMMATION_MATERIEL mat
+            WHERE
+                mat.idLot = :idLot
+                AND
+                mat.traiteOperateur = false
+        ;`,{
+            idLot: lot.idLot,
+        });
+        lot.consoEnCours = conso[0].nb > 0 ? true : false;
 
         let materielsOK = await db.query(`
             SELECT

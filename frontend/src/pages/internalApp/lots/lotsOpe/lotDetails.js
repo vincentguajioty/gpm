@@ -54,6 +54,10 @@ const LotDetails = () => {
                 <Alert variant='warning'>Inventaire en cours sur ce lot. Toute modification du lot est donc impossible.</Alert>
             :null}
 
+            {lot.lot.consoEnCours == true ?
+                <Alert variant='warning'>Ce lot semble être utilisé, un rapport de consommation est en cours. Il n'est pas recommandé d'apporter des modifications au lot pour le moment.</Alert>
+            :null}
+
             <Row>
                 <Col md={4}>
                     <LotProprietes
