@@ -61,6 +61,7 @@ const LotProprietesForm = ({lot, setModeEdition, setPageNeedsRefresh}) => {
             setValue("commentairesLots", lot.commentairesLots);
             setValue("idVehicule", lot.idVehicule);
             setValue("idLotsEtat", lot.idLotsEtat);
+            setValue("dispoBenevoles", lot.dispoBenevoles ? true : false);
 
             setLoading(false);
         } catch (error) {
@@ -88,6 +89,7 @@ const LotProprietesForm = ({lot, setModeEdition, setPageNeedsRefresh}) => {
                 commentairesLots: data.commentairesLots,
                 idVehicule: data.idVehicule,
                 idLotsEtat: data.idLotsEtat,
+                dispoBenevoles: data.dispoBenevoles,
             });
 
             setPageNeedsRefresh(true);
@@ -251,6 +253,22 @@ const LotProprietesForm = ({lot, setModeEdition, setPageNeedsRefresh}) => {
                         <td>
                             <Form.Control size="sm" type="text" name='frequenceInventaire' id='frequenceInventaire' {...register('frequenceInventaire')}/>
                             <small className="text-danger">{errors.frequenceInventaire?.message}</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="bg-100" style={{ width: '30%' }}>Disponible aux bénéboles</td>
+                        <td>
+                            <Form.Check
+                                id='dispoBenevoles'
+                                name='dispoBenevoles'
+                                label="Rapports de consommation"
+                                type='switch'
+                                checked={watch("dispoBenevoles")}
+                                onClick={(e)=>{
+                                    setValue("dispoBenevoles", !watch("dispoBenevoles"))
+                                }}
+                            />
+                            <small className="text-danger">{errors.dispoBenevoles?.message}</small>
                         </td>
                     </tr>
                     <tr>

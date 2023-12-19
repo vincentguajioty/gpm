@@ -687,3 +687,40 @@ exports.getCodesBarreCatalogue = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+exports.getConsommationsEnCours = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                *
+            FROM
+                LOTS_CONSOMMATION
+            WHERE
+                declarationEnCours = true
+            ORDER BY
+                dateConsommation
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getLotsPublics = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idLot as value,
+                libelleLot as label
+            FROM
+                LOTS_LOTS
+            WHERE
+                dispoBenevoles = true
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}

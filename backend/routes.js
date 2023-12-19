@@ -15,6 +15,8 @@ const lotsCtrl = require('./controllers/lots');
 const sacsCtrl = require('./controllers/sacs');
 const materielsCtrl = require('./controllers/materiels');
 
+const lotsConsommationsCtrl = require('./controllers/lotsConsommation');
+
 const reservesConteneursCtrl = require('./controllers/reservesConteneurs');
 const reservesMaterielsCtrl = require('./controllers/reservesMateriels');
 
@@ -55,7 +57,7 @@ router.post('/updatePasswordWithoutCheck', loggerMiddleware.httpLogger(), jwtFun
 router.post('/getCurrentSessionsOneUser',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                                        connexionCtrl.getCurrentSessionsOneUser );
 router.post('/blackListSession',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), loggerMiddleware.suppressionLogger(),  connexionCtrl.blackListSession );
 
-//select routes for forms and lists
+//select routes for forms and lists - AUTHENTICATED
 router.get('/select/getPersonnes',                             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getPersonnes);
 router.get('/select/getActivePersonnes',                       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getActivePersonnes);
 router.get('/select/getNonAnonymesPersonnes',                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getNonAnonymesPersonnes);
@@ -93,6 +95,10 @@ router.get('/select/getSacsFull',                              loggerMiddleware.
 router.get('/select/getTypesLots',                             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getTypesLots);
 router.get('/select/getVehicules',                             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVehicules);
 router.get('/select/getCodesBarreCatalogue',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCodesBarreCatalogue);
+//select routes for forms and lists - PUBLIC
+router.get('/select/getConsommationsEnCours',                  loggerMiddleware.httpLogger(), selectForListsCtrl.getConsommationsEnCours);
+router.get('/select/getPublicCatalogueMateriel',               loggerMiddleware.httpLogger(), selectForListsCtrl.getCatalogueMateriel);
+router.get('/select/getLotsPublics',                           loggerMiddleware.httpLogger(), selectForListsCtrl.getLotsPublics);
 
 //Composant Calendrier
 router.get('/calendrier/peremptionsLots',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),       calendrierCtrl.peremptionsLots);
@@ -151,6 +157,9 @@ router.post('/lots/getLotsAlertes',      loggerMiddleware.httpLogger(), jwtFunct
 router.post('/lots/autoAffect',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['alertesBenevolesLots_affectation']),                                                 loggerMiddleware.modificationLogger(),   lotsCtrl.autoAffect);
 router.post('/lots/affectationTier',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['alertesBenevolesLots_affectationTier']),                                             loggerMiddleware.modificationLogger(),   lotsCtrl.affectationTier);
 router.post('/lots/udpateStatut',        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),                       middlewaresFunctions.alerteLotOwned(), loggerMiddleware.modificationLogger(),   lotsCtrl.udpateStatut);
+//OPERTAIONNEL - Consommation
+router.post('/consommations/getOneConso',     loggerMiddleware.httpLogger(),       lotsConsommationsCtrl.getOneConso);
+router.post('/consommations/createConso',     loggerMiddleware.httpLogger(),       lotsConsommationsCtrl.createConso);
 
 //RESERVES - Conteneurs
 router.get('/reserves/getConteneurs',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_lecture']),                                              reservesConteneursCtrl.getConteneurs);

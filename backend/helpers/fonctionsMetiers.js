@@ -1294,6 +1294,214 @@ const majValideursPersonne = async (enableLog) => {
     }
 }
 
+const ajouterItemConsommation = async (element) => {
+    try {
+        const getExistingElement = await db.query(`
+            SELECT
+                *
+            FROM
+                LOTS_CONSOMMATION_MATERIEL
+            WHERE
+                idLot = :idLot
+                AND
+                idMaterielCatalogue = :idMaterielCatalogue
+                AND
+                idConsommation = :idConsommation
+        `,{
+            idLot: element.idLot,
+            idMaterielCatalogue: element.idMaterielCatalogue,
+            idConsommation: element.idConsommation,
+        });
+
+        if(getExistingElement.length == 0)
+        {
+            const addElement = await db.query(`
+                INSERT INTO
+                    LOTS_CONSOMMATION_MATERIEL
+                SET
+                    idConsommation = :idConsommation,
+                    idMaterielCatalogue = :idMaterielCatalogue,
+                    idLot = :idLot,
+                    quantiteConsommation = :quantiteConsommation,
+                    idConteneur = null,
+                    traiteOperateur = false
+            `,{
+                idConsommation: element.idConsommation || null,
+                idMaterielCatalogue: element.idMaterielCatalogue || null,
+                idLot: element.idLot || null,
+                quantiteConsommation: element.quantiteConsommation || null,
+            });
+
+            const getLast = await db.query(`
+                SELECT
+                    m.*,
+                    l.libelleLot,
+                    c.libelleMateriel,
+                    res.libelleConteneur
+                FROM
+                    LOTS_CONSOMMATION_MATERIEL m
+                    LEFT OUTER JOIN LOTS_LOTS l ON m.idLot = l.idLot
+                    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                    LEFT OUTER JOIN RESERVES_CONTENEUR res ON m.idConteneur = res.idConteneur
+                ORDER BY
+                    m.idConsommationMateriel DESC
+                LIMIT 1
+            `);
+            return(getLast[0]);
+        }
+        else
+        {
+            const updateElement = await db.query(`
+                UPDATE
+                    LOTS_CONSOMMATION_MATERIEL
+                SET
+                    quantiteConsommation = quantiteConsommation + :quantiteConsommation
+                WHERE
+                    idConsommationMateriel = :idConsommationMateriel
+            `,{
+                idConsommationMateriel: getExistingElement[0].idConsommationMateriel || null,
+                quantiteConsommation: element.quantiteConsommation || null,
+            });
+
+            const getUpdated = await db.query(`
+                SELECT
+                    m.*,
+                    l.libelleLot,
+                    c.libelleMateriel,
+                    res.libelleConteneur
+                FROM
+                    LOTS_CONSOMMATION_MATERIEL m
+                    LEFT OUTER JOIN LOTS_LOTS l ON m.idLot = l.idLot
+                    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                    LEFT OUTER JOIN RESERVES_CONTENEUR res ON m.idConteneur = res.idConteneur
+                WHERE
+                    m.idConsommationMateriel = :idConsommationMateriel
+            `,{
+                idConsommationMateriel: getExistingElement[0].idConsommationMateriel || null,
+            });
+            return(getUpdated[0]);
+        }
+
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const updateItemConsommation = async (element) => {
+    try {
+        const getExistingElement = await db.query(`
+            SELECT
+                *
+            FROM
+                LOTS_CONSOMMATION_MATERIEL
+            WHERE
+                idLot = :idLot
+                AND
+                idMaterielCatalogue = :idMaterielCatalogue
+                AND
+                idConsommation = :idConsommation
+        `,{
+            idLot: element.idLot,
+            idMaterielCatalogue: element.idMaterielCatalogue,
+            idConsommation: element.idConsommation,
+        });
+
+        if(getExistingElement.length == 0 || (getExistingElement.length == 1 && getExistingElement[0].idConsommationMateriel == element.idConsommationMateriel))
+        {
+            const updateElement = await db.query(`
+                UPDATE
+                    LOTS_CONSOMMATION_MATERIEL
+                SET
+                    idLot = :idLot,
+                    quantiteConsommation = :quantiteConsommation
+                WHERE
+                    idConsommationMateriel = :idConsommationMateriel
+            `,{
+                idConsommationMateriel: element.idConsommationMateriel || null,
+                idLot: element.idLot || null,
+                quantiteConsommation: element.quantiteConsommation || null,
+            });
+
+            const getItem = await db.query(`
+                SELECT
+                    m.*,
+                    l.libelleLot,
+                    c.libelleMateriel,
+                    res.libelleConteneur
+                FROM
+                    LOTS_CONSOMMATION_MATERIEL m
+                    LEFT OUTER JOIN LOTS_LOTS l ON m.idLot = l.idLot
+                    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                    LEFT OUTER JOIN RESERVES_CONTENEUR res ON m.idConteneur = res.idConteneur
+                WHERE
+                    idConsommationMateriel = :idConsommationMateriel
+            `,{
+                idConsommationMateriel: element.idConsommationMateriel || null,
+            });
+            return({toUpdate: getItem[0], toDelete: null});
+        }
+        else
+        {
+            const updateElement = await db.query(`
+                UPDATE
+                    LOTS_CONSOMMATION_MATERIEL
+                SET
+                    quantiteConsommation = quantiteConsommation + :quantiteConsommation
+                WHERE
+                    idConsommationMateriel = :idConsommationMateriel
+            `,{
+                idConsommationMateriel: getExistingElement[0].idConsommationMateriel || null,
+                quantiteConsommation: element.quantiteConsommation || null,
+            });
+
+            const deleteElement = await db.query(`
+                DELETE FROM
+                    LOTS_CONSOMMATION_MATERIEL
+                WHERE
+                    idConsommationMateriel = :idConsommationMateriel
+            `,{
+                idConsommationMateriel: element.idConsommationMateriel || null,
+            });
+
+            const getUpdated = await db.query(`
+                SELECT
+                    m.*,
+                    l.libelleLot,
+                    c.libelleMateriel,
+                    res.libelleConteneur
+                FROM
+                    LOTS_CONSOMMATION_MATERIEL m
+                    LEFT OUTER JOIN LOTS_LOTS l ON m.idLot = l.idLot
+                    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                    LEFT OUTER JOIN RESERVES_CONTENEUR res ON m.idConteneur = res.idConteneur
+                WHERE
+                    m.idConsommationMateriel = :idConsommationMateriel
+            `,{
+                idConsommationMateriel: getExistingElement[0].idConsommationMateriel || null,
+            });
+            return({toUpdate: getUpdated[0], toDelete: element.idConsommationMateriel});
+        }
+
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const supprimerItemConsommation = async (idConsommationMateriel) => {
+    try {
+        const getExistingElement = await db.query(`
+            DELETE FROM
+                LOTS_CONSOMMATION_MATERIEL
+            WHERE
+                idConsommationMateriel = :idConsommationMateriel
+        `,{
+            idConsommationMateriel: idConsommationMateriel,
+        });
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -1332,4 +1540,7 @@ module.exports = {
     majNotificationsPersonne,
     majNotificationsProfil,
     majValideursPersonne,
+    ajouterItemConsommation,
+    updateItemConsommation,
+    supprimerItemConsommation,
 };

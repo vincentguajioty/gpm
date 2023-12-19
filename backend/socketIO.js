@@ -1,9 +1,18 @@
+const db = require('./db');
 const logger = require('./winstonLogger');
 const jwtFunctions = require('./jwt');
 const fonctionsMetiers = require('./helpers/fonctionsMetiers');
 
 const socketInterface = async (http) => {
     try {
+        let config = await db.query(`
+            SELECT
+                *
+            FROM
+                CONFIG
+        `);
+        config = config[0];
+        
         const socketIO = require('socket.io')(http, {
             cors: {
                 origin: [process.env.CORS_ORIGINS],
@@ -18,7 +27,7 @@ const socketInterface = async (http) => {
             
             socket.on('disconnect', () => {
                 logger.debug('A user disconnected');
-              });
+            });
 
             //---- Inventaires des lots ----
             socket.on('lot_inventaire_join', async (data) => {
@@ -97,6 +106,30 @@ const socketInterface = async (http) => {
                     await fonctionsMetiers.validerInventaireReserve(data.idReserveInventaire, data.commentaire);
                 }
             });
+
+            //---- Consommations espace publc ----
+            if(config.consommation_benevoles == true)
+            {
+                socket.on('consommation_join_evenement', async (data) => {
+                    logger.debug('User dans le suivi de conso ' + data);
+                    socket.join(data);
+                });
+
+                socket.on('consommation_addElement', async (data) => {
+                    let newElement = await fonctionsMetiers.ajouterItemConsommation(data);
+                    socketIO.to('consommation-'+data.idConsommation).emit("consommation_addElement", newElement);
+                })
+
+                socket.on('consommation_updateElement', async (data) => {
+                    let result = await fonctionsMetiers.updateItemConsommation(data);
+                    socketIO.to('consommation-'+data.idConsommation).emit("consommation_updateElement", result);
+                })
+
+                socket.on('consommation_deleteElement', async (data) => {
+                    await fonctionsMetiers.supprimerItemConsommation(data.idConsommationMateriel);
+                    socketIO.to('consommation-'+data.idConsommation).emit("consommation_deleteElement", {idConsommationMateriel: data.idConsommationMateriel});
+                })
+            }
         });
     } catch (error) {
         logger.error(error)

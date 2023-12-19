@@ -1,13 +1,29 @@
-import React from 'react';
-import { Card } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import React, {useState} from 'react';
+
+import GererConsommation from './tracerConso/gererConsommation';
+import ChoixConsommation from './tracerConso/choixConsommation';
 
 const TracerConso = () => {
-  return (
-    'La page publique qui permet de tracer une conso'
-  );
+    const [idConsommation, setIdConsommation] = useState();
+    
+    if(idConsommation && idConsommation > 0)
+    {
+        return(
+            <GererConsommation
+                idConsommation={idConsommation}
+            />
+        );
+    }
+    else
+    {
+        return(
+            <ChoixConsommation
+                setIdConsommation={setIdConsommation}
+            />
+        );
+    }
 };
+
+TracerConso.propTypes = {};
 
 export default TracerConso;

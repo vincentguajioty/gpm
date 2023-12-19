@@ -368,7 +368,8 @@ exports.addLot = async (req, res)=>{
                 idNotificationEnabled = :idNotificationEnabled,
                 idLotsEtat = :idLotsEtat,
                 dateDernierInventaire = :dateDernierInventaire,
-                frequenceInventaire = :frequenceInventaire
+                frequenceInventaire = :frequenceInventaire,
+                dispoBenevoles = false
         `,{
             libelleLot: req.body.libelleLot || null,
             idNotificationEnabled: req.body.idNotificationEnabled || null,
@@ -414,7 +415,8 @@ exports.duplicateLot = async (req, res)=>{
                 frequenceInventaire,
                 commentairesLots,
                 idVehicule,
-                idLotsEtat
+                idLotsEtat,
+                dispoBenevoles
             )
             SELECT
                 :libelleLot as libelleLot,
@@ -426,7 +428,8 @@ exports.duplicateLot = async (req, res)=>{
                 frequenceInventaire,
                 commentairesLots,
                 idVehicule,
-                idLotsEtat
+                idLotsEtat,
+                dispoBenevoles
             FROM
                 LOTS_LOTS
             WHERE
@@ -618,7 +621,8 @@ exports.updateLot = async (req, res)=>{
                 frequenceInventaire = :frequenceInventaire,
                 commentairesLots = :commentairesLots,
                 idVehicule = :idVehicule,
-                idLotsEtat = :idLotsEtat
+                idLotsEtat = :idLotsEtat,
+                dispoBenevoles = :dispoBenevoles
             WHERE
                 idLot = :idLot
         `,{
@@ -632,6 +636,7 @@ exports.updateLot = async (req, res)=>{
             commentairesLots: req.body.commentairesLots || null,
             idVehicule: req.body.idVehicule || null,
             idLotsEtat: req.body.idLotsEtat || null,
+            dispoBenevoles: req.body.dispoBenevoles || false,
             idLot: req.body.idLot || null,
         });
 

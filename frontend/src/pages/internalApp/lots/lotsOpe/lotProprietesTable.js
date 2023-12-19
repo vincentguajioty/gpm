@@ -65,6 +65,10 @@ const LotProprietesTable = ({lot, setPageNeedsRefresh}) => {
                     <td className="bg-100" style={{ width: '30%' }}>Alertes de bénévoles en cours</td>
                     <td><SoftBadge bg={lot.lot.nbAlertesEnCours > 0 ? 'warning' : 'success'}>{lot.lot.nbAlertesEnCours}</SoftBadge></td>
                 </tr>
+                <tr>
+                    <td className="bg-100" style={{ width: '30%' }}>Accessible aux bénévoles pour la consommation</td>
+                    <td><SoftBadge bg={lot.lot.dispoBenevoles ? 'warning' : 'success'}>{lot.lot.dispoBenevoles ? 'Accessible' : 'Verrouillé'}</SoftBadge></td>
+                </tr>
             </tbody>
         </Table>
     );

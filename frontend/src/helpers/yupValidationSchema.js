@@ -746,3 +746,49 @@ export const reservesStartInventaireModal = Yup.object().shape({
         .typeError(champObligatoire)
         .required(champObligatoire),
 });
+
+export const consommationPubliqueCreation = Yup.object().shape({
+    nomDeclarantConsommation: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    dateConsommation: Yup
+        .date()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    evenementConsommation: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});
+
+export const consommationPubliqueAjoutMateriel = Yup.object().shape({
+    idMaterielCatalogue: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    idLot: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    quantiteConsommation: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+});
+
+export const consommationPubliqueModificationMateriel = Yup.object().shape({
+    idLot: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    quantiteConsommation: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+});
