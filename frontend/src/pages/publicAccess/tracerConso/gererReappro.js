@@ -16,6 +16,7 @@ const GestionReappro = ({
     consommation,
 }) => {
     const [isLoading, setLoading] = useState(true);
+    const [conteneurs, setConteneurs] = useState([]);
 
     const colonnes = [
         {accessor: 'libelleLot'          , Header: 'Lot'},
@@ -24,9 +25,8 @@ const GestionReappro = ({
         {accessor: 'reconditionnement'   , Header: 'Reconditionnement'},
     ];
     const [lignes, setLignes] = useState([]);
-    const initTableau = async () => {
-        let conteneurs = await Axios.get('/select/getConteneursPublics');
-        conteneurs = conteneurs.data;
+    const initTableau = async (conteneursFromDB) => {
+        let conteneurListe = conteneursFromDB != null && conteneursFromDB.length > 0 ? conteneursFromDB : conteneurs;
 
         let tempTable  = [];
         for(const item of consommation.elements)
@@ -36,9 +36,9 @@ const GestionReappro = ({
                 libelleMateriel: item.libelleMateriel,
                 quantiteConsommation: item.quantiteConsommation,
                 reconditionnement:<>
-                    <Form.Select size="sm" value={item.idConteneur} onChange={(e) => {updateReconditionnementState(item.idConsommationMateriel, e.target.value || null)}}>
+                    <Form.Select size="sm" value={item.idConteneur || 0} onChange={(e) => {updateReconditionnementState(item.idConsommationMateriel, e.target.value || null)}}>
                         <option key="0" value="0">--- Reconditionnement impossible ---</option>
-                        {conteneurs.map((item, i) => {
+                        {conteneurListe.map((item, i) => {
                             return (<option key={item.value} value={item.value}>{item.label}</option>);
                         })}
                     </Form.Select>
@@ -53,8 +53,19 @@ const GestionReappro = ({
         initTableau();
     }, [consommation])
 
+    const initPage = async () => {
+        try {
+            let conteneurs = await Axios.get('/select/getConteneursPublics');
+            setConteneurs(conteneurs.data);
+
+            await initTableau(conteneurs.data);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
-        initTableau();
+        initPage();
     }, [])
 
     const updateReconditionnementState = async (idConsommationMateriel, idConteneur) => {
