@@ -78,7 +78,8 @@ exports.getConfigForAdmin = async (req, res) => {
             `SELECT
                 alertes_benevoles_lots,
                 alertes_benevoles_vehicules,
-                consommation_benevoles
+                consommation_benevoles,
+                consommation_benevoles_auto
             FROM
                 CONFIG
         `);
@@ -162,11 +163,13 @@ exports.saveAlertesConfig = async (req, res) => {
             SET
                 alertes_benevoles_lots = :alertes_benevoles_lots,
                 alertes_benevoles_vehicules = :alertes_benevoles_vehicules,
-                consommation_benevoles = :consommation_benevoles
+                consommation_benevoles = :consommation_benevoles,
+                consommation_benevoles_auto = :consommation_benevoles_auto
         `,{
             alertes_benevoles_lots : req.body.alertes_benevoles_lots || 0,
             alertes_benevoles_vehicules : req.body.alertes_benevoles_vehicules || 0,
             consommation_benevoles : req.body.consommation_benevoles || 0,
+            consommation_benevoles_auto : req.body.consommation_benevoles_auto || 0,
         });
 
         res.sendStatus(201);

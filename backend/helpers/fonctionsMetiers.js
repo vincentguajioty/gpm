@@ -1619,6 +1619,115 @@ const terminerReconditionnementConsommation = async (data) => {
     }
 }
 
+const validerUnElementConsomme = async (idConsommationMateriel) => {
+    try {
+        let itemFromConso = await db.query(`
+            SELECT
+                *
+            FROM
+                LOTS_CONSOMMATION_MATERIEL
+            WHERE
+                idConsommationMateriel = :idConsommationMateriel
+        `,{
+            idConsommationMateriel: idConsommationMateriel || null,
+        });
+        itemFromConso = itemFromConso[0];
+
+        if(itemFromConso.traiteOperateur == false)
+        {
+            if(itemFromConso.idConteneur && itemFromConso.idConteneur != null && itemFromConso.idConteneur > 0)
+            {
+                let updateReserve = await db.query(`
+                    UPDATE
+                        RESERVES_MATERIEL
+                    SET
+                        quantiteReserve = quantiteReserve - :quantiteConsommation
+                    WHERE
+                        idConteneur = :idConteneur
+                        AND
+                        idMaterielCatalogue = :idMaterielCatalogue
+                `,{
+                    quantiteConsommation: itemFromConso.quantiteConsommation || 0,
+                    idConteneur: itemFromConso.idConteneur || null,
+                    idMaterielCatalogue: itemFromConso.idMaterielCatalogue || null,
+                });
+            }else{
+                //décompte le lot
+                let updateLot = await db.query(`
+                    UPDATE
+                        MATERIEL_ELEMENT e
+                        LEFT OUTER JOIN MATERIEL_EMPLACEMENT em ON e.idEmplacement = em.idEmplacement
+                        LEFT OUTER JOIN MATERIEL_SAC s ON em.idSac = s.idSac
+                    SET
+                        e.quantite = e.quantite - :quantiteConsommation
+                    WHERE
+                        s.idLot = :idLot
+                        AND
+                        idMaterielCatalogue = :idMaterielCatalogue
+                `,{
+                    quantiteConsommation: itemFromConso.quantiteConsommation || 0,
+                    idLot: itemFromConso.idLot || null,
+                    idMaterielCatalogue: itemFromConso.idMaterielCatalogue || null,
+                });
+                await checkOneConf(itemFromConso.idLot);
+            }
+
+            const result = await db.query(`
+                UPDATE
+                    LOTS_CONSOMMATION_MATERIEL
+                SET
+                    traiteOperateur = true
+                WHERE
+                    idConsommationMateriel = :idConsommationMateriel
+            `,{
+                idConsommationMateriel: idConsommationMateriel || null,
+            });
+            
+            return true;
+        }else{
+            return false;
+        }
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const comptabiliserToutesConsommations = async () => {
+    try {
+        const getConfig = await db.query(`
+            SELECT
+                consommation_benevoles_auto
+            FROM
+                CONFIG
+        `);
+        if(getConfig[0].consommation_benevoles_auto == true)
+        {
+            logger.debug('Lancement du traitement auto des consommations de bénévoles car paramètre actif');
+            let elements = await db.query(`
+                SELECT
+                    idConsommationMateriel
+                FROM
+                    LOTS_CONSOMMATION_MATERIEL m
+                    LEFT OUTER JOIN LOTS_CONSOMMATION c ON m.idConsommation = c.idConsommation
+                WHERE
+                    c.declarationEnCours = false
+                    AND
+                    c.reapproEnCours = false
+                    AND
+                    m.traiteOperateur = false
+            `);
+            for(const element of elements)
+            {
+                await validerUnElementConsomme(element.idConsommationMateriel);
+            }
+        }else{
+            logger.debug('Annulation du traitement auto des consommations de bénévoles car paramètre désactivé');
+        }
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -1664,4 +1773,6 @@ module.exports = {
     terminerSaisieConsommation,
     updateReconditionnementConsommation,
     terminerReconditionnementConsommation,
+    validerUnElementConsomme,
+    comptabiliserToutesConsommations,
 };

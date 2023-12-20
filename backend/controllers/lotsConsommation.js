@@ -166,74 +166,17 @@ exports.getAllConso = async (req, res)=>{
 
 exports.decompterActionDefaut = async (req, res)=>{
     try {
-        let itemFromConso = await db.query(`
-            SELECT
-                *
-            FROM
-                LOTS_CONSOMMATION_MATERIEL
-            WHERE
-                idConsommationMateriel = :idConsommationMateriel
-        `,{
-            idConsommationMateriel: req.body.idConsommationMateriel || null,
-        });
-        itemFromConso = itemFromConso[0];
+        let traitement = await fonctionsMetiers.validerUnElementConsomme(req.body.idConsommationMateriel);
 
-        if(itemFromConso.traiteOperateur == false)
+        if(traitement == true)
         {
-            if(itemFromConso.idConteneur && itemFromConso.idConteneur != null && itemFromConso.idConteneur > 0)
-            {
-                let updateReserve = await db.query(`
-                    UPDATE
-                        RESERVES_MATERIEL
-                    SET
-                        quantiteReserve = quantiteReserve - :quantiteConsommation
-                    WHERE
-                        idConteneur = :idConteneur
-                        AND
-                        idMaterielCatalogue = :idMaterielCatalogue
-                `,{
-                    quantiteConsommation: itemFromConso.quantiteConsommation || 0,
-                    idConteneur: itemFromConso.idConteneur || null,
-                    idMaterielCatalogue: itemFromConso.idMaterielCatalogue || null,
-                });
-            }else{
-                //décompte le lot
-                let updateLot = await db.query(`
-                    UPDATE
-                        MATERIEL_ELEMENT e
-                        LEFT OUTER JOIN MATERIEL_EMPLACEMENT em ON e.idEmplacement = em.idEmplacement
-                        LEFT OUTER JOIN MATERIEL_SAC s ON em.idSac = s.idSac
-                    SET
-                        e.quantite = e.quantite - :quantiteConsommation
-                    WHERE
-                        s.idLot = :idLot
-                        AND
-                        idMaterielCatalogue = :idMaterielCatalogue
-                `,{
-                    quantiteConsommation: itemFromConso.quantiteConsommation || 0,
-                    idLot: itemFromConso.idLot || null,
-                    idMaterielCatalogue: itemFromConso.idMaterielCatalogue || null,
-                });
-                await fonctionsMetiers.checkOneConf(itemFromConso.idLot);
-            }
-
-            const result = await db.query(`
-                UPDATE
-                    LOTS_CONSOMMATION_MATERIEL
-                SET
-                    traiteOperateur = true
-                WHERE
-                    idConsommationMateriel = :idConsommationMateriel
-            `,{
-                idConsommationMateriel: req.body.idConsommationMateriel || null,
-            });
-            
             res.sendStatus(201);
         }else{
             res.sendStatus(501);
         }
     } catch (error) {
         logger.error(error)
+        res.sendStatus(501);
     }
 }
 
@@ -280,52 +223,7 @@ exports.decompterToutesActionsDefaut = async (req, res)=>{
 
         for(const itemFromConso of toutesLesConso)
         {
-            if(itemFromConso.idConteneur && itemFromConso.idConteneur != null && itemFromConso.idConteneur > 0)
-            {
-                let updateReserve = await db.query(`
-                    UPDATE
-                        RESERVES_MATERIEL
-                    SET
-                        quantiteReserve = quantiteReserve - :quantiteConsommation
-                    WHERE
-                        idConteneur = :idConteneur
-                        AND
-                        idMaterielCatalogue = :idMaterielCatalogue
-                `,{
-                    quantiteConsommation: itemFromConso.quantiteConsommation || 0,
-                    idConteneur: itemFromConso.idConteneur || null,
-                    idMaterielCatalogue: itemFromConso.idMaterielCatalogue || null,
-                });
-            }else{
-                let updateLot = await db.query(`
-                    UPDATE
-                        MATERIEL_ELEMENT e
-                        LEFT OUTER JOIN MATERIEL_EMPLACEMENT em ON e.idEmplacement = em.idEmplacement
-                        LEFT OUTER JOIN MATERIEL_SAC s ON em.idSac = s.idSac
-                    SET
-                        e.quantite = e.quantite - :quantiteConsommation
-                    WHERE
-                        s.idLot = :idLot
-                        AND
-                        idMaterielCatalogue = :idMaterielCatalogue
-                `,{
-                    quantiteConsommation: itemFromConso.quantiteConsommation || 0,
-                    idLot: itemFromConso.idLot || null,
-                    idMaterielCatalogue: itemFromConso.idMaterielCatalogue || null,
-                });
-                await fonctionsMetiers.checkOneConf(itemFromConso.idLot);
-            }
-
-            const result = await db.query(`
-                UPDATE
-                    LOTS_CONSOMMATION_MATERIEL
-                SET
-                    traiteOperateur = true
-                WHERE
-                    idConsommationMateriel = :idConsommationMateriel
-            `,{
-                idConsommationMateriel: itemFromConso.idConsommationMateriel || null,
-            });
+            let traitement = await fonctionsMetiers.validerUnElementConsomme(itemFromConso.idConsommationMateriel);
         }
 
         res.sendStatus(201);

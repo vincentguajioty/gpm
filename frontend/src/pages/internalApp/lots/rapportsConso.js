@@ -59,6 +59,10 @@ const RapportsConso = () => {
                 <Alert variant='warning'>La fonctionnalité de saisie de rapports de consommation est désactivée.</Alert>
             : null}
 
+            {ConfigurationService.config['consommation_benevoles_auto'] == true ?
+                <Alert variant='info'>La configuration actuelle de l'outil valide automatiquement toutes les consommations saisies sans action de votre part.</Alert>
+            : null}
+
             {rapports.length == 0 ?
                 <Alert variant='info'>Aucun rapport de consommation à afficher</Alert>
             :

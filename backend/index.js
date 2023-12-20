@@ -91,6 +91,13 @@ schedule.scheduleJob(process.env.CRON_MAIL_QUEUE, async function() {
     logger.debug('Fin cron de dépilement des emails en queue');
 });
 
+//Comptabilisation des rapports de consommation en auto
+schedule.scheduleJob(process.env.CRON_CONSOMMATIONS_AUTO, async function() {
+    logger.debug('Lancement cron de comptabilisation de consommations en auto');
+    await fonctionsMetiers.comptabiliserToutesConsommations();
+    logger.debug('Fin cron de comptabilisation de consommations en auto');
+});
+
 //Cron journalier
 schedule.scheduleJob(process.env.CRON_DAILY, async function() {
     logger.info('CRON - Début du CRON');

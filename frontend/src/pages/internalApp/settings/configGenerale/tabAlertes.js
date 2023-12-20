@@ -25,6 +25,7 @@ const ConfigGeneraleTabAlertes = ({
                 alertes_benevoles_lots: data.alertes_benevoles_lots,
                 alertes_benevoles_vehicules: data.alertes_benevoles_vehicules,
                 consommation_benevoles: data.consommation_benevoles,
+                consommation_benevoles_auto: data.consommation_benevoles_auto,
             });
 
             setPageNeedsRefresh(true);
@@ -37,6 +38,7 @@ const ConfigGeneraleTabAlertes = ({
         setValue('alertes_benevoles_lots', config.alertes_benevoles_lots);
         setValue('alertes_benevoles_vehicules', config.alertes_benevoles_vehicules);
         setValue('consommation_benevoles', config.consommation_benevoles);
+        setValue('consommation_benevoles_auto', config.consommation_benevoles_auto);
     }
 
     useEffect(() => {
@@ -80,16 +82,19 @@ const ConfigGeneraleTabAlertes = ({
                     onClick={(e)=>{setValue("consommation_benevoles", !watch("consommation_benevoles"))}}
                 />
                 <small className="text-danger">{errors.consommation_benevoles?.message}</small>
+                <Form.Check
+                    type='switch'
+                    id="consommation_benevoles_auto"
+                    name="consommation_benevoles_auto"
+                    label="Les rapports sont automatiquement validés"
+                    checked={watch("consommation_benevoles_auto")}
+                    onClick={(e)=>{setValue("consommation_benevoles_auto", !watch("consommation_benevoles_auto"))}}
+                />
+                <small className="text-danger">{errors.consommation_benevoles_auto?.message}</small>
             </Form.Group>
 
             <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Enregistrer'}</Button>
         </Form>
-    </>);
-    
-    return (<>
-        <li>alertes_benevoles_lots</li>
-        <li>alertes_benevoles_vehicules</li>
-        <li>consommation_benevoles</li>
     </>);
 };
 
