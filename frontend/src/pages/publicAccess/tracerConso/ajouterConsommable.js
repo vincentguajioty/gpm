@@ -4,6 +4,7 @@ import moment from 'moment-timezone';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import FalconComponentCard from 'components/common/FalconComponentCard';
 import Select from 'react-select';
+import dynamicSort from 'helpers/dynamicSort';
 
 import { Axios } from 'helpers/axios';
 
@@ -17,12 +18,14 @@ const AjouterConsommable = ({
 }) => {
     const [isLoading, setLoading] = useState(true);
     const [catalogue, setCatalogue] = useState([]);
+    const [catalogueQuickSelect, setCatalogueQuickSelect] = useState([]);
     const [lots, setLots] = useState([]);
 
     const initPage = async () => {
         try {
             let getForSelect = await Axios.get('/select/getPublicCatalogueMateriel');
             setCatalogue(getForSelect.data);
+            setCatalogueQuickSelect(getForSelect.data.filter(elem => elem.frequenceRapportConso >= 10).sort(dynamicSort('-frequenceRapportConso')).slice(0,5));
 
             getForSelect = await Axios.get('/select/getLotsPublics');
             setLots(getForSelect.data);
@@ -91,6 +94,9 @@ const AjouterConsommable = ({
                                 onChange={val => val != null ? setValue("idMaterielCatalogue", val.value) : setValue("idMaterielCatalogue", null)}
                             />
                             <small className="text-danger">{errors.idMaterielCatalogue?.message}</small>
+                            {watch("idMaterielCatalogue") == null ? catalogueQuickSelect.map((cat, i)=>{return(
+                                    <Button className='mt-1 me-1' variant='outline-info' size='sm' onClick={()=>{setValue("idMaterielCatalogue", cat.value)}}>{cat.label}</Button>
+                            )}) : null}
                         </Form.Group>
 
                         {watch("idMaterielCatalogue") && watch("idMaterielCatalogue") > 0 ?
@@ -104,7 +110,7 @@ const AjouterConsommable = ({
                                         classNamePrefix="react-select"
                                         closeMenuOnSelect={true}
                                         isClearable={true}
-                                        isSearchable={true}
+                                        isSearchable={false}
                                         isDisabled={isLoading}
                                         placeholder='Aucun emplacement selectionné'
                                         options={lots}

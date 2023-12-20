@@ -97,7 +97,7 @@ router.get('/select/getVehicules',                             loggerMiddleware.
 router.get('/select/getCodesBarreCatalogue',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCodesBarreCatalogue);
 //select routes for forms and lists - PUBLIC
 router.get('/select/getConsommationsEnCours',                  loggerMiddleware.httpLogger(), selectForListsCtrl.getConsommationsEnCours);
-router.get('/select/getPublicCatalogueMateriel',               loggerMiddleware.httpLogger(), selectForListsCtrl.getCatalogueMateriel);
+router.get('/select/getPublicCatalogueMateriel',               loggerMiddleware.httpLogger(), selectForListsCtrl.getPublicCatalogueMateriel);
 router.get('/select/getLotsPublics',                           loggerMiddleware.httpLogger(), selectForListsCtrl.getLotsPublics);
 router.get('/select/getConteneursPublics',                     loggerMiddleware.httpLogger(), selectForListsCtrl.getConteneursPublics);
 

@@ -709,6 +709,41 @@ exports.getConsommationsEnCours = async (req, res)=>{
     }
 }
 
+exports.getPublicCatalogueMateriel = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT DISTINCT
+                cat.idMaterielCatalogue as value,
+                cat.libelleMateriel as label,
+                COALESCE(cat.frequenceRapportConso, 0) AS frequenceRapportConso
+            FROM
+                (SELECT
+                    c.*,
+                    SUM(conso.quantiteConsommation) as frequenceRapportConso
+                FROM
+                    MATERIEL_CATALOGUE c
+                    LEFT OUTER JOIN MATERIEL_ELEMENT elem ON c.idMaterielCatalogue = elem.idMaterielCatalogue
+                    LEFT OUTER JOIN MATERIEL_EMPLACEMENT emp ON elem.idEmplacement = emp.idEmplacement
+                    LEFT OUTER JOIN MATERIEL_SAC s ON emp.idSac = s.idSac
+                    LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot
+                    LEFT OUTER JOIN LOTS_CONSOMMATION_MATERIEL conso ON c.idMaterielCatalogue = conso.idMaterielCatalogue
+                WHERE
+                    (conso.idLot IS NULL OR conso.idLot = l.idLot)
+                    AND
+                    l.dispoBenevoles = true
+                GROUP BY
+                    c.idMaterielCatalogue
+                ) cat
+            ORDER BY
+                cat.libelleMateriel
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.getLotsPublics = async (req, res)=>{
     try {
         let results = await db.query(`

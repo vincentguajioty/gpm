@@ -72,7 +72,6 @@ const GererConsommation = ({
         })
 
         socket.on("consommation_updateElement", (data)=>{
-            console.log(data)
             let tempArray = [];
             for(const elem of consommation.elements)
             {
