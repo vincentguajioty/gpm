@@ -158,9 +158,15 @@ router.post('/lots/getLotsAlertes',      loggerMiddleware.httpLogger(), jwtFunct
 router.post('/lots/autoAffect',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['alertesBenevolesLots_affectation']),                                                 loggerMiddleware.modificationLogger(),   lotsCtrl.autoAffect);
 router.post('/lots/affectationTier',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['alertesBenevolesLots_affectationTier']),                                             loggerMiddleware.modificationLogger(),   lotsCtrl.affectationTier);
 router.post('/lots/udpateStatut',        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),                       middlewaresFunctions.alerteLotOwned(), loggerMiddleware.modificationLogger(),   lotsCtrl.udpateStatut);
-//OPERTAIONNEL - Consommation
+//OPERTAIONNEL - Consommation - PUBLIC
 router.post('/consommations/getOneConso',     middlewaresFunctions.checkFunctionnalityRapportConsoEnabled(), loggerMiddleware.httpLogger(),       lotsConsommationsCtrl.getOneConso);
 router.post('/consommations/createConso',     middlewaresFunctions.checkFunctionnalityRapportConsoEnabled(), loggerMiddleware.httpLogger(),       lotsConsommationsCtrl.createConso);
+//OPERTAIONNEL - Consommation - AUTHENTICATED
+router.get('/consommations/getAllConso',                   middlewaresFunctions.checkFunctionnalityRapportConsoEnabled(), loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['consommationLots_lecture']),      lotsConsommationsCtrl.getAllConso);
+router.post('/consommations/decompterActionDefaut',        middlewaresFunctions.checkFunctionnalityRapportConsoEnabled(), loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['consommationLots_affectation']),  lotsConsommationsCtrl.decompterActionDefaut);
+router.post('/consommations/annulerTouteAction',           middlewaresFunctions.checkFunctionnalityRapportConsoEnabled(), loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['consommationLots_affectation']),  lotsConsommationsCtrl.annulerTouteAction);
+router.post('/consommations/decompterToutesActionsDefaut', middlewaresFunctions.checkFunctionnalityRapportConsoEnabled(), loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['consommationLots_affectation']),  lotsConsommationsCtrl.decompterToutesActionsDefaut);
+router.post('/consommations/lotsConsommationsDelete',      middlewaresFunctions.checkFunctionnalityRapportConsoEnabled(), loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['consommationLots_supression']),   lotsConsommationsCtrl.lotsConsommationsDelete);
 
 //RESERVES - Conteneurs
 router.get('/reserves/getConteneurs',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_lecture']),                                              reservesConteneursCtrl.getConteneurs);
