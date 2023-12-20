@@ -5,6 +5,9 @@ const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 
 exports.getOneConso = async (req, res)=>{
     try {
+        let verifFonctionnalite = await fonctionsMetiers.checkFunctionnalityRapportConsoEnabled();
+        if(verifFonctionnalite == false){return;}
+
         const consommation = await db.query(`
             SELECT
                 *
@@ -42,6 +45,9 @@ exports.getOneConso = async (req, res)=>{
 
 exports.createConso = async (req, res)=>{
     try {
+        let verifFonctionnalite = await fonctionsMetiers.checkFunctionnalityRapportConsoEnabled();
+        if(verifFonctionnalite == false){return;}
+
         const result = await db.query(`
             INSERT INTO
                 LOTS_CONSOMMATION

@@ -96,10 +96,10 @@ router.get('/select/getTypesLots',                             loggerMiddleware.
 router.get('/select/getVehicules',                             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVehicules);
 router.get('/select/getCodesBarreCatalogue',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCodesBarreCatalogue);
 //select routes for forms and lists - PUBLIC
-router.get('/select/getConsommationsEnCours',                  loggerMiddleware.httpLogger(), selectForListsCtrl.getConsommationsEnCours);
-router.get('/select/getPublicCatalogueMateriel',               loggerMiddleware.httpLogger(), selectForListsCtrl.getPublicCatalogueMateriel);
-router.get('/select/getLotsPublics',                           loggerMiddleware.httpLogger(), selectForListsCtrl.getLotsPublics);
-router.get('/select/getConteneursPublics',                     loggerMiddleware.httpLogger(), selectForListsCtrl.getConteneursPublics);
+router.get('/select/getConsommationsEnCours',                  middlewaresFunctions.checkFunctionnalityRapportConsoEnabled(), loggerMiddleware.httpLogger(), selectForListsCtrl.getConsommationsEnCours);
+router.get('/select/getPublicCatalogueMateriel',               middlewaresFunctions.checkFunctionnalityRapportConsoEnabled(), loggerMiddleware.httpLogger(), selectForListsCtrl.getPublicCatalogueMateriel);
+router.get('/select/getLotsPublics',                           middlewaresFunctions.checkFunctionnalityRapportConsoEnabled(), loggerMiddleware.httpLogger(), selectForListsCtrl.getLotsPublics);
+router.get('/select/getConteneursPublics',                     middlewaresFunctions.checkFunctionnalityRapportConsoEnabled(), loggerMiddleware.httpLogger(), selectForListsCtrl.getConteneursPublics);
 
 //Composant Calendrier
 router.get('/calendrier/peremptionsLots',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),       calendrierCtrl.peremptionsLots);
@@ -159,8 +159,8 @@ router.post('/lots/autoAffect',          loggerMiddleware.httpLogger(), jwtFunct
 router.post('/lots/affectationTier',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['alertesBenevolesLots_affectationTier']),                                             loggerMiddleware.modificationLogger(),   lotsCtrl.affectationTier);
 router.post('/lots/udpateStatut',        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),                       middlewaresFunctions.alerteLotOwned(), loggerMiddleware.modificationLogger(),   lotsCtrl.udpateStatut);
 //OPERTAIONNEL - Consommation
-router.post('/consommations/getOneConso',     loggerMiddleware.httpLogger(),       lotsConsommationsCtrl.getOneConso);
-router.post('/consommations/createConso',     loggerMiddleware.httpLogger(),       lotsConsommationsCtrl.createConso);
+router.post('/consommations/getOneConso',     middlewaresFunctions.checkFunctionnalityRapportConsoEnabled(), loggerMiddleware.httpLogger(),       lotsConsommationsCtrl.getOneConso);
+router.post('/consommations/createConso',     middlewaresFunctions.checkFunctionnalityRapportConsoEnabled(), loggerMiddleware.httpLogger(),       lotsConsommationsCtrl.createConso);
 
 //RESERVES - Conteneurs
 router.get('/reserves/getConteneurs',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_lecture']),                                              reservesConteneursCtrl.getConteneurs);

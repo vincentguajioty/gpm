@@ -1,5 +1,6 @@
 const db = require('../db');
 const logger = require('../winstonLogger');
+const fonctionsMetiers = require('./fonctionsMetiers');
 
 const himselfRead = () => {
     return function(req, res, next) {
@@ -176,6 +177,23 @@ const alerteLotOwned = () => {
     }
 }
 
+const checkFunctionnalityRapportConsoEnabled = () => {
+    return async function(req, res, next) {
+        let verifFonctionnalite = await fonctionsMetiers.checkFunctionnalityRapportConsoEnabled();
+        if(verifFonctionnalite == true)
+        {
+            next();
+        }
+        else
+        {
+            logger.info('Accès refusé par checkFunctionnalityRapportConsoEnabled car fonctionnalité désactivée', {idPersonne: 'SYSTEM'});
+            res.status(403);
+            res.send('Fonctionnalité désactivée');
+        }
+        
+    }
+}
+
 module.exports = {
     himselfRead,
     himselfWrite,
@@ -185,4 +203,5 @@ module.exports = {
     addToHimself,
     alerteVehiculeOwned,
     alerteLotOwned,
+    checkFunctionnalityRapportConsoEnabled,
 };

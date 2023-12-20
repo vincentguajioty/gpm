@@ -2,6 +2,7 @@ const db = require('./db');
 const logger = require('./winstonLogger');
 const jwtFunctions = require('./jwt');
 const fonctionsMetiers = require('./helpers/fonctionsMetiers');
+const middlewaresFunctions = require('./helpers/middlewares');
 
 const socketInterface = async (http) => {
     try {
