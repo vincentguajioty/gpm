@@ -55,7 +55,8 @@ const socketInterface = async (http) => {
                 if(authResult == true)
                 {
                     logger.debug(data);
-                    socket.to('lot-'+data.idInventaire).emit("lot_inventaire_demandePopullationPrecedente", data.demandePopullationPrecedente);
+                    await fonctionsMetiers.initiateOldValuesInventaireLot(data.idInventaire);
+                    socketIO.to('lot-'+data.idInventaire).emit("lot_inventaire_reloadPage");
                 }
             });
 
@@ -94,7 +95,8 @@ const socketInterface = async (http) => {
                 if(authResult == true)
                 {
                     logger.debug(data);
-                    socket.to('reserve-'+data.idReserveInventaire).emit("reserve_inventaire_demandePopullationPrecedente", data.demandePopullationPrecedente);
+                    await fonctionsMetiers.initiateOldValuesInventaireReserve(data.idReserveInventaire);
+                    socketIO.to('reserve-'+data.idReserveInventaire).emit("reserve_inventaire_reloadPage");
                 }
             });
 

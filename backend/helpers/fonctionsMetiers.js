@@ -866,6 +866,25 @@ const updateInventaireLotItem = async (element) => {
     }
 }
 
+const initiateOldValuesInventaireLot = async (idInventaire) => {
+    try {
+        let updateQuery = await db.query(`
+            UPDATE
+                LOTS_INVENTAIRES_TEMP
+            SET
+                quantiteInventoriee = quantiteAvantInventaire,
+                peremptionInventoriee = peremptionAvantInventaire
+            WHERE
+                idInventaire = :idInventaire
+        `,{
+            idInventaire : idInventaire || null,
+        });
+
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 const validerInventaireLot = async (idInventaire, commentairesInventaire) => {
     try {
         let getLot = await db.query(`
@@ -991,6 +1010,25 @@ const updateInventaireReserveItem = async (element) => {
             quantiteInventoriee : element.quantiteInventoriee || null,
             peremptionInventoriee : element.peremptionInventoriee || null,
             idReserveElement : element.idReserveElement || null,
+        });
+
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const initiateOldValuesInventaireReserve = async (idReserveInventaire) => {
+    try {
+        let updateQuery = await db.query(`
+            UPDATE
+                RESERVES_INVENTAIRES_TEMP
+            SET
+                quantiteInventoriee = quantiteAvantInventaire,
+                peremptionInventoriee = peremptionAvantInventaire
+            WHERE
+                idReserveInventaire = :idReserveInventaire
+        `,{
+            idReserveInventaire : idReserveInventaire || null,
         });
 
     } catch (error) {
@@ -1756,9 +1794,11 @@ module.exports = {
     cnilAnonymeCron,
     replaceString,
     updateInventaireLotItem,
+    initiateOldValuesInventaireLot,
     validerInventaireLot,
     figeInventaireLot,
     updateInventaireReserveItem,
+    initiateOldValuesInventaireReserve,
     validerInventaireReserve,
     figeInventaireReserve,
     majIndicateursPersonne,

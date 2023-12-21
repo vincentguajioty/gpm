@@ -13,8 +13,7 @@ const InventaireParcoursManuel = ({
     inventaireElements,
     arborescenceSacs,
     catalogueCodesBarres,
-    demandePopullationPrecedente,
-    setDemandePopullationPrecedente,
+    manageDemandePopullationPrecedente,
     validerInventaire,
 }) => {
     const navigate = useNavigate();
@@ -111,7 +110,6 @@ const InventaireParcoursManuel = ({
                                                     idEmplacement={emp.idEmplacement}
                                                     inventaireElements={inventaireElements.filter(elem => elem.idEmplacement == emp.idEmplacement)}
                                                     catalogueCodesBarres={catalogueCodesBarres}
-                                                    demandePopullationPrecedente={demandePopullationPrecedente}
                                                 />
                                             </Accordion.Body>
                                         </Accordion.Item>
@@ -128,7 +126,7 @@ const InventaireParcoursManuel = ({
                     </div>
                     
                     <Button variant='outline-danger' className='me-2 mt-3' disabled={isLoading} onClick={handleShowDeleteModal}>{isLoading ? 'Patientez...' : 'Annuler tout'}</Button>
-                    <Button variant='outline-warning' className='me-2 mt-3' disabled={isLoading} onClick={()=>{setDemandePopullationPrecedente(true)}}>{isLoading ? 'Patientez...' : 'Populler avec l\'inventaire précédent'}</Button>
+                    <Button variant='outline-warning' className='me-2 mt-3' disabled={isLoading} onClick={manageDemandePopullationPrecedente}>{isLoading ? 'Patientez...' : 'Populler avec l\'inventaire précédent'}</Button>
                 </> : null}
             </Card.Body>
         </Card>

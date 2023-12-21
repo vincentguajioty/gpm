@@ -13,8 +13,7 @@ const InventaireParcoursManuel = ({
     idReserveInventaire,
     inventaireElements,
     catalogueCodesBarres,
-    demandePopullationPrecedente,
-    setDemandePopullationPrecedente,
+    manageDemandePopullationPrecedente,
     validerInventaire,
 }) => {
     const navigate = useNavigate();
@@ -101,7 +100,6 @@ const InventaireParcoursManuel = ({
                     idConteneur={idConteneur}
                     inventaireElements={inventaireElements}
                     catalogueCodesBarres={catalogueCodesBarres}
-                    demandePopullationPrecedente={demandePopullationPrecedente}
                 />
 
                 {HabilitationService.habilitations['reserve_modification'] ? <>
@@ -110,7 +108,7 @@ const InventaireParcoursManuel = ({
                     </div>
                     
                     <Button variant='outline-danger' className='me-2 mt-3' disabled={isLoading} onClick={handleShowDeleteModal}>{isLoading ? 'Patientez...' : 'Annuler tout'}</Button>
-                    <Button variant='outline-warning' className='me-2 mt-3' disabled={isLoading} onClick={()=>{setDemandePopullationPrecedente(true)}}>{isLoading ? 'Patientez...' : 'Populler avec l\'inventaire précédent'}</Button>
+                    <Button variant='outline-warning' className='me-2 mt-3' disabled={isLoading} onClick={manageDemandePopullationPrecedente}>{isLoading ? 'Patientez...' : 'Populler avec l\'inventaire précédent'}</Button>
                 </> : null}
             </Card.Body>
         </Card>

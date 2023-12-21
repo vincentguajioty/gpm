@@ -23,7 +23,6 @@ const InventaireParcoursManuelOneEmplacement = ({
     idEmplacement,
     inventaireElements,
     catalogueCodesBarres,
-    demandePopullationPrecedente,
 }) => {
     const [alerteScanLabel, setAlerteScanLabel] = useState();
     const [successScanLabel, setSuccessScanLabel] = useState();
@@ -143,37 +142,6 @@ const InventaireParcoursManuelOneEmplacement = ({
         await socket.emit("lot_inventaire_update", newElement);
     }
 
-    const manageDemandePopullationPrecedente = async () => {
-        try {
-            for(const oneElement of inventaireElements)
-            {
-                let newElement = {
-                    idElement: oneElement.idElement,
-                    idEmplacement: oneElement.idEmplacement,
-                    idInventaire: oneElement.idInventaire,
-                    idMaterielCatalogue: oneElement.idMaterielCatalogue,
-                    libelleMateriel: oneElement.libelleMateriel,
-                    peremptionAvantInventaire: oneElement.peremptionAvantInventaire,
-                    peremptionInventoriee: oneElement.peremptionAvantInventaire,
-                    quantiteAvantInventaire: oneElement.quantiteAvantInventaire,
-                    quantiteInventoriee: oneElement.quantiteAvantInventaire,
-                    quantiteAlerte: oneElement.quantiteAlerte,
-                };
-        
-                await socket.emit("lot_inventaire_update", newElement);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    useEffect(()=>{
-        if(demandePopullationPrecedente)
-        {
-            manageDemandePopullationPrecedente();
-        }
-    },[demandePopullationPrecedente])
-
     return (<>
         <Form className='mb-3' onSubmit={validerScannette}>
             <FloatingLabel
@@ -188,7 +156,7 @@ const InventaireParcoursManuelOneEmplacement = ({
                     id='champScannette'
                     value={champScannette}
                     onChange={(e) => setChampScannette(e.target.value)}
-                    disabled={demandePopullationPrecedente || !HabilitationService.habilitations['lots_modification']}
+                    disabled={!HabilitationService.habilitations['lots_modification']}
                 />
             </FloatingLabel>
         </Form>

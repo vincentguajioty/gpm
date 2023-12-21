@@ -24,8 +24,6 @@ const LotInventaireEnCours = () => {
     const [isClosed, setIsClosed] = useState(false);
     const [displaySocketError, setDisplaySocketError] = useState(false);
 
-    const [demandePopullationPrecedente, setDemandePopullationPrecedente] = useState(false);
-
     const [detailsInventaire, setDetailsInventaire] = useState([]);
     const [inventaireElements, setInventaireElements] = useState([]);
     const [arborescenceSacs, setArborescenceSacs] = useState([]);
@@ -80,8 +78,7 @@ const LotInventaireEnCours = () => {
             setInventaireElements(tempArray);
         })
 
-        socket.on("lot_inventaire_demandePopullationPrecedente", (data)=>{
-            setDemandePopullationPrecedente(data);
+        socket.on("lot_inventaire_reloadPage", (data)=>{
             location.reload();
         })
 
@@ -97,19 +94,11 @@ const LotInventaireEnCours = () => {
 
     const manageDemandePopullationPrecedente = async () => {
         try {
-            await socket.emit("lot_inventaire_demandePopullationPrecedente", {idInventaire: idInventaire, demandePopullationPrecedente: demandePopullationPrecedente});
-            location.reload();
+            await socket.emit("lot_inventaire_demandePopullationPrecedente", {idInventaire: idInventaire});
         } catch (error) {
             console.log(error)
         }
     }
-
-    useEffect(()=>{
-        if(demandePopullationPrecedente)
-        {
-            manageDemandePopullationPrecedente();
-        }
-    },[demandePopullationPrecedente])
 
     const validerInventaire = async (commentaire) => {
         try {
@@ -157,7 +146,6 @@ const LotInventaireEnCours = () => {
                             inventaireElements={inventaireElements}
                             arborescenceSacs={arborescenceSacs}
                             catalogueCodesBarres={catalogueCodesBarres}
-                            demandePopullationPrecedente={demandePopullationPrecedente}
                         />
                     </Col>
                     <Col md={8}>
@@ -173,8 +161,7 @@ const LotInventaireEnCours = () => {
                             inventaireElements={inventaireElements}
                             arborescenceSacs={arborescenceSacs}
                             catalogueCodesBarres={catalogueCodesBarres}
-                            demandePopullationPrecedente={demandePopullationPrecedente}
-                            setDemandePopullationPrecedente={setDemandePopullationPrecedente}
+                            manageDemandePopullationPrecedente={manageDemandePopullationPrecedente}
                             validerInventaire={validerInventaire}
                         />
                     </Col>

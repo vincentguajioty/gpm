@@ -17,7 +17,6 @@ const InventaireScanVolee = ({
     inventaireElements,
     arborescenceSacs,
     catalogueCodesBarres,
-    demandePopullationPrecedente,
 }) => {
     const [emplacementActuelLabel, setEmplacementActuelLabel] = useState();
     const [idEmplacementActuel, setIdEmplacementActuel] = useState();
@@ -142,7 +141,7 @@ const InventaireScanVolee = ({
                             id='champScannette'
                             value={champScannette}
                             onChange={(e) => setChampScannette(e.target.value)}
-                            disabled={demandePopullationPrecedente || !HabilitationService.habilitations['lots_modification']}
+                            disabled={!HabilitationService.habilitations['lots_modification']}
                         />
                     </FloatingLabel>
                 </Form>

@@ -24,8 +24,6 @@ const ReserveInventaireEnCours = () => {
     const [displaySocketError, setDisplaySocketError] = useState(false);
     const [idConteneur, setIdConteneur] = useState();
 
-    const [demandePopullationPrecedente, setDemandePopullationPrecedente] = useState(false);
-
     const [detailsInventaire, setDetailsInventaire] = useState([]);
     const [inventaireElements, setInventaireElements] = useState([]);
     const [catalogueCodesBarres, setCatalogueCodesBarres] = useState([]);
@@ -75,8 +73,7 @@ const ReserveInventaireEnCours = () => {
             setInventaireElements(tempArray);
         })
 
-        socket.on("reserve_inventaire_demandePopullationPrecedente", (data)=>{
-            setDemandePopullationPrecedente(data);
+        socket.on("reserve_inventaire_reloadPage", (data)=>{
             location.reload();
         })
 
@@ -92,19 +89,11 @@ const ReserveInventaireEnCours = () => {
 
     const manageDemandePopullationPrecedente = async () => {
         try {
-            await socket.emit("reserve_inventaire_demandePopullationPrecedente", {idReserveInventaire: idReserveInventaire, demandePopullationPrecedente: demandePopullationPrecedente});
-            location.reload();
+            await socket.emit("reserve_inventaire_demandePopullationPrecedente", {idReserveInventaire: idReserveInventaire});
         } catch (error) {
             console.log(error)
         }
     }
-
-    useEffect(()=>{
-        if(demandePopullationPrecedente)
-        {
-            manageDemandePopullationPrecedente();
-        }
-    },[demandePopullationPrecedente])
 
     const validerInventaire = async (commentaire) => {
         try {
@@ -143,8 +132,7 @@ const ReserveInventaireEnCours = () => {
                     idReserveInventaire={idReserveInventaire}
                     inventaireElements={inventaireElements}
                     catalogueCodesBarres={catalogueCodesBarres}
-                    demandePopullationPrecedente={demandePopullationPrecedente}
-                    setDemandePopullationPrecedente={setDemandePopullationPrecedente}
+                    manageDemandePopullationPrecedente={manageDemandePopullationPrecedente}
                     validerInventaire={validerInventaire}
                 />
             }
