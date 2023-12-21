@@ -672,7 +672,7 @@ const Profils = () => {
                             <Form.Check
                                 id='appli_conf'
                                 name='appli_conf'
-                                label="Modifier la configuration générale de GPM VG"
+                                label={"Modifier la configuration générale de " + window.__ENV__.APP_NAME}
                                 type='switch'
                                 checked={watch("appli_conf")}
                                 onClick={(e)=>{
@@ -680,7 +680,7 @@ const Profils = () => {
                                 }}
                             />
                         :
-                            <><FontAwesomeIcon icon={watch('appli_conf') ? 'check' : 'ban'}/> Modifier la configuration générale de GPM VG</>
+                            <><FontAwesomeIcon icon={watch('appli_conf') ? 'check' : 'ban'}/> Modifier la configuration générale de {window.__ENV__.APP_NAME}</>
                         }<br/>
                         {modeEdition ?
                             <Form.Check

@@ -57,7 +57,7 @@ const ProfilRecapDroitsUtilisateur = ({idPersonne, pageNeedsRefresh}) => {
 
                 <h6>Administration de l'application:</h6>
                 <p>
-                    <FontAwesomeIcon icon={profil['appli_conf'] ? 'check' : 'ban'}/> Modifier la configuration générale de GPM VG<br/>
+                    <FontAwesomeIcon icon={profil['appli_conf'] ? 'check' : 'ban'}/> Modifier la configuration générale de {window.__ENV__.APP_NAME}<br/>
                     <FontAwesomeIcon icon={profil['annuaire_mdp'] ? 'check' : 'ban'}/> Réinitialiser les mots de passe des autres utilisateurs<br/>
                     <FontAwesomeIcon icon={profil['delegation'] ? 'check' : 'ban'}/> Se connecter entant qu'autre utilisateur<br/>
                     <FontAwesomeIcon icon={profil['maintenance'] ? 'check' : 'ban'}/> Se connecter même en mode maitenance<br/>
