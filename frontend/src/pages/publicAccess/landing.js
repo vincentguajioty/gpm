@@ -34,8 +34,8 @@ const Landing = () => {
 				</Col>
 			</Row>
 
-			<Row>
-				{ConfigurationService.config['consommation_benevoles'] ? 
+			<Row className="justify-content-center text-center">
+				{ConfigurationService.config['alertes_benevoles_lots'] || ConfigurationService.config['alertes_benevoles_vehicules'] ?
 					<Col lg={4} className='mb-2'>
 						<Flex
 							alignItems="center"
@@ -54,7 +54,7 @@ const Landing = () => {
 					</Col>
 				: null}
 
-				{ConfigurationService.config['alertes_benevoles_lots'] || ConfigurationService.config['alertes_benevoles_vehicules'] ?
+				{ConfigurationService.config['consommation_benevoles'] ? 
 					<Col lg={4} className='mb-2'>
 						<Flex
 							alignItems="center"
