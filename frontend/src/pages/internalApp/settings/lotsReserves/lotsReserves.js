@@ -2,7 +2,9 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import PageHeader from 'components/common/PageHeader';
 import SettingsMetierCRUD from 'components/settings/settingsMetierCRUD';
+
 import Catalogue from './catalogue';
+import CodesBarre from './codesBarre';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -72,6 +74,12 @@ const LotsReservesSettings = () => {
             {HabilitationService.habilitations['catalogue_lecture'] ? 
                 <Col md={12}>
                     <Catalogue />    
+                </Col>
+            :null}
+
+            {HabilitationService.habilitations['codeBarre_lecture'] ? 
+                <Col md={12}>
+                    <CodesBarre />    
                 </Col>
             :null}
 

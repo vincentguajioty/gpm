@@ -785,6 +785,110 @@ exports.deleteCatalogueMateriel = async (req, res)=>{
     }
 }
 
+/*--- Codes Barre --- */
+exports.getCodesBarres = async (req, res)=>{
+    try {
+        let results = await db.query(
+            `SELECT
+                cb.*,
+                mc.libelleMateriel
+            FROM
+                CODES_BARRE cb
+                LEFT OUTER JOIN MATERIEL_CATALOGUE mc ON cb.idMaterielCatalogue = mc.idMaterielCatalogue
+            ORDER BY
+                mc.libelleMateriel
+            ;`
+        );
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+exports.addCodeBarres = async (req, res)=>{
+    try {
+        let results = await db.query(
+            `INSERT INTO
+                CODES_BARRE
+            SET
+                codeBarre = :codeBarre,
+                internalReference = :internalReference,
+                peremptionConsommable = :peremptionConsommable,
+                commentairesCode = :commentairesCode,
+                idMaterielCatalogue = :idMaterielCatalogue
+            ;`,
+        {
+            codeBarre: req.body.codeBarre || null,
+            internalReference: req.body.internalReference || 0,
+            peremptionConsommable: req.body.peremptionConsommable || null,
+            commentairesCode: req.body.commentairesCode || null,
+            idMaterielCatalogue: req.body.idMaterielCatalogue || null,
+        });
+
+        if(req.body.internalReference == true)
+        {
+            let selectLast = await db.query(
+                'SELECT MAX(idCode) as idCode FROM CODES_BARRE;'
+            );
+
+            let results = await db.query(
+                `UPDATE
+                    CODES_BARRE
+                SET
+                    codeBarre = CONCAT('GPM',idCode)
+                WHERE
+                    idCode = :idCode
+                ;`,
+            {
+                idCode: selectLast[0].idCode,
+            });
+        }
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+exports.updateCodeBarres = async (req, res)=>{
+    try {
+        let results = await db.query(
+            `UPDATE
+                CODES_BARRE
+            SET
+                codeBarre = :codeBarre,
+                internalReference = :internalReference,
+                peremptionConsommable = :peremptionConsommable,
+                commentairesCode = :commentairesCode,
+                idMaterielCatalogue = :idMaterielCatalogue
+            WHERE
+                idCode = :idCode
+            ;`,
+        {
+            codeBarre: req.body.codeBarre || null,
+            internalReference: req.body.internalReference || 0,
+            peremptionConsommable: req.body.peremptionConsommable || null,
+            commentairesCode: req.body.commentairesCode || null,
+            idMaterielCatalogue: req.body.idMaterielCatalogue || null,
+            idCode: req.body.idCode,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+exports.codesBarreDelete = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.codesBarreDelete(req.verifyJWTandProfile.idPersonne , req.body.idCode);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 /*--- Types d`accessoires VHF --- */
 exports.getVHFTypesAccessoires = async (req, res)=>{
     try {

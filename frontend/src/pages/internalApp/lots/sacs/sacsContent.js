@@ -12,6 +12,7 @@ import MaterielsTable from '../materiels/materielsTable';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { emplacementsFormSchema } from 'helpers/yupValidationSchema';
+import CodesBarreModal from 'components/widgets/CodeBarreModal';
 
 const SacsContent = ({
     idSac,
@@ -212,6 +213,13 @@ const SacsContent = ({
                             </ToggleButton>
                         : null }
                     </ButtonGroup>
+                    {HabilitationService.habilitations['codeBarre_lecture'] && idEmplacement != null && idEmplacement != 0 ? <>
+                        <br/>
+                        <CodesBarreModal
+                            valeurCodeBarre={'GPMEMP'+idEmplacement}
+                            title={'Voir le code barre de l\'emplacement'}
+                        />
+                    </>: null}
                 </>}
             </Col>
             {idEmplacement != null && showEdit == true && HabilitationService.habilitations['sac_modification'] && !inventaireEnCours ? 

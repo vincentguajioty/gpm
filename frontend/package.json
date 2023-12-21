@@ -49,6 +49,7 @@
     "rc-tooltip": "^6.0.1",
     "react": "^18.2.0",
     "react-18-image-lightbox": "^5.1.4",
+    "react-barcode": "^1.4.6",
     "react-beautiful-dnd": "^13.1.1",
     "react-bootstrap": "^2.7.4",
     "react-chartjs-2": "^5.0.1",

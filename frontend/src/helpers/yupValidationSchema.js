@@ -792,3 +792,23 @@ export const consommationPubliqueModificationMateriel = Yup.object().shape({
         .min(1, champObligatoire)
         .required(champObligatoire),
 });
+
+export const codesBarreFormFournisseur = Yup.object().shape({
+    codeBarre: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    idMaterielCatalogue: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+});
+
+export const codesBarreFormInterne= Yup.object().shape({
+    idMaterielCatalogue: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+});
