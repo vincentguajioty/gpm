@@ -29,7 +29,8 @@ const Logo = ({ at, width, className, textClass, ...rest }) => {
         )}
       >
         <img className="me-2" src={logo} alt="Logo" width={width} />
-        <span className={classNames('font-sans-serif', textClass)}>{window.__ENV__.APP_NAME}</span>
+        <span className={classNames('font-sans-serif', 'd-none', 'd-sm-block', textClass)}>{window.__ENV__.APP_NAME}</span>
+        <span className={classNames('font-sans-serif', 'd-sm-none', textClass)}>{window.__ENV__.APP_NAME_SHORT}</span>
       </div>
     </Link>
   );
