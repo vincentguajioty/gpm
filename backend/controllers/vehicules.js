@@ -330,7 +330,8 @@ exports.addVehicule = async (req, res)=>{
             SET
                 libelleVehicule = :libelleVehicule,
                 affichageSyntheseDesinfections = 1,
-                affichageSyntheseHealth = 1
+                affichageSyntheseHealth = 1,
+                dispoBenevoles = 0
         `,{
             libelleVehicule: req.body.libelleVehicule || null,
         });
@@ -383,7 +384,8 @@ exports.updateVehicule = async (req, res)=>{
                 idVehiculesEtat = :idVehiculesEtat,
                 idCarburant = :idCarburant,
                 affichageSyntheseDesinfections = :affichageSyntheseDesinfections,
-                affichageSyntheseHealth = :affichageSyntheseHealth
+                affichageSyntheseHealth = :affichageSyntheseHealth,
+                dispoBenevoles = :dispoBenevoles
             WHERE
                 idVehicule = :idVehicule
         `,{
@@ -415,6 +417,7 @@ exports.updateVehicule = async (req, res)=>{
             idCarburant : req.body.idCarburant || null,
             affichageSyntheseDesinfections : req.body.affichageSyntheseDesinfections || null,
             affichageSyntheseHealth : req.body.affichageSyntheseHealth || null,
+            dispoBenevoles : req.body.dispoBenevoles || 0,
             idVehicule: req.body.idVehicule,
         });
 
@@ -1262,6 +1265,33 @@ exports.udpateStatut = async (req, res)=>{
                 idAlerte: req.body.idAlerte,
             });
         }
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//Alertes des bénévoles - Création publique
+exports.createAlerte = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                VEHICULES_ALERTES
+            SET
+                idVehiculesAlertesEtat = 1,
+                dateCreationAlerte = CURRENT_TIMESTAMP,
+                nomDeclarant = :nomDeclarant,
+                mailDeclarant = :mailDeclarant,
+                idVehicule = :idVehicule,
+                messageAlerteVehicule = :messageAlerteVehicule
+        `,{
+            nomDeclarant: req.body.nomDeclarant || null,
+            mailDeclarant: req.body.mailDeclarant || null,
+            idVehicule: req.body.idVehicule || null,
+            messageAlerteVehicule: req.body.messageAlerteVehicule || null,
+        });
 
         res.sendStatus(201);
     } catch (error) {

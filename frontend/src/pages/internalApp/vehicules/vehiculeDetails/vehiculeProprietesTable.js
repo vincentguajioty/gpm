@@ -89,6 +89,10 @@ const VehiculeProprietesTable = ({vehicule, setPageNeedsRefresh}) => {
                     </td>
                 </tr>
                 <tr>
+                    <td className="bg-100" style={{ width: '30%' }}>Accessible aux bénévoles pour la remontée d'incidents</td>
+                    <td><SoftBadge bg={vehicule.dispoBenevoles ? 'warning' : 'success'}>{vehicule.dispoBenevoles ? 'Accessible' : 'Verrouillé'}</SoftBadge></td>
+                </tr>
+                <tr>
                     <td className="bg-100" style={{ width: '30%' }}>Lots chargés</td>
                     <td><VehiculeLotsCharges lots={vehicule.lots}/></td>
                 </tr>

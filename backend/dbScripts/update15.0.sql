@@ -369,4 +369,6 @@ ALTER TABLE LOTS_LOTS ADD dispoBenevoles BOOLEAN DEFAULT false;
 ALTER TABLE CONFIG ADD consommation_benevoles_auto BOOLEAN DEFAULT false;
 UPDATE CONFIG SET consommation_benevoles_auto = false;
 
+ALTER TABLE VEHICULES ADD dispoBenevoles BOOLEAN DEFAULT false;
+
 UPDATE CONFIG SET version = '15.0';

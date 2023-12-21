@@ -1332,15 +1332,17 @@ const majValideursPersonne = async (enableLog) => {
     }
 }
 
-const checkFunctionnalityRapportConsoEnabled = async () => {
+const checkFunctionnalityBenevolesEnabled = async () => {
     try {
         const getConfig = await db.query(`
             SELECT
-                consommation_benevoles
+                consommation_benevoles,
+                alertes_benevoles_lots,
+                alertes_benevoles_vehicules
             FROM
                 CONFIG
         `);
-        if(getConfig[0].consommation_benevoles == true)
+        if(getConfig[0].consommation_benevoles == true || getConfig[0].alertes_benevoles_lots == true || getConfig[0].alertes_benevoles_vehicules == true)
         {
             return true;
         }
@@ -1356,7 +1358,7 @@ const checkFunctionnalityRapportConsoEnabled = async () => {
 
 const ajouterItemConsommation = async (element) => {
     try {
-        let verifFonctionnalite = await checkFunctionnalityRapportConsoEnabled();
+        let verifFonctionnalite = await checkFunctionnalityBenevolesEnabled();
         if(verifFonctionnalite == false){return;}
         
         const getExistingElement = await db.query(`
@@ -1452,7 +1454,7 @@ const ajouterItemConsommation = async (element) => {
 
 const updateItemConsommation = async (element) => {
     try {
-        let verifFonctionnalite = await checkFunctionnalityRapportConsoEnabled();
+        let verifFonctionnalite = await checkFunctionnalityBenevolesEnabled();
         if(verifFonctionnalite == false){return;}
 
         const getExistingElement = await db.query(`
@@ -1555,7 +1557,7 @@ const updateItemConsommation = async (element) => {
 
 const supprimerItemConsommation = async (idConsommationMateriel) => {
     try {
-        let verifFonctionnalite = await checkFunctionnalityRapportConsoEnabled();
+        let verifFonctionnalite = await checkFunctionnalityBenevolesEnabled();
         if(verifFonctionnalite == false){return;}
 
         const getExistingElement = await db.query(`
@@ -1573,7 +1575,7 @@ const supprimerItemConsommation = async (idConsommationMateriel) => {
 
 const terminerSaisieConsommation = async (data) => {
     try {
-        let verifFonctionnalite = await checkFunctionnalityRapportConsoEnabled();
+        let verifFonctionnalite = await checkFunctionnalityBenevolesEnabled();
         if(verifFonctionnalite == false){return;}
 
         const getExistingElement = await db.query(`
@@ -1596,7 +1598,7 @@ const terminerSaisieConsommation = async (data) => {
 
 const updateReconditionnementConsommation = async (element) => {
     try {
-        let verifFonctionnalite = await checkFunctionnalityRapportConsoEnabled();
+        let verifFonctionnalite = await checkFunctionnalityBenevolesEnabled();
         if(verifFonctionnalite == false){return;}
 
         const updateElement = await db.query(`
@@ -1636,7 +1638,7 @@ const updateReconditionnementConsommation = async (element) => {
 
 const terminerReconditionnementConsommation = async (data) => {
     try {
-        let verifFonctionnalite = await checkFunctionnalityRapportConsoEnabled();
+        let verifFonctionnalite = await checkFunctionnalityBenevolesEnabled();
         if(verifFonctionnalite == false){return;}
         
         const getExistingElement = await db.query(`
@@ -1806,7 +1808,7 @@ module.exports = {
     majNotificationsPersonne,
     majNotificationsProfil,
     majValideursPersonne,
-    checkFunctionnalityRapportConsoEnabled,
+    checkFunctionnalityBenevolesEnabled,
     ajouterItemConsommation,
     updateItemConsommation,
     supprimerItemConsommation,

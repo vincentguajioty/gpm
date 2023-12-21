@@ -261,7 +261,7 @@ const LotProprietesForm = ({lot, setModeEdition, setPageNeedsRefresh}) => {
                             <Form.Check
                                 id='dispoBenevoles'
                                 name='dispoBenevoles'
-                                label="Rapports de consommation"
+                                label="Rapports de consommation et incidents"
                                 type='switch'
                                 checked={watch("dispoBenevoles")}
                                 onClick={(e)=>{

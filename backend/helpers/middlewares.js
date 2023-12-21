@@ -177,16 +177,16 @@ const alerteLotOwned = () => {
     }
 }
 
-const checkFunctionnalityRapportConsoEnabled = () => {
+const checkFunctionnalityBenevolesEnabled = () => {
     return async function(req, res, next) {
-        let verifFonctionnalite = await fonctionsMetiers.checkFunctionnalityRapportConsoEnabled();
+        let verifFonctionnalite = await fonctionsMetiers.checkFunctionnalityBenevolesEnabled();
         if(verifFonctionnalite == true)
         {
             next();
         }
         else
         {
-            logger.info('Accès refusé par checkFunctionnalityRapportConsoEnabled car fonctionnalité désactivée', {idPersonne: 'SYSTEM'});
+            logger.info('Accès refusé par checkFunctionnalityBenevolesEnabled car fonctionnalité désactivée', {idPersonne: 'SYSTEM'});
             res.status(403);
             res.send('Fonctionnalité désactivée');
         }
@@ -203,5 +203,5 @@ module.exports = {
     addToHimself,
     alerteVehiculeOwned,
     alerteLotOwned,
-    checkFunctionnalityRapportConsoEnabled,
+    checkFunctionnalityBenevolesEnabled,
 };

@@ -781,3 +781,21 @@ exports.getConteneursPublics = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+exports.getVehiculesPublics = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idVehicule as value,
+                libelleVehicule as label
+            FROM
+                VEHICULES
+            WHERE
+                dispoBenevoles = true
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}

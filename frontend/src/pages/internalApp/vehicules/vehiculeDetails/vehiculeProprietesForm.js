@@ -79,6 +79,7 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
             setValue("idCarburant", vehicule.idCarburant);
             setValue("affichageSyntheseDesinfections", vehicule.affichageSyntheseDesinfections);
             setValue("affichageSyntheseHealth", vehicule.affichageSyntheseHealth);
+            setValue("dispoBenevoles", vehicule.dispoBenevoles == true ? true : false);
 
             setLoading(false);
         } catch (error) {
@@ -124,6 +125,7 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
                 idCarburant: data.idCarburant,
                 affichageSyntheseDesinfections: data.affichageSyntheseDesinfections,
                 affichageSyntheseHealth: data.affichageSyntheseHealth,
+                dispoBenevoles: data.dispoBenevoles,
             });
 
             setPageNeedsRefresh(true);
@@ -466,6 +468,22 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
                                 }}
                             />
                             <small className="text-danger">{errors.affichageSyntheseHealth?.message}</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="bg-100" style={{ width: '30%' }}>Disponible aux bénéboles</td>
+                        <td>
+                            <Form.Check
+                                id='dispoBenevoles'
+                                name='dispoBenevoles'
+                                label="Incidents"
+                                type='switch'
+                                checked={watch("dispoBenevoles")}
+                                onClick={(e)=>{
+                                    setValue("dispoBenevoles", !watch("dispoBenevoles"))
+                                }}
+                            />
+                            <small className="text-danger">{errors.dispoBenevoles?.message}</small>
                         </td>
                     </tr>
                 </tbody>

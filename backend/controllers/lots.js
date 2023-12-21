@@ -806,6 +806,33 @@ exports.udpateStatut = async (req, res)=>{
     }
 }
 
+//LOTS - Alertes bénévoles Création publique
+exports.createAlerte = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                LOTS_ALERTES
+            SET
+                idLotsAlertesEtat = 1,
+                dateCreationAlerte = CURRENT_TIMESTAMP,
+                nomDeclarant = :nomDeclarant,
+                mailDeclarant = :mailDeclarant,
+                idLot = :idLot,
+                messageAlerteLot = :messageAlerteLot
+        `,{
+            nomDeclarant: req.body.nomDeclarant || null,
+            mailDeclarant: req.body.mailDeclarant || null,
+            idLot: req.body.idLot || null,
+            messageAlerteLot: req.body.messageAlerteLot || null,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 //LOTS - Inventaires
 exports.getOneInventaireForDisplay = async (req, res)=>{
     try {

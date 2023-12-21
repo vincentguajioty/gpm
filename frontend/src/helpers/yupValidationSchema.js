@@ -805,10 +805,50 @@ export const codesBarreFormFournisseur = Yup.object().shape({
         .required(champObligatoire),
 });
 
-export const codesBarreFormInterne= Yup.object().shape({
+export const codesBarreFormInterne = Yup.object().shape({
     idMaterielCatalogue: Yup
         .number()
         .typeError(champObligatoire)
         .min(1, champObligatoire)
         .required(champObligatoire),
+});
+
+export const alerteBenevoleLots = Yup.object().shape({
+    nomDeclarant: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    idLot: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    messageAlerteLot: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    mailDeclarant: Yup
+        .string()
+        .typeError(champObligatoire)
+        .email(champMail),
+});
+
+export const alerteBenevoleVehicules = Yup.object().shape({
+    nomDeclarant: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    idVehicule: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    messageAlerteVehicule: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    mailDeclarant: Yup
+        .string()
+        .typeError(champObligatoire)
+        .email(champMail),
 });
