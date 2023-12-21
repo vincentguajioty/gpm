@@ -6,7 +6,7 @@ const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 //----- PUBLIC ----
 exports.getOneConso = async (req, res)=>{
     try {
-        let verifFonctionnalite = await fonctionsMetiers.checkFunctionnalityRapportConsoEnabled();
+        let verifFonctionnalite = await fonctionsMetiers.checkFunctionnalityBenevolesEnabled();
         if(verifFonctionnalite == false){return;}
 
         const consommation = await db.query(`
@@ -85,7 +85,7 @@ exports.getOneConso = async (req, res)=>{
 
 exports.createConso = async (req, res)=>{
     try {
-        let verifFonctionnalite = await fonctionsMetiers.checkFunctionnalityRapportConsoEnabled();
+        let verifFonctionnalite = await fonctionsMetiers.checkFunctionnalityBenevolesEnabled();
         if(verifFonctionnalite == false){return;}
 
         const result = await db.query(`
