@@ -10,7 +10,6 @@ import NavbarVerticalMenu from './NavbarVerticalMenu';
 import ToggleButton from './ToggleButton';
 import routes from 'routes/publicSiteMaps';
 import { capitalize } from 'helpers/utils';
-import bgNavbar from 'assets/img/generic/bg-navbar.png';
 
 const NavbarVertical = () => {
   const {
@@ -80,9 +79,7 @@ const NavbarVertical = () => {
         onMouseLeave={handleMouseLeave}
         style={{
           backgroundImage:
-            navbarStyle === 'vibrant'
-              ? `linear-gradient(-45deg, rgba(0, 160, 255, 0.86), #0048a2),url(${bgNavbar})`
-              : 'none'
+            navbarStyle === 'none'
         }}
       >
         <div className="navbar-vertical-content scrollbar">
