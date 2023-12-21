@@ -35,25 +35,6 @@ const Landing = () => {
 			</Row>
 
 			<Row className="justify-content-center text-center">
-				{ConfigurationService.config['alertes_benevoles_lots'] || ConfigurationService.config['alertes_benevoles_vehicules'] ?
-					<Col lg={4} className='mb-2'>
-						<Flex
-							alignItems="center"
-							className="px-4 py-x1 bg-light rounded-3 border position-relative"
-						>
-							<img src={imgIncident} alt="" width="39" />
-							<div className="ms-3 my-x1">
-							<h5 className="fs-0 fw-semi-bold mb-2">
-								<a onClick={goIncident} className="text-900 hover-primary stretched-link">
-									Incident Matériel
-								</a>
-							</h5>
-							<h6 className="mb-0 text-600">J'ai rencontré un incident matériel et souhaite le remonter à l'équipe logistique.</h6>
-							</div>
-						</Flex>
-					</Col>
-				: null}
-
 				{ConfigurationService.config['consommation_benevoles'] ? 
 					<Col lg={4} className='mb-2'>
 						<Flex
@@ -68,6 +49,25 @@ const Landing = () => {
 								</a>
 							</h5>
 							<h6 className="mb-0 text-600">Je souhaite tracer une consommation de matériel lors d'un évènement.</h6>
+							</div>
+						</Flex>
+					</Col>
+				: null}
+
+				{ConfigurationService.config['alertes_benevoles_lots'] || ConfigurationService.config['alertes_benevoles_vehicules'] ?
+					<Col lg={4} className='mb-2'>
+						<Flex
+							alignItems="center"
+							className="px-4 py-x1 bg-light rounded-3 border position-relative"
+						>
+							<img src={imgIncident} alt="" width="39" />
+							<div className="ms-3 my-x1">
+							<h5 className="fs-0 fw-semi-bold mb-2">
+								<a onClick={goIncident} className="text-900 hover-primary stretched-link">
+									Incident Matériel
+								</a>
+							</h5>
+							<h6 className="mb-0 text-600">J'ai rencontré un incident matériel et souhaite le remonter à l'équipe logistique.</h6>
 							</div>
 						</Flex>
 					</Col>

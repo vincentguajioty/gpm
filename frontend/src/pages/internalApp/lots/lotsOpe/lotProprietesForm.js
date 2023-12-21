@@ -256,7 +256,7 @@ const LotProprietesForm = ({lot, setModeEdition, setPageNeedsRefresh}) => {
                         </td>
                     </tr>
                     <tr>
-                        <td className="bg-100" style={{ width: '30%' }}>Disponible aux bénéboles</td>
+                        <td className="bg-100" style={{ width: '30%' }}>Disponible aux bénévoles</td>
                         <td>
                             <Form.Check
                                 id='dispoBenevoles'
