@@ -997,6 +997,12 @@ const lotsDelete = async (idLogger, idLot) => {
             idLot : idLot,
         });
 
+        let updateConsoMateriel = await db.query(`
+            UPDATE LOTS_CONSOMMATION_MATERIEL SET idLot = Null WHERE idLot = :idLot
+        ;`,{
+            idLot : idLot,
+        });
+
 
         let finalDeleteQuery = await db.query(`
             DELETE FROM LOTS_LOTS WHERE idLot = :idLot
@@ -1214,7 +1220,7 @@ const reserveConteneurDelete = async (idLogger, idConteneur) => {
             idConteneur : idConteneur,
         });
 
-        let updateConsommation = await db.query(`
+        let updateConsoMateriel = await db.query(`
             UPDATE LOTS_CONSOMMATION_MATERIEL SET idConteneur = Null WHERE idConteneur = :idConteneur
         ;`,{
             idConteneur : idConteneur,

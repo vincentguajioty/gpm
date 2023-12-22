@@ -50,7 +50,7 @@ exports.login = async (req, res)=>{
         {
             if(!reCaptchaToken)
             {
-                logger.warn('Erreur de recaptcha: token manquant', {idPersonne: 'SYSTEM'});
+                logger.warn('Erreur de recaptcha: token manquant');
                 return res.json({auth: false, message:"reCaptcha manquant"});
             }
             
@@ -58,11 +58,11 @@ exports.login = async (req, res)=>{
 
             if(googleCheckResult === true)
             {
-                logger.info('Recaptcha validé', {idPersonne: 'SYSTEM'});
+                logger.info('Recaptcha validé');
             }
             else
             {
-                logger.warn('Erreur de recaptcha: token invalide', {idPersonne: 'SYSTEM'});
+                logger.warn('Erreur de recaptcha: token invalide');
                 return res.json({auth: false, message:"reCaptcha invalide"});
             }
         }
@@ -190,7 +190,7 @@ exports.login = async (req, res)=>{
             {
                 //L'utilisateur a fait une erreur de mot de passe
                 logger.debug("L'utilisateur a fait une erreur de mot de passe");
-                logger.warn('Connexion de l\'utilisateur rejetée car erreur de mot de passe', {idPersonne: 'SYSTEM'});
+                logger.warn('Connexion de l\'utilisateur rejetée car erreur de mot de passe');
                 return res.json({auth: false, message:"Mauvaise combinaison user/pwd"});
             }
         }
@@ -198,7 +198,7 @@ exports.login = async (req, res)=>{
         {
             //L'utilisateur est inconnu, on regarde si une création AD est possible
             logger.debug("L'utilisateur est inconnu, on regarde si une création AD est possible");
-            logger.info('Pas de user trouvé pour ' + identifiant, {idPersonne: 'SYSTEM'})
+            logger.info('Pas de user trouvé pour ' + identifiant)
 
             if(process.env.LDAP_ENABLED == "1" && process.env.LDAP_AUTOCREATE == "1")
             {
@@ -753,7 +753,7 @@ exports.getCurrentSessionsOneUser = async (req, res) => {
 
 exports.dropSession = async (req, res) => {
     try {
-        logger.info('Déconnexion', {idPersonne: 'SYSTEM'});
+        logger.info('Déconnexion');
         const deleteQuery = await db.query(
             'DELETE FROM JWT_SESSIONS WHERE jwtToken = :jwtToken',
         {
@@ -820,10 +820,13 @@ exports.delegate = async (req, res, next)=>{
         if(targetUser.length == 1)
         {
             //L'utilisateur a bien ses droits, on le connecte
-            logger.debug("[DELEGATION] L'utilisateur a bien ses droits, on le connecte");
+            logger.debug("DELEGATION - L'utilisateur a bien ses droits, on le connecte");
             selectedUser = targetUser[0];
             delete selectedUser.motDePasse;
             delete selectedUser.mfaSecret;
+            selectedUser.tokenDelegationActive = true;
+            selectedUser.tokenDelegationInitialIdPersonne = req.verifyJWTandProfile.idPersonne;
+            selectedUser.tokenDelegationInitialIdentifiant = req.verifyJWTandProfile.identifiant;
 
             const tokenValidUntil = moment(new Date()).add(jwtExpirySeconds, 'seconds');
             const token = jwt.sign(selectedUser, process.env.JWT_TOKEN, {
@@ -834,7 +837,7 @@ exports.delegate = async (req, res, next)=>{
                 expiresIn: jwtRefreshExpirySeconds,
             });                    
             req.session.utilisateur = selectedUser;
-            logger.info('[DELEGATION] Connexion en succès de ' + selectedUser.identifiant, {idPersonne: selectedUser.idPersonne});
+            logger.info('DELEGATION - Connexion en succès de '+req.verifyJWTandProfile.identifiant+' au compte de ' + selectedUser.identifiant, {idPersonne: selectedUser.idPersonne, identifiant: selectedUser.identifiant});
             const sessionInDB = await db.query(`
                 INSERT INTO
                     JWT_SESSIONS
@@ -859,8 +862,8 @@ exports.delegate = async (req, res, next)=>{
         else
         {
             //L'utilisateur existe mais n'a pas de droits
-            logger.debug("[DELEGATION] L'utilisateur existe mais n'a pas de droits");
-            logger.warn('[DELEGATION] Connexion de l\'utilisateur rejetée car droits insuffisants', {idPersonne: selectedUser.idPersonne});
+            logger.debug("DELEGATION - L'utilisateur existe mais n'a pas de droits");
+            logger.warn('DELEGATION - Connexion de l\'utilisateur rejetée car droits insuffisants', {idPersonne: selectedUser.idPersonne});
             return res.json({auth: false, message:"Droits insuffisants"});
         }
     } catch (error) {

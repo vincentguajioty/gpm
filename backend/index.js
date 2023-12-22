@@ -43,7 +43,7 @@ app.use('/', routes);
 
 const startServer = () => {
     http.listen(3001, () => {
-        logger.info(`Server listening on `+3001, {idPersonne: 'SYSTEM'});
+        logger.info(`Server listening on `+3001);
 
         fonctionsSocketIO.socketInterface(http);
     });

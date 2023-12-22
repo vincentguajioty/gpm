@@ -62,7 +62,7 @@ exports.authenticateForAES = async (req, res)=>{
         if(checkTheKey)
         {
             logger.debug("La clef saisie est valide, on génère donc un token chiffré à stocker dans le FrontEnd, à envoyer pour décrypter");
-            logger.info('Authentification AES réussie pour idUtilisateur ' + req.verifyJWTandProfile.idPersonne);
+            logger.info('Authentification AES réussie pour idPersonne ' + req.verifyJWTandProfile.idPersonne);
 
             const jwtExpirySeconds = parseInt(process.env.JWT_AESFOURNISSEURS_EXPIRATION);
             const aesTokenValidUntil = moment(new Date()).add(jwtExpirySeconds, 'seconds');

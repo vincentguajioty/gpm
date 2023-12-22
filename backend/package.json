@@ -30,6 +30,7 @@
     "nodemailer-express-handlebars": "^5.0.0",
     "sharp": "^0.30.7",
     "socket.io": "^4.7.2",
-    "winston": "^3.8.1"
+    "winston": "^3.8.1",
+    "winston-daily-rotate-file": "^4.7.1"
   }
 }

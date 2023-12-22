@@ -61,7 +61,7 @@ const sendMailQueue = async () => {
                 // break;
             
                 default:
-                    logger.warn('Mail '+mailNeeded.idMailQueue+' ne peut pas être envoyé pour cause d\'erreur dans le type de mail', {idUtilisateur: 'SYSTEM'})
+                    logger.warn('Mail '+mailNeeded.idMailQueue+' ne peut pas être envoyé pour cause d\'erreur dans le type de mail')
                     successCheck = false;
                     break;
             }

@@ -206,13 +206,13 @@ const unlockReservesInventaires = async () => {
 
 const updatePeremptionsAnticipations = async () => {
     try {
-        logger.info("Début de la mise à jour de la table de matériel opérationnel pour mise à jour du champ d'anticipation des péremption conformément au catalogue.", {idPersonne: 'SYSTEM'})
+        logger.info("Début de la mise à jour de la table de matériel opérationnel pour mise à jour du champ d'anticipation des péremption conformément au catalogue.")
         const updateOpe = await db.query(`UPDATE MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue SET e.peremptionAnticipation = c.peremptionAnticipationOpe WHERE c.peremptionAnticipationOpe IS NOT NULL;`);
-        logger.info("Fin de la mise à jour de la table de matériel opérationnel pour mise à jour du champ d'anticipation des péremption conformément au catalogue.", {idPersonne: 'SYSTEM'})
+        logger.info("Fin de la mise à jour de la table de matériel opérationnel pour mise à jour du champ d'anticipation des péremption conformément au catalogue.")
 
-        logger.info("Début de la mise à jour de la table de matériel en reserve pour mise à jour du champ d'anticipation des péremption conformément au catalogue.", {idPersonne: 'SYSTEM'})
+        logger.info("Début de la mise à jour de la table de matériel en reserve pour mise à jour du champ d'anticipation des péremption conformément au catalogue.")
         const updateRes = await db.query(`UPDATE RESERVES_MATERIEL e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue SET e.peremptionReserveAnticipation = c.peremptionAnticipationRes WHERE c.peremptionAnticipationRes IS NOT NULL;`);
-        logger.info("Fin de la mise à jour de la table de matériel en reserve pour mise à jour du champ d'anticipation des péremption conformément au catalogue.", {idPersonne: 'SYSTEM'})
+        logger.info("Fin de la mise à jour de la table de matériel en reserve pour mise à jour du champ d'anticipation des péremption conformément au catalogue.")
     } catch (error) {
         logger.error(error)
     }
@@ -220,7 +220,7 @@ const updatePeremptionsAnticipations = async () => {
 
 const notificationsMAJpersonne = async () => {
     try {
-        logger.info("Début de la mise à jour des conditions de notification dans la table des personnes.", {idPersonne: 'SYSTEM'})
+        logger.info("Début de la mise à jour des conditions de notification dans la table des personnes.")
 
         const personnes = await db.query(`
             SELECT
@@ -249,7 +249,7 @@ const notificationsMAJpersonne = async () => {
             });
         }
 
-        logger.info("Fin de la mise à jour des conditions de notification dans la table des personnes.", {idPersonne: 'SYSTEM'})
+        logger.info("Fin de la mise à jour des conditions de notification dans la table des personnes.")
     } catch (error) {
         logger.error(error)
     }
@@ -257,7 +257,7 @@ const notificationsMAJpersonne = async () => {
 
 const notificationsConditionsMAJ = async () => {
     try {
-        logger.info("Début de la mise à jour de la table des conditions de notification.", {idPersonne: 'SYSTEM'})
+        logger.info("Début de la mise à jour de la table des conditions de notification.")
 
         const currentDate = new Date();
 
@@ -283,7 +283,7 @@ const notificationsConditionsMAJ = async () => {
             nomJour: moment(currentDate).format("dddd"),
         });
         
-        logger.info("Fin de la mise à jour de la table des conditions de notification.", {idPersonne: 'SYSTEM'})
+        logger.info("Fin de la mise à jour de la table des conditions de notification.")
     } catch (error) {
         logger.error(error)
     }
@@ -348,7 +348,7 @@ const checkVehiculeMaintenance = async (idVehicule) => {
 
 const checkAllMaintenance = async () => {
     try {
-        logger.info("Lancement de la vérification des maintenance de tous les véhicules.", {idPersonne: 'SYSTEM'})
+        logger.info("Lancement de la vérification des maintenance de tous les véhicules.")
 
         let allVehicules = await db.query(`
             SELECT * FROM VEHICULES;
@@ -358,7 +358,7 @@ const checkAllMaintenance = async () => {
             await checkOneMaintenance(vehicule.idVehicule)
         }
         
-        logger.info("Fin de la vérification des maintenance de tous les véhicules.", {idPersonne: 'SYSTEM'})
+        logger.info("Fin de la vérification des maintenance de tous les véhicules.")
     } catch (error) {
         logger.error(error)
     }
@@ -366,7 +366,7 @@ const checkAllMaintenance = async () => {
 
 const checkOneMaintenance = async (idVehicule) => {
     try {
-        logger.info("Lancement de la vérification des maintenance du véhicule "+idVehicule, {idPersonne: 'SYSTEM'})
+        logger.info("Lancement de la vérification des maintenance du véhicule "+idVehicule)
 
         let alertes = await db.query(`
             SELECT COUNT(*) as nb FROM VEHICULES_HEALTH_ALERTES WHERE idVehicule = :idVehicule;
@@ -378,7 +378,7 @@ const checkOneMaintenance = async (idVehicule) => {
         {
             if (await checkVehiculeMaintenance(idVehicule) == 1)
             {
-                logger.info("Véhicule "+idVehicule+" contrôlé en erreur de maintenance.", {idPersonne: 'SYSTEM'})
+                logger.info("Véhicule "+idVehicule+" contrôlé en erreur de maintenance.")
                 let update = await db.query(`
                     UPDATE VEHICULES SET alerteMaintenance = True WHERE idVehicule = :idVehicule;
                 `,{
@@ -387,7 +387,7 @@ const checkOneMaintenance = async (idVehicule) => {
             }
             else
             {
-                logger.info("Véhicule "+idVehicule+" contrôlé en maintenance ok.", {idPersonne: 'SYSTEM'})
+                logger.info("Véhicule "+idVehicule+" contrôlé en maintenance ok.")
                 let update = await db.query(`
                     UPDATE VEHICULES SET alerteMaintenance = false WHERE idVehicule = :idVehicule;
                 `,{
@@ -397,7 +397,7 @@ const checkOneMaintenance = async (idVehicule) => {
         }
         else
         {
-            logger.warn("Vérification des maintenance du vehicule "+idVehicule+" impossible car aucune alerte paramétrée.", {idPersonne: 'SYSTEM'})
+            logger.warn("Vérification des maintenance du vehicule "+idVehicule+" impossible car aucune alerte paramétrée.")
             let update = await db.query(`
                 UPDATE VEHICULES SET alerteMaintenance = null WHERE idVehicule = :idVehicule;
             `,{
@@ -405,7 +405,7 @@ const checkOneMaintenance = async (idVehicule) => {
             });
         }
         
-        logger.info("Fin de la vérification des maintenance du véhicule "+idVehicule, {idPersonne: 'SYSTEM'})
+        logger.info("Fin de la vérification des maintenance du véhicule "+idVehicule)
     } catch (error) {
         logger.error(error)
     }
@@ -469,7 +469,7 @@ const checkVehiculeDesinfection = async (idVehicule) => {
 
 const checkAllDesinfection = async () => {
     try {
-        logger.info("Lancement de la vérification des désinfections de tous les véhicules.", {idPersonne: 'SYSTEM'})
+        logger.info("Lancement de la vérification des désinfections de tous les véhicules.")
 
         let allVehicules = await db.query(`
             SELECT * FROM VEHICULES;
@@ -479,7 +479,7 @@ const checkAllDesinfection = async () => {
             await checkOneDesinfection(vehicule.idVehicule)
         }
         
-        logger.info("Fin de la vérification des désinfections de tous les véhicules.", {idPersonne: 'SYSTEM'})
+        logger.info("Fin de la vérification des désinfections de tous les véhicules.")
     } catch (error) {
         logger.error(error)
     }
@@ -487,7 +487,7 @@ const checkAllDesinfection = async () => {
 
 const checkOneDesinfection = async (idVehicule) => {
     try {
-        logger.info("Lancement de la vérification des désinfections du véhicule "+idVehicule, {idPersonne: 'SYSTEM'})
+        logger.info("Lancement de la vérification des désinfections du véhicule "+idVehicule)
 
         let alertes = await db.query(`
             SELECT COUNT(*) as nb FROM VEHICULES_DESINFECTIONS_ALERTES WHERE idVehicule = :idVehicule;
@@ -499,7 +499,7 @@ const checkOneDesinfection = async (idVehicule) => {
         {
             if (await checkVehiculeDesinfection(idVehicule) == 1)
             {
-                logger.info("Véhicule "+idVehicule+" contrôlé en erreur de désinfections.", {idPersonne: 'SYSTEM'})
+                logger.info("Véhicule "+idVehicule+" contrôlé en erreur de désinfections.")
                 let update = await db.query(`
                     UPDATE VEHICULES SET alerteDesinfection = True WHERE idVehicule = :idVehicule;
                 `,{
@@ -508,7 +508,7 @@ const checkOneDesinfection = async (idVehicule) => {
             }
             else
             {
-                logger.info("Véhicule "+idVehicule+" contrôlé en désinfections ok.", {idPersonne: 'SYSTEM'})
+                logger.info("Véhicule "+idVehicule+" contrôlé en désinfections ok.")
                 let update = await db.query(`
                     UPDATE VEHICULES SET alerteDesinfection = false WHERE idVehicule = :idVehicule;
                 `,{
@@ -518,7 +518,7 @@ const checkOneDesinfection = async (idVehicule) => {
         }
         else
         {
-            logger.warn("Vérification des désinfections du vehicule "+idVehicule+" impossible car aucune alerte paramétrée.", {idPersonne: 'SYSTEM'})
+            logger.warn("Vérification des désinfections du vehicule "+idVehicule+" impossible car aucune alerte paramétrée.")
             let update = await db.query(`
                 UPDATE VEHICULES SET alerteDesinfection = null WHERE idVehicule = :idVehicule;
             `,{
@@ -526,7 +526,7 @@ const checkOneDesinfection = async (idVehicule) => {
             });
         }
         
-        logger.info("Fin de la vérification des désinfections du véhicule "+idVehicule, {idPersonne: 'SYSTEM'})
+        logger.info("Fin de la vérification des désinfections du véhicule "+idVehicule)
     } catch (error) {
         logger.error(error)
     }
@@ -534,7 +534,7 @@ const checkOneDesinfection = async (idVehicule) => {
 
 const checkLotsConf = async (idLot) => {
     try {
-        logger.info("Vérification de conformité du lot "+idLot, {idPersonne: 'SYSTEM'})
+        logger.info("Vérification de conformité du lot "+idLot)
         let errorsConf = 0;
 
         let lot = await db.query(`
@@ -620,12 +620,12 @@ const checkLotsConf = async (idLot) => {
 
         if(errorsConf > 0)
         {
-            logger.info("Lot "+idLot+" vérifié non-conforme", {idPersonne: 'SYSTEM'})
+            logger.info("Lot "+idLot+" vérifié non-conforme")
             return 1;
         }
         else
         {
-            logger.info("Lot "+idLot+" vérifié conforme", {idPersonne: 'SYSTEM'})
+            logger.info("Lot "+idLot+" vérifié conforme")
             return 0;
         }
         
@@ -680,7 +680,7 @@ const checkOneConf = async (idLot) => {
 
 const checkAllConf = async () => {
     try {
-        logger.info("Lancement de la vérification de conformité de tous les lots.", {idPersonne: 'SYSTEM'})
+        logger.info("Lancement de la vérification de conformité de tous les lots.")
 
         let lots = await db.query(`
             SELECT * FROM LOTS_LOTS;
@@ -690,7 +690,7 @@ const checkAllConf = async () => {
             await checkOneConf(lot.idLot)
         }
         
-        logger.info("Fin de la vérification de conformité de tous les lots.", {idPersonne: 'SYSTEM'})
+        logger.info("Fin de la vérification de conformité de tous les lots.")
     } catch (error) {
         logger.error(error)
     }
@@ -824,7 +824,7 @@ const cnilAnonymeCron = async () => {
         `);
         for(const user of users)
         {
-            logger.info("CRON - Anonymisation de l'utilisateur "+user.idPersonne+" - "+user.identifiant, {idPersonne: 'SYSTEM'})
+            logger.info("CRON - Anonymisation de l'utilisateur "+user.idPersonne+" - "+user.identifiant)
             await cnilAnonyme(user.idPersonne);
         }
         
@@ -1195,7 +1195,7 @@ const majIndicateursPersonne = async (idPersonne, enableLog) => {
 
         if(enableLog)
         {
-            logger.info("Revue des indicateurs d'accueil pour la personne "+idPersonne, {idPersonne: 'SYSTEM'})
+            logger.info("Revue des indicateurs d'accueil pour la personne "+idPersonne)
         }
     } catch (error) {
         logger.error(error)
@@ -1204,7 +1204,7 @@ const majIndicateursPersonne = async (idPersonne, enableLog) => {
 
 const majIndicateursProfil = async (idProfil) => {
     try {
-        logger.info("Revue des indicateurs d'accueil pour le profil "+idProfil, {idPersonne: 'SYSTEM'})
+        logger.info("Revue des indicateurs d'accueil pour le profil "+idProfil)
 
         let personnes = await db.query(`
             SELECT idPersonne FROM PROFILS_PERSONNES WHERE idProfil = :idProfil;
@@ -1282,7 +1282,7 @@ const majNotificationsPersonne = async (idPersonne, enableLog) => {
 
         if(enableLog)
         {
-            logger.info("Revue des notifications pour la personne "+idPersonne, {idPersonne: 'SYSTEM'})
+            logger.info("Revue des notifications pour la personne "+idPersonne)
         }
     } catch (error) {
         logger.error(error)
@@ -1291,7 +1291,7 @@ const majNotificationsPersonne = async (idPersonne, enableLog) => {
 
 const majNotificationsProfil = async (idProfil) => {
     try {
-        logger.info("Revue des notifications pour le profil "+idProfil, {idPersonne: 'SYSTEM'})
+        logger.info("Revue des notifications pour le profil "+idProfil)
 
         let personnes = await db.query(`
             SELECT idPersonne FROM PROFILS_PERSONNES WHERE idProfil = :idProfil;
@@ -1325,7 +1325,7 @@ const majValideursPersonne = async (enableLog) => {
         
         if (enableLog)
         {
-            logger.info("Nettoyage des personnes des valideurs par défaut des commandes", {idPersonne: 'SYSTEM'})
+            logger.info("Nettoyage des personnes des valideurs par défaut des commandes")
         }
     } catch (error) {
         logger.error(error)

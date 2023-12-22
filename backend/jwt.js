@@ -49,7 +49,7 @@ const verifyJWTandProfile = (role) => {
                         });
                         if(!acl)
                         {
-                            logger.info('Accès refusé par ACL', {idPersonne: 'SYSTEM'});
+                            logger.info('Accès refusé par ACL');
                             res.status(403);
                             res.send('Accès refusé par le contrôle de profile');
                         }
@@ -60,7 +60,7 @@ const verifyJWTandProfile = (role) => {
                             );
                             if(maintenanceConfig[0].maintenance && !decoded['maintenance'])
                             {
-                                logger.info('Accès refusé par le dispositif de maintenance', {idPersonne: 'SYSTEM'});
+                                logger.info('Accès refusé par le dispositif de maintenance');
                                 res.status(403);
                                 res.send('Accès refusé par le dispositif de maintenance');
                             }
@@ -171,7 +171,7 @@ const verifyJWTforSocketIO = async (token, role) => {
             });
             if(!acl)
             {
-                logger.info('Accès refusé par ACL', {idPersonne: 'SYSTEM'});
+                logger.info('Accès refusé par ACL');
                 return(false);
             }
             else
@@ -181,7 +181,7 @@ const verifyJWTforSocketIO = async (token, role) => {
                 );
                 if(maintenanceConfig[0].maintenance && !decoded['maintenance'])
                 {
-                    logger.info('Accès refusé par le dispositif de maintenance', {idPersonne: 'SYSTEM'});
+                    logger.info('Accès refusé par le dispositif de maintenance');
                     return(false);
                 }
                 else

@@ -426,9 +426,7 @@ router.post('/settingsUtilisateurs/updateProfils',                   loggerMiddl
 router.post('/settingsUtilisateurs/pwdReinitRequest',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['annuaire_mdp',]) ,                                             loggerMiddleware.modificationLogger(), connexionCtrl.pwdReinitRequest);
 router.post('/settingsUtilisateurs/anonymiserUser',                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['annuaire_suppression',]) ,                                     loggerMiddleware.suppressionLogger(),  settingsUtilisateursCtrl.anonymiserUser);
 router.post('/settingsUtilisateurs/deleteUser',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['annuaire_suppression',]) ,                                     loggerMiddleware.suppressionLogger(),  settingsUtilisateursCtrl.deleteUser);
-router.post('/settingsUtilisateurs/delegate',                        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['delegation',]) ,                                               loggerMiddleware.suppressionLogger(),  connexionCtrl.delegate);
-
-
+router.post('/settingsUtilisateurs/delegate',                        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['delegation',]) ,                                                                                      connexionCtrl.delegate);
 
 //settings techniques
 router.get('/settingsTechniques/getConfigForAdmin',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) ,                                        settingsTechniquesCtrl.getConfigForAdmin);

@@ -6,7 +6,7 @@ const himselfRead = () => {
     return function(req, res, next) {
         if(req.verifyJWTandProfile.idPersonne != req.body.idPersonne && !req.verifyJWTandProfile.annuaire_lecture)
         {
-            logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
+            logger.info('Accès refusé par ACL et référence idPersonne croisée');
             res.status(403);
             res.send('Accès refusé par le contrôle de profile');
         }
@@ -21,7 +21,7 @@ const himselfWrite = () => {
     return function(req, res, next) {
         if(req.verifyJWTandProfile.idPersonne != req.body.idPersonne && !req.verifyJWTandProfile.annuaire_modification)
         {
-            logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
+            logger.info('Accès refusé par ACL et référence idPersonne croisée');
             res.status(403);
             res.send('Accès refusé par le contrôle de profile');
         }
@@ -41,7 +41,7 @@ const hisOwnTdlArray = () => {
         }
         else
         {
-            logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
+            logger.info('Accès refusé par ACL et référence idPersonne croisée');
             res.status(403);
             res.send('Accès refusé par le contrôle de profile');
         }
@@ -71,7 +71,7 @@ const hisOwnTdl = () => {
         }
         else
         {
-            logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
+            logger.info('Accès refusé par ACL et référence idPersonne croisée');
             res.status(403);
             res.send('Accès refusé par le contrôle de profile');
         }
@@ -101,7 +101,7 @@ const editHisOwnTdl = () => {
         }
         else
         {
-            logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
+            logger.info('Accès refusé par ACL et référence idPersonne croisée');
             res.status(403);
             res.send('Accès refusé par le contrôle de profile');
         }
@@ -117,7 +117,7 @@ const addToHimself = () => {
         }
         else
         {
-            logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
+            logger.info('Accès refusé par ACL et référence idPersonne croisée');
             res.status(403);
             res.send('Accès refusé par le contrôle de profile');
         }
@@ -143,7 +143,7 @@ const alerteVehiculeOwned = () => {
         }
         else
         {
-            logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
+            logger.info('Accès refusé par ACL et référence idPersonne croisée');
             res.status(403);
             res.send('Accès refusé par le contrôle de profile');
         }
@@ -169,7 +169,7 @@ const alerteLotOwned = () => {
         }
         else
         {
-            logger.info('Accès refusé par ACL et référence idPersonne croisée', {idPersonne: 'SYSTEM'});
+            logger.info('Accès refusé par ACL et référence idPersonne croisée');
             res.status(403);
             res.send('Accès refusé par le contrôle de profile');
         }
@@ -186,7 +186,7 @@ const checkFunctionnalityBenevolesEnabled = () => {
         }
         else
         {
-            logger.info('Accès refusé par checkFunctionnalityBenevolesEnabled car fonctionnalité désactivée', {idPersonne: 'SYSTEM'});
+            logger.info('Accès refusé par checkFunctionnalityBenevolesEnabled car fonctionnalité désactivée');
             res.status(403);
             res.send('Fonctionnalité désactivée');
         }
