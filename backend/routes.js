@@ -58,6 +58,7 @@ router.post('/getCurrentSessionsOneUser',  loggerMiddleware.httpLogger(), jwtFun
 router.post('/blackListSession',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), loggerMiddleware.suppressionLogger(),  connexionCtrl.blackListSession );
 
 //select routes for forms and lists - AUTHENTICATED
+router.get('/select/getNotificationsConditions',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getNotificationsConditions);
 router.get('/select/getPersonnes',                             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getPersonnes);
 router.get('/select/getActivePersonnes',                       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getActivePersonnes);
 router.get('/select/getNonAnonymesPersonnes',                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getNonAnonymesPersonnes);

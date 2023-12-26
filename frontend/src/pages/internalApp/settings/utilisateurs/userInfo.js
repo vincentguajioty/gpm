@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import FalconComponentCard from 'components/common/FalconComponentCard';
 import { Form, Button, Row, Col } from 'react-bootstrap'; 
+import Select from 'react-select';
 
 import {Axios} from 'helpers/axios';
 
@@ -12,6 +13,7 @@ const UserInfo = ({idPersonne, pageNeedsRefresh}) => {
 	const [isLoading, setLoading] = useState(false);
     const [readyToDisplay, setReadyToDisplay] = useState(false);
     const [personne, setPersonne] = useState([]);
+    const [conditionsNotif, setConditionsNotifs] = useState([]);
 
     const notificationsDisponibles = [
         {config: 'notif_lots_manquants'         , label:'Matériels manquants (lots)'            , profilNeeded: 'lots_lecture',},
@@ -48,6 +50,9 @@ const UserInfo = ({idPersonne, pageNeedsRefresh}) => {
 
     const initValue = async () => {
         try {
+            const getNotificationsConditions = await Axios.get('/select/getNotificationsConditions');
+            setConditionsNotifs(getNotificationsConditions.data);
+            
             const response = await Axios.post('/settingsUtilisateurs/getOneUser',{
                 idPersonne: idPersonne,
             });
@@ -58,6 +63,8 @@ const UserInfo = ({idPersonne, pageNeedsRefresh}) => {
             setValue("mailPersonne", response.data[0].mailPersonne);
             setValue("telPersonne", response.data[0].telPersonne);
             setValue("fonction", response.data[0].fonction);
+            setValue("abonnementsNotificationsJournalieres", response.data[0].abonnementsNotificationsJournalieres);
+            console.log(response.data[0].abonnementsNotificationsJournalieres);
 
             for(const notif of notificationsDisponibles)
             {
@@ -177,6 +184,24 @@ const UserInfo = ({idPersonne, pageNeedsRefresh}) => {
                                             <small className="text-danger">{errors.mailPersonne?.message}</small>
 
                                             <Form.Label className='mt-3'>Abonnement aux notifications journalières:</Form.Label>
+                                            <Select
+                                                id="abonnementsNotificationsJournalieres"
+                                                name="abonnementsNotificationsJournalieres"
+                                                size="sm"
+                                                className='mb-2'
+                                                closeMenuOnSelect={false}
+                                                placeholder='Aucune condition selectionnée'
+                                                options={conditionsNotif}
+                                                isClearable={true}
+                                                isSearchable={true}
+                                                isMulti
+                                                classNamePrefix="react-select"
+                                                value={watch("abonnementsNotificationsJournalieres")}
+                                                onChange={selected => setValue("abonnementsNotificationsJournalieres", selected)}
+                                                isDisabled={isLoading}
+                                            />
+                                            <small className="text-danger">{errors.abonnementsNotificationsJournalieres?.message}</small>
+                                            
                                             {notificationsDisponibles.map((notif, i) => {return(
                                                 <Form.Check
                                                     type='switch'

@@ -112,6 +112,23 @@ exports.getOneUser = async (req, res, next)=>{
             user.onGoingToken = onGoingResetProcess.length > 0 ? onGoingResetProcess[0].tokenReset : null;
         }
 
+        for(const user of result)
+        {
+            let abonnementsNotificationsJournalieres = await db.query(`
+                SELECT
+                    abo.idCondition as value,
+                    cond.libelleCondition as label
+                FROM
+                    NOTIFICATIONS_ABONNEMENTS abo
+                    LEFT OUTER JOIN NOTIFICATIONS_CONDITIONS cond ON abo.idCondition = cond.idCondition
+                WHERE
+                    idPersonne = :idPersonne
+            `,{
+                idPersonne: user.idPersonne
+            });
+            user.abonnementsNotificationsJournalieres = abonnementsNotificationsJournalieres;
+        }
+
         res.send(result);
     } catch (error) {
         logger.error(error);
@@ -288,6 +305,29 @@ exports.updateMonCompte = async (req, res, next)=>{
             conf_indicateur11Accueil: req.body.data.conf_indicateur11Accueil ? true : false,
             conf_indicateur12Accueil: req.body.data.conf_indicateur12Accueil ? true : false,
         });
+
+        const cleanQuery = await db.query(`
+            DELETE FROM
+                NOTIFICATIONS_ABONNEMENTS
+            WHERE
+                idPersonne     = :idPersonne
+        `,{
+            idPersonne     : req.body.idPersonne || null,
+        });
+
+        for(const entry of req.body.data.abonnementsNotificationsJournalieres)
+        {
+            const insertQuery = await db.query(`
+                INSERT INTO
+                    NOTIFICATIONS_ABONNEMENTS
+                SET
+                    idPersonne     = :idPersonne,
+                    idCondition = :idCondition
+            `,{
+                idPersonne     : req.body.idPersonne || null,
+                idCondition : entry.value || null,
+            });
+        }
 
         await fonctionsMetiers.majIndicateursPersonne(req.body.idPersonne, true);
         await fonctionsMetiers.majNotificationsPersonne(req.body.idPersonne, true);

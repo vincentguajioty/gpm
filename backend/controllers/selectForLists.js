@@ -1,6 +1,22 @@
 const db = require('../db');
 const logger = require('../winstonLogger');
 
+exports.getNotificationsConditions = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idCondition as value,
+                libelleCondition as label
+            FROM
+                NOTIFICATIONS_CONDITIONS
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.getPersonnes = async (req, res)=>{
     try {
         let results = await db.query(`
