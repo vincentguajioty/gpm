@@ -47,6 +47,8 @@ const transporterWithoutDKIM = nodemailer.createTransport(
     }
 );
 
+/* --------- FONCTIONS LOCALES CAS PAR CAS --------- */
+
 const autoResetPwd = async (requestInfo) => {
     try {
         // use a template file with nodemailer
@@ -623,16 +625,309 @@ const finDeclarationConso = async (requestInfo) => {
 }
 
 const notifJournaliere = async (requestInfo) => {
-    try {
-        //TODO
-        
+try {
+    // use a template file with nodemailer
+    let configDB = await db.query(
+        `SELECT * FROM CONFIG;`
+    );
+    configDB = configDB[0]
+
+    const transporter = process.env.DKIM_ENABLED && process.env.DKIM_ENABLED == true ? transporterWithDKIM : transporterWithoutDKIM;
+    transporter.use('compile', hbs(handlebarOptions))
+
+    //get data for the email
+    const users = await db.query(`
+        SELECT
+            *
+        FROM
+            PERSONNE_REFERENTE
+        WHERE
+            idPersonne = :idPersonne
+    `,{
+        idPersonne: requestInfo.idPersonne,
+    });
+
+    //get users and send the mail to each one      
+    let mailOptions={};
+    let emailErrors = 0;
+    for (const personne of users) {
+        // notif_lots_manquants
+        let lots_manquants = [];
+        if(personne.notif_lots_manquants)
+        {
+            lots_manquants = await db.query(`
+                SELECT
+                    l.libelleLot,
+                    c.libelleMateriel
+                FROM
+                    MATERIEL_ELEMENT m
+                    LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement
+                    LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac
+                    LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot
+                    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                    LEFT OUTER JOIN NOTIFICATIONS_ENABLED notif ON l.idNotificationEnabled = notif.idNotificationEnabled
+                WHERE
+                    (quantite < quantiteAlerte OR quantite = quantiteAlerte)
+                    AND
+                    notifiationEnabled = true
+            ;`);
+        }
+
+        // notif_lots_peremptions
+        let lots_peremptions = [];
+        if(personne.notif_lots_peremptions)
+        {
+            lots_peremptions = await db.query(`
+                SELECT
+                    l.libelleLot,
+                    c.libelleMateriel
+                FROM
+                    MATERIEL_ELEMENT m
+                    LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement
+                    LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac
+                    LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot
+                    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                    LEFT OUTER JOIN NOTIFICATIONS_ENABLED notif ON l.idNotificationEnabled = notif.idNotificationEnabled
+                WHERE
+                    (peremptionNotification < CURRENT_DATE OR peremptionNotification = CURRENT_DATE)
+                    AND
+                    notifiationEnabled = true
+            ;`);
+        }
+
+        // notif_lots_inventaires
+        let lots_inventaires = [];
+        if(personne.notif_lots_inventaires)
+        {
+            lots_inventaires = await db.query(`
+                SELECT
+                    libelleLot
+                FROM
+                    LOTS_LOTS l
+                    LEFT OUTER JOIN NOTIFICATIONS_ENABLED notif ON l.idNotificationEnabled = notif.idNotificationEnabled
+                WHERE
+                    notifiationEnabled = true
+                    AND
+                    (frequenceInventaire IS NOT NULL)
+                    AND
+                    (
+                        (DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) < CURRENT_DATE)
+                        OR
+                        (DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) = CURRENT_DATE)
+                    )
+            ;`);
+        }
+
+        // notif_lots_conformites
+        let lots_conformites = [];
+        if(personne.notif_lots_conformites)
+        {
+            lots_conformites = await db.query(`
+                SELECT
+                    l.libelleLot
+                FROM
+                    LOTS_LOTS l
+                    LEFT OUTER JOIN NOTIFICATIONS_ENABLED notif ON l.idNotificationEnabled = notif.idNotificationEnabled
+                WHERE
+                    alerteConfRef = 1
+                    AND
+                    notifiationEnabled = true
+            ;`);
+        }
+
+        // notif_reserves_manquants
+        let reserves_manquants = [];
+        if(personne.notif_reserves_manquants)
+        {
+            reserves_manquants = await db.query(`
+                SELECT
+                    c.libelleConteneur,
+                    r.libelleMateriel
+                FROM
+                    RESERVES_MATERIEL m
+                    LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur=c.idConteneur
+                    LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue
+                WHERE
+                    quantiteReserve < quantiteAlerteReserve
+                    OR
+                    quantiteReserve = quantiteAlerteReserve
+            ;`);
+        }
+
+        // notif_reserves_peremptions
+        let reserves_peremptions = [];
+        if(personne.notif_reserves_peremptions)
+        {
+            reserves_peremptions = await db.query(`
+                SELECT
+                    c.libelleConteneur,
+                    r.libelleMateriel
+                FROM
+                    RESERVES_MATERIEL m
+                    LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur=c.idConteneur
+                    LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue
+                WHERE
+                    peremptionNotificationReserve < CURRENT_DATE
+                    OR
+                    peremptionNotificationReserve = CURRENT_DATE
+            ;`);
+        }
+
+        // notif_reserves_inventaires
+        let reserves_inventaires = [];
+        if(personne.notif_reserves_inventaires)
+        {
+            reserves_inventaires = await db.query(`
+                SELECT
+                    libelleConteneur
+                FROM
+                    RESERVES_CONTENEUR
+                WHERE
+                    (frequenceInventaire IS NOT NULL)
+                    AND
+                    (
+                        (DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) < CURRENT_DATE)
+                        OR
+                        (DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) = CURRENT_DATE)
+                    )
+            ;`);
+        }
+
+        // notif_vehicules_desinfections
+        let vehicules_desinfections = [];
+        if(personne.notif_vehicules_desinfections)
+        {
+            vehicules_desinfections = await db.query(`
+                SELECT
+                    v.libelleVehicule
+                FROM
+                    VEHICULES v
+                    LEFT OUTER JOIN NOTIFICATIONS_ENABLED notif ON v.idNotificationEnabled = notif.idNotificationEnabled
+                WHERE
+                    notifiationEnabled = true
+                    AND 
+                    alerteDesinfection = 1
+            ;`);
+        }
+
+        // notif_vehicules_health
+        let vehicules_health = [];
+        if(personne.notif_vehicules_health)
+        {
+            vehicules_health = await db.query(`
+                SELECT
+                    v.libelleVehicule
+                FROM
+                    VEHICULES v
+                    LEFT OUTER JOIN NOTIFICATIONS_ENABLED notif ON v.idNotificationEnabled = notif.idNotificationEnabled
+                WHERE
+                    notifiationEnabled = true
+                    AND 
+                    alerteMaintenance = 1
+            `);
+        }
+
+        // notif_tenues_stock
+        let tenues_stock = [];
+        if(personne.notif_tenues_stock)
+        {
+            tenues_stock = await db.query(`
+                SELECT
+                    libelleCatalogueTenue
+                FROM
+                    TENUES_CATALOGUE
+                WHERE
+                    stockCatalogueTenue < stockAlerteCatalogueTenue
+                    OR
+                    stockCatalogueTenue = stockAlerteCatalogueTenue
+            ;`);
+        }
+
+        // notif_tenues_retours
+        let tenues_retours = [];
+        if(personne.notif_tenues_retours)
+        {
+            tenues_retours = await db.query(`
+                SELECT
+                    nomPersonne,
+                    prenomPersonne,
+                    personneNonGPM,    
+                    libelleCatalogueTenue
+                FROM
+                    TENUES_AFFECTATION ta
+                    JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                    LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne
+                WHERE
+                    dateRetour < CURRENT_DATE
+                    OR
+                    dateRetour = CURRENT_DATE
+            ;`);
+        }
+
+        let qttAlerte = lots_manquants.length + lots_peremptions.length + lots_inventaires.length + lots_conformites.length + reserves_manquants.length + reserves_peremptions.length + reserves_inventaires.length + vehicules_desinfections.length + vehicules_health.length + tenues_stock.length + tenues_retours.length;
+
+        if(qttAlerte > 0)
+        {
+            mailOptions = {
+                from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
+                to: personne.mailPersonne, // list of receivers
+                subject: '['+configDB.appname+'] Bilan journalier ',
+                template: 'notifJournaliere', // the name of the template file i.e email.handlebars
+                context:{
+                    personne: personne,
+                    appname: configDB.appname,
+                    urlsite: configDB.urlsite,
+                    qttAlerte : qttAlerte,
+                    lots_manquants: lots_manquants,
+                    lots_peremptions: lots_peremptions,
+                    lots_inventaires: lots_inventaires,
+                    lots_conformites: lots_conformites,
+                    reserves_manquants: reserves_manquants,
+                    reserves_peremptions: reserves_peremptions,
+                    reserves_inventaires: reserves_inventaires,
+                    vehicules_desinfections: vehicules_desinfections,
+                    vehicules_health: vehicules_health,
+                    tenues_stock: tenues_stock,
+                    tenues_retours: tenues_retours,
+                },
+                list: {
+                    unsubscribe: {
+                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+configDB.appname+'-forUser:'+personne.idUtilisateur,
+                        comment: 'Ne plus recevoir de mails',
+                    },
+                },
+            };
+            logger.debug(mailOptions);
+    
+            // trigger the sending of the E-mail
+            const sendMailResult = await transporter.sendMail(mailOptions);
+            if(sendMailResult.rejected.length == 0)
+            {
+                logger.debug(sendMailResult);
+            }
+            else
+            {
+                logger.error(error);
+                emailErrors += 1;
+            }
+        }
+    }
+
+    if(emailErrors == 0)
+    {
         return true;
-    } catch (error) {
-        logger.error(error);
+    }
+    else
+    {
         return false;
     }
+} catch (error) {
+    logger.error(error);
+    return false;
+}
 }
 
+/* --------- FONCTIONS EXPORTEES --------- */
 
 const sendMailQueue = async () => {
     try {
@@ -717,14 +1012,14 @@ const sendMailQueue = async () => {
     }
 }
 
-const registerToMailQueue = async (
-    {typeMail,
+const registerToMailQueue = async ({
+    typeMail,
     idObject,
     idPersonne,
     otherMail,
     otherSubject,
-    otherContent,}
-) => {
+    otherContent,
+}) => {
     try {
         const updateAccordingRetries = await db.query(`
             INSERT INTO
