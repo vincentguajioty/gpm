@@ -1,6 +1,7 @@
 const db = require('../db');
 const logger = require('../winstonLogger');
 const fonctionsLDAP = require('./fonctionsLDAP');
+const fonctionsMail = require('./fonctionsMail');
 const moment = require('moment');
 
 const majLdapOneUser = async (idPersonne) => {
@@ -244,7 +245,7 @@ const notificationsMAJpersonne = async () => {
             WHERE
                 idPersonne = :idPersonne
             `,{
-                actifCeJour: personne.actifCeJour,
+                actifCeJour: personne.actifCeJour &&  personne.actifCeJour == true ? true : false,
                 idPersonne: personne.idPersonne,
             });
         }
@@ -1243,6 +1244,7 @@ const majNotificationsPersonne = async (idPersonne, enableLog) => {
         notif_tenues_retours = personne.notifications && (personne.tenues_lecture) && (personne.notif_tenues_retours);
         notif_benevoles_lots = personne.notifications && (personne.alertesBenevolesLots_lecture) && (personne.notif_benevoles_lots);
         notif_benevoles_vehicules = personne.notifications && (personne.alertesBenevolesVehicules_lecture) && (personne.notif_benevoles_vehicules);
+        notif_consommations_lots = personne.notifications && (personne.lots_lecture || personne.sac_lecture || personne.materiel_lecture) && (personne.notif_lots_manquants);
 
         let update = await db.query(`
             UPDATE
@@ -1260,7 +1262,8 @@ const majNotificationsPersonne = async (idPersonne, enableLog) => {
                 notif_tenues_stock            = :notif_tenues_stock,
                 notif_tenues_retours          = :notif_tenues_retours,
                 notif_benevoles_lots          = :notif_benevoles_lots,
-                notif_benevoles_vehicules     = :notif_benevoles_vehicules
+                notif_benevoles_vehicules     = :notif_benevoles_vehicules,
+                notif_consommations_lots      = :notif_consommations_lots
             WHERE
                 idPersonne                    = :idPersonne
         `,{
@@ -1278,6 +1281,7 @@ const majNotificationsPersonne = async (idPersonne, enableLog) => {
             notif_tenues_retours         : notif_tenues_retours,
             notif_benevoles_lots         : notif_benevoles_lots,
             notif_benevoles_vehicules    : notif_benevoles_vehicules,
+            notif_consommations_lots     : notif_consommations_lots,
         });
 
         if(enableLog)
@@ -1654,6 +1658,29 @@ const terminerReconditionnementConsommation = async (data) => {
             idConsommation: data.idConsommation || null,
             commentairesConsommation: data.commentairesConsommation || null,
         });
+        
+        const usersToNotify = await db.query(`
+            SELECT
+                idPersonne
+            FROM
+                VIEW_HABILITATIONS
+            WHERE
+                notif_consommations_lots = true
+                AND
+                notifications = true
+                AND
+                mailPersonne IS NOT NULL
+                AND
+                mailPersonne <> ""
+        `);
+        for(const personne of usersToNotify)
+        {
+            await fonctionsMail.registerToMailQueue({
+                typeMail: 'finDeclarationConso',
+                idPersonne: personne.idPersonne,
+                idObject: data.idConsommation,
+            });
+        }
     } catch (error) {
         logger.error(error)
     }
@@ -1768,6 +1795,34 @@ const comptabiliserToutesConsommations = async () => {
     }
 }
 
+const queueNotificationJournaliere = async () => {
+    try {
+        const getUsersToNotify = await db.query(`
+            SELECT
+                idPersonne
+            FROM
+                VIEW_HABILITATIONS
+            WHERE
+                notifications_abo_cejour = true
+                AND
+                notifications = true
+                AND
+                mailPersonne IS NOT NULL
+                AND
+                mailPersonne <> ""
+        `);
+        for(const personne of getUsersToNotify)
+        {
+            await fonctionsMail.registerToMailQueue({
+                typeMail: 'notifJournaliere',
+                idPersonne: personne.idPersonne,
+            });
+        }
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -1817,4 +1872,5 @@ module.exports = {
     terminerReconditionnementConsommation,
     validerUnElementConsomme,
     comptabiliserToutesConsommations,
+    queueNotificationJournaliere,
 };

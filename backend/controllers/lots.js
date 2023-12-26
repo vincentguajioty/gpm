@@ -2,6 +2,7 @@ const db = require('../db');
 const logger = require('../winstonLogger');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
+const fonctionsMail = require('../helpers/fonctionsMail');
 
 //LOTS - Gestion générale
 exports.getLots = async (req, res)=>{
@@ -825,6 +826,42 @@ exports.createAlerte = async (req, res)=>{
             idLot: req.body.idLot || null,
             messageAlerteLot: req.body.messageAlerteLot || null,
         });
+
+        let selectLast = await db.query(
+            'SELECT MAX(idAlerte) as idAlerte FROM LOTS_ALERTES;'
+        );
+
+        if(req.body.mailDeclarant && req.body.mailDeclarant != null && req.body.mailDeclarant != "")
+        {
+            await fonctionsMail.registerToMailQueue({
+                typeMail: 'confirmationAlerteLot',
+                idObject: selectLast[0].idAlerte,
+                otherMail: req.body.mailDeclarant,
+            });
+        }
+        
+        const usersToNotify = await db.query(`
+            SELECT
+                idPersonne
+            FROM
+                VIEW_HABILITATIONS
+            WHERE
+                notif_benevoles_lots = true
+                AND
+                notifications = true
+                AND
+                mailPersonne IS NOT NULL
+                AND
+                mailPersonne <> ""
+        `);
+        for(const personne of usersToNotify)
+        {
+            await fonctionsMail.registerToMailQueue({
+                typeMail: 'alerteBenevolesLot',
+                idPersonne: personne.idPersonne,
+                idObject: selectLast[0].idAlerte,
+            });
+        }
 
         res.sendStatus(201);
     } catch (error) {

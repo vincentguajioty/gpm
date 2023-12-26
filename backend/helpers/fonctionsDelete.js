@@ -147,6 +147,12 @@ const annuaireDelete = async (idLogger, idPersonne) => {
 
         await fonctionsMetiers.deconnecterUtilisateur(idPersonne);
 
+        let delteMailQueue = await db.query(`
+            DELETE FROM MAIL_QUEUE WHERE idPersonne = :idPersonne
+        ;`,{
+            idPersonne : idPersonne,
+        });
+
         let finalDeleteQuery = await db.query(`
             DELETE FROM PERSONNE_REFERENTE WHERE idPersonne = :idPersonne
         ;`,{

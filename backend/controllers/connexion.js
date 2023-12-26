@@ -8,6 +8,7 @@ const moment = require('moment');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 const fonctionsLDAP = require('../helpers/fonctionsLDAP');
 const fonctionsAuthentification = require('../helpers/fonctionsAuthentification');
+const fonctionsMail = require('../helpers/fonctionsMail');
 
 const jwtExpirySeconds = parseInt(process.env.JWT_EXPIRATION);
 const jwtRefreshExpirySeconds = parseInt(process.env.JWT_REFRESH_EXPIRATION);
@@ -383,13 +384,12 @@ exports.pwdReinitRequest = async (req, res)=>{
 
         if(getUser[0].mailPersonne != null && getUser[0].mailPersonne != '' && getUser[0].mailPersonne == req.body.mailPersonne)
         {
-            let sendMailToUser = await db.query(
-                `INSERT INTO MAIL_QUEUE SET typeMail = 'autoResetPwd', idObject = :idReset, idSecondaire = :idPersonne;`,
-                {
-                    idPersonne : getUser[0].idPersonne,
-                    idReset : generateToken[0].idReset,
-                }
-            );
+            
+            await fonctionsMail.registerToMailQueue({
+                typeMail: 'autoResetPwd',
+                idPersonne: getUser[0].idPersonne,
+                idObject: generateToken[0].idReset,
+            });
     
             return res.json({handleResult: 'mailEnvoye'});
         }
@@ -446,11 +446,9 @@ exports.pwdReinitValidate = async (req, res, next)=>{
                 idPersonne : resetRequest[0].idPersonne,
             });
 
-            const provisionMailNotif = await db.query(`
-            INSERT INTO MAIL_QUEUE SET typeMail = 'resetPassword', idObject = :idPersonne;
-            `,
-            {
-                idPersonne : resetRequest[0].idPersonne,
+            await fonctionsMail.registerToMailQueue({
+                typeMail: 'resetPassword',
+                idPersonne: resetRequest[0].idPersonne,
             });
 
             return res.json({handleResult: 'reussite'});

@@ -87,6 +87,7 @@ schedule.scheduleJob(process.env.CRON_MAIL_QUEUE, async function() {
     else
     {
         logger.debug('Autorisation refusée dans la conf pour envoyer les mails, aucun traitement lancé');
+        await fonctionsMail.clearMailQueue();
     }
     logger.debug('Fin cron de dépilement des emails en queue');
 });
@@ -111,12 +112,6 @@ schedule.scheduleJob(process.env.CRON_DAILY, async function() {
     logger.debug("CRON - Début de suppression de token pour utilisateurs sans profils");
     await fonctionsLDAP.killTokensForNoProfils();
     logger.debug("CRON - Fin de suppression de token pour utilisateurs sans profils");
-
-    //Mise à jour des conditions de notifications
-    logger.debug("CRON - Début de la vérification des conditions de notification");
-    await fonctionsMetiers.notificationsConditionsMAJ();
-    await fonctionsMetiers.notificationsMAJpersonne();
-    logger.debug("CRON - Fin de la vérification des conditions de notification");
 
     //Mise à jour des anticipations de péremption
     logger.debug("CRON - Début de la mise à jour des anticipations de péremption");
@@ -146,6 +141,13 @@ schedule.scheduleJob(process.env.CRON_DAILY, async function() {
     logger.debug("CRON - Début de l'anonymisation des comptes CNIL");
     await fonctionsMetiers.cnilAnonymeCron();
     logger.debug("CRON - Fin de l'anonymisation des comptes CNIL");
+
+    //Mise à jour des conditions de notifications et envoi de la notif journaliere
+    logger.debug("CRON - Début de la vérification des conditions de notification et envoi de la notif");
+    await fonctionsMetiers.notificationsConditionsMAJ();
+    await fonctionsMetiers.notificationsMAJpersonne();
+    await fonctionsMetiers.queueNotificationJournaliere();
+    logger.debug("CRON - Fin de la vérification des conditions de notification et envoi de la notif");
     
     logger.info('CRON - Fin du CRON');
 });

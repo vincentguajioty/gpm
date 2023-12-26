@@ -57,6 +57,7 @@ exports.getOneUser = async (req, res, next)=>{
                 pr.notif_tenues_retours,
                 pr.notif_benevoles_lots,
                 pr.notif_benevoles_vehicules,
+                pr.notif_consommations_lots,
                 pr.conf_indicateur1Accueil,
                 pr.conf_indicateur2Accueil,
                 pr.conf_indicateur3Accueil,
@@ -262,6 +263,7 @@ exports.updateMonCompte = async (req, res, next)=>{
                 notif_tenues_retours = :notif_tenues_retours,
                 notif_benevoles_lots = :notif_benevoles_lots,
                 notif_benevoles_vehicules = :notif_benevoles_vehicules,
+                notif_consommations_lots = :notif_consommations_lots,
                 conf_indicateur1Accueil = :conf_indicateur1Accueil,
                 conf_indicateur2Accueil = :conf_indicateur2Accueil,
                 conf_indicateur3Accueil = :conf_indicateur3Accueil,
@@ -294,6 +296,7 @@ exports.updateMonCompte = async (req, res, next)=>{
             notif_tenues_retours: req.body.data.notif_tenues_retours ? true : false,
             notif_benevoles_lots: req.body.data.notif_benevoles_lots ? true : false,
             notif_benevoles_vehicules: req.body.data.notif_benevoles_vehicules ? true : false,
+            notif_consommations_lots: req.body.data.notif_consommations_lots ? true : false,
             conf_indicateur1Accueil: req.body.data.conf_indicateur1Accueil ? true : false,
             conf_indicateur2Accueil: req.body.data.conf_indicateur2Accueil ? true : false,
             conf_indicateur3Accueil: req.body.data.conf_indicateur3Accueil ? true : false,
@@ -329,6 +332,7 @@ exports.updateMonCompte = async (req, res, next)=>{
             });
         }
 
+        await fonctionsMetiers.notificationsMAJpersonne();
         await fonctionsMetiers.majIndicateursPersonne(req.body.idPersonne, true);
         await fonctionsMetiers.majNotificationsPersonne(req.body.idPersonne, true);
 
@@ -369,6 +373,7 @@ exports.addUser = async (req, res, next)=>{
                 notif_tenues_retours          = false,
                 notif_benevoles_lots          = false,
                 notif_benevoles_vehicules     = false,
+                notif_consommations_lots      = false,
                 notifications_abo_cejour      = false,
                 cnil_anonyme                  = false,
                 isActiveDirectory             = false,

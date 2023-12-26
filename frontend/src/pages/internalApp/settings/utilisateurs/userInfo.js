@@ -29,6 +29,7 @@ const UserInfo = ({idPersonne, pageNeedsRefresh}) => {
         {config: 'notif_tenues_retours'         , label:'Non retour de tenues'                  , profilNeeded: 'tenues_lecture',},
         {config: 'notif_benevoles_lots'         , label:'Alertes de bénévoles sur les lots'     , profilNeeded: 'alertesBenevolesLots_lecture',},
         {config: 'notif_benevoles_vehicules'    , label:'Alertes de bénévoles sur les véhicules', profilNeeded: 'alertesBenevolesVehicules_lecture',},
+        {config: 'notif_consommations_lots'     , label:'Rapports de consommations'             , profilNeeded: 'lots_lecture',},
     ];
 
     const indicateursDisponibles = [

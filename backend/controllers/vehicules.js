@@ -1,6 +1,7 @@
 const db = require('../db');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
+const fonctionsMail = require('../helpers/fonctionsMail');
 const logger = require('../winstonLogger');
 const multer = require('multer');
 
@@ -1292,6 +1293,42 @@ exports.createAlerte = async (req, res)=>{
             idVehicule: req.body.idVehicule || null,
             messageAlerteVehicule: req.body.messageAlerteVehicule || null,
         });
+
+        let selectLast = await db.query(
+            'SELECT MAX(idAlerte) as idAlerte FROM VEHICULES_ALERTES;'
+        );
+
+        if(req.body.mailDeclarant && req.body.mailDeclarant != null && req.body.mailDeclarant != "")
+        {
+            await fonctionsMail.registerToMailQueue({
+                typeMail: 'confirmationAlerteVehicule',
+                idObject: selectLast[0].idAlerte,
+                otherMail: req.body.mailDeclarant,
+            });
+        }
+        
+        const usersToNotify = await db.query(`
+            SELECT
+                idPersonne
+            FROM
+                VIEW_HABILITATIONS
+            WHERE
+                notif_benevoles_vehicules = true
+                AND
+                notifications = true
+                AND
+                mailPersonne IS NOT NULL
+                AND
+                mailPersonne <> ""
+        `);
+        for(const personne of usersToNotify)
+        {
+            await fonctionsMail.registerToMailQueue({
+                typeMail: 'alerteBenevolesVehicule',
+                idPersonne: personne.idPersonne,
+                idObject: selectLast[0].idAlerte,
+            });
+        }
 
         res.sendStatus(201);
     } catch (error) {

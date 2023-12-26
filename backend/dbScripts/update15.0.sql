@@ -47,11 +47,20 @@ CREATE TABLE JWT_SESSIONS_BLACKLIST(
 
 CREATE TABLE MAIL_QUEUE(
 	idMailQueue  INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-	typeMail     VARCHAR(20),
+	typeMail     VARCHAR(100),
 	idObject     INT,
-	idSecondaire INT,
+	idPersonne   INT,
+	otherMail    TEXT,
+	otherSubject TEXT,
+	otherContent TEXT,
 	lastTry      DATETIME,
-	retryCounter INT DEFAULT 0
+	sendRequest  DATETIME,
+	successSend  DATETIME,
+	abordSend    DATETIME,
+	retryCounter INT DEFAULT 0,
+	CONSTRAINT fk_mailsQueue_personne
+		FOREIGN KEY (idPersonne)
+		REFERENCES PERSONNE_REFERENTE(idPersonne)
 );
 
 DROP TABLE NOTIFICATIONS_MAILS;
@@ -83,6 +92,7 @@ ALTER TABLE PERSONNE_REFERENTE CHANGE notif_tenues_stock notif_tenues_stock BOOL
 ALTER TABLE PERSONNE_REFERENTE CHANGE notif_tenues_retours notif_tenues_retours BOOLEAN;
 ALTER TABLE PERSONNE_REFERENTE CHANGE notif_benevoles_lots notif_benevoles_lots BOOLEAN;
 ALTER TABLE PERSONNE_REFERENTE CHANGE notif_benevoles_vehicules notif_benevoles_vehicules BOOLEAN;
+ALTER TABLE PERSONNE_REFERENTE ADD notif_consommations_lots BOOLEAN AFTER notif_benevoles_vehicules;
 
 ALTER TABLE PERSONNE_REFERENTE DROP tableRowPerso;
 ALTER TABLE PERSONNE_REFERENTE DROP layout;
@@ -146,6 +156,21 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		p.disclaimerAccept,
 		p.isActiveDirectory,
 		p.mfaEnabled,
+		p.notifications_abo_cejour,
+		p.notif_lots_manquants,
+		p.notif_lots_peremptions,
+		p.notif_lots_inventaires,
+		p.notif_lots_conformites,
+		p.notif_reserves_manquants,
+		p.notif_reserves_peremptions,
+		p.notif_reserves_inventaires,
+		p.notif_vehicules_desinfections,
+		p.notif_vehicules_health,
+		p.notif_tenues_stock,
+		p.notif_tenues_retours,
+		p.notif_benevoles_lots,
+		p.notif_benevoles_vehicules,
+		p.notif_consommations_lots,
 		MAX(connexion_connexion)                       as connexion_connexion,
 		MAX(annuaire_lecture)                          as annuaire_lecture,
 		MAX(annuaire_ajout)                            as annuaire_ajout,
