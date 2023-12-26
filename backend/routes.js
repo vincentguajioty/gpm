@@ -56,6 +56,7 @@ router.post('/updatePassword',             loggerMiddleware.httpLogger(), jwtFun
 router.post('/updatePasswordWithoutCheck', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), loggerMiddleware.modificationLogger(), connexionCtrl.updatePasswordWithoutCheck );
 router.post('/getCurrentSessionsOneUser',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                                        connexionCtrl.getCurrentSessionsOneUser );
 router.post('/blackListSession',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), loggerMiddleware.suppressionLogger(),  connexionCtrl.blackListSession );
+router.post('/contactDeveloppeur',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                                        connexionCtrl.contactDeveloppeur );
 
 //select routes for forms and lists - AUTHENTICATED
 router.get('/select/getNotificationsConditions',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getNotificationsConditions);

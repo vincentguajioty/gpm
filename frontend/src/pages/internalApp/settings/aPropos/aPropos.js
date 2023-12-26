@@ -13,6 +13,8 @@ import HabilitationService from 'services/habilitationsService';
 import { Axios } from 'helpers/axios';
 import moment from 'moment-timezone';
 
+import ContactDev from './contactDev';
+
 const APropos = () => {
     const[cgu, setCgu] = useState("");
 
@@ -52,7 +54,7 @@ const APropos = () => {
                             Rendez-vous sur <a href="https://github.com/vincentguajioty/gpm">GitHub</a> pour en savoir plus sur les développements en cours, les projets, et les mises à jour!
                         </p>
                         <p className='mb-3 ms-3 me-3'>
-                            Pour contacter le developpeur de la solution, merci d'utiliser CE FORMULAIRE EN CLIQUANT ICI
+                            Pour contacter le developpeur de la solution, merci d'utiliser <ContactDev />
                         </p>
                         <p className='mb-3 ms-3 me-3'>
                             Les <a href="https://github.com/vincentguajioty/gpm/issues/new/choose">tickets GitHub</a> sont également un bon moyen de communiquer !

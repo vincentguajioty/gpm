@@ -869,3 +869,34 @@ exports.delegate = async (req, res, next)=>{
         res.sendStatus(500);
     }
 }
+
+exports.contactDeveloppeur = async (req, res, next)=>{
+    try {
+        let otherContent = req.body.messageFromFront;
+
+        otherContent.LDAP_ENABLED = process.env.LDAP_ENABLED;
+        otherContent.LOCK_DB_UPGRADE = process.env.LOCK_DB_UPGRADE;
+        otherContent.LDAP_ENABLED = process.env.LDAP_ENABLED;
+        otherContent.LOCK_ALL_MAIL = process.env.LOCK_ALL_MAIL;
+        otherContent.DKIM_ENABLED = process.env.DKIM_ENABLED;
+        otherContent.MAX_RETRY = process.env.MAX_RETRY;
+        otherContent.CORS_ORIGINS = process.env.CORS_ORIGINS;
+        otherContent.CRON_MAIL_QUEUE = process.env.CRON_MAIL_QUEUE;
+        otherContent.CRON_DAILY = process.env.CRON_DAILY;
+        otherContent.CRON_CONSOMMATIONS_AUTO = process.env.CRON_CONSOMMATIONS_AUTO;
+        otherContent.RECAPTCHA_ENABLED = process.env.RECAPTCHA_ENABLED;
+        otherContent.LOG_LEVEL = process.env.LOG_LEVEL;
+
+        await fonctionsMail.registerToMailQueue({
+            typeMail: 'contactDev',
+            otherMail: 'contact@guajioty.fr',
+            otherSubject: 'Contact Developpeur de GPM',
+            otherContent: JSON.stringify(otherContent),
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}

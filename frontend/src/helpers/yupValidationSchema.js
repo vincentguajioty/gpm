@@ -852,3 +852,14 @@ export const alerteBenevoleVehicules = Yup.object().shape({
         .typeError(champObligatoire)
         .email(champMail),
 });
+
+export const contactDeveloppeur = Yup.object().shape({
+    topic: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    message: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});

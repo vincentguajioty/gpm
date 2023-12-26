@@ -927,6 +927,65 @@ try {
 }
 }
 
+const contactDev = async (requestInfo) => {
+    try {
+        // use a template file with nodemailer
+        let configDB = await db.query(
+            `SELECT * FROM CONFIG;`
+        );
+        configDB = configDB[0]
+
+        const transporter = process.env.DKIM_ENABLED && process.env.DKIM_ENABLED == true ? transporterWithDKIM : transporterWithoutDKIM;
+        transporter.use('compile', hbs(handlebarOptions))
+
+        //get users and send the mail to each one      
+        let mailOptions={};
+        let emailErrors = 0;
+        mailOptions = {
+            from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
+            to: requestInfo.otherMail, // list of receivers
+            subject: '[GPM]['+configDB.appname+'] Contact Developpeur depuis une app cliente',
+            template: 'contactDev', // the name of the template file i.e email.handlebars
+            context:{
+                appname: configDB.appname,
+                urlsite: configDB.urlsite,
+                content: requestInfo.otherContent
+            },
+            list: {
+                unsubscribe: {
+                    url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+configDB.appname+'-forUser:0',
+                    comment: 'Ne plus recevoir de mails',
+                },
+            },
+        };
+        logger.debug(mailOptions);
+
+        // trigger the sending of the E-mail
+        const sendMailResult = await transporter.sendMail(mailOptions);
+        if(sendMailResult.rejected.length == 0)
+        {
+            logger.debug(sendMailResult);
+        }
+        else
+        {
+            logger.error(error);
+            emailErrors += 1;
+        }
+
+        if(emailErrors == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    } catch (error) {
+        logger.error(error);
+        return false;
+    }
+}
+
 /* --------- FONCTIONS EXPORTEES --------- */
 
 const sendMailQueue = async () => {
@@ -990,6 +1049,10 @@ const sendMailQueue = async () => {
 
                 case 'notifJournaliere':
                     successCheck = await notifJournaliere(mailNeeded);
+                break;
+
+                case 'contactDev':
+                    successCheck = await contactDev(mailNeeded);
                 break;
             
                 default:
