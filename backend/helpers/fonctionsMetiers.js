@@ -1823,6 +1823,48 @@ const queueNotificationJournaliere = async () => {
     }
 }
 
+const calculerTotalCommande = async (idCommande) => {
+    try {
+        const updateTotal = await db.query(`
+            UPDATE
+                COMMANDES
+            SET
+                montantTotal = (
+                    SELECT
+                        CAST(IFNULL(SUM(prixProduitTTC*quantiteCommande),0) AS DECIMAL(10,2)) AS total
+                    FROM
+                        COMMANDES_MATERIEL c
+                        LEFT OUTER JOIN MATERIEL_CATALOGUE m ON c.idMaterielCatalogue = m.idMaterielCatalogue 
+                    WHERE
+                        idCommande = :idCommande
+                )
+            WHERE
+                idCommande = :idCommande
+        `,{
+            idCommande: idCommande
+        });
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const calculerTousTotauxCommandes = async () => {
+    try {
+        let getAllCommandes = await db.query(`
+            SELECT
+                idCommande
+            FROM
+                COMMANDES
+        `);
+        for(const commande of getAllCommandes)
+        {
+            await calculerTotalCommande(commande.idCommande);
+        }
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -1873,4 +1915,6 @@ module.exports = {
     validerUnElementConsomme,
     comptabiliserToutesConsommations,
     queueNotificationJournaliere,
+    calculerTotalCommande,
+    calculerTousTotauxCommandes,
 };

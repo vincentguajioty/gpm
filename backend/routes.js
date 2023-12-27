@@ -198,6 +198,16 @@ router.post('/reserves/materielsReservesDelete',  loggerMiddleware.httpLogger(),
 router.post('/transferts/getReservesForOneTransfert', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_ReserveVersLot']),                                         transfertsCtrl.getReservesForOneTransfert);
 router.post('/transferts/opererTransfertReserveLot',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_ReserveVersLot']),  loggerMiddleware.modificationLogger(), transfertsCtrl.opererTransfertReserveLot);
 
+//COMMANDES
+router.get('/commandes/getCommandes',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture']),        commandesCtrl.getCommandes);
+/*
+commande_lecture
+commande_ajout
+commande_etreEnCharge
+commande_abandonne
+commande_valider_delegate
+*/
+
 //Fournisseurs - Informations de base
 router.get('/fournisseurs/getFournisseurs',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),      jwtFunctions.decryptAesToken(),        fournisseursCtrl.getFournisseurs);
 router.post('/fournisseurs/getOneFournisseur',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),      jwtFunctions.decryptAesToken(),        fournisseursCtrl.getOneFournisseur);

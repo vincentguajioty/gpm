@@ -78,76 +78,86 @@ startApp();
 
 //Envoi régulier des emails à récurrence définie dans la config
 schedule.scheduleJob(process.env.CRON_MAIL_QUEUE, async function() {
-    logger.debug('Lancement cron de dépilement des emails en queue');
-    if(process.env.LOCK_ALL_MAIL == 0)
+    if(http.listening)
     {
-        logger.debug('Autorisation accordée dans la conf pour envoyer les mails');
-        await fonctionsMail.sendMailQueue();
+        logger.debug('Lancement cron de dépilement des emails en queue');
+
+        if(process.env.LOCK_ALL_MAIL == 0)
+        {
+            logger.debug('Autorisation accordée dans la conf pour envoyer les mails');
+            await fonctionsMail.sendMailQueue();
+        }
+        else
+        {
+            logger.debug('Autorisation refusée dans la conf pour envoyer les mails, aucun traitement lancé');
+            await fonctionsMail.clearMailQueue();
+        }
+        logger.debug('Fin cron de dépilement des emails en queue');
     }
-    else
-    {
-        logger.debug('Autorisation refusée dans la conf pour envoyer les mails, aucun traitement lancé');
-        await fonctionsMail.clearMailQueue();
-    }
-    logger.debug('Fin cron de dépilement des emails en queue');
 });
 
 //Comptabilisation des rapports de consommation en auto
 schedule.scheduleJob(process.env.CRON_CONSOMMATIONS_AUTO, async function() {
-    logger.debug('Lancement cron de comptabilisation de consommations en auto');
-    await fonctionsMetiers.comptabiliserToutesConsommations();
-    logger.debug('Fin cron de comptabilisation de consommations en auto');
+    if(http.listening)
+    {
+        logger.debug('Lancement cron de comptabilisation de consommations en auto');
+        await fonctionsMetiers.comptabiliserToutesConsommations();
+        logger.debug('Fin cron de comptabilisation de consommations en auto');
+    }
 });
 
 //Cron journalier
 schedule.scheduleJob(process.env.CRON_DAILY, async function() {
-    logger.info('CRON - Début du CRON');
+    if(http.listening)
+    {
+        logger.info('CRON - Début du CRON');
 
-    //Mise à jour des users AD
-    logger.debug("CRON - Début de la mise à jour des users AD");
-    await fonctionsLDAP.updateAllUsersFromAD();
-    logger.debug("CRON - Fin de la mise à jour des users AD");
+        //Mise à jour des users AD
+        logger.debug("CRON - Début de la mise à jour des users AD");
+        await fonctionsLDAP.updateAllUsersFromAD();
+        logger.debug("CRON - Fin de la mise à jour des users AD");
 
-    //Kill de tous les tokens pour utilisateurs sans profils
-    logger.debug("CRON - Début de suppression de token pour utilisateurs sans profils");
-    await fonctionsLDAP.killTokensForNoProfils();
-    logger.debug("CRON - Fin de suppression de token pour utilisateurs sans profils");
+        //Kill de tous les tokens pour utilisateurs sans profils
+        logger.debug("CRON - Début de suppression de token pour utilisateurs sans profils");
+        await fonctionsLDAP.killTokensForNoProfils();
+        logger.debug("CRON - Fin de suppression de token pour utilisateurs sans profils");
 
-    //Mise à jour des anticipations de péremption
-    logger.debug("CRON - Début de la mise à jour des anticipations de péremption");
-    await fonctionsMetiers.updatePeremptionsAnticipations();
-    logger.debug("CRON - Fin de la mise à jour des anticipations de péremption");
+        //Mise à jour des anticipations de péremption
+        logger.debug("CRON - Début de la mise à jour des anticipations de péremption");
+        await fonctionsMetiers.updatePeremptionsAnticipations();
+        logger.debug("CRON - Fin de la mise à jour des anticipations de péremption");
 
-    //Analyse complète des lots
-    logger.debug("CRON - Début de la vérification de conformité de tous les lots");
-    await fonctionsMetiers.checkAllConf();
-    logger.debug("CRON - Fin de la vérification de conformité de tous les lots");
+        //Analyse complète des lots
+        logger.debug("CRON - Début de la vérification de conformité de tous les lots");
+        await fonctionsMetiers.checkAllConf();
+        logger.debug("CRON - Fin de la vérification de conformité de tous les lots");
 
-    //Analyse complète des désinfections de véhicules
-    logger.debug("CRON - Début de la vérification des désinfections de tous les véhicules");
-    await fonctionsMetiers.checkAllDesinfection();
-    logger.debug("CRON - Fin de la vérification des désinfections de tous les véhicule");
+        //Analyse complète des désinfections de véhicules
+        logger.debug("CRON - Début de la vérification des désinfections de tous les véhicules");
+        await fonctionsMetiers.checkAllDesinfection();
+        logger.debug("CRON - Fin de la vérification des désinfections de tous les véhicule");
 
-    //Analyse complète des maintenances de véhicules
-    logger.debug("CRON - Début de la vérification des maintenances de tous les véhicules");
-    await fonctionsMetiers.checkAllMaintenance();
-    logger.debug("CRON - Fin de la vérification des maintenances de tous les véhicule");
+        //Analyse complète des maintenances de véhicules
+        logger.debug("CRON - Début de la vérification des maintenances de tous les véhicules");
+        await fonctionsMetiers.checkAllMaintenance();
+        logger.debug("CRON - Fin de la vérification des maintenances de tous les véhicule");
 
-    //Clean table de reset des tokens
-    logger.debug("CRON - Vidage de la table de token de reset de mots de passe");
-    await fonctionsMetiers.clearPwdReinitTable();
+        //Clean table de reset des tokens
+        logger.debug("CRON - Vidage de la table de token de reset de mots de passe");
+        await fonctionsMetiers.clearPwdReinitTable();
 
-    //CNIL - Anonymisation des comptes qui doivent l'être
-    logger.debug("CRON - Début de l'anonymisation des comptes CNIL");
-    await fonctionsMetiers.cnilAnonymeCron();
-    logger.debug("CRON - Fin de l'anonymisation des comptes CNIL");
+        //CNIL - Anonymisation des comptes qui doivent l'être
+        logger.debug("CRON - Début de l'anonymisation des comptes CNIL");
+        await fonctionsMetiers.cnilAnonymeCron();
+        logger.debug("CRON - Fin de l'anonymisation des comptes CNIL");
 
-    //Mise à jour des conditions de notifications et envoi de la notif journaliere
-    logger.debug("CRON - Début de la vérification des conditions de notification et envoi de la notif");
-    await fonctionsMetiers.notificationsConditionsMAJ();
-    await fonctionsMetiers.notificationsMAJpersonne();
-    await fonctionsMetiers.queueNotificationJournaliere();
-    logger.debug("CRON - Fin de la vérification des conditions de notification et envoi de la notif");
-    
-    logger.info('CRON - Fin du CRON');
+        //Mise à jour des conditions de notifications et envoi de la notif journaliere
+        logger.debug("CRON - Début de la vérification des conditions de notification et envoi de la notif");
+        await fonctionsMetiers.notificationsConditionsMAJ();
+        await fonctionsMetiers.notificationsMAJpersonne();
+        await fonctionsMetiers.queueNotificationJournaliere();
+        logger.debug("CRON - Fin de la vérification des conditions de notification et envoi de la notif");
+        
+        logger.info('CRON - Fin du CRON');
+    }
 });

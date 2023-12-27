@@ -1,6 +1,7 @@
 const db = require('./db');
 const fs = require('fs');
 const logger = require('./winstonLogger');
+const fonctionsMetiers = require('./helpers/fonctionsMetiers');
 
 const BACKEND_VERSION = '15.0';
 
@@ -334,6 +335,8 @@ const majDB = async () => {
                 logger.debug(update);
                 finalResult = finalResult && await majDB();
                 logger.debug(finalResult);
+
+                await fonctionsMetiers.calculerTousTotauxCommandes();
             break;
 
             default:

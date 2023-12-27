@@ -36,8 +36,8 @@ import ReserveInventaireEnCours from 'pages/internalApp/reserves/inventairesCont
 
 import Commandes from 'pages/internalApp/commandes/commandes';
 import CentresDeCouts from 'pages/internalApp/centresDeCouts/centresDeCouts';
-import Fournisseurs from 'pages/internalApp/commandes/fournisseurs';
-import FournisseurDetails from 'pages/internalApp/commandes/fournisseurDetails';
+import Fournisseurs from 'pages/internalApp/fournisseurs/fournisseurs';
+import FournisseurDetails from 'pages/internalApp/fournisseurs/fournisseurDetails';
 
 import Frequences from 'pages/internalApp/transmissions/frequences';
 import Plans from 'pages/internalApp/transmissions/plans';

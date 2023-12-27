@@ -75,7 +75,6 @@ ALTER TABLE PERSONNE_REFERENTE CHANGE conf_indicateur9Accueil conf_indicateur9Ac
 ALTER TABLE PERSONNE_REFERENTE CHANGE conf_indicateur10Accueil conf_indicateur10Accueil BOOLEAN;
 ALTER TABLE PERSONNE_REFERENTE CHANGE conf_indicateur11Accueil conf_indicateur11Accueil BOOLEAN;
 ALTER TABLE PERSONNE_REFERENTE CHANGE conf_indicateur12Accueil conf_indicateur12Accueil BOOLEAN;
-ALTER TABLE PERSONNE_REFERENTE CHANGE conf_accueilRefresh conf_accueilRefresh BOOLEAN;
 ALTER TABLE PERSONNE_REFERENTE CHANGE notif_lots_manquants notif_lots_manquants BOOLEAN;
 ALTER TABLE PERSONNE_REFERENTE CHANGE notif_lots_peremptions notif_lots_peremptions BOOLEAN;
 ALTER TABLE PERSONNE_REFERENTE CHANGE notif_lots_inventaires notif_lots_inventaires BOOLEAN;
@@ -395,5 +394,7 @@ ALTER TABLE CONFIG ADD consommation_benevoles_auto BOOLEAN DEFAULT false;
 UPDATE CONFIG SET consommation_benevoles_auto = false;
 
 ALTER TABLE VEHICULES ADD dispoBenevoles BOOLEAN DEFAULT false;
+
+ALTER TABLE COMMANDES ADD montantTotal FLOAT AFTER numCommandeFournisseur;
 
 UPDATE CONFIG SET version = '15.0';
