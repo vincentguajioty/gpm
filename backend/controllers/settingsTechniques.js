@@ -268,3 +268,24 @@ exports.saveNotifsCommandesConfig = async (req, res) => {
         res.sendStatus(500);
     }
 }
+
+exports.getMailQueue = async (req, res) => {
+    try {
+        const queueMail = await db.query(`
+            SELECT
+                q.*,
+                p.identifiant
+            FROM
+                MAIL_QUEUE q
+                LEFT OUTER JOIN PERSONNE_REFERENTE p ON q.idPersonne = p.idPersonne
+            ORDER BY
+                sendRequest DESC
+            LIMIT 1000
+        `);
+
+        res.send(queueMail);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}

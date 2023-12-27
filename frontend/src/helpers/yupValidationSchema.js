@@ -863,3 +863,14 @@ export const contactDeveloppeur = Yup.object().shape({
         .typeError(champObligatoire)
         .required(champObligatoire),
 });
+
+export const mailEquipeForm = Yup.object().shape({
+    sujet: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    message: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});

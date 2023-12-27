@@ -63,6 +63,8 @@ router.get('/select/getNotificationsConditions',               loggerMiddleware.
 router.get('/select/getPersonnes',                             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getPersonnes);
 router.get('/select/getActivePersonnes',                       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getActivePersonnes);
 router.get('/select/getNonAnonymesPersonnes',                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getNonAnonymesPersonnes);
+router.get('/select/getPersonnesWithMail',                     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getPersonnesWithMail);
+router.get('/select/getProfils',                               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getProfils);
 router.get('/select/getNotificationsEnabled',                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getNotificationsEnabled);
 router.get('/select/getCategoriesMateriels',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCategoriesMateriels);
 router.get('/select/getLieux',                                 loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getLieux);
@@ -319,6 +321,7 @@ router.get('/messagesGeneraux/getMessagesTypes',              loggerMiddleware.h
 router.post('/messagesGeneraux/addMessage',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['messages_ajout']),       loggerMiddleware.modificationLogger(), messagesGenerauxCtrl.addMessage);
 router.post('/messagesGeneraux/updateMessage',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['messages_ajout']),       loggerMiddleware.modificationLogger(), messagesGenerauxCtrl.updateMessage);
 router.post('/messagesGeneraux/deleteMessage',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['messages_suppression']), loggerMiddleware.suppressionLogger(),  messagesGenerauxCtrl.deleteMessage);
+router.post('/messagesGeneraux/messageMail',                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['contactMailGroupe']),                                           messagesGenerauxCtrl.messageMail);
 
 //ToDoList
 router.get('/todolist/getPersonsForTDL',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['todolist_lecture']),                                                                                    toDoListCtrl.getPersonsForTDL);
@@ -436,6 +439,7 @@ router.post('/settingsTechniques/saveGlobalConfig',            loggerMiddleware.
 router.post('/settingsTechniques/saveCnilConfig',              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) , loggerMiddleware.modificationLogger(), settingsTechniquesCtrl.saveCnilConfig);
 router.post('/settingsTechniques/saveAlertesConfig',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) , loggerMiddleware.modificationLogger(), settingsTechniquesCtrl.saveAlertesConfig);
 router.post('/settingsTechniques/saveNotifsCommandesConfig',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) , loggerMiddleware.modificationLogger(), settingsTechniquesCtrl.saveNotifsCommandesConfig);
+router.get('/settingsTechniques/getMailQueue',                 loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) ,                                        settingsTechniquesCtrl.getMailQueue);
 
 //Actions massives
 router.post('/actionsmassives/authenticateForAM',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]),                                actionsMassivesCtrl.authenticateForAM);

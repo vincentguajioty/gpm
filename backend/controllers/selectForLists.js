@@ -73,6 +73,46 @@ exports.getNonAnonymesPersonnes = async (req, res)=>{
     }
 }
 
+exports.getPersonnesWithMail = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idPersonne as value,
+                identifiant as label
+            FROM
+                PERSONNE_REFERENTE
+            WHERE
+                mailPersonne IS NOT NULL
+                AND
+                mailPersonne <> ""
+            ORDER BY
+                identifiant
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getProfils = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idProfil as value,
+                libelleProfil as label
+            FROM
+                PROFILS
+            ORDER BY
+                libelleProfil
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.getNotificationsEnabled = async (req, res)=>{
     try {
         let results = await db.query(`
