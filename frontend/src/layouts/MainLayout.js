@@ -7,6 +7,7 @@ import NavbarVertical from 'components/navbar/vertical/NavbarVertical';
 import Footer from 'components/footer/Footer';
 import HabilitationService from 'services/habilitationsService';
 import { Alert } from 'react-bootstrap';
+import ConfigurationService from 'services/configurationService';
 
 const MainLayout = () => {
   const { hash, pathname } = useLocation();
@@ -44,6 +45,9 @@ const MainLayout = () => {
         <NavbarVertical />
         <div className={classNames('content', { 'pb-0': isKanban })}>
           <NavbarTop />
+          {ConfigurationService.config['maintenance'] ?
+            <Alert variant='danger'>Application en maintenance, seuls les utilisateurs habilités seront en mesure de se connecter.</Alert>
+          : null}
           {HabilitationService.delegationActive && HabilitationService.delegationActive == 1 ?
             <Alert variant='warning'>Attention, vous agissez entant que {HabilitationService.habilitations.identifiant}, les actions menées via cette session restent de votre responsabilité et restent tracées en votre nom ({HabilitationService.habilitationsInitial.identifiant}).</Alert>
           : null}

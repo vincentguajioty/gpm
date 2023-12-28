@@ -17,7 +17,7 @@ export const publicRoutes = {
 
 if(ConfigurationService.config)
 {
-    if(ConfigurationService.config['consommation_benevoles'])
+    if(!ConfigurationService.config['maintenance'] && ConfigurationService.config['consommation_benevoles'])
     {
         publicRoutes.children.push(
             {
@@ -30,7 +30,7 @@ if(ConfigurationService.config)
         )
     }
 
-    if(ConfigurationService.config['alertes_benevoles_lots'] || ConfigurationService.config['alertes_benevoles_vehicules'])
+    if(!ConfigurationService.config['maintenance'] && (ConfigurationService.config['alertes_benevoles_lots'] || ConfigurationService.config['alertes_benevoles_vehicules']))
     {
         publicRoutes.children.push(
             {

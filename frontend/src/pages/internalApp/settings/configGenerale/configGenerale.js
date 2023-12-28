@@ -49,11 +49,6 @@ const ConfigGenerale = () => {
         />
 
         {readyToDisplay ? <>
-            
-            {config.general.maintenance ?
-                <Alert variant='danger' >Application en maintenance, seuls les utilisateurs habilités seront en mesure de se connecter.</Alert>
-            : null}
-
             <Card>
                 <Tabs defaultActiveKey="general" id="uncontrolled-tab-example">
                     <Tab eventKey="general" title="Générale" className='border-bottom border-x p-3'>
