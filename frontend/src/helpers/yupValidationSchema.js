@@ -385,6 +385,11 @@ export const frequencesAttachedForm = Yup.object().shape({
         .string()
         .typeError(champObligatoire)
         .required(champObligatoire),
+    idTypeDocument: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
 });
 
 export const planVHFForm = Yup.object().shape({
@@ -398,6 +403,11 @@ export const planAttachedForm = Yup.object().shape({
     nomDocPlanVHF: Yup
         .string()
         .typeError(champObligatoire)
+        .required(champObligatoire),
+    idTypeDocument: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
         .required(champObligatoire),
 });
 
@@ -422,6 +432,11 @@ export const vhfEquipementsAttachedForm = Yup.object().shape({
     nomDocVHF: Yup
         .string()
         .typeError(champObligatoire)
+        .required(champObligatoire),
+    idTypeDocument: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
         .required(champObligatoire),
 });
 
@@ -450,6 +465,11 @@ export const vehiculeAttachedForm = Yup.object().shape({
     nomDocVehicule: Yup
         .string()
         .typeError(champObligatoire)
+        .required(champObligatoire),
+    idTypeDocument: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
         .required(champObligatoire),
 });
 
@@ -896,6 +916,11 @@ export const commandeStep3PJCheck = Yup.object().shape({
     nomDocCommande: Yup
         .string()
         .typeError(champObligatoire)
+        .required(champObligatoire),
+    idTypeDocument: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
         .required(champObligatoire),
 });
 
