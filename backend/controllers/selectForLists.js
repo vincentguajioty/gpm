@@ -42,7 +42,31 @@ exports.getActivePersonnes = async (req, res)=>{
                 idPersonne as value,
                 identifiant as label
             FROM
-                VIEW_PERSONNE_REFERENTE
+                VIEW_HABILITATIONS
+            WHERE
+                connexion_connexion = true
+            ORDER BY
+                identifiant
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getActivePersonnesForCmdAffectation = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idPersonne as value,
+                identifiant as label
+            FROM
+                VIEW_HABILITATIONS
+            WHERE
+                connexion_connexion = true
+                AND
+                commande_etreEnCharge = true
             ORDER BY
                 identifiant
         ;`);
@@ -743,6 +767,102 @@ exports.getCodesBarreCatalogue = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+exports.getEtatsCommandes = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idEtat as value,
+                libelleEtat as label
+            FROM
+                COMMANDES_ETATS
+            ORDER BY
+                libelleEtat
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getCentresCouts = async (req, res)=>{
+    try {
+        let expires = await db.query(`
+            SELECT
+                idCentreDeCout as value,
+                libelleCentreDecout as label
+            FROM
+                CENTRE_COUTS
+            WHERE
+                dateFermeture IS NOT NULL
+                AND
+                dateFermeture < CURRENT_DATE
+            ORDER BY
+                libelleCentreDecout
+        ;`);
+
+        let futurs = await db.query(`
+            SELECT
+                idCentreDeCout as value,
+                libelleCentreDecout as label
+            FROM
+                CENTRE_COUTS
+            WHERE
+                dateOuverture IS NOT NULL
+                AND
+                dateOuverture > CURRENT_DATE
+            ORDER BY
+                libelleCentreDecout
+        ;`);
+
+        let enCours = await db.query(`
+            SELECT
+                idCentreDeCout as value,
+                libelleCentreDecout as label
+            FROM
+                CENTRE_COUTS
+            WHERE
+                (dateOuverture <= CURRENT_DATE
+                AND
+                dateFermeture >= CURRENT_DATE)
+                OR
+                (dateOuverture IS NULL
+                AND
+                dateFermeture >= CURRENT_DATE)
+                OR
+                (dateOuverture <= CURRENT_DATE
+                AND
+                dateFermeture IS NULL)
+                OR
+                (dateOuverture IS NULL
+                AND
+                dateFermeture IS NULL)
+            ORDER BY
+                libelleCentreDecout
+        ;`);
+
+        res.send([
+            {
+                label: "En cours",
+                options: enCours,
+            },
+            {
+                label: "Futurs",
+                options: futurs,
+            },
+            {
+                label: "Expirés",
+                options: expires,
+            },
+        ]);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+/* ------------- PUBLIC ------------- */
 
 exports.getConsommationsEnCours = async (req, res)=>{
     try {

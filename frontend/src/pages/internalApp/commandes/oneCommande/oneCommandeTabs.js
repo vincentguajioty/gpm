@@ -124,15 +124,47 @@ const OneCommandeTabs = ({
         },
     ];
 
+    const getDefaultTab = () => {
+        switch (commande.detailsCommande.idEtat) {
+            case 1:
+                return 1;
+            break;
+            case 2:
+                return 4;
+            break;
+            case 3:
+                return 5;
+            break;
+            case 4:
+                return 6;
+            break;
+            case 5:
+                return 7;
+            break;
+            case 6:
+                return 6;
+            break;
+            case 7:
+                return 8;
+            break;
+            case 8:
+                return 8;
+            break;        
+            default:
+                return 1;
+            break;
+        }
+    }
+
     return (<>
-        <Tab.Container id="left-tabs-example" defaultActiveKey="1">
+        <Tab.Container id="left-tabs-example" defaultActiveKey={getDefaultTab}>
             <Row>
                 <Col md={3}>
                     <Nav variant="pills" className="flex-column">
                         {tabs.map((item, i)=>{return(
                             <Nav.Item>
                                 <Nav.Link eventKey={item.id} disabled={item.disabled}>
-                                    <FontAwesomeIcon icon={item.icon} className='me-1'/>
+                                    <FontAwesomeIcon icon={item.icon} className='me-2'/>
                                     {item.title}
                                 </Nav.Link>
                             </Nav.Item>

@@ -881,3 +881,28 @@ export const commandeAddForm = Yup.object().shape({
         .typeError(champObligatoire)
         .required(champObligatoire),
 });
+
+export const commandeStep1InfosGeneralesCheck = Yup.object().shape({
+    nomCommande: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});
+
+export const commandeStep2ContenuCheck = Yup.object().shape({
+});
+
+export const commandeStep3PJCheck = Yup.object().shape({
+});
+
+export const commandeStep4ValidationCheck = Yup.object().shape({
+});
+
+export const commandeStep5PassageCheck = Yup.object().shape({
+});
+
+export const commandeStep6LivraisonCheck = Yup.object().shape({
+});
+
+export const commandeStep7StockCheck = Yup.object().shape({
+});

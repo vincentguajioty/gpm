@@ -1,6 +1,7 @@
 const db = require('../db');
 const logger = require('../winstonLogger');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
+const fonctionsDelete = require('../helpers/fonctionsDelete');
 
 exports.getCommandes = async (req, res)=>{
     try {
@@ -171,6 +172,131 @@ exports.addCommande = async (req, res)=>{
 
         res.status(201);
         res.json({idCommande: selectLast[0].idCommande});
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.abandonnerCommande = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                COMMANDES
+            SET
+                idEtat = 8
+            WHERE
+                idCommande = :idCommande
+        `,{
+            idCommande: req.body.idCommande || null,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.commandesDelete = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.commandesDelete(req.verifyJWTandProfile.idPersonne , req.body.idCommande);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateInfoGenerales = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                COMMANDES
+            SET
+                nomCommande = :nomCommande,
+                idCentreDeCout = :idCentreDeCout,
+                idFournisseur = :idFournisseur,
+                idLieuLivraison = :idLieuLivraison,
+                remarquesGenerales = :remarquesGenerales
+            WHERE
+                idCommande = :idCommande
+        `,{
+            nomCommande: req.body.nomCommande || null,
+            idCentreDeCout: req.body.idCentreDeCout || null,
+            idFournisseur: req.body.idFournisseur || null,
+            idLieuLivraison: req.body.idLieuLivraison || null,
+            remarquesGenerales: req.body.remarquesGenerales || null,
+            idCommande: req.body.idCommande || null,
+        });
+
+        let cleanQuery = await db.query(`
+            DELETE FROM
+                COMMANDES_DEMANDEURS
+            WHERE
+                idCommande     = :idCommande
+        `,{
+            idCommande     : req.body.idCommande || null,
+        });
+        for(const entry of req.body.idDemandeur)
+        {
+            const insertQuery = await db.query(`
+                INSERT INTO
+                    COMMANDES_DEMANDEURS
+                SET
+                    idCommande     = :idCommande,
+                    idDemandeur = :idDemandeur
+            `,{
+                idCommande     : req.body.idCommande || null,
+                idDemandeur : entry.value || null,
+            });
+        }
+
+        cleanQuery = await db.query(`
+            DELETE FROM
+                COMMANDES_OBSERVATEURS
+            WHERE
+                idCommande     = :idCommande
+        `,{
+            idCommande     : req.body.idCommande || null,
+        });
+        for(const entry of req.body.idObservateur)
+        {
+            const insertQuery = await db.query(`
+                INSERT INTO
+                    COMMANDES_OBSERVATEURS
+                SET
+                    idCommande     = :idCommande,
+                    idObservateur = :idObservateur
+            `,{
+                idCommande     : req.body.idCommande || null,
+                idObservateur : entry.value || null,
+            });
+        }
+
+        cleanQuery = await db.query(`
+            DELETE FROM
+                COMMANDES_AFFECTEES
+            WHERE
+                idCommande     = :idCommande
+        `,{
+            idCommande     : req.body.idCommande || null,
+        });
+        for(const entry of req.body.idAffectee)
+        {
+            const insertQuery = await db.query(`
+                INSERT INTO
+                    COMMANDES_AFFECTEES
+                SET
+                    idCommande     = :idCommande,
+                    idAffectee = :idAffectee
+            `,{
+                idCommande     : req.body.idCommande || null,
+                idAffectee : entry.value || null,
+            });
+        }
+        
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

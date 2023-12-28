@@ -62,6 +62,7 @@ router.post('/contactDeveloppeur',         loggerMiddleware.httpLogger(), jwtFun
 router.get('/select/getNotificationsConditions',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getNotificationsConditions);
 router.get('/select/getPersonnes',                             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getPersonnes);
 router.get('/select/getActivePersonnes',                       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getActivePersonnes);
+router.get('/select/getActivePersonnesForCmdAffectation',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getActivePersonnesForCmdAffectation);
 router.get('/select/getNonAnonymesPersonnes',                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getNonAnonymesPersonnes);
 router.get('/select/getPersonnesWithMail',                     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getPersonnesWithMail);
 router.get('/select/getProfils',                               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getProfils);
@@ -99,6 +100,8 @@ router.get('/select/getSacsFull',                              loggerMiddleware.
 router.get('/select/getTypesLots',                             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getTypesLots);
 router.get('/select/getVehicules',                             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVehicules);
 router.get('/select/getCodesBarreCatalogue',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCodesBarreCatalogue);
+router.get('/select/getEtatsCommandes',                        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getEtatsCommandes);
+router.get('/select/getCentresCouts',                          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCentresCouts);
 //select routes for forms and lists - PUBLIC
 router.get('/select/getConsommationsEnCours',                  middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), loggerMiddleware.httpLogger(), selectForListsCtrl.getConsommationsEnCours);
 router.get('/select/getPublicCatalogueMateriel',               middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), loggerMiddleware.httpLogger(), selectForListsCtrl.getPublicCatalogueMateriel);
@@ -199,9 +202,12 @@ router.post('/transferts/getReservesForOneTransfert', loggerMiddleware.httpLogge
 router.post('/transferts/opererTransfertReserveLot',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_ReserveVersLot']),  loggerMiddleware.modificationLogger(), transfertsCtrl.opererTransfertReserveLot);
 
 //COMMANDES
-router.get('/commandes/getCommandes',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture']),                                        commandesCtrl.getCommandes);
-router.post('/commandes/getOneCommande',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture']),                                        commandesCtrl.getOneCommande);
-router.post('/commandes/addCommande',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_ajout']),   loggerMiddleware.modificationLogger(), commandesCtrl.addCommande);
+router.get('/commandes/getCommandes',              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture']),                                             commandesCtrl.getCommandes);
+router.post('/commandes/getOneCommande',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture']),                                             commandesCtrl.getOneCommande);
+router.post('/commandes/addCommande',              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_ajout']),        loggerMiddleware.modificationLogger(), commandesCtrl.addCommande);
+router.post('/commandes/abandonnerCommande',       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_abandonner']),   loggerMiddleware.modificationLogger(), commandesCtrl.abandonnerCommande);
+router.post('/commandes/commandesDelete',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_abandonner']),   loggerMiddleware.suppressionLogger(),  commandesCtrl.commandesDelete);
+router.post('/commandes/updateInfoGenerales',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_ajout']),        loggerMiddleware.modificationLogger(), commandesCtrl.updateInfoGenerales);
 /*
 commande_lecture
 commande_ajout
