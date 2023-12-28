@@ -215,6 +215,10 @@ commande_etreEnCharge
 commande_abandonne
 commande_valider_delegate
 */
+//VHF Canaux Attachements
+router.post('/commandes/uploadCommandesAttached',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), commandesCtrl.uploadCommandesAttachedMulter, commandesCtrl.uploadCommandesAttached);
+router.post('/commandes/updateMetaDataCommandes',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), commandesCtrl.updateMetaDataCommandes);
+router.post('/commandes/dropCommandesDocument',       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.suppressionLogger(),  commandesCtrl.dropCommandesDocument);
 
 //Fournisseurs - Informations de base
 router.get('/fournisseurs/getFournisseurs',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),      jwtFunctions.decryptAesToken(),        fournisseursCtrl.getFournisseurs);

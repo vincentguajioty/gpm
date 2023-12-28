@@ -1,5 +1,6 @@
 const db = require('../db');
 const logger = require('../winstonLogger');
+const multer = require('multer');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
 
@@ -297,6 +298,94 @@ exports.updateInfoGenerales = async (req, res)=>{
         }
         
         res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//Commandes PJ
+const multerConfigCommandes = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, 'uploads/commandes');
+    },
+    filename: (req, file, callback) => {
+        const ext = file.mimetype.split('/')[1];
+        callback(null, `commandes-${Date.now()}.${ext}`);
+    }
+});
+
+const uploadCommandes = multer({
+    storage: multerConfigCommandes,
+});
+
+exports.uploadCommandesAttachedMulter = uploadCommandes.single('file');
+
+exports.uploadCommandesAttached = async (req, res, next)=>{
+    try {
+        const newFileToDB = await db.query(
+            `INSERT INTO
+                DOCUMENTS_COMMANDES
+            SET
+                urlFichierDocCommande = :filename,
+                idCommande                 = :idCommande
+        `,{
+            filename : req.file.filename,
+            idCommande : req.query.idCommande,
+        });
+
+        const lastSelect = await db.query(`SELECT MAX(idDocCommande) as idDocCommande FROM DOCUMENTS_COMMANDES`);
+
+        res.status(200);
+        res.json({idDocCommande: lastSelect[0].idDocCommande})
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateMetaDataCommandes = async (req, res, next)=>{
+    try {
+        const document = await db.query(
+            `SELECT
+                *
+            FROM
+                DOCUMENTS_COMMANDES
+            WHERE
+                idDocCommande = :idDocCommande
+        `,{
+            idDocCommande : req.body.idDocCommande,
+        });
+
+        const update = await db.query(
+            `UPDATE
+                DOCUMENTS_COMMANDES
+            SET
+                nomDocCommande   = :nomDocCommande,
+                formatDocCommande = :formatDocCommande,
+                dateDocCommande   = :dateDocCommande,
+                idTypeDocument = :idTypeDocument
+            WHERE
+                idDocCommande        = :idDocCommande
+        `,{
+            nomDocCommande    : req.body.nomDocCommande || null,
+            formatDocCommande : document[0].urlFichierDocCommande.split('.')[1],
+            dateDocCommande   : req.body.dateDocCommande || new Date(),
+            idDocCommande     : req.body.idDocCommande,
+            idTypeDocument    : req.body.idTypeDocument || null,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.dropCommandesDocument = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.commandeDocDelete(req.verifyJWTandProfile.idPersonne , req.body.idDocCommande);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

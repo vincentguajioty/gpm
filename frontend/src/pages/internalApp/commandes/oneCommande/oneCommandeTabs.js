@@ -59,6 +59,7 @@ const OneCommandeTabs = ({
                 idCommande = {idCommande}
                 commande = {commande}
                 forceReadOnly = {commande.detailsCommande.idEtat > 6 ? true : false}
+                avoidDelete = {commande.detailsCommande.idEtat > 1 ? true : false}
                 setPageNeedsRefresh = {setPageNeedsRefresh}
             />,
         },

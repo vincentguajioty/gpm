@@ -893,6 +893,10 @@ export const commandeStep2ContenuCheck = Yup.object().shape({
 });
 
 export const commandeStep3PJCheck = Yup.object().shape({
+    nomDocCommande: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
 });
 
 export const commandeStep4ValidationCheck = Yup.object().shape({
