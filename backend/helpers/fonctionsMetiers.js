@@ -1865,6 +1865,432 @@ const calculerTousTotauxCommandes = async () => {
     }
 }
 
+const getValideurs = async (idCommande) => {
+    try {
+        let commande = await db.query(`
+            SELECT
+                idCentreDeCout
+            FROM
+                COMMANDES
+            WHERE
+                idCommande = :idCommande
+        ;`,{
+            idCommande: idCommande,
+        });
+        commande = commande[0];
+
+        if(!commande.idCentreDeCout || commande.idCentreDeCout == null)
+        {
+            return([]);
+        }
+        
+        const getValideursCentreDeCout = await db.query(`
+            SELECT
+                c.idPersonne,
+                p.identifiant
+            FROM
+                CENTRE_COUTS_PERSONNES c
+                LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idPersonne = p.idPersonne
+            WHERE
+                c.idCentreDeCout = :idCentreDeCout
+        ;`,{
+            idCentreDeCout: commande.idCentreDeCout,
+        });
+        let valideursPotentiels = [];
+        for(const personne of getValideursCentreDeCout)
+        {
+            if(await cmdEstValideur(personne.idPersonne, idCommande) == true)
+            {
+                valideursPotentiels.push({
+                    value: personne.idPersonne,
+                    label: personne.identifiant,
+                })
+            }
+        }
+
+        if(valideursPotentiels.length > 0)
+        {
+            return valideursPotentiels;
+        }
+
+        const getValideursUniversels = await db.query(`
+            SELECT
+                idPersonne as value,
+                identifiant as label
+            FROM
+                VIEW_HABILITATIONS
+            WHERE
+                commande_valider_delegate = 1
+        ;`);
+
+        return getValideursUniversels;
+        
+    } catch (error) {
+        logger.error(error)
+        return([]);
+    }
+}
+
+const cmdEstValideur = async(idPersonne, idCommande) => {
+    try {
+        let commande = await db.query(`
+            SELECT
+                *
+            FROM
+                COMMANDES
+            WHERE
+                idCommande = :idCommande
+        `,{
+            idCommande: idCommande,
+        })
+        commande = commande[0];
+    
+        if(!commande.idCentreDeCout || commande.idCentreDeCout == null)
+        {
+            return false;
+        }
+
+        let centreDeCout = await db.query(`
+            SELECT
+                *
+            FROM
+                CENTRE_COUTS
+            WHERE
+                idCentreDeCout = :idCentreDeCout
+        ;`,{
+            idCentreDeCout: commande.idCentreDeCout,
+        });
+        centreDeCout = centreDeCout[0];
+        
+        let pouvoirsvalidation = await db.query(`
+            SELECT
+                idPersonne,
+                montantMaxValidation,
+                depasseBudget,
+                validerClos
+            FROM
+                CENTRE_COUTS_PERSONNES
+            WHERE
+                idCentreDeCout = :idCentreDeCout
+                AND idPersonne = :idPersonne
+        ;`,{
+            idCentreDeCout: commande.idCentreDeCout,
+            idPersonne: idPersonne,
+        });
+
+        let enApprocheSurCentreCout = await db.query(`
+            SELECT
+                SUM(montantTotal) as enApproche
+            FROM
+                COMMANDES
+            WHERE
+                idCentreDeCout = :idCentreDeCout
+                AND integreCentreCouts = 0
+                AND idEtat != 8
+                AND idEtat != 1
+                AND idEtat != 2
+        ;`,{
+            idCentreDeCout: commande.idCentreDeCout,
+        });
+        enApprocheSurCentreCout = enApprocheSurCentreCout[0].enApproche;
+
+        let encoursCentreCout = await db.query(`
+            SELECT
+                COALESCE(SUM(montantEntrant),0)-COALESCE(SUM(montantSortant),0) as encours
+            FROM
+                CENTRE_COUTS_OPERATIONS
+            WHERE
+                idCentreDeCout = :idCentreDeCout
+        ;`,{
+            idCentreDeCout: commande.idCentreDeCout,
+        });
+        encoursCentreCout = encoursCentreCout[0].encours
+
+        let disponible = encoursCentreCout - enApprocheSurCentreCout;
+        
+        let centreOuvert;
+        if(centreDeCout.dateFermeture == null)
+        {
+            if(new Date(centreDeCout.dateOuverture) <= new Date())
+            {
+                centreOuvert = true;
+            }
+            else
+            {
+                centreOuvert = false;
+            }
+        }
+        else
+        {
+            if(new Date(centreDeCout.dateFermeture) < new Date())
+            {
+                centreOuvert = false;
+            }
+            else
+            {
+                if(new Date(centreDeCout.dateOuverture) <= new Date())
+                {
+                    centreOuvert = true;
+                }
+                else
+                {
+                    centreOuvert = false;
+                }
+            }
+        }
+
+        for(const pouvoir of pouvoirsvalidation)
+        {
+            if(pouvoir.montantMaxValidation == null)
+            {
+                if(centreOuvert == false && pouvoir.validerClos == false)
+                {
+                    return false;
+                }
+
+                if(commande.montantTotal >= disponible && pouvoir.depasseBudget == false)
+                {
+                    return false;
+                }
+
+                return true;
+            }else{
+                if(pouvoir.montantMaxValidation >= commande.montantTotal)
+                {
+                    if(centreOuvert == false && pouvoir.validerClos == false)
+                    {
+                        return false;
+                    }
+    
+                    if(commande.montantTotal > disponible && pouvoir.depasseBudget == false)
+                    {
+                        return false;
+                    }
+    
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        return false;
+    } catch (error) {
+        logger.error(error)
+        return false;
+    }
+}
+
+const cmdEstAffectee = async(idPersonne, idCommande) => {
+    try {
+        let affectees = await db.query(`
+            SELECT
+                *
+            FROM
+                COMMANDES_AFFECTEES
+            WHERE
+                idCommande = :idCommande
+                AND
+                idAffectee = :idPersonne
+        `,{
+            idCommande: idCommande,
+            idPersonne: idPersonne,
+        })
+        if(affectees.length == 1){return true;}else{return false;}
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const cmdEstValideurUniversel = async(idPersonne, idCommande) => {
+    try {
+        let profilPersonne = await db.query(`
+            SELECT
+                commande_valider_delegate
+            FROM
+                VIEW_HABILITATIONS
+            WHERE
+                idPersonne = :idPersonne
+        `,{
+            idPersonne: idPersonne,
+        });
+
+        if(profilPersonne.length != 1 || profilPersonne[0].commande_valider_delegate == false)
+        {return false;}
+
+        let commande = await db.query(`
+            SELECT
+                *
+            FROM
+                COMMANDES
+            WHERE
+                idCommande = :idCommande
+        `,{
+            idCommande: idCommande,
+        });
+        commande = commande[0];
+
+        let nbValideursStandards = await db.query(`
+            SELECT
+                COUNT(*) as nb
+            FROM
+                CENTRE_COUTS_PERSONNES c
+                INNER JOIN PERSONNE_REFERENTE p ON c.idPersonne = p.idPersonne
+            WHERE
+                idCentreDeCout = :idCentreDeCout
+                AND
+                (montantMaxValidation >= :montantTotalCommande OR montantMaxValidation IS NULL)
+        `,{
+            idCentreDeCout: commande.idCentreDeCout,
+            montantTotalCommande: commande.montantTotal
+        });
+        nbValideursStandards = nbValideursStandards[0].nb;
+
+        if(nbValideursStandards == 0){return true}else{return false}
+
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const cmdEstObservateur = async(idPersonne, idCommande) => {
+    try {
+        let obs = await db.query(`
+            SELECT
+                *
+            FROM
+                COMMANDES_OBSERVATEURS
+            WHERE
+                idCommande = :idCommande
+                AND
+                idObservateur = :idPersonne
+        `,{
+            idCommande: idCommande,
+            idPersonne: idPersonne,
+        })
+        if(obs.length == 1){return true;}else{return false;}
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const cmdEstDemandeur = async(idPersonne, idCommande) => {
+    try {
+        let dem = await db.query(`
+            SELECT
+                *
+            FROM
+                COMMANDES_DEMANDEURS
+            WHERE
+                idCommande = :idCommande
+                AND
+                idDemandeur = :idPersonne
+        `,{
+            idCommande: idCommande,
+            idPersonne: idPersonne,
+        })
+        if(dem.length == 1){return true;}else{return false;}
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const centreCoutsEstCharge = async(idPersonne, idCentreDeCout) => {
+    try {
+        let centreDeCout = await db.query(`
+            SELECT
+                *
+            FROM
+                CENTRE_COUTS
+            WHERE
+                idCentreDeCout = :idCentreDeCout
+        ;`,{
+            idCentreDeCout: idCentreDeCout,
+        });
+        centreDeCout = centreDeCout[0];
+
+        let encoursCentreCout = await db.query(`
+            SELECT
+                COALESCE(SUM(montantEntrant),0)-COALESCE(SUM(montantSortant),0) as encours
+            FROM
+                CENTRE_COUTS_OPERATIONS
+            WHERE
+                idCentreDeCout = :idCentreDeCout
+        ;`,{
+            idCentreDeCout: idCentreDeCout,
+        });
+        encoursCentreCout = encoursCentreCout[0].encours
+
+        let pouvoirs = await db.query(`
+            SELECT
+                c.*
+            FROM
+                CENTRE_COUTS_PERSONNES c
+                LEFT OUTER JOIN VIEW_HABILITATIONS v ON c.idPersonne = v.idPersonne
+            WHERE
+                c.idCentreDeCout = :idCentreDeCout
+                AND v.cout_etreEnCharge=1
+                AND c.idPersonne = :idPersonne
+        ;`,{
+            idCentreDeCout: idCentreDeCout,
+            idPersonne: idPersonne,
+        });
+
+        let centreOuvert;
+        if(centreDeCout.dateFermeture == null)
+        {
+            if(new Date(centreDeCout.dateOuverture) <= new Date())
+            {
+                centreOuvert = true;
+            }
+            else
+            {
+                centreOuvert = false;
+            }
+        }
+        else
+        {
+            if(new Date(centreDeCout.dateFermeture) < new Date())
+            {
+                centreOuvert = false;
+            }
+            else
+            {
+                if(new Date(centreDeCout.dateOuverture) <= new Date())
+                {
+                    centreOuvert = true;
+                }
+                else
+                {
+                    centreOuvert = false;
+                }
+            }
+        }
+
+        for(const pouvoir of pouvoirs)
+        {
+            if(centreOuvert == false && pouvoir.validerClos == false)
+            {
+                return false;
+            }
+
+            if(encoursCentreCout < 0 && pouvoir.depasseBudget == false)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
+
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -1917,4 +2343,11 @@ module.exports = {
     queueNotificationJournaliere,
     calculerTotalCommande,
     calculerTousTotauxCommandes,
+    getValideurs,
+    cmdEstValideur,
+    cmdEstAffectee,
+    cmdEstValideurUniversel,
+    cmdEstObservateur,
+    cmdEstDemandeur,
+    centreCoutsEstCharge,
 };

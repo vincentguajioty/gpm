@@ -44,6 +44,7 @@ import {
   faEdit as farEdit
 } from '@fortawesome/free-regular-svg-icons';
 import {
+  faForward,
   faBarcode,
   faBinoculars,
   faUserShield,
@@ -264,6 +265,7 @@ import {
 
 library.add(
   // Solid
+  faForward,
   faBarcode,
   faBinoculars,
   faUserShield,

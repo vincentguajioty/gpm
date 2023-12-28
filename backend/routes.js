@@ -199,7 +199,9 @@ router.post('/transferts/getReservesForOneTransfert', loggerMiddleware.httpLogge
 router.post('/transferts/opererTransfertReserveLot',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_ReserveVersLot']),  loggerMiddleware.modificationLogger(), transfertsCtrl.opererTransfertReserveLot);
 
 //COMMANDES
-router.get('/commandes/getCommandes',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture']),        commandesCtrl.getCommandes);
+router.get('/commandes/getCommandes',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture']),                                        commandesCtrl.getCommandes);
+router.post('/commandes/getOneCommande',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture']),                                        commandesCtrl.getOneCommande);
+router.post('/commandes/addCommande',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_ajout']),   loggerMiddleware.modificationLogger(), commandesCtrl.addCommande);
 /*
 commande_lecture
 commande_ajout

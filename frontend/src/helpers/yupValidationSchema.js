@@ -874,3 +874,10 @@ export const mailEquipeForm = Yup.object().shape({
         .typeError(champObligatoire)
         .required(champObligatoire),
 });
+
+export const commandeAddForm = Yup.object().shape({
+    nomCommande: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});
