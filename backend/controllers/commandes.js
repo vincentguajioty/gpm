@@ -406,7 +406,70 @@ exports.demandeValidation = async (req, res)=>{
             UPDATE
                 COMMANDES
             SET
-                idEtat = 2
+                idEtat = 2,
+                dateDemandeValidation = CURRENT_TIMESTAMP
+            WHERE
+                idCommande = :idCommande
+        `,{
+            idCommande: req.body.idCommande || null,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateRemarquesValidation = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                COMMANDES
+            SET
+                remarquesValidation = :remarquesValidation
+            WHERE
+                idCommande = :idCommande
+        `,{
+            remarquesValidation: req.body.remarquesValidation || null,
+            idCommande: req.body.idCommande || null,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.rejeterCommande = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                COMMANDES
+            SET
+                idEtat = 1
+            WHERE
+                idCommande = :idCommande
+        `,{
+            idCommande: req.body.idCommande || null,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.approuverCommande = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                COMMANDES
+            SET
+                idEtat = 3,
+                dateValidation = CURRENT_TIMESTAMP
             WHERE
                 idCommande = :idCommande
         `,{

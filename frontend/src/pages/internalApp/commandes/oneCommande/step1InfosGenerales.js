@@ -18,12 +18,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { commandeStep1InfosGeneralesCheck } from 'helpers/yupValidationSchema';
 
-import DatePicker from 'react-datepicker';
-import { registerLocale, setDefaultLocale } from  "react-datepicker";
-import fr from 'date-fns/locale/fr';
-registerLocale('fr', fr);
-setDefaultLocale('fr');
-
 const OneCommandeStep1InfosGenerales = ({
     idCommande,
     commande,
@@ -282,7 +276,7 @@ const OneCommandeStep1InfosGenerales = ({
                                 size="sm"
                                 classNamePrefix="react-select"
                                 isDisabled={true}
-                                placeholder='Aucun valideur - Commande bloquée'
+                                placeholder='Aucun valideur'
                                 options={tousUsers}
                                 value={commande.valideurs}
                                 isMulti
@@ -305,7 +299,7 @@ const OneCommandeStep1InfosGenerales = ({
                                 isClearable={true}
                                 isSearchable={true}
                                 isDisabled={readOnly}
-                                placeholder='Aucun centre de cout - Commande bloquée'
+                                placeholder='Aucun centre de cout'
                                 options={centresCouts}
                                 value={findOptionForSelect(centresCouts, watch("idCentreDeCout"))}
                                 onChange={val => val != null ? setValue("idCentreDeCout", val.value) : setValue("idCentreDeCout", null)}
