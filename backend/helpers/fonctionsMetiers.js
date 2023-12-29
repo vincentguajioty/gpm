@@ -2291,6 +2291,351 @@ const centreCoutsEstCharge = async(idPersonne, idCentreDeCout) => {
     }
 }
 
+const verificationContraintesCmd = async (idCommande) => {
+    try {
+        let commande = await db.query(`
+            SELECT
+                *
+            FROM
+                COMMANDES
+            WHERE
+                idCommande = :idCommande
+        ;`,{
+            idCommande: idCommande,
+        });
+        commande = commande[0];
+
+        let contraintes = await db.query(`
+            SELECT
+                *
+            FROM
+                COMMANDES_CONTRAINTES
+        ;`);
+        for(const contrainte of contraintes)
+        {
+            let contrainteRespectee = false;
+
+            // vérification des possibles contraintes une à une
+            if(contrainte.fournisseurObligatoire == true)
+            {
+                if(commande.idFournisseur != null && commande.idFournisseur > 0)
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.minDemandeurs && contrainte.minDemandeurs > 0)
+            {
+                let personnes = await db.query(`
+                    SELECT
+                        p.idPersonne as value,
+                        p.identifiant as label
+                    FROM
+                        COMMANDES_DEMANDEURS c
+                        LEFT OUTER JOIN PERSONNE_REFERENTE p ON p.idPersonne = c.idDemandeur
+                    WHERE
+                        c.idCommande = :idCommande
+                ;`,{
+                    idCommande: idCommande,
+                });
+                if(personnes.length >= contrainte.minDemandeurs)
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.minAffectees && contrainte.minAffectees > 0)
+            {
+                let personnes = await db.query(`
+                    SELECT
+                        p.idPersonne as value,
+                        p.identifiant as label
+                    FROM
+                        COMMANDES_AFFECTEES c
+                        LEFT OUTER JOIN PERSONNE_REFERENTE p ON p.idPersonne = c.idAffectee
+                    WHERE
+                        c.idCommande = :idCommande
+                ;`,{
+                    idCommande: idCommande,
+                });
+                if(personnes.length >= contrainte.minAffectees)
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.minObservateurs && contrainte.minObservateurs > 0)
+            {
+                let personnes = await db.query(`
+                    SELECT
+                        p.idPersonne as value,
+                        p.identifiant as label
+                    FROM
+                        COMMANDES_OBSERVATEURS c
+                        LEFT OUTER JOIN PERSONNE_REFERENTE p ON p.idPersonne = c.idObservateur
+                    WHERE
+                        c.idCommande = :idCommande
+                ;`,{
+                    idCommande: idCommande,
+                });
+                if(personnes.length >= contrainte.minObservateurs)
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.minValideurs && contrainte.minValideurs > 0)
+            {
+                let personnes = await fonctionsMetiers.getValideurs(idCommande);
+                if(personnes.length >= contrainte.minValideurs)
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.idTypeDocumentObligatoire != null && contrainte.idTypeDocumentObligatoire > 0 && contrainte.nbTypeDocumentObligatoire > 0)
+            {
+                let documents = await db.query(`
+                    SELECT
+                        *
+                    FROM
+                        DOCUMENTS_COMMANDES
+                    WHERE
+                        idCommande = :idCommande
+                        AND
+                        idTypeDocument = :idTypeDocument
+                ;`,{
+                    idCommande: idCommande,
+                    idTypeDocument: idTypeDocumentObligatoire,
+                });
+                if(documents.length >= contrainte.nbTypeDocumentObligatoire)
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.minMontant != null)
+            {
+                if(commande.montantTotal >= contrainte.minMontant)
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.maxMontant != null)
+            {
+                if(commande.montantTotal <= contrainte.maxMontant)
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.minQttMateriel != null && contrainte.minQttMateriel > 0)
+            {
+                let materiels = await db.query(`
+                    SELECT
+                        m.*,
+                        c.libelleMateriel
+                    FROM
+                        COMMANDES_MATERIEL m
+                        LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                    WHERE
+                        m.idCommande = :idCommande
+                ;`,{
+                    idCommande: idCommande,
+                });
+
+                if(materiels.length >= contrainte.minQttMateriel)
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.integrationStockObligatoire == true)
+            {
+                let totalATransferer = await db.query(`
+                    SELECT
+                        SUM(quantiteAtransferer) as totalATransferer
+                    FROM
+                        COMMANDES_MATERIEL
+                    WHERE
+                        idCommande = :idCommande
+                ;`,{
+                    idCommande: idCommande,
+                });
+                totalATransferer = totalATransferer[0].totalATransferer;
+
+                if(totalATransferer == 0)
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.centreCoutsObligatoire == true)
+            {
+                if(commande.idCentreDeCout != null && commande.idCentreDeCout > 0)
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.lieuLivraisonObligatoire == true)
+            {
+                if(commande.idLieuLivraison != null && commande.idLieuLivraison > 0)
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.remarquesGeneralesObligatoires == true)
+            {
+                if(commande.remarquesGenerales != null && commande.remarquesGenerales != "")
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.remarquesValidationObligatoire == true)
+            {
+                if(commande.remarquesValidation != null && commande.remarquesValidation != "")
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.remarquesLivraisonsObligatoire == true)
+            {
+                if(commande.remarquesLivraison != null && commande.remarquesLivraison != "")
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.referenceCommandeFournisseurObligatoire == true)
+            {
+                if(commande.numCommandeFournisseur != null && commande.numCommandeFournisseur != "")
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.datePassageCommandeObligatoire == true)
+            {
+                if(commande.datePassage != null && commande.datePassage != "")
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.datePrevueLivraisonObligatoire == true)
+            {
+                if(commande.dateLivraisonPrevue != null && commande.dateLivraisonPrevue != "")
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            if(contrainte.dateLivraisonEffectiveObligatoire == true)
+            {
+                if(commande.dateLivraisoneffective != null && commande.dateLivraisoneffective != "")
+                {
+                    contrainteRespectee = true;
+                }else{
+                    contrainteRespectee = false;
+                }
+            }
+
+            contrainte.contrainteRespectee = contrainteRespectee;
+        }
+
+        let etatsCommandes = await db.query(`
+            SELECT
+                *
+            FROM
+                COMMANDES_ETATS
+            WHERE
+                idEtat <> :etatActuel
+        ;`,{
+            etatActuel: commande.idEtat,
+        });
+        for(const futurEtat of etatsCommandes)
+        {
+            let passagePossible = false;
+            let contraintesQuiAppliquent = contraintes.filter(ctr => (ctr.idEtatInitial == commande.idEtat && ctr.idEtatFinal == futurEtat.idEtat))
+
+            if(contraintesQuiAppliquent.length == 0)
+            {
+                passagePossible = true
+            }else{
+                let contraintesKO = contraintesQuiAppliquent.filter(ctr => ctr.contrainteRespectee != true);
+                passagePossible = contraintesKO.length == 0 ? true : false;
+            }
+
+            futurEtat.passagePossible = passagePossible;
+        }
+
+        return({
+            contraintes: contraintes.filter(ctr => ctr.idEtatInitial == commande.idEtat),
+            possiblesMovesTo: etatsCommandes,
+        })
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const verificationAvantChangementEtatCmd = async (idCommande, idEtatCible) => {
+    try {
+        let verificationContraintes = await verificationContraintesCmd(idCommande);
+
+        let move = verificationContraintes.possiblesMovesTo.filter(move => move.idEtat == idEtatCible);
+        if(move.length != 1)
+        {
+            return false;
+        }else{
+            return move[0].passagePossible;
+        }
+
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -2350,4 +2695,6 @@ module.exports = {
     cmdEstObservateur,
     cmdEstDemandeur,
     centreCoutsEstCharge,
+    verificationContraintesCmd,
+    verificationAvantChangementEtatCmd,
 };

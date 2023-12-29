@@ -11,16 +11,83 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Axios } from 'helpers/axios';
 import HabilitationService from 'services/habilitationsService';
 
+const Preparation = ({
+    idCommande,
+    commande,
+    forceReadOnly,
+    setPageNeedsRefresh,
+}) => {
+    let ok = commande.verificationContraintes.possiblesMovesTo.filter(move => move.idEtat == 2)[0].passagePossible && !forceReadOnly;
+
+    const demandeValidation = async () => {
+        try {
+            await Axios.post('/commandes/demandeValidation',{
+                idCommande: idCommande,
+            });
+            setPageNeedsRefresh(true);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    return(
+        <center>
+            <p><small>
+                Critères à respecter pour soumettre à validation:<br/>
+                {commande.verificationContraintes.contraintes.map((ctr, i) => {return(
+                    <>
+                        <FontAwesomeIcon icon={ctr.contrainteRespectee == true ? 'check' : 'ban'} color={ctr.contrainteRespectee == true ? 'green' : 'red'} className='me-2' />
+                        {ctr.libelleContrainte}
+                        <br/>
+                    </>
+                )})}
+            </small></p>
+
+            <IconButton
+                className='mt-2'
+                disabled={!ok}
+                icon='forward'
+                variant={ok ? 'success' : 'outline-success'}
+                onClick={demandeValidation}
+            >
+                Demander la validation
+                
+            </IconButton>
+        </center>
+    );
+};
+
+const Arbitrage = ({
+    idCommande,
+    commande,
+    forceReadOnly,
+    setPageNeedsRefresh,
+}) => {
+    return('Je dis go ou pas');
+};
+
 const OneCommandeStep4Validation = ({
     idCommande,
     commande,
     forceReadOnly,
     setPageNeedsRefresh,
 }) => {
-    
-    return (<>
-        TODO
-    </>);
+    if(commande.detailsCommande.idEtat == 1)
+    {
+        return(<Preparation
+            idCommande={idCommande}
+            commande={commande}
+            forceReadOnly={forceReadOnly}
+            setPageNeedsRefresh={setPageNeedsRefresh}
+        />);
+    }else{
+        return(<Arbitrage
+            idCommande={idCommande}
+            commande={commande}
+            forceReadOnly={forceReadOnly}
+            setPageNeedsRefresh={setPageNeedsRefresh}
+        />);
+    }
 };
 
 OneCommandeStep4Validation.propTypes = {};

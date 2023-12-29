@@ -314,6 +314,20 @@ const checkCmdRole = (acceptedRoles) => {
     }
 }
 
+const checkCmdCanMoveTo = (idEtatCible) => {
+    return async function(req, res, next) {
+        let check = await fonctionsMetiers.verificationAvantChangementEtatCmd(req.body.idCommande, idEtatCible);
+        if(check == true)
+        {
+            next();
+        }else{
+            logger.info('Les contraintes métier bloquent le passage de la commande vers l\'état demandé.');
+            res.status(403);
+            res.send('Les contraintes métier bloquent le passage de la commande vers l\'état demandé.');
+        }
+    }
+}
+
 module.exports = {
     himselfRead,
     himselfWrite,
@@ -326,4 +340,5 @@ module.exports = {
     checkFunctionnalityBenevolesEnabled,
     checkCmdStage,
     checkCmdRole,
+    checkCmdCanMoveTo,
 };

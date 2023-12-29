@@ -399,4 +399,92 @@ ALTER TABLE COMMANDES ADD montantTotal FLOAT AFTER numCommandeFournisseur;
 
 ALTER TABLE COMMANDES_MATERIEL ADD idCommandeMateriel INT NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (idCommandeMateriel);
 
+CREATE TABLE COMMANDES_CONTRAINTES(
+	idContrainte                            INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	libelleContrainte                       TEXT,
+	idEtatInitial                           INT,
+	idEtatFinal                             INT,
+	fournisseurObligatoire                  BOOLEAN,
+	minDemandeurs                           INT,
+	minAffectees                            INT,
+	minObservateurs                         INT,
+	minValideurs                            INT,
+	centreCoutsObligatoire                  BOOLEAN,
+	lieuLivraisonObligatoire                BOOLEAN,
+	minQttMateriel                          INT,
+	minMontant                              FLOAT,
+	maxMontant                              FLOAT,
+	remarquesGeneralesObligatoires          BOOLEAN,
+	idTypeDocumentObligatoire               INT,
+	nbTypeDocumentObligatoire               INT,
+	remarquesValidationObligatoire          BOOLEAN,
+	referenceCommandeFournisseurObligatoire BOOLEAN,
+	datePassageCommandeObligatoire          BOOLEAN,
+	datePrevueLivraisonObligatoire          BOOLEAN,
+	dateLivraisonEffectiveObligatoire       BOOLEAN,
+	remarquesLivraisonsObligatoire          BOOLEAN,
+	integrationStockObligatoire             BOOLEAN,
+	CONSTRAINT fk_cmdCntr_etatinitial
+		FOREIGN KEY (idEtatInitial)
+		REFERENCES COMMANDES_ETATS(idEtat),
+	CONSTRAINT fk_cmdCntr_etatfinal
+		FOREIGN KEY (idEtatFinal)
+		REFERENCES COMMANDES_ETATS(idEtat)
+);
+
+INSERT INTO COMMANDES_CONTRAINTES SET
+	libelleContrainte = "Au moins un valideur identifié",
+	idEtatInitial = 1,
+	idEtatFinal = 2,
+	minDemandeurs = 1
+;
+INSERT INTO COMMANDES_CONTRAINTES SET
+	libelleContrainte = "Au moins une personne affectée à la commande",
+	idEtatInitial = 1,
+	idEtatFinal = 2,
+	minAffectees = 1
+;
+INSERT INTO COMMANDES_CONTRAINTES SET
+	libelleContrainte = "Au moins une personne demandeur renseignée",
+	idEtatInitial = 1,
+	idEtatFinal = 2,
+	minDemandeurs = 1
+;
+INSERT INTO COMMANDES_CONTRAINTES SET
+	libelleContrainte = "Fournisseur obligatoire",
+	idEtatInitial = 1,
+	idEtatFinal = 2,
+	fournisseurObligatoire = true
+;
+INSERT INTO COMMANDES_CONTRAINTES SET
+	libelleContrainte = "Centre de couts obligatoire",
+	idEtatInitial = 1,
+	idEtatFinal = 2,
+	centreCoutsObligatoire = true
+;
+INSERT INTO COMMANDES_CONTRAINTES SET
+	libelleContrainte = "Remarque de refus obligatoire",
+	idEtatInitial = 2,
+	idEtatFinal = 1,
+	remarquesValidationObligatoire = true
+;
+INSERT INTO COMMANDES_CONTRAINTES SET
+	libelleContrainte = "Référence commande fournisseur obligatoire",
+	idEtatInitial = 3,
+	idEtatFinal = 4,
+	referenceCommandeFournisseurObligatoire = true
+;
+INSERT INTO COMMANDES_CONTRAINTES SET
+	libelleContrainte = "Remarques obligatoires pour passer en SAV",
+	idEtatInitial = 4,
+	idEtatFinal = 6,
+	remarquesLivraisonsObligatoire = true
+;
+INSERT INTO COMMANDES_CONTRAINTES SET
+	libelleContrainte = "Remarques obligatoires pour quitter le SAV",
+	idEtatInitial = 6,
+	idEtatFinal = 5,
+	remarquesLivraisonsObligatoire = true
+;
+
 UPDATE CONFIG SET version = '15.0';

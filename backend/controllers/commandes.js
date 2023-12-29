@@ -125,8 +125,11 @@ exports.getOneCommande = async (req, res)=>{
             idCommande: req.body.idCommande
         });
 
+        let verificationContraintes = await fonctionsMetiers.verificationContraintesCmd(req.body.idCommande);
+
         res.send({
             detailsCommande: commande[0],
+            verificationContraintes: verificationContraintes,
             demandeurs: demandeurs,
             observateurs: observateurs,
             affectees: affectees,
@@ -389,6 +392,26 @@ exports.removeMateriels = async (req, res)=>{
         });
 
         await fonctionsMetiers.calculerTotalCommande(req.body.idCommande);
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.demandeValidation = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                COMMANDES
+            SET
+                idEtat = 2
+            WHERE
+                idCommande = :idCommande
+        `,{
+            idCommande: req.body.idCommande || null,
+        });
 
         res.sendStatus(201);
     } catch (error) {
