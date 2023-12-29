@@ -16,10 +16,7 @@ import { Axios } from 'helpers/axios';
 import HabilitationService from 'services/habilitationsService';
 
 const OneCommandeStep8Cloture = ({
-    idCommande,
     commande,
-    forceReadOnly,
-    setPageNeedsRefresh,
 }) => {
     if(commande.detailsCommande.idEtat == 7)
     {

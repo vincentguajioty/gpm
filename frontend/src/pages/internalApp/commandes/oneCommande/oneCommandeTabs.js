@@ -25,6 +25,31 @@ const OneCommandeTabs = ({
     commande,
     setPageNeedsRefresh,
 }) => {
+    const checkUserInRole = (acceptedRolesPerStage) => {
+        // [
+        //     {
+        //         idEtat: NUMBER,
+        //         acceptedRoles: ['valideurs', 'demandeurs', 'affectees', 'observateurs']
+        //     }
+        // ]
+        let accepted = false;
+        for(const stage of acceptedRolesPerStage)
+        {
+            if(commande.detailsCommande.idEtat == stage.idEtat)
+            {
+                for(const role of stage.acceptedRoles)
+                {
+                    for(const personne of commande[role])
+                    {
+                        if(personne.value == HabilitationService.habilitations.idPersonne){accepted = true}
+                    }
+                }
+            }
+        }
+
+        return accepted;
+    }
+
     const tabs = [
         {
             id: 1,
@@ -66,12 +91,12 @@ const OneCommandeTabs = ({
         {
             id: 4,
             title: "Validation",
-            icon: commande.detailsCommande.idEtat < 2 ? 'spinner' : commande.detailsCommande.idEtat > 2 ? 'check' : 'forward',
-            disabled: commande.detailsCommande.idEtat < 2 ? true : false,
+            icon: commande.detailsCommande.idEtat > 2 ? 'check' : 'forward',
+            disabled: false,
             content: <OneCommandeStep4Validation
                 idCommande = {idCommande}
                 commande = {commande}
-                forceReadOnly = {commande.detailsCommande.idEtat > 2 ? true : commande.valideurs.filter(personne => personne.idPersonne == HabilitationService.habilitations.idPersonne).length == 1 ? false : true}
+                forceReadOnly = {commande.detailsCommande.idEtat > 2 ? true : checkUserInRole([{idEtat:1, acceptedRoles:['affectees','valideurs']},{idEtat:2, acceptedRoles:['valideurs']}]) ? false : true}
                 setPageNeedsRefresh = {setPageNeedsRefresh}
             />,
         },
@@ -83,7 +108,7 @@ const OneCommandeTabs = ({
             content: <OneCommandeStep5Passage
                 idCommande = {idCommande}
                 commande = {commande}
-                forceReadOnly = {commande.detailsCommande.idEtat > 3 ? true : false}
+                forceReadOnly = {commande.detailsCommande.idEtat > 3 ? true : checkUserInRole([{idEtat:3, acceptedRoles:['affectees']}]) ? false : true}
                 setPageNeedsRefresh = {setPageNeedsRefresh}
             />,
         },
@@ -95,7 +120,7 @@ const OneCommandeTabs = ({
             content: <OneCommandeStep6Livraison
                 idCommande = {idCommande}
                 commande = {commande}
-                forceReadOnly = {commande.detailsCommande.idEtat > 4 &&  commande.detailsCommande.idEtat != 6 ? true : false}
+                forceReadOnly = {commande.detailsCommande.idEtat > 4 && commande.detailsCommande.idEtat != 6 ? true : checkUserInRole([{idEtat:4, acceptedRoles:['affectees']}, {idEtat:6, acceptedRoles:['affectees']}]) ? false : true}
                 setPageNeedsRefresh = {setPageNeedsRefresh}
             />,
         },
@@ -107,7 +132,7 @@ const OneCommandeTabs = ({
             content: <OneCommandeStep7Stock
                 idCommande = {idCommande}
                 commande = {commande}
-                forceReadOnly = {commande.detailsCommande.idEtat > 5 && commande.detailsCommande.idEtat != 6 ? true : false}
+                forceReadOnly = {commande.detailsCommande.idEtat > 5 && commande.detailsCommande.idEtat != 6 ? true : checkUserInRole([{idEtat:5, acceptedRoles:['affectees']}]) ? false : true}
                 setPageNeedsRefresh = {setPageNeedsRefresh}
             />,
         },
@@ -117,10 +142,7 @@ const OneCommandeTabs = ({
             icon: commande.detailsCommande.idEtat < 7 ? 'spinner' : 'check',
             disabled: commande.detailsCommande.idEtat < 7 ? true : false,
             content: <OneCommandeStep8Cloture
-                idCommande = {idCommande}
                 commande = {commande}
-                forceReadOnly = {commande.detailsCommande.idEtat < 7 ? true : false}
-                setPageNeedsRefresh = {setPageNeedsRefresh}
             />,
         },
     ];
