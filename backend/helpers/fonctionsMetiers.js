@@ -1879,9 +1879,19 @@ const getValideurs = async (idCommande) => {
         });
         commande = commande[0];
 
+        const getValideursUniversels = await db.query(`
+            SELECT
+                idPersonne as value,
+                identifiant as label
+            FROM
+                VIEW_HABILITATIONS
+            WHERE
+                commande_valider_delegate = 1
+        ;`);
+
         if(!commande.idCentreDeCout || commande.idCentreDeCout == null)
         {
-            return([]);
+            return(getValideursUniversels);
         }
         
         const getValideursCentreDeCout = await db.query(`
@@ -1912,16 +1922,6 @@ const getValideurs = async (idCommande) => {
         {
             return valideursPotentiels;
         }
-
-        const getValideursUniversels = await db.query(`
-            SELECT
-                idPersonne as value,
-                identifiant as label
-            FROM
-                VIEW_HABILITATIONS
-            WHERE
-                commande_valider_delegate = 1
-        ;`);
 
         return getValideursUniversels;
         
