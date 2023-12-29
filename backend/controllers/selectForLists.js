@@ -379,7 +379,8 @@ exports.getCatalogueMaterielFull = async (req, res)=>{
                 libelleMateriel as label,
                 sterilite,
                 peremptionAnticipationOpe,
-                peremptionAnticipationRes
+                peremptionAnticipationRes,
+                idFournisseur
             FROM
                 MATERIEL_CATALOGUE
             ORDER BY

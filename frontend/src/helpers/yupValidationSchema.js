@@ -910,6 +910,28 @@ export const commandeStep1InfosGeneralesCheck = Yup.object().shape({
 });
 
 export const commandeStep2ContenuCheck = Yup.object().shape({
+    quantiteCommande: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    prixProduitTTC: Yup
+        .number()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    referenceProduitFournisseurNeeded: Yup
+        .boolean(),
+    referenceProduitFournisseur: Yup
+        .string()
+        .nullable(true)
+        .typeError(champObligatoire)
+        .when("referenceProduitFournisseurNeeded", {
+            is: true,
+            then: () => Yup.string()
+                .nullable(true)
+                .typeError(champObligatoire)
+                .required(champObligatoire),
+        }),
 });
 
 export const commandeStep3PJCheck = Yup.object().shape({

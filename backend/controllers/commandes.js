@@ -304,6 +304,99 @@ exports.updateInfoGenerales = async (req, res)=>{
     }
 }
 
+exports.addMateriels = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                COMMANDES_MATERIEL
+            SET
+                idCommande = :idCommande,
+                idMaterielCatalogue = :idMaterielCatalogue,
+                quantiteCommande = :quantiteCommande,
+                referenceProduitFournisseur = :referenceProduitFournisseur,
+                remiseProduit = :remiseProduit,
+                prixProduitHT = :prixProduitHT,
+                taxeProduit = :taxeProduit,
+                prixProduitTTC = :prixProduitTTC,
+                remarqueArticle = :remarqueArticle
+        `,{
+            idCommande: req.body.idCommande || null,
+            idMaterielCatalogue: req.body.idMaterielCatalogue || null,
+            quantiteCommande: req.body.quantiteCommande || null,
+            referenceProduitFournisseur: req.body.referenceProduitFournisseur || null,
+            remiseProduit: req.body.remiseProduit || null,
+            prixProduitHT: req.body.prixProduitHT || null,
+            taxeProduit: req.body.taxeProduit || null,
+            prixProduitTTC: req.body.prixProduitTTC || null,
+            remarqueArticle: req.body.remarqueArticle || null,
+        });
+
+        await fonctionsMetiers.calculerTotalCommande(req.body.idCommande);
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateMateriels = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                COMMANDES_MATERIEL
+            SET
+                idMaterielCatalogue = :idMaterielCatalogue,
+                quantiteCommande = :quantiteCommande,
+                referenceProduitFournisseur = :referenceProduitFournisseur,
+                remiseProduit = :remiseProduit,
+                prixProduitHT = :prixProduitHT,
+                taxeProduit = :taxeProduit,
+                prixProduitTTC = :prixProduitTTC,
+                remarqueArticle = :remarqueArticle
+            WHERE
+                idCommandeMateriel = :idCommandeMateriel
+        `,{
+            idCommandeMateriel: req.body.idCommandeMateriel || null,
+            idMaterielCatalogue: req.body.idMaterielCatalogue || null,
+            quantiteCommande: req.body.quantiteCommande || null,
+            referenceProduitFournisseur: req.body.referenceProduitFournisseur || null,
+            remiseProduit: req.body.remiseProduit || null,
+            prixProduitHT: req.body.prixProduitHT || null,
+            taxeProduit: req.body.taxeProduit || null,
+            prixProduitTTC: req.body.prixProduitTTC || null,
+            remarqueArticle: req.body.remarqueArticle || null,
+        });
+
+        await fonctionsMetiers.calculerTotalCommande(req.body.idCommande);
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.removeMateriels = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            DELETE FROM
+                COMMANDES_MATERIEL
+            WHERE
+                idCommandeMateriel = :idCommandeMateriel
+        `,{
+            idCommandeMateriel: req.body.idCommandeMateriel || null,
+        });
+
+        await fonctionsMetiers.calculerTotalCommande(req.body.idCommande);
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 //Commandes PJ
 const multerConfigCommandes = multer.diskStorage({
     destination: (req, file, callback) => {

@@ -241,7 +241,7 @@ const OneCommandeStep3PJ = ({
             </Offcanvas.Body>
         </Offcanvas>
         
-        <div className='mt-2'>
+        <div className='mt-2 mb-2'>
             <GPMtable
                 columns={colonnes}
                 data={lignes}

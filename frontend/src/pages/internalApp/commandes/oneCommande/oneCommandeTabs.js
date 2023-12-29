@@ -71,7 +71,7 @@ const OneCommandeTabs = ({
             content: <OneCommandeStep4Validation
                 idCommande = {idCommande}
                 commande = {commande}
-                forceReadOnly = {commande.detailsCommande.idEtat > 2 ? true : false}
+                forceReadOnly = {commande.detailsCommande.idEtat > 2 ? true : commande.valideurs.filter(personne => personne.idPersonne == HabilitationService.habilitations.idPersonne).length == 1 ? false : true}
                 setPageNeedsRefresh = {setPageNeedsRefresh}
             />,
         },
