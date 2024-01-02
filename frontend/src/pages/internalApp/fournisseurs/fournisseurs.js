@@ -33,27 +33,35 @@ const Fournisseurs = () => {
     }
 
     const colonnes = [
-        {accessor: 'nomFournisseur'       , Header: 'Nom'},
-        {accessor: 'siteWebFournisseur'   , Header: 'Site'},
-        {accessor: 'telephoneFournisseur' , Header: 'Téléphone'},
-        {accessor: 'actions'              , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of fournisseurs)
         {
-            tempTable.push({
-                nomFournisseur: <Link to={'/fournisseurs/'+item.idFournisseur}>{item.nomFournisseur}</Link>,
-                siteWebFournisseur: <Link to={item.siteWebFournisseur}>{item.siteWebFournisseur}</Link>,
-                telephoneFournisseur: item.telephoneFournisseur,
-                actions: <>
+            accessor: 'nomFournisseur',
+            Header: 'Nom',
+            Cell: ({ value, row }) => {
+				return(<Link to={'/fournisseurs/'+row.original.idFournisseur}>{row.original.nomFournisseur}</Link>);
+			},
+        },
+        {
+            accessor: 'siteWebFournisseur',
+            Header: 'Site',
+            Cell: ({ value, row }) => {
+				return(<Link to={row.original.siteWebFournisseur}>{row.original.siteWebFournisseur}</Link>);
+			},
+        },
+        {
+            accessor: 'telephoneFournisseur',
+            Header: 'Téléphone',
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(<>
                     <IconButton
                         icon='eye'
                         size = 'sm'
                         variant="outline-primary"
                         className="me-1"
-                        onClick={()=>{navigate('/fournisseurs/'+item.idFournisseur)}}
+                        onClick={()=>{navigate('/fournisseurs/'+row.original.idFournisseur)}}
                     />
                     {HabilitationService.habilitations['fournisseurs_suppression'] ? 
                         <IconButton
@@ -61,17 +69,13 @@ const Fournisseurs = () => {
                             size = 'sm'
                             variant="outline-danger"
                             className="me-1"
-                            onClick={()=>{handleShowDeleteModal(item.idFournisseur)}}
+                            onClick={()=>{handleShowDeleteModal(row.original.idFournisseur)}}
                         />
                     : null}
-                </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [fournisseurs])
+                </>);
+			},
+        },
+    ];
 
     useEffect(() => {
         initPage();
@@ -186,7 +190,7 @@ const Fournisseurs = () => {
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
-                        data={lignes}
+                        data={fournisseurs}
                         topButtonShow={true}
                         topButton={
                             HabilitationService.habilitations['fournisseurs_ajout'] ?

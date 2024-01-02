@@ -26,48 +26,58 @@ const OneCommandeStep2Contenu = ({
     setPageNeedsRefresh,
 }) => {
     const colonnes = [
-        {accessor: 'libelleMateriel'             , Header: 'Matériel'},
-        {accessor: 'referenceProduitFournisseur' , Header: 'Référence'},
-        {accessor: 'prixProduitTTC'              , Header: 'Prix Unitaire TTC'},
-        {accessor: 'quantiteCommande'            , Header: 'Quantité'},
-        {accessor: 'total'                       , Header: 'Sous Total'},
-        {accessor: 'actions'                     , Header: 'Actions', isHidden: forceReadOnly || !HabilitationService.habilitations.commande_ajout},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of commande.materiels)
         {
-            tempTable.push({
-                libelleMateriel: item.libelleMateriel,
-                referenceProduitFournisseur: item.referenceProduitFournisseur,
-                prixProduitTTC: item.prixProduitTTC + ' €',
-                quantiteCommande: item.quantiteCommande,
-                total: Math.round(item.prixProduitTTC * item.quantiteCommande*100)/100 + ' €',
-                actions: !forceReadOnly && HabilitationService.habilitations.commande_ajout ? <>
-                    <IconButton
-                        icon='pen'
-                        size = 'sm'
-                        variant="outline-warning"
-                        className="me-1"
-                        onClick={()=>{handleShowOffCanevas(item.idCommandeMateriel)}}
-                    />
-                    <IconButton
-                        icon='trash'
-                        size = 'sm'
-                        variant="outline-danger"
-                        className="me-1"
-                        onClick={()=>{handleShowDeleteModal(item.idCommandeMateriel)}}
-                    />
-                </> : null,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [commande.materiels])
-
+            accessor: 'libelleMateriel',
+            Header: 'Matériel',
+        },
+        {
+            accessor: 'referenceProduitFournisseur',
+            Header: 'Référence',
+        },
+        {
+            accessor: 'prixProduitTTC',
+            Header: 'Prix Unitaire TTC',
+            Cell: ({ value, row }) => {
+				return(value + ' €');
+			},
+        },
+        {
+            accessor: 'quantiteCommande',
+            Header: 'Quantité',
+        },
+        {
+            accessor: 'total',
+            Header: 'Sous Total',
+            Cell: ({ value, row }) => {
+				return(Math.round(row.original.prixProduitTTC * row.original.quantiteCommande*100)/100 + ' €');
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            isHidden: forceReadOnly || !HabilitationService.habilitations.commande_ajout,
+            Cell: ({ value, row }) => {
+				return(
+                    !forceReadOnly && HabilitationService.habilitations.commande_ajout ? <>
+                        <IconButton
+                            icon='pen'
+                            size = 'sm'
+                            variant="outline-warning"
+                            className="me-1"
+                            onClick={()=>{handleShowOffCanevas(row.original.idCommandeMateriel)}}
+                        />
+                        <IconButton
+                            icon='trash'
+                            size = 'sm'
+                            variant="outline-danger"
+                            className="me-1"
+                            onClick={()=>{handleShowDeleteModal(row.original.idCommandeMateriel)}}
+                        />
+                    </> : null
+                );
+			},
+        },
+    ];
 
     /*offcanevas edit*/
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -373,7 +383,7 @@ const OneCommandeStep2Contenu = ({
         <div className='mt-2 mb-2'>
             <GPMtable
                 columns={colonnes}
-                data={lignes}
+                data={commande.materiels}
                 topButtonShow={true}
                 topButton={
                     !forceReadOnly && HabilitationService.habilitations.commande_ajout ? <>

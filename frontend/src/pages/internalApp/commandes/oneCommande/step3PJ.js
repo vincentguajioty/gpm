@@ -23,40 +23,43 @@ const OneCommandeStep3PJ = ({
     setPageNeedsRefresh,
 }) => {
     const colonnes = [
-        {accessor: 'nomDocCommande',       Header: 'Nom du document'},
-        {accessor: 'libelleTypeDocument' , Header: 'Type'},
-        {accessor: 'formatDocCommande' ,   Header: 'Format'},
-        {accessor: 'dateDocCommande' ,     Header: 'Date'},
-        {accessor: 'actions'       ,       Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of commande.documents)
         {
-            tempTable.push({
-                nomDocCommande: item.nomDocCommande,
-                libelleTypeDocument: item.libelleTypeDocument,
-                formatDocCommande: item.formatDocCommande,
-                dateDocCommande: moment(item.dateDocCommande).format('DD/MM/YYYY HH:mm'),
-                actions:
+            accessor: 'nomDocCommande',       
+            Header: 'Nom du document',
+        },
+        {
+            accessor: 'libelleTypeDocument', 
+            Header: 'Type',
+        },
+        {
+            accessor: 'formatDocCommande',   
+            Header: 'Format',
+        },
+        {
+            accessor: 'dateDocCommande',     
+            Header: 'Date',
+            Cell: ({ value, row }) => {
+				return(moment(value).format('DD/MM/YYYY HH:mm'));
+			},
+        },
+        {
+            accessor: 'actions',       
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
                     <CardDropdown>
                         <div className="py-2">
-                            {item.formatDocCommande == 'pdf' ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePDF(item.urlFichierDocCommande)}}>Afficher le PDF</Dropdown.Item>) : null}
-                            {["png", "jpg", "jpeg"].includes(item.formatDocCommande) ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePicture(item.urlFichierDocCommande)}}>Afficher l'image</Dropdown.Item>) : null}
-                            <Dropdown.Item className='text-success' onClick={() => {downloadDocument(item.urlFichierDocCommande, item.nomDocCommande, item.formatDocCommande)}}>Télécharger</Dropdown.Item>
+                            {row.original.formatDocCommande == 'pdf' ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePDF(row.original.urlFichierDocCommande)}}>Afficher le PDF</Dropdown.Item>) : null}
+                            {["png", "jpg", "jpeg"].includes(row.original.formatDocCommande) ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePicture(row.original.urlFichierDocCommande)}}>Afficher l'image</Dropdown.Item>) : null}
+                            <Dropdown.Item className='text-success' onClick={() => {downloadDocument(row.original.urlFichierDocCommande, row.original.nomDocCommande, row.original.formatDocCommande)}}>Télécharger</Dropdown.Item>
                             <Dropdown.Divider />
-                            <Dropdown.Item className='text-danger' onClick={() => (supprimerEntree(item.idDocCommande))} disabled={forceReadOnly || avoidDelete}>Supprimer (attention pas de confirmation)</Dropdown.Item>
+                            <Dropdown.Item className='text-danger' onClick={() => (supprimerEntree(row.original.idDocCommande))} disabled={forceReadOnly || avoidDelete}>Supprimer (attention pas de confirmation)</Dropdown.Item>
                         </div>
                     </CardDropdown>
-                ,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [commande.documents])
+                );
+			},
+        },
+    ];
 
     /* FORM */
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -244,7 +247,7 @@ const OneCommandeStep3PJ = ({
         <div className='mt-2 mb-2'>
             <GPMtable
                 columns={colonnes}
-                data={lignes}
+                data={commande.documents}
                 topButtonShow={true}
                 topButton={
                     HabilitationService.habilitations['commande_etreEnCharge'] && !forceReadOnly ?

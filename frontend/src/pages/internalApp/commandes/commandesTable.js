@@ -18,48 +18,55 @@ const CommandesTable = ({
     commandesArrayFiltered
 }) => {
     const colonnes = [
-        {accessor: 'dateCreation'       , Header: 'Date création'},
-        {accessor: 'nomCommande'        , Header: 'Nom de la commande'},
-        {accessor: 'nomFournisseur'     , Header: 'Fournisseur'},
-        {accessor: 'montantTotal'       , Header: 'Montant'},
-        {accessor: 'libelleEtat'        , Header: 'Etat'},
-        {accessor: 'libelleCentreDecout', Header: 'Centre de couts'},
-        {accessor: 'actions'            , Header: 'Actions'},
+        {
+            accessor: 'dateCreation',
+            Header: 'Date création',
+            Cell: ({ value, row }) => {
+				return(moment(value).format('DD/MM/YYYY HH:mm'));
+			},
+        },
+        {
+            accessor: 'nomCommande',
+            Header: 'Nom de la commande',
+            Cell: ({ value, row }) => {
+				return(<Link to={'/commandes/'+row.original.idCommande}>{row.original.nomCommande}</Link>);
+			},
+        },
+        {
+            accessor: 'nomFournisseur',
+            Header: 'Fournisseur',
+        },
+        {
+            accessor: 'montantTotal',
+            Header: 'Montant',
+            Cell: ({ value, row }) => {
+				return(value+' €');
+			},
+        },
+        {
+            accessor: 'libelleEtat',
+            Header: 'Etat',
+        },
+        {
+            accessor: 'libelleCentreDecout',
+            Header: 'Centre de couts',
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+                return(
+                    <IconButton
+                        icon='eye'
+                        size = 'sm'
+                        variant="outline-primary"
+                        className="me-1"
+                        onClick={()=>{navigate('/commandes/'+row.original.idCommande)}}
+                    />
+                );
+			},
+        },
     ];
-
-    const [lignes, setLignes] = useState([]);
-    const initTable = () => {
-        try {
-            let tempTable  = [];
-            for(const item of commandesArrayFiltered)
-            {
-                tempTable.push({
-                    dateCreation: moment(item.dateCreation).format('DD/MM/YYYY HH:mm'),
-                    nomCommande: <Link to={'/commandes/'+item.idCommande}>{item.nomCommande}</Link>,
-                    nomFournisseur: item.nomFournisseur,
-                    montantTotal: item.montantTotal+' €',
-                    libelleEtat: item.libelleEtat,
-                    libelleCentreDecout: item.libelleCentreDecout,
-                    actions:<>
-                        <IconButton
-                            icon='eye'
-                            size = 'sm'
-                            variant="outline-primary"
-                            className="me-1"
-                            onClick={()=>{navigate('/commandes/'+item.idCommande)}}
-                        />
-                    </>,
-                });
-            }
-            setLignes(tempTable);
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    useEffect(()=>{
-        initTable();
-    },[commandesArrayFiltered])
 
     // Add offCanevas
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -113,7 +120,7 @@ const CommandesTable = ({
 
         <GPMtable
             columns={colonnes}
-            data={lignes}
+            data={commandesArrayFiltered}
             topButtonShow={true}
             topButton={HabilitationService.habilitations.commande_ajout ?
                 <IconButton
