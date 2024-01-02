@@ -21,7 +21,6 @@ import fr from 'date-fns/locale/fr';
 registerLocale('fr', fr);
 setDefaultLocale('fr');
 
-
 const OneCommandeStep5Passage = ({
     idCommande,
     commande,

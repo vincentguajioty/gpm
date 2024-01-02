@@ -528,6 +528,71 @@ exports.passerCommande = async (req, res)=>{
     }
 }
 
+exports.updateInfosLivraison = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                COMMANDES
+            SET
+                dateLivraisoneffective = :dateLivraisoneffective,
+                remarquesLivraison = :remarquesLivraison
+            WHERE
+                idCommande = :idCommande
+        `,{
+            dateLivraisoneffective: req.body.dateLivraisoneffective || null,
+            remarquesLivraison: req.body.remarquesLivraison || null,
+            idCommande: req.body.idCommande || null,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.livraisonOKCommande = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                COMMANDES
+            SET
+                idEtat = 5
+            WHERE
+                idCommande = :idCommande
+        `,{
+            idCommande: req.body.idCommande || null,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.livraisonSAVCommande = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                COMMANDES
+            SET
+                idEtat = 6,
+                savHistorique = true
+            WHERE
+                idCommande = :idCommande
+        `,{
+            idCommande: req.body.idCommande || null,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+
 //Commandes PJ
 const multerConfigCommandes = multer.diskStorage({
     destination: (req, file, callback) => {
