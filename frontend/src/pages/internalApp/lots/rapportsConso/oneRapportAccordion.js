@@ -22,41 +22,43 @@ const RapportsConsoOneAccordion = ({
     const [consommation, setConsommation] = useState();
 
     const colonnes = [
-        {accessor: 'libelleLot'          , Header: 'Lot'},
-        {accessor: 'libelleMateriel'     , Header: 'Matériel'},
-        {accessor: 'quantiteConsommation', Header: 'Quantité consommée'},
-        {accessor: 'libelleConteneur'    , Header: 'Réapprovisionné via'},
-        {accessor: 'actions'             , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const loadConso = async () => {
-        try {
-            const getFromDB = await Axios.post('/consommations/getOneConso',{
-                idConsommation: idConsommation
-            });
-            setConsommation(getFromDB.data);
-
-            let tempArray = [];
-            for(const element of getFromDB.data.elements)
-            {
-                tempArray.push({
-                    libelleLot: element.libelleLot,
-                    libelleMateriel: element.libelleMateriel,
-                    quantiteConsommation: element.quantiteConsommation,
-                    libelleConteneur: element.idConteneur && element.idConteneur > 0 ?<SoftBadge bg='success'>{element.libelleConteneur}</SoftBadge> : <SoftBadge bg='warning'>Non-réapprovisionné</SoftBadge>,
-                    actions:<>
-                        {getFromDB.data.consommation.declarationEnCours && getFromDB.data.consommation.reapproEnCours ?
+        {
+            accessor: 'libelleLot',
+            Header: 'Lot',
+        },
+        {
+            accessor: 'libelleMateriel',
+            Header: 'Matériel',
+        },
+        {
+            accessor: 'quantiteConsommation',
+            Header: 'Quantité consommée',
+        },
+        {
+            accessor: 'libelleConteneur',
+            Header: 'Réapprovisionné via',
+            Cell: ({ value, row }) => {
+				return(value && value != "" ?<SoftBadge bg='success'>{value}</SoftBadge> : <SoftBadge bg='warning'>Non-réapprovisionné</SoftBadge>);
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        {consommation.consommation.declarationEnCours && consommation.consommation.reapproEnCours ?
                             <SoftBadge bg="info" className='me-1'>Element verrouillé car réappro en cours</SoftBadge>
-                            : getFromDB.data.consommation.declarationEnCours ? <SoftBadge bg="info" className='me-1'>Element verrouillé car saisie en cours</SoftBadge>
-                            : element.traiteOperateur == true ? <SoftBadge bg="success">Traité</SoftBadge>
+                            : consommation.consommation.declarationEnCours ? <SoftBadge bg="info" className='me-1'>Element verrouillé car saisie en cours</SoftBadge>
+                            : row.original.traiteOperateur == true ? <SoftBadge bg="success">Traité</SoftBadge>
                             : HabilitationService.habilitations['consommationLots_affectation'] ? <>
-                                {element.idConteneur != null && element.idConteneur > 0 ?
+                                {row.original.idConteneur != null && row.original.idConteneur > 0 ?
                                     <IconButton
                                         variant='outline-info'
                                         size='sm'
                                         className='me-1 mb-1'
                                         icon='cube'
-                                        onClick={()=>{decompterActionDefaut(element.idConsommationMateriel)}}
+                                        onClick={()=>{decompterActionDefaut(row.original.idConsommationMateriel)}}
                                     >Décompter la réserve</IconButton>
                                 :
                                     <IconButton
@@ -64,7 +66,7 @@ const RapportsConsoOneAccordion = ({
                                         size='sm'
                                         className='me-1 mb-1'
                                         icon='briefcase-medical'
-                                        onClick={()=>{decompterActionDefaut(element.idConsommationMateriel)}}
+                                        onClick={()=>{decompterActionDefaut(row.original.idConsommationMateriel)}}
                                     >Décompter le lot</IconButton>
                                 }
                                 <IconButton
@@ -72,15 +74,22 @@ const RapportsConsoOneAccordion = ({
                                     size='sm'
                                     className='me-1 mb-1'
                                     icon='ban'
-                                    onClick={()=>{annulerTouteAction(element.idConsommationMateriel)}}
+                                    onClick={()=>{annulerTouteAction(row.original.idConsommationMateriel)}}
                                 >Ne rien faire</IconButton>
                             </>
                             : null
                         }
-                    </>,
-                })
-            }
-            setLignes(tempArray)
+                    </>
+                );
+			},
+        },
+    ];
+    const loadConso = async () => {
+        try {
+            const getFromDB = await Axios.post('/consommations/getOneConso',{
+                idConsommation: idConsommation
+            });
+            setConsommation(getFromDB.data);
 
             setLoading(false);
         } catch (error) {
@@ -209,7 +218,7 @@ const RapportsConsoOneAccordion = ({
 
             <GPMtable
                 columns={colonnes}
-                data={lignes}
+                data={consommation?.elements}
                 topButtonShow={consommation.consommation.qttMaterielsNonTraites > 0 && HabilitationService.habilitations['consommationLots_affectation']}
                 topButton={
                     <IconButton

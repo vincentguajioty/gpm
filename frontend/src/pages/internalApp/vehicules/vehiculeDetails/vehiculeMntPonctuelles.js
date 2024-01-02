@@ -23,50 +23,58 @@ setDefaultLocale('fr');
 const VehiculeMaintenancesPonctuelles = ({idVehicule, maintenancesPonctuelles, setPageNeedsRefresh}) => {
     const nl2br = require('react-nl2br');
     const colonnes = [
-        {accessor: 'dateMaintenance'        , Header: 'Date'},
-        {accessor: 'libelleTypeMaintenance' , Header: 'Intervention'},
-        {accessor: 'identifiant'            , Header: 'Intervenant'},
-        {accessor: 'detailsMaintenance'     , Header: 'Détails'},
-        {accessor: 'actions'                , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of maintenancesPonctuelles)
         {
-            tempTable.push({
-                dateMaintenance: moment(item.dateMaintenance).format('DD/MM/YYYY'),
-                libelleTypeMaintenance: item.libelleTypeMaintenance,
-                identifiant: item.identifiant,
-                detailsMaintenance: nl2br(item.detailsMaintenance),
-                actions:<>
-                    {HabilitationService.habilitations['vehicules_modification'] ? 
-                        <IconButton
-                            icon='pen'
-                            size = 'sm'
-                            variant="outline-warning"
-                            className="me-1"
-                            onClick={()=>{handleShowOffCanevas(item.idMaintenance)}}
-                        />
-                    : null}
+            accessor: 'dateMaintenance',
+            Header: 'Date',
+            Cell: ({ value, row }) => {
+				return(moment(value).format('DD/MM/YYYY'));
+			},
+        },
+        {
+            accessor: 'libelleTypeMaintenance',
+            Header: 'Intervention',
+        },
+        {
+            accessor: 'identifiant',
+            Header: 'Intervenant',
+        },
+        {
+            accessor: 'detailsMaintenance',
+            Header: 'Détails',
+            Cell: ({ value, row }) => {
+				return(nl2br(value));
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        {HabilitationService.habilitations['vehicules_modification'] ? 
+                            <IconButton
+                                icon='pen'
+                                size = 'sm'
+                                variant="outline-warning"
+                                className="me-1"
+                                onClick={()=>{handleShowOffCanevas(row.original.idMaintenance)}}
+                            />
+                        : null}
 
-                    {HabilitationService.habilitations['vehicules_modification'] ? 
-                        <IconButton
-                            icon='trash'
-                            size = 'sm'
-                            variant="outline-danger"
-                            className="me-1"
-                            onClick={()=>{handleShowDeleteModal(item.idMaintenance)}}
-                        />
-                    : null}
-                </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [maintenancesPonctuelles])
+                        {HabilitationService.habilitations['vehicules_modification'] ? 
+                            <IconButton
+                                icon='trash'
+                                size = 'sm'
+                                variant="outline-danger"
+                                className="me-1"
+                                onClick={()=>{handleShowDeleteModal(row.original.idMaintenance)}}
+                            />
+                        : null}
+                    </>
+                );
+			},
+        },
+    ];
 
     //formulaire d'ajout
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -264,7 +272,7 @@ const VehiculeMaintenancesPonctuelles = ({idVehicule, maintenancesPonctuelles, s
 
         <GPMtable
             columns={colonnes}
-            data={lignes}
+            data={maintenancesPonctuelles}
             topButtonShow={true}
             topButton={
                 HabilitationService.habilitations['vehicules_modification'] ?

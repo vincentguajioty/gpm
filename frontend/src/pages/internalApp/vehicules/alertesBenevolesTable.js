@@ -36,84 +36,105 @@ const AlertesBenevolesVehiculesTable = ({
         initTable();
     },[])
 
-    const colonnes = [
-        {accessor: 'nomDeclarant'               , Header: 'Demandeur'},
-        {accessor: 'dateCreationAlerte'         , Header: 'Ouverture'},
-        {accessor: 'libelleVehicule'            , Header: 'Véhicule'},
-        {accessor: 'messageAlerteVehicule'      , Header: 'Message'},
-        {accessor: 'libelleVehiculesAlertesEtat', Header: 'Traitement'},
-        {accessor: 'idTraitant'                 , Header: 'Affectation'},
-        {accessor: 'actions'                    , Header: 'Clore'},
-    ];
-    const [lignes, setLignes] = useState([]);
     const nl2br = require('react-nl2br');
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of alertes)
+    const colonnes = [
         {
-            tempTable.push({
-                nomDeclarant: item.nomDeclarant,
-                dateCreationAlerte: moment(item.dateCreationAlerte).format('DD/MM/YYYY HH:mm'),
-                libelleVehicule: item.libelleVehicule,
-                messageAlerteVehicule: nl2br(item.messageAlerteVehicule),
-                libelleVehiculesAlertesEtat: item.idVehiculesAlertesEtat == 2 || item.idVehiculesAlertesEtat == 3 ?
-                    <DropdownButton
-                        variant={item.couleurVehiuclesAlertesEtat}
-                        title={item.libelleVehiculesAlertesEtat}
-                        size='sm'
-                        disabled={item.idTraitant != HabilitationService.habilitations.idPersonne}
-                    >
-                        <Dropdown.Item onClick={()=>{miseEnAttente(item.idAlerte)}} active={item.idVehiculesAlertesEtat == 3}>Mise en attente</Dropdown.Item>
-                        <Dropdown.Item onClick={()=>{repriseTravaux(item.idAlerte)}} active={item.idVehiculesAlertesEtat == 2}>Reprise des travaux</Dropdown.Item>
-                    </DropdownButton>
-                :
-                    <SoftBadge bg={item.couleurVehiuclesAlertesEtat}>{item.libelleVehiculesAlertesEtat}</SoftBadge>,
-                idTraitant: item.idTraitant != null ? <SoftBadge>{item.prenomPersonne} {item.nomPersonne}</SoftBadge> : item.idVehiculesAlertesEtat == 1 ? <>
-                    <IconButton
-                        size='sm'
-                        className='me-1 mb-1'
-                        icon='user'
-                        variant='outline-primary'
-                        onClick={()=>{autoAffect(item.idAlerte)}}
-                        disabled={!HabilitationService.habilitations.alertesBenevolesVehicules_affectation}
-                    >Me l'affecter</IconButton>
-                    <br/>
-                    <IconButton
-                        size='sm'
-                        className='me-1 mb-1'
-                        icon='users'
-                        variant='outline-primary'
-                        disabled={!HabilitationService.habilitations.alertesBenevolesVehicules_affectationTier}
-                        onClick={()=>{handleShowAffectModal(item.idAlerte)}}
-                    >Affecter à un tier</IconButton>
-                </> : null,
-                actions:
-                    item.idVehiculesAlertesEtat == 1 ?
+            accessor: 'nomDeclarant',
+            Header: 'Demandeur',
+        },
+        {
+            accessor: 'dateCreationAlerte',
+            Header: 'Ouverture',
+            Cell: ({ value, row }) => {
+				return(moment(value).format('DD/MM/YYYY HH:mm'));
+			},
+        },
+        {
+            accessor: 'libelleVehicule',
+            Header: 'Véhicule',
+        },
+        {
+            accessor: 'messageAlerteVehicule',
+            Header: 'Message',
+            Cell: ({ value, row }) => {
+				return(nl2br(value));
+			},
+        },
+        {
+            accessor: 'libelleVehiculesAlertesEtat',
+            Header: 'Traitement',
+            Cell: ({ value, row }) => {
+				return(
+                    row.original.idVehiculesAlertesEtat == 2 || row.original.idVehiculesAlertesEtat == 3 ?
+                        <DropdownButton
+                            variant={row.original.couleurVehiuclesAlertesEtat}
+                            title={row.original.libelleVehiculesAlertesEtat}
+                            size='sm'
+                            disabled={row.original.idTraitant != HabilitationService.habilitations.idPersonne}
+                        >
+                            <Dropdown.Item onClick={()=>{miseEnAttente(row.original.idAlerte)}} active={row.original.idVehiculesAlertesEtat == 3}>Mise en attente</Dropdown.Item>
+                            <Dropdown.Item onClick={()=>{repriseTravaux(row.original.idAlerte)}} active={row.original.idVehiculesAlertesEtat == 2}>Reprise des travaux</Dropdown.Item>
+                        </DropdownButton>
+                    :
+                        <SoftBadge bg={row.original.couleurVehiuclesAlertesEtat}>{row.original.libelleVehiculesAlertesEtat}</SoftBadge>
+                );
+			},
+        },
+        {
+            accessor: 'idTraitant',
+            Header: 'Affectation',
+            Cell: ({ value, row }) => {
+				return(
+                    row.original.idTraitant != null ? <SoftBadge>{row.original.prenomPersonne} {row.original.nomPersonne}</SoftBadge> : row.original.idVehiculesAlertesEtat == 1 ? <>
+                        <IconButton
+                            size='sm'
+                            className='me-1 mb-1'
+                            icon='user'
+                            variant='outline-primary'
+                            onClick={()=>{autoAffect(row.original.idAlerte)}}
+                            disabled={!HabilitationService.habilitations.alertesBenevolesVehicules_affectation}
+                        >Me l'affecter</IconButton>
+                        <br/>
+                        <IconButton
+                            size='sm'
+                            className='me-1 mb-1'
+                            icon='users'
+                            variant='outline-primary'
+                            disabled={!HabilitationService.habilitations.alertesBenevolesVehicules_affectationTier}
+                            onClick={()=>{handleShowAffectModal(row.original.idAlerte)}}
+                        >Affecter à un tier</IconButton>
+                    </> : null
+                );
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Clore',
+            Cell: ({ value, row }) => {
+				return(
+                    row.original.idVehiculesAlertesEtat == 1 ?
                         <IconButton
                             size='sm'
                             className='me-1 mb-1'
                             icon='user-shield'
                             variant='outline-warning'
                             disabled={!HabilitationService.habilitations.alertesBenevolesVehicules_affectationTier && !HabilitationService.habilitations.alertesBenevolesVehicules_affectation}
-                            onClick={()=>{doublonAlerte(item.idAlerte)}}
+                            onClick={()=>{doublonAlerte(row.original.idAlerte)}}
                         >Signaler comme doublon</IconButton>
-                    : item.idVehiculesAlertesEtat == 2 || item.idVehiculesAlertesEtat == 3 ?
+                    : row.original.idVehiculesAlertesEtat == 2 || row.original.idVehiculesAlertesEtat == 3 ?
                         <IconButton
                             size='sm'
                             className='me-1 mb-1'
                             icon='check'
                             variant='outline-success'
-                            disabled={item.idTraitant != HabilitationService.habilitations.idPersonne}
-                            onClick={()=>{cloreAlerte(item.idAlerte)}}
+                            disabled={row.original.idTraitant != HabilitationService.habilitations.idPersonne}
+                            onClick={()=>{cloreAlerte(row.original.idAlerte)}}
                         >Clore</IconButton>
-                    : null,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [alertes])
+                    : null
+                );
+			},
+        },
+    ];
 
     //auto-affecation
     const autoAffect = async (idAlerte) => {
@@ -249,7 +270,7 @@ const AlertesBenevolesVehiculesTable = ({
         {readyToDisplay ?
             <GPMtable
                 columns={colonnes}
-                data={lignes}
+                data={alertes}
             />
         : <LoaderInfiniteLoop/>}
     </>);

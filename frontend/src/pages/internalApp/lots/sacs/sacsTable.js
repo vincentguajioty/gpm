@@ -47,55 +47,61 @@ const SacsTable = ({
     }, [pageNeedsRefresh])
 
     const colonnes = [
-        {accessor: 'libelleSac'          , Header: 'Libellé'                 , isHidden: !displayLibelleSac},
-        {accessor: 'libelleLot'          , Header: 'Lot'                     , isHidden: !displayLibelleLot},
-        {accessor: 'contenu'             , Header: 'Contenu'                 , isHidden: !displayContenu},
-        {accessor: 'actions'             , Header: 'Actions'                 , isHidden: !displayActions},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of sacs)
         {
-            tempTable.push({
-                libelleSac          : item.libelleSac,
-                libelleLot          : item.libelleLot,
-                contenu             :
+            accessor: 'libelleSac',
+            Header: 'Libellé',
+            isHidden: !displayLibelleSac,
+        },
+        {
+            accessor: 'libelleLot',
+            Header: 'Lot',
+            isHidden: !displayLibelleLot,
+        },
+        {
+            accessor: 'contenu',
+            Header: 'Contenu',
+            isHidden: !displayContenu,
+            Cell: ({ value, row }) => {
+				return(
                     <SacsContentModal
-                        idSac={item.idSac}
-                        libelleSac={item.libelleSac}
-                        inventaireEnCours={item.inventaireEnCours}
+                        idSac={row.original.idSac}
+                        libelleSac={row.original.libelleSac}
+                        inventaireEnCours={row.original.inventaireEnCours}
                     />
-                ,
-                quantiteMateriels   : item.quantiteMateriels,
-                actions             : <>
-                    {item.inventaireEnCours ?
-                        <SoftBadge bg='danger'>INVENTAIRE EN COURS</SoftBadge>    
-                    :
-                        <>
-                            {HabilitationService.habilitations['sac_modification'] ? 
-                                <SacsForm idSac={item.idSac} element={item} setPageNeedsRefresh={setPageNeedsRefresh} />
-                            : null}
-                            {HabilitationService.habilitations['sac_suppression'] ? 
-                                <SacsDeleteModal idSac={item.idSac} setPageNeedsRefresh={setPageNeedsRefresh} />
-                            : null}
-                        </>
-                    }
-                </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [sacs])
+                );
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            isHidden: !displayActions,
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        {row.original.inventaireEnCours ?
+                            <SoftBadge bg='danger'>INVENTAIRE EN COURS</SoftBadge>    
+                        :
+                            <>
+                                {HabilitationService.habilitations['sac_modification'] ? 
+                                    <SacsForm idSac={row.original.idSac} element={row.original} setPageNeedsRefresh={setPageNeedsRefresh} />
+                                : null}
+                                {HabilitationService.habilitations['sac_suppression'] ? 
+                                    <SacsDeleteModal idSac={row.original.idSac} setPageNeedsRefresh={setPageNeedsRefresh} />
+                                : null}
+                            </>
+                        }
+                    </>
+                );
+			},
+        },
+    ];
 
     return (
     <>
         {readyToDisplay ?
             <GPMtable
                 columns={colonnes}
-                data={lignes}
+                data={sacs}
                 topButtonShow={true}
                 topButton={
                     HabilitationService.habilitations['sac_ajout'] ?

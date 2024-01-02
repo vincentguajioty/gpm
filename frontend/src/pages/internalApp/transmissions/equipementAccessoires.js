@@ -16,25 +16,34 @@ import { vhfAccessoiresForm } from 'helpers/yupValidationSchema';
 const EquipementVhfAccessoires = ({equipement, setPageNeedsRefresh}) => {
     const nl2br = require('react-nl2br');
     const colonnes = [
-        {accessor: 'libelleVhfAccessoireType'    , Header: 'Type'},
-        {accessor: 'libelleVhfAccessoire'   , Header: 'Libellé'},
-        {accessor: 'marqueModeleVhfAccessoire' , Header: 'Marque/Modèle'},
-        {accessor: 'SnVhfAccessoire' , Header: 'SN'},
-        {accessor: 'remarquesVhfAccessoire' , Header: 'Remarques'},
-        {accessor: 'actions'        , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of equipement.accessoires)
         {
-            tempTable.push({
-                libelleVhfAccessoireType: item.libelleVhfAccessoireType,
-                libelleVhfAccessoire: item.libelleVhfAccessoire,
-                marqueModeleVhfAccessoire: item.marqueModeleVhfAccessoire,
-                SnVhfAccessoire: item.SnVhfAccessoire,
-                remarquesVhfAccessoire: nl2br(item.remarquesVhfAccessoire),
-                actions:
+            accessor: 'libelleVhfAccessoireType',
+            Header: 'Type',
+        },
+        {
+            accessor: 'libelleVhfAccessoire',
+            Header: 'Libellé',
+        },
+        {
+            accessor: 'marqueModeleVhfAccessoire',
+            Header: 'Marque/Modèle',
+        },
+        {
+            accessor: 'SnVhfAccessoire',
+            Header: 'SN',
+        },
+        {
+            accessor: 'remarquesVhfAccessoire',
+            Header: 'Remarques',
+            Cell: ({ value, row }) => {
+				return(nl2br(value));
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
                     <>
                         {HabilitationService.habilitations['vhf_equipement_modification'] ? 
                             <IconButton
@@ -42,7 +51,7 @@ const EquipementVhfAccessoires = ({equipement, setPageNeedsRefresh}) => {
                                 size = 'sm'
                                 variant="outline-warning"
                                 className="me-1"
-                                onClick={()=>{handleShowOffCanevas(item.idVhfAccessoire)}}
+                                onClick={()=>{handleShowOffCanevas(row.original.idVhfAccessoire)}}
                             />
                         : null}
                         {HabilitationService.habilitations['vhf_equipement_suppression'] ? 
@@ -51,17 +60,14 @@ const EquipementVhfAccessoires = ({equipement, setPageNeedsRefresh}) => {
                                 size = 'sm'
                                 variant="outline-danger"
                                 className="me-1"
-                                onClick={()=>{handleShowDeleteModal(item.idVhfAccessoire)}}
+                                onClick={()=>{handleShowDeleteModal(row.original.idVhfAccessoire)}}
                             />
                         : null}
-                    </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [equipement.accessoires])
+                    </>
+                );
+			},
+        },
+    ];
 
     /* FORM */
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -242,7 +248,7 @@ const EquipementVhfAccessoires = ({equipement, setPageNeedsRefresh}) => {
             <Card.Body>
                 <GPMtable
                     columns={colonnes}
-                    data={lignes}
+                    data={equipement.accessoires}
                     topButtonShow={true}
                     topButton={
                         HabilitationService.habilitations['vhf_equipement_ajout'] ?

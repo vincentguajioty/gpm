@@ -48,17 +48,18 @@ const Cautions = () => {
     }, [])
 
     const colonnes = [
-        {accessor: 'personne', Header: 'Personne'},
-        {accessor: 'cautions', Header: 'Cautions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of cautions)
         {
-            tempTable.push({
-                personne:<>{item.nomPrenom}{item.type=='externe' ? <SoftBadge bg='secondary' className='ms-1'>Externe</SoftBadge>:null}</>,
-                cautions:<Table className="fs--1 mt-3" size='sm' responsive>
+            accessor: 'personne',
+            Header: 'Personne',
+            Cell: ({ value, row }) => {
+				return(<>{row.original.nomPrenom}{row.original.type=='externe' ? <SoftBadge bg='secondary' className='ms-1'>Externe</SoftBadge>:null}</>);
+			},
+        },
+        {
+            accessor: 'cautions',
+            Header: 'Cautions',
+            Cell: ({ value, row }) => {
+				return(<Table className="fs--1 mt-3" size='sm' responsive>
                     <thead>
                         <tr>
                             <th>Emission</th>
@@ -69,7 +70,7 @@ const Cautions = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {item.cautions.map((caution, i)=>{return(
+                        {value.map((caution, i)=>{return(
                             <tr>
                                 <td>{moment(caution.dateEmissionCaution).format('DD/MM/YYYY')}</td>
                                 <td>{caution.dateExpirationCaution != null ? 
@@ -104,14 +105,10 @@ const Cautions = () => {
                             </tr>
                         )})}
                     </tbody>
-                </Table>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [cautions, cautionsRow])
+                </Table>);
+			},
+        },
+    ];
 
     //formulaire d'ajout
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -330,7 +327,7 @@ const Cautions = () => {
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
-                        data={lignes}
+                        data={cautions}
                         topButtonShow={true}
                         topButton={
                             HabilitationService.habilitations['tenues_ajout'] ?

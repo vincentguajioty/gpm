@@ -39,21 +39,24 @@ const Plans = () => {
     }, [])
 
     const colonnes = [
-        {accessor: 'libellePlan',         Header: 'Libellé'},
-        {accessor: 'canaux' ,      Header: 'Canaux'},
-        {accessor: 'actions'       , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of vhfPlans)
         {
-            tempTable.push({
-                libellePlan: item.libellePlan,
-                canaux: <PlansCanaux vhfPlan={item} />,
-                actions:
+            accessor: 'libellePlan',
+            Header: 'Libellé',
+        },
+        {
+            accessor: 'canaux',
+            Header: 'Canaux',
+            Cell: ({ value, row }) => {
+				return(<PlansCanaux vhfPlan={row.original} />);
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
                     <>
-                        <PlansAttached vhfPlan={item} />
+                        <PlansAttached vhfPlan={row.original} />
                         
                         {HabilitationService.habilitations['vhf_plan_modification'] ? 
                             <IconButton
@@ -61,7 +64,7 @@ const Plans = () => {
                                 size = 'sm'
                                 variant="outline-warning"
                                 className="me-1"
-                                onClick={()=>{handleShowOffCanevas(item.idVhfPlan)}}
+                                onClick={()=>{handleShowOffCanevas(row.original.idVhfPlan)}}
                             />
                         : null}
                         {HabilitationService.habilitations['vhf_plan_suppression'] ? 
@@ -70,17 +73,14 @@ const Plans = () => {
                                 size = 'sm'
                                 variant="outline-danger"
                                 className="me-1"
-                                onClick={()=>{handleShowDeleteModal(item.idVhfPlan)}}
+                                onClick={()=>{handleShowDeleteModal(row.original.idVhfPlan)}}
                             />
                         : null}
-                    </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [vhfPlans])
+                    </>
+                );
+			},
+        },
+    ];
 
     //formulaire d'ajout
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -218,7 +218,7 @@ const Plans = () => {
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
-                        data={lignes}
+                        data={vhfPlans}
                         topButtonShow={true}
                         topButton={
                             HabilitationService.habilitations['vhf_plan_ajout'] ?

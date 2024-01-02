@@ -37,40 +37,43 @@ const PlansAttached = ({vhfPlan}) => {
     }
 
     const colonnes = [
-        {accessor: 'nomDocPlanVHF',       Header: 'Nom du document'},
-        {accessor: 'libelleTypeDocument' , Header: 'Type'},
-        {accessor: 'formatDocPlanVHF' ,   Header: 'Format'},
-        {accessor: 'dateDocPlanVHF' ,     Header: 'Date'},
-        {accessor: 'actions'       ,       Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of documents)
         {
-            tempTable.push({
-                nomDocPlanVHF: item.nomDocPlanVHF,
-                libelleTypeDocument: item.libelleTypeDocument,
-                formatDocPlanVHF: item.formatDocPlanVHF,
-                dateDocPlanVHF: moment(item.dateDocPlanVHF).format('DD/MM/YYYY HH:mm'),
-                actions:
+            accessor: 'nomDocPlanVHF',
+            Header: 'Nom du document',
+        },
+        {
+            accessor: 'libelleTypeDocument',
+            Header: 'Type',
+        },
+        {
+            accessor: 'formatDocPlanVHF',
+            Header: 'Format',
+        },
+        {
+            accessor: 'dateDocPlanVHF',
+            Header: 'Date',
+            Cell: ({ value, row }) => {
+				return(moment(value).format('DD/MM/YYYY HH:mm'));
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
                     <CardDropdown>
                         <div className="py-2">
-                            {item.formatDocPlanVHF == 'pdf' ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePDF(item.urlFichierDocPlanVHF)}}>Afficher le PDF</Dropdown.Item>) : null}
-                            {["png", "jpg", "jpeg"].includes(item.formatDocPlanVHF) ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePicture(item.urlFichierDocPlanVHF)}}>Afficher l'image</Dropdown.Item>) : null}
-                            <Dropdown.Item className='text-success' onClick={() => {downloadDocument(item.urlFichierDocPlanVHF, item.nomDocPlanVHF, item.formatDocPlanVHF)}}>Télécharger</Dropdown.Item>
+                            {row.original.formatDocPlanVHF == 'pdf' ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePDF(row.original.urlFichierDocPlanVHF)}}>Afficher le PDF</Dropdown.Item>) : null}
+                            {["png", "jpg", "jpeg"].includes(row.original.formatDocPlanVHF) ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePicture(row.original.urlFichierDocPlanVHF)}}>Afficher l'image</Dropdown.Item>) : null}
+                            <Dropdown.Item className='text-success' onClick={() => {downloadDocument(row.original.urlFichierDocPlanVHF, row.original.nomDocPlanVHF, row.original.formatDocPlanVHF)}}>Télécharger</Dropdown.Item>
                             <Dropdown.Divider />
-                            <Dropdown.Item className='text-danger' onClick={() => (supprimerEntree(item.idDocPlanVHF))}>Supprimer (attention pas de confirmation)</Dropdown.Item>
+                            <Dropdown.Item className='text-danger' onClick={() => (supprimerEntree(row.original.idDocPlanVHF))}>Supprimer (attention pas de confirmation)</Dropdown.Item>
                         </div>
                     </CardDropdown>
-                ,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [documents])
+                );
+			},
+        },
+    ];
 
     //partie formulaire
     const [isLoading, setIsLoading] = useState(false);
@@ -231,7 +234,7 @@ const PlansAttached = ({vhfPlan}) => {
                         <Col md={8} className='mb-2'>
                             <GPMtable
                                 columns={colonnes}
-                                data={lignes}
+                                data={documents}
                             />
                         </Col>
                         <Col md={4}>

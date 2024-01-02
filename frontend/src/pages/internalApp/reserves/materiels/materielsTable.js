@@ -48,69 +48,81 @@ const ReservesMaterielsTable = ({
     }, [pageNeedsRefresh])
 
     const colonnes = [
-        {accessor: 'libelleMateriel'     , Header: 'Libellé'      , isHidden: !displayLibelleMateriel},
-        {accessor: 'libelleConteneur'    , Header: 'Conteneur'    , isHidden: !displayLibelleConteneur},
-        {accessor: 'quantiteReserve'     , Header: 'Quantité'     , isHidden: !displayQuantiteReserve},
-        {accessor: 'peremptionReserve'   , Header: 'Péremption'   , isHidden: !displayPeremptionReserve},
-        {accessor: 'actions'             , Header: 'Actions'      , isHidden: !displayActions},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of materiels)
         {
-            tempTable.push({
-                libelleMateriel   : item.libelleMateriel,
-                libelleConteneur  : item.libelleConteneur,
-                quantiteReserve: 
-                    item.quantiteReserve < item.quantiteAlerteReserve ?
-                        <SoftBadge bg='danger'>{item.quantiteReserve}</SoftBadge>
+            accessor: 'libelleMateriel',
+            Header: 'Libellé',
+            isHidden: !displayLibelleMateriel,
+        },
+        {
+            accessor: 'libelleConteneur',
+            Header: 'Conteneur',
+            isHidden: !displayLibelleConteneur,
+        },
+        {
+            accessor: 'quantiteReserve',
+            Header: 'Quantité',
+            isHidden: !displayQuantiteReserve,
+            Cell: ({ value, row }) => {
+				return(
+                    row.original.quantiteReserve < row.original.quantiteAlerteReserve ?
+                        <SoftBadge bg='danger'>{row.original.quantiteReserve}</SoftBadge>
                     :
-                        item.quantiteReserve == item.quantiteAlerteReserve ?
-                            <SoftBadge bg='warning'>{item.quantiteReserve}</SoftBadge>
+                        row.original.quantiteReserve == row.original.quantiteAlerteReserve ?
+                            <SoftBadge bg='warning'>{row.original.quantiteReserve}</SoftBadge>
                         :
-                            <SoftBadge bg='success'>{item.quantiteReserve}</SoftBadge>
-                ,
-                peremptionReserve:
-                    item.peremptionReserve != null ?
-                        item.peremptionReserve < new Date() ?
-                            <SoftBadge bg='danger'>{moment(item.peremptionReserve).format('DD/MM/YYYY')}</SoftBadge>
+                            <SoftBadge bg='success'>{row.original.quantiteReserve}</SoftBadge>
+                );
+			},
+        },
+        {
+            accessor: 'peremptionReserve',
+            Header: 'Péremption',
+            isHidden: !displayPeremptionReserve,
+            Cell: ({ value, row }) => {
+				return(
+                    row.original.peremptionReserve != null ?
+                        row.original.peremptionReserve < new Date() ?
+                            <SoftBadge bg='danger'>{moment(row.original.peremptionReserve).format('DD/MM/YYYY')}</SoftBadge>
                         :
-                            item.peremptionNotificationReserve < new Date() ?
-                                <SoftBadge bg='warning'>{moment(item.peremptionReserve).format('DD/MM/YYYY')}</SoftBadge>
+                            row.original.peremptionNotificationReserve < new Date() ?
+                                <SoftBadge bg='warning'>{moment(row.original.peremptionReserve).format('DD/MM/YYYY')}</SoftBadge>
                             :
-                                <SoftBadge bg='success'>{moment(item.peremptionReserve).format('DD/MM/YYYY')}</SoftBadge>
-                    :
-                        null
-                ,
-                actions             : <>
-                    {item.inventaireEnCours ?
-                        <SoftBadge bg='danger'>INVENTAIRE EN COURS</SoftBadge>    
-                    :
-                        <>
-                            {HabilitationService.habilitations['materiel_modification'] ? 
-                                <ReservesMaterielsForm idReserveElement={item.idReserveElement} element={item} setPageNeedsRefresh={setPageNeedsRefresh} />
-                            : null}
-                            {HabilitationService.habilitations['materiel_suppression'] ? 
-                                <ReservesMaterielsDeleteModal idReserveElement={item.idReserveElement} setPageNeedsRefresh={setPageNeedsRefresh} />
-                            : null}
-                        </>
-                    }
-                </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [materiels])
+                                <SoftBadge bg='success'>{moment(row.original.peremptionReserve).format('DD/MM/YYYY')}</SoftBadge>
+                    : null
+                );
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            isHidden: !displayActions,
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        {row.original.inventaireEnCours ?
+                            <SoftBadge bg='danger'>INVENTAIRE EN COURS</SoftBadge>    
+                        :
+                            <>
+                                {HabilitationService.habilitations['materiel_modification'] ? 
+                                    <ReservesMaterielsForm idReserveElement={row.original.idReserveElement} element={row.original} setPageNeedsRefresh={setPageNeedsRefresh} />
+                                : null}
+                                {HabilitationService.habilitations['materiel_suppression'] ? 
+                                    <ReservesMaterielsDeleteModal idReserveElement={row.original.idReserveElement} setPageNeedsRefresh={setPageNeedsRefresh} />
+                                : null}
+                            </>
+                        }
+                    </>
+                );
+			},
+        },
+    ];
 
     return (
     <>
         {readyToDisplay ?
             <GPMtable
                 columns={colonnes}
-                data={lignes}
+                data={materiels}
                 topButtonShow={true}
                 topButton={
                     HabilitationService.habilitations['materiel_ajout'] ?

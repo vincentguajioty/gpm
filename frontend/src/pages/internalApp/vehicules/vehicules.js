@@ -41,43 +41,71 @@ const Vehicules = () => {
     }, [])
 
     const colonnes = [
-        {accessor: 'libelleVehicule'              , Header: 'Libellé'},
-        {accessor: 'libelleType'                  , Header: 'Type'},
-        {accessor: 'libelleVehiculesEtat'         , Header: 'Etat'},
-        {accessor: 'identifiant'                  , Header: 'Responsable'},
-        {accessor: 'immatriculation'              , Header: 'Immatriculation'},
-        {accessor: 'marqueModele'                 , Header: 'Marque/Modèle'},
-        {accessor: 'controles'                    , Header: 'Contrôles'},
-        {accessor: 'nbAlertesEnCours'             , Header: 'Alertes bénévoles'},
-        {accessor: 'libelleNotificationEnabled'   , Header: 'Notifications'},
-        {accessor: 'actions'                      , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of vehiculesTable)
         {
-            tempTable.push({
-                libelleVehicule: <Link to={'/vehicules/'+item.idVehicule}>{item.libelleVehicule}</Link>,
-                libelleType: item.libelleType,
-                libelleVehiculesEtat: item.libelleVehiculesEtat,
-                identifiant: item.identifiant,
-                immatriculation: item.immatriculation,
-                marqueModele: item.marqueModele,
-                controles:<>
-                    <SoftBadge className='me-1' bg={item.alerteDesinfection == null ? 'secondary' : item.alerteDesinfection == 0 ? 'success' : 'danger'}>Désinfections</SoftBadge>
-                    <SoftBadge className='me-1' bg={item.alerteMaintenance == null ? 'secondary' : item.alerteMaintenance == 0 ? 'success' : 'danger'}>Maintenance</SoftBadge>
-                </>,
-                nbAlertesEnCours: item.nbAlertesEnCours > 0 ? <SoftBadge>{item.nbAlertesEnCours}</SoftBadge> : null,
-                libelleNotificationEnabled: item.notifiationEnabled == true ? <FontAwesomeIcon icon='bell' /> : <FontAwesomeIcon icon='bell-slash'/>,
-                actions:
+            accessor: 'libelleVehicule',
+            Header: 'Libellé',
+            Cell: ({ value, row }) => {
+				return(<Link to={'/vehicules/'+row.original.idVehicule}>{row.original.libelleVehicule}</Link>);
+			},
+        },
+        {
+            accessor: 'libelleType',
+            Header: 'Type',
+        },
+        {
+            accessor: 'libelleVehiculesEtat',
+            Header: 'Etat',
+        },
+        {
+            accessor: 'identifiant',
+            Header: 'Responsable',
+        },
+        {
+            accessor: 'immatriculation',
+            Header: 'Immatriculation',
+        },
+        {
+            accessor: 'marqueModele',
+            Header: 'Marque/Modèle',
+        },
+        {
+            accessor: 'controles',
+            Header: 'Contrôles',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        <SoftBadge className='me-1' bg={row.original.alerteDesinfection == null ? 'secondary' : row.original.alerteDesinfection == 0 ? 'success' : 'danger'}>Désinfections</SoftBadge>
+                        <SoftBadge className='me-1' bg={row.original.alerteMaintenance == null ? 'secondary' : row.original.alerteMaintenance == 0 ? 'success' : 'danger'}>Maintenance</SoftBadge>
+                    </>
+                );
+			},
+        },
+        {
+            accessor: 'nbAlertesEnCours',
+            Header: 'Alertes bénévoles',
+            Cell: ({ value, row }) => {
+				return(row.original.nbAlertesEnCours > 0 ? <SoftBadge>{row.original.nbAlertesEnCours}</SoftBadge> : null);
+			},
+        },
+        {
+            accessor: 'libelleNotificationEnabled',
+            Header: 'Notifications',
+            Cell: ({ value, row }) => {
+				return(row.original.notifiationEnabled == true ? <FontAwesomeIcon icon='bell' /> : <FontAwesomeIcon icon='bell-slash'/>);
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
                     <>
                         <IconButton
                             icon='eye'
                             size = 'sm'
                             variant="outline-primary"
                             className="me-1"
-                            onClick={()=>{navigate('/vehicules/'+item.idVehicule)}}
+                            onClick={()=>{navigate('/vehicules/'+row.original.idVehicule)}}
                         />
                         {HabilitationService.habilitations['vehicules_suppression'] ? 
                             <IconButton
@@ -85,17 +113,14 @@ const Vehicules = () => {
                                 size = 'sm'
                                 variant="outline-danger"
                                 className="me-1"
-                                onClick={()=>{handleShowDeleteModal(item.idVehicule)}}
+                                onClick={()=>{handleShowDeleteModal(row.original.idVehicule)}}
                             />
                         : null}
-                    </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [vehiculesTable])
+                    </>
+                );
+			},
+        },
+    ];
 
     /* DELETE */
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -205,7 +230,7 @@ const Vehicules = () => {
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
-                        data={lignes}
+                        data={vehiculesTable}
                         topButtonShow={true}
                         topButton={
                             HabilitationService.habilitations['vehicules_ajout'] ?

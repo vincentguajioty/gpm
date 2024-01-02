@@ -22,13 +22,82 @@ const EnvoiMailEquipe = () => {
     const [destinatairesIndividuels, setDestinatairesIndividuels] = useState([]);
     const [destinatairesGroupes, setDestinatairesGroupes] = useState([]);
 
+    const [mailHistorique, setMailHistorique] = useState([]);
+    const translateMailTypeToLabel = (item) => {
+        
+        let finalLabel = null;
+        switch(item.typeMail)
+        {
+            case 'autoResetPwd':
+                finalLabel = <SoftBadge>Demande de réinitialisation #{item.idObject}</SoftBadge>
+            break;
+
+            case 'confirmationAlerteLot':
+                finalLabel = <SoftBadge>Alerte de lot #{item.idObject}</SoftBadge>
+            break;
+
+            case 'alerteBenevolesLot':
+                finalLabel = <SoftBadge>Alerte de lot #{item.idObject}</SoftBadge>
+            break;
+
+            case 'confirmationAlerteVehicule':
+                finalLabel = <SoftBadge>Alerte de véhicule #{item.idObject}</SoftBadge>
+            break;
+
+            case 'alerteBenevolesVehicule':
+                finalLabel = <SoftBadge>Alerte de véhicule #{item.idObject}</SoftBadge>
+            break;
+
+            case 'finDeclarationConso':
+                finalLabel = <SoftBadge>Rapport de consommation #{item.idObject}</SoftBadge>
+            break;
+
+            default:
+            break;
+        }
+
+        return finalLabel;
+    }
     const colonnes = [
-        {accessor: 'envoi'      , Header: 'Demande d\'envoi'},
-        {accessor: 'typeMail'   , Header: 'Type de mail'},
-        {accessor: 'idPersonne' , Header: 'Destinataire'},
-        {accessor: 'idObject'   , Header: 'Porte sur'},
+        {
+            accessor: 'envoi',
+            Header: 'Demande d\'envoi',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        <SoftBadge className='me-1 mb-1'>Demandé le {moment(row.original.sendRequest).format('DD/MM/YYYY HH:mm:ss')}</SoftBadge>
+                        <br/>
+                        {row.original.successSend ?
+                            <SoftBadge className='me-1 mb-1' bg='success'>Envoi réussi le {moment(row.original.successSend).format('DD/MM/YYYY HH:mm:ss')}</SoftBadge>
+                        :
+                            row.original.abordSend ?
+                                <SoftBadge className='me-1 mb-1' bg='danger'>Envoi échoué le {moment(row.original.abordSend).format('DD/MM/YYYY HH:mm:ss')}</SoftBadge>
+                            :
+                                <SoftBadge className='me-1 mb-1' bg='warning'>Envoi en cours</SoftBadge>
+                        }
+                    </>
+                );
+			},
+        },
+        {
+            accessor: 'typeMail',
+            Header: 'Type de mail',
+        },
+        {
+            accessor: 'idPersonne',
+            Header: 'Destinataire',
+            Cell: ({ value, row }) => {
+				return(row.original.idPersonne ? 'Utilisateur: '+row.original.identifiant : 'Externe: '+row.original.otherMail);
+			},
+        },
+        {
+            accessor: 'idObject',
+            Header: 'Porte sur',
+            Cell: ({ value, row }) => {
+				return(translateMailTypeToLabel(row.original));
+			},
+        },
     ];
-    const [lignes, setLignes] = useState([]);
 
     const initPage = async () => {
         try {
@@ -40,59 +109,7 @@ const EnvoiMailEquipe = () => {
             if(HabilitationService.habilitations.appli_conf)
             {
                 getData = await Axios.get('/settingsTechniques/getMailQueue');
-                let tempTable  = [];
-                for(const item of getData.data)
-                {
-                    let idObject = null;
-                    switch(item.typeMail)
-                    {
-                        case 'autoResetPwd':
-                            idObject = <SoftBadge>Demande de réinitialisation #{item.idObject}</SoftBadge>
-                        break;
-
-                        case 'confirmationAlerteLot':
-                            idObject = <SoftBadge>Alerte de lot #{item.idObject}</SoftBadge>
-                        break;
-
-                        case 'alerteBenevolesLot':
-                            idObject = <SoftBadge>Alerte de lot #{item.idObject}</SoftBadge>
-                        break;
-
-                        case 'confirmationAlerteVehicule':
-                            idObject = <SoftBadge>Alerte de véhicule #{item.idObject}</SoftBadge>
-                        break;
-
-                        case 'alerteBenevolesVehicule':
-                            idObject = <SoftBadge>Alerte de véhicule #{item.idObject}</SoftBadge>
-                        break;
-
-                        case 'finDeclarationConso':
-                            idObject = <SoftBadge>Rapport de consommation #{item.idObject}</SoftBadge>
-                        break;
-
-                        default:
-                        break;
-                    }
-
-                    tempTable.push({
-                        envoi:<>
-                            <SoftBadge className='me-1 mb-1'>Demandé le {moment(item.sendRequest).format('DD/MM/YYYY HH:mm:ss')}</SoftBadge>
-                            <br/>
-                            {item.successSend ?
-                                <SoftBadge className='me-1 mb-1' bg='success'>Envoi réussi le {moment(item.successSend).format('DD/MM/YYYY HH:mm:ss')}</SoftBadge>
-                            :
-                                item.abordSend ?
-                                    <SoftBadge className='me-1 mb-1' bg='danger'>Envoi échoué le {moment(item.abordSend).format('DD/MM/YYYY HH:mm:ss')}</SoftBadge>
-                                :
-                                    <SoftBadge className='me-1 mb-1' bg='warning'>Envoi en cours</SoftBadge>
-                            }
-                        </>,
-                        typeMail: item.typeMail,
-                        idPersonne: item.idPersonne ? 'Utilisateur: '+item.identifiant : 'Externe: '+item.otherMail,
-                        idObject: idObject,
-                    });
-                }
-                setLignes(tempTable);
+                setMailHistorique(getData.data);
             }
 
             setPageReadyToDisplay(true);
@@ -215,7 +232,7 @@ const EnvoiMailEquipe = () => {
                         >
                             <GPMtable
                                 columns={colonnes}
-                                data={lignes}
+                                data={mailHistorique}
                                 topButtonShow={true}
                                 topButton={
                                     <IconButton

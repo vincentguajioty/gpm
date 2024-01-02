@@ -8,71 +8,96 @@ import GPMtable from 'components/gpmTable/gpmTable';
 
 const LotConformiteReferentiel = ({analyseRef}) => {
     const [nbAlerte, setNbAlerte] = useState();
-    const colonnes = [
-        {accessor: 'libelleMateriel'    , Header: 'Matériel'},
-        {accessor: 'sterilite'          , Header: 'Stérilité'},
-        {accessor: 'quantiteReferentiel', Header: 'Quantité requise'},
-        {accessor: 'qttLot'             , Header: 'Quantité présente'},
-        {accessor: 'peremptionLot'      , Header: 'Péremption'},
-        {accessor: 'analyse'            , Header: 'Analyse'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        let nbAlertesTemp = 0;
 
+    const analyseOneItem = (item) => {
+        let analyse = [];
+
+        if(item.qttLot < item.quantiteReferentiel)
+        {
+            analyse.push({
+                bg: 'danger',
+                text: "Quantité",
+            });
+        }
+
+        if(item.sterilite == true && (
+            item.peremptionLot == null
+            ||
+            new Date(item.peremptionLot) < new Date()
+        ))
+        {
+            analyse.push({
+                bg: 'danger',
+                text: "Péremption",
+            });
+        }
+
+        return analyse;
+    }
+
+
+    const colonnes = [
+        {
+            accessor: 'libelleMateriel',
+            Header: 'Matériel',
+        },
+        {
+            accessor: 'sterilite',
+            Header: 'Stérilité',
+            Cell: ({ value, row }) => {
+				return(value == true ? 'Stérile' : 'Non-stérile');
+			},
+        },
+        {
+            accessor: 'quantiteReferentiel',
+            Header: 'Quantité requise',
+        },
+        {
+            accessor: 'qttLot',
+            Header: 'Quantité présente',
+        },
+        {
+            accessor: 'peremptionLot',
+            Header: 'Péremption',
+            Cell: ({ value, row }) => {
+				return(value != null ? moment(value).format('DD/MM/YYYY') : null);
+			},
+        },
+        {
+            accessor: 'analyse',
+            Header: 'Analyse',
+            Cell: ({ value, row }) => {
+				let analyse = analyseOneItem(row.original);
+                return(
+                    analyse.length == 0 ? <SoftBadge bg='success'>OK</SoftBadge> : analyse.map((alerte, i)=>{return(
+                        <SoftBadge bg={alerte.bg} className='me-1'>{alerte.text}</SoftBadge>
+                    )})
+                );
+			},
+        },
+    ];
+
+    const calculAlertes = () => {
+        let nbAlertesTemp = 0;
         for(const item of analyseRef)
         {
-            let analyse = [];
-
-            if(item.qttLot < item.quantiteReferentiel)
-            {
-                analyse.push({
-                    bg: 'danger',
-                    text: "Quantité",
-                });
-                nbAlertesTemp += 1;
-            }
-
-            if(item.sterilite == true && (
-                item.peremptionLot == null
-                ||
-                new Date(item.peremptionLot) < new Date()
-            ))
-            {
-                analyse.push({
-                    bg: 'danger',
-                    text: "Péremption",
-                });
-                nbAlertesTemp += 1;
-            }
-
-            tempTable.push({
-                libelleMateriel: item.libelleMateriel,
-                sterilite: item.sterilite == true ? 'Stérile' : 'Non-stérile',
-                quantiteReferentiel: item.quantiteReferentiel,
-                qttLot: item.qttLot,
-                peremptionLot: item.peremptionLot != null ? moment(item.peremptionLot).format('DD/MM/YYYY') : null,
-                analyse: analyse.length == 0 ? <SoftBadge bg='success'>OK</SoftBadge> : analyse.map((alerte, i)=>{return(
-                    <SoftBadge bg={alerte.bg} className='me-1'>{alerte.text}</SoftBadge>
-                )}),
-            })
+            let analyse = analyseOneItem(item);
+            nbAlertesTemp += analyse.length;
         }
-        setLignes(tempTable);
         setNbAlerte(nbAlertesTemp);
     }
     useEffect(() => {
-        initTableau();
+        calculAlertes();
     }, [analyseRef])
 
     useEffect(() => {
-        initTableau();
+        calculAlertes();
     }, [])
 
     return (
         <GPMtable
             columns={colonnes}
-            data={lignes}
+            data={analyseRef}
             topButtonShow={true}
             topButton={<Alert variant={nbAlerte > 0 ? 'danger' : 'success'} >{nbAlerte > 0 ? nbAlerte+' erreurs détectées - Lot non-conforme' : 'Aucune alerte détectée'}</Alert>}
         />

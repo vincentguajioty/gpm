@@ -40,31 +40,38 @@ const ReferentielsSettings = () => {
     }, [])
 
     const colonnes = [
-        {accessor: 'libelleTypeLot', Header: 'Libellé'},
-        {accessor: 'lotsRattaches' , Header: 'Lots rattachés'},
-        {accessor: 'actions'       , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of referentiels)
         {
-            tempTable.push({
-                libelleTypeLot: <Link to={'/settingsReferentiels/'+item.idTypeLot}>{item.libelleTypeLot}</Link>,
-                lotsRattaches: 
+            accessor: 'libelleTypeLot',
+            Header: 'Libellé',
+            Cell: ({ value, row }) => {
+				return(<Link to={'/settingsReferentiels/'+row.original.idTypeLot}>{row.original.libelleTypeLot}</Link>);
+			},
+        },
+        {
+            accessor: 'lotsRattaches',
+            Header: 'Lots rattachés',
+            Cell: ({ value, row }) => {
+				return(
                     <>
-                        {item.lotsRattaches.map((lot, j) => {return(
+                        {row.original.lotsRattaches.map((lot, j) => {return(
                             <SoftBadge bg={lot.alerteConfRef ? 'danger' : 'success'} className='me-1'>{lot.libelleLot}</SoftBadge>
                         )})}
-                    </>,
-                actions:
+                    </>
+                );
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
                     <>
                         <IconButton
                             icon='eye'
                             size = 'sm'
                             variant="outline-primary"
                             className="me-1"
-                            onClick={()=>{navigate('/settingsReferentiels/'+item.idTypeLot)}}
+                            onClick={()=>{navigate('/settingsReferentiels/'+row.original.idTypeLot)}}
                         />
                         {HabilitationService.habilitations['typesLots_suppression'] ? 
                             <IconButton
@@ -72,17 +79,14 @@ const ReferentielsSettings = () => {
                                 size = 'sm'
                                 variant="outline-danger"
                                 className="me-1"
-                                onClick={()=>{handleShowDeleteModal(item.idTypeLot)}}
+                                onClick={()=>{handleShowDeleteModal(row.original.idTypeLot)}}
                             />
                         : null}
-                    </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [referentiels])
+                    </>
+                );
+			},
+        },
+    ];
 
     //formulaire d'ajout
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -193,7 +197,7 @@ const ReferentielsSettings = () => {
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
-                        data={lignes}
+                        data={referentiels}
                         topButtonShow={true}
                         topButton={
                             HabilitationService.habilitations['typesLots_ajout'] ?

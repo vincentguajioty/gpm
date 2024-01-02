@@ -15,65 +15,73 @@ import VehiculeMaintenancesRegulieresForm from './vehiculeMntRegulieresForm';
 const VehiculeMaintenancesRegulieres = ({idVehicule, maintenancesRegulieres, maintenancesRegulieresAlertes, setPageNeedsRefresh}) => {
     const nl2br = require('react-nl2br');
     const colonnes = [
-        {accessor: 'dateHealth'      , Header: 'Date'},
-        {accessor: 'interventions'   , Header: 'Interventions'},
-        {accessor: 'identifiant'     , Header: 'Intervenant'},
-        {accessor: 'actions'         , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of maintenancesRegulieres)
         {
-            tempTable.push({
-                dateHealth: moment(item.dateHealth).format('DD/MM/YYYY'),
-                interventions: <>
-                    <Table responsive size='sm'>
-                        <thead>
-                            <tr>
-                                <th>Actes</th>
-                                <th>Remarques</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {item.checks.map((verif, i)=>{return(
+            accessor: 'dateHealth',
+            Header: 'Date',
+            Cell: ({ value, row }) => {
+				return(moment(value).format('DD/MM/YYYY'));
+			},
+        },
+        {
+            accessor: 'checks',
+            Header: 'Interventions',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        <Table responsive size='sm'>
+                            <thead>
                                 <tr>
-                                    <td>{verif.libelleHealthType}</td>
-                                    <td>{nl2br(verif.remarquesCheck)}</td>
+                                    <th>Actes</th>
+                                    <th>Remarques</th>
                                 </tr>
-                            )})}
-                        </tbody>
-                    </Table>
-                </>,
-                identifiant: item.identifiant,
-                actions:<>
-                    {HabilitationService.habilitations['vehiculeHealth_modification'] ? 
-                        <VehiculeMaintenancesRegulieresForm
-                            idVehicule = {idVehicule}
-                            maintenance = {item}
-                            idVehiculeHealth = {item.idVehiculeHealth}
-                            maintenancesRegulieresAlertes = {maintenancesRegulieresAlertes}
-                            setPageNeedsRefresh = {setPageNeedsRefresh}
-                        />
-                    : null}
+                            </thead>
+                            <tbody>
+                                {value.map((verif, i)=>{return(
+                                    <tr>
+                                        <td>{verif.libelleHealthType}</td>
+                                        <td>{nl2br(verif.remarquesCheck)}</td>
+                                    </tr>
+                                )})}
+                            </tbody>
+                        </Table>
+                    </>
+                );
+			},
+        },
+        {
+            accessor: 'identifiant',
+            Header: 'Intervenant',
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        {HabilitationService.habilitations['vehiculeHealth_modification'] ? 
+                            <VehiculeMaintenancesRegulieresForm
+                                idVehicule = {idVehicule}
+                                maintenance = {row.original}
+                                idVehiculeHealth = {row.original.idVehiculeHealth}
+                                maintenancesRegulieresAlertes = {maintenancesRegulieresAlertes}
+                                setPageNeedsRefresh = {setPageNeedsRefresh}
+                            />
+                        : null}
 
-                    {HabilitationService.habilitations['vehiculeHealth_suppression'] ? 
-                        <IconButton
-                            icon='trash'
-                            size = 'sm'
-                            variant="outline-danger"
-                            className="me-1"
-                            onClick={()=>{handleShowDeleteModal(item.idVehiculeHealth)}}
-                        />
-                    : null}
-                </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [maintenancesRegulieres])
+                        {HabilitationService.habilitations['vehiculeHealth_suppression'] ? 
+                            <IconButton
+                                icon='trash'
+                                size = 'sm'
+                                variant="outline-danger"
+                                className="me-1"
+                                onClick={()=>{handleShowDeleteModal(row.original.idVehiculeHealth)}}
+                            />
+                        : null}
+                    </>
+                );
+			},
+        },
+    ];
 
     /* DELETE */
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -132,7 +140,7 @@ const VehiculeMaintenancesRegulieres = ({idVehicule, maintenancesRegulieres, mai
 
         <GPMtable
             columns={colonnes}
-            data={lignes}
+            data={maintenancesRegulieres}
             topButtonShow={true}
             topButton={<>
                 {HabilitationService.habilitations['vehiculeHealth_ajout'] ?

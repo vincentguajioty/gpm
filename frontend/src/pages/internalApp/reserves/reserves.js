@@ -41,49 +41,55 @@ const Reserves = () => {
     }
 
     const colonnes = [
-        {accessor: 'libelleConteneur'           , Header: 'Libellé'},
-        {accessor: 'libelleLieu'                , Header: 'Lieu'},
-        {accessor: 'prochainInventaire'         , Header: 'Prochain Inventaire'},
-        {accessor: 'actions'                    , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of conteneursArray)
         {
-            tempTable.push({
-                libelleConteneur: <Link to={'/reservesConteneurs/'+item.idConteneur}>{item.libelleConteneur}</Link>,
-                libelleLieu: item.libelleLieu,
-                prochainInventaire:
-                    item.inventaireEnCours == true ?
+            accessor: 'libelleConteneur',
+            Header: 'Libellé',
+            Cell: ({ value, row }) => {
+				return(<Link to={'/reservesConteneurs/'+row.original.idConteneur}>{row.original.libelleConteneur}</Link>);
+			},
+        },
+        {
+            accessor: 'libelleLieu',
+            Header: 'Lieu',
+        },
+        {
+            accessor: 'prochainInventaire',
+            Header: 'Prochain Inventaire',
+            Cell: ({ value, row }) => {
+				return(
+                    row.original.inventaireEnCours == true ?
                     <SoftBadge bg="primary">Inventaire en cours</SoftBadge>
-                    : <SoftBadge bg={item.prochainInventaire != null ? (new Date(item.prochainInventaire) < new Date() ? 'danger' : 'success') : 'secondary'}>{item.prochainInventaire != null ? moment(item.prochainInventaire).format('DD/MM/YYYY') : 'N/A'}</SoftBadge>
-                ,
-                actions: <>
-                    <IconButton
-                        icon='eye'
-                        size = 'sm'
-                        variant="outline-primary"
-                        className="me-1"
-                        onClick={()=>{navigate('/reservesConteneurs/'+item.idConteneur)}}
-                    />
-                    {HabilitationService.habilitations['lots_suppression'] && item.inventaireEnCours != true ? 
+                    : <SoftBadge bg={value != null ? (new Date(value) < new Date() ? 'danger' : 'success') : 'secondary'}>{value != null ? moment(value).format('DD/MM/YYYY') : 'N/A'}</SoftBadge>
+                );
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
                         <IconButton
-                            icon='trash'
+                            icon='eye'
                             size = 'sm'
-                            variant="outline-danger"
+                            variant="outline-primary"
                             className="me-1"
-                            onClick={()=>{handleShowDeleteModal(item.idConteneur)}}
+                            onClick={()=>{navigate('/reservesConteneurs/'+row.original.idConteneur)}}
                         />
-                    : null}
-                </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [conteneursArray])
+                        {HabilitationService.habilitations['lots_suppression'] && row.original.inventaireEnCours != true ? 
+                            <IconButton
+                                icon='trash'
+                                size = 'sm'
+                                variant="outline-danger"
+                                className="me-1"
+                                onClick={()=>{handleShowDeleteModal(row.original.idConteneur)}}
+                            />
+                        : null}
+                    </>
+                );
+			},
+        },
+    ];
 
     useEffect(() => {
         initPage();
@@ -229,7 +235,7 @@ const Reserves = () => {
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
-                        data={lignes}
+                        data={conteneursArray}
                         topButtonShow={true}
                         topButton={
                             HabilitationService.habilitations['reserve_ajout'] ?

@@ -35,61 +35,80 @@ const LotInventairesTable = ({
 
     const [idInventaireEnCours, setIdInventaireEnCours] = useState();
     const colonnes = [
-        {accessor: 'dateInventaire'        , Header: 'Date'},
-        {accessor: 'idPersonne'            , Header: 'Réalisé par'},
-        {accessor: 'commentairesInventaire', Header: 'Commentaires'},
-        {accessor: 'actions'               , Header: 'Actions'},
+        {
+            accessor: 'dateInventaire',
+            Header: 'Date',
+            Cell: ({ value, row }) => {
+				return(value ? moment(value).format('DD/MM/YYYY') : null);
+			},
+        },
+        {
+            accessor: 'idPersonne',
+            Header: 'Réalisé par',
+            Cell: ({ value, row }) => {
+				return(row.original.nomPersonne+' '+row.original.prenomPersonne);
+			},
+        },
+        {
+            accessor: 'commentairesInventaire',
+            Header: 'Commentaires',
+            Cell: ({ value, row }) => {
+				return(nl2br(value));
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        {row.original.inventaireEnCours && inventaireEnCours ?
+                            <IconButton
+                                icon='binoculars'
+                                size = 'sm'
+                                variant="warning"
+                                className="me-1"
+                                onClick={()=>{navigate('/inventaireLotEnCours/'+row.original.idInventaire)}}
+                            >Rejoindre l'inventaire en cours</IconButton>
+                        : <>
+                            <IconButton
+                                icon='eye'
+                                size = 'sm'
+                                variant="outline-info"
+                                className="me-1"
+                                onClick={()=>{handleShowDetailsModal(row.original.idInventaire)}}
+                            />
+
+                            {HabilitationService.habilitations['lots_suppression'] ? 
+                                <IconButton
+                                    icon='trash'
+                                    size = 'sm'
+                                    variant="outline-danger"
+                                    className="me-1"
+                                    onClick={()=>{handleShowDeleteModal(row.original.idInventaire)}}
+                                />
+                            : null}
+                        </>}
+                    </>
+                );
+			},
+        },
     ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
+    const getInventaireEnCoursID = () => {
         for(const item of inventaires)
         {
-            if(item.inventaireEnCours){setIdInventaireEnCours(item.idInventaire)}
-
-            tempTable.push({
-                dateInventaire: moment(item.dateInventaire).format('DD/MM/YYYY'),
-                idPersonne: item.nomPersonne+' '+item.prenomPersonne,
-                commentairesInventaire: nl2br(item.commentairesInventaire),
-                actions: <>
-                    {item.inventaireEnCours && inventaireEnCours ?
-                        <IconButton
-                            icon='binoculars'
-                            size = 'sm'
-                            variant="warning"
-                            className="me-1"
-                            onClick={()=>{navigate('/inventaireLotEnCours/'+item.idInventaire)}}
-                        >Rejoindre l'inventaire en cours</IconButton>
-                    : <>
-                        <IconButton
-                            icon='eye'
-                            size = 'sm'
-                            variant="outline-info"
-                            className="me-1"
-                            onClick={()=>{handleShowDetailsModal(item.idInventaire)}}
-                        />
-
-                        {HabilitationService.habilitations['lots_suppression'] ? 
-                            <IconButton
-                                icon='trash'
-                                size = 'sm'
-                                variant="outline-danger"
-                                className="me-1"
-                                onClick={()=>{handleShowDeleteModal(item.idInventaire)}}
-                            />
-                        : null}
-                    </>}
-                </>,
-            })
+            if(item.inventaireEnCours)
+            {
+                setIdInventaireEnCours(item.idInventaire)
+            }
         }
-        setLignes(tempTable);
     }
     useEffect(() => {
-        initTableau();
+        getInventaireEnCoursID();
     }, [inventaires])
 
     useEffect(() => {
-        initTableau();
+        getInventaireEnCoursID();
     }, [])
 
     /* DELETE */
@@ -127,12 +146,26 @@ const LotInventairesTable = ({
     const [showDetailsModal, setShowDetailsModal] = useState(false);
     const [inventaire, setInventaire] = useState([]);
     const inventaireColonnes = [
-        {accessor: 'libelleMateriel'  , Header: 'Matériel'},
-        {accessor: 'libelleCategorie' , Header: 'Catégorie'},
-        {accessor: 'quantiteInventaire'         , Header: 'Quantité'},
-        {accessor: 'peremptionInventaire'       , Header: 'Péremption'},
+        {
+            accessor: 'libelleMateriel',
+            Header: 'Matériel',
+        },
+        {
+            accessor: 'libelleCategorie',
+            Header: 'Catégorie',
+        },
+        {
+            accessor: 'quantiteInventaire',
+            Header: 'Quantité',
+        },
+        {
+            accessor: 'peremptionInventaire',
+            Header: 'Péremption',
+            Cell: ({ value, row }) => {
+				return(value ? moment(value).format('DD/MM/YYYY') : null);
+			},
+        },
     ];
-    const [inventaireLignes, setInventaireLignes] = useState([]);
     const handleCloseDetailsModal = () => {
         setShowDetailsModal(false);
         setLoading(false);
@@ -147,19 +180,6 @@ const LotInventairesTable = ({
                 idInventaire: id,
             })
             setInventaire(getInventaire.data);
-
-            let tempArray = [];
-            for(const item of getInventaire.data.contenu)
-            {
-                tempArray.push({
-                    libelleMateriel: item.libelleMateriel,
-                    libelleCategorie: item.libelleCategorie,
-                    quantiteInventaire: item.quantiteInventaire,
-                    peremptionInventaire: item.peremptionInventaire ? moment(item.peremptionInventaire).format('DD/MM/YYYY') : null,
-                });
-            }
-            setInventaireLignes(tempArray);
-
             setLoading(false);
         } catch (error) {
             console.log(error)
@@ -261,7 +281,7 @@ const LotInventairesTable = ({
                         </Table>
                         <GPMtable
                             columns={inventaireColonnes}
-                            data={inventaireLignes}
+                            data={inventaire.contenu}
                             topButtonShow={false}
                         />
                     </>
@@ -338,7 +358,7 @@ const LotInventairesTable = ({
         
         <GPMtable
             columns={colonnes}
-            data={lignes}
+            data={inventaires}
             topButtonShow={true}
             topButton={
                 inventaireEnCours ?

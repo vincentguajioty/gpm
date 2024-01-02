@@ -40,21 +40,32 @@ const MessagesGeneraux = () => {
     }, [])
 
     const colonnes = [
-        {accessor: 'redacteur'   , Header: 'Rédacteur'},
-        {accessor: 'corpsMessage', Header: 'Message'},
-        {accessor: 'isPublic'    , Header: 'Public'},
-        {accessor: 'actions'     , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of messages)
         {
-            tempTable.push({
-                redacteur: item.prenomPersonne + ' ' + item.nomPersonne,
-                corpsMessage: <Alert variant={item.couleurMessageType}>{nl2br(item.corpsMessage)}</Alert>,
-                isPublic: item.isPublic == true ? <SoftBadge bg='warning'>Public</SoftBadge> : <SoftBadge bg='secondary'>Privé</SoftBadge>,
-                actions:
+            accessor: 'redacteur',
+            Header: 'Rédacteur',
+            Cell: ({ value, row }) => {
+				return(row.original.prenomPersonne + ' ' + row.original.nomPersonne);
+			},
+        },
+        {
+            accessor: 'corpsMessage',
+            Header: 'Message',
+            Cell: ({ value, row }) => {
+				return(<Alert variant={row.original.couleurMessageType}>{nl2br(value)}</Alert>);
+			},
+        },
+        {
+            accessor: 'isPublic',
+            Header: 'Public',
+            Cell: ({ value, row }) => {
+				return(row.original.isPublic == true ? <SoftBadge bg='warning'>Public</SoftBadge> : <SoftBadge bg='secondary'>Privé</SoftBadge>);
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
                     <>
                         {HabilitationService.habilitations['messages_ajout'] ?
                             <IconButton
@@ -62,7 +73,7 @@ const MessagesGeneraux = () => {
                                 size = 'sm'
                                 variant="warning"
                                 className="me-1"
-                                onClick={()=>{handleShowOffCanevas(item.idMessage)}}
+                                onClick={()=>{handleShowOffCanevas(row.original.idMessage)}}
                             />
                         : null}
 
@@ -72,17 +83,14 @@ const MessagesGeneraux = () => {
                                 size = 'sm'
                                 variant="danger"
                                 className="me-1"
-                                onClick={()=>{handleShowDeleteModal(item.idMessage)}}
+                                onClick={()=>{handleShowDeleteModal(row.original.idMessage)}}
                             />
                         : null}
-                    </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [messages])
+                    </>
+                );
+			},
+        },
+    ];
 
     //formulaire d'ajout
     const [typesMessages, setTypesMessages] = useState([]);
@@ -247,7 +255,7 @@ const MessagesGeneraux = () => {
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
-                        data={lignes}
+                        data={messages}
                         topButtonShow={true}
                         topButton={
                             HabilitationService.habilitations['messages_ajout'] ?

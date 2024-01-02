@@ -20,43 +20,43 @@ const AfficherConsommable = ({
     consommation,
 }) => {
     const colonnes = [
-        {accessor: 'libelleLot'          , Header: 'Lot'},
-        {accessor: 'libelleMateriel'     , Header: 'Matériel'},
-        {accessor: 'quantiteConsommation', Header: 'Quantité'},
-        {accessor: 'actions', Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of consommation.elements)
         {
-            tempTable.push({
-                libelleLot: item.libelleLot,
-                libelleMateriel: item.libelleMateriel,
-                quantiteConsommation: item.quantiteConsommation,
-                actions:<>
-                    <IconButton
-                        icon='pen'
-                        size = 'sm'
-                        variant="outline-warning"
-                        className="me-1"
-                        onClick={()=>{handleShowUpdateModal(item.idConsommationMateriel)}}
-                    />
-                    <IconButton
-                        icon='trash'
-                        size = 'sm'
-                        variant="outline-danger"
-                        className="me-1"
-                        onClick={()=>{handleShowDeleteModal(item.idConsommationMateriel)}}
-                    />
-                </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [consommation])
+            accessor: 'libelleLot',
+            Header: 'Lot',
+        },
+        {
+            accessor: 'libelleMateriel',
+            Header: 'Matériel',
+        },
+        {
+            accessor: 'quantiteConsommation',
+            Header: 'Quantité',
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        <IconButton
+                            icon='pen'
+                            size = 'sm'
+                            variant="outline-warning"
+                            className="me-1"
+                            onClick={()=>{handleShowUpdateModal(row.original.idConsommationMateriel)}}
+                        />
+                        <IconButton
+                            icon='trash'
+                            size = 'sm'
+                            variant="outline-danger"
+                            className="me-1"
+                            onClick={()=>{handleShowDeleteModal(row.original.idConsommationMateriel)}}
+                        />
+                    </>
+                );
+			},
+        },
+    ];
 
     const [isLoading, setLoading] = useState(false);
     const [catalogue, setCatalogue] = useState([]);
@@ -79,7 +79,6 @@ const AfficherConsommable = ({
     }
     
     useEffect(() => {
-        initTableau();
         initPage();
     }, [])
 
@@ -282,7 +281,7 @@ const AfficherConsommable = ({
             <FalconComponentCard.Body>
                 <GPMtable
                     columns={colonnes}
-                    data={lignes}
+                    data={consommation.elements}
                     topButtonShow={false}
                 />
                 <div className="d-grid gap-2 mt-3">

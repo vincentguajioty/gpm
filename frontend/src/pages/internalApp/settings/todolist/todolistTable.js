@@ -21,7 +21,7 @@ const ToDoListTable = ({
 }) => {
     const [readyToDisplay, setReadyToDisplay] = useState(false);
     const [colonnes, setColonnes] = useState([]);
-    const [lignes, setLignes] = useState([]);
+    const [taches, setTaches] = useState([]);
     const [showAddButton, setShowAddButton] = useState(false);
 
     const initPage = async () => {
@@ -31,103 +31,165 @@ const ToDoListTable = ({
             switch (filtre) {
                 case 'all':
                     getData = await Axios.get('todolist/getAllTDL');
+                    setTaches(getData.data);
                     setColonnes([
-                        {accessor: 'titre'                  , Header: 'Titre'},
-                        {accessor: 'details'                , Header: 'Description'},
-                        {accessor: 'dateCreation'           , Header: 'Crée le'},
-                        {accessor: 'dateExecution'          , Header: 'A faire avant'},
-                        {accessor: 'dateCloture'            , Header: 'Close le'},
-                        {accessor: 'idTDLpriorite'          , Header: 'Priorite'},
-                        {accessor: 'idExecutant'            , Header: 'Affectée à'},
-                        {accessor: 'actions'                , Header: 'Actions'},
+                        {
+                            accessor: 'titre',
+                            Header: 'Titre',
+                        },
+                        {
+                            accessor: 'details',
+                            Header: 'Description',
+                            Cell: ({ value, row }) => {
+                                return(nl2br(value));
+                            },
+                        },
+                        {
+                            accessor: 'dateCreation',
+                            Header: 'Crée le',
+                            Cell: ({ value, row }) => {
+                                return(value != null ? moment(value).format('DD/MM/YYYY HH:mm') : null);
+                            },
+                        },
+                        {
+                            accessor: 'dateExecution',
+                            Header: 'A faire avant',
+                            Cell: ({ value, row }) => {
+                                return(value != null ? moment(value).format('DD/MM/YYYY HH:mm') : null);
+                            },
+                        },
+                        {
+                            accessor: 'dateCloture',
+                            Header: 'Close le',
+                            Cell: ({ value, row }) => {
+                                return(value != null ? moment(value).format('DD/MM/YYYY HH:mm') : null);
+                            },
+                        },
+                        {
+                            accessor: 'libellePriorite',
+                            Header: 'Priorite',
+                            Cell: ({ value, row }) => {
+                                return(row.original.idTDLpriorite > 0 ? <SoftBadge bg={row.original.couleurPriorite}>{row.original.libellePriorite}</SoftBadge> : null);
+                            },
+                        },
+                        {
+                            accessor: 'idExecutant',
+                            Header: 'Affectée à',
+                            Cell: ({ value, row }) => {
+                                return(
+                                    <>{value.map((personne, i)=>{return(
+                                        <SoftBadge bg='secondary' className='me-1'>{personne.prenomPersonne} {personne.nomPersonne}</SoftBadge>
+                                    )})}</>
+                                );
+                            },
+                        },
+                        {
+                            accessor: 'actions',
+                            Header: 'Actions',
+                            Cell: ({ value, row }) => {
+                                return(
+                                    <ToDoListForm
+                                        idTache={row.original.idTache}
+                                        isOwnTDL={row.original.idExecutant.filter(personne => personne.idPersonne == HabilitationService.habilitations.idPersonne).length > 0 ? true : false}
+                                        isCompleted={row.original.dateCloture != null ? true : false}
+                                        showResolvedButton={true}
+                                        showEditButton={true}
+                                        showAffectationButton={true}
+                                        showDeleteButton={true}
+                                        setComponentsHaveToReload={setComponentsHaveToReload}
+                                    />
+                                );
+                            },
+                        },
                     ]);
-                    for(const item of getData.data)
-                    {
-                        tempTable.push({
-                            titre: item.titre,
-                            details: nl2br(item.details),
-                            dateCreation: item.dateCreation != null ? moment(item.dateCreation).format('DD/MM/YYYY HH:mm') : null,
-                            dateExecution: item.dateExecution != null ? moment(item.dateExecution).format('DD/MM/YYYY HH:mm') : null,
-                            dateCloture: item.dateCloture != null ? moment(item.dateCloture).format('DD/MM/YYYY HH:mm') : null,
-                            idTDLpriorite: item.idTDLpriorite > 0 ? <SoftBadge bg={item.couleurPriorite}>{item.libellePriorite}</SoftBadge> : null,
-                            idExecutant: <>{item.idExecutant.map((personne, i)=>{return(
-                                <SoftBadge bg='secondary' className='me-1'>{personne.prenomPersonne} {personne.nomPersonne}</SoftBadge>
-                            )})}</>,
-                            actions:
-                                <ToDoListForm
-                                    idTache={item.idTache}
-                                    isOwnTDL={item.idExecutant.filter(personne => personne.idPersonne == HabilitationService.habilitations.idPersonne).length > 0 ? true : false}
-                                    isCompleted={item.dateCloture != null ? true : false}
-                                    showResolvedButton={true}
-                                    showEditButton={true}
-                                    showAffectationButton={true}
-                                    showDeleteButton={true}
-                                    setComponentsHaveToReload={setComponentsHaveToReload}
-                                />,
-                        })
-                    }
-                    setLignes(tempTable);
                     setShowAddButton(true);
                 break;
                 
                 case 'unaffected':
                     getData = await Axios.get('todolist/getUnaffectedTDL');
+                    setTaches(getData.data);
                     setColonnes([
-                        {accessor: 'titre'                  , Header: 'Titre'},
-                        {accessor: 'dateExecution'          , Header: 'A faire avant'},
-                        {accessor: 'idTDLpriorite'          , Header: 'Priorite'},
-                        {accessor: 'actions'                , Header: 'Actions'},
+                        {
+                            accessor: 'titre',
+                            Header: 'Titre',
+                        },
+                        {
+                            accessor: 'dateExecution',
+                            Header: 'A faire avant',
+                            Cell: ({ value, row }) => {
+                                return(value != null ? moment(value).format('DD/MM/YYYY HH:mm') : null);
+                            },
+                        },
+                        {
+                            accessor: 'libellePriorite',
+                            Header: 'Priorite',
+                            Cell: ({ value, row }) => {
+                                return(row.original.idTDLpriorite > 0 ? <SoftBadge bg={row.original.couleurPriorite}>{row.original.libellePriorite}</SoftBadge> : null);
+                            },
+                        },
+                        {
+                            accessor: 'actions',
+                            Header: 'Actions',
+                            Cell: ({ value, row }) => {
+                                return(
+                                    <ToDoListForm
+                                        idTache={row.original.idTache}
+                                        isOwnTDL={row.original.idExecutant.filter(personne => personne.idPersonne == HabilitationService.habilitations.idPersonne).length > 0 ? true : false}
+                                        isCompleted={row.original.dateCloture != null ? true : false}
+                                        showResolvedButton={true}
+                                        showEditButton={true}
+                                        showAffectationButton={true}
+                                        showDeleteButton={true}
+                                        setComponentsHaveToReload={setComponentsHaveToReload}
+                                    />
+                                );
+                            },
+                        },
                     ]);
-                    for(const item of getData.data)
-                    {
-                        tempTable.push({
-                            titre: item.titre,
-                            dateExecution: item.dateExecution != null ? moment(item.dateExecution).format('DD/MM/YYYY HH:mm') : null,
-                            idTDLpriorite: item.idTDLpriorite > 0 ? <SoftBadge bg={item.couleurPriorite}>{item.libellePriorite}</SoftBadge> : null,
-                            actions:
-                                <ToDoListForm
-                                    idTache={item.idTache}
-                                    isOwnTDL={false}
-                                    isCompleted={item.dateCloture != null ? true : false}
-                                    showEditButton={true}
-                                    showAffectationButton={true}
-                                    showDeleteButton={true}
-                                    setComponentsHaveToReload={setComponentsHaveToReload}
-                                />,
-                        })
-                    }
-                    setLignes(tempTable);
                     setShowAddButton(true);
                 break;
                 
                 case 'finished':
                     getData = await Axios.get('todolist/getClosedTDL');
+                    setTaches(getData.data);
                     setColonnes([
-                        {accessor: 'titre'                  , Header: 'Titre'},
-                        {accessor: 'dateCloture'            , Header: 'Close le'},
-                        {accessor: 'idTDLpriorite'          , Header: 'Priorite'},
-                        {accessor: 'actions'                , Header: 'Actions'},
+                        {
+                            accessor: 'titre',
+                            Header: 'Titre',
+                        },
+                        {
+                            accessor: 'dateCloture',
+                            Header: 'Close le',
+                            Cell: ({ value, row }) => {
+                                return(value != null ? moment(value).format('DD/MM/YYYY HH:mm') : null);
+                            },
+                        },
+                        {
+                            accessor: 'libellePriorite',
+                            Header: 'Priorite',
+                            Cell: ({ value, row }) => {
+                                return(row.original.idTDLpriorite > 0 ? <SoftBadge bg={row.original.couleurPriorite}>{row.original.libellePriorite}</SoftBadge> : null);
+                            },
+                        },
+                        {
+                            accessor: 'actions',
+                            Header: 'Actions',
+                            Cell: ({ value, row }) => {
+                                return(
+                                    <ToDoListForm
+                                        idTache={row.original.idTache}
+                                        isOwnTDL={row.original.idExecutant.filter(personne => personne.idPersonne == HabilitationService.habilitations.idPersonne).length > 0 ? true : false}
+                                        isCompleted={row.original.dateCloture != null ? true : false}
+                                        showResolvedButton={true}
+                                        showEditButton={true}
+                                        showAffectationButton={true}
+                                        showDeleteButton={true}
+                                        setComponentsHaveToReload={setComponentsHaveToReload}
+                                    />
+                                );
+                            },
+                        },
                     ]);
-                    for(const item of getData.data)
-                    {
-                        tempTable.push({
-                            titre: item.titre,
-                            dateCloture: item.dateCloture != null ? moment(item.dateCloture).format('DD/MM/YYYY HH:mm') : null,
-                            idTDLpriorite: item.idTDLpriorite > 0 ? <SoftBadge bg={item.couleurPriorite}>{item.libellePriorite}</SoftBadge> : null,
-                            actions:
-                                <ToDoListForm
-                                    idTache={item.idTache}
-                                    isOwnTDL={item.idExecutant.filter(personne => personne.idPersonne == HabilitationService.habilitations.idPersonne).length > 0 ? true : false}
-                                    isCompleted={item.dateCloture != null ? true : false}
-                                    showResolvedButton={true}
-                                    showEditButton={true}
-                                    showAffectationButton={true}
-                                    showDeleteButton={true}
-                                    setComponentsHaveToReload={setComponentsHaveToReload}
-                                />,
-                        })
-                    }
-                    setLignes(tempTable);
                     setShowAddButton(false);
                 break;
 
@@ -135,34 +197,52 @@ const ToDoListTable = ({
                     getData = await Axios.post('todolist/getTDLonePerson',{
                         idPersonne: idPersonne,
                     });
+                    setTaches(getData.data);
                     setColonnes([
-                        {accessor: 'titre'                  , Header: 'Titre'},
-                        {accessor: 'details'                , Header: 'Description'},
-                        {accessor: 'dateExecution'          , Header: 'A faire avant'},
-                        {accessor: 'idTDLpriorite'          , Header: 'Priorite'},
-                        {accessor: 'actions'                , Header: 'Actions'},
+                        {
+                            accessor: 'titre',
+                            Header: 'Titre',
+                        },
+                        {
+                            accessor: 'details',
+                            Header: 'Description',
+                            Cell: ({ value, row }) => {
+                                return(nl2br(value));
+                            },
+                        },
+                        {
+                            accessor: 'dateExecution',
+                            Header: 'A faire avant',
+                            Cell: ({ value, row }) => {
+                                return(value != null ? moment(value).format('DD/MM/YYYY HH:mm') : null);
+                            },
+                        },
+                        {
+                            accessor: 'libellePriorite',
+                            Header: 'Priorite',
+                            Cell: ({ value, row }) => {
+                                return(row.original.idTDLpriorite > 0 ? <SoftBadge bg={row.original.couleurPriorite}>{row.original.libellePriorite}</SoftBadge> : null);
+                            },
+                        },
+                        {
+                            accessor: 'actions',
+                            Header: 'Actions',
+                            Cell: ({ value, row }) => {
+                                return(
+                                    <ToDoListForm
+                                        idTache={row.original.idTache}
+                                        isOwnTDL={row.original.idExecutant.filter(personne => personne.idPersonne == HabilitationService.habilitations.idPersonne).length > 0 ? true : false}
+                                        isCompleted={row.original.dateCloture != null ? true : false}
+                                        showResolvedButton={true}
+                                        showEditButton={true}
+                                        showAffectationButton={true}
+                                        showDeleteButton={true}
+                                        setComponentsHaveToReload={setComponentsHaveToReload}
+                                    />
+                                );
+                            },
+                        },
                     ]);
-                    for(const item of getData.data)
-                    {
-                        tempTable.push({
-                            titre: item.titre,
-                            details: nl2br(item.details),
-                            dateExecution: item.dateExecution != null ? moment(item.dateExecution).format('DD/MM/YYYY HH:mm') : null,
-                            idTDLpriorite: item.idTDLpriorite > 0 ? <SoftBadge bg={item.couleurPriorite}>{item.libellePriorite}</SoftBadge> : null,
-                            actions:
-                                <ToDoListForm
-                                    idTache={item.idTache}
-                                    isOwnTDL={item.idExecutant.filter(personne => personne.idPersonne == HabilitationService.habilitations.idPersonne).length > 0 ? true : false}
-                                    isCompleted={item.dateCloture != null ? true : false}
-                                    showResolvedButton={true}
-                                    showEditButton={true}
-                                    showAffectationButton={true}
-                                    showDeleteButton={true}
-                                    setComponentsHaveToReload={setComponentsHaveToReload}
-                                />,
-                        })
-                    }
-                    setLignes(tempTable);
                     setShowAddButton(false);
                 break;
             
@@ -200,7 +280,7 @@ const ToDoListTable = ({
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
-                        data={lignes}
+                        data={taches}
                         topButtonShow={showAddButton}
                         topButton={<ToDoListForm idTache={0} showAddButton={true} setComponentsHaveToReload={setComponentsHaveToReload} />}
                     />

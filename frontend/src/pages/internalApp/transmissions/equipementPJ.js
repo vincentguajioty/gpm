@@ -18,40 +18,43 @@ import { vhfEquipementsAttachedForm } from 'helpers/yupValidationSchema';
 
 const EquipementVhfPJ = ({equipement, setPageNeedsRefresh}) => {
     const colonnes = [
-        {accessor: 'nomDocVHF',       Header: 'Nom du document'},
-        {accessor: 'libelleTypeDocument' , Header: 'Type'},
-        {accessor: 'formatDocVHF' ,   Header: 'Format'},
-        {accessor: 'dateDocVHF' ,     Header: 'Date'},
-        {accessor: 'actions'       ,       Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of equipement.documents)
         {
-            tempTable.push({
-                nomDocVHF: item.nomDocVHF,
-                libelleTypeDocument: item.libelleTypeDocument,
-                formatDocVHF: item.formatDocVHF,
-                dateDocVHF: moment(item.dateDocVHF).format('DD/MM/YYYY HH:mm'),
-                actions:
+            accessor: 'nomDocVHF',
+            Header: 'Nom du document',
+        },
+        {
+            accessor: 'libelleTypeDocument',
+            Header: 'Type',
+        },
+        {
+            accessor: 'formatDocVHF',
+            Header: 'Format',
+        },
+        {
+            accessor: 'dateDocVHF',
+            Header: 'Date',
+            Cell: ({ value, row }) => {
+				return(moment(value).format('DD/MM/YYYY HH:mm'));
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
                     <CardDropdown>
                         <div className="py-2">
-                            {item.formatDocVHF == 'pdf' ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePDF(item.urlFichierDocVHF)}}>Afficher le PDF</Dropdown.Item>) : null}
-                            {["png", "jpg", "jpeg"].includes(item.formatDocVHF) ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePicture(item.urlFichierDocVHF)}}>Afficher l'image</Dropdown.Item>) : null}
-                            <Dropdown.Item className='text-success' onClick={() => {downloadDocument(item.urlFichierDocVHF, item.nomDocVHF, item.formatDocVHF)}}>Télécharger</Dropdown.Item>
+                            {row.original.formatDocVHF == 'pdf' ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePDF(row.original.urlFichierDocVHF)}}>Afficher le PDF</Dropdown.Item>) : null}
+                            {["png", "jpg", "jpeg"].includes(row.original.formatDocVHF) ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePicture(row.original.urlFichierDocVHF)}}>Afficher l'image</Dropdown.Item>) : null}
+                            <Dropdown.Item className='text-success' onClick={() => {downloadDocument(row.original.urlFichierDocVHF, row.original.nomDocVHF, row.original.formatDocVHF)}}>Télécharger</Dropdown.Item>
                             <Dropdown.Divider />
-                            <Dropdown.Item className='text-danger' onClick={() => (supprimerEntree(item.idDocVHF))}>Supprimer (attention pas de confirmation)</Dropdown.Item>
+                            <Dropdown.Item className='text-danger' onClick={() => (supprimerEntree(row.original.idDocVHF))}>Supprimer (attention pas de confirmation)</Dropdown.Item>
                         </div>
                     </CardDropdown>
-                ,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [equipement.documents])
+                );
+			},
+        },
+    ];
 
     /* FORM */
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -247,7 +250,7 @@ const EquipementVhfPJ = ({equipement, setPageNeedsRefresh}) => {
             <Card.Body>
                 <GPMtable
                     columns={colonnes}
-                    data={lignes}
+                    data={equipement.documents}
                     topButtonShow={true}
                     topButton={
                         HabilitationService.habilitations['vhf_equipement_ajout'] ?

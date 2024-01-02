@@ -39,41 +39,62 @@ const Frequences = () => {
     }, [])
 
     const colonnes = [
-        {accessor: 'chName',         Header: 'Libellé'},
-        {accessor: 'libelleTechno' , Header: 'Technologie'},
-        {accessor: 'rxFreq' ,        Header: 'RX'},
-        {accessor: 'txFreq' ,        Header: 'TX'},
-        {accessor: 'porteuse' ,      Header: 'Porteuse'},
-        {accessor: 'actions'       , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of canaux)
         {
-            tempTable.push({
-                chName: item.chName,
-                libelleTechno: item.libelleTechno,
-                rxFreq:<>
-                    Fréquence: {item.rxFreq} MHz
-                    <br/>
-                    {item.rxCtcss ? "CTCSS: "+item.rxCtcss+"Hz" : null}
-                </>,
-                txFreq:<>
-                    Fréquence: {item.txFreq} MHz
-                    {item.txCtcss ? <><br/>CTCSS: {item.txCtcss}Hz</> : null}
-                    {item.txPower ? <><br/>Puissance: {item.txPower}W</> : null}
-                </>,
-                porteuse:<>
-                    {item.appelSelectifPorteuse ? "Fréquence: "+item.appelSelectifPorteuse+"Hz" : null}
-                    {item.appelSelectifCode ? <><br/>Code d'appel: {item.appelSelectifCode}</> : null}
-                    {item.niveauCtcss ? <><br/>CTCSS: {item.niveauCtcss}Hz</> : null}
-                    {item.let ? <><br/>Let: {item.let}ms</> : null}
-                    {item.notone ? <><br/>NoTone: {item.notone}ms</> : null}
-                </>,
-                actions:
+            accessor: 'chName',
+            Header: 'Libellé',
+        },
+        {
+            accessor: 'libelleTechno',
+            Header: 'Technologie',
+        },
+        {
+            accessor: 'rxFreq',
+            Header: 'RX',
+            Cell: ({ value, row }) => {
+				return(
                     <>
-                        <FrequencesAttached vhfCanal={item} />
+                        Fréquence: {row.original.rxFreq} MHz
+                        <br/>
+                        {row.original.rxCtcss ? "CTCSS: "+row.original.rxCtcss+"Hz" : null}
+                    </>
+                );
+			},
+        },
+        {
+            accessor: 'txFreq',
+            Header: 'TX',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        Fréquence: {row.original.txFreq} MHz
+                        {row.original.txCtcss ? <><br/>CTCSS: {row.original.txCtcss}Hz</> : null}
+                        {row.original.txPower ? <><br/>Puissance: {row.original.txPower}W</> : null}
+                    </>
+                );
+			},
+        },
+        {
+            accessor: 'porteuse',
+            Header: 'Porteuse',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        {row.original.appelSelectifPorteuse ? "Fréquence: "+row.original.appelSelectifPorteuse+"Hz" : null}
+                        {row.original.appelSelectifCode ? <><br/>Code d'appel: {row.original.appelSelectifCode}</> : null}
+                        {row.original.niveauCtcss ? <><br/>CTCSS: {row.original.niveauCtcss}Hz</> : null}
+                        {row.original.let ? <><br/>Let: {row.original.let}ms</> : null}
+                        {row.original.notone ? <><br/>NoTone: {row.original.notone}ms</> : null}
+                    </>
+                );
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        <FrequencesAttached vhfCanal={row.original} />
                         
                         {HabilitationService.habilitations['vhf_canal_modification'] ? 
                             <IconButton
@@ -81,7 +102,7 @@ const Frequences = () => {
                                 size = 'sm'
                                 variant="outline-warning"
                                 className="me-1"
-                                onClick={()=>{handleShowOffCanevas(item.idVhfCanal)}}
+                                onClick={()=>{handleShowOffCanevas(row.original.idVhfCanal)}}
                             />
                         : null}
                         {HabilitationService.habilitations['vhf_canal_suppression'] ? 
@@ -90,17 +111,14 @@ const Frequences = () => {
                                 size = 'sm'
                                 variant="outline-danger"
                                 className="me-1"
-                                onClick={()=>{handleShowDeleteModal(item.idVhfCanal)}}
+                                onClick={()=>{handleShowDeleteModal(row.original.idVhfCanal)}}
                             />
                         : null}
-                    </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [canaux])
+                    </>
+                );
+			},
+        },
+    ];
 
     //formulaire d'ajout
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -386,7 +404,7 @@ const Frequences = () => {
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
-                        data={lignes}
+                        data={canaux}
                         topButtonShow={true}
                         topButton={
                             HabilitationService.habilitations['vhf_canal_ajout'] ?

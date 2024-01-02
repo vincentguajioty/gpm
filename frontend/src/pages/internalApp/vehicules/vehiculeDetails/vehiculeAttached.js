@@ -30,41 +30,44 @@ const VehiculeAttached = ({idVehicule, libelleVehicule, documents, setPageNeedsR
     }
 
     const colonnes = [
-        {accessor: 'nomDocVehicule',       Header: 'Nom du document'},
-        {accessor: 'libelleTypeDocument' , Header: 'Type'},
-        {accessor: 'formatDocVehicule' ,   Header: 'Format'},
-        {accessor: 'dateDocVehicule' ,     Header: 'Date'},
-        {accessor: 'actions'       ,       Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of documents)
         {
-            tempTable.push({
-                nomDocVehicule: item.nomDocVehicule,
-                libelleTypeDocument: item.libelleTypeDocument,
-                formatDocVehicule: item.formatDocVehicule,
-                dateDocVehicule: moment(item.dateDocVehicule).format('DD/MM/YYYY HH:mm'),
-                actions:
+            accessor: 'nomDocVehicule',
+            Header: 'Nom du document',
+        },
+        {
+            accessor: 'libelleTypeDocument',
+            Header: 'Type',
+        },
+        {
+            accessor: 'formatDocVehicule',
+            Header: 'Format',
+        },
+        {
+            accessor: 'dateDocVehicule',
+            Header: 'Date',
+            Cell: ({ value, row }) => {
+				return(moment(value).format('DD/MM/YYYY HH:mm'));
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
                     <CardDropdown>
                         <div className="py-2">
-                            {item.formatDocVehicule == 'pdf' ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePDF(item.urlFichierDocVehicule)}}>Afficher le PDF</Dropdown.Item>) : null}
-                            {["png", "jpg", "jpeg"].includes(item.formatDocVehicule) ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePicture(item.urlFichierDocVehicule)}}>Afficher l'image</Dropdown.Item>) : null}
-                            <Dropdown.Item className='text-success' onClick={() => {downloadDocument(item.urlFichierDocVehicule, item.nomDocVehicule, item.formatDocVehicule)}}>Télécharger</Dropdown.Item>
+                            {row.original.formatDocVehicule == 'pdf' ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePDF(row.original.urlFichierDocVehicule)}}>Afficher le PDF</Dropdown.Item>) : null}
+                            {["png", "jpg", "jpeg"].includes(row.original.formatDocVehicule) ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePicture(row.original.urlFichierDocVehicule)}}>Afficher l'image</Dropdown.Item>) : null}
+                            <Dropdown.Item className='text-success' onClick={() => {downloadDocument(row.original.urlFichierDocVehicule, row.original.nomDocVehicule, row.original.formatDocVehicule)}}>Télécharger</Dropdown.Item>
                             <Dropdown.Divider />
-                            <Dropdown.Item className='text-danger' onClick={() => (supprimerEntree(item.idDocVehicules))}>Supprimer (attention pas de confirmation)</Dropdown.Item>
+                            <Dropdown.Item className='text-danger' onClick={() => (supprimerEntree(row.original.idDocVehicules))}>Supprimer (attention pas de confirmation)</Dropdown.Item>
                         </div>
                     </CardDropdown>
-                ,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [documents])
-
+                );
+			},
+        },
+    ];
+    
     //partie formulaire
     const [isLoading, setIsLoading] = useState(false);
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm({
@@ -223,7 +226,7 @@ const VehiculeAttached = ({idVehicule, libelleVehicule, documents, setPageNeedsR
                         <Col md={8} className='mb-2'>
                             <GPMtable
                                 columns={colonnes}
-                                data={lignes}
+                                data={documents}
                             />
                         </Col>
                         <Col md={4}>

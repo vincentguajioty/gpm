@@ -50,50 +50,66 @@ const CodesBarre = () => {
 	}, [])
 
     /* TABLE FOR DISPLAY */
-    const colonnes = [
-        {accessor: 'codeBarre'            , Header: 'Code Barre'},
-        {accessor: 'internalReference'    , Header: 'Base'},
-        {accessor: 'libelleMateriel'      , Header: 'Elément du catalogue'},
-        {accessor: 'peremptionConsommable', Header: 'Péremption spécifiée'},
-        {accessor: 'commentairesCode'     , Header: 'Commentaires'},
-        {accessor: 'actions'              , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
     const nl2br = require('react-nl2br');
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of codesBarre)
+    const colonnes = [
         {
-            tempTable.push({
-                codeBarre:<>
+            accessor: 'codeBarre',
+            Header: 'Code Barre',
+            Cell: ({ value, row }) => {
+				return(<>
                     <CodesBarreModal
-                        valeurCodeBarre={item.codeBarre}
+                        valeurCodeBarre={value}
                     />
-                    {item.codeBarre}
-                </>,
-                internalReference: item.internalReference == true ? <SoftBadge bg='primary'>Interne</SoftBadge> : <SoftBadge bg='info'>Fournisseur</SoftBadge>,
-                libelleMateriel: item.libelleMateriel,
-                peremptionConsommable: item.peremptionConsommable && item.peremptionConsommable != null ? moment(item.peremptionConsommable).format('DD/MM/YYYY') : null,
-                commentairesCode: nl2br(item.commentairesCode),
-                actions:<>
-                    {HabilitationService.habilitations['codeBarre_modification'] && item.internalReference == true ? 
-                        <ActionButton onClick={() => handleShowOffCanevasInternal(item.idCode)} icon="pen" title="Modifier" variant="action" className="p-0 me-2" />
-                    : null }
-                    {HabilitationService.habilitations['codeBarre_modification'] && item.internalReference == false ? 
-                        <ActionButton onClick={() => handleShowOffCanevasExternal(item.idCode)} icon="pen" title="Modifier" variant="action" className="p-0 me-2" />
-                    : null }
+                    {value}
+                </>);
+			},
+        },
+        {
+            accessor: 'internalReference',
+            Header: 'Base',
+            Cell: ({ value, row }) => {
+				return(value == true ? <SoftBadge bg='primary'>Interne</SoftBadge> : <SoftBadge bg='info'>Fournisseur</SoftBadge>);
+			},
+        },
+        {
+            accessor: 'libelleMateriel',
+            Header: 'Elément du catalogue',
+        },
+        {
+            accessor: 'peremptionConsommable',
+            Header: 'Péremption spécifiée',
+            Cell: ({ value, row }) => {
+				return(value && value != null ? moment(value).format('DD/MM/YYYY') : null);
+			},
+        },
+        {
+            accessor: 'commentairesCode',
+            Header: 'Commentaires',
+            Cell: ({ value, row }) => {
+				return(nl2br(value));
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        {HabilitationService.habilitations['codeBarre_modification'] && row.original.internalReference == true ? 
+                            <ActionButton onClick={() => handleShowOffCanevasInternal(row.original.idCode)} icon="pen" title="Modifier" variant="action" className="p-0 me-2" />
+                        : null }
+                        {HabilitationService.habilitations['codeBarre_modification'] && row.original.internalReference == false ? 
+                            <ActionButton onClick={() => handleShowOffCanevasExternal(row.original.idCode)} icon="pen" title="Modifier" variant="action" className="p-0 me-2" />
+                        : null }
 
-                    {HabilitationService.habilitations['codeBarre_suppression'] ? 
-                        <ActionButton onClick={() => handleShowDeleteModal(item.idCode)} icon="trash" title="Supprimer" variant="action" className="p-0" />
-                    : null }
-                </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-		initTableau();
-	}, [codesBarre])
+                        {HabilitationService.habilitations['codeBarre_suppression'] ? 
+                            <ActionButton onClick={() => handleShowDeleteModal(row.original.idCode)} icon="trash" title="Supprimer" variant="action" className="p-0" />
+                        : null }
+                    </>
+                );
+			},
+        },
+    ];
 
     /* DELETE */
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -356,7 +372,7 @@ const CodesBarre = () => {
                     >
                         <GPMtable
                             columns={colonnes}
-                            data={lignes}
+                            data={codesBarre}
                             topButtonShow={true}
                             topButton={
                                 HabilitationService.habilitations['codeBarre_ajout'] ? <>

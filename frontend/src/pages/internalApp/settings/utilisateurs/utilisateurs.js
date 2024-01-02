@@ -43,48 +43,58 @@ const Utilisateurs = () => {
     }, [])
 
     const colonnes = [
-        {accessor: 'identifiant'   , Header: 'Identifiant de connexion'},
-        {accessor: 'nomPersonne'   , Header: 'Nom'},
-        {accessor: 'prenomPersonne', Header: 'Prénom'},
-        {accessor: 'mailPersonne'  , Header: 'Mail'},
-        {accessor: 'fonction'      , Header: 'Fonction'},
-        {accessor: 'profils'       , Header: 'Profils'},
-        {accessor: 'actions'       , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of personnesFiltered)
         {
-            tempTable.push({
-                identifiant: <Link to={'/teamUtilisateurs/'+item.idPersonne}>{item.identifiant}</Link>,
-                nomPersonne: item.nomPersonne,
-                prenomPersonne: item.prenomPersonne,
-                mailPersonne: item.mailPersonne,
-                fonction: item.fonction,
-                profils: 
+            accessor: 'identifiant',
+            Header: 'Identifiant de connexion',
+            Cell: ({ value, row }) => {
+				return(<Link to={'/teamUtilisateurs/'+row.original.idPersonne}>{row.original.identifiant}</Link>);
+			},
+        },
+        {
+            accessor: 'nomPersonne',
+            Header: 'Nom',
+        },
+        {
+            accessor: 'prenomPersonne',
+            Header: 'Prénom',
+        },
+        {
+            accessor: 'mailPersonne',
+            Header: 'Mail',
+        },
+        {
+            accessor: 'fonction',
+            Header: 'Fonction',
+        },
+        {
+            accessor: 'profils',
+            Header: 'Profils',
+            Cell: ({ value, row }) => {
+				return(
                     <>
-                        {item.profils.map((profil, j) => {return(
+                        {value.map((profil, j) => {return(
                             <SoftBadge bg='info' className='me-1'>{profil.libelleProfil}</SoftBadge>
                         )})}
-                    </>,
-                actions:
-                    <>
-                        <IconButton
-                            icon='eye'
-                            size = 'sm'
-                            variant="outline-primary"
-                            className="me-1"
-                            onClick={()=>{navigate('/teamUtilisateurs/'+item.idPersonne)}}
-                        />
-                    </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [personnesFiltered])
+                    </>
+                );
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
+                    <IconButton
+                        icon='eye'
+                        size = 'sm'
+                        variant="outline-primary"
+                        className="me-1"
+                        onClick={()=>{navigate('/teamUtilisateurs/'+row.original.idPersonne)}}
+                    />
+                );
+			},
+        },
+    ];
 
     //formulaire d'ajout
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -155,7 +165,7 @@ const Utilisateurs = () => {
                     
                     <GPMtable
                         columns={colonnes}
-                        data={lignes}
+                        data={personnesFiltered}
                         topButtonShow={true}
                         topButton={
                             HabilitationService.habilitations['annuaire_ajout'] ?

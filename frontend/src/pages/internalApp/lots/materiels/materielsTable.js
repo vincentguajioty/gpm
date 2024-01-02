@@ -60,80 +60,108 @@ const MaterielsTable = ({
     }, [pageNeedsRefresh])
 
     const colonnes = [
-        {accessor: 'libelleMateriel'     , Header: 'Libellé'      , isHidden: !displayLibelleMateriel},
-        {accessor: 'libelleEmplacement'  , Header: 'Emplacement'  , isHidden: !displayLibelleEmplacement},
-        {accessor: 'libelleSac'          , Header: 'Sac'          , isHidden: !displayLibelleSac},
-        {accessor: 'libelleLot'          , Header: 'Lot'          , isHidden: !displayLibelleLot},
-        {accessor: 'quantite'            , Header: 'Quantité'     , isHidden: !displayQuantite},
-        {accessor: 'peremption'          , Header: 'Péremption'   , isHidden: !displayPeremption},
-        {accessor: 'libelleMaterielsEtat', Header: 'Etat'         , isHidden: !displayLibelleMaterielsEtat},
-        {accessor: 'notif'               , Header: 'Notifications', isHidden: !displayNotif},
-        {accessor: 'actions'             , Header: 'Actions'      , isHidden: !displayActions},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of materiels)
         {
-            tempTable.push({
-                libelleMateriel     : item.libelleMateriel,
-                libelleEmplacement  : item.libelleEmplacement,
-                libelleSac          : item.libelleSac,
-                libelleLot          : item.libelleLot,
-                quantite: 
-                    item.quantite < item.quantiteAlerte ?
-                        <SoftBadge bg='danger'>{item.quantite}</SoftBadge>
+            accessor: 'libelleMateriel',
+            Header: 'Libellé',
+            isHidden: !displayLibelleMateriel,
+        },
+        {
+            accessor: 'libelleEmplacement',
+            Header: 'Emplacement',
+            isHidden: !displayLibelleEmplacement,
+        },
+        {
+            accessor: 'libelleSac',
+            Header: 'Sac',
+            isHidden: !displayLibelleSac,
+        },
+        {
+            accessor: 'libelleLot',
+            Header: 'Lot',
+            isHidden: !displayLibelleLot,
+        },
+        {
+            accessor: 'quantite',
+            Header: 'Quantité',
+            isHidden: !displayQuantite,
+            Cell: ({ value, row }) => {
+				return(
+                    row.original.quantite < row.original.quantiteAlerte ?
+                        <SoftBadge bg='danger'>{row.original.quantite}</SoftBadge>
                     :
-                        item.quantite == item.quantiteAlerte ?
-                            <SoftBadge bg='warning'>{item.quantite}</SoftBadge>
+                        row.original.quantite == row.original.quantiteAlerte ?
+                            <SoftBadge bg='warning'>{row.original.quantite}</SoftBadge>
                         :
-                            <SoftBadge bg='success'>{item.quantite}</SoftBadge>
-                ,
-                peremption:
-                    item.peremption != null ?
-                        item.peremption < new Date() ?
-                            <SoftBadge bg='danger'>{moment(item.peremption).format('DD/MM/YYYY')}</SoftBadge>
+                            <SoftBadge bg='success'>{row.original.quantite}</SoftBadge>
+                );
+			},
+        },
+        {
+            accessor: 'peremption',
+            Header: 'Péremption',
+            isHidden: !displayPeremption,
+            Cell: ({ value, row }) => {
+				return(
+                    row.original.peremption != null ?
+                        row.original.peremption < new Date() ?
+                            <SoftBadge bg='danger'>{moment(row.original.peremption).format('DD/MM/YYYY')}</SoftBadge>
                         :
-                            item.peremptionNotification < new Date() ?
-                                <SoftBadge bg='warning'>{moment(item.peremption).format('DD/MM/YYYY')}</SoftBadge>
+                            row.original.peremptionNotification < new Date() ?
+                                <SoftBadge bg='warning'>{moment(row.original.peremption).format('DD/MM/YYYY')}</SoftBadge>
                             :
-                                <SoftBadge bg='success'>{moment(item.peremption).format('DD/MM/YYYY')}</SoftBadge>
+                                <SoftBadge bg='success'>{moment(row.original.peremption).format('DD/MM/YYYY')}</SoftBadge>
                     :
                         null
-                ,
-                libelleMaterielsEtat: item.libelleMaterielsEtat,
-                notif               : item.idNotificationEnabled != 1 ? <FontAwesomeIcon icon='bell-slash' /> : <FontAwesomeIcon icon='bell' />,
-                actions             : <>
-                    {item.inventaireEnCours ?
-                        <SoftBadge bg='danger'>INVENTAIRE EN COURS</SoftBadge>    
-                    :
-                        <>
-                            {HabilitationService.habilitations['reserve_ReserveVersLot'] ? 
-                                <TransfertsMaterielsOpe idElement={item.idElement} setPageNeedsRefresh={setPageNeedsRefresh} />
-                            : null}
-                            {HabilitationService.habilitations['materiel_modification'] ? 
-                                <MaterielsForm idElement={item.idElement} element={item} setPageNeedsRefresh={setPageNeedsRefresh} />
-                            : null}
-                            {HabilitationService.habilitations['materiel_suppression'] ? 
-                                <MaterielsDeleteModal idElement={item.idElement} setPageNeedsRefresh={setPageNeedsRefresh} />
-                            : null}
-                        </>
-                    }
-                </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [materiels])
+                );
+			},
+        },
+        {
+            accessor: 'libelleMaterielsEtat',
+            Header: 'Etat',
+            isHidden: !displayLibelleMaterielsEtat,
+        },
+        {
+            accessor: 'notif',
+            Header: 'Notifications',
+            isHidden: !displayNotif,
+            Cell: ({ value, row }) => {
+				return(row.original.idNotificationEnabled != 1 ? <FontAwesomeIcon icon='bell-slash' /> : <FontAwesomeIcon icon='bell' />);
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            isHidden: !displayActions,
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        {row.original.inventaireEnCours ?
+                            <SoftBadge bg='danger'>INVENTAIRE EN COURS</SoftBadge>    
+                        :
+                            <>
+                                {HabilitationService.habilitations['reserve_ReserveVersLot'] ? 
+                                    <TransfertsMaterielsOpe idElement={row.original.idElement} setPageNeedsRefresh={setPageNeedsRefresh} />
+                                : null}
+                                {HabilitationService.habilitations['materiel_modification'] ? 
+                                    <MaterielsForm idElement={row.original.idElement} element={row.original} setPageNeedsRefresh={setPageNeedsRefresh} />
+                                : null}
+                                {HabilitationService.habilitations['materiel_suppression'] ? 
+                                    <MaterielsDeleteModal idElement={row.original.idElement} setPageNeedsRefresh={setPageNeedsRefresh} />
+                                : null}
+                            </>
+                        }
+                    </>
+                );
+			},
+        },
+    ];
 
     return (
     <>
         {readyToDisplay ?
             <GPMtable
                 columns={colonnes}
-                data={lignes}
+                data={materiels}
                 topButtonShow={true && !hideAddButton}
                 topButton={
                     HabilitationService.habilitations['materiel_ajout'] ?

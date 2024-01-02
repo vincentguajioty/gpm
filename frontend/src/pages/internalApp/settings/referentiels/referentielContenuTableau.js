@@ -5,39 +5,35 @@ import GPMtable from 'components/gpmTable/gpmTable';
 
 const ReferentielContenuTableau = ({contenu}) => {
     const colonnes = [
-        {accessor: 'libelleMateriel'        , Header: 'Matériel'},
-        {accessor: 'quantiteReferentiel'    , Header: 'Quantité'},
-        {accessor: 'obligatoire'            , Header: 'Obligation'},
-        {accessor: 'libelleCategorie'       , Header: 'Catégorie'},
-        {accessor: 'commentairesReferentiel', Header: 'Commentaires'},
-    ];
-
-    const [lignes, setLignes] = useState([]);
-    const initTableLignes = () => {
-        let tempTable  = [];
-        for(const item of contenu)
         {
-            tempTable.push({
-                libelleMateriel        : item.libelleMateriel,
-                quantiteReferentiel    : item.quantiteReferentiel,
-                obligatoire            : item.obligatoire ? <SoftBadge bg="info">Obligatoire</SoftBadge> : <SoftBadge bg="success">Facultatif</SoftBadge>,
-                libelleCategorie       : item.libelleCategorie,
-                commentairesReferentiel: item.commentairesReferentiel,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(()=>{
-        initTableLignes();
-    },[])
-    useEffect(()=>{
-        initTableLignes();
-    },[contenu])
+            accessor: 'libelleMateriel',
+            Header: 'Matériel',
+        },
+        {
+            accessor: 'quantiteReferentiel',
+            Header: 'Quantité',
+        },
+        {
+            accessor: 'obligatoire',
+            Header: 'Obligation',
+            Cell: ({ value, row }) => {
+				return(value ? <SoftBadge bg="info">Obligatoire</SoftBadge> : <SoftBadge bg="success">Facultatif</SoftBadge>);
+			},
+        },
+        {
+            accessor: 'libelleCategorie',
+            Header: 'Catégorie',
+        },
+        {
+            accessor: 'commentairesReferentiel',
+            Header: 'Commentaires',
+        },
+    ];
 
     return (
         <GPMtable
             columns={colonnes}
-            data={lignes}
+            data={contenu}
         />
     );
 };

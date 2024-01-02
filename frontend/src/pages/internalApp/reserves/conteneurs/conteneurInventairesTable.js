@@ -35,61 +35,78 @@ const ConteneurInventairesTable = ({
 
     const [idReserveInventaireEnCours, setIdReserveInventaireEnCours] = useState();
     const colonnes = [
-        {accessor: 'dateInventaire'        , Header: 'Date'},
-        {accessor: 'idPersonne'            , Header: 'Réalisé par'},
-        {accessor: 'commentairesInventaire', Header: 'Commentaires'},
-        {accessor: 'actions'               , Header: 'Actions'},
+        {
+            accessor: 'dateInventaire',
+            Header: 'Date',
+            Cell: ({ value, row }) => {
+				return(moment(value).format('DD/MM/YYYY'));
+			},
+        },
+        {
+            accessor: 'idPersonne',
+            Header: 'Réalisé par',
+            Cell: ({ value, row }) => {
+				return(row.original.nomPersonne+' '+row.original.prenomPersonne);
+			},
+        },
+        {
+            accessor: 'commentairesInventaire',
+            Header: 'Commentaires',
+            Cell: ({ value, row }) => {
+				return(nl2br(value));
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        {row.original.inventaireEnCours && inventaireEnCours ?
+                            <IconButton
+                                icon='binoculars'
+                                size = 'sm'
+                                variant="warning"
+                                className="me-1"
+                                onClick={()=>{navigate('/inventaireReserveEnCours/'+row.original.idReserveInventaire)}}
+                            >Rejoindre l'inventaire en cours</IconButton>
+                        : <>
+                            <IconButton
+                                icon='eye'
+                                size = 'sm'
+                                variant="outline-info"
+                                className="me-1"
+                                onClick={()=>{handleShowDetailsModal(row.original.idReserveInventaire)}}
+                            />
+
+                            {HabilitationService.habilitations['reserve_suppression'] ? 
+                                <IconButton
+                                    icon='trash'
+                                    size = 'sm'
+                                    variant="outline-danger"
+                                    className="me-1"
+                                    onClick={()=>{handleShowDeleteModal(row.original.idReserveInventaire)}}
+                                />
+                            : null}
+                        </>}
+                    </>
+                );
+			},
+        },
     ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
+    const initInventaireEnCoursID = () => {
         for(const item of inventaires)
         {
-            if(item.inventaireEnCours){setIdReserveInventaireEnCours(item.idReserveInventaire)}
-
-            tempTable.push({
-                dateInventaire: moment(item.dateInventaire).format('DD/MM/YYYY'),
-                idPersonne: item.nomPersonne+' '+item.prenomPersonne,
-                commentairesInventaire: nl2br(item.commentairesInventaire),
-                actions: <>
-                    {item.inventaireEnCours && inventaireEnCours ?
-                        <IconButton
-                            icon='binoculars'
-                            size = 'sm'
-                            variant="warning"
-                            className="me-1"
-                            onClick={()=>{navigate('/inventaireReserveEnCours/'+item.idReserveInventaire)}}
-                        >Rejoindre l'inventaire en cours</IconButton>
-                    : <>
-                        <IconButton
-                            icon='eye'
-                            size = 'sm'
-                            variant="outline-info"
-                            className="me-1"
-                            onClick={()=>{handleShowDetailsModal(item.idReserveInventaire)}}
-                        />
-
-                        {HabilitationService.habilitations['reserve_suppression'] ? 
-                            <IconButton
-                                icon='trash'
-                                size = 'sm'
-                                variant="outline-danger"
-                                className="me-1"
-                                onClick={()=>{handleShowDeleteModal(item.idReserveInventaire)}}
-                            />
-                        : null}
-                    </>}
-                </>,
-            })
+            if(item.inventaireEnCours)
+            {setIdReserveInventaireEnCours(item.idReserveInventaire)}
         }
-        setLignes(tempTable);
     }
     useEffect(() => {
-        initTableau();
+        initInventaireEnCoursID();
     }, [inventaires])
 
     useEffect(() => {
-        initTableau();
+        initInventaireEnCoursID();
     }, [])
 
     /* DELETE */
@@ -127,12 +144,26 @@ const ConteneurInventairesTable = ({
     const [showDetailsModal, setShowDetailsModal] = useState(false);
     const [inventaire, setInventaire] = useState([]);
     const inventaireColonnes = [
-        {accessor: 'libelleMateriel'  , Header: 'Matériel'},
-        {accessor: 'libelleCategorie' , Header: 'Catégorie'},
-        {accessor: 'quantiteInventaire'         , Header: 'Quantité'},
-        {accessor: 'peremptionInventaire'       , Header: 'Péremption'},
+        {
+            accessor: 'libelleMateriel',
+            Header: 'Matériel',
+        },
+        {
+            accessor: 'libelleCategorie',
+            Header: 'Catégorie',
+        },
+        {
+            accessor: 'quantiteInventaire',
+            Header: 'Quantité',
+        },
+        {
+            accessor: 'peremptionInventaire',
+            Header: 'Péremption',
+            Cell: ({ value, row }) => {
+				return(value ? moment(value).format('DD/MM/YYYY') : null);
+			},
+        },
     ];
-    const [inventaireLignes, setInventaireLignes] = useState([]);
     const handleCloseDetailsModal = () => {
         setShowDetailsModal(false);
         setLoading(false);
@@ -147,18 +178,6 @@ const ConteneurInventairesTable = ({
                 idReserveInventaire: id,
             })
             setInventaire(getInventaire.data);
-
-            let tempArray = [];
-            for(const item of getInventaire.data.contenu)
-            {
-                tempArray.push({
-                    libelleMateriel: item.libelleMateriel,
-                    libelleCategorie: item.libelleCategorie,
-                    quantiteInventaire: item.quantiteInventaire,
-                    peremptionInventaire: item.peremptionInventaire ? moment(item.peremptionInventaire).format('DD/MM/YYYY') : null,
-                });
-            }
-            setInventaireLignes(tempArray);
 
             setLoading(false);
         } catch (error) {
@@ -261,7 +280,7 @@ const ConteneurInventairesTable = ({
                         </Table>
                         <GPMtable
                             columns={inventaireColonnes}
-                            data={inventaireLignes}
+                            data={inventaire.contenu}
                             topButtonShow={false}
                         />
                     </>
@@ -338,7 +357,7 @@ const ConteneurInventairesTable = ({
         
         <GPMtable
             columns={colonnes}
-            data={lignes}
+            data={inventaires}
             topButtonShow={true}
             topButton={
                 inventaireEnCours ?

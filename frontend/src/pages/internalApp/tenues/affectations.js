@@ -48,71 +48,70 @@ const AffectationsTenues = () => {
     }, [])
 
     const colonnes = [
-        {accessor: 'personne',     Header: 'Personne'},
-        {accessor: 'affectation',  Header: 'Affectation'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of affectations)
         {
-            tempTable.push({
-                personne:<>{item.nomPrenom}{item.type=='externe' ? <SoftBadge bg='secondary' className='ms-1'>Externe</SoftBadge>:null}</>,
-                affectation:<Table className="fs--1 mt-3" size='sm' responsive>
-                    <thead>
-                        <tr>
-                            <th>Element</th>
-                            <th>Taille</th>
-                            <th>Affecté le</th>
-                            <th>Retour prévu le</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {item.affectations.map((affect, i)=>{return(
+            accessor: 'personne',
+            Header: 'Personne',
+            Cell: ({ value, row }) => {
+				return(<>{row.original.nomPrenom}{row.original.type=='externe' ? <SoftBadge bg='secondary' className='ms-1'>Externe</SoftBadge>:null}</>);
+			},
+        },
+        {
+            accessor: 'affectations',
+            Header: 'Affectation',
+            Cell: ({ value, row }) => {
+				return(
+                    <Table className="fs--1 mt-3" size='sm' responsive>
+                        <thead>
                             <tr>
-                                <td>{affect.libelleCatalogueTenue}</td>
-                                <td>{affect.tailleCatalogueTenue}</td>
-                                <td>{affect.dateAffectation != null ? moment(affect.dateAffectation).format('DD/MM/YYYY') : null}</td>
-                                <td>{affect.dateRetour != null ? 
-                                        new Date(affect.dateRetour) < new Date() ?
-                                            <SoftBadge bg='danger'>{moment(affect.dateRetour).format('DD/MM/YYYY')}</SoftBadge>
-                                        :
-                                            <SoftBadge bg='success'>{moment(affect.dateRetour).format('DD/MM/YYYY')}</SoftBadge>
-                                    : null}
-                                </td>
-                                <td>
-                                    {HabilitationService.habilitations['tenues_modification'] ? 
-                                        <IconButton
-                                            icon='pen'
-                                            size = 'sm'
-                                            variant="outline-warning"
-                                            className="me-1"
-                                            onClick={()=>{handleShowOffCanevas(affect.idTenue)}}
-                                        />
-                                    : null}
-                                    {HabilitationService.habilitations['tenues_suppression'] ? 
-                                        <IconButton
-                                            icon='trash'
-                                            size = 'sm'
-                                            variant="outline-danger"
-                                            className="me-1"
-                                            onClick={()=>{handleShowDeleteModal(affect.idTenue)}}
-                                        />
-                                    : null}
-                                </td>
+                                <th>Element</th>
+                                <th>Taille</th>
+                                <th>Affecté le</th>
+                                <th>Retour prévu le</th>
+                                <th>Actions</th>
                             </tr>
-                        )})}
-                    </tbody>
-                </Table>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [affectations, affectationsRow])
-
+                        </thead>
+                        <tbody>
+                            {value.map((affect, i)=>{return(
+                                <tr>
+                                    <td>{affect.libelleCatalogueTenue}</td>
+                                    <td>{affect.tailleCatalogueTenue}</td>
+                                    <td>{affect.dateAffectation != null ? moment(affect.dateAffectation).format('DD/MM/YYYY') : null}</td>
+                                    <td>{affect.dateRetour != null ? 
+                                            new Date(affect.dateRetour) < new Date() ?
+                                                <SoftBadge bg='danger'>{moment(affect.dateRetour).format('DD/MM/YYYY')}</SoftBadge>
+                                            :
+                                                <SoftBadge bg='success'>{moment(affect.dateRetour).format('DD/MM/YYYY')}</SoftBadge>
+                                        : null}
+                                    </td>
+                                    <td>
+                                        {HabilitationService.habilitations['tenues_modification'] ? 
+                                            <IconButton
+                                                icon='pen'
+                                                size = 'sm'
+                                                variant="outline-warning"
+                                                className="me-1"
+                                                onClick={()=>{handleShowOffCanevas(affect.idTenue)}}
+                                            />
+                                        : null}
+                                        {HabilitationService.habilitations['tenues_suppression'] ? 
+                                            <IconButton
+                                                icon='trash'
+                                                size = 'sm'
+                                                variant="outline-danger"
+                                                className="me-1"
+                                                onClick={()=>{handleShowDeleteModal(affect.idTenue)}}
+                                            />
+                                        : null}
+                                    </td>
+                                </tr>
+                            )})}
+                        </tbody>
+                    </Table>
+                );
+			},
+        },
+    ];
+    
     //formulaire d'ajout
     const [showOffCanevas, setShowOffCanevas] = useState(false);
     const [offCanevasIdTenue, setOffCanevasIdTenue] = useState();
@@ -341,7 +340,7 @@ const AffectationsTenues = () => {
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
-                        data={lignes}
+                        data={affectations}
                         topButtonShow={true}
                         topButton={
                             HabilitationService.habilitations['tenues_ajout'] ?

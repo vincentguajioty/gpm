@@ -44,44 +44,55 @@ const Catalogue = () => {
 	}, [])
 
     /* TABLE FOR DISPLAY */
-    const colonnes = [
-        {accessor: 'libelleMateriel'          , Header: 'Libellé'},
-        {accessor: 'libelleCategorie'         , Header: 'Catégorie'},
-        {accessor: 'nomFournisseur'           , Header: 'Fournisseur de prédilection'},
-        {accessor: 'peremptionAnticipationOpe', Header: 'Anticipation de péremption lots/réserves'},
-        {accessor: 'commentairesMateriel'     , Header: 'Commentaires'},
-        {accessor: 'nbCodesBarre'             , Header: 'Codes barre liés'},
-        {accessor: 'actions'                  , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
     const nl2br = require('react-nl2br');
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of catalogue)
+    const colonnes = [
         {
-            tempTable.push({
-                libelleMateriel          : item.libelleMateriel,
-                libelleCategorie         : item.libelleCategorie,
-                nomFournisseur           : item.nomFournisseur,
-                peremptionAnticipationOpe: <>{item.peremptionAnticipationOpe} / {item.peremptionAnticipationRes}</>,
-                commentairesMateriel     : nl2br(item.commentairesMateriel),
-                nbCodesBarre             : item.nbCodesBarre,
-                actions                  :
+            accessor: 'libelleMateriel',
+            Header: 'Libellé',
+        },
+        {
+            accessor: 'libelleCategorie',
+            Header: 'Catégorie',
+        },
+        {
+            accessor: 'nomFournisseur',
+            Header: 'Fournisseur de prédilection',
+        },
+        {
+            accessor: 'peremptionAnticipationOpe',
+            Header: 'Anticipation de péremption lots/réserves',
+            Cell: ({ value, row }) => {
+				return(<>{row.original.peremptionAnticipationOpe} / {row.original.peremptionAnticipationRes}</>);
+			},
+        },
+        {
+            accessor: 'commentairesMateriel',
+            Header: 'Commentaires',
+            Cell: ({ value, row }) => {
+				return(nl2br(value));
+			},
+        },
+        {
+            accessor: 'nbCodesBarre',
+            Header: 'Codes barre liés',
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
                     <>
                         {HabilitationService.habilitations['catalogue_modification'] ? 
-                            <ActionButton onClick={() => handleShowOffCanevas(item.idMaterielCatalogue)} icon="pen" title="Modifier" variant="action" className="p-0 me-2" />
+                            <ActionButton onClick={() => handleShowOffCanevas(row.original.idMaterielCatalogue)} icon="pen" title="Modifier" variant="action" className="p-0 me-2" />
                         : null }
                         {HabilitationService.habilitations['catalogue_suppression'] ? 
-                            <ActionButton onClick={() => handleShowDeleteModal(item.idMaterielCatalogue)} icon="trash" title="Supprimer" variant="action" className="p-0" />
+                            <ActionButton onClick={() => handleShowDeleteModal(row.original.idMaterielCatalogue)} icon="trash" title="Supprimer" variant="action" className="p-0" />
                         : null }
-                    </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-		initTableau();
-	}, [catalogue])
+                    </>
+                );
+			},
+        },
+    ];
 
     /* FORM */
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -320,7 +331,7 @@ const Catalogue = () => {
                     >
                         <GPMtable
                             columns={colonnes}
-                            data={lignes}
+                            data={catalogue}
                             topButtonShow={true}
                             topButton={
                                 HabilitationService.habilitations['catalogue_ajout'] ? 

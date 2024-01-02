@@ -40,34 +40,48 @@ const Equipements = () => {
     }, [])
 
     const colonnes = [
-        {accessor: 'vhfIndicatif'   , Header: 'Indicatif'},
-        {accessor: 'libelleType'    , Header: 'Type'},
-        {accessor: 'libelleVhfEtat' , Header: 'Etat'},
-        {accessor: 'libelleTechno'  , Header: 'Technologie'},
-        {accessor: 'nbAccessoires'  , Header: 'Accessoires'},
-        {accessor: 'libellePlan'    , Header: 'Plan de fréquence'},
-        {accessor: 'actions'        , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of equipementsVhf)
         {
-            tempTable.push({
-                vhfIndicatif: <Link to={'/vhfEquipements/'+item.idVhfEquipement}>{item.vhfIndicatif}</Link>,
-                libelleType: item.libelleType,
-                libelleVhfEtat: item.libelleVhfEtat,
-                libelleTechno: item.libelleTechno,
-                nbAccessoires: item.nbAccessoires,
-                libellePlan: item.idVhfPlan > 0 ? <SoftBadge bg='info'>{item.libellePlan}</SoftBadge> : <SoftBadge bg='danger'>Non-Programmée</SoftBadge>,
-                actions:
+            accessor: 'vhfIndicatif',
+            Header: 'Indicatif',
+            Cell: ({ value, row }) => {
+				return(<Link to={'/vhfEquipements/'+row.original.idVhfEquipement}>{row.original.vhfIndicatif}</Link>);
+			},
+        },
+        {
+            accessor: 'libelleType',
+            Header: 'Type',
+        },
+        {
+            accessor: 'libelleVhfEtat',
+            Header: 'Etat',
+        },
+        {
+            accessor: 'libelleTechno',
+            Header: 'Technologie',
+        },
+        {
+            accessor: 'nbAccessoires',
+            Header: 'Accessoires',
+        },
+        {
+            accessor: 'libellePlan',
+            Header: 'Plan de fréquence',
+            Cell: ({ value, row }) => {
+				return(row.original.idVhfPlan > 0 ? <SoftBadge bg='info'>{row.original.libellePlan}</SoftBadge> : <SoftBadge bg='danger'>Non-Programmée</SoftBadge>);
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
                     <>
                         <IconButton
                             icon='eye'
                             size = 'sm'
                             variant="outline-primary"
                             className="me-1"
-                            onClick={()=>{navigate('/vhfEquipements/'+item.idVhfEquipement)}}
+                            onClick={()=>{navigate('/vhfEquipements/'+row.original.idVhfEquipement)}}
                         />
                         {HabilitationService.habilitations['vhf_equipement_suppression'] ? 
                             <IconButton
@@ -75,17 +89,14 @@ const Equipements = () => {
                                 size = 'sm'
                                 variant="outline-danger"
                                 className="me-1"
-                                onClick={()=>{handleShowDeleteModal(item.idVhfEquipement)}}
+                                onClick={()=>{handleShowDeleteModal(row.original.idVhfEquipement)}}
                             />
                         : null}
-                    </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [equipementsVhf])
+                    </>
+                );
+			},
+        },
+    ];
 
     //formulaire d'ajout
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -196,7 +207,7 @@ const Equipements = () => {
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
-                        data={lignes}
+                        data={equipementsVhf}
                         topButtonShow={true}
                         topButton={
                             HabilitationService.habilitations['vhf_equipement_ajout'] ?

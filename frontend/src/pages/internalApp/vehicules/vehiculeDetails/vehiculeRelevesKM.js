@@ -22,29 +22,37 @@ setDefaultLocale('fr');
 
 const VehiculeRelevesKM = ({idVehicule, relevesKM, setPageNeedsRefresh}) => {
     const colonnes = [
-        {accessor: 'dateReleve'        , Header: 'Date'},
-        {accessor: 'releveKilometrique', Header: 'Relevé'},
-        {accessor: 'identifiant'       , Header: 'Intervenant'},
-        {accessor: 'actions'           , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of relevesKM)
         {
-            tempTable.push({
-                dateReleve: moment(item.dateReleve).format('DD/MM/YYYY'),
-                releveKilometrique: item.releveKilometrique + ' km',
-                identifiant: item.identifiant,
-                actions:
-                    item.idReleve > 0 ? <>
+            accessor: 'dateReleve',
+            Header: 'Date',
+            Cell: ({ value, row }) => {
+				return(moment(value).format('DD/MM/YYYY'));
+			},
+        },
+        {
+            accessor: 'releveKilometrique',
+            Header: 'Relevé',
+            Cell: ({ value, row }) => {
+				return(value + ' km');
+			},
+        },
+        {
+            accessor: 'identifiant',
+            Header: 'Intervenant',
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
+                    row.original.idReleve > 0 ? <>
                         {HabilitationService.habilitations['vehicules_modification'] ? 
                             <IconButton
                                 icon='pen'
                                 size = 'sm'
                                 variant="outline-warning"
                                 className="me-1"
-                                onClick={()=>{handleShowOffCanevas(item.idReleve)}}
+                                onClick={()=>{handleShowOffCanevas(row.original.idReleve)}}
                             />
                         : null}
 
@@ -54,17 +62,14 @@ const VehiculeRelevesKM = ({idVehicule, relevesKM, setPageNeedsRefresh}) => {
                                 size = 'sm'
                                 variant="outline-danger"
                                 className="me-1"
-                                onClick={()=>{handleShowDeleteModal(item.idReleve)}}
+                                onClick={()=>{handleShowDeleteModal(row.original.idReleve)}}
                             />
                         : null}
-                    </> : <i>Relevé fait via une maintenance</i>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [relevesKM])
+                    </> : <i>Relevé fait via une maintenance</i>
+                );
+			},
+        },
+    ];
 
     //formulaire d'ajout
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -230,7 +235,7 @@ const VehiculeRelevesKM = ({idVehicule, relevesKM, setPageNeedsRefresh}) => {
 
         <GPMtable
             columns={colonnes}
-            data={lignes}
+            data={relevesKM}
             topButtonShow={true}
             topButton={
                 HabilitationService.habilitations['vehicules_modification'] ?

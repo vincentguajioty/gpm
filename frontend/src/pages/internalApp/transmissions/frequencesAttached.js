@@ -36,40 +36,43 @@ const FrequencesAttached = ({vhfCanal}) => {
     }
 
     const colonnes = [
-        {accessor: 'nomDocCanalVHF',       Header: 'Nom du document'},
-        {accessor: 'libelleTypeDocument' , Header: 'Type'},
-        {accessor: 'formatDocCanalVHF' ,   Header: 'Format'},
-        {accessor: 'dateDocCanalVHF' ,     Header: 'Date'},
-        {accessor: 'actions'       ,       Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of documents)
         {
-            tempTable.push({
-                nomDocCanalVHF: item.nomDocCanalVHF,
-                libelleTypeDocument: item.libelleTypeDocument,
-                formatDocCanalVHF: item.formatDocCanalVHF,
-                dateDocCanalVHF: moment(item.dateDocCanalVHF).format('DD/MM/YYYY HH:mm'),
-                actions:
+            accessor: 'nomDocCanalVHF',
+            Header: 'Nom du document',
+        },
+        {
+            accessor: 'libelleTypeDocument',
+            Header: 'Type',
+        },
+        {
+            accessor: 'formatDocCanalVHF',
+            Header: 'Format',
+        },
+        {
+            accessor: 'dateDocCanalVHF',
+            Header: 'Date',
+            Cell: ({ value, row }) => {
+				return(moment(value).format('DD/MM/YYYY HH:mm'));
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
                     <CardDropdown>
                         <div className="py-2">
-                            {item.formatDocCanalVHF == 'pdf' ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePDF(item.urlFichierDocCanalVHF)}}>Afficher le PDF</Dropdown.Item>) : null}
-                            {["png", "jpg", "jpeg"].includes(item.formatDocCanalVHF) ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePicture(item.urlFichierDocCanalVHF)}}>Afficher l'image</Dropdown.Item>) : null}
-                            <Dropdown.Item className='text-success' onClick={() => {downloadDocument(item.urlFichierDocCanalVHF, item.nomDocCanalVHF, item.formatDocCanalVHF)}}>Télécharger</Dropdown.Item>
+                            {row.original.formatDocCanalVHF == 'pdf' ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePDF(row.original.urlFichierDocCanalVHF)}}>Afficher le PDF</Dropdown.Item>) : null}
+                            {["png", "jpg", "jpeg"].includes(row.original.formatDocCanalVHF) ? (<Dropdown.Item className='text-info' onClick={() => {displayOnePicture(row.original.urlFichierDocCanalVHF)}}>Afficher l'image</Dropdown.Item>) : null}
+                            <Dropdown.Item className='text-success' onClick={() => {downloadDocument(row.original.urlFichierDocCanalVHF, row.original.nomDocCanalVHF, row.original.formatDocCanalVHF)}}>Télécharger</Dropdown.Item>
                             <Dropdown.Divider />
-                            <Dropdown.Item className='text-danger' onClick={() => (supprimerEntree(item.idDocCanalVHF))}>Supprimer (attention pas de confirmation)</Dropdown.Item>
+                            <Dropdown.Item className='text-danger' onClick={() => (supprimerEntree(row.original.idDocCanalVHF))}>Supprimer (attention pas de confirmation)</Dropdown.Item>
                         </div>
                     </CardDropdown>
-                ,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [documents])
+                );
+			},
+        },
+    ];
 
     //partie formulaire
     const [isLoading, setIsLoading] = useState(false);
@@ -230,7 +233,7 @@ const FrequencesAttached = ({vhfCanal}) => {
                         <Col md={8} className='mb-2'>
                             <GPMtable
                                 columns={colonnes}
-                                data={lignes}
+                                data={documents}
                             />
                         </Col>
                         <Col md={4}>

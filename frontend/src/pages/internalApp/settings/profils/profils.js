@@ -37,31 +37,38 @@ const Profils = () => {
     useEffect(() => {
         initPage();
     }, [])
-
+    const nl2br = require('react-nl2br');
     const colonnes = [
-        {accessor: 'libelleProfil', Header: 'Libellé'},
-        {accessor: 'LDAP_BINDDN', Header: 'Local/AD'},
-        {accessor: 'descriptifProfil' , Header: 'Description'},
-        {accessor: 'actions'       , Header: 'Actions'},
-    ];
-    const nl2br = require('react-nl2br')
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of profils)
         {
-            tempTable.push({
-                libelleProfil: item.libelleProfil,
-                LDAP_BINDDN: <SoftBadge bg={item.LDAP_BINDDN == null ? 'secondary' : 'info'} className='me-1'>{item.LDAP_BINDDN == null ? 'Groupe local' : 'Lié au groupe AD: '+item.LDAP_BINDDN}</SoftBadge>,
-                descriptifProfil: nl2br(item.descriptifProfil),
-                actions:
+            accessor: 'libelleProfil',
+            Header: 'Libellé',
+        },
+        {
+            accessor: 'LDAP_BINDDN',
+            Header: 'Local/AD',
+            Cell: ({ value, row }) => {
+				return(<SoftBadge bg={row.original.LDAP_BINDDN == null ? 'secondary' : 'info'} className='me-1'>{row.original.LDAP_BINDDN == null ? 'Groupe local' : 'Lié au groupe AD: '+row.original.LDAP_BINDDN}</SoftBadge>);
+			},
+        },
+        {
+            accessor: 'descriptifProfil',
+            Header: 'Description',
+            Cell: ({ value, row }) => {
+				return(nl2br(value));
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
                     <>
                         <IconButton
                             icon='eye'
                             size = 'sm'
                             variant="outline-primary"
                             className="me-1"
-                            onClick={()=>{handleShowEditModal(item.idProfil)}}
+                            onClick={()=>{handleShowEditModal(row.original.idProfil)}}
                         />
                         {HabilitationService.habilitations['typesLots_suppression'] ? 
                             <IconButton
@@ -69,17 +76,14 @@ const Profils = () => {
                                 size = 'sm'
                                 variant="outline-danger"
                                 className="me-1"
-                                onClick={()=>{handleShowDeleteModal(item.idProfil)}}
+                                onClick={()=>{handleShowDeleteModal(row.original.idProfil)}}
                             />
                         : null}
-                    </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [profils])
+                    </>
+                );
+			},
+        },
+    ];
 
     //formulaire d'ajout et modification
     const [showEditModal, setShowEditModal] = useState(false);
@@ -3016,7 +3020,7 @@ const Profils = () => {
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
-                        data={lignes}
+                        data={profils}
                         topButtonShow={true}
                         topButton={
                             HabilitationService.habilitations['profils_ajout'] ?

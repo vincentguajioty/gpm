@@ -38,33 +38,45 @@ const Tenues = () => {
     }, [])
 
     const colonnes = [
-        {accessor: 'libelleCatalogueTenue', Header: 'Libellé'},
-        {accessor: 'tailleCatalogueTenue' , Header: 'Taille'},
-        {accessor: 'stockCatalogueTenue' , Header: 'Stock'},
-        {accessor: 'affectations' , Header: 'Affectations'},
-        {accessor: 'actions'       , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of catalogue)
         {
-            tempTable.push({
-                libelleCatalogueTenue: item.libelleCatalogueTenue,
-                tailleCatalogueTenue: item.tailleCatalogueTenue,
-                stockCatalogueTenue: 
-                    item.stockCatalogueTenue < item.stockAlerteCatalogueTenue ?
-                        <SoftBadge bg='danger'>{item.stockCatalogueTenue}</SoftBadge>
+            accessor: 'libelleCatalogueTenue',
+            Header: 'Libellé',
+        },
+        {
+            accessor: 'tailleCatalogueTenue',
+            Header: 'Taille',
+        },
+        {
+            accessor: 'stockCatalogueTenue',
+            Header: 'Stock',
+            Cell: ({ value, row }) => {
+				return(
+                    value < row.original.stockAlerteCatalogueTenue ?
+                        <SoftBadge bg='danger'>{value}</SoftBadge>
                     :
-                        item.stockCatalogueTenue == item.stockAlerteCatalogueTenue ?
-                            <SoftBadge bg='warning'>{item.stockCatalogueTenue}</SoftBadge>
+                        value == row.original.stockAlerteCatalogueTenue ?
+                            <SoftBadge bg='warning'>{value}</SoftBadge>
                         :
-                            <SoftBadge bg='success'>{item.stockCatalogueTenue}</SoftBadge>
-                ,
-                affectations: <>{item.affectations.map((affect, i)=>{return(
-                    <SoftBadge bg='info' className='me-1'>{affect.personneNonGPM}{affect.identifiant}</SoftBadge>
-                )})}</>,
-                actions:
+                            <SoftBadge bg='success'>{value}</SoftBadge>
+                );
+			},
+        },
+        {
+            accessor: 'affectations',
+            Header: 'Affectations',
+            Cell: ({ value, row }) => {
+				return(
+                    <>{value.map((affect, i)=>{return(
+                        <SoftBadge bg='info' className='me-1'>{affect.personneNonGPM}{affect.identifiant}</SoftBadge>
+                    )})}</>
+                );
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
                     <>
                         {HabilitationService.habilitations['tenuesCatalogue_modification'] ? 
                             <IconButton
@@ -72,7 +84,7 @@ const Tenues = () => {
                                 size = 'sm'
                                 variant="outline-warning"
                                 className="me-1"
-                                onClick={()=>{handleShowOffCanevas(item.idCatalogueTenue)}}
+                                onClick={()=>{handleShowOffCanevas(row.original.idCatalogueTenue)}}
                             />
                         : null}
                         {HabilitationService.habilitations['tenuesCatalogue_suppression'] ? 
@@ -81,17 +93,15 @@ const Tenues = () => {
                                 size = 'sm'
                                 variant="outline-danger"
                                 className="me-1"
-                                onClick={()=>{handleShowDeleteModal(item.idCatalogueTenue)}}
+                                onClick={()=>{handleShowDeleteModal(row.original.idCatalogueTenue)}}
                             />
                         : null}
-                    </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [catalogue])
+                    </>
+                );
+			},
+        },
+    ];
+
 
     //formulaire d'ajout
     const [showOffCanevas, setShowOffCanevas] = useState(false);
@@ -283,7 +293,7 @@ const Tenues = () => {
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
-                        data={lignes}
+                        data={catalogue}
                         topButtonShow={true}
                         topButton={
                             HabilitationService.habilitations['tenuesCatalogue_ajout'] ?

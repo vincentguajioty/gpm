@@ -15,47 +15,50 @@ import VehiculeDesinfectionsForm from './vehiculeDesinfectionsForm';
 const VehiculeDesinfections = ({idVehicule, desinfections, desinfectionsAlertes, setPageNeedsRefresh}) => {
     const nl2br = require('react-nl2br');
     const colonnes = [
-        {accessor: 'dateDesinfection', Header: 'Date'},
-        {accessor: 'desinfections'   , Header: 'Désinfection'},
-        {accessor: 'identifiant'     , Header: 'Intervenant'},
-        {accessor: 'actions'         , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of desinfections)
         {
-            tempTable.push({
-                dateDesinfection: moment(item.dateDesinfection).format('DD/MM/YYYY'),
-                desinfections: item.libelleVehiculesDesinfectionsType,
-                identifiant: item.identifiant,
-                actions:<>
-                    {HabilitationService.habilitations['desinfections_modification'] ? 
-                        <VehiculeDesinfectionsForm
-                            idVehicule = {idVehicule}
-                            desinfection = {item}
-                            idVehiculesDesinfection = {item.idVehiculesDesinfection}
-                            setPageNeedsRefresh = {setPageNeedsRefresh}
-                        />
-                    : null}
+            accessor: 'dateDesinfection',
+            Header: 'Date',
+            Cell: ({ value, row }) => {
+				return(moment(value).format('DD/MM/YYYY'));
+			},
+        },
+        {
+            accessor: 'desinfections',
+            Header: 'Désinfection',
+        },
+        {
+            accessor: 'identifiant',
+            Header: 'Intervenant',
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        {HabilitationService.habilitations['desinfections_modification'] ? 
+                            <VehiculeDesinfectionsForm
+                                idVehicule = {idVehicule}
+                                desinfection = {row.original}
+                                idVehiculesDesinfection = {row.original.idVehiculesDesinfection}
+                                setPageNeedsRefresh = {setPageNeedsRefresh}
+                            />
+                        : null}
 
-                    {HabilitationService.habilitations['desinfections_suppression'] ? 
-                        <IconButton
-                            icon='trash'
-                            size = 'sm'
-                            variant="outline-danger"
-                            className="me-1"
-                            onClick={()=>{handleShowDeleteModal(item.idVehiculesDesinfection)}}
-                        />
-                    : null}
-                </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [desinfections])
+                        {HabilitationService.habilitations['desinfections_suppression'] ? 
+                            <IconButton
+                                icon='trash'
+                                size = 'sm'
+                                variant="outline-danger"
+                                className="me-1"
+                                onClick={()=>{handleShowDeleteModal(row.original.idVehiculesDesinfection)}}
+                            />
+                        : null}
+                    </>
+                );
+			},
+        },
+    ];
 
     /* DELETE */
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -115,7 +118,7 @@ const VehiculeDesinfections = ({idVehicule, desinfections, desinfectionsAlertes,
 
         <GPMtable
             columns={colonnes}
-            data={lignes}
+            data={desinfections}
             topButtonShow={true}
             topButton={<>
                 {HabilitationService.habilitations['desinfections_ajout'] ? 

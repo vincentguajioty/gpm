@@ -43,64 +43,94 @@ const Lots = () => {
     }
 
     const colonnes = [
-        {accessor: 'libelleLot'                 , Header: 'Libellé'},
-        {accessor: 'libelleLotsEtat'            , Header: 'Etat'},
-        {accessor: 'libelleTypeLot'             , Header: 'Référentiel'},
-        {accessor: 'identifiant'                , Header: 'Référent'},
-        {accessor: 'materiels'                  , Header: 'Quantité de matériel'},
-        {accessor: 'prochainInventaire'         , Header: 'Prochain Inventaire'},
-        {accessor: 'alertesBenevoles'           , Header: 'Alertes Bénévoles'},
-        {accessor: 'libelleNotificationEnabled' , Header: 'Notifications'},
-        {accessor: 'actions'                    , Header: 'Actions'},
-    ];
-    const [lignes, setLignes] = useState([]);
-    const initTableau = () => {
-        let tempTable  = [];
-        for(const item of lotsArray)
         {
-            tempTable.push({
-                libelleLot: <Link to={'/lots/'+item.idLot}>{item.libelleLot}</Link>,
-                libelleLotsEtat: item.libelleLotsEtat,
-                libelleTypeLot: <SoftBadge bg={item.alerteConfRef == 1 ? 'danger' : item.alerteConfRef == 0 ? 'success' : 'secondary'}>{item.libelleTypeLot != null ? item.libelleTypeLot : 'N/A'}</SoftBadge>,
-                identifiant: item.identifiant,
-                materiels:<>
-                    {item.materielsOK > 0 ? <SoftBadge className='me-1' bg='success'>{item.materielsOK}</SoftBadge> : null }
-                    {item.materielsLimites > 0 ? <SoftBadge className='me-1' bg='warning'>{item.materielsLimites}</SoftBadge> : null }
-                    {item.materielsAlerte > 0 ? <SoftBadge className='me-1' bg='danger'>{item.materielsAlerte}</SoftBadge> : null }
-                </>,
-                prochainInventaire:
-                    item.inventaireEnCours == true ?
+            accessor: 'libelleLot',
+            Header: 'Libellé',
+            Cell: ({ value, row }) => {
+				return(<Link to={'/lots/'+row.original.idLot}>{row.original.libelleLot}</Link>);
+			},
+        },
+        {
+            accessor: 'libelleLotsEtat',
+            Header: 'Etat',
+        },
+        {
+            accessor: 'libelleTypeLot',
+            Header: 'Référentiel',
+            Cell: ({ value, row }) => {
+				return(<SoftBadge bg={row.original.alerteConfRef == 1 ? 'danger' : row.original.alerteConfRef == 0 ? 'success' : 'secondary'}>{row.original.libelleTypeLot != null ? row.original.libelleTypeLot : 'N/A'}</SoftBadge>);
+			},
+        },
+        {
+            accessor: 'identifiant',
+            Header: 'Référent',
+        },
+        {
+            accessor: 'materiels',
+            Header: 'Quantité de matériel',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
+                        {row.original.materielsOK > 0 ? <SoftBadge className='me-1' bg='success'>{row.original.materielsOK}</SoftBadge> : null }
+                        {row.original.materielsLimites > 0 ? <SoftBadge className='me-1' bg='warning'>{row.original.materielsLimites}</SoftBadge> : null }
+                        {row.original.materielsAlerte > 0 ? <SoftBadge className='me-1' bg='danger'>{row.original.materielsAlerte}</SoftBadge> : null }
+                    </>
+                );
+			},
+        },
+        {
+            accessor: 'prochainInventaire',
+            Header: 'Prochain Inventaire',
+            Cell: ({ value, row }) => {
+				return(
+                    row.original.inventaireEnCours == true ?
                     <SoftBadge bg="primary">Inventaire en cours</SoftBadge>
-                    : <SoftBadge bg={item.prochainInventaire != null ? (new Date(item.prochainInventaire) < new Date() ? 'danger' : 'success') : 'secondary'}>{item.prochainInventaire != null ? moment(item.prochainInventaire).format('DD/MM/YYYY') : 'N/A'}</SoftBadge>
-                ,
-                alertesBenevoles: item.nbAlertesEnCours > 0 ? <SoftBadge>{item.nbAlertesEnCours}</SoftBadge> : null,
-                libelleNotificationEnabled: item.notifiationEnabled == true ? <FontAwesomeIcon icon='bell' /> : <FontAwesomeIcon icon='bell-slash'/>,
-                actions: <>
-                    <IconButton
-                        icon='eye'
-                        size = 'sm'
-                        variant="outline-primary"
-                        className="me-1"
-                        onClick={()=>{navigate('/lots/'+item.idLot)}}
-                    />
-                    {HabilitationService.habilitations['lots_suppression'] && item.inventaireEnCours != true ? 
+                    : <SoftBadge bg={row.original.prochainInventaire != null ? (new Date(row.original.prochainInventaire) < new Date() ? 'danger' : 'success') : 'secondary'}>{row.original.prochainInventaire != null ? moment(row.original.prochainInventaire).format('DD/MM/YYYY') : 'N/A'}</SoftBadge>
+                );
+			},
+        },
+        {
+            accessor: 'nbAlertesEnCours',
+            Header: 'Alertes Bénévoles',
+            Cell: ({ value, row }) => {
+				return(value > 0 ? <SoftBadge>{value}</SoftBadge> : null);
+			},
+        },
+        {
+            accessor: 'notifiationEnabled',
+            Header: 'Notifications',
+            Cell: ({ value, row }) => {
+				return(value == true ? <FontAwesomeIcon icon='bell' /> : <FontAwesomeIcon icon='bell-slash'/>);
+			},
+        },
+        {
+            accessor: 'actions',
+            Header: 'Actions',
+            Cell: ({ value, row }) => {
+				return(
+                    <>
                         <IconButton
-                            icon='trash'
+                            icon='eye'
                             size = 'sm'
-                            variant="outline-danger"
+                            variant="outline-primary"
                             className="me-1"
-                            onClick={()=>{handleShowDeleteModal(item.idLot)}}
+                            onClick={()=>{navigate('/lots/'+row.original.idLot)}}
                         />
-                    : null}
-                </>,
-            })
-        }
-        setLignes(tempTable);
-    }
-    useEffect(() => {
-        initTableau();
-    }, [lotsArray])
-
+                        {HabilitationService.habilitations['lots_suppression'] && row.original.inventaireEnCours != true ? 
+                            <IconButton
+                                icon='trash'
+                                size = 'sm'
+                                variant="outline-danger"
+                                className="me-1"
+                                onClick={()=>{handleShowDeleteModal(row.original.idLot)}}
+                            />
+                        : null}
+                    </>
+                );
+			},
+        },
+    ];
+    
     useEffect(() => {
         initPage();
     }, [])
@@ -373,7 +403,7 @@ const Lots = () => {
                 {readyToDisplay ?
                     <GPMtable
                         columns={colonnes}
-                        data={lignes}
+                        data={lotsArray}
                         topButtonShow={true}
                         topButton={
                             HabilitationService.habilitations['lots_ajout'] ?
