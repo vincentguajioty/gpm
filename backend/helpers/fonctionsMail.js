@@ -90,6 +90,7 @@ const autoResetPwd = async (requestInfo) => {
             mailOptions = {
                 from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
+                cc: configDB.mailcopy ? configDB.mailserver : null,
                 subject: '['+configDB.appname+'] Terminer la réinitialisation de votre mot de passe',
                 template: 'autoResetPwd', // the name of the template file i.e email.handlebars
                 context:{
@@ -164,6 +165,7 @@ const resetPassword = async (requestInfo) => {
             mailOptions = {
                 from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
+                cc: configDB.mailcopy ? configDB.mailserver : null,
                 subject: '['+configDB.appname+'] Réinitialisation de votre mot de passe',
                 template: 'resetPassword', // the name of the template file i.e email.handlebars
                 context:{
@@ -224,6 +226,7 @@ const confirmationAlerteLot = async (requestInfo) => {
         mailOptions = {
             from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
             to: requestInfo.otherMail, // list of receivers
+            cc: configDB.mailcopy ? configDB.mailserver : null,
             subject: '['+configDB.appname+'] Alerte sur un lot opérationnel',
             template: 'confirmationAlerteLot', // the name of the template file i.e email.handlebars
             context:{
@@ -315,6 +318,7 @@ const alerteBenevolesLot = async (requestInfo) => {
             mailOptions = {
                 from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
+                cc: configDB.mailcopy ? configDB.mailserver : null,
                 subject: '['+configDB.appname+'] Alerte sur '+detailsAlerte.libelleLot,
                 template: 'alerteBenevolesLot', // the name of the template file i.e email.handlebars
                 context:{
@@ -376,6 +380,7 @@ const confirmationAlerteVehicule = async (requestInfo) => {
         mailOptions = {
             from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
             to: requestInfo.otherMail, // list of receivers
+            cc: configDB.mailcopy ? configDB.mailserver : null,
             subject: '['+configDB.appname+'] Alerte sur un véhicule',
             template: 'confirmationAlerteVehicule', // the name of the template file i.e email.handlebars
             context:{
@@ -467,6 +472,7 @@ const alerteBenevolesVehicule = async (requestInfo) => {
             mailOptions = {
                 from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
+                cc: configDB.mailcopy ? configDB.mailserver : null,
                 subject: '['+configDB.appname+'] Alerte sur '+detailsAlerte.libelleVehicule,
                 template: 'alerteBenevolesVehicule', // the name of the template file i.e email.handlebars
                 context:{
@@ -579,6 +585,7 @@ const finDeclarationConso = async (requestInfo) => {
             mailOptions = {
                 from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
+                cc: configDB.mailcopy ? configDB.mailserver : null,
                 subject: '['+configDB.appname+'] Consommation lors de '+consommation[0].evenementConsommation,
                 template: 'finDeclarationConso', // the name of the template file i.e email.handlebars
                 context:{
@@ -587,6 +594,7 @@ const finDeclarationConso = async (requestInfo) => {
                     appname: configDB.appname,
                     urlsite: configDB.urlsite,
                     consommation_benevoles_auto: configDB.consommation_benevoles_auto == true ? 1 : 0,
+                    cc: configDB.mailcopy ? configDB.mailserver : null,
                 },
                 list: {
                     unsubscribe: {
@@ -871,6 +879,7 @@ try {
             mailOptions = {
                 from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
+                cc: configDB.mailcopy ? configDB.mailserver : null,
                 subject: '['+configDB.appname+'] Bilan journalier ',
                 template: 'notifJournaliere', // the name of the template file i.e email.handlebars
                 context:{
@@ -944,6 +953,7 @@ const contactDev = async (requestInfo) => {
         mailOptions = {
             from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
             to: requestInfo.otherMail, // list of receivers
+            cc: configDB.mailcopy ? configDB.mailserver : null,
             subject: '[GPM]['+configDB.appname+'] Contact Developpeur depuis une app cliente',
             template: 'contactDev', // the name of the template file i.e email.handlebars
             context:{
@@ -1016,6 +1026,7 @@ const mailDeGroupe = async (requestInfo) => {
             mailOptions = {
                 from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
+                cc: configDB.mailcopy ? configDB.mailserver : null,
                 subject: '['+configDB.appname+'] Mail de groupe: ' + requestInfo.otherSubject,
                 template: 'mailDeGroupe', // the name of the template file i.e email.handlebars
                 context:{
@@ -1106,6 +1117,7 @@ const commandeNotif = async (requestInfo) => {
             mailOptions = {
                 from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
+                cc: configDB.mailcopy ? configDB.mailserver : null,
                 subject: '['+configDB.appname+'][COMMANDE] ' + requestInfo.otherSubject,
                 template: 'commandeNotif', // the name of the template file i.e email.handlebars
                 context:{

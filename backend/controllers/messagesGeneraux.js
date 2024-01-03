@@ -127,8 +127,6 @@ exports.deleteMessage = async (req, res)=>{
 
 exports.messageMail = async (req, res)=>{
     try {
-        console.log(req.body.data)
-
         let listePersonnes;
         if(req.body.data.idPersonne && req.body.data.idPersonne.length > 0)
         {
