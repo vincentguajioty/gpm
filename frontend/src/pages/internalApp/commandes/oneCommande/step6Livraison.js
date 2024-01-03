@@ -132,7 +132,7 @@ const OneCommandeStep6Livraison = ({
                     <center className='mt-2'>
                         <IconButton
                             disabled={!okToSAV}
-                            icon='ban'
+                            icon='exclamation-triangle'
                             variant={okToSAV ? 'warning' : 'outline-warning'}
                             onClick={livraisonSAV}
                         >

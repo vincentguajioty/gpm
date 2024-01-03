@@ -120,7 +120,7 @@ const TransfertsMaterielsOpe = ({
         <TransfertsMaterielsOpeNonRetour modal={showNoRollbackModal} setModal={setShowNoRollbackModal} />
 
         <IconButton
-            icon='arrows-alt-h'
+            icon='hand-holding-medical'
             size = 'sm'
             variant="outline-success"
             className="me-1"

@@ -2483,11 +2483,11 @@ const verificationContraintesCmd = async (idCommande) => {
                 });
                 totalATransferer = totalATransferer[0].totalATransferer;
 
-                if(totalATransferer == 0)
+                if(totalATransferer > 0)
                 {
-                    contrainteRespectee = true;
-                }else{
                     contrainteRespectee = false;
+                }else{
+                    contrainteRespectee = true;
                 }
             }
 

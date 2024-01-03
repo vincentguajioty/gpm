@@ -231,7 +231,7 @@ const catalogueDelete = async (idLogger, idMaterielCatalogue) => {
         });
         logger.info("Sauvegarde avant suppression", {idPersonne: idLogger, backupBeforeDrop: getInitialData[0]});
 
-        await commandeItemDelete('SYSTEM', null, idMaterielCatalogue);
+        await commandeItemDelete('SYSTEM', null, idMaterielCatalogue, null);
 
         let materielADelete = await db.query(`
             SELECT * FROM MATERIEL_ELEMENT WHERE idMaterielCatalogue = :idMaterielCatalogue
@@ -571,58 +571,66 @@ const commandeDocDelete = async (idLogger, idDocCommande) => {
     }
 }
 
-const commandeItemDelete = async (idLogger, idCommande, idMaterielCatalogue) => {
+const commandeItemDelete = async (idLogger, idCommande, idMaterielCatalogue, idCommandeMateriel) => {
     try {
         logger.info("Suppression de l'entrée commande idCommande: "+idCommande+" idMaterielCatalogue:"+idMaterielCatalogue, {idPersonne: idLogger})
-
-        if(idMaterielCatalogue == -1)
+        if(idCommandeMateriel != null && idCommandeMateriel > 0)
         {
-            let getInitialData = await db.query(`
-                SELECT * FROM COMMANDES_MATERIEL WHERE idMaterielCatalogue Is Null AND idCommande = :idCommande
-            ;`,{
-                idCommande : idCommande,
-            });
-            logger.info("Sauvegarde avant suppression", {idPersonne: idLogger, backupBeforeDrop: getInitialData[0]});
-
             let finalDeleteQuery = await db.query(`
-                DELETE FROM COMMANDES_MATERIEL WHERE idMaterielCatalogue Is Null AND idCommande = :idCommande;
+                DELETE FROM COMMANDES_MATERIEL WHERE idCommandeMateriel = :idCommandeMateriel;
             ;`,{
-                idCommande : idCommande,
+                idCommandeMateriel : idCommandeMateriel,
             });
-        }
-        else
-        {
-            if(idCommande == null)
-            {
-                let finalDeleteQuery = await db.query(`
-                    DELETE FROM COMMANDES_MATERIEL WHERE idMaterielCatalogue = :idMaterielCatalogue;
-                ;`,{
-                    idMaterielCatalogue: idMaterielCatalogue,
-                });
-            }
-            else
+        }else{
+            if(idMaterielCatalogue == -1)
             {
                 let getInitialData = await db.query(`
-                SELECT * FROM COMMANDES_MATERIEL WHERE idMaterielCatalogue = :idMaterielCatalogue AND idCommande = :idCommande
+                    SELECT * FROM COMMANDES_MATERIEL WHERE idMaterielCatalogue Is Null AND idCommande = :idCommande
                 ;`,{
                     idCommande : idCommande,
-                    idMaterielCatalogue: idMaterielCatalogue,
                 });
                 logger.info("Sauvegarde avant suppression", {idPersonne: idLogger, backupBeforeDrop: getInitialData[0]});
 
                 let finalDeleteQuery = await db.query(`
-                    DELETE FROM COMMANDES_MATERIEL WHERE idMaterielCatalogue = :idMaterielCatalogue AND idCommande = :idCommande;
+                    DELETE FROM COMMANDES_MATERIEL WHERE idMaterielCatalogue Is Null AND idCommande = :idCommande;
                 ;`,{
                     idCommande : idCommande,
-                    idMaterielCatalogue: idMaterielCatalogue,
                 });
+            }
+            else
+            {
+                if(idCommande == null)
+                {
+                    let finalDeleteQuery = await db.query(`
+                        DELETE FROM COMMANDES_MATERIEL WHERE idMaterielCatalogue = :idMaterielCatalogue;
+                    ;`,{
+                        idMaterielCatalogue: idMaterielCatalogue,
+                    });
+                }
+                else
+                {
+                    let getInitialData = await db.query(`
+                    SELECT * FROM COMMANDES_MATERIEL WHERE idMaterielCatalogue = :idMaterielCatalogue AND idCommande = :idCommande
+                    ;`,{
+                        idCommande : idCommande,
+                        idMaterielCatalogue: idMaterielCatalogue,
+                    });
+                    logger.info("Sauvegarde avant suppression", {idPersonne: idLogger, backupBeforeDrop: getInitialData[0]});
+
+                    let finalDeleteQuery = await db.query(`
+                        DELETE FROM COMMANDES_MATERIEL WHERE idMaterielCatalogue = :idMaterielCatalogue AND idCommande = :idCommande;
+                    ;`,{
+                        idCommande : idCommande,
+                        idMaterielCatalogue: idMaterielCatalogue,
+                    });
+                }
             }
         }
 
-        logger.info("Suppression réussie de l'entrée commande idCommande: "+idCommande+" idMaterielCatalogue:"+idMaterielCatalogue, {idPersonne: idLogger})
+        logger.info("Suppression réussie de l'entrée commande idCommande: "+idCommande+" idMaterielCatalogue:"+idMaterielCatalogue+"  idCommandeMateriel:"+idCommandeMateriel, {idPersonne: idLogger})
         return true;
     } catch (error) {
-        logger.info("Suppression en échec de l'entrée commande idCommande: "+idCommande+" idMaterielCatalogue:"+idMaterielCatalogue, {idPersonne: idLogger})
+        logger.info("Suppression en échec de l'entrée commande idCommande: "+idCommande+" idMaterielCatalogue:"+idMaterielCatalogue+"  idCommandeMateriel:"+idCommandeMateriel, {idPersonne: idLogger})
         logger.error(error)
         return false;
     }
@@ -646,7 +654,7 @@ const commandesDelete = async (idLogger, idCommande) => {
         ;`,{
             idCommande : idCommande,
         });
-        for(const materiel of materielADetacher){await commandeItemDelete('SYSTEM', idCommande, materiel.idMaterielCatalogue);}
+        for(const materiel of materielADetacher){await commandeItemDelete('SYSTEM', null, null, materiel.idCommandeMateriel);}
         
         deleteQuery = await db.query(`
             DELETE FROM COMMANDES_TIMELINE WHERE idCommande = :idCommande

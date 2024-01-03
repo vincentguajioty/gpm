@@ -524,6 +524,19 @@ exports.passerCommande = async (req, res)=>{
             idCommande: req.body.idCommande || null,
         });
 
+        const updateMaterielCommande = await db.query(`
+            UPDATE
+                COMMANDES_MATERIEL
+            SET
+                quantiteAtransferer = quantiteCommande
+            WHERE
+                idCommande = :idCommande
+                AND
+                idMaterielCatalogue IS NOT NULL
+        `,{
+            idCommande: req.body.idCommande || null,
+        });
+
         res.sendStatus(201);
     } catch (error) {
         logger.error(error);
@@ -595,6 +608,46 @@ exports.livraisonSAVCommande = async (req, res)=>{
     }
 }
 
+exports.transfertManuel = async (req, res)=>{
+    try {
+        const updateMaterielCommande = await db.query(`
+            UPDATE
+                COMMANDES_MATERIEL
+            SET
+                quantiteAtransferer = 0
+            WHERE
+                idCommandeMateriel = :idCommandeMateriel
+        `,{
+            idCommandeMateriel: req.body.idCommandeMateriel || null,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.cloreCommande = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                COMMANDES
+            SET
+                idEtat = 7,
+                dateCloture = CURRENT_TIMESTAMP
+            WHERE
+                idCommande = :idCommande
+        `,{
+            idCommande: req.body.idCommande || null,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
 
 //Commandes PJ
 const multerConfigCommandes = multer.diskStorage({
@@ -678,6 +731,97 @@ exports.dropCommandesDocument = async (req, res)=>{
     try {
         const deleteResult = await fonctionsDelete.commandeDocDelete(req.verifyJWTandProfile.idPersonne , req.body.idDocCommande);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//Transferts
+exports.getReservesForOneIntegration = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                rm.*,
+                rm.idReserveElement as value,
+                CONCAT_WS(' > ',c.libelleConteneur,cat.libelleMateriel) as label,
+                c.libelleConteneur,
+                c.inventaireEnCours,
+                cat.libelleMateriel
+            FROM
+                RESERVES_MATERIEL rm
+                LEFT OUTER JOIN RESERVES_CONTENEUR c ON rm.idConteneur = c.idConteneur
+                LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON rm.idMaterielCatalogue = cat.idMaterielCatalogue
+            WHERE
+                rm.idMaterielCatalogue = :idMaterielCatalogue
+        ;`,{
+            idMaterielCatalogue: req.body.idMaterielCatalogue
+        });
+
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.enregistrerTransfert = async (req, res)=>{
+    try {
+        const downgradeCmd = await db.query(`
+            UPDATE
+                COMMANDES_MATERIEL
+            SET
+                quantiteAtransferer = quantiteAtransferer - :qttTransfert
+            WHERE
+                idCommandeMateriel = :idCommandeMateriel
+        `,{
+            idCommandeMateriel: req.body.idCommandeMateriel || null,
+            qttTransfert: req.body.qttTransfert || 0,
+        });
+
+        const upgradeReserve = await db.query(`
+            UPDATE
+                RESERVES_MATERIEL
+            SET
+                quantiteReserve = quantiteReserve + :qttTransfert
+            WHERE
+                idReserveElement = :idReserveElement
+        `,{
+            idReserveElement: req.body.idReserveElement || null,
+            qttTransfert: req.body.qttTransfert || 0,
+        });
+
+        if(req.body.peremptionCmd && req.body.peremptionCmd != null)
+        {
+            let currentReserve = await db.query(`
+                SELECT
+                    *
+                FROM
+                    RESERVES_MATERIEL
+                WHERE
+                    idReserveElement = :idReserveElement
+            `,{
+                idReserveElement: req.body.idReserveElement || null,
+            });
+            currentReserve = currentReserve[0];
+
+            if(currentReserve.peremptionReserve == null || new Date(currentReserve.peremptionReserve) > new Date(req.body.peremptionCmd))
+            {
+                const upgradeReserve = await db.query(`
+                    UPDATE
+                        RESERVES_MATERIEL
+                    SET
+                        peremptionReserve = :peremptionReserve
+                    WHERE
+                        idReserveElement = :idReserveElement
+                `,{
+                    idReserveElement: req.body.idReserveElement || null,
+                    peremptionReserve: req.body.peremptionCmd || null,
+                });
+            }
+        }
+
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

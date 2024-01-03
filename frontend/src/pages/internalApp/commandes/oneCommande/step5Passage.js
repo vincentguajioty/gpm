@@ -139,8 +139,8 @@ const OneCommandeStep5Passage = ({
             <center className='mt-2'>
                 <IconButton
                     disabled={!ok}
-                    icon='ban'
-                    variant={ok ? 'warning' : 'outline-warning'}
+                    icon='forward'
+                    variant={ok ? 'success' : 'outline-success'}
                     onClick={passerCommande}
                 >
                     La commande est passée
