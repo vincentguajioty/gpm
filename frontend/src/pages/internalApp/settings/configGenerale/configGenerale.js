@@ -8,6 +8,7 @@ import ConfigGeneraleTabAlertes from './tabAlertes';
 import ConfigGeneraleTabCNIL from './tabCnil';
 import ConfigGeneraleTabGeneral from './tabGeneral';
 import ConfigGeneraleTabNotifs from './tabNotif';
+import ConfigGeneraleTabReglesCmd from './tabReglesCmd';
 
 import { Axios } from 'helpers/axios';
 
@@ -78,6 +79,14 @@ const ConfigGenerale = () => {
                     <Tab eventKey="notifcmd" title="Notifications des commandes" className='border-bottom border-x p-3'>
                         <ConfigGeneraleTabNotifs
                             config={config.notifcmd}
+                            setPageNeedsRefresh={setPageNeedsRefresh}
+                            isLoading={isLoading}
+                            setIsLoading={setIsLoading}
+                        />
+                    </Tab>
+                    <Tab eventKey="reglesCmd" title="Règles métier des commandes" className='border-bottom border-x p-3'>
+                        <ConfigGeneraleTabReglesCmd
+                            reglesCmd={config.reglesCmd}
                             setPageNeedsRefresh={setPageNeedsRefresh}
                             isLoading={isLoading}
                             setIsLoading={setIsLoading}

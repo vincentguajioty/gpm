@@ -983,3 +983,20 @@ export const commandeAddComment = Yup.object().shape({
         .typeError(champObligatoire)
         .required(champObligatoire),
 });
+
+export const settingsAddCommandeContraint = Yup.object().shape({
+    libelleContrainte: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    idEtatInitial: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    idEtatFinal: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+});

@@ -84,6 +84,18 @@ exports.getConfigForAdmin = async (req, res) => {
                 CONFIG
         `);
 
+        const reglesCmd = await db.query(
+            `SELECT
+                c.*,
+                e1.libelleEtat as etatInitial,
+                e2.libelleEtat as etatFinal
+            FROM
+                COMMANDES_CONTRAINTES c
+                LEFT OUTER JOIN COMMANDES_ETATS e1 ON c.idEtatInitial = e1.idEtat
+                LEFT OUTER JOIN COMMANDES_ETATS e2 ON c.idEtatFinal = e2.idEtat
+            ORDER BY
+                c.idEtatInitial, c.idEtatFinal
+        `);
 
         res.send({
             general: general[0],
@@ -91,6 +103,7 @@ exports.getConfigForAdmin = async (req, res) => {
             aes: aes[0],
             notifcmd: notifcmd[0],
             alertesbenevoles: alertesbenevoles[0],
+            reglesCmd: reglesCmd,
         });
     } catch (error) {
         logger.error(error);
@@ -284,6 +297,86 @@ exports.getMailQueue = async (req, res) => {
         `);
 
         res.send(queueMail);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.addOneCmdContrainte = async (req, res) => {
+    try {
+        const general = await db.query(`
+            INSERT INTO
+                COMMANDES_CONTRAINTES
+            SET
+                libelleContrainte = :libelleContrainte,
+                idEtatInitial = :idEtatInitial,
+                idEtatFinal = :idEtatFinal,
+                fournisseurObligatoire = :fournisseurObligatoire,
+                minDemandeurs = :minDemandeurs,
+                minAffectees = :minAffectees,
+                minObservateurs = :minObservateurs,
+                minValideurs = :minValideurs,
+                centreCoutsObligatoire = :centreCoutsObligatoire,
+                lieuLivraisonObligatoire = :lieuLivraisonObligatoire,
+                minQttMateriel = :minQttMateriel,
+                minMontant = :minMontant,
+                maxMontant = :maxMontant,
+                remarquesGeneralesObligatoires = :remarquesGeneralesObligatoires,
+                idTypeDocumentObligatoire = :idTypeDocumentObligatoire,
+                nbTypeDocumentObligatoire = :nbTypeDocumentObligatoire,
+                remarquesValidationObligatoire = :remarquesValidationObligatoire,
+                referenceCommandeFournisseurObligatoire = :referenceCommandeFournisseurObligatoire,
+                datePassageCommandeObligatoire = :datePassageCommandeObligatoire,
+                datePrevueLivraisonObligatoire = :datePrevueLivraisonObligatoire,
+                dateLivraisonEffectiveObligatoire = :dateLivraisonEffectiveObligatoire,
+                remarquesLivraisonsObligatoire = :remarquesLivraisonsObligatoire,
+                integrationStockObligatoire = :integrationStockObligatoire
+        `,{
+            libelleContrainte: req.body.libelleContrainte || null,
+            idEtatInitial: req.body.idEtatInitial || null,
+            idEtatFinal: req.body.idEtatFinal || null,
+            fournisseurObligatoire: req.body.fournisseurObligatoire || null,
+            minDemandeurs: req.body.minDemandeurs || null,
+            minAffectees: req.body.minAffectees || null,
+            minObservateurs: req.body.minObservateurs || null,
+            minValideurs: req.body.minValideurs || null,
+            centreCoutsObligatoire: req.body.centreCoutsObligatoire || null,
+            lieuLivraisonObligatoire: req.body.lieuLivraisonObligatoire || null,
+            minQttMateriel: req.body.minQttMateriel || null,
+            minMontant: req.body.minMontant || null,
+            maxMontant: req.body.maxMontant || null,
+            remarquesGeneralesObligatoires: req.body.remarquesGeneralesObligatoires || null,
+            idTypeDocumentObligatoire: req.body.idTypeDocumentObligatoire || null,
+            nbTypeDocumentObligatoire: req.body.nbTypeDocumentObligatoire || null,
+            remarquesValidationObligatoire: req.body.remarquesValidationObligatoire || null,
+            referenceCommandeFournisseurObligatoire: req.body.referenceCommandeFournisseurObligatoire || null,
+            datePassageCommandeObligatoire: req.body.datePassageCommandeObligatoire || null,
+            datePrevueLivraisonObligatoire: req.body.datePrevueLivraisonObligatoire || null,
+            dateLivraisonEffectiveObligatoire: req.body.dateLivraisonEffectiveObligatoire || null,
+            remarquesLivraisonsObligatoire: req.body.remarquesLivraisonsObligatoire || null,
+            integrationStockObligatoire: req.body.integrationStockObligatoire || null,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.dropOneCmdContrainte = async (req, res) => {
+    try {
+        const general = await db.query(`
+            DELETE FROM
+                COMMANDES_CONTRAINTES
+            WHERE
+                idContrainte = :idContrainte
+        `,{
+            idContrainte : req.body.idContrainte || null,
+        });
+
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

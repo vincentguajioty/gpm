@@ -774,11 +774,11 @@ exports.getEtatsCommandes = async (req, res)=>{
         let results = await db.query(`
             SELECT
                 idEtat as value,
-                libelleEtat as label
+                CONCAT(idEtat, ' - ', libelleEtat) as label
             FROM
                 COMMANDES_ETATS
             ORDER BY
-                libelleEtat
+                idEtat
         ;`);
         res.send(results);
     } catch (error) {

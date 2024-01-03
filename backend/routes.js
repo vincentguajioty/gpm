@@ -480,6 +480,8 @@ router.post('/settingsTechniques/saveCnilConfig',              loggerMiddleware.
 router.post('/settingsTechniques/saveAlertesConfig',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) , loggerMiddleware.modificationLogger(), settingsTechniquesCtrl.saveAlertesConfig);
 router.post('/settingsTechniques/saveNotifsCommandesConfig',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) , loggerMiddleware.modificationLogger(), settingsTechniquesCtrl.saveNotifsCommandesConfig);
 router.get('/settingsTechniques/getMailQueue',                 loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) ,                                        settingsTechniquesCtrl.getMailQueue);
+router.post('/settingsTechniques/addOneCmdContrainte',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) , loggerMiddleware.modificationLogger(), settingsTechniquesCtrl.addOneCmdContrainte);
+router.post('/settingsTechniques/dropOneCmdContrainte',        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['appli_conf',]) ,                                        settingsTechniquesCtrl.dropOneCmdContrainte);
 
 //Actions massives
 router.post('/actionsmassives/authenticateForAM',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]),                                actionsMassivesCtrl.authenticateForAM);
