@@ -43,7 +43,6 @@ const OneCommande = () => {
         }
     },[pageNeedsRefresh])
 
-    console.log(commande);
     return (
         pageReady ?
             <>
@@ -78,6 +77,7 @@ const OneCommande = () => {
                                 <OneCommandeTimeLine
                                     idCommande={idCommande}
                                     commande={commande}
+                                    setPageNeedsRefresh={setPageNeedsRefresh}
                                 />
                             </FalconComponentCard.Body>
                         </FalconComponentCard>

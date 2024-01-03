@@ -976,3 +976,10 @@ export const commandeStep7StockCheck = Yup.object().shape({
         })
         .required(champObligatoire),
 });
+
+export const commandeAddComment = Yup.object().shape({
+    comment: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});

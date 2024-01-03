@@ -26,12 +26,6 @@ const OneCommandeTabs = ({
     setPageNeedsRefresh,
 }) => {
     const checkUserInRole = (acceptedRolesPerStage) => {
-        // [
-        //     {
-        //         idEtat: NUMBER,
-        //         acceptedRoles: ['valideurs', 'demandeurs', 'affectees', 'observateurs']
-        //     }
-        // ]
         let accepted = false;
         for(const stage of acceptedRolesPerStage)
         {
@@ -182,7 +176,7 @@ const OneCommandeTabs = ({
     return (<>
         <Tab.Container id="left-tabs-example" defaultActiveKey={getDefaultTab}>
             <Row>
-                <Col md={3}>
+                <Col md={3} className='mb-2'>
                     <Nav variant="pills" className="flex-column">
                         {tabs.map((item, i)=>{return(
                             <Nav.Item>

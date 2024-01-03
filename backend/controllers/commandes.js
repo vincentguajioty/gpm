@@ -107,9 +107,17 @@ exports.getOneCommande = async (req, res)=>{
 
         let timeLine = await db.query(`
             SELECT
-                t.*
+                t.idEvtCommande as id,
+                null as title,
+                detailsEvtCommande as text,
+                i.iconFontAsw as icon,
+                i.iconColor as iconColor,
+                t.dateEvtCommande as time,
+                'completed' as status,
+                null as link
             FROM
                 COMMANDES_TIMELINE t
+                LEFT OUTER JOIN COMMANDES_TIMELINE_ICON i ON t.idComIcon = i.idComIcon
             WHERE
                 t.idCommande = :idCommande
             ORDER BY
@@ -178,8 +186,20 @@ exports.addCommande = async (req, res)=>{
             idDemandeur: req.verifyJWTandProfile.idPersonne,
         });
 
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(selectLast[0].idCommande, req.verifyJWTandProfile.identifiant+" crée la commande.", 1);
+
         res.status(201);
         res.json({idCommande: selectLast[0].idCommande});
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.addComment = async (req, res)=>{
+    try {
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" ajoute le commentaire: "+req.body.comment, 36);
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
@@ -200,6 +220,8 @@ exports.abandonnerCommande = async (req, res)=>{
         });
 
         await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 8);
+
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" abandonne la commande.", 7);
         
         res.sendStatus(201);
     } catch (error) {
@@ -305,6 +327,8 @@ exports.updateInfoGenerales = async (req, res)=>{
                 idAffectee : entry.value || null,
             });
         }
+
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" modifie la commande.", 12);
         
         res.sendStatus(201);
     } catch (error) {
@@ -341,6 +365,8 @@ exports.addMateriels = async (req, res)=>{
         });
 
         await fonctionsMetiers.calculerTotalCommande(req.body.idCommande);
+
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" ajoute un article à la commande.", 12);
 
         res.sendStatus(201);
     } catch (error) {
@@ -379,6 +405,8 @@ exports.updateMateriels = async (req, res)=>{
 
         await fonctionsMetiers.calculerTotalCommande(req.body.idCommande);
 
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" modifie un article de la commande.", 12);
+
         res.sendStatus(201);
     } catch (error) {
         logger.error(error);
@@ -398,6 +426,8 @@ exports.removeMateriels = async (req, res)=>{
         });
 
         await fonctionsMetiers.calculerTotalCommande(req.body.idCommande);
+
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" retire un article de la commande.", 12);
 
         res.sendStatus(201);
     } catch (error) {
@@ -422,6 +452,8 @@ exports.demandeValidation = async (req, res)=>{
 
         await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 2);
 
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" envoie la demande de validation.", 14);
+
         res.sendStatus(201);
     } catch (error) {
         logger.error(error);
@@ -442,6 +474,8 @@ exports.updateRemarquesValidation = async (req, res)=>{
             remarquesValidation: req.body.remarquesValidation || null,
             idCommande: req.body.idCommande || null,
         });
+
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" édite les remarques de validation: "+req.body.remarquesValidation, 12);
 
         res.sendStatus(201);
     } catch (error) {
@@ -465,6 +499,8 @@ exports.rejeterCommande = async (req, res)=>{
 
         await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 1);
 
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" refuse la commande.", 19);
+
         res.sendStatus(201);
     } catch (error) {
         logger.error(error);
@@ -487,6 +523,8 @@ exports.approuverCommande = async (req, res)=>{
         });
 
         await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 3);
+
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" valide la commande.", 13);
 
         res.sendStatus(201);
     } catch (error) {
@@ -512,6 +550,8 @@ exports.updatePassageCommande = async (req, res)=>{
             dateLivraisonPrevue: req.body.dateLivraisonPrevue ||null,
             idCommande: req.body.idCommande || null,
         });
+
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" modifie les informations de commande données par le fournisseur.", 12);
 
         res.sendStatus(201);
     } catch (error) {
@@ -548,6 +588,8 @@ exports.passerCommande = async (req, res)=>{
 
         await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 4);
 
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" a lancer la commande chez le fournisseur.", 21);
+
         res.sendStatus(201);
     } catch (error) {
         logger.error(error);
@@ -571,6 +613,8 @@ exports.updateInfosLivraison = async (req, res)=>{
             idCommande: req.body.idCommande || null,
         });
 
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" modifie les informations de livraison.", 12);
+
         res.sendStatus(201);
     } catch (error) {
         logger.error(error);
@@ -592,6 +636,8 @@ exports.livraisonOKCommande = async (req, res)=>{
         });
 
         await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 5);
+
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" réceptionne la commande sans déclencher de SAV, ou cloture le SAV le cas échéant.", 25);
 
         res.sendStatus(201);
     } catch (error) {
@@ -615,6 +661,8 @@ exports.livraisonSAVCommande = async (req, res)=>{
         });
 
         await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 6);
+
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" réceptionne la commande et engage un SAV.", 30);
 
         res.sendStatus(201);
     } catch (error) {
@@ -659,6 +707,8 @@ exports.cloreCommande = async (req, res)=>{
 
         await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 7);
 
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.body.idCommande, req.verifyJWTandProfile.identifiant+" clôture la commande.", 16);
+
         res.sendStatus(201);
     } catch (error) {
         logger.error(error);
@@ -697,6 +747,8 @@ exports.uploadCommandesAttached = async (req, res, next)=>{
         });
 
         const lastSelect = await db.query(`SELECT MAX(idDocCommande) as idDocCommande FROM DOCUMENTS_COMMANDES`);
+
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(req.query.idCommande, req.verifyJWTandProfile.identifiant+" ajoute une pièce jointe.", 9);
 
         res.status(200);
         res.json({idDocCommande: lastSelect[0].idDocCommande})
@@ -746,6 +798,18 @@ exports.updateMetaDataCommandes = async (req, res, next)=>{
 
 exports.dropCommandesDocument = async (req, res)=>{
     try {
+        const getCommandeID = await db.query(`
+            SELECT
+                idCommande
+            FROM
+                DOCUMENTS_COMMANDES
+            WHERE
+                idDocCommande = :idDocCommande
+        `,{
+            idDocCommande: req.body.idDocCommande || null,
+        });
+        await fonctionsMetiers.ajouterCommentaireTimeLineCommande(getCommandeID[0].idCommande, req.verifyJWTandProfile.identifiant+" supprime une pièce jointe.", 11);
+
         const deleteResult = await fonctionsDelete.commandeDocDelete(req.verifyJWTandProfile.idPersonne , req.body.idDocCommande);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {

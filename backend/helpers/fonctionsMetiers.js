@@ -3244,6 +3244,27 @@ const envoyerNotifAuChangementStatutCommande = async (idCommande, idEtatCible) =
     }
 }
 
+const ajouterCommentaireTimeLineCommande = async (idCommande, commentaire, idComIcon) => {
+    try {
+        let commande = await db.query(`
+            INSERT INTO
+                COMMANDES_TIMELINE
+            SET
+                idCommande = :idCommande,
+                detailsEvtCommande = :commentaire,
+                idComIcon = :idComIcon,
+                dateEvtCommande = CURRENT_TIMESTAMP
+            ;
+        `,{
+            idCommande: idCommande || null,
+            commentaire: commentaire || null,
+            idComIcon: idComIcon || null,
+        });
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -3306,4 +3327,5 @@ module.exports = {
     verificationContraintesCmd,
     verificationAvantChangementEtatCmd,
     envoyerNotifAuChangementStatutCommande,
+    ajouterCommentaireTimeLineCommande,
 };

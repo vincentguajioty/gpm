@@ -30,7 +30,6 @@ const OneCommandeStep2Contenu = ({
             accessor: 'libelleMateriel',
             Header: 'Matériel',
             Cell: ({ value, row }) => {
-				console.log(row.original)
                 return(<>
                     {value}
                     {row.original.idFournisseurReference != null && row.original.idFournisseurReference > 0 && row.original.idFournisseurReference != commande.detailsCommande.idFournisseur ?
