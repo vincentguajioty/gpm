@@ -91,10 +91,13 @@ exports.getOneCommande = async (req, res)=>{
         let materiels = await db.query(`
             SELECT
                 m.*,
-                c.libelleMateriel
+                c.libelleMateriel,
+                c.idFournisseur as idFournisseurReference,
+                f.nomFournisseur as nomFournisseurReference
             FROM
                 COMMANDES_MATERIEL m
                 LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur
             WHERE
                 m.idCommande = :idCommande
         ;`,{

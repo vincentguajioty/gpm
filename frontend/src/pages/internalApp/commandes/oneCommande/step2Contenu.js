@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Link, useNavigate, } from 'react-router-dom';
-import { Card, Offcanvas, Button, Form, Tab, Nav, Row, Col, Modal, } from 'react-bootstrap';
+import { Card, Offcanvas, Button, Form, Tab, Nav, Row, Col, Modal, OverlayTrigger, Tooltip, } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 import PageHeader from 'components/common/PageHeader';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
@@ -29,6 +29,30 @@ const OneCommandeStep2Contenu = ({
         {
             accessor: 'libelleMateriel',
             Header: 'Matériel',
+            Cell: ({ value, row }) => {
+				console.log(row.original)
+                return(<>
+                    {value}
+                    {row.original.idFournisseurReference != null && row.original.idFournisseurReference > 0 && row.original.idFournisseurReference != commande.detailsCommande.idFournisseur ?
+                        <OverlayTrigger
+                            placement="top"
+                            overlay={
+                                <Tooltip style={{ position: 'fixed' }}>
+                                    Article habituellement acheté chez {row.original.nomFournisseurReference}
+                                </Tooltip>
+                            }
+                        >
+                            <span>
+                                <FontAwesomeIcon
+                                    icon='exclamation-circle'
+                                    transform="shrink-1"
+                                    className="ms-1 text-danger"
+                                />
+                            </span>
+                        </OverlayTrigger>
+                    : null}
+                </>);
+			},
         },
         {
             accessor: 'referenceProduitFournisseur',

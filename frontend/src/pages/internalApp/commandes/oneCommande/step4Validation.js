@@ -158,58 +158,62 @@ const Arbitrage = ({
                         <Form.Control size="sm" as="textarea" rows={5} name="remarquesValidation" id="remarquesValidation" {...register("remarquesValidation")} disabled={forceReadOnly}/>
                         <small className="text-danger">{errors.remarquesValidation?.message}</small>
                     </Form.Group>
-                    <div className="d-grid gap-2 mt-3">
-                        <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading || forceReadOnly}>{isLoading ? 'Patientez...' : 'Enregistrer les remarques'}</Button>
-                    </div>
+                    {commande.detailsCommande.idEtat == 2 ?
+                        <div className="d-grid gap-2 mt-3">
+                            <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading || forceReadOnly}>{isLoading ? 'Patientez...' : 'Enregistrer les remarques'}</Button>
+                        </div>
+                    :null}
                 </Form>
             </Col>
-            
-            <hr/>
 
-            <Col md={6}>
-                <center className='mt-2'>
-                    <IconButton
-                        disabled={!okToReject}
-                        icon='ban'
-                        variant={okToReject ? 'warning' : 'outline-warning'}
-                        onClick={rejeter}
-                    >
-                        Rejeter
-                    </IconButton>
-                    <p><small>
-                        <u>Critères à respecter pour rejeter:</u><br/>
-                        {commande.verificationContraintes.contraintes.filter(ctr => ctr.idEtatFinal == 1).map((ctr, i) => {return(
-                            <>
-                                <FontAwesomeIcon icon={ctr.contrainteRespectee == true ? 'check' : 'ban'} color={ctr.contrainteRespectee == true ? 'green' : 'red'} className='me-2' />
-                                {ctr.libelleContrainte}
-                                <br/>
-                            </>
-                        )})}
-                    </small></p>
-                </center>
-            </Col>
-            <Col md={6}>
-                <center className='mt-2'>
-                    <IconButton
-                        disabled={!okToAccept}
-                        icon='check'
-                        variant={okToAccept ? 'success' : 'outline-success'}
-                        onClick={accepter}
-                    >
-                        Accepter
-                    </IconButton>
-                    <p><small>
-                        <u>Critères à respecter pour accepter:</u><br/>
-                        {commande.verificationContraintes.contraintes.filter(ctr => ctr.idEtatFinal == 3).map((ctr, i) => {return(
-                            <>
-                                <FontAwesomeIcon icon={ctr.contrainteRespectee == true ? 'check' : 'ban'} color={ctr.contrainteRespectee == true ? 'green' : 'red'} className='me-2' />
-                                {ctr.libelleContrainte}
-                                <br/>
-                            </>
-                        )})}
-                    </small></p>
-                </center>
-            </Col>
+            {commande.detailsCommande.idEtat == 2 ? <>
+                <hr/>
+
+                <Col md={6}>
+                    <center className='mt-2'>
+                        <IconButton
+                            disabled={!okToReject}
+                            icon='ban'
+                            variant={okToReject ? 'warning' : 'outline-warning'}
+                            onClick={rejeter}
+                        >
+                            Rejeter
+                        </IconButton>
+                        <p><small>
+                            <u>Critères à respecter pour rejeter:</u><br/>
+                            {commande.verificationContraintes.contraintes.filter(ctr => ctr.idEtatFinal == 1).map((ctr, i) => {return(
+                                <>
+                                    <FontAwesomeIcon icon={ctr.contrainteRespectee == true ? 'check' : 'ban'} color={ctr.contrainteRespectee == true ? 'green' : 'red'} className='me-2' />
+                                    {ctr.libelleContrainte}
+                                    <br/>
+                                </>
+                            )})}
+                        </small></p>
+                    </center>
+                </Col>
+                <Col md={6}>
+                    <center className='mt-2'>
+                        <IconButton
+                            disabled={!okToAccept}
+                            icon='check'
+                            variant={okToAccept ? 'success' : 'outline-success'}
+                            onClick={accepter}
+                        >
+                            Accepter
+                        </IconButton>
+                        <p><small>
+                            <u>Critères à respecter pour accepter:</u><br/>
+                            {commande.verificationContraintes.contraintes.filter(ctr => ctr.idEtatFinal == 3).map((ctr, i) => {return(
+                                <>
+                                    <FontAwesomeIcon icon={ctr.contrainteRespectee == true ? 'check' : 'ban'} color={ctr.contrainteRespectee == true ? 'green' : 'red'} className='me-2' />
+                                    {ctr.libelleContrainte}
+                                    <br/>
+                                </>
+                            )})}
+                        </small></p>
+                    </center>
+                </Col>
+            </>: null}
         </Row>
     </>);
 };

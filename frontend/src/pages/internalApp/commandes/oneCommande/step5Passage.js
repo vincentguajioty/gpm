@@ -81,14 +81,18 @@ const OneCommandeStep5Passage = ({
             
         <Form onSubmit={handleSubmit(saveForm)}>
             <Row className='mt-2'>
-                <Col md={4}>
+                <Col md={6}>
+                    <Form.Label>Fournisseur</Form.Label>
+                    <Form.Control size="sm" type="text" value={commande.detailsCommande.nomFournisseur} disabled={true}/>
+                </Col>
+                <Col md={6}>
                     <Form.Group className="mb-3">
                         <Form.Label>Référence de la commande ({commande.detailsCommande.nomFournisseur || null})</Form.Label>
                         <Form.Control size="sm" type="text" name="numCommandeFournisseur" id="numCommandeFournisseur" {...register("numCommandeFournisseur")} disabled={forceReadOnly}/>
                         <small className="text-danger">{errors.numCommandeFournisseur?.message}</small>
                     </Form.Group>
                 </Col>
-                <Col md={4}>
+                <Col md={6}>
                     <Form.Label>Commande passée le</Form.Label><br/>
                     <DatePicker
                         selected={watch("datePassage")}
@@ -105,7 +109,7 @@ const OneCommandeStep5Passage = ({
                     />
                     <small className="text-danger">{errors.datePassage?.message}</small>
                 </Col>
-                <Col md={4}>
+                <Col md={6}>
                     <Form.Label>Date de livraison Prévue</Form.Label><br/>
                     <DatePicker
                         selected={watch("dateLivraisonPrevue")}
@@ -123,33 +127,36 @@ const OneCommandeStep5Passage = ({
                     <small className="text-danger">{errors.dateLivraisonPrevue?.message}</small>
                 </Col>
             </Row>
-            <div className="d-grid gap-2 mt-3">
-                <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading || forceReadOnly}>{isLoading ? 'Patientez...' : 'Enregistrer les remarques'}</Button>
-            </div>
+            {commande.detailsCommande.idEtat == 3 ?
+                <div className="d-grid gap-2 mt-3">
+                    <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading || forceReadOnly}>{isLoading ? 'Patientez...' : 'Enregistrer les remarques'}</Button>
+                </div>
+            :null}
         </Form>
-            
-        <hr/>
-
-        <center className='mt-2'>
-            <IconButton
-                disabled={!ok}
-                icon='ban'
-                variant={ok ? 'warning' : 'outline-warning'}
-                onClick={passerCommande}
-            >
-                La commande est passée
-            </IconButton>
-            <p><small>
-                <u>Critères à respecter pour passer la commande:</u><br/>
-                {commande.verificationContraintes.contraintes.filter(ctr => ctr.idEtatFinal == 4).map((ctr, i) => {return(
-                    <>
-                        <FontAwesomeIcon icon={ctr.contrainteRespectee == true ? 'check' : 'ban'} color={ctr.contrainteRespectee == true ? 'green' : 'red'} className='me-2' />
-                        {ctr.libelleContrainte}
-                        <br/>
-                    </>
-                )})}
-            </small></p>
-        </center>
+        
+        {commande.detailsCommande.idEtat == 3 ? <>
+            <hr/>
+            <center className='mt-2'>
+                <IconButton
+                    disabled={!ok}
+                    icon='ban'
+                    variant={ok ? 'warning' : 'outline-warning'}
+                    onClick={passerCommande}
+                >
+                    La commande est passée
+                </IconButton>
+                <p><small>
+                    <u>Critères à respecter pour passer la commande:</u><br/>
+                    {commande.verificationContraintes.contraintes.filter(ctr => ctr.idEtatFinal == 4).map((ctr, i) => {return(
+                        <>
+                            <FontAwesomeIcon icon={ctr.contrainteRespectee == true ? 'check' : 'ban'} color={ctr.contrainteRespectee == true ? 'green' : 'red'} className='me-2' />
+                            {ctr.libelleContrainte}
+                            <br/>
+                        </>
+                    )})}
+                </small></p>
+            </center>
+        </>: null}
     </>);
 };
 

@@ -90,7 +90,7 @@ const OneCommandeStep6Livraison = ({
     return (<>
         <Row className='mt-2'>
             {commande.detailsCommande.savHistorique ?
-                <Col md={12} className="mb-3">
+                <Col md={12}>
                     <Alert variant='warning'>Cette commande fait ou a fait l'objet d'un SAV.</Alert>
                 </Col>
             : null}
@@ -118,58 +118,61 @@ const OneCommandeStep6Livraison = ({
                         <Form.Control size="sm" as="textarea" rows={5} name="remarquesLivraison" id="remarquesLivraison" {...register("remarquesLivraison")} disabled={forceReadOnly}/>
                         <small className="text-danger">{errors.remarquesLivraison?.message}</small>
                     </Form.Group>
-                    <div className="d-grid gap-2 mt-3">
-                        <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading || forceReadOnly}>{isLoading ? 'Patientez...' : 'Enregistrer les remarques'}</Button>
-                    </div>
+                    {commande.detailsCommande.idEtat == 4 || commande.detailsCommande.idEtat == 6 ? 
+                        <div className="d-grid gap-2 mt-3">
+                            <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading || forceReadOnly}>{isLoading ? 'Patientez...' : 'Enregistrer les remarques'}</Button>
+                        </div>
+                    :null}
                 </Form>
             </Col>
             
-            <hr/>
-
-            <Col md={6}>
-                <center className='mt-2'>
-                    <IconButton
-                        disabled={!okToSAV}
-                        icon='ban'
-                        variant={okToSAV ? 'warning' : 'outline-warning'}
-                        onClick={livraisonSAV}
-                    >
-                        Engager un SAV
-                    </IconButton>
-                    <p><small>
-                        <u>Critères à respecter pour passer en SAV:</u><br/>
-                        {commande.verificationContraintes.contraintes.filter(ctr => ctr.idEtatFinal == 6).map((ctr, i) => {return(
-                            <>
-                                <FontAwesomeIcon icon={ctr.contrainteRespectee == true ? 'check' : 'ban'} color={ctr.contrainteRespectee == true ? 'green' : 'red'} className='me-2' />
-                                {ctr.libelleContrainte}
-                                <br/>
-                            </>
-                        )})}
-                    </small></p>
-                </center>
-            </Col>
-            <Col md={6}>
-                <center className='mt-2'>
-                    <IconButton
-                        disabled={!okToContinue}
-                        icon='check'
-                        variant={okToContinue ? 'success' : 'outline-success'}
-                        onClick={livraisonOK}
-                    >
-                        Livraison conforme
-                    </IconButton>
-                    <p><small>
-                        <u>Critères à respecter pour accepter la livraison:</u><br/>
-                        {commande.verificationContraintes.contraintes.filter(ctr => ctr.idEtatFinal == 5).map((ctr, i) => {return(
-                            <>
-                                <FontAwesomeIcon icon={ctr.contrainteRespectee == true ? 'check' : 'ban'} color={ctr.contrainteRespectee == true ? 'green' : 'red'} className='me-2' />
-                                {ctr.libelleContrainte}
-                                <br/>
-                            </>
-                        )})}
-                    </small></p>
-                </center>
-            </Col>
+            {commande.detailsCommande.idEtat == 4 || commande.detailsCommande.idEtat == 6 ? <>
+                <hr/>
+                <Col md={6}>
+                    <center className='mt-2'>
+                        <IconButton
+                            disabled={!okToSAV}
+                            icon='ban'
+                            variant={okToSAV ? 'warning' : 'outline-warning'}
+                            onClick={livraisonSAV}
+                        >
+                            Engager un SAV
+                        </IconButton>
+                        <p><small>
+                            <u>Critères à respecter pour passer en SAV:</u><br/>
+                            {commande.verificationContraintes.contraintes.filter(ctr => ctr.idEtatFinal == 6).map((ctr, i) => {return(
+                                <>
+                                    <FontAwesomeIcon icon={ctr.contrainteRespectee == true ? 'check' : 'ban'} color={ctr.contrainteRespectee == true ? 'green' : 'red'} className='me-2' />
+                                    {ctr.libelleContrainte}
+                                    <br/>
+                                </>
+                            )})}
+                        </small></p>
+                    </center>
+                </Col>
+                <Col md={6}>
+                    <center className='mt-2'>
+                        <IconButton
+                            disabled={!okToContinue}
+                            icon='check'
+                            variant={okToContinue ? 'success' : 'outline-success'}
+                            onClick={livraisonOK}
+                        >
+                            Livraison conforme
+                        </IconButton>
+                        <p><small>
+                            <u>Critères à respecter pour accepter la livraison:</u><br/>
+                            {commande.verificationContraintes.contraintes.filter(ctr => ctr.idEtatFinal == 5).map((ctr, i) => {return(
+                                <>
+                                    <FontAwesomeIcon icon={ctr.contrainteRespectee == true ? 'check' : 'ban'} color={ctr.contrainteRespectee == true ? 'green' : 'red'} className='me-2' />
+                                    {ctr.libelleContrainte}
+                                    <br/>
+                                </>
+                            )})}
+                        </small></p>
+                    </center>
+                </Col>
+            </> :null}
         </Row>
     </>);
 };
