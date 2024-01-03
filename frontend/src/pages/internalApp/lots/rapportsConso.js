@@ -1,13 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import { Alert, Card, Accordion, AccordionContext } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { Alert, Card, Accordion, } from 'react-bootstrap';
 import PageHeader from 'components/common/PageHeader';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import moment from 'moment-timezone';
 
-import HabilitationService from 'services/habilitationsService';
 import ConfigurationService from 'services/configurationService';
 
 import { Axios } from 'helpers/axios';

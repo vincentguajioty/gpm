@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
-import { Row, Col, Card, Tabs, Tab, Alert, } from 'react-bootstrap';
+import { Alert, } from 'react-bootstrap';
 import PageHeader from 'components/common/PageHeader';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
-import WidgetSectionTitle from 'components/widgets/WidgetSectionTitle';
 import moment from 'moment-timezone';
 
 import HabilitationService from 'services/habilitationsService';

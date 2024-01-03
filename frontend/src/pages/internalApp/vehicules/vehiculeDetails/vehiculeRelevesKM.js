@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { Form, Offcanvas, Button, Modal } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 import GPMtable from 'components/gpmTable/gpmTable';

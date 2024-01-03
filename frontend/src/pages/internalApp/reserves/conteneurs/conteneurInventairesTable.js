@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Modal, Button, Table, Alert, Form } from 'react-bootstrap';
+import { Modal, Button, Table, Form } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import SoftBadge from 'components/common/SoftBadge';
 import IconButton from 'components/common/IconButton';
 import moment from 'moment-timezone';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';

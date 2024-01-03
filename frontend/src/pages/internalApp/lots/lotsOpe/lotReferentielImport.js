@@ -1,9 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import { Table, Accordion, Alert, Button, Modal, Form, } from 'react-bootstrap';
+import React, {useState} from 'react';
+import { Table, Button, Modal, Form, } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SoftBadge from 'components/common/SoftBadge';
-import moment from 'moment-timezone';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 
 import { Axios } from 'helpers/axios';

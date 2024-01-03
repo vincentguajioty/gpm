@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import { Card, Form, Row, Col, Button, } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { Form, Row, Col, Button, } from 'react-bootstrap';
 import PageHeader from 'components/common/PageHeader';
 import FalconComponentCard from 'components/common/FalconComponentCard';
+import moment from 'moment-timezone';
+import IconButton from 'components/common/IconButton';
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -18,8 +17,6 @@ registerLocale('fr', fr);
 setDefaultLocale('fr');
 
 import { Axios } from 'helpers/axios';
-import moment from 'moment-timezone';
-import IconButton from 'components/common/IconButton';
 
 const ChoixConsommation = ({
     setIdConsommation,

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { Table, Modal, Button } from 'react-bootstrap';
 import moment from 'moment-timezone';
 import SoftBadge from 'components/common/SoftBadge';

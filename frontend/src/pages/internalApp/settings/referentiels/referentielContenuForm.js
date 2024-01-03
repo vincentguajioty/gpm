@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import { Row, Col, Table, Form, Button} from 'react-bootstrap';
-
-import HabilitationService from 'services/habilitationsService';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 
 import { Axios } from 'helpers/axios';

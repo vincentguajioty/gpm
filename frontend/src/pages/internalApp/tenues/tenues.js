@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Offcanvas, Button, Form, Table, Modal } from 'react-bootstrap';
+import { Offcanvas, Button, Form, Modal } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 import FalconComponentCard from 'components/common/FalconComponentCard';
 import ActionButton from 'components/common/ActionButton';

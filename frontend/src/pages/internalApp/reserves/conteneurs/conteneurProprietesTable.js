@@ -1,6 +1,5 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SoftBadge from 'components/common/SoftBadge';
 import moment from 'moment-timezone';
 

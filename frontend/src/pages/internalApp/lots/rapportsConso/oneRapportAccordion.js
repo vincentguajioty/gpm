@@ -1,9 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Table, Modal, Button } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
-import FalconComponentCard from 'components/common/FalconComponentCard';
-import ActionButton from 'components/common/ActionButton';
-import PageHeader from 'components/common/PageHeader';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import moment from 'moment-timezone';
 import SoftBadge from 'components/common/SoftBadge';

@@ -1,8 +1,5 @@
 import React from 'react';
-import { Table, Accordion, Alert } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import SoftBadge from 'components/common/SoftBadge';
-import moment from 'moment-timezone';
+import { Accordion, Alert } from 'react-bootstrap';
 
 import SacsContent from '../sacs/sacsContent';
 import SacsForm from '../sacs/sacsForm';

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import moment from 'moment-timezone';
 import SoftBadge from 'components/common/SoftBadge';
@@ -13,7 +13,6 @@ import VehiculeDesinfectionsAlertes from './vehiculeDesinfectionsAlertes';
 import VehiculeDesinfectionsForm from './vehiculeDesinfectionsForm';
 
 const VehiculeDesinfections = ({idVehicule, desinfections, desinfectionsAlertes, setPageNeedsRefresh}) => {
-    const nl2br = require('react-nl2br');
     const colonnes = [
         {
             accessor: 'dateDesinfection',

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 
 import SoftBadge from 'components/common/SoftBadge';
 import GPMtable from 'components/gpmTable/gpmTable';

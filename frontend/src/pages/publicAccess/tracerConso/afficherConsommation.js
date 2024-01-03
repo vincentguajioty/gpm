@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { Card, Form, Button, Modal, Alert, } from 'react-bootstrap';
+import { Form, Button, Modal, Alert, } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
-import moment from 'moment-timezone';
-import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import FalconComponentCard from 'components/common/FalconComponentCard';
 import Select from 'react-select';
 import GPMtable from 'components/gpmTable/gpmTable';

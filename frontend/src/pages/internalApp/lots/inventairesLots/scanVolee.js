@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import { Card, Form, FloatingLabel, } from 'react-bootstrap';
-import Flex from 'components/common/Flex';
 import SoftBadge from 'components/common/SoftBadge';
 import moment from 'moment-timezone';
 

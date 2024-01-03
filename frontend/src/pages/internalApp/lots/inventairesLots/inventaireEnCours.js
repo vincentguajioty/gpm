@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
-import { Row, Col, Card, Tabs, Tab, Alert, } from 'react-bootstrap';
+import { Row, Col, Alert, } from 'react-bootstrap';
 import PageHeader from 'components/common/PageHeader';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import WidgetSectionTitle from 'components/widgets/WidgetSectionTitle';

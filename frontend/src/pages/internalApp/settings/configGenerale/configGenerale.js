@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import PageHeader from 'components/common/PageHeader';
-import { Card, Tabs, Tab, Alert } from 'react-bootstrap';
+import { Card, Tabs, Tab } from 'react-bootstrap';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 
 import ConfigGeneraleTabAES from './tabAes';

@@ -8,7 +8,6 @@ import IconButton from 'components/common/IconButton';
 import Select from 'react-select';
 import GPMtable from 'components/gpmTable/gpmTable';
 import moment from 'moment-timezone';
-import Barcode from 'react-barcode';
 import SoftBadge from 'components/common/SoftBadge';
 import CodesBarreModal from 'components/widgets/CodeBarreModal';
 

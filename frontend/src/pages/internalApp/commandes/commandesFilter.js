@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Form, Accordion } from 'react-bootstrap';
+import { Form, } from 'react-bootstrap';
 
 const CommandesFilter = ({
     commandesArray,

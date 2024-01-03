@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Form, Accordion, Button, Modal, Alert, } from 'react-bootstrap';
+import { Card, Form, Button, Modal, Alert, } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 
 import { Axios } from 'helpers/axios';

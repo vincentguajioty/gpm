@@ -1,16 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import PageHeader from 'components/common/PageHeader';
-import { Row, Col, Modal, Button, Form } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Modal, Button, Form } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
-import FalconComponentCard from 'components/common/FalconComponentCard';
-import ActionButton from 'components/common/ActionButton';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
-import { version } from 'config';
-import SoftBadge from 'components/common/SoftBadge';
 import IconButton from 'components/common/IconButton';
 import Select from 'react-select';
-
-import ConfigurationService from 'services/configurationService';
 
 import { Axios } from 'helpers/axios';
 

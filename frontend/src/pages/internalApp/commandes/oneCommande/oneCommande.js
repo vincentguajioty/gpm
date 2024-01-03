@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
-import { Card, Row, Col, Accordion } from 'react-bootstrap';
-import  { Breakpoint } from 'react-socks';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Row, Col, } from 'react-bootstrap';
 import FalconComponentCard from 'components/common/FalconComponentCard';
 import ActionButton from 'components/common/ActionButton';
 import PageHeader from 'components/common/PageHeader';

@@ -1,8 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import { Row, Col, Alert, } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
 import PageHeader from 'components/common/PageHeader';
 import moment from 'moment-timezone';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';

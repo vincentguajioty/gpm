@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { Form , Offcanvas, Button, Dropdown } from 'react-bootstrap';
 import GPMtable from 'components/gpmTable/gpmTable';
 import IconButton from 'components/common/IconButton';

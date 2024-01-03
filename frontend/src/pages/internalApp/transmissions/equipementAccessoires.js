@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { Card, Modal, Button, Offcanvas, Form, } from 'react-bootstrap';
 import Flex from 'components/common/Flex';
 import FalconCloseButton from 'components/common/FalconCloseButton';

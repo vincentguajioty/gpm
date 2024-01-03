@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { Row, Col, Card } from 'react-bootstrap';
+import { Row, Col, } from 'react-bootstrap';
 import HabilitationService from 'services/habilitationsService';
 import ConfigurationService from 'services/configurationService';
 import Flex from 'components/common/Flex';

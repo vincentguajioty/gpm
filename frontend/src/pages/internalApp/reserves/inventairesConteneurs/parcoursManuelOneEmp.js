@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Card, Form, Accordion, FloatingLabel, Table, InputGroup, Dropdown, DropdownButton } from 'react-bootstrap';
-import Flex from 'components/common/Flex';
+import { Form, FloatingLabel, Table, InputGroup, Dropdown, DropdownButton } from 'react-bootstrap';
 import SoftBadge from 'components/common/SoftBadge';
 import moment from 'moment-timezone';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

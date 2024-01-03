@@ -1,11 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { Link, useNavigate, } from 'react-router-dom';
-import { Card, Offcanvas, Button, Form, Tab, Nav, Row, Col, Modal, OverlayTrigger, Tooltip, } from 'react-bootstrap';
+import { Offcanvas, Button, Form, Row, Col, Modal, OverlayTrigger, Tooltip, } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
-import PageHeader from 'components/common/PageHeader';
-import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import GPMtable from 'components/gpmTable/gpmTable';
-import moment from 'moment-timezone';
 import IconButton from 'components/common/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SoftBadge from 'components/common/SoftBadge';

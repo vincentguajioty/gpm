@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { Form, Offcanvas, Modal, Button } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 import GPMtable from 'components/gpmTable/gpmTable';
 import moment from 'moment-timezone';
 import IconButton from 'components/common/IconButton';
 import Select from 'react-select';
-
 
 import HabilitationService from 'services/habilitationsService';
 import { Axios } from 'helpers/axios';
