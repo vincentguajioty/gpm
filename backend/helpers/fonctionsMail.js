@@ -1060,6 +1060,97 @@ const mailDeGroupe = async (requestInfo) => {
     }
 }
 
+const commandeNotif = async (requestInfo) => {
+    try {
+        // use a template file with nodemailer
+        let configDB = await db.query(
+            `SELECT * FROM CONFIG;`
+        );
+        configDB = configDB[0]
+
+        const transporter = process.env.DKIM_ENABLED && process.env.DKIM_ENABLED == true ? transporterWithDKIM : transporterWithoutDKIM;
+        transporter.use('compile', hbs(handlebarOptions))
+
+        //get data for the email
+        const users = await db.query(`
+            SELECT
+                *
+            FROM
+                PERSONNE_REFERENTE
+            WHERE
+                idPersonne = :idPersonne
+        `,{
+            idPersonne: requestInfo.idPersonne,
+        });
+        
+        let commande = await db.query(`
+            SELECT
+                c.*,
+                f.nomFournisseur,
+                couts.libelleCentreDecout
+            FROM
+                COMMANDES c
+                LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = c.idFournisseur
+                LEFT OUTER JOIN CENTRE_COUTS couts ON couts.idCentreDeCout = c.idCentreDeCout
+            WHERE
+                idCommande = :idCommande
+        `,{
+            idCommande: requestInfo.idObject,
+        });
+        commande = commande[0];
+
+        //get users and send the mail to each one      
+        let mailOptions={};
+        let emailErrors = 0;
+        for (const personne of users) {
+            mailOptions = {
+                from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
+                to: personne.mailPersonne, // list of receivers
+                subject: '['+configDB.appname+'][COMMANDE] ' + requestInfo.otherSubject,
+                template: 'commandeNotif', // the name of the template file i.e email.handlebars
+                context:{
+                    personne: personne,
+                    appname: configDB.appname,
+                    urlsite: configDB.urlsite,
+                    message: requestInfo.otherContent,
+                    commande: commande,
+                },
+                list: {
+                    unsubscribe: {
+                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+configDB.appname+'-forUser:'+personne.idUtilisateur,
+                        comment: 'Ne plus recevoir de mails',
+                    },
+                },
+            };
+            logger.debug(mailOptions);
+    
+            // trigger the sending of the E-mail
+            const sendMailResult = await transporter.sendMail(mailOptions);
+            if(sendMailResult.rejected.length == 0)
+            {
+                logger.debug(sendMailResult);
+            }
+            else
+            {
+                logger.error(error);
+                emailErrors += 1;
+            }
+        }
+
+        if(emailErrors == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    } catch (error) {
+        logger.error(error);
+        return false;
+    }
+}
+
 /* --------- FONCTIONS EXPORTEES --------- */
 
 const sendMailQueue = async () => {
@@ -1131,6 +1222,10 @@ const sendMailQueue = async () => {
 
                 case 'mailDeGroupe':
                     successCheck = await mailDeGroupe(mailNeeded);
+                break;
+
+                case 'commandeNotif':
+                    successCheck = await commandeNotif(mailNeeded);
                 break;
             
                 default:

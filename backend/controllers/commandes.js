@@ -3,6 +3,7 @@ const logger = require('../winstonLogger');
 const multer = require('multer');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
+const fonctionsMail = require('../helpers/fonctionsMail');
 
 exports.getCommandes = async (req, res)=>{
     try {
@@ -197,6 +198,8 @@ exports.abandonnerCommande = async (req, res)=>{
         `,{
             idCommande: req.body.idCommande || null,
         });
+
+        await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 8);
         
         res.sendStatus(201);
     } catch (error) {
@@ -417,6 +420,8 @@ exports.demandeValidation = async (req, res)=>{
             idCommande: req.body.idCommande || null,
         });
 
+        await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 2);
+
         res.sendStatus(201);
     } catch (error) {
         logger.error(error);
@@ -458,6 +463,8 @@ exports.rejeterCommande = async (req, res)=>{
             idCommande: req.body.idCommande || null,
         });
 
+        await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 1);
+
         res.sendStatus(201);
     } catch (error) {
         logger.error(error);
@@ -478,6 +485,8 @@ exports.approuverCommande = async (req, res)=>{
         `,{
             idCommande: req.body.idCommande || null,
         });
+
+        await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 3);
 
         res.sendStatus(201);
     } catch (error) {
@@ -537,6 +546,8 @@ exports.passerCommande = async (req, res)=>{
             idCommande: req.body.idCommande || null,
         });
 
+        await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 4);
+
         res.sendStatus(201);
     } catch (error) {
         logger.error(error);
@@ -580,6 +591,8 @@ exports.livraisonOKCommande = async (req, res)=>{
             idCommande: req.body.idCommande || null,
         });
 
+        await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 5);
+
         res.sendStatus(201);
     } catch (error) {
         logger.error(error);
@@ -600,6 +613,8 @@ exports.livraisonSAVCommande = async (req, res)=>{
         `,{
             idCommande: req.body.idCommande || null,
         });
+
+        await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 6);
 
         res.sendStatus(201);
     } catch (error) {
@@ -641,6 +656,8 @@ exports.cloreCommande = async (req, res)=>{
         `,{
             idCommande: req.body.idCommande || null,
         });
+
+        await fonctionsMetiers.envoyerNotifAuChangementStatutCommande(req.body.idCommande, 7);
 
         res.sendStatus(201);
     } catch (error) {

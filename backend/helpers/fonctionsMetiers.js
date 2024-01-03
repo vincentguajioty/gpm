@@ -1881,6 +1881,7 @@ const getValideurs = async (idCommande) => {
 
         const getValideursUniversels = await db.query(`
             SELECT
+                idPersonne,    
                 idPersonne as value,
                 identifiant as label
             FROM
@@ -1912,6 +1913,7 @@ const getValideurs = async (idCommande) => {
             if(await cmdEstValideur(personne.idPersonne, idCommande) == true)
             {
                 valideursPotentiels.push({
+                    idPersonne: personne.idPersonne,
                     value: personne.idPersonne,
                     label: personne.identifiant,
                 })
@@ -2636,6 +2638,612 @@ const verificationAvantChangementEtatCmd = async (idCommande, idEtatCible) => {
     }
 }
 
+const envoyerNotifAuChangementStatutCommande = async (idCommande, idEtatCible) => {
+    try {
+        let configForNotif = await db.query(
+            'SELECT * FROM CONFIG;'
+        );
+        configForNotif = configForNotif[0];
+
+        let commande = await db.query(`
+            SELECT
+                savHistorique
+            FROM
+                COMMANDES
+            WHERE
+                idCommande = :idCommande
+            ;
+        `,{
+            idCommande: idCommande || null,
+        });
+        let savHistorique = commande[0].savHistorique
+
+        const demandeurs = await db.query(`
+            SELECT
+                pr.idPersonne
+            FROM
+                COMMANDES_DEMANDEURS ca
+                LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idDemandeur = pr.idPersonne
+            WHERE
+                idCommande = :idCommande
+                AND mailPersonne != ''
+                AND mailPersonne IS NOT NULL
+            ;
+        `,{
+            idCommande: idCommande || null,
+        });
+
+        const affectees = await db.query(`
+            SELECT
+                pr.idPersonne
+            FROM
+                COMMANDES_AFFECTEES ca
+                LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idAffectee = pr.idPersonne
+            WHERE
+                idCommande = :idCommande
+                AND mailPersonne != ''
+                AND mailPersonne IS NOT NULL
+            ;
+        `,{
+            idCommande: idCommande || null,
+        });
+
+        const observateurs = await db.query(`
+            SELECT
+                pr.idPersonne
+            FROM
+                COMMANDES_OBSERVATEURS ca
+                LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ca.idObservateur = pr.idPersonne
+            WHERE
+                idCommande = :idCommande
+                AND mailPersonne != ''
+                AND mailPersonne IS NOT NULL
+            ;
+        `,{
+            idCommande: idCommande || null,
+        });
+
+        const valideurs = await getValideurs(idCommande);
+
+        const responsablesCentreCouts = await db.query(`
+            SELECT
+                p.idPersonne
+            FROM
+                CENTRE_COUTS_PERSONNES c
+                INNER JOIN PERSONNE_REFERENTE p ON c.idPersonne = p.idPersonne
+            WHERE
+                idCentreDeCout = (SELECT idCentreDeCout FROM COMMANDES WHERE idCommande = :idCommande);
+        `,{
+            idCommande: idCommande || null,
+        });
+
+        switch (idEtatCible) {
+            case 1:
+                logger.debug('Envoi de notifications pour la commande '+idCommande+' qui passe au statut 1')
+                if(configForNotif.notifications_commandes_demandeur_validationNOK)
+                {
+                    for(const personne of demandeurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande refusée',
+                            otherContent: "La commande dont vous êtes le demandeur a été refusée et est à nouveau disponible pour édition."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_valideur_validationNOK)
+                {
+                    for(const personne of valideurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande refusée',
+                            otherContent: "La commande dont vous êtes le valideur a été refusée."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_affectee_validationNOK)
+                {
+                    for(const personne of affectees)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande refusée',
+                            otherContent: "La commande qui vous est affectée a été refusée et est à nouveau disponible pour édition."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_observateur_validationNOK)
+                {
+                    for(const personne of observateurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande refusée',
+                            otherContent: "Pour information, la commande dont vous êtes observateur a été refusée."
+                        })
+                    }
+                }
+            break;
+
+            case 2:
+                logger.debug('Envoi de notifications pour la commande '+idCommande+' qui passe au statut 2')
+                if(configForNotif.notifications_commandes_demandeur_validation)
+                {
+                    for(const personne of demandeurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Validation demandée',
+                            otherContent: "La commande dont vous êtes le demandeur a bien été soumise à validation. Elle sera traitée par les personnes affectées dès lors que les valideurs auront approuvé la commande."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_valideur_validation)
+                {
+                    for(const personne of valideurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Demande de validation en cours chez vous',
+                            otherContent: "La commande dont vous êtes le valideur a été soumise à validation. Merci de vous connecter à l'application pour valider ou refuser la commande."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_affectee_validation)
+                {
+                    for(const personne of affectees)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Validation demandée',
+                            otherContent: "La commande qui vous est affectée a été soumise à validation. Vous serez en mesure de travailler dessus dès que celle-ci sera validée."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_observateur_validation)
+                {
+                    for(const personne of observateurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Validation demandée',
+                            otherContent: "Pour information, la commande dont vous êtes observateur a été soumise à validation."
+                        })
+                    }
+                }
+            break;
+
+            case 3:
+                logger.debug('Envoi de notifications pour la commande '+idCommande+' qui passe au statut 3')
+                if(configForNotif.notifications_commandes_demandeur_validationOK)
+                {
+                    for(const personne of demandeurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande validée',
+                            otherContent: "La commande dont vous êtes le demandeur a été validée. Elle est désormais entre les mains des personnes affectées à son traitement afin qu'elle soit passée chez le fournisseur."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_valideur_validationOK)
+                {
+                    for(const personne of valideurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande validée',
+                            otherContent: "La commande dont vous êtes le valideur a bien été validée."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_affectee_validationOK)
+                {
+                    for(const personne of affectees)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande validée',
+                            otherContent: "La commande qui vous est affectée a été validée. Elle est désormais entre vos main pour être passée auprès du fournisseur."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_observateur_validationOK)
+                {
+                    for(const personne of observateurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande validée',
+                            otherContent: "Pour information, la commande dont vous êtes observateur a été validée."
+                        })
+                    }
+                }
+            break;
+
+            case 4:
+                logger.debug('Envoi de notifications pour la commande '+idCommande+' qui passe au statut 4')
+                if(configForNotif.notifications_commandes_demandeur_passee)
+                {
+                    for(const personne of demandeurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande passée',
+                            otherContent: "La commande dont vous êtes le demandeur a été passée auprès du fournisseur et est désormais en attente de livraison."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_valideur_passee)
+                {
+                    for(const personne of valideurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande passée',
+                            otherContent: "La commande dont vous êtes le valideur a été passée auprès du fournisseur et est désormais en attente de livraison."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_affectee_passee)
+                {
+                    for(const personne of affectees)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande passée',
+                            otherContent: "La commande qui vous est affectée a été passée auprès du fournisseur et est désormais en attente de livraison."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_observateur_passee)
+                {
+                    for(const personne of observateurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande passée',
+                            otherContent: "Pour information, la commande dont vous êtes observateur a été passée auprès du fournisseur et est désormais en attente de livraison."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_valideur_centreCout)
+                {
+                    for(const personne of responsablesCentreCouts)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Intégration d\'une commande au centre de couts',
+                            otherContent: "Une commande rattachée à l'un de vos centres de couts vient d'être passée auprès du fournisseur. Dès à présent et dès que celle-ci aura été payée au fournisseur, nous vous invitons à l'intégrer dans le livre de comptes de votre centre de couts."
+                        })
+                    }
+                }
+            break;
+
+            case 5:
+                logger.debug('Envoi de notifications pour la commande '+idCommande+' qui passe au statut 5')
+                if(savHistorique)
+                {
+                    if(configForNotif.notifications_commandes_demandeur_savOK)
+                    {
+                        for(const personne of demandeurs)
+                        {
+                            await fonctionsMail.registerToMailQueue({
+                                typeMail: 'commandeNotif',
+                                idObject: idCommande,
+                                idPersonne: personne.idPersonne,
+                                otherSubject: 'Fin du SAV',
+                                otherContent: "La commande dont vous êtes le demandeur a terminé son traitement SAV et est passée à un stade de livraison acceptée. Elle doit maintenant être intégrée au stock."
+                            })
+                        }
+                    }
+                    if(configForNotif.notifications_commandes_valideur_savOK)
+                    {
+                        for(const personne of valideurs)
+                        {
+                            await fonctionsMail.registerToMailQueue({
+                                typeMail: 'commandeNotif',
+                                idObject: idCommande,
+                                idPersonne: personne.idPersonne,
+                                otherSubject: 'Fin du SAV',
+                                otherContent: "La commande dont vous êtes le valideur a terminé son traitement SAV et est passée à un stade de livraison acceptée. Elle doit maintenant être intégrée au stock."
+                            })
+                        }
+                    }
+                    if(configForNotif.notifications_commandes_affectee_savOK)
+                    {
+                        for(const personne of affectees)
+                        {
+                            await fonctionsMail.registerToMailQueue({
+                                typeMail: 'commandeNotif',
+                                idObject: idCommande,
+                                idPersonne: personne.idPersonne,
+                                otherSubject: 'Fin du SAV',
+                                otherContent: "La commande qui vous est affectée a terminé son traitement SAV et est passée à un stade de livraison acceptée. Vous devez maintenance l'intégrer au stock."
+                            })
+                        }
+                    }
+                    if(configForNotif.notifications_commandes_observateur_savOK)
+                    {
+                        for(const personne of observateurs)
+                        {
+                            await fonctionsMail.registerToMailQueue({
+                                typeMail: 'commandeNotif',
+                                idObject: idCommande,
+                                idPersonne: personne.idPersonne,
+                                otherSubject: 'Fin du SAV',
+                                otherContent: "Pour information, la commande dont vous êtes observateur a terminé son traitement SAV et est passée à un stade de livraison acceptée. Elle doit maintenant être intégrée au stock."
+                            })
+                        }
+                    }
+                }else{
+                    if(configForNotif.notifications_commandes_demandeur_livraisonOK)
+                    {
+                        for(const personne of demandeurs)
+                        {
+                            await fonctionsMail.registerToMailQueue({
+                                typeMail: 'commandeNotif',
+                                idObject: idCommande,
+                                idPersonne: personne.idPersonne,
+                                otherSubject: 'Livraison OK',
+                                otherContent: "La commande dont vous êtes le demandeur a été livrée correctement sans déclenchement de SAV. Elle doit maintenant être intégrée au stock."
+                            })
+                        }
+                    }
+                    if(configForNotif.notifications_commandes_valideur_livraisonOK)
+                    {
+                        for(const personne of valideurs)
+                        {
+                            await fonctionsMail.registerToMailQueue({
+                                typeMail: 'commandeNotif',
+                                idObject: idCommande,
+                                idPersonne: personne.idPersonne,
+                                otherSubject: 'Livraison OK',
+                                otherContent: "La commande dont vous êtes le valideur a été livrée correctement sans déclenchement de SAV. Elle doit maintenant être intégrée au stock."
+                            })
+                        }
+                    }
+                    if(configForNotif.notifications_commandes_affectee_livraisonOK)
+                    {
+                        for(const personne of affectees)
+                        {
+                            await fonctionsMail.registerToMailQueue({
+                                typeMail: 'commandeNotif',
+                                idObject: idCommande,
+                                idPersonne: personne.idPersonne,
+                                otherSubject: 'Livraison OK',
+                                otherContent: "La commande qui vous est affectée a été livrée correctement sans déclenchement de SAV. Vous devez maintenance l'intégrer au stock."
+                            })
+                        }
+                    }
+                    if(configForNotif.notifications_commandes_observateur_livraisonOK)
+                    {
+                        for(const personne of observateurs)
+                        {
+                            await fonctionsMail.registerToMailQueue({
+                                typeMail: 'commandeNotif',
+                                idObject: idCommande,
+                                idPersonne: personne.idPersonne,
+                                otherSubject: 'Livraison OK',
+                                otherContent: "Pour information, la commande dont vous êtes observateur a été livrée correctement sans déclenchement de SAV. Elle doit maintenant être intégrée au stock."
+                            })
+                        }
+                    }
+                }
+            break;
+
+            case 6:
+                logger.debug('Envoi de notifications pour la commande '+idCommande+' qui passe au statut 6')
+                if(configForNotif.notifications_commandes_demandeur_livraisonNOK)
+                    {
+                        for(const personne of demandeurs)
+                        {
+                            await fonctionsMail.registerToMailQueue({
+                                typeMail: 'commandeNotif',
+                                idObject: idCommande,
+                                idPersonne: personne.idPersonne,
+                                otherSubject: 'Livraison défaillante - Engagement SAV',
+                                otherContent: "La commande dont vous êtes le demandeur a été livrée avec un défaut nécessitant une démarche SAV."
+                            })
+                        }
+                    }
+                    if(configForNotif.notifications_commandes_valideur_livraisonNOK)
+                    {
+                        for(const personne of valideurs)
+                        {
+                            await fonctionsMail.registerToMailQueue({
+                                typeMail: 'commandeNotif',
+                                idObject: idCommande,
+                                idPersonne: personne.idPersonne,
+                                otherSubject: 'Livraison défaillante - Engagement SAV',
+                                otherContent: "La commande dont vous êtes le valideur a été livrée avec un défaut nécessitant une démarche SAV."
+                            })
+                        }
+                    }
+                    if(configForNotif.notifications_commandes_affectee_livraisonNOK)
+                    {
+                        for(const personne of affectees)
+                        {
+                            await fonctionsMail.registerToMailQueue({
+                                typeMail: 'commandeNotif',
+                                idObject: idCommande,
+                                idPersonne: personne.idPersonne,
+                                otherSubject: 'Livraison défaillante - Engagement SAV',
+                                otherContent: "La commande qui vous est affectée a été livrée avec un défaut nécessitant une démarche SAV. Le suivi du SAV est a effecté dans le champ des commentaires de livraison."
+                            })
+                        }
+                    }
+                    if(configForNotif.notifications_commandes_observateur_livraisonNOK)
+                    {
+                        for(const personne of observateurs)
+                        {
+                            await fonctionsMail.registerToMailQueue({
+                                typeMail: 'commandeNotif',
+                                idObject: idCommande,
+                                idPersonne: personne.idPersonne,
+                                otherSubject: 'Livraison défaillante - Engagement SAV',
+                                otherContent: "Pour information, la commande dont vous êtes observateur a été livrée avec un défaut nécessitant une démarche SAV."
+                            })
+                        }
+                    }
+            break;
+
+            case 7:
+                logger.debug('Envoi de notifications pour la commande '+idCommande+' qui passe au statut 7')
+                if(configForNotif.notifications_commandes_demandeur_cloture)
+                {
+                    for(const personne of demandeurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande cloturée',
+                            otherContent: "La commande dont vous êtes le demandeur a été cloturée. Son traitement prend donc fin."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_valideur_cloture)
+                {
+                    for(const personne of valideurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande cloturée',
+                            otherContent: "La commande dont vous êtes le valideur a été cloturée. Son traitement prend donc fin."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_affectee_cloture)
+                {
+                    for(const personne of affectees)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande cloturée',
+                            otherContent: "La commande qui vous est affectée a été cloturée. Son traitement prend donc fin."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_observateur_cloture)
+                {
+                    for(const personne of observateurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande cloturée',
+                            otherContent: "Pour information, la commande dont vous êtes observateur a été cloturée. Son traitement prend donc fin."
+                        })
+                    }
+                }
+            break;
+
+            case 8:
+                logger.debug('Envoi de notifications pour la commande '+idCommande+' qui passe au statut 8')
+                if(configForNotif.notifications_commandes_demandeur_abandon)
+                {
+                    for(const personne of demandeurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande abandonnée',
+                            otherContent: "La commande dont vous êtes le demandeur a été abandonnée. Son traitement prend donc fin sans aucune autre action nécessaire."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_valideur_abandon)
+                {
+                    for(const personne of valideurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande abandonnée',
+                            otherContent: "La commande dont vous êtes le valideur a été abandonnée. Son traitement prend donc fin sans aucune autre action nécessaire."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_affectee_abandon)
+                {
+                    for(const personne of affectees)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande abandonnée',
+                            otherContent: "La commande qui vous est affectée a été abandonnée. Son traitement prend donc fin sans aucune autre action nécessaire."
+                        })
+                    }
+                }
+                if(configForNotif.notifications_commandes_observateur_abandon)
+                {
+                    for(const personne of observateurs)
+                    {
+                        await fonctionsMail.registerToMailQueue({
+                            typeMail: 'commandeNotif',
+                            idObject: idCommande,
+                            idPersonne: personne.idPersonne,
+                            otherSubject: 'Commande abandonnée',
+                            otherContent: "Pour information, la commande dont vous êtes observateur a été abandonnée. Son traitement prend donc fin sans aucune autre action nécessaire."
+                        })
+                    }
+                }
+            break;
+        
+            default:
+            break;
+        }
+
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -2697,4 +3305,5 @@ module.exports = {
     centreCoutsEstCharge,
     verificationContraintesCmd,
     verificationAvantChangementEtatCmd,
+    envoyerNotifAuChangementStatutCommande,
 };

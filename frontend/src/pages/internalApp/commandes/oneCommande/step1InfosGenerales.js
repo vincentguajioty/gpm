@@ -360,7 +360,7 @@ const OneCommandeStep1InfosGenerales = ({
                                     variant='outline-danger'
                                     icon='ban'
                                     onClick={abandonnerCommande}
-                                    disabled={commande.detailsCommande.idEtat == 7}
+                                    disabled={commande.detailsCommande.idEtat >= 7}
                                 >Abandonner</IconButton>
                             </center>
                         </Col>

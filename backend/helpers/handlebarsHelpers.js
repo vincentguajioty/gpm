@@ -40,7 +40,12 @@ const ifCond = (v1, operator, v2, options) => {
 }
 
 const nl2br = (text) => {
-    return text.replace(/(\r\n|\n|\r)/gm, '<br/>');
+    if(text && text != null && text != "")
+    {
+        return text.replace(/(\r\n|\n|\r)/gm, '<br/>');
+    }else{
+        return null;
+    }
 }
 
 module.exports = {
