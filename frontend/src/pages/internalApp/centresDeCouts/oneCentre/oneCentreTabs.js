@@ -15,6 +15,9 @@ const OneCentreTabs = ({
     const [mesDroits, setMesDroits] = useState(false);
 
     const checkIfUserCanEdit = () => {
+        setTabInReadOnly(true);
+        setMesDroits(false)
+
         let gestionnaireSelected = centre.gestionnaires.filter(personne => personne.idPersonne == HabilitationService.habilitations.idPersonne)
         if(gestionnaireSelected.length == 1)
         {
