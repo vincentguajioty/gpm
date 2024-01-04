@@ -215,6 +215,33 @@ exports.addCentre = async (req, res)=>{
     }
 }
 
+exports.updateCentre = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                CENTRE_COUTS
+            SET
+                libelleCentreDecout = :libelleCentreDecout,
+                commentairesCentreCout = :commentairesCentreCout,
+                dateOuverture = :dateOuverture,
+                dateFermeture = :dateFermeture
+            WHERE
+                idCentreDeCout = :idCentreDeCout
+        `,{
+            libelleCentreDecout: req.body.libelleCentreDecout || null,
+            commentairesCentreCout: req.body.commentairesCentreCout || null,
+            dateOuverture: req.body.dateOuverture || null,
+            dateFermeture: req.body.dateFermeture || null,
+            idCentreDeCout: req.body.idCentreDeCout || null,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.addOperation = async (req, res)=>{
     try {
         const result = await db.query(`
@@ -283,6 +310,69 @@ exports.updateOperation = async (req, res)=>{
 exports.centreCoutsOperationsDelete = async (req, res)=>{
     try {
         const deleteResult = await fonctionsDelete.centreCoutsOperationsDelete(req.verifyJWTandProfile.idPersonne , req.body.idOperations);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.addGerant = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                CENTRE_COUTS_PERSONNES
+            SET
+                idCentreDeCout = :idCentreDeCout,
+                idPersonne = :idPersonne,
+                montantMaxValidation = :montantMaxValidation,
+                depasseBudget = :depasseBudget,
+                validerClos = :validerClos
+        `,{
+            idCentreDeCout: req.body.idCentreDeCout || null,
+            idPersonne: req.body.idPersonne || null,
+            montantMaxValidation: req.body.montantMaxValidation || null,
+            depasseBudget: req.body.depasseBudget || false,
+            validerClos: req.body.validerClos || false,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateGerant = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                CENTRE_COUTS_PERSONNES
+            SET
+                idPersonne = :idPersonne,
+                montantMaxValidation = :montantMaxValidation,
+                depasseBudget = :depasseBudget,
+                validerClos = :validerClos
+            WHERE
+                idGerant = :idGerant
+        `,{
+            idGerant: req.body.idGerant || null,
+            idPersonne: req.body.idPersonne || null,
+            montantMaxValidation: req.body.montantMaxValidation || null,
+            depasseBudget: req.body.depasseBudget || false,
+            validerClos: req.body.validerClos || false,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.centreCoutsGerantDelete = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.centreCoutsGerantDelete(req.verifyJWTandProfile.idPersonne , req.body.idGerant);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);

@@ -1049,3 +1049,11 @@ export const operationLivreDeCompte = Yup.object().shape({
                 .max(Yup.ref("montantMaxDepense"), 'Plafond dépassé'),
         })
 });
+
+export const modifGerantCentreCouts = Yup.object().shape({
+    idPersonne: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+});

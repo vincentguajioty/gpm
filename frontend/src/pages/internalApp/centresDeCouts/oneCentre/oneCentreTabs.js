@@ -4,6 +4,7 @@ import { Tabs, Tab, } from 'react-bootstrap';
 import HabilitationService from 'services/habilitationsService';
 
 import OneCentreLivre from './oneCentreLivre';
+import OneCentreProprietes from './oneCentreProps';
 
 const OneCentreTabs = ({
     idCentreDeCout,
@@ -30,6 +31,10 @@ const OneCentreTabs = ({
         checkIfUserCanEdit();
     },[])
 
+    useEffect(()=>{
+        checkIfUserCanEdit();
+    },[centre])
+
     return(
         <Tabs defaultActiveKey="livre" transition={true}>
             <Tab eventKey="livre" title="Livre de comptes" className='border-bottom border-x p-3'>
@@ -48,6 +53,11 @@ const OneCentreTabs = ({
             <Tab eventKey="pj" title="Pièces jointes" className='border-bottom border-x p-3'>
             </Tab>
             <Tab eventKey="props" title="Propriétés et gestionnaires" className='border-bottom border-x p-3'>
+                <OneCentreProprietes
+                    idCentreDeCout={idCentreDeCout}
+                    centre={centre}
+                    setPageNeedsRefresh={setPageNeedsRefresh}
+                />
             </Tab>
             <Tab eventKey="export" title="Export" className='border-bottom border-x p-3'>
             </Tab>

@@ -3271,14 +3271,14 @@ const calculerTotalCentreDeCouts = async (idCentreDeCout) => {
             UPDATE
                 CENTRE_COUTS
             SET
-                soldeActuel = (
+                soldeActuel = IFNULL((
                     SELECT
                         SUM(CAST(IFNULL(montantEntrant,0) - IFNULL(montantSortant,0) AS DECIMAL(10,2)))
                     FROM
                         CENTRE_COUTS_OPERATIONS c
                     WHERE
                         idCentreDeCout = :idCentreDeCout
-                )
+                ),0)
             WHERE
                 idCentreDeCout = :idCentreDeCout
         `,{

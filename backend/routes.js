@@ -232,9 +232,13 @@ router.post('/transferts/enregistrerTransfert',            loggerMiddleware.http
 router.get('/centresCouts/getCentres',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_lecture']),                                             centresCoutsCtrl.getCentres);
 router.post('/centresCouts/getOneCentre',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_lecture']),                                             centresCoutsCtrl.getOneCentre);
 router.post('/centresCouts/addCentre',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_ajout']),        loggerMiddleware.modificationLogger(), centresCoutsCtrl.addCentre);
+router.post('/centresCouts/updateCentre',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_ajout']),        loggerMiddleware.modificationLogger(), centresCoutsCtrl.updateCentre);
 router.post('/centresCouts/addOperation',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_etreEnCharge']), loggerMiddleware.modificationLogger(), centresCoutsCtrl.addOperation);
 router.post('/centresCouts/updateOperation',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_etreEnCharge']), loggerMiddleware.modificationLogger(), centresCoutsCtrl.updateOperation);
-router.post('/centresCouts/centreCoutsOperationsDelete',    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_supprimer']),    loggerMiddleware.suppressionLogger(),  centresCoutsCtrl.centreCoutsOperationsDelete);
+router.post('/centresCouts/centreCoutsOperationsDelete',    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_etreEnCharge']), loggerMiddleware.suppressionLogger(),  centresCoutsCtrl.centreCoutsOperationsDelete);
+router.post('/centresCouts/addGerant',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_ajout']),        loggerMiddleware.modificationLogger(), centresCoutsCtrl.addGerant);
+router.post('/centresCouts/updateGerant',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_ajout']),        loggerMiddleware.modificationLogger(), centresCoutsCtrl.updateGerant);
+router.post('/centresCouts/centreCoutsGerantDelete',        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_ajout']),        loggerMiddleware.modificationLogger(), centresCoutsCtrl.centreCoutsGerantDelete);
 
 //VHF Canaux Attachements
 router.post('/commandes/uploadCommandesAttached',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), commandesCtrl.uploadCommandesAttachedMulter, commandesCtrl.uploadCommandesAttached);
