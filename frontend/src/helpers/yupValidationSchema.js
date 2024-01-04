@@ -1047,6 +1047,32 @@ export const operationLivreDeCompte = Yup.object().shape({
                 .nullable(true)
                 .typeError(champObligatoire)
                 .max(Yup.ref("montantMaxDepense"), 'Plafond dépassé'),
+        }),
+    montantEntrant: Yup
+        .number()
+        .transform((val) => {
+            if(val == "" || isNaN(val))
+            {
+                return null
+            }else{
+                return val
+            }})
+        .nullable(true)
+        .typeError(champObligatoire)
+        .when('montantMaxCredit',{
+            is:(montantMaxCredit) => montantMaxCredit != null,
+            then: () => Yup
+                .number()
+                .transform((val) => {
+                    if(val == "" || isNaN(val))
+                    {
+                        return null
+                    }else{
+                        return val
+                    }})
+                .nullable(true)
+                .typeError(champObligatoire)
+                .max(Yup.ref("montantMaxCredit"), 'Plafond dépassé'),
         })
 });
 

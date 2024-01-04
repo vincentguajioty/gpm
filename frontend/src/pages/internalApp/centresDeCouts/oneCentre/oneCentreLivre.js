@@ -138,7 +138,7 @@ const OneCentreLivre = ({
             let getForSelect = await Axios.get('/select/getPersonnes');
             setPersonnes(getForSelect.data);
 
-            if(mesDroits.montantMaxValidation && mesDroits.montantMaxValidation >= 0)
+            if(mesDroits.montantMaxValidation >= 0)
             {
                 setValue("montantMaxCredit", mesDroits.montantMaxValidation);
             }else{
@@ -155,7 +155,7 @@ const OneCentreLivre = ({
                 setValue("detailsMoyenTransaction", oneOperation.detailsMoyenTransaction);
                 setValue("idPersonne", oneOperation.idPersonne);
 
-                if(mesDroits.montantMaxValidation && mesDroits.montantMaxValidation >= 0)
+                if(mesDroits.montantMaxValidation != null)
                 {
                     if(centre.centreDetails.soldeActuel < mesDroits.montantMaxValidation)
                     {
@@ -179,8 +179,8 @@ const OneCentreLivre = ({
             }else{
                 setValue("idPersonne", HabilitationService.habilitations.idPersonne);
                 setValue("dateOperation", new Date());
-
-                if(mesDroits.montantMaxValidation && mesDroits.montantMaxValidation >= 0)
+                
+                if(mesDroits.montantMaxValidation != null)
                 {
                     if(centre.centreDetails.soldeActuel < mesDroits.montantMaxValidation)
                     {
@@ -327,7 +327,7 @@ const OneCentreLivre = ({
                         <Form.Label>Montants</Form.Label>
                         <FloatingLabel
                             controlId="floatingInput"
-                            label={"Montant sortant"+ (watch("montantMaxDepense") && watch("montantMaxDepense") != null ? ' (Max: '+watch("montantMaxDepense")+' €)' : "")}
+                            label={"Montant sortant"+ (watch("montantMaxDepense") != null ? ' (Max: '+watch("montantMaxDepense")+' €)' : "")}
                             className="mb-3"
                         >
                             <Form.Control size="sm" type="number" min="0" step="0.01" max={watch("montantMaxDepense")} name='montantSortant' id='montantSortant' {...register('montantSortant')}/>
@@ -335,7 +335,7 @@ const OneCentreLivre = ({
                         </FloatingLabel>
                         <FloatingLabel
                             controlId="floatingInput"
-                            label={"Montant entrant"+ (watch("montantMaxCredit") && watch("montantMaxCredit") != null ? ' (Max: '+watch("montantMaxCredit")+' €)' : "")}
+                            label={"Montant entrant"+ (watch("montantMaxCredit") != null ? ' (Max: '+watch("montantMaxCredit")+' €)' : "")}
                             className="mb-3"
                         >
                             <Form.Control size="sm" type="number" min="0" step="0.01" max={watch("montantMaxCredit")} name='montantEntrant' id='montantEntrant' {...register('montantEntrant')}/>
