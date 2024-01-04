@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@socket.io/admin-ui": "^0.5.1",
     "authenticator": "^1.1.5",
     "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",

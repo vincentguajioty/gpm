@@ -3,6 +3,7 @@ const logger = require('./winstonLogger');
 const jwtFunctions = require('./jwt');
 const fonctionsMetiers = require('./helpers/fonctionsMetiers');
 const middlewaresFunctions = require('./helpers/middlewares');
+const { instrument } = require("@socket.io/admin-ui");
 
 const socketInterface = async (http) => {
     try {
@@ -16,12 +17,26 @@ const socketInterface = async (http) => {
         
         const socketIO = require('socket.io')(http, {
             cors: {
-                origin: [process.env.CORS_ORIGINS],
+                origin: [process.env.CORS_ORIGINS, "https://admin.socket.io"],
+                default: process.env.CORS_ORIGINS,
                 methods: ["GET", "POST"],
                 credentials: true,
                 allowedHeaders: ["token"],
             },
         });
+
+        if(process.env.SOCKET_IO_MONITOR == true)
+        {
+            logger.debug('SOCKETIO Monitor activé');
+            instrument(socketIO, {
+                auth: {
+                    type: "basic",
+                    username: process.env.SOCKET_IO_MONITOR_USER,
+                    password: process.env.SOCKET_IO_MONITOR_PWD
+                },
+                namespaceName: process.env.SOCKET_IO_MONITOR_NAMESPACE
+            });
+        }
 
         socketIO.on('connection', (socket) => {
             logger.debug(`${socket.id} user just connected!`);
