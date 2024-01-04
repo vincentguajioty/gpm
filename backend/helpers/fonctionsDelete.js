@@ -500,6 +500,8 @@ const centreCoutsOperationsDelete = async (idLogger, idOperations) => {
             idOperations : idOperations,
         });
 
+        await fonctionsMetiers.calculerTotalCentreDeCouts(getInitialData[0].idCentreDeCout);
+
         logger.info("Suppression réussie l'opération "+idOperations, {idPersonne: idLogger})
         return true;
     } catch (error) {

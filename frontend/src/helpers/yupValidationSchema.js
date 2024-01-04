@@ -1007,3 +1007,45 @@ export const centresCoutsAddForm = Yup.object().shape({
         .typeError(champObligatoire)
         .required(champObligatoire),
 });
+
+export const operationLivreDeCompte = Yup.object().shape({
+    dateOperation: Yup
+        .date()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    libelleOperation: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    idPersonne: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    montantSortant: Yup
+        .number()
+        .transform((val) => {
+            if(val == "" || isNaN(val))
+            {
+                return null
+            }else{
+                return val
+            }})
+        .nullable(true)
+        .typeError(champObligatoire)
+        .when('montantMaxDepense',{
+            is:(montantMaxDepense) => montantMaxDepense != null,
+            then: () => Yup
+                .number()
+                .transform((val) => {
+                    if(val == "" || isNaN(val))
+                    {
+                        return null
+                    }else{
+                        return val
+                    }})
+                .nullable(true)
+                .typeError(champObligatoire)
+                .max(Yup.ref("montantMaxDepense"), 'Plafond dépassé'),
+        })
+});

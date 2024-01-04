@@ -3306,6 +3306,25 @@ const calculerTousTotauxCentreDeCouts = async () => {
     }
 }
 
+const checkGestionnaireStatut = (centreDeCout, gestionnaire) => {
+    try {
+        let estActif = true;
+
+        if(centreDeCout.statutOuverture != '1 - Ouvert' && gestionnaire.validerClos != true)
+        {
+            estActif = false;
+        }
+
+        if(centreDeCout.soldeActuel < 0 && gestionnaire.depasseBudget != true)
+        {
+            estActif = false;
+        }
+        return estActif;
+    } catch (error) {
+        logger.log(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -3371,4 +3390,5 @@ module.exports = {
     ajouterCommentaireTimeLineCommande,
     calculerTotalCentreDeCouts,
     calculerTousTotauxCentreDeCouts,
+    checkGestionnaireStatut,
 };

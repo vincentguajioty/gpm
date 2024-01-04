@@ -68,7 +68,7 @@ const CentresDeCoutsTable = ({
             Header: 'Gestionnaires',
             Cell: ({ value, row }) => {
 				return(value.map((personne, i)=>{return(
-                    <><SoftBadge className='me-1 mb-1'>{personne.identifiant}</SoftBadge><br/></>
+                    <><SoftBadge className='me-1 mb-1' bg={personne.actif ? 'success' : 'secondary'}>{personne.identifiant}</SoftBadge><br/></>
                 )}));
 			},
         },
