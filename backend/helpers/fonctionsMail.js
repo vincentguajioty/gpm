@@ -18,8 +18,8 @@ const handlebarOptions = {
     viewPath: path.resolve('./templates/'),
 };
 
-const transporterWithDKIM = nodemailer.createTransport(
-    {
+const getTransporter = () => {
+    let transporterOptions = {
         host: process.env.SMTP_SERVER,
         port: process.env.SMTP_PORT,
         secure: process.env.SMTP_SECURE == 1 ? true : false,
@@ -27,25 +27,19 @@ const transporterWithDKIM = nodemailer.createTransport(
             user: process.env.SMTP_USER,
             pass: process.env.SMTP_PASSWORD,
         },
-        dkim: {
+    };
+
+    if(process.env.DKIM_ENABLED && process.env.DKIM_ENABLED == true)
+    {
+        transporterOptions.dkim = {
             domainName: process.env.DKIM_DOMAIN,
             keySelector: process.env.DKIM_KEYSELECTOR,
             privateKey: fs.readFileSync('./privateDKIM.pem', "utf8"),
         }
     }
-);
 
-const transporterWithoutDKIM = nodemailer.createTransport(
-    {
-        host: process.env.SMTP_SERVER,
-        port: process.env.SMTP_PORT,
-        secure: process.env.SMTP_SECURE == 1 ? true : false,
-        auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASSWORD,
-        },
-    }
-);
+    return nodemailer.createTransport(transporterOptions);
+}
 
 /* --------- FONCTIONS LOCALES CAS PAR CAS --------- */
 
@@ -57,7 +51,7 @@ const autoResetPwd = async (requestInfo) => {
         );
         configDB = configDB[0]
 
-        const transporter = process.env.DKIM_ENABLED && process.env.DKIM_ENABLED == true ? transporterWithDKIM : transporterWithoutDKIM;
+        const transporter = getTransporter();
         transporter.use('compile', hbs(handlebarOptions))
 
         //get data for the email
@@ -143,7 +137,7 @@ const resetPassword = async (requestInfo) => {
         );
         configDB = configDB[0]
 
-        const transporter = process.env.DKIM_ENABLED && process.env.DKIM_ENABLED == true ? transporterWithDKIM : transporterWithoutDKIM;
+        const transporter = getTransporter();
         transporter.use('compile', hbs(handlebarOptions))
 
         //get data for the email
@@ -217,7 +211,7 @@ const confirmationAlerteLot = async (requestInfo) => {
         );
         configDB = configDB[0]
 
-        const transporter = process.env.DKIM_ENABLED && process.env.DKIM_ENABLED == true ? transporterWithDKIM : transporterWithoutDKIM;
+        const transporter = getTransporter();
         transporter.use('compile', hbs(handlebarOptions))
 
         //get users and send the mail to each one      
@@ -276,7 +270,7 @@ const alerteBenevolesLot = async (requestInfo) => {
         );
         configDB = configDB[0]
 
-        const transporter = process.env.DKIM_ENABLED && process.env.DKIM_ENABLED == true ? transporterWithDKIM : transporterWithoutDKIM;
+        const transporter = getTransporter();
         transporter.use('compile', hbs(handlebarOptions))
 
         //get data for the email
@@ -371,7 +365,7 @@ const confirmationAlerteVehicule = async (requestInfo) => {
         );
         configDB = configDB[0]
 
-        const transporter = process.env.DKIM_ENABLED && process.env.DKIM_ENABLED == true ? transporterWithDKIM : transporterWithoutDKIM;
+        const transporter = getTransporter();
         transporter.use('compile', hbs(handlebarOptions))
 
         //get users and send the mail to each one      
@@ -430,7 +424,7 @@ const alerteBenevolesVehicule = async (requestInfo) => {
         );
         configDB = configDB[0]
 
-        const transporter = process.env.DKIM_ENABLED && process.env.DKIM_ENABLED == true ? transporterWithDKIM : transporterWithoutDKIM;
+        const transporter = getTransporter();
         transporter.use('compile', hbs(handlebarOptions))
 
         //get data for the email
@@ -525,7 +519,7 @@ const finDeclarationConso = async (requestInfo) => {
         );
         configDB = configDB[0]
 
-        const transporter = process.env.DKIM_ENABLED && process.env.DKIM_ENABLED == true ? transporterWithDKIM : transporterWithoutDKIM;
+        const transporter = getTransporter();
         transporter.use('compile', hbs(handlebarOptions))
 
         //get data for the email
@@ -640,7 +634,7 @@ try {
     );
     configDB = configDB[0]
 
-    const transporter = process.env.DKIM_ENABLED && process.env.DKIM_ENABLED == true ? transporterWithDKIM : transporterWithoutDKIM;
+    const transporter = getTransporter();
     transporter.use('compile', hbs(handlebarOptions))
 
     //get data for the email
@@ -944,7 +938,7 @@ const contactDev = async (requestInfo) => {
         );
         configDB = configDB[0]
 
-        const transporter = process.env.DKIM_ENABLED && process.env.DKIM_ENABLED == true ? transporterWithDKIM : transporterWithoutDKIM;
+        const transporter = getTransporter();
         transporter.use('compile', hbs(handlebarOptions))
 
         //get users and send the mail to each one      
@@ -1004,7 +998,7 @@ const mailDeGroupe = async (requestInfo) => {
         );
         configDB = configDB[0]
 
-        const transporter = process.env.DKIM_ENABLED && process.env.DKIM_ENABLED == true ? transporterWithDKIM : transporterWithoutDKIM;
+        const transporter = getTransporter();
         transporter.use('compile', hbs(handlebarOptions))
 
         //get data for the email
@@ -1079,7 +1073,7 @@ const commandeNotif = async (requestInfo) => {
         );
         configDB = configDB[0]
 
-        const transporter = process.env.DKIM_ENABLED && process.env.DKIM_ENABLED == true ? transporterWithDKIM : transporterWithoutDKIM;
+        const transporter = getTransporter();
         transporter.use('compile', hbs(handlebarOptions))
 
         //get data for the email
