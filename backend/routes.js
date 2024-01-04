@@ -23,6 +23,7 @@ const reservesMaterielsCtrl = require('./controllers/reservesMateriels');
 const transfertsCtrl = require('./controllers/transferts');
 
 const commandesCtrl = require('./controllers/commandes');
+const centresCoutsCtrl = require('./controllers/centresCouts');
 const fournisseursCtrl = require('./controllers/fournisseurs');
 const fournisseursAesCtrl = require('./controllers/fournisseursAes');
 
@@ -226,13 +227,11 @@ router.post('/commandes/cloreCommande',                    loggerMiddleware.http
 //COMMANDES - transferts vers la réserve
 router.post('/transferts/getReservesForOneIntegration',    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.getReservesForOneIntegration);
 router.post('/transferts/enregistrerTransfert',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.enregistrerTransfert);
-/*
-commande_lecture
-commande_ajout
-commande_etreEnCharge
-commande_abandonne
-commande_valider_delegate
-*/
+
+//CENTRES DE COUTS
+router.get('/centresCouts/getCentres',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_lecture']),                                                    centresCoutsCtrl.getCentres);
+router.post('/centresCouts/addCentre',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_ajout']),               loggerMiddleware.modificationLogger(), centresCoutsCtrl.addCentre);
+
 //VHF Canaux Attachements
 router.post('/commandes/uploadCommandesAttached',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), commandesCtrl.uploadCommandesAttachedMulter, commandesCtrl.uploadCommandesAttached);
 router.post('/commandes/updateMetaDataCommandes',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), commandesCtrl.updateMetaDataCommandes);

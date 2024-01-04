@@ -3,7 +3,6 @@ const logger = require('../winstonLogger');
 const multer = require('multer');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
-const fonctionsMail = require('../helpers/fonctionsMail');
 
 exports.getCommandes = async (req, res)=>{
     try {

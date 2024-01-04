@@ -525,4 +525,6 @@ UPDATE COMMANDES_TIMELINE_ICON SET iconFontAsw='truck', iconColor='text-success'
 UPDATE COMMANDES_TIMELINE_ICON SET iconFontAsw='truck', iconColor='text-warning' WHERE idComIcon=30;/*receptionne avec SAV*/
 UPDATE COMMANDES_TIMELINE_ICON SET iconFontAsw='comment', iconColor='text-info' WHERE idComIcon=36;/*commentaire manuel*/
 
+ALTER TABLE CENTRE_COUTS ADD soldeActuel FLOAT;
+
 UPDATE CONFIG SET version = '15.0';

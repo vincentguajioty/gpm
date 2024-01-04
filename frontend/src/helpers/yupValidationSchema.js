@@ -1000,3 +1000,10 @@ export const settingsAddCommandeContraint = Yup.object().shape({
         .min(1, champObligatoire)
         .required(champObligatoire),
 });
+
+export const centresCoutsAddForm = Yup.object().shape({
+    libelleCentreDecout: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});

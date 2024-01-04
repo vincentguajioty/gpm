@@ -3265,6 +3265,47 @@ const ajouterCommentaireTimeLineCommande = async (idCommande, commentaire, idCom
     }
 }
 
+const calculerTotalCentreDeCouts = async (idCentreDeCout) => {
+    try {
+        const updateTotal = await db.query(`
+            UPDATE
+                CENTRE_COUTS
+            SET
+                soldeActuel = (
+                    SELECT
+                        SUM(CAST(IFNULL(montantEntrant,0) - IFNULL(montantSortant,0) AS DECIMAL(10,2)))
+                    FROM
+                        CENTRE_COUTS_OPERATIONS c
+                    WHERE
+                        idCentreDeCout = :idCentreDeCout
+                )
+            WHERE
+                idCentreDeCout = :idCentreDeCout
+        `,{
+            idCentreDeCout: idCentreDeCout
+        });
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const calculerTousTotauxCentreDeCouts = async () => {
+    try {
+        let getAllCentres = await db.query(`
+            SELECT
+                idCentreDeCout
+            FROM
+                CENTRE_COUTS
+        `);
+        for(const centre of getAllCentres)
+        {
+            await calculerTotalCentreDeCouts(centre.idCentreDeCout);
+        }
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -3328,4 +3369,6 @@ module.exports = {
     verificationAvantChangementEtatCmd,
     envoyerNotifAuChangementStatutCommande,
     ajouterCommentaireTimeLineCommande,
+    calculerTotalCentreDeCouts,
+    calculerTousTotauxCentreDeCouts,
 };

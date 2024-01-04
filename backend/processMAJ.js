@@ -337,6 +337,7 @@ const majDB = async () => {
                 logger.debug(finalResult);
 
                 await fonctionsMetiers.calculerTousTotauxCommandes();
+                await fonctionsMetiers.calculerTousTotauxCentreDeCouts();
             break;
 
             default:

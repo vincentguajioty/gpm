@@ -37,6 +37,7 @@ import ReserveInventaireEnCours from 'pages/internalApp/reserves/inventairesCont
 import Commandes from 'pages/internalApp/commandes/commandes';
 import OneCommande from 'pages/internalApp/commandes/oneCommande/oneCommande';
 import CentresDeCouts from 'pages/internalApp/centresDeCouts/centresDeCouts';
+import OneCentre from 'pages/internalApp/centresDeCouts/oneCentre/oneCentre';
 import Fournisseurs from 'pages/internalApp/fournisseurs/fournisseurs';
 import FournisseurDetails from 'pages/internalApp/fournisseurs/fournisseurDetails';
 
@@ -119,6 +120,7 @@ const FalconRoutes = () => {
           <Route path="/commandes" element={<Commandes />} />
           <Route path="/commandes/:idCommande" element={<OneCommande />} />
           <Route path="/couts" element={<CentresDeCouts />} />
+          <Route path="/couts/:idCentreDeCout" element={<OneCentre />} />
           <Route path="/fournisseurs" element={<Fournisseurs />} />
           <Route path="/fournisseurs/:idFournisseur" element={<FournisseurDetails />} />
 
