@@ -283,6 +283,16 @@ exports.updateCentre = async (req, res)=>{
     }
 }
 
+exports.centreCoutsDelete = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.centreCoutsDelete(req.verifyJWTandProfile.idPersonne , req.body.idCentreDeCout);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 //OPERATIONS
 exports.addOperation = async (req, res)=>{
     try {

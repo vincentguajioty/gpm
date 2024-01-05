@@ -69,7 +69,32 @@ const ProprietesDuCentre = ({
         }
     }
 
-    return(
+    /*DELETE CENTRE*/
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const handleCloseDeleteModal = () => {
+        setShowDeleteModal(false);
+        setLoading(false);
+    };
+    const handleShowDeleteModal = () => {
+        setShowDeleteModal(true);
+    };
+    const navigate = useNavigate();
+    const supprimerCentre = async () => {
+        try {
+            setLoading(true);
+            
+            await Axios.post('/centresCouts/centreCoutsDelete',{
+                idCentreDeCout: idCentreDeCout,
+            })
+
+            navigate('/couts');
+            handleCloseDeleteModal();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    return(<>
         <Form onSubmit={handleSubmit(saveProps)}>
             <Form.Group className="mb-3">
                 <Form.Label>Titre du centre</Form.Label>
@@ -121,9 +146,26 @@ const ProprietesDuCentre = ({
 
             <div className="d-grid gap-2 mt-3">
                 <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading || !HabilitationService.habilitations.cout_ajout}>{isLoading ? 'Patientez...' : 'Modifier'}</Button>
+                <Button variant='outline-danger' className='mb-1'onClick={handleShowDeleteModal} disabled={isLoading || !HabilitationService.habilitations.cout_supprimer}>{isLoading ? 'Patientez...' : 'Supprimer définitivement'}</Button>
             </div>
         </Form>
-    );
+
+        <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} backdrop="static" keyboard={false}>
+            <Modal.Header>
+                <Modal.Title>Suppression</Modal.Title>
+                <FalconCloseButton onClick={handleCloseDeleteModal}/>
+            </Modal.Header>
+            <Modal.Body>
+                Attention, vous allez supprimer le centre de couts. Etes-vous certain de vouloir continuer ?
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseDeleteModal}>
+                    Annuler
+                </Button>
+                <Button variant='danger' onClick={supprimerCentre} disabled={isLoading}>{isLoading ? 'Patientez...' : 'Supprimer'}</Button>
+            </Modal.Footer>
+        </Modal>
+    </>);
 }
 
 const GestionnairesTable = ({
