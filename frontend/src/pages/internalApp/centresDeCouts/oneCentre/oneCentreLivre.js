@@ -18,6 +18,7 @@ import { operationLivreDeCompte } from 'helpers/yupValidationSchema';
 import DatePicker from 'react-datepicker';
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
 import fr from 'date-fns/locale/fr';
+import SoftBadge from 'components/common/SoftBadge';
 registerLocale('fr', fr);
 setDefaultLocale('fr');
 
@@ -29,6 +30,7 @@ const OneCentreLivre = ({
     mesDroits,
 }) => {
     const navigate = useNavigate();
+    const nl2br = require('react-nl2br');
     const colonnes = [
         {
             accessor: 'dateOperation',
@@ -42,22 +44,21 @@ const OneCentreLivre = ({
             Header: 'Titre',
         },
         {
-            accessor: 'montantEntrant',
-            Header: 'Entrant',
-            Cell: ({ value, row }) => {
-				return(value && value != null ? value+' €' : null);
-			},
-        },
-        {
             accessor: 'montantSortant',
-            Header: 'Sortant',
+            Header: 'Transaction',
             Cell: ({ value, row }) => {
-				return(value && value != null ? value+' €' : null);
+				return(<>
+                    {row.original.montantSortant ? <SoftBadge className='me-1 mb-1' bg='warning'>- {row.original.montantSortant} €</SoftBadge> : null}
+                    {row.original.montantEntrant ? <SoftBadge className='me-1 mb-1' bg='info'>+ {row.original.montantEntrant} €</SoftBadge> : null}
+                </>);
 			},
         },
         {
             accessor: 'detailsMoyenTransaction',
             Header: 'Détails',
+            Cell: ({ value, row }) => {
+				return(nl2br(value));
+			},
         },
         {
             accessor: 'identifiant',
