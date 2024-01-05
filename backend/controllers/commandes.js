@@ -10,11 +10,13 @@ exports.getCommandes = async (req, res)=>{
             SELECT
                 c.*,
                 f.nomFournisseur,
-                e.libelleEtat
+                e.libelleEtat,
+                cdc.libelleCentreDecout
             FROM
                 COMMANDES c
                 LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur
                 LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat
+                LEFT OUTER JOIN CENTRE_COUTS cdc ON c.idCentreDeCout = cdc.idCentreDeCout
             ORDER BY
                 dateCreation DESC
         ;`);

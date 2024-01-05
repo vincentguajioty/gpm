@@ -121,24 +121,48 @@ exports.getOneCentre = async (req, res)=>{
 
         let commandesAIntegrer = await db.query(`
             SELECT
-                *
+                c.*,
+                f.nomFournisseur,
+                e.libelleEtat
             FROM
-                COMMANDES
+                COMMANDES c
+                LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur
+                LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat
             WHERE
-                idCentreDeCout = :idCentreDeCout
-                AND integreCentreCouts = false
-                AND idEtat > 3
-                AND idEtat < 8
+                c.idCentreDeCout = :idCentreDeCout
+                AND c.integreCentreCouts = false
+                AND c.idEtat > 3
+                AND c.idEtat < 8
         ;`,{
             idCentreDeCout: req.body.idCentreDeCout
         });
+        for(const cmd of commandesAIntegrer)
+        {
+            let affectees = await db.query(`
+                SELECT
+                    p.idPersonne as value,
+                    p.identifiant as label
+                FROM
+                    COMMANDES_AFFECTEES c
+                    LEFT OUTER JOIN PERSONNE_REFERENTE p ON p.idPersonne = c.idAffectee
+                WHERE
+                    c.idCommande = :idCommande
+            ;`,{
+                idCommande: cmd.idCommande,
+            });
+            cmd.affectees = affectees;
+        }
 
         let commandesRefusees = await db.query(`
             SELECT
-                *
+                c.*,
+                f.nomFournisseur,
+                e.libelleEtat
             FROM
                 COMMANDES c
                 LEFT OUTER JOIN CENTRE_COUTS_OPERATIONS op ON c.idCommande = op.idCommande
+                LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur
+                LEFT OUTER JOIN COMMANDES_ETATS e ON c.idEtat = e.idEtat
             WHERE
                 c.idCentreDeCout = :idCentreDeCout
                 AND c.integreCentreCouts = true
@@ -146,6 +170,22 @@ exports.getOneCentre = async (req, res)=>{
         ;`,{
             idCentreDeCout: req.body.idCentreDeCout
         });
+        for(const cmd of commandesRefusees)
+        {
+            let affectees = await db.query(`
+                SELECT
+                    p.idPersonne as value,
+                    p.identifiant as label
+                FROM
+                    COMMANDES_AFFECTEES c
+                    LEFT OUTER JOIN PERSONNE_REFERENTE p ON p.idPersonne = c.idAffectee
+                WHERE
+                    c.idCommande = :idCommande
+            ;`,{
+                idCommande: cmd.idCommande,
+            });
+            cmd.affectees = affectees;
+        }
 
         let commandesEnApproche = await db.query(`
             SELECT
@@ -374,6 +414,106 @@ exports.centreCoutsGerantDelete = async (req, res)=>{
     try {
         const deleteResult = await fonctionsDelete.centreCoutsGerantDelete(req.verifyJWTandProfile.idPersonne , req.body.idGerant);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.integrerCommande = async (req, res)=>{
+    try {
+        let commande = await db.query(`
+            SELECT
+                c.*,
+                f.nomFournisseur
+            FROM
+                COMMANDES c
+                LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur
+            WHERE
+                idCommande = :idCommande
+        `,{
+            idCommande: req.body.idCommande || null,
+        });
+        commande = commande[0]
+
+        const result = await db.query(`
+            INSERT INTO
+                CENTRE_COUTS_OPERATIONS
+            SET
+                idCentreDeCout = :idCentreDeCout,
+                dateOperation = CURRENT_TIMESTAMP,
+                libelleOperation = :libelleOperation,
+                montantSortant = :montantSortant,
+                detailsMoyenTransaction = :detailsMoyenTransaction,
+                idPersonne = :idPersonne,
+                idCommande = :idCommande
+        `,{
+            idCentreDeCout: req.body.idCentreDeCout || null,
+            libelleOperation: 'Commande '+req.body.idCommande+' ('+commande.nomFournisseur+')',
+            montantSortant: commande.montantTotal || null,
+            detailsMoyenTransaction: commande.nomCommande || null,
+            idPersonne: req.verifyJWTandProfile.idPersonne,
+            idCommande: req.body.idCommande || null,
+        });
+
+        const updateCMD = await db.query(`
+            UPDATE
+                COMMANDES
+            SET
+                integreCentreCouts = 1
+            WHERE
+                idCommande = :idCommande
+        `,{
+            idCommande: req.body.idCommande || null,
+        });
+        
+        await fonctionsMetiers.calculerTotalCentreDeCouts(req.body.idCentreDeCout);
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.refuserCommande = async (req, res)=>{
+    try {
+        const updateCMD = await db.query(`
+            UPDATE
+                COMMANDES
+            SET
+                integreCentreCouts = 1
+            WHERE
+                idCommande = :idCommande
+        `,{
+            idCommande: req.body.idCommande || null,
+        });
+        
+        await fonctionsMetiers.calculerTotalCentreDeCouts(req.body.idCentreDeCout);
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.recyclerCommande = async (req, res)=>{
+    try {
+        const updateCMD = await db.query(`
+            UPDATE
+                COMMANDES
+            SET
+                integreCentreCouts = 0
+            WHERE
+                idCommande = :idCommande
+        `,{
+            idCommande: req.body.idCommande || null,
+        });
+        
+        await fonctionsMetiers.calculerTotalCentreDeCouts(req.body.idCentreDeCout);
+        
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

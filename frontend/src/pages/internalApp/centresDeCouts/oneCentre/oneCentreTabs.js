@@ -5,6 +5,8 @@ import HabilitationService from 'services/habilitationsService';
 
 import OneCentreLivre from './oneCentreLivre';
 import OneCentreProprietes from './oneCentreProps';
+import OneCentreCommandesAIntegrer from './oneCentreCmdIntegration';
+import OneCentreCommandesRefusees from './oneCentreCmdRejet';
 
 const OneCentreTabs = ({
     idCentreDeCout,
@@ -50,8 +52,20 @@ const OneCentreTabs = ({
                 />
             </Tab>
             <Tab eventKey="cmdToDo" title="Commandes à intégrer" className='border-bottom border-x p-3'>
+                <OneCentreCommandesAIntegrer
+                    idCentreDeCout={idCentreDeCout}
+                    commandes={centre.commandesAIntegrer}
+                    setPageNeedsRefresh={setPageNeedsRefresh}
+                    tabInReadOnly={tabInReadOnly}
+                />
             </Tab>
             <Tab eventKey="cmdRefusees" title="Commandes refusées" className='border-bottom border-x p-3'>
+                <OneCentreCommandesRefusees
+                    idCentreDeCout={idCentreDeCout}
+                    commandes={centre.commandesRefusees}
+                    setPageNeedsRefresh={setPageNeedsRefresh}
+                    tabInReadOnly={tabInReadOnly}
+                />
             </Tab>
             <Tab eventKey="pj" title="Pièces jointes" className='border-bottom border-x p-3'>
             </Tab>
