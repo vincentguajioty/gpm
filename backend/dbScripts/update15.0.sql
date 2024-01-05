@@ -63,6 +63,32 @@ CREATE TABLE MAIL_QUEUE(
 		REFERENCES PERSONNE_REFERENTE(idPersonne)
 );
 
+DELETE FROM NOTIFICATIONS_MAILS WHERE contexte = "";
+DELETE FROM NOTIFICATIONS_MAILS WHERE contexte IS Null;
+DELETE FROM NOTIFICATIONS_MAILS WHERE contexte = "Création compte utilisateur";
+DELETE FROM NOTIFICATIONS_MAILS WHERE contexte = "Création compte utilisateur via import";
+DELETE FROM NOTIFICATIONS_MAILS WHERE contexte = "Mail CNIL 6 mois";
+DELETE FROM NOTIFICATIONS_MAILS WHERE contexte = "Mail CNIL 1 mois";
+
+UPDATE NOTIFICATIONS_MAILS SET contexte = "alerteBenevolesLot" WHERE contexte = "Alerte bénévole lots";
+UPDATE NOTIFICATIONS_MAILS SET contexte = "alerteBenevolesVehicule" WHERE contexte = "Alerte bénévole véhicules";
+UPDATE NOTIFICATIONS_MAILS SET contexte = "contactDev" WHERE contexte = "Contact développeur";
+UPDATE NOTIFICATIONS_MAILS SET contexte = "mailDeGroupe" WHERE contexte = "Messages mail aux équipes";
+UPDATE NOTIFICATIONS_MAILS SET contexte = "resetPassword" WHERE contexte = "Réinitialisation de mot de passe";
+UPDATE NOTIFICATIONS_MAILS SET contexte = "notifJournaliere" WHERE contexte = "Notification journalère";
+UPDATE NOTIFICATIONS_MAILS SET contexte = "commandeNotif" WHERE contexte = "Commandes";
+
+INSERT INTO MAIL_QUEUE (typeMail, otherMail, otherSubject, otherContent, sendRequest, successSend, retryCounter) SELECT
+	contexte as typeMail,
+	adresseDest as otherMail,
+	sujet as otherSubject,
+	contenu as otherContent,
+	dateEntreeQueue as sendRequest,
+	dateEnvoiMail as successSend,
+	nombreRetry as retryCounter
+FROM
+	NOTIFICATIONS_MAILS;
+
 DROP TABLE NOTIFICATIONS_MAILS;
 
 ALTER TABLE PERSONNE_REFERENTE CHANGE conf_indicateur1Accueil conf_indicateur1Accueil BOOLEAN;
