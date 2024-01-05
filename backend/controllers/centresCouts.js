@@ -188,15 +188,29 @@ exports.getOneCentre = async (req, res)=>{
             });
             cmd.affectees = affectees;
         }
-
-        let commandesEnApproche = await db.query(`
+        
+        let commandesValideesNonIntegrees = await db.query(`
             SELECT
                 *
             FROM
                 COMMANDES
             WHERE
                 idCentreDeCout = :idCentreDeCout
-                AND idEtat <= 3
+                AND integreCentreCouts = false
+                AND idEtat > 2
+                AND idEtat < 8
+        ;`,{
+            idCentreDeCout: req.body.idCentreDeCout
+        });
+
+        let commandesNonValidees = await db.query(`
+            SELECT
+                *
+            FROM
+                COMMANDES
+            WHERE
+                idCentreDeCout = :idCentreDeCout
+                AND idEtat <= 2
         ;`,{
             idCentreDeCout: req.body.idCentreDeCout
         });
@@ -218,7 +232,8 @@ exports.getOneCentre = async (req, res)=>{
             operations: operations,
             commandesAIntegrer: commandesAIntegrer,
             commandesRefusees: commandesRefusees,
-            commandesEnApproche: commandesEnApproche,
+            commandesValideesNonIntegrees: commandesValideesNonIntegrees,
+            commandesNonValidees: commandesNonValidees,
             documents: documents,
         });
     } catch (error) {
