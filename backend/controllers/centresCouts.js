@@ -3,6 +3,7 @@ const logger = require('../winstonLogger');
 const multer = require('multer');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
+const excelJS = require("exceljs");
 
 //CENTRE
 exports.getCentres = async (req, res)=>{
@@ -616,6 +617,60 @@ exports.dropCentreCoutsDocument = async (req, res)=>{
     try {
         const deleteResult = await fonctionsDelete.centreCoutsDocDelete(req.verifyJWTandProfile.idPersonne , req.body.idDocCouts);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//Export
+exports.genererExport = async (req, res)=>{
+    try {
+        const operations = await db.query(`
+            SELECT
+                o.*,
+                p.nomPersonne,
+                p.prenomPersonne,
+                p.identifiant
+            FROM
+                CENTRE_COUTS_OPERATIONS o
+                LEFT OUTER JOIN PERSONNE_REFERENTE p ON o.idPersonne = p.idPersonne
+            WHERE
+                idCentreDeCout = :idCentreDeCout
+            ORDER BY
+                dateOperation DESC
+        ;`,{
+            idCentreDeCout: req.body.idCentreDeCout
+        });
+
+        const workbook = new excelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Export CDC');
+
+        worksheet.columns = [
+            { header: "Référence opération",   key: "idOperations",            width: 10 },
+            { header: "Date",                  key: "dateOperation",           width: 20 }, 
+            { header: "Libellé",               key: "libelleOperation",        width: 60 },
+            { header: "Montant Entrant",       key: "montantEntrant",          width: 15 },
+            { header: "Montant Sortant",       key: "montantSortant",          width: 15 },
+            { header: "Détails",               key: "detailsMoyenTransaction", width: 60 },
+            { header: "Personnes responsable", key: "identifiant",             width: 20 },
+            { header: "Référence commande",    key: "idCommande",              width: 20 },
+        ];
+
+        for(const ope of operations)
+        {
+            worksheet.addRow(ope);
+        }
+
+        worksheet.getRow(1).eachCell((cell) => {
+            cell.font = { bold: true };
+        });
+
+        let fileName = Date.now() + '-ExportCDC.xlsx';
+
+        const saveFile = await workbook.xlsx.writeFile('temp/'+fileName);
+
+        res.send({fileName: fileName});
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

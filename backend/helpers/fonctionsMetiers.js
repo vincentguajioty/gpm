@@ -3325,6 +3325,30 @@ const checkGestionnaireStatut = (centreDeCout, gestionnaire) => {
     }
 }
 
+const cleanTempFolder = () => {
+    try {
+        const fs = require("fs");
+        const path = require("path");
+
+        const directory = "temp";
+
+        fs.readdir(directory, (err, files) => {
+            if (err) throw err;
+
+            for (const file of files) {
+                if(file != 'do_not_delete.txt')
+                {
+                    fs.unlink(path.join(directory, file), (err) => {
+                        if (err) throw err;
+                    });
+                }
+            }
+        });
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -3391,4 +3415,5 @@ module.exports = {
     calculerTotalCentreDeCouts,
     calculerTousTotauxCentreDeCouts,
     checkGestionnaireStatut,
+    cleanTempFolder,
 };

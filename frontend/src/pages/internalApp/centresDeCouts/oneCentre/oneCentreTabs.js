@@ -8,6 +8,7 @@ import OneCentreProprietes from './oneCentreProps';
 import OneCentreCommandesAIntegrer from './oneCentreCmdIntegration';
 import OneCentreCommandesRefusees from './oneCentreCmdRejet';
 import OneCommandePJ from './oneCentrePJ';
+import OneCentreExport from './oneCentreExport';
 
 const OneCentreTabs = ({
     idCentreDeCout,
@@ -40,8 +41,6 @@ const OneCentreTabs = ({
     useEffect(()=>{
         checkIfUserCanEdit();
     },[centre])
-
-    console.log(centre.documents)
 
     return(
         <Tabs defaultActiveKey="livre" transition={true}>
@@ -85,6 +84,9 @@ const OneCentreTabs = ({
                 />
             </Tab>
             <Tab eventKey="export" title="Export" className='border-bottom border-x p-3'>
+                <OneCentreExport
+                    idCentreDeCout={idCentreDeCout}
+                />
             </Tab>
         </Tabs>
     )

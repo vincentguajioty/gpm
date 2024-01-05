@@ -112,6 +112,9 @@ schedule.scheduleJob(process.env.CRON_DAILY, async function() {
     {
         logger.info('CRON - Début du CRON');
 
+        //Nettoyage des fichiers temporaires
+        fonctionsMetiers.cleanTempFolder();
+
         //Mise à jour des users AD
         logger.debug("CRON - Début de la mise à jour des users AD");
         await fonctionsLDAP.updateAllUsersFromAD();

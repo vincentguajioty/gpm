@@ -54,3 +54,12 @@ exports.vhfPlans = async (req, res, next)=>{
         res.sendStatus(500);
     }
 }
+
+exports.temp = async (req, res, next)=>{
+    try {
+        res.sendFile(path.join(__dirname, '..', `temp/${req.body.fileName}`));
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}

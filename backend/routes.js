@@ -250,7 +250,9 @@ router.post('/centresCouts/recyclerCommande',               loggerMiddleware.htt
 //PJ
 router.post('/centresCouts/uploadCentreCoutsAttached',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), centresCoutsCtrl.uploadCDCAttachedMulter, centresCoutsCtrl.uploadCentreCoutsAttached);
 router.post('/centresCouts/updateMetaDataCentreCouts',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), centresCoutsCtrl.updateMetaDataCentreCouts);
-router.post('/centresCouts/dropCentreCoutsDocument',       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.suppressionLogger(),  centresCoutsCtrl.dropCentreCoutsDocument);
+router.post('/centresCouts/dropCentreCoutsDocument',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.suppressionLogger(),  centresCoutsCtrl.dropCentreCoutsDocument);
+//Export
+router.post('/centresCouts/genererExport',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_lecture']),  centresCoutsCtrl.genererExport);
 
 //Fournisseurs - Informations de base
 router.get('/fournisseurs/getFournisseurs',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),      jwtFunctions.decryptAesToken(),        fournisseursCtrl.getFournisseurs);
@@ -518,6 +520,7 @@ router.post('/getSecureFile/vehicules',      loggerMiddleware.httpLogger(), jwtF
 router.post('/getSecureFile/vhfCanaux',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_lecture',]),      serveDocumentsCtrl.vhfCanaux);
 router.post('/getSecureFile/vhfEquipements', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_lecture',]), serveDocumentsCtrl.vhfEquipements);
 router.post('/getSecureFile/vhfPlans',       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_plan_lecture',]),       serveDocumentsCtrl.vhfPlans);
+router.post('/getSecureFile/temp',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),    serveDocumentsCtrl.temp);
 
 
 router.get('/', connexionCtrl.alive );
