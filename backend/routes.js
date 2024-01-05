@@ -227,6 +227,10 @@ router.post('/commandes/cloreCommande',                    loggerMiddleware.http
 //COMMANDES - transferts vers la réserve
 router.post('/transferts/getReservesForOneIntegration',    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.getReservesForOneIntegration);
 router.post('/transferts/enregistrerTransfert',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.enregistrerTransfert);
+//COMMANDES Attachements
+router.post('/commandes/uploadCommandesAttached',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), commandesCtrl.uploadCommandesAttachedMulter, commandesCtrl.uploadCommandesAttached);
+router.post('/commandes/updateMetaDataCommandes',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), commandesCtrl.updateMetaDataCommandes);
+router.post('/commandes/dropCommandesDocument',       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.suppressionLogger(),  commandesCtrl.dropCommandesDocument);
 
 //CENTRES DE COUTS
 router.get('/centresCouts/getCentres',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_lecture']),                                             centresCoutsCtrl.getCentres);
@@ -242,11 +246,10 @@ router.post('/centresCouts/centreCoutsGerantDelete',        loggerMiddleware.htt
 router.post('/centresCouts/integrerCommande',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_etreEnCharge']), loggerMiddleware.modificationLogger(), centresCoutsCtrl.integrerCommande);
 router.post('/centresCouts/refuserCommande',                loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_etreEnCharge']), loggerMiddleware.modificationLogger(), centresCoutsCtrl.refuserCommande);
 router.post('/centresCouts/recyclerCommande',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cout_etreEnCharge']), loggerMiddleware.modificationLogger(), centresCoutsCtrl.recyclerCommande);
-
-//VHF Canaux Attachements
-router.post('/commandes/uploadCommandesAttached',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), commandesCtrl.uploadCommandesAttachedMulter, commandesCtrl.uploadCommandesAttached);
-router.post('/commandes/updateMetaDataCommandes',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), commandesCtrl.updateMetaDataCommandes);
-router.post('/commandes/dropCommandesDocument',       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.suppressionLogger(),  commandesCtrl.dropCommandesDocument);
+//PJ
+router.post('/centresCouts/uploadCentreCoutsAttached',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), centresCoutsCtrl.uploadCDCAttachedMulter, centresCoutsCtrl.uploadCentreCoutsAttached);
+router.post('/centresCouts/updateMetaDataCentreCouts',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), centresCoutsCtrl.updateMetaDataCentreCouts);
+router.post('/centresCouts/dropCentreCoutsDocument',       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.suppressionLogger(),  centresCoutsCtrl.dropCentreCoutsDocument);
 
 //Fournisseurs - Informations de base
 router.get('/fournisseurs/getFournisseurs',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['fournisseurs_lecture']),      jwtFunctions.decryptAesToken(),        fournisseursCtrl.getFournisseurs);

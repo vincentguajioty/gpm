@@ -4,6 +4,7 @@ const multer = require('multer');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
 
+//CENTRE
 exports.getCentres = async (req, res)=>{
     try {
         let results = await db.query(`
@@ -282,6 +283,7 @@ exports.updateCentre = async (req, res)=>{
     }
 }
 
+//OPERATIONS
 exports.addOperation = async (req, res)=>{
     try {
         const result = await db.query(`
@@ -357,6 +359,7 @@ exports.centreCoutsOperationsDelete = async (req, res)=>{
     }
 }
 
+//GESTIONNAIRES
 exports.addGerant = async (req, res)=>{
     try {
         const result = await db.query(`
@@ -420,6 +423,7 @@ exports.centreCoutsGerantDelete = async (req, res)=>{
     }
 }
 
+//COMMANDES
 exports.integrerCommande = async (req, res)=>{
     try {
         let commande = await db.query(`
@@ -514,6 +518,94 @@ exports.recyclerCommande = async (req, res)=>{
         await fonctionsMetiers.calculerTotalCentreDeCouts(req.body.idCentreDeCout);
         
         res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//PJ
+const multerConfigCDC = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, 'uploads/centresCouts');
+    },
+    filename: (req, file, callback) => {
+        const ext = file.mimetype.split('/')[1];
+        callback(null, `cdc-${Date.now()}.${ext}`);
+    }
+});
+
+const uploadCDC = multer({
+    storage: multerConfigCDC,
+});
+
+exports.uploadCDCAttachedMulter = uploadCDC.single('file');
+
+exports.uploadCentreCoutsAttached = async (req, res, next)=>{
+    try {
+        const newFileToDB = await db.query(
+            `INSERT INTO
+                DOCUMENTS_CENTRE_COUTS
+            SET
+                urlFichierDocCouts = :filename,
+                idCentreDeCout     = :idCentreDeCout
+        `,{
+            filename : req.file.filename,
+            idCentreDeCout : req.query.idCentreDeCout,
+        });
+
+        const lastSelect = await db.query(`SELECT MAX(idDocCouts) as idDocCouts FROM DOCUMENTS_CENTRE_COUTS`);
+
+        res.status(200);
+        res.json({idDocCouts: lastSelect[0].idDocCouts})
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateMetaDataCentreCouts = async (req, res, next)=>{
+    try {
+        const document = await db.query(
+            `SELECT
+                *
+            FROM
+                DOCUMENTS_CENTRE_COUTS
+            WHERE
+                idDocCouts = :idDocCouts
+        `,{
+            idDocCouts : req.body.idDocCouts,
+        });
+
+        const update = await db.query(
+            `UPDATE
+                DOCUMENTS_CENTRE_COUTS
+            SET
+                nomDocCouts   = :nomDocCouts,
+                formatDocCouts = :formatDocCouts,
+                dateDocCouts   = :dateDocCouts,
+                idTypeDocument = :idTypeDocument
+            WHERE
+                idDocCouts        = :idDocCouts
+        `,{
+            nomDocCouts    : req.body.nomDocCouts || null,
+            formatDocCouts : document[0].urlFichierDocCouts.split('.')[1],
+            dateDocCouts   : req.body.dateDocCouts || new Date(),
+            idDocCouts     : req.body.idDocCouts,
+            idTypeDocument    : req.body.idTypeDocument || null,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.dropCentreCoutsDocument = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.centreCoutsDocDelete(req.verifyJWTandProfile.idPersonne , req.body.idDocCouts);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

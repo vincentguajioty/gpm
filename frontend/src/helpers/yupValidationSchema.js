@@ -1083,3 +1083,15 @@ export const modifGerantCentreCouts = Yup.object().shape({
         .min(1, champObligatoire)
         .required(champObligatoire),
 });
+
+export const centreDeCoutsAttached = Yup.object().shape({
+    nomDocCouts: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    idTypeDocument: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+});

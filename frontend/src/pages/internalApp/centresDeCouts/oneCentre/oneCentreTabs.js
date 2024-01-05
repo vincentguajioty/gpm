@@ -7,6 +7,7 @@ import OneCentreLivre from './oneCentreLivre';
 import OneCentreProprietes from './oneCentreProps';
 import OneCentreCommandesAIntegrer from './oneCentreCmdIntegration';
 import OneCentreCommandesRefusees from './oneCentreCmdRejet';
+import OneCommandePJ from './oneCentrePJ';
 
 const OneCentreTabs = ({
     idCentreDeCout,
@@ -40,6 +41,8 @@ const OneCentreTabs = ({
         checkIfUserCanEdit();
     },[centre])
 
+    console.log(centre.documents)
+
     return(
         <Tabs defaultActiveKey="livre" transition={true}>
             <Tab eventKey="livre" title="Livre de comptes" className='border-bottom border-x p-3'>
@@ -68,6 +71,11 @@ const OneCentreTabs = ({
                 />
             </Tab>
             <Tab eventKey="pj" title="Pièces jointes" className='border-bottom border-x p-3'>
+                <OneCommandePJ
+                    idCentreDeCout={idCentreDeCout}
+                    documents={centre.documents}
+                    setPageNeedsRefresh={setPageNeedsRefresh}
+                />
             </Tab>
             <Tab eventKey="props" title="Propriétés et gestionnaires" className='border-bottom border-x p-3'>
                 <OneCentreProprietes
