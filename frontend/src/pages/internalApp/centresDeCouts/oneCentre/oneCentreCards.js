@@ -89,6 +89,7 @@ const OneCentreCards = ({
             }
 
             let budgetRestantLibre = Math.round((budgetPositifEntrant - commandesIntegrees - operationsHorsCommandes - commandesValideesNonIntegrees - commandesNonValidees)*100)/100;
+            if(budgetRestantLibre <0){budgetRestantLibre = 0;}
 
             let finalArray = [
                 {
