@@ -45,7 +45,7 @@ const OneCentre = () => {
                 <PageHeader
                     preTitle='Centres de couts'
                     title={centre.centreDetails.libelleCentreDecout}
-                    description={"Etat: "+centre.centreDetails.statutOuverture + ' | Solde actuel: ' + centre.centreDetails.soldeActuel+' €'}
+                    description={centre.centreDetails.statutOuverture + ' | Solde: ' + centre.centreDetails.soldeActuel+' €'}
                     className="mb-3"
                 />
 

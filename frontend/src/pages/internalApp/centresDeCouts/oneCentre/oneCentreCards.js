@@ -164,7 +164,7 @@ const OneCentreCards = ({
         <Card>
             <Card.Body className="d-flex flex-column justify-content-between">
                 {readyToDisplay ? <>
-                    <OneCentreCardsGraph data={data} budgetTotalPositif={budgetTotalPositif} />
+                    <OneCentreCardsGraph data={data} soldeActuel={centre.centreDetails.soldeActuel} budgetTotalPositif={budgetTotalPositif} />
                     <OneCentreCardsDetails data={data} />
                 </>:<LoaderInfiniteLoop/>}
             </Card.Body>

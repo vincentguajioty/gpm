@@ -21,7 +21,7 @@ echarts.use([
   LegendComponent
 ]);
 
-const OneCentreCardsGraph = ({ data, budgetTotalPositif }) => {
+const OneCentreCardsGraph = ({ data, soldeActuel, budgetTotalPositif }) => {
     const chartRef = useRef(null);
 
     const [otpionsForGraph, setOtpionsForGraph] = useState({});
@@ -114,7 +114,7 @@ const OneCentreCardsGraph = ({ data, budgetTotalPositif }) => {
             />
             <div className="position-absolute top-50 start-50 translate-middle text-center">
                 <div className="rounded-circle d-flex flex-center marketing-exp-circle">
-                    <h4 className="mb-0 text-900">{budgetTotalPositif} €</h4>
+                    <h4 className="mb-0 text-900">{soldeActuel} €</h4>
                 </div>
             </div>
         </div>
