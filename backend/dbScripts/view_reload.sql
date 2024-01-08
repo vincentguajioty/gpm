@@ -1,7 +1,6 @@
 DROP VIEW IF EXISTS VIEW_VEHICULES_KM;
 DROP VIEW IF EXISTS VIEW_HABILITATIONS;
 DROP VIEW IF EXISTS VIEW_DOCUMENTS_COMMANDES;
-DROP VIEW IF EXISTS VIEW_DOCUMENTS_CENTRE_COUTS;
 DROP VIEW IF EXISTS VIEW_DOCUMENTS_VEHICULES;
 DROP VIEW IF EXISTS VIEW_DOCUMENTS_CANAL_VHF;
 DROP VIEW IF EXISTS VIEW_DOCUMENTS_PLAN_VHF;
@@ -91,7 +90,6 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		MAX(materiel_suppression)                      as materiel_suppression,
 		MAX(messages_ajout)                            as messages_ajout,
 		MAX(messages_suppression)                      as messages_suppression,
-		MAX(verrouIP)                                  as verrouIP,
 		MAX(commande_lecture)                          as commande_lecture,
 		MAX(commande_ajout)                            as commande_ajout,
 		MAX(commande_etreEnCharge)                     as commande_etreEnCharge,
@@ -201,17 +199,6 @@ CREATE OR REPLACE VIEW VIEW_DOCUMENTS_COMMANDES AS
 		LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument
 	ORDER BY
 		nomDocCommande ASC
-;
-
-CREATE OR REPLACE VIEW VIEW_DOCUMENTS_CENTRE_COUTS AS
-	SELECT
-		c.*,
-		t.libelleTypeDocument
-	FROM
-		DOCUMENTS_CENTRE_COUTS c
-		LEFT OUTER JOIN DOCUMENTS_TYPES t ON c.idTypeDocument = t.idTypeDocument
-	ORDER BY
-		nomDocCouts ASC
 ;
 
 CREATE OR REPLACE VIEW VIEW_DOCUMENTS_CENTRE_COUTS_COMMANDES AS

@@ -152,7 +152,6 @@ const Profils = () => {
             setValue('materiel_suppression', selected[0].materiel_suppression);
             setValue('messages_ajout', selected[0].messages_ajout);
             setValue('messages_suppression', selected[0].messages_suppression);
-            setValue('verrouIP', selected[0].verrouIP);
             setValue('commande_lecture', selected[0].commande_lecture);
             setValue('commande_ajout', selected[0].commande_ajout);
             setValue('commande_etreEnCharge', selected[0].commande_etreEnCharge);
@@ -309,7 +308,6 @@ const Profils = () => {
                     materiel_suppression: data.materiel_suppression,
                     messages_ajout: data.messages_ajout,
                     messages_suppression: data.messages_suppression,
-                    verrouIP: data.verrouIP,
                     commande_lecture: data.commande_lecture,
                     commande_ajout: data.commande_ajout,
                     commande_etreEnCharge: data.commande_etreEnCharge,
@@ -453,7 +451,6 @@ const Profils = () => {
                     materiel_suppression: data.materiel_suppression,
                     messages_ajout: data.messages_ajout,
                     messages_suppression: data.messages_suppression,
-                    verrouIP: data.verrouIP,
                     commande_lecture: data.commande_lecture,
                     commande_ajout: data.commande_ajout,
                     commande_etreEnCharge: data.commande_etreEnCharge,

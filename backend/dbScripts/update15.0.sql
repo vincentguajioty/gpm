@@ -26,6 +26,11 @@ ALTER TABLE CONFIG DROP confirmationSuppression;
 ALTER TABLE CONFIG DROP logouttemp;
 ALTER TABLE CONFIG DROP sitecolor;
 
+DROP TABLE VERROUILLAGE_IP;
+DROP TABLE VERROUILLAGE_IP_TEMP;
+
+DROP VIEW VIEW_DOCUMENTS_CENTRE_COUTS;
+
 CREATE TABLE JWT_SESSIONS(
 	idSession       INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	idPersonne      INT,
@@ -90,6 +95,8 @@ FROM
 	NOTIFICATIONS_MAILS;
 
 DROP TABLE NOTIFICATIONS_MAILS;
+DROP TABLE COMMANDES_NOTIFICATIONS;
+DROP TABLE PERSONNE_REFERENTE_TEMP;
 
 ALTER TABLE PERSONNE_REFERENTE CHANGE conf_indicateur1Accueil conf_indicateur1Accueil BOOLEAN;
 ALTER TABLE PERSONNE_REFERENTE CHANGE conf_indicateur2Accueil conf_indicateur2Accueil BOOLEAN;
@@ -166,6 +173,7 @@ ALTER TABLE PROFILS DROP sac2_lecture;
 ALTER TABLE PROFILS DROP sac2_ajout;
 ALTER TABLE PROFILS DROP sac2_modification;
 ALTER TABLE PROFILS DROP sac2_suppression;
+ALTER TABLE PROFILS DROP verrouIP;
 
 CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 	SELECT
@@ -240,7 +248,6 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		MAX(materiel_suppression)                      as materiel_suppression,
 		MAX(messages_ajout)                            as messages_ajout,
 		MAX(messages_suppression)                      as messages_suppression,
-		MAX(verrouIP)                                  as verrouIP,
 		MAX(commande_lecture)                          as commande_lecture,
 		MAX(commande_ajout)                            as commande_ajout,
 		MAX(commande_etreEnCharge)                     as commande_etreEnCharge,
@@ -552,5 +559,8 @@ UPDATE COMMANDES_TIMELINE_ICON SET iconFontAsw='truck', iconColor='text-warning'
 UPDATE COMMANDES_TIMELINE_ICON SET iconFontAsw='comment', iconColor='text-info' WHERE idComIcon=36;/*commentaire manuel*/
 
 ALTER TABLE CENTRE_COUTS ADD soldeActuel FLOAT;
+
+ALTER TABLE LOTS_ALERTES DROP ipDeclarant;
+ALTER TABLE VEHICULES_ALERTES DROP ipDeclarant;
 
 UPDATE CONFIG SET version = '15.0';
