@@ -250,7 +250,7 @@ const GestionnairesTable = ({
             setShowOffCanevas(true);
             setLoading(true);
 
-            let getForSelect = await Axios.get('/select/getPersonnes');
+            let getForSelect = await Axios.get('/select/getActivePersonnesAccesCDC');
             setPersonnes(getForSelect.data);
 
             if(id > 0)

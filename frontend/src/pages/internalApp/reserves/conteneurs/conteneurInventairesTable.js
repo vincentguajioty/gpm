@@ -202,7 +202,7 @@ const ConteneurInventairesTable = ({
             setValue("idPersonne", HabilitationService.habilitations.idPersonne);
             setValue("isLastInventaire", true);
 
-            let getData = await Axios.get('/select/getPersonnes');
+            let getData = await Axios.get('/select/getActivePersonnes');
             setPersonnes(getData.data);
             
             setLoading(false);

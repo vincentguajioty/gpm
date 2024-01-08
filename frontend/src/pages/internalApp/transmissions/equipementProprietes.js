@@ -64,7 +64,7 @@ const EquipementVhfProprietes = ({equipement, setPageNeedsRefresh}) => {
             setTechnologies(getData.data);
             getData = await Axios.get('/select/getVhfPlans');
             setPlans(getData.data);
-            getData = await Axios.get('/select/getPersonnes');
+            getData = await Axios.get('/select/getActivePersonnes');
             setPersonnes(getData.data);
 
             setFormReady(true);

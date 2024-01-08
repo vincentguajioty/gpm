@@ -42,7 +42,7 @@ const LotProprietesForm = ({lot, setModeEdition, setPageNeedsRefresh}) => {
             getData = await Axios.get('/select/getNotificationsEnabled');
             setNotifications(getData.data);
 
-            getData = await Axios.get('/select/getPersonnes');
+            getData = await Axios.get('/select/getActivePersonnes');
             setPersonnes(getData.data);
 
             getData = await Axios.get('/select/getEtatsLots');

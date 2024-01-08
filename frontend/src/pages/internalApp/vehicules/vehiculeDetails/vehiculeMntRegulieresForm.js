@@ -64,7 +64,7 @@ const VehiculeMaintenancesRegulieresForm = ({
             setRemainingChecks(getData.data);
         }
 
-        let getData = await Axios.get('/select/getPersonnes');
+        let getData = await Axios.get('/select/getActivePersonnes');
         setPersonnes(getData.data);
 
         setShowEditModal(true);

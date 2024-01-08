@@ -51,7 +51,7 @@ const VehiculeDesinfectionsForm = ({
             setValue("idExecutant", HabilitationService.habilitations.idPersonne);
         }
 
-        let getData = await Axios.get('/select/getPersonnes');
+        let getData = await Axios.get('/select/getActivePersonnes');
         setPersonnes(getData.data);
         getData = await Axios.get('/select/getTypesDesinfections');
         setTypesDesinfections(getData.data);

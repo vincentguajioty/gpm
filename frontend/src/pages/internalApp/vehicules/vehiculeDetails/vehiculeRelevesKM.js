@@ -101,7 +101,7 @@ const VehiculeRelevesKM = ({idVehicule, relevesKM, setPageNeedsRefresh}) => {
             setValue("idPersonne", HabilitationService.habilitations.idPersonne);
         }
 
-        const getData = await Axios.get('/select/getPersonnes');
+        const getData = await Axios.get('/select/getActivePersonnes');
         setPersonnes(getData.data);
 
         setShowOffCanevas(true);

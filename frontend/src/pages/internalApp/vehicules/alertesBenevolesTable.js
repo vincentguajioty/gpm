@@ -250,7 +250,7 @@ const AlertesBenevolesVehiculesTable = ({
     const [personnes, setPersonnes] = useState([]);
     const handleShowAffectModal = async (id) => {
         try {
-            let getData = await Axios.get('/select/getActivePersonnes');
+            let getData = await Axios.get('/select/getActivePersonnesAccesAlertesVehicules');
             setPersonnes(getData.data);
 
             setAffectModalIdAlerte(id);

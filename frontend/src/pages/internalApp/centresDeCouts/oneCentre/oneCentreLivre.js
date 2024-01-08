@@ -136,7 +136,7 @@ const OneCentreLivre = ({
             setShowOffCanevas(true);
             setLoading(true);
 
-            let getForSelect = await Axios.get('/select/getPersonnes');
+            let getForSelect = await Axios.get('/select/getActivePersonnes');
             setPersonnes(getForSelect.data);
 
             if(mesDroits.montantMaxValidation >= 0)

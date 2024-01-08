@@ -32,7 +32,7 @@ const ConteneurProprietesForm = ({conteneur, setModeEdition, setPageNeedsRefresh
             let getData = await Axios.get('/select/getLieux');
             setLieux(getData.data);
 
-            getData = await Axios.get('/select/getPersonnes');
+            getData = await Axios.get('/select/getActivePersonnes');
             setPersonnes(getData.data);
 
             setValue("idLieu", conteneur.idLieu);

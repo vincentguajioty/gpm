@@ -153,7 +153,7 @@ const AffectationsTenues = () => {
         getData = await Axios.get('/tenues/getPersonnesSuggested');
         setPersonnesExternes(getData.data);
 
-        getData = await Axios.get('/select/getPersonnes');
+        getData = await Axios.get('/select/getNonAnonymesPersonnes');
         getData.data.unshift({value: 0, label: '--- Affecté à un externe ---'})
         setPersonnesInternes(getData.data);
 

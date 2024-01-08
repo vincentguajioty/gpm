@@ -55,6 +55,69 @@ exports.getActivePersonnes = async (req, res)=>{
     }
 }
 
+exports.getActivePersonnesAccesCDC = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idPersonne as value,
+                identifiant as label
+            FROM
+                VIEW_HABILITATIONS
+            WHERE
+                connexion_connexion = true
+                AND cout_etreEnCharge = true
+            ORDER BY
+                identifiant
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getActivePersonnesAccesAlertesLots = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idPersonne as value,
+                identifiant as label
+            FROM
+                VIEW_HABILITATIONS
+            WHERE
+                connexion_connexion = true
+                AND alertesBenevolesLots_affectation = true
+            ORDER BY
+                identifiant
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getActivePersonnesAccesAlertesVehicules = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idPersonne as value,
+                identifiant as label
+            FROM
+                VIEW_HABILITATIONS
+            WHERE
+                connexion_connexion = true
+                AND alertesBenevolesVehicules_affectation = true
+            ORDER BY
+                identifiant
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.getActivePersonnesForCmdAffectation = async (req, res)=>{
     try {
         let results = await db.query(`
