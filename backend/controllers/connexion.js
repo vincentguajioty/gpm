@@ -900,3 +900,409 @@ exports.contactDeveloppeur = async (req, res, next)=>{
         res.sendStatus(500);
     }
 }
+
+exports.getIndividualHomePageDetails = async (req, res, next)=>{
+    try {
+        let personne = await db.query(`
+            SELECT
+                conf_indicateur1Accueil,
+                conf_indicateur2Accueil,
+                conf_indicateur3Accueil,
+                conf_indicateur4Accueil,
+                conf_indicateur5Accueil,
+                conf_indicateur6Accueil,
+                conf_indicateur9Accueil,
+                conf_indicateur10Accueil,
+                conf_indicateur11Accueil,
+                conf_indicateur12Accueil
+            FROM
+                PERSONNE_REFERENTE
+            WHERE
+                idPersonne = :idPersonne;
+        `,{
+            idPersonne : req.verifyJWTandProfile.idPersonne,
+        });
+        personne = personne[0];
+
+        let lotsEnCharge = await db.query(`
+            SELECT COUNT(idLot) as nb FROM LOTS_LOTS WHERE idPersonne = :idPersonne;
+        `,{
+            idPersonne : req.verifyJWTandProfile.idPersonne,
+        });
+        lotsEnCharge = lotsEnCharge[0].nb > 0 ? true : false;
+
+        let vehiculesEnCharge = await db.query(`
+            SELECT COUNT(idVehicule) as nb FROM VEHICULES WHERE idResponsable = :idPersonne;
+        `,{
+            idPersonne : req.verifyJWTandProfile.idPersonne,
+        });
+        vehiculesEnCharge = vehiculesEnCharge[0].nb > 0 ? true : false;
+
+        let alertesLots = await db.query(`
+            SELECT COUNT(idAlerte) as nb FROM LOTS_ALERTES WHERE
+                (idLotsAlertesEtat = 1)
+                OR (idTraitant = :idPersonne AND idLotsAlertesEtat = 2)
+                OR (idTraitant = :idPersonne AND idLotsAlertesEtat = 3)
+            ;
+        `,{
+            idPersonne : req.verifyJWTandProfile.idPersonne,
+        });
+        alertesLots = alertesLots[0].nb > 0 ? true : false;
+
+        let alertesVehicules = await db.query(`
+            SELECT COUNT(idAlerte) as nb FROM VEHICULES_ALERTES WHERE
+                (idVehiculesAlertesEtat = 1)
+                OR (idTraitant = :idPersonne AND idVehiculesAlertesEtat = 2)
+                OR (idTraitant = :idPersonne AND idVehiculesAlertesEtat = 3)
+            ;
+        `,{
+            idPersonne : req.verifyJWTandProfile.idPersonne,
+        });
+        alertesVehicules = alertesVehicules[0].nb > 0 ? true : false;
+
+        let allCmdPending = await db.query(`
+            SELECT
+                c.*,
+                cdc.libelleCentreDecout
+            FROM
+                COMMANDES c
+                LEFT OUTER JOIN CENTRE_COUTS cdc ON c.idCentreDeCout = cdc.idCentreDeCout
+            WHERE
+                c.idEtat = 2
+            ORDER BY
+                dateDemandeValidation DESC
+        ;`);
+
+        let commandesAValider = false;
+        for(const cmd of allCmdPending)
+        {
+            let valideursCmd = await fonctionsMetiers.getValideurs(cmd.idCommande);
+            for(const valideur of valideursCmd)
+            {
+                if(valideur.idPersonne == req.verifyJWTandProfile.idPersonne){
+                    commandesAValider = true;
+                }
+            }
+        }
+
+        let maToDo = await db.query(`
+            SELECT COUNT(tdl.idTache) as nb FROM TODOLIST tdl LEFT OUTER JOIN TODOLIST_PERSONNES p ON tdl.idTache = p.idTache WHERE
+                tdl.dateCloture IS NULL
+                AND
+                p.idExecutant = :idPersonne
+            ;
+        `,{
+            idPersonne : req.verifyJWTandProfile.idPersonne,
+        });
+        maToDo = maToDo[0].nb > 0 ? true : false;
+
+        res.send({
+            lotsEnCharge: lotsEnCharge && req.verifyJWTandProfile.lots_lecture == true,
+            vehiculesEnCharge: vehiculesEnCharge && req.verifyJWTandProfile.vehicules_lecture == true,
+            alertesLots: alertesLots && req.verifyJWTandProfile.alertesBenevolesLots_lecture == true,
+            alertesVehicules: alertesVehicules && req.verifyJWTandProfile.alertesBenevolesVehicules_lecture == true,
+            calendrier: true,
+            checkListParc:
+                personne.conf_indicateur1Accueil == true
+                || personne.conf_indicateur2Accueil == true
+                || personne.conf_indicateur3Accueil == true
+                || personne.conf_indicateur4Accueil == true
+                || personne.conf_indicateur5Accueil == true
+                || personne.conf_indicateur6Accueil == true
+                || personne.conf_indicateur9Accueil == true
+                || personne.conf_indicateur10Accueil == true
+                || personne.conf_indicateur11Accueil == true
+                || personne.conf_indicateur12Accueil == true,
+            commandesAValider: commandesAValider && (req.verifyJWTandProfile.cout_etreEnCharge == true ||req.verifyJWTandProfile.commande_valider_delegate == true),
+            maToDo: maToDo,
+        })
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getHomeCheckList = async (req, res, next)=>{
+    try {
+        let personne = await db.query(`
+            SELECT
+                conf_indicateur1Accueil,
+                conf_indicateur2Accueil,
+                conf_indicateur3Accueil,
+                conf_indicateur4Accueil,
+                conf_indicateur5Accueil,
+                conf_indicateur6Accueil,
+                conf_indicateur9Accueil,
+                conf_indicateur10Accueil,
+                conf_indicateur11Accueil,
+                conf_indicateur12Accueil
+            FROM
+                PERSONNE_REFERENTE
+            WHERE
+                idPersonne = :idPersonne;
+        `,{
+            idPersonne : req.verifyJWTandProfile.idPersonne,
+        });
+        personne = personne[0];
+
+        let result = [];
+
+        if(personne.conf_indicateur1Accueil)
+        {
+            let getAlertesData = await db.query(`
+                SELECT
+                    l.libelleLot,
+                    c.libelleMateriel
+                FROM
+                    MATERIEL_ELEMENT m
+                    LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement
+                    LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac
+                    LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot
+                    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                    LEFT OUTER JOIN NOTIFICATIONS_ENABLED notif ON l.idNotificationEnabled = notif.idNotificationEnabled
+                WHERE
+                    (peremptionNotification < CURRENT_DATE OR peremptionNotification = CURRENT_DATE)
+                    AND
+                    notifiationEnabled = true
+            `);
+
+            result.push({
+                label: "Matériels périmés (lots)",
+                config: "conf_indicateur1Accueil",
+                profilNeeded: "lots_lecture",
+                alertes: getAlertesData,
+                nbAlertes: getAlertesData.length,
+            });
+        }
+
+        if(personne.conf_indicateur2Accueil)
+        {
+            let getAlertesData = await db.query(`
+                SELECT
+                    l.libelleLot,
+                    c.libelleMateriel
+                FROM
+                    MATERIEL_ELEMENT m
+                    LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement
+                    LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac
+                    LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot
+                    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                    LEFT OUTER JOIN NOTIFICATIONS_ENABLED notif ON l.idNotificationEnabled = notif.idNotificationEnabled
+                WHERE
+                    (quantite < quantiteAlerte OR quantite = quantiteAlerte)
+                    AND
+                    notifiationEnabled = true
+            `);
+
+            result.push({
+                label: "Matériels manquants (lots)",
+                config: "conf_indicateur2Accueil",
+                profilNeeded: "lots_lecture",
+                alertes: getAlertesData,
+                nbAlertes: getAlertesData.length,
+            });
+        }
+
+        if(personne.conf_indicateur3Accueil)
+        {
+            let getAlertesData = await db.query(`
+                SELECT
+                    libelleLot
+                FROM
+                    LOTS_LOTS l
+                    LEFT OUTER JOIN NOTIFICATIONS_ENABLED notif ON l.idNotificationEnabled = notif.idNotificationEnabled
+                WHERE
+                    notifiationEnabled = true
+                    AND
+                    (frequenceInventaire IS NOT NULL)
+                    AND
+                    (
+                        (DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) < CURRENT_DATE)
+                        OR
+                        (DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) = CURRENT_DATE)
+                    )
+            `);
+
+            result.push({
+                label: "Lots en attente d'inventaire",
+                config: "conf_indicateur3Accueil",
+                profilNeeded: "lots_lecture",
+                alertes: getAlertesData,
+                nbAlertes: getAlertesData.length,
+            });
+        }
+
+        if(personne.conf_indicateur4Accueil)
+        {
+            let getAlertesData = await db.query(`
+                SELECT
+                    l.libelleLot
+                FROM
+                    LOTS_LOTS l
+                    LEFT OUTER JOIN NOTIFICATIONS_ENABLED notif ON l.idNotificationEnabled = notif.idNotificationEnabled
+                WHERE
+                    alerteConfRef = 1
+                    AND
+                    notifiationEnabled = true
+            `);
+
+            result.push({
+                label: "Lots non conformes",
+                config: "conf_indicateur4Accueil",
+                profilNeeded: "lots_lecture",
+                alertes: getAlertesData,
+                nbAlertes: getAlertesData.length,
+            });
+        }
+
+        if(personne.conf_indicateur5Accueil)
+        {
+            let getAlertesData = await db.query(`
+                SELECT
+                    c.libelleConteneur,
+                    r.libelleMateriel
+                FROM
+                    RESERVES_MATERIEL m
+                    LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur=c.idConteneur
+                    LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue
+                WHERE
+                    peremptionNotificationReserve < CURRENT_DATE
+                    OR
+                    peremptionNotificationReserve = CURRENT_DATE
+            `);
+
+            result.push({
+                label: "Matériels périmés (réserve)",
+                config: "conf_indicateur5Accueil",
+                profilNeeded: "reserve_lecture",
+                alertes: getAlertesData,
+                nbAlertes: getAlertesData.length,
+            });
+        }
+
+        if(personne.conf_indicateur6Accueil)
+        {
+            let getAlertesData = await db.query(`
+                SELECT
+                    c.libelleConteneur,
+                    r.libelleMateriel
+                FROM
+                    RESERVES_MATERIEL m
+                    LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur=c.idConteneur
+                    LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue
+                WHERE
+                    quantiteReserve < quantiteAlerteReserve
+                    OR
+                    quantiteReserve = quantiteAlerteReserve
+            `);
+
+            result.push({
+                label: "Matériels manquants (réserve)",
+                config: "conf_indicateur6Accueil",
+                profilNeeded: "reserve_lecture",
+                alertes: getAlertesData,
+                nbAlertes: getAlertesData.length,
+            });
+        }
+
+        if(personne.conf_indicateur9Accueil)
+        {
+            let getAlertesData = await db.query(`
+                SELECT
+                    libelleCatalogueTenue
+                FROM
+                    TENUES_CATALOGUE
+                WHERE
+                    stockCatalogueTenue < stockAlerteCatalogueTenue
+                    OR
+                    stockCatalogueTenue = stockAlerteCatalogueTenue
+            `);
+
+            result.push({
+                label: "Stock des tenues",
+                config: "conf_indicateur9Accueil",
+                profilNeeded: "tenues_lecture",
+                alertes: getAlertesData,
+                nbAlertes: getAlertesData.length,
+            });
+        }
+
+        if(personne.conf_indicateur10Accueil)
+        {
+            let getAlertesData = await db.query(`
+                SELECT
+                    nomPersonne,
+                    prenomPersonne,
+                    personneNonGPM,    
+                    libelleCatalogueTenue
+                FROM
+                    TENUES_AFFECTATION ta
+                    JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                    LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne
+                WHERE
+                    dateRetour < CURRENT_DATE
+                    OR
+                    dateRetour = CURRENT_DATE
+            `);
+
+            result.push({
+                label: "Non retour de tenues",
+                config: "conf_indicateur10Accueil",
+                profilNeeded: "tenues_lecture",
+                alertes: getAlertesData,
+                nbAlertes: getAlertesData.length,
+            });
+        }
+
+        if(personne.conf_indicateur11Accueil)
+        {
+            let getAlertesData = await db.query(`
+                SELECT
+                    v.libelleVehicule
+                FROM
+                    VEHICULES v
+                    LEFT OUTER JOIN NOTIFICATIONS_ENABLED notif ON v.idNotificationEnabled = notif.idNotificationEnabled
+                WHERE
+                    notifiationEnabled = true
+                    AND 
+                    alerteDesinfection = 1
+            `);
+
+            result.push({
+                label: "Désinfections des véhicules",
+                config: "conf_indicateur11Accueil",
+                profilNeeded: "desinfections_lecture",
+                alertes: getAlertesData,
+                nbAlertes: getAlertesData.length,
+            });
+        }
+
+        if(personne.conf_indicateur12Accueil)
+        {
+            let getAlertesData = await db.query(`
+                SELECT
+                    v.libelleVehicule
+                FROM
+                    VEHICULES v
+                    LEFT OUTER JOIN NOTIFICATIONS_ENABLED notif ON v.idNotificationEnabled = notif.idNotificationEnabled
+                WHERE
+                    notifiationEnabled = true
+                    AND 
+                    alerteMaintenance = 1
+            `);
+
+            result.push({
+                label: "Maintenance régulière des véhicules",
+                config: "conf_indicateur12Accueil",
+                profilNeeded: "vehiculeHealth_lecture",
+                alertes: getAlertesData,
+                nbAlertes: getAlertesData.length,
+            });
+        }
+
+        res.send(result)
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}

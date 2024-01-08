@@ -43,21 +43,23 @@ const selectForListsCtrl = require('./controllers/selectForLists')
 const calendrierCtrl = require('./controllers/calendrier');
 
 //authentification
-router.post('/login',                      loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.login );
-router.post('/mfaNeeded',                  loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.mfaNeeded );
-router.post('/pwdReinitRequest',           loggerMiddleware.httpLogger(), fonctionsMetiers.checkPwdReinitEnable(),                                                           connexionCtrl.pwdReinitRequest );
-router.post('/pwdReinitValidate',          loggerMiddleware.httpLogger(), fonctionsMetiers.checkPwdReinitEnable(),                                                           connexionCtrl.pwdReinitValidate );
-router.post('/refreshToken',               loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.refreshToken );
-router.post('/dropSession',                loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.dropSession );
-router.get('/getConfig',                   loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.getConfig );
-router.get('/checkLogin',                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                                        connexionCtrl.checkLogin );
-router.get('/getCGU',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                                        connexionCtrl.getCGU );
-router.post('/acceptCGU',                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                                        connexionCtrl.acceptCGU );
-router.post('/updatePassword',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), loggerMiddleware.modificationLogger(), connexionCtrl.updatePassword );
-router.post('/updatePasswordWithoutCheck', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), loggerMiddleware.modificationLogger(), connexionCtrl.updatePasswordWithoutCheck );
-router.post('/getCurrentSessionsOneUser',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                                        connexionCtrl.getCurrentSessionsOneUser );
-router.post('/blackListSession',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), loggerMiddleware.suppressionLogger(),  connexionCtrl.blackListSession );
-router.post('/contactDeveloppeur',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                                        connexionCtrl.contactDeveloppeur );
+router.post('/login',                        loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.login);
+router.post('/mfaNeeded',                    loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.mfaNeeded);
+router.post('/pwdReinitRequest',             loggerMiddleware.httpLogger(), fonctionsMetiers.checkPwdReinitEnable(),                                                           connexionCtrl.pwdReinitRequest);
+router.post('/pwdReinitValidate',            loggerMiddleware.httpLogger(), fonctionsMetiers.checkPwdReinitEnable(),                                                           connexionCtrl.pwdReinitValidate);
+router.post('/refreshToken',                 loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.refreshToken);
+router.post('/dropSession',                  loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.dropSession);
+router.get('/getConfig',                     loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.getConfig);
+router.get('/checkLogin',                    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                                        connexionCtrl.checkLogin);
+router.get('/getCGU',                        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                                        connexionCtrl.getCGU);
+router.post('/acceptCGU',                    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                                        connexionCtrl.acceptCGU);
+router.post('/updatePassword',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), loggerMiddleware.modificationLogger(), connexionCtrl.updatePassword);
+router.post('/updatePasswordWithoutCheck',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), loggerMiddleware.modificationLogger(), connexionCtrl.updatePasswordWithoutCheck);
+router.post('/getCurrentSessionsOneUser',    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                                        connexionCtrl.getCurrentSessionsOneUser);
+router.post('/blackListSession',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]), loggerMiddleware.suppressionLogger(),  connexionCtrl.blackListSession);
+router.post('/contactDeveloppeur',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                                        connexionCtrl.contactDeveloppeur);
+router.get('/getIndividualHomePageDetails',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                                        connexionCtrl.getIndividualHomePageDetails);
+router.get('/getHomeCheckList',              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),                                        connexionCtrl.getHomeCheckList);
 
 //select routes for forms and lists - AUTHENTICATED
 router.get('/select/getNotificationsConditions',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getNotificationsConditions);
@@ -203,8 +205,9 @@ router.post('/transferts/getReservesForOneTransfert', loggerMiddleware.httpLogge
 router.post('/transferts/opererTransfertReserveLot',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_ReserveVersLot']),  loggerMiddleware.modificationLogger(), transfertsCtrl.opererTransfertReserveLot);
 
 //COMMANDES
-router.get('/commandes/getCommandes',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture']),                                                                                                                                                                                            commandesCtrl.getCommandes);
-router.post('/commandes/getOneCommande',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture']),                                                                                                                                                                                            commandesCtrl.getOneCommande);
+router.get('/commandes/getCommandes',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture']),                                                                                                                                                                                              commandesCtrl.getCommandes);
+router.get('/commandes/getCommandesToApprouveOnePerson',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture']),                                                                                                                                                                                              commandesCtrl.getCommandesToApprouveOnePerson);
+router.post('/commandes/getOneCommande',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture']),                                                                                                                                                                                              commandesCtrl.getOneCommande);
 router.post('/commandes/addCommande',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_ajout']),                                                                                                                                                         loggerMiddleware.modificationLogger(), commandesCtrl.addCommande);
 router.post('/commandes/addComment',                       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),                                            middlewaresFunctions.checkCmdRole(['demandeur','affectee', 'valideur', 'observateur']),                 loggerMiddleware.modificationLogger(), commandesCtrl.addComment);
 router.post('/commandes/abandonnerCommande',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_abandonner']),                                                                                                                                                    loggerMiddleware.modificationLogger(), commandesCtrl.abandonnerCommande);
@@ -523,6 +526,6 @@ router.post('/getSecureFile/vhfPlans',       loggerMiddleware.httpLogger(), jwtF
 router.post('/getSecureFile/temp',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion',]),    serveDocumentsCtrl.temp);
 
 
-router.get('/', connexionCtrl.alive );
+router.get('/', connexionCtrl.alive);
 
 module.exports = router;

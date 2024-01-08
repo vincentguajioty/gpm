@@ -5,7 +5,7 @@ import PageHeader from 'components/common/PageHeader';
 
 import AlertesBenevolesLotsTable from './alertesBenevolesTable';
 
-const AlertesBenevolesVehicules = () => {
+const AlertesBenevolesLots = () => {
     return (<>
         <PageHeader
             preTitle="Lots opérationnels"
@@ -24,6 +24,6 @@ const AlertesBenevolesVehicules = () => {
     </>);
 };
 
-AlertesBenevolesVehicules.propTypes = {};
+AlertesBenevolesLots.propTypes = {};
 
-export default AlertesBenevolesVehicules;
+export default AlertesBenevolesLots;

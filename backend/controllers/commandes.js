@@ -28,6 +28,42 @@ exports.getCommandes = async (req, res)=>{
     }
 }
 
+exports.getCommandesToApprouveOnePerson = async (req, res)=>{
+    try {
+        let allCmdPending = await db.query(`
+            SELECT
+                c.*,
+                cdc.libelleCentreDecout
+            FROM
+                COMMANDES c
+                LEFT OUTER JOIN CENTRE_COUTS cdc ON c.idCentreDeCout = cdc.idCentreDeCout
+            WHERE
+                c.idEtat = 2
+            ORDER BY
+                dateDemandeValidation DESC
+        ;`);
+
+        let results = [];
+        for(const cmd of allCmdPending)
+        {
+            let valideursCmd = await fonctionsMetiers.getValideurs(cmd.idCommande);
+            for(const valideur of valideursCmd)
+            {
+                if(valideur.idPersonne == req.verifyJWTandProfile.idPersonne){
+                    let verificationContraintes = await fonctionsMetiers.verificationContraintesCmd(cmd.idCommande);
+                    cmd.verificationContraintes = verificationContraintes;
+                    results.push(cmd)
+                }
+            }
+        }
+
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.getOneCommande = async (req, res)=>{
     try {
         let commande = await db.query(`

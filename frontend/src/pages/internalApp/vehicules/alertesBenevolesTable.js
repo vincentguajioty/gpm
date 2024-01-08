@@ -13,10 +13,20 @@ import HabilitationService from 'services/habilitationsService';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { alerteVehiculeAffectation } from 'helpers/yupValidationSchema';
+import Flex from 'components/common/Flex';
 
 const AlertesBenevolesVehiculesTable = ({
     idVehicule = 0,
     setPageNeedsRefresh = null,
+    filterForHomePage = false,
+    boxTitle = null,
+    displayNomDeclarant = true,
+    displayDateCreationAlerte = true,
+    displayLibelleVehicule = true,
+    displayMessageAlerteVehicule = true,
+    displayLibelleVehiculesAlertesEtat = true,
+    displayIdTraitant = true,
+    displayActions = true,
 }) => {
     const [readyToDisplay, setReadyToDisplay] = useState(false);
     const [alertes, setAlertes] = useState([]);
@@ -26,7 +36,18 @@ const AlertesBenevolesVehiculesTable = ({
             const getData = await Axios.post('/vehicules/getVehiculesAlertes',{
                 idVehicule: idVehicule,
             });
-            setAlertes(getData.data);
+
+            if(filterForHomePage == true)
+            {
+                setAlertes(getData.data.filter(alerte =>
+                    (alerte.idVehiculesAlertesEtat == 1)
+                    || (alerte.idTraitant == HabilitationService.habilitations.idPersonne && alerte.idVehiculesAlertesEtat == 2)
+                    || (alerte.idTraitant == HabilitationService.habilitations.idPersonne && alerte.idVehiculesAlertesEtat == 3)
+                ));
+            }else{
+                setAlertes(getData.data);
+            }
+
             setReadyToDisplay(true);
         } catch (error) {
             console.log(error)
@@ -40,10 +61,12 @@ const AlertesBenevolesVehiculesTable = ({
     const colonnes = [
         {
             accessor: 'nomDeclarant',
+            isHidden: !displayNomDeclarant,
             Header: 'Demandeur',
         },
         {
             accessor: 'dateCreationAlerte',
+            isHidden: !displayDateCreationAlerte,
             Header: 'Ouverture',
             Cell: ({ value, row }) => {
 				return(moment(value).format('DD/MM/YYYY HH:mm'));
@@ -51,10 +74,12 @@ const AlertesBenevolesVehiculesTable = ({
         },
         {
             accessor: 'libelleVehicule',
+            isHidden: !displayLibelleVehicule,
             Header: 'Véhicule',
         },
         {
             accessor: 'messageAlerteVehicule',
+            isHidden: !displayMessageAlerteVehicule,
             Header: 'Message',
             Cell: ({ value, row }) => {
 				return(nl2br(value));
@@ -62,6 +87,7 @@ const AlertesBenevolesVehiculesTable = ({
         },
         {
             accessor: 'libelleVehiculesAlertesEtat',
+            isHidden: !displayLibelleVehiculesAlertesEtat,
             Header: 'Traitement',
             Cell: ({ value, row }) => {
 				return(
@@ -82,6 +108,7 @@ const AlertesBenevolesVehiculesTable = ({
         },
         {
             accessor: 'idTraitant',
+            isHidden: !displayIdTraitant,
             Header: 'Affectation',
             Cell: ({ value, row }) => {
 				return(
@@ -109,6 +136,7 @@ const AlertesBenevolesVehiculesTable = ({
         },
         {
             accessor: 'actions',
+            isHidden: !displayActions,
             Header: 'Clore',
             Cell: ({ value, row }) => {
 				return(
@@ -271,6 +299,8 @@ const AlertesBenevolesVehiculesTable = ({
             <GPMtable
                 columns={colonnes}
                 data={alertes}
+                topButtonShow={true}
+                topButton={<h5>{boxTitle}</h5>}
             />
         : <LoaderInfiniteLoop/>}
     </>);

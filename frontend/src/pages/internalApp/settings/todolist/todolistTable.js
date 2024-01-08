@@ -270,9 +270,11 @@ const ToDoListTable = ({
 
     return (<>
         <FalconComponentCard noGuttersBottom className="mb-3">
-            <FalconComponentCard.Header
-                title={titreBox}
-            />
+            {showAddButton ?
+                <FalconComponentCard.Header
+                    title={titreBox}
+                />
+            : null}
             <FalconComponentCard.Body
                 scope={{ ActionButton }}
                 noLight
@@ -281,8 +283,8 @@ const ToDoListTable = ({
                     <GPMtable
                         columns={colonnes}
                         data={taches}
-                        topButtonShow={showAddButton}
-                        topButton={<ToDoListForm idTache={0} showAddButton={true} setComponentsHaveToReload={setComponentsHaveToReload} />}
+                        topButtonShow={true}
+                        topButton={showAddButton ? <ToDoListForm idTache={0} showAddButton={true} setComponentsHaveToReload={setComponentsHaveToReload} /> : <h5>{titreBox}</h5>}
                     />
                 : <LoaderInfiniteLoop />}
             </FalconComponentCard.Body>

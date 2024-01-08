@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { Row, Col, } from 'react-bootstrap';
+import { Row, Col, Alert } from 'react-bootstrap';
 import HabilitationService from 'services/habilitationsService';
 import ConfigurationService from 'services/configurationService';
 import Flex from 'components/common/Flex';
@@ -12,8 +12,22 @@ import lottieMnt from 'components/widgets/lottie-maintenance';
 
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 
+import { Axios } from 'helpers/axios';
+
 const Landing = () => {
 	const navigate = useNavigate();
+
+	const [messagesGeneraux, setMessagesGeneraux] = useState([]);
+
+	const initPage = async () => {
+		try {
+			let getMessages = await Axios.get('/messagesGeneraux/getMessagesPublics');
+			setMessagesGeneraux(getMessages.data);
+
+		} catch (error) {
+			console.log(error);
+		}
+	}
 
 	const goIncident = () => {
 		navigate('/incidentPublic');
@@ -25,6 +39,11 @@ const Landing = () => {
 		navigate(HabilitationService.habilitations ? '/home' : '/login');
 	}
 
+	useEffect(() => {
+		initPage();
+	}, [])
+
+	const nl2br = require('react-nl2br');
 	if(ConfigurationService.config)
 	{
 		if(ConfigurationService.config.maintenance)
@@ -53,6 +72,12 @@ const Landing = () => {
 				</Row>
 	
 				<Row className="justify-content-center text-center">
+					<Col lg={12} className='mb-2'>
+						{messagesGeneraux.map((message, i)=>{return(
+							<Alert variant={message.couleurMessageType}>{nl2br(message.corpsMessage)}</Alert>
+						)})}
+					</Col>
+
 					{ConfigurationService.config['consommation_benevoles'] ? 
 						<Col lg={4} className='mb-2'>
 							<Flex

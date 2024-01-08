@@ -17,6 +17,15 @@ import { alerteLotAffectation } from 'helpers/yupValidationSchema';
 const AlertesBenevolesLotsTable = ({
     idLot = 0,
     setPageNeedsRefresh = null,
+    filterForHomePage = false,
+    boxTitle = null,
+    displayNomDeclarant = true,
+    displayDateCreationAlerte = true,
+    displayLibelleLot = true,
+    displayMessageAlerteLot = true,
+    displayLibelleLotsAlertesEtat = true,
+    displayIdTraitant = true,
+    displayActions = true,
 }) => {
     const [readyToDisplay, setReadyToDisplay] = useState(false);
     const [alertes, setAlertes] = useState([]);
@@ -26,7 +35,18 @@ const AlertesBenevolesLotsTable = ({
             const getData = await Axios.post('/lots/getLotsAlertes',{
                 idLot: idLot,
             });
-            setAlertes(getData.data);
+            
+            if(filterForHomePage == true)
+            {
+                setAlertes(getData.data.filter(alerte =>
+                    (alerte.idLotsAlertesEtat == 1)
+                    || (alerte.idTraitant == HabilitationService.habilitations.idPersonne && alerte.idLotsAlertesEtat == 2)
+                    || (alerte.idTraitant == HabilitationService.habilitations.idPersonne && alerte.idLotsAlertesEtat == 3)
+                ));
+            }else{
+                setAlertes(getData.data);
+            }
+            
             setReadyToDisplay(true);
         } catch (error) {
             console.log(error)
@@ -39,10 +59,12 @@ const AlertesBenevolesLotsTable = ({
     const colonnes = [
         {
             accessor: 'nomDeclarant',
+            isHidden: !displayNomDeclarant,
             Header: 'Demandeur',
         },
         {
             accessor: 'dateCreationAlerte',
+            isHidden: !displayDateCreationAlerte,
             Header: 'Ouverture',
             Cell: ({ value, row }) => {
 				return(moment(value).format('DD/MM/YYYY HH:mm'));
@@ -50,10 +72,12 @@ const AlertesBenevolesLotsTable = ({
         },
         {
             accessor: 'libelleLot',
+            isHidden: !displayLibelleLot,
             Header: 'Lot',
         },
         {
             accessor: 'messageAlerteLot',
+            isHidden: !displayMessageAlerteLot,
             Header: 'Message',
             Cell: ({ value, row }) => {
 				return(nl2br(value));
@@ -61,6 +85,7 @@ const AlertesBenevolesLotsTable = ({
         },
         {
             accessor: 'libelleLotsAlertesEtat',
+            isHidden: !displayLibelleLotsAlertesEtat,
             Header: 'Traitement',
             Cell: ({ value, row }) => {
 				return(
@@ -81,6 +106,7 @@ const AlertesBenevolesLotsTable = ({
         },
         {
             accessor: 'idTraitant',
+            isHidden: !displayIdTraitant,
             Header: 'Affectation',
             Cell: ({ value, row }) => {
 				return(
@@ -108,6 +134,7 @@ const AlertesBenevolesLotsTable = ({
         },
         {
             accessor: 'actions',
+            isHidden: !displayActions,
             Header: 'Clore',
             Cell: ({ value, row }) => {
 				return(
@@ -271,6 +298,8 @@ const AlertesBenevolesLotsTable = ({
             <GPMtable
                 columns={colonnes}
                 data={alertes}
+                topButtonShow={true}
+                topButton={<h5>{boxTitle}</h5>}
             />
         : <LoaderInfiniteLoop/>}
     </>);
