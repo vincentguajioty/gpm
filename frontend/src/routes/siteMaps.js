@@ -549,13 +549,6 @@ if(HabilitationService.habilitations)
         })
     }
     tempChildrens.push({
-        name: 'Manuel et aide',
-        to: '/settingsAide',
-        icon: 'question-circle',
-        exact: false,
-        active: true
-    })
-    tempChildrens.push({
         name: 'A propos',
         to: '/settingsFAQ',
         icon: 'info',

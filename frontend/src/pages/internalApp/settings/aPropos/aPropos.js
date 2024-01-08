@@ -59,6 +59,9 @@ const APropos = () => {
                         <p className='mb-3 ms-3 me-3'>
                             Les <a href="https://github.com/vincentguajioty/gpm/issues/new/choose">tickets GitHub</a> sont également un bon moyen de communiquer !
                         </p>
+                        <p className='mb-3 ms-3 me-3'>
+                            Besoin d'aide ? Une documentation complète est disponible <a href="https://gpm.guajioty.fr">ici</a>.
+                        </p>
                     </FalconComponentCard.Body>
                 </FalconComponentCard>
             </Col>

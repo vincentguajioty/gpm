@@ -73,7 +73,6 @@ import ToDoList from 'pages/internalApp/settings/todolist/todolist';
 
 import ConfigGenerale from 'pages/internalApp/settings/configGenerale/configGenerale';
 import ActionsMassives from 'pages/internalApp/settings/actionsMassives/actionsMassives';
-import ManuelAide from 'pages/internalApp/settings/manuelAide/manuelAide';
 import APropos from 'pages/internalApp/settings/aPropos/aPropos';
 
 const FalconRoutes = () => {
@@ -156,7 +155,6 @@ const FalconRoutes = () => {
 
           <Route path="/settingsGeneraux" element={<ConfigGenerale />} />
           <Route path="/settingsActionsMassives" element={<ActionsMassives />} />
-          <Route path="/settingsAide" element={<ManuelAide />} />
           <Route path="/settingsFAQ" element={<APropos />} />
 
         </Route>
