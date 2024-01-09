@@ -38,10 +38,13 @@ const ActionsMassives = () => {
                 let action = actions.filter(action => action.id == id);
                 action = action[0];
 
+                setIsLoading(true);
+
                 const getData = await Axios.post(action.endPointBo,{
                     amToken: ActionsMassivesService.amToken
                 });
 
+                setIsLoading(false);
                 setPageNeedsRefresh(true);
             }
         } catch (error) {
@@ -94,8 +97,9 @@ const ActionsMassives = () => {
                                                 icon='exclamation-triangle'
                                                 size='sm'
                                                 onClick={()=>{lancerUneAction(action.id);}}
+                                                disabled={isLoading}
                                             >
-                                                Lancer l'action
+                                                {isLoading ? 'Chargement' : "Lancer l'action"}
                                             </IconButton>
                                         </td>
                                     </tr>
