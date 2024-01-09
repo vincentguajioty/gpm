@@ -5,8 +5,9 @@ import classNames from 'classnames';
 import NavbarTop from 'components/navbar/top/NavbarTop';
 import NavbarVertical from 'components/navbar/vertical/NavbarVertical';
 import Footer from 'components/footer/Footer';
-import HabilitationService from 'services/habilitationsService';
 import { Alert } from 'react-bootstrap';
+
+import HabilitationService from 'services/habilitationsService';
 import ConfigurationService from 'services/configurationService';
 
 const MainLayout = () => {
@@ -34,7 +35,7 @@ const MainLayout = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  if(!localStorage.getItem("token"))
+  if(!HabilitationService.token)
   {
     return <Navigate to="/login" />
   }

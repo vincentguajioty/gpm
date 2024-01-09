@@ -1,15 +1,15 @@
 const ActionsMassivesService = {
     
-    amToken: localStorage.getItem("amToken"),
-    amTokenValidUntil: localStorage.getItem("amTokenValidUntil"),
+    amToken: sessionStorage.getItem("amToken"),
+    amTokenValidUntil: sessionStorage.getItem("amTokenValidUntil"),
 
     setAmToken: function (tok) {
         this.amToken = tok;
-        localStorage.setItem("amToken", tok);
+        sessionStorage.setItem("amToken", tok);
     },
     setAmTokenValidUntil: function (timeLimit) {
         this.amTokenValidUntil = timeLimit;
-        localStorage.setItem("amTokenValidUntil", timeLimit);
+        sessionStorage.setItem("amTokenValidUntil", timeLimit);
     },
 };
 

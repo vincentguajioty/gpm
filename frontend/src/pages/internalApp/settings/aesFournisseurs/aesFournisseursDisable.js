@@ -30,8 +30,8 @@ const AesFournisseursDisable = ({
                 aesToken: AesFournisseursService.aesToken,
             });
 
-            localStorage.removeItem('aesToken');
-            localStorage.removeItem('aesTokenValidUntil');
+            sessionStorage.removeItem('aesToken');
+            sessionStorage.removeItem('aesTokenValidUntil');
             
             handleCloseDeleteModal();
             setIsLoading(false);

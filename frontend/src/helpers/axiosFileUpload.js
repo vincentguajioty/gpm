@@ -49,7 +49,7 @@ instance.interceptors.response.use(function (response) {
 }, function (error) {
     switch (error.response.status) {
         case 401:
-            localStorage.clear();
+            HabilitationService.disconnect();
             break;
         
         case 403:

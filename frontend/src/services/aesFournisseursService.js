@@ -1,15 +1,15 @@
 const AesFournisseursService = {
     
-    aesToken: localStorage.getItem("aesToken"),
-    aesTokenValidUntil: localStorage.getItem("aesTokenValidUntil"),
+    aesToken: sessionStorage.getItem("aesToken"),
+    aesTokenValidUntil: sessionStorage.getItem("aesTokenValidUntil"),
 
     setAesToken: function (tok) {
         this.aesToken = tok;
-        localStorage.setItem("aesToken", tok);
+        sessionStorage.setItem("aesToken", tok);
     },
     setAesTokenValidUntil: function (timeLimit) {
         this.aesTokenValidUntil = timeLimit;
-        localStorage.setItem("aesTokenValidUntil", timeLimit);
+        sessionStorage.setItem("aesTokenValidUntil", timeLimit);
     },
 };
 

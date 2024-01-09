@@ -7,7 +7,7 @@ import HabilitationService from 'services/habilitationsService';
 const Logout = () => {
     const clean = async () => {
 		const tokenToClean = HabilitationService.token;
-		localStorage.clear();
+		HabilitationService.disconnect();
 		const dropSession = await Axios.post('dropSession',
 		{
 			jwtToken: tokenToClean,

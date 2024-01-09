@@ -40,9 +40,9 @@ const Home = () => {
 	}
 
 	const reloadForNavBar = async () => {
-		if(localStorage.getItem("homeNeedRefresh") != 0)
+		if(sessionStorage.getItem("homeNeedRefresh") != 0)
 		{
-			localStorage.setItem("homeNeedRefresh", 0);
+			sessionStorage.setItem("homeNeedRefresh", 0);
 			location.reload();
 		}else{
 			initPage();

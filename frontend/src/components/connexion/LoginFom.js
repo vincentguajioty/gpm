@@ -22,6 +22,8 @@ const LoginForm = ({ hasLabel }) => {
   const [erreurDeConnexion, setErreurDeConnexion] = useState(false);
   const [showFMA, setShowMFA] = useState(false);
 
+  const [seSouvenir, setSeSouvenir] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
 
   // Handler
@@ -42,6 +44,7 @@ const LoginForm = ({ hasLabel }) => {
         setErreurDeConnexion(true);
         setIsLoading(false);
       }else{
+        HabilitationService.setSeSouvenir(seSouvenir);
         HabilitationService.setToken(response.data.token);
         HabilitationService.setTokenValidUntil(response.data.tokenValidUntil);
         HabilitationService.setRefreshToken(response.data.refreshToken);
@@ -124,6 +127,17 @@ const LoginForm = ({ hasLabel }) => {
           />
         </Form.Group>
       : null}
+
+      <Form.Group className="mb-3">
+        <Form.Check
+            type='switch'
+            id="seSouvenir"
+            name="seSouvenir"
+            label="Se souvenir de moi"
+            checked={seSouvenir}
+            onClick={()=>{setSeSouvenir(!seSouvenir)}}
+        />
+      </Form.Group>
 
       {window.__ENV__.APP_RECAPTCHA_ENABLED === "1" ? (
         <ReCAPTCHA

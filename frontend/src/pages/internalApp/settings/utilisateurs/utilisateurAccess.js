@@ -170,7 +170,7 @@ const UtilisateurAccess = ({personne, setPageNeedsRefresh}) => {
                 HabilitationService.setRefreshToken(response.data.refreshToken);
                 HabilitationService.setHabilitations(response.data.habilitations);
                 
-                localStorage.setItem("homeNeedRefresh", 1);
+                sessionStorage.setItem("homeNeedRefresh", 1);
                 
                 await sleep(1000);
                 navigate('/home');

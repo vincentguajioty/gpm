@@ -4,8 +4,8 @@ import IconButton from 'components/common/IconButton';
 const ActionsMassivesLock = ({setPageNeedsRefresh}) => {
     const lockAccess = async () => {
         try {
-            localStorage.removeItem('amToken');
-            localStorage.removeItem('amTokenValidUntil');
+            sessionStorage.removeItem('amToken');
+            sessionStorage.removeItem('amTokenValidUntil');
             setPageNeedsRefresh(true);
         } catch (e) {
             console.log(e);

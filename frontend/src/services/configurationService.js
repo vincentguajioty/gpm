@@ -1,9 +1,9 @@
 const ConfigurationService = {
-    config: localStorage.getItem("config") ? JSON.parse(localStorage.getItem("config")) : undefined,
+    config: sessionStorage.getItem("config") ? JSON.parse(sessionStorage.getItem("config")) : undefined,
 
     setConfig: function (config) {
         this.config = config;
-        localStorage.setItem("config", JSON.stringify(config));
+        sessionStorage.setItem("config", JSON.stringify(config));
     },
 };
 
