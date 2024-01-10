@@ -120,8 +120,4 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		PERSONNE_REFERENTE p
 ;
 
-INSERT INTO MESSAGES SET
-	titreMessage='Ajout de nouvelles habilitations',
-	corpsMessage='Suite à la mise à jour du module de profils, une nouvelle habilitation liée aux notifications est apparue. Par défault, cette habilitation est activée tous les profils.';
-
 UPDATE CONFIG set version = '7.5';

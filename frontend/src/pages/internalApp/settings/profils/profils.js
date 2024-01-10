@@ -70,7 +70,7 @@ const Profils = () => {
                             className="me-1"
                             onClick={()=>{handleShowEditModal(row.original.idProfil)}}
                         />
-                        {HabilitationService.habilitations['typesLots_suppression'] ? 
+                        {HabilitationService?.habilitations?.profils_suppression ? 
                             <IconButton
                                 icon='trash'
                                 size = 'sm'

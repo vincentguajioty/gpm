@@ -20,11 +20,6 @@ CREATE TABLE VEHICULES_RELEVES(
 
 ALTER TABLE VEHICULES DROP kilometrage;
 
-INSERT INTO MESSAGES SET
-	titreMessage='Mise à jour du module véhicule',
-	corpsMessage='Suite à la mise à jour du module véhicule, le kilométrage avant mise à jour a été inséré comme premier relevé kilométrique dans la tanle des releves. La date affectée à ce relevé est celle de la mise à jour. Merci de vérifier cette date.';
-
-
 CREATE TABLE VEHICULES_ETATS(
 	idVehiculesEtat INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	libelleVehiculesEtat VARCHAR(50)
@@ -188,9 +183,5 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 	FROM
 		PERSONNE_REFERENTE p
 ;
-
-INSERT INTO MESSAGES SET
-	titreMessage='Ajout de nouvelles habilitations',
-	corpsMessage='Suite à la mise à jour du module de profils, de nouvelles habilitations de gestion des paramètres > états sont apparues. Par défault, ces habilitations sont décochées sur tous les profils. Merci de les activer sur les profils voulus.';
 
 UPDATE CONFIG set version = '7.4';
