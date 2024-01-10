@@ -469,7 +469,7 @@ INSERT INTO COMMANDES_CONTRAINTES SET
 	libelleContrainte = "Au moins un valideur identifié",
 	idEtatInitial = 1,
 	idEtatFinal = 2,
-	minDemandeurs = 1
+	minValideurs = 1
 ;
 INSERT INTO COMMANDES_CONTRAINTES SET
 	libelleContrainte = "Au moins une personne affectée à la commande",

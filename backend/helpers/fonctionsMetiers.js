@@ -2396,7 +2396,7 @@ const verificationContraintesCmd = async (idCommande) => {
 
             if(contrainte.minValideurs && contrainte.minValideurs > 0)
             {
-                let personnes = await fonctionsMetiers.getValideurs(idCommande);
+                let personnes = await getValideurs(idCommande);
                 if(personnes.length >= contrainte.minValideurs)
                 {
                     contrainteRespectee = true;
