@@ -6,9 +6,6 @@ import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 
 import { Axios } from 'helpers/axios';
 import socketIO from 'socket.io-client';
-const socket = socketIO.connect(window.__ENV__.APP_BACKEND_URL,{withCredentials: true, extraHeaders: {
-    "token": 'PUBLIC_ACCESS'
-}});
 
 import AjouterConsommable from './ajouterConsommable';
 import AfficherConsommable from './afficherConsommation';
@@ -20,9 +17,15 @@ const GererConsommation = ({
     const [isLoading, setLoading] = useState(true);
     const [consommation, setConsommation] = useState([]);
 
+    const [socket, setSocket] = useState(undefined);
+
     const initPage = async () => {
         try {
-            await socket.emit("consommation_join_evenement", 'consommation-'+idConsommation);
+            const tempSocket = socketIO.connect(window.__ENV__.APP_BACKEND_URL,{withCredentials: true, extraHeaders: {
+                "token": 'PUBLIC_ACCESS'
+            }});
+            await tempSocket.emit("consommation_join_evenement", 'consommation-'+idConsommation);
+            setSocket(tempSocket);
 
             let getData = await Axios.post('/consommations/getOneConso',{
                 idConsommation: idConsommation,
@@ -40,79 +43,81 @@ const GererConsommation = ({
     },[])
 
     useEffect(()=>{
-        socket.removeAllListeners();
+        if(socket)
+        {
+            socket.removeAllListeners();
 
-        socket.on("consommation_addElement", (data)=>{
-            let elementExisting = consommation.elements.filter(elem => elem.idConsommationMateriel == data.idConsommationMateriel);
+            socket.on("consommation_addElement", (data)=>{
+                let elementExisting = consommation.elements.filter(elem => elem.idConsommationMateriel == data.idConsommationMateriel);
 
-            let tempArray = [];
-            if(elementExisting.length == 1)
-            {
-                for(const elem of consommation.elements)
+                let tempArray = [];
+                if(elementExisting.length == 1)
                 {
-                    if(elem.idConsommationMateriel == data.idConsommationMateriel)
+                    for(const elem of consommation.elements)
                     {
-                        tempArray.push(data);
-                    }else{
-                        tempArray.push(elem);
-                    }
-                }
-            }else{
-                tempArray = consommation.elements;
-                tempArray.push(data);
-            }
-
-            setConsommation({
-                consommation: consommation.consommation,
-                elements: tempArray,
-            })
-        })
-
-        socket.on("consommation_updateElement", (data)=>{
-            let tempArray = [];
-            for(const elem of consommation.elements)
-            {
-                if(elem.idConsommationMateriel == data.toUpdate.idConsommationMateriel)
-                {
-                    tempArray.push(data.toUpdate);
-                }else{
-                    if(data.toDelete != null)
-                    {
-                        if(elem.idConsommationMateriel != data.toDelete)
+                        if(elem.idConsommationMateriel == data.idConsommationMateriel)
                         {
+                            tempArray.push(data);
+                        }else{
                             tempArray.push(elem);
                         }
+                    }
+                }else{
+                    tempArray = consommation.elements;
+                    tempArray.push(data);
+                }
+
+                setConsommation({
+                    consommation: consommation.consommation,
+                    elements: tempArray,
+                })
+            })
+
+            socket.on("consommation_updateElement", (data)=>{
+                let tempArray = [];
+                for(const elem of consommation.elements)
+                {
+                    if(elem.idConsommationMateriel == data.toUpdate.idConsommationMateriel)
+                    {
+                        tempArray.push(data.toUpdate);
                     }else{
+                        if(data.toDelete != null)
+                        {
+                            if(elem.idConsommationMateriel != data.toDelete)
+                            {
+                                tempArray.push(elem);
+                            }
+                        }else{
+                            tempArray.push(elem);
+                        }
+                    }
+                }
+
+                setConsommation({
+                    consommation: consommation.consommation,
+                    elements: tempArray,
+                })
+            })
+
+            socket.on("consommation_deleteElement", (data)=>{
+                let tempArray = [];
+                for(const elem of consommation.elements)
+                {
+                    if(elem.idConsommationMateriel != data.idConsommationMateriel)
+                    {
                         tempArray.push(elem);
                     }
                 }
-            }
-
-            setConsommation({
-                consommation: consommation.consommation,
-                elements: tempArray,
+                setConsommation({
+                    consommation: consommation.consommation,
+                    elements: tempArray,
+                })
             })
-        })
 
-        socket.on("consommation_deleteElement", (data)=>{
-            let tempArray = [];
-            for(const elem of consommation.elements)
-            {
-                if(elem.idConsommationMateriel != data.idConsommationMateriel)
-                {
-                    tempArray.push(elem);
-                }
-            }
-            setConsommation({
-                consommation: consommation.consommation,
-                elements: tempArray,
+            socket.on("consommation_reloadPage", (data)=>{
+                location.reload();
             })
-        })
-
-        socket.on("consommation_reloadPage", (data)=>{
-            location.reload();
-        })
-
+        }
     },[socket, consommation])
     
     if(isLoading)

@@ -14,10 +14,6 @@ import InventaireScanVolee from './scanVolee';
 import InventaireParcoursManuel from './parcoursManuel';
 import { Link } from 'react-router-dom';
 
-const socket = socketIO.connect(window.__ENV__.APP_BACKEND_URL,{withCredentials: true, extraHeaders: {
-    "token": HabilitationService.token
-}});
-
 const LotInventaireEnCours = () => {
     let {idInventaire} = useParams();
     const [readyToDisplay, setReadyToDisplay] = useState(false);
@@ -28,6 +24,8 @@ const LotInventaireEnCours = () => {
     const [inventaireElements, setInventaireElements] = useState([]);
     const [arborescenceSacs, setArborescenceSacs] = useState([]);
     const [catalogueCodesBarres, setCatalogueCodesBarres] = useState([]);
+
+    const [socket, setSocket] = useState(undefined);
 
     const initPageFirstCharge = async () => {
         try {
@@ -52,7 +50,12 @@ const LotInventaireEnCours = () => {
             
             setReadyToDisplay(true);
 
-            await socket.emit("lot_inventaire_join", 'lot-'+idInventaire);
+            const tempSocket = socketIO.connect(window.__ENV__.APP_BACKEND_URL,{withCredentials: true, extraHeaders: {
+                "token": HabilitationService.token
+            }});
+            await tempSocket.emit("lot_inventaire_join", 'lot-'+idInventaire);
+            setSocket(tempSocket);
+            
         } catch (error) {
             console.log(error)
         }
@@ -62,34 +65,37 @@ const LotInventaireEnCours = () => {
     },[])
 
     useEffect(() => {
-        socket.removeAllListeners();
+        if(socket)
+        {
+            socket.removeAllListeners();
         
-        socket.on("lot_inventaire_updateYourElement", (data)=>{
-            let tempArray = [];
-            for(const elem of inventaireElements)
-            {
-                if(elem.idElement == data.idElement)
+            socket.on("lot_inventaire_updateYourElement", (data)=>{
+                let tempArray = [];
+                for(const elem of inventaireElements)
                 {
-                    tempArray.push(data);
-                }else{
-                    tempArray.push(elem)
+                    if(elem.idElement == data.idElement)
+                    {
+                        tempArray.push(data);
+                    }else{
+                        tempArray.push(elem)
+                    }
                 }
-            }
-            setInventaireElements(tempArray);
-        })
+                setInventaireElements(tempArray);
+            })
 
-        socket.on("lot_inventaire_reloadPage", (data)=>{
-            location.reload();
-        })
+            socket.on("lot_inventaire_reloadPage", (data)=>{
+                location.reload();
+            })
 
-        socket.on("lot_inventaire_validate", (data)=>{
-            setIsClosed(true);
-        })
+            socket.on("lot_inventaire_validate", (data)=>{
+                setIsClosed(true);
+            })
 
-        socket.on("connect_error", (error)=>{
-            console.log(error);
-            setDisplaySocketError(!socket.connected)
-        })
+            socket.on("connect_error", (error)=>{
+                console.log(error);
+                setDisplaySocketError(!socket.connected)
+            })
+        }
 	}, [socket, inventaireElements])
 
     const manageDemandePopullationPrecedente = async () => {

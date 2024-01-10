@@ -12,10 +12,6 @@ import socketIO from 'socket.io-client';
 import InventaireParcoursManuel from './parcoursManuel';
 import { Link } from 'react-router-dom';
 
-const socket = socketIO.connect(window.__ENV__.APP_BACKEND_URL,{withCredentials: true, extraHeaders: {
-    "token": HabilitationService.token
-}});
-
 const ReserveInventaireEnCours = () => {
     let {idReserveInventaire} = useParams();
     const [readyToDisplay, setReadyToDisplay] = useState(false);
@@ -26,6 +22,8 @@ const ReserveInventaireEnCours = () => {
     const [detailsInventaire, setDetailsInventaire] = useState([]);
     const [inventaireElements, setInventaireElements] = useState([]);
     const [catalogueCodesBarres, setCatalogueCodesBarres] = useState([]);
+
+    const [socket, setSocket] = useState(undefined);
 
     const initPageFirstCharge = async () => {
         try {
@@ -46,44 +44,53 @@ const ReserveInventaireEnCours = () => {
             
             setReadyToDisplay(true);
 
-            await socket.emit("reserve_inventaire_join", 'reserve-'+idReserveInventaire);
+            const tempSocket = socketIO.connect(window.__ENV__.APP_BACKEND_URL,{withCredentials: true, extraHeaders: {
+                "token": HabilitationService.token
+            }});
+            await tempSocket.emit("reserve_inventaire_join", 'reserve-'+idReserveInventaire);
+            setSocket(tempSocket);
+            
         } catch (error) {
             console.log(error)
         }
     }
     useEffect(()=>{
+        
         initPageFirstCharge();
     },[])
 
     useEffect(() => {
-        socket.removeAllListeners();
+        if(socket)
+        {
+            socket.removeAllListeners();
         
-        socket.on("reserve_inventaire_updateYourElement", (data)=>{
-            let tempArray = [];
-            for(const elem of inventaireElements)
-            {
-                if(elem.idReserveElement == data.idReserveElement)
+            socket.on("reserve_inventaire_updateYourElement", (data)=>{
+                let tempArray = [];
+                for(const elem of inventaireElements)
                 {
-                    tempArray.push(data);
-                }else{
-                    tempArray.push(elem)
+                    if(elem.idReserveElement == data.idReserveElement)
+                    {
+                        tempArray.push(data);
+                    }else{
+                        tempArray.push(elem)
+                    }
                 }
-            }
-            setInventaireElements(tempArray);
-        })
+                setInventaireElements(tempArray);
+            })
 
-        socket.on("reserve_inventaire_reloadPage", (data)=>{
-            location.reload();
-        })
+            socket.on("reserve_inventaire_reloadPage", (data)=>{
+                location.reload();
+            })
 
-        socket.on("reserve_inventaire_validate", (data)=>{
-            setIsClosed(true);
-        })
+            socket.on("reserve_inventaire_validate", (data)=>{
+                setIsClosed(true);
+            })
 
-        socket.on("connect_error", (error)=>{
-            console.log(error);
-            setDisplaySocketError(!socket.connected)
-        })
+            socket.on("connect_error", (error)=>{
+                console.log(error);
+                setDisplaySocketError(!socket.connected)
+            })
+        }
 	}, [socket, inventaireElements])
 
     const manageDemandePopullationPrecedente = async () => {
