@@ -133,7 +133,7 @@ const LoginForm = ({ hasLabel }) => {
             type='switch'
             id="seSouvenir"
             name="seSouvenir"
-            label="Se souvenir de moi"
+            label="Rester connecté"
             checked={seSouvenir}
             onClick={()=>{setSeSouvenir(!seSouvenir)}}
         />
