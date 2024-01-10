@@ -10,6 +10,7 @@ import InventaireParcoursManuelOneEmplacement from './parcoursManuelOneEmp';
 
 const InventaireParcoursManuel = ({
     idConteneur,
+    socket,
     idReserveInventaire,
     inventaireElements,
     catalogueCodesBarres,
@@ -97,6 +98,7 @@ const InventaireParcoursManuel = ({
             <Card.Body>
                 <InventaireParcoursManuelOneEmplacement
                     idReserveInventaire={idReserveInventaire}
+                    socket={socket}
                     idConteneur={idConteneur}
                     inventaireElements={inventaireElements}
                     catalogueCodesBarres={catalogueCodesBarres}

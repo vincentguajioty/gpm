@@ -101,7 +101,7 @@ const socketInterface = async (http) => {
                 {
                     logger.debug(data);
                     await fonctionsMetiers.updateInventaireReserveItem(data);
-                    socket.to('reserve-'+data.idReserveInventaire).emit("reserve_inventaire_updateYourElement", data);
+                    socketIO.to('reserve-'+data.idReserveInventaire).emit("reserve_inventaire_updateYourElement", data);
                 }
             });
             
@@ -120,7 +120,7 @@ const socketInterface = async (http) => {
                 if(authResult == true)
                 {
                     logger.debug(data);
-                    socket.to('reserve-'+data.idReserveInventaire).emit("reserve_inventaire_validate");
+                    socketIO.to('reserve-'+data.idReserveInventaire).emit("reserve_inventaire_validate");
                     await fonctionsMetiers.validerInventaireReserve(data.idReserveInventaire, data.commentaire);
                 }
             });

@@ -12,13 +12,9 @@ setDefaultLocale('fr');
 
 import HabilitationService from 'services/habilitationsService';
 
-import socketIO from 'socket.io-client';
-const socket = socketIO.connect(window.__ENV__.APP_BACKEND_URL,{withCredentials: true, extraHeaders: {
-    "token": HabilitationService.token
-}});
-
 const InventaireParcoursManuelOneEmplacement = ({
     idReserveInventaire,
+    socket,
     idConteneur,
     inventaireElements,
     catalogueCodesBarres,
@@ -98,10 +94,6 @@ const InventaireParcoursManuelOneEmplacement = ({
             console.log(error)
         }
     }
-
-    useEffect(()=>{
-        socket.emit("reserve_inventaire_join", 'lot-'+idReserveInventaire);
-    },[])
 
     const updateQuantite = async (idReserveElement, quantiteInventoriee, updateOldPeremption) => {
         let oneElement = inventaireElements.filter(elem => elem.idReserveElement == idReserveElement)[0];

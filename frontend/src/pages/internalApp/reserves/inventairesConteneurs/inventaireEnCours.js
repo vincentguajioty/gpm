@@ -128,6 +128,7 @@ const ReserveInventaireEnCours = () => {
             :
                 <InventaireParcoursManuel
                     idConteneur={idConteneur}
+                    socket={socket}
                     idReserveInventaire={idReserveInventaire}
                     inventaireElements={inventaireElements}
                     catalogueCodesBarres={catalogueCodesBarres}
