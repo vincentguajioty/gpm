@@ -10,6 +10,7 @@ import InventaireParcoursManuelOneEmplacement from './parcoursManuelOneEmp';
 
 const InventaireParcoursManuel = ({
     idInventaire,
+    socket,
     inventaireElements,
     arborescenceSacs,
     catalogueCodesBarres,
@@ -107,6 +108,7 @@ const InventaireParcoursManuel = ({
                                             <Accordion.Body>
                                                 <InventaireParcoursManuelOneEmplacement
                                                     idInventaire={idInventaire}
+                                                    socket={socket}
                                                     idEmplacement={emp.idEmplacement}
                                                     inventaireElements={inventaireElements.filter(elem => elem.idEmplacement == emp.idEmplacement)}
                                                     catalogueCodesBarres={catalogueCodesBarres}

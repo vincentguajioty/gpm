@@ -6,13 +6,9 @@ import moment from 'moment-timezone';
 import HabilitationService from 'services/habilitationsService';
 import filterArrayInArray from 'helpers/filterInArray';
 
-import socketIO from 'socket.io-client';
-const socket = socketIO.connect(window.__ENV__.APP_BACKEND_URL,{withCredentials: true, extraHeaders: {
-    "token": HabilitationService.token
-}});
-
 const InventaireScanVolee = ({
     idInventaire,
+    socket,
     inventaireElements,
     arborescenceSacs,
     catalogueCodesBarres,
@@ -111,10 +107,6 @@ const InventaireScanVolee = ({
             console.log(error)
         }
     }
-
-    useEffect(()=>{
-        socket.emit("lot_inventaire_join", 'lot-'+idInventaire);
-    },[])
 
     return (<>
         <Card className="mb-3">

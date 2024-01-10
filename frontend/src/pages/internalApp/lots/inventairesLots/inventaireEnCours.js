@@ -143,6 +143,7 @@ const LotInventaireEnCours = () => {
                         />
                         <InventaireScanVolee
                             idInventaire={idInventaire}
+                            socket={socket}
                             inventaireElements={inventaireElements}
                             arborescenceSacs={arborescenceSacs}
                             catalogueCodesBarres={catalogueCodesBarres}
@@ -158,6 +159,7 @@ const LotInventaireEnCours = () => {
                         />
                         <InventaireParcoursManuel
                             idInventaire={idInventaire}
+                            socket={socket}
                             inventaireElements={inventaireElements}
                             arborescenceSacs={arborescenceSacs}
                             catalogueCodesBarres={catalogueCodesBarres}

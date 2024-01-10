@@ -61,7 +61,7 @@ const socketInterface = async (http) => {
                 {
                     logger.debug(data);
                     await fonctionsMetiers.updateInventaireLotItem(data);
-                    socket.to('lot-'+data.idInventaire).emit("lot_inventaire_updateYourElement", data);
+                    socketIO.to('lot-'+data.idInventaire).emit("lot_inventaire_updateYourElement", data);
                 }
             });
             
@@ -80,7 +80,7 @@ const socketInterface = async (http) => {
                 if(authResult == true)
                 {
                     logger.debug(data);
-                    socket.to('lot-'+data.idInventaire).emit("lot_inventaire_validate");
+                    socketIO.to('lot-'+data.idInventaire).emit("lot_inventaire_validate");
                     await fonctionsMetiers.validerInventaireLot(data.idInventaire, data.commentaire);
                 }
             });
