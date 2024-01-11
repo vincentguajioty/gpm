@@ -22,10 +22,12 @@ const Moncompte = () => {
 			<Col md={8}>
 				<UserInfo idPersonne={HabilitationService.habilitations.idPersonne} />
 			</Col>
-			<Col md={4}>
-				<Password checkOldPassword={true} layout="box" />
-				<MFA />
-			</Col>
+			{!HabilitationService.delegationActive ?
+				<Col md={4}>
+					<Password checkOldPassword={true} layout="box" />
+					<MFA />
+				</Col>
+			: null}
 			<Col md={12}>
 				<ProfilRecapDroitsUtilisateurBox idPersonne={HabilitationService.habilitations.idPersonne} />
 			</Col>
