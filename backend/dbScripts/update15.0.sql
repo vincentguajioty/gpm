@@ -167,6 +167,13 @@ UPDATE DOCUMENTS_CANAL_VHF    SET urlFichierDocCanalVHF = REPLACE(urlFichierDocC
 UPDATE DOCUMENTS_VHF          SET urlFichierDocVHF      = REPLACE(urlFichierDocVHF,      'documents/vhfEquipements/', '');
 UPDATE DOCUMENTS_PLAN_VHF     SET urlFichierDocPlanVHF  = REPLACE(urlFichierDocPlanVHF,  'documents/vhfPlans/', '');
 
+ALTER TABLE DOCUMENTS_CENTRE_COUTS CHANGE urlFichierDocCouts urlFichierDocCouts TEXT;
+ALTER TABLE DOCUMENTS_COMMANDES CHANGE urlFichierDocCommande urlFichierDocCommande TEXT;
+ALTER TABLE DOCUMENTS_VEHICULES CHANGE urlFichierDocVehicule urlFichierDocVehicule TEXT;
+ALTER TABLE DOCUMENTS_CANAL_VHF CHANGE urlFichierDocCanalVHF urlFichierDocCanalVHF TEXT;
+ALTER TABLE DOCUMENTS_VHF CHANGE urlFichierDocVHF urlFichierDocVHF TEXT;
+ALTER TABLE DOCUMENTS_PLAN_VHF CHANGE urlFichierDocPlanVHF urlFichierDocPlanVHF TEXT;
+
 ALTER TABLE PROFILS CHANGE descriptifProfil descriptifProfil TEXT;
 
 ALTER TABLE PROFILS DROP sac2_lecture;
