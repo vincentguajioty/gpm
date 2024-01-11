@@ -46,7 +46,7 @@ const calendrierCtrl = require('./controllers/calendrier');
 router.post('/login',                        loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.login);
 router.post('/mfaNeeded',                    loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.mfaNeeded);
 router.post('/pwdReinitRequest',             loggerMiddleware.httpLogger(), fonctionsMetiers.checkPwdReinitEnable(),                                                           connexionCtrl.pwdReinitRequest);
-router.post('/pwdReinitValidate',            loggerMiddleware.httpLogger(), fonctionsMetiers.checkPwdReinitEnable(),                                                           connexionCtrl.pwdReinitValidate);
+router.post('/pwdReinitValidate',            loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.pwdReinitValidate);
 router.post('/refreshToken',                 loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.refreshToken);
 router.post('/dropSession',                  loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.dropSession);
 router.get('/getConfig',                     loggerMiddleware.httpLogger(),                                                                                                    connexionCtrl.getConfig);

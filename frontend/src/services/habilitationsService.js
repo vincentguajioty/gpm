@@ -103,15 +103,15 @@ const HabilitationService = {
         localStorage.clear();
         sessionStorage.clear();
 
-        this.habilitations = undefined;
-        this.token = undefined;
-        this.tokenValidUntil = undefined;
-        this.refreshToken = undefined;
-        this.habilitationsInitial = undefined;
-        this.tokenInitial = undefined;
-        this.tokenValidUntilInitial = undefined;
-        this.refreshTokenInitial = undefined;
-        this.delegationActive = undefined;
+        delete this.habilitations;
+        delete this.token;
+        delete this.tokenValidUntil;
+        delete this.refreshToken;
+        delete this.habilitationsInitial;
+        delete this.tokenInitial;
+        delete this.tokenValidUntilInitial;
+        delete this.refreshTokenInitial;
+        delete this.delegationActive;
     }
 };
 

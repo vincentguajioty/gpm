@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import QRCode from "react-qr-code"; 
 import FalconComponentCard from 'components/common/FalconComponentCard';
 import { Form, Button, InputGroup } from 'react-bootstrap'; 
@@ -16,6 +17,7 @@ const MFA = () => {
     const [loading, setLoading] = useState(true);
     const [utilisateur, setUtilisateur] = useState();
     const [enableUrl, setEnableUrl] = useState();
+    const navigate = useNavigate();
 
     //init
     const getUtilisateur = async () => {
@@ -47,9 +49,7 @@ const MFA = () => {
             const response = await Axios.post('settingsUtilisateurs/disableMfa',{
 				idPersonne: HabilitationService.habilitations.idPersonne,
 			});
-            setLoading(true);
-            setUtilisateur();
-            getUtilisateur();
+            navigate('/logout');
         } catch (error) {
             console.log(error);
         }
@@ -65,7 +65,7 @@ const MFA = () => {
 				idPersonne: HabilitationService.habilitations.idPersonne,
                 confirmation: data.confirmation,
 			});
-            getUtilisateur();
+            navigate('/logout');
         } catch (error) {
             console.log(error)
         }
