@@ -102,7 +102,7 @@ const SuiviDesinfections = () => {
                                                     return(
                                                         <td>
                                                             <SoftBadge bg={derniereDesinfColor} className='me-1'>Dernièrement: {derniereDesinfLabel}</SoftBadge><br/>
-                                                            {derniereDesinfLabel != 'Aucune' ? <SoftBadge bg={derniereDesinfColor} className='me-1'>Prochaine: {derniereDesinfLabel}</SoftBadge> : null}
+                                                            {derniereDesinfLabel != 'Aucune' ? <SoftBadge bg={derniereDesinfColor} className='me-1'>Prochaine: {prochaineDesinfLabel}</SoftBadge> : null}
                                                         </td>
                                                     )
                                                 }
