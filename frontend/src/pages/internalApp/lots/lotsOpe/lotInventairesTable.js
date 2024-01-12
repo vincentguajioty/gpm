@@ -6,6 +6,7 @@ import IconButton from 'components/common/IconButton';
 import moment from 'moment-timezone';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import Select from 'react-select';
+import { lotsInventaireDelete } from 'helpers/deleteModalWarningContent';
 
 import { Axios } from 'helpers/axios';
 import HabilitationService from 'services/habilitationsService';
@@ -238,9 +239,7 @@ const LotInventairesTable = ({
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un inventaire (id: {deleteModalIdInventaire}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{lotsInventaireDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

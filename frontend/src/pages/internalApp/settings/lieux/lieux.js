@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import PageHeader from 'components/common/PageHeader';
 import SettingsMetierCRUD from 'components/settings/settingsMetierCRUD';
+import { lieuxDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -26,6 +27,7 @@ const LieuxSettings = () => {
             profilAdd: "lieux_ajout",
             profilUpdate: "lieux_modification",
             profilDelete: "lieux_suppression",
+            deleteWarning: lieuxDelete,
         },
     ];
 

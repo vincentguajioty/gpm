@@ -3,6 +3,7 @@ import { ButtonGroup, ToggleButton, Row, Col, Form, Button, Modal } from 'react-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import Select from 'react-select';
+import { emplacementsDelete } from 'helpers/deleteModalWarningContent';
 
 import { Axios } from 'helpers/axios';
 import HabilitationService from 'services/habilitationsService';
@@ -151,9 +152,7 @@ const SacsContent = ({
             <Modal.Header closeButton >
                 <Modal.Title>Suppression</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un emplacement (id: {idEmplacement}) et détacher tous ses matériels. Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{emplacementsDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

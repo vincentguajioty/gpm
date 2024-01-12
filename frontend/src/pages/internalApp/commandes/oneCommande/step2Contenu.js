@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SoftBadge from 'components/common/SoftBadge';
 import Select from 'react-select'
 import findOptionForSelect from 'helpers/selectHelpers';
+import { itemCommandesDelete } from 'helpers/deleteModalWarningContent';
 
 import { Axios } from 'helpers/axios';
 import HabilitationService from 'services/habilitationsService';
@@ -388,9 +389,7 @@ const OneCommandeStep2Contenu = ({
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un élément de la commande (id: {deleteModalIdCommandeMateriel}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{itemCommandesDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

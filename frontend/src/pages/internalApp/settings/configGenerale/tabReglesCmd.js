@@ -5,6 +5,7 @@ import GPMtable from 'components/gpmTable/gpmTable';
 import SoftBadge from 'components/common/SoftBadge';
 import IconButton from 'components/common/IconButton';
 import Select from 'react-select';
+import { commandeRegleMetierDelete } from 'helpers/deleteModalWarningContent';
 
 import { Axios } from 'helpers/axios';
 
@@ -150,9 +151,7 @@ const ConfigGeneraleTabReglesCmd = ({
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un lot (id: {deleteModalIdContrainte}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{commandeRegleMetierDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

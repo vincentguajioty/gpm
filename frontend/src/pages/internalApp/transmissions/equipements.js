@@ -9,6 +9,7 @@ import PageHeader from 'components/common/PageHeader';
 import SoftBadge from 'components/common/SoftBadge';
 import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
+import { vhfEquipementsDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -188,9 +189,7 @@ const Equipements = () => {
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un équipement radio ainsi que tous ses accessoires (id: {deleteModalIdVhfEquipement}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{vhfEquipementsDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

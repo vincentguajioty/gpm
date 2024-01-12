@@ -5,6 +5,7 @@ import FalconComponentCard from 'components/common/FalconComponentCard';
 import Select from 'react-select';
 import GPMtable from 'components/gpmTable/gpmTable';
 import IconButton from 'components/common/IconButton';
+import { lotsConsommationsDelete } from 'helpers/deleteModalWarningContent';
 
 import { Axios } from 'helpers/axios';
 
@@ -183,9 +184,7 @@ const AfficherConsommable = ({
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un lot (id: {deleteModalIdConsommationMateriel}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{lotsConsommationsDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

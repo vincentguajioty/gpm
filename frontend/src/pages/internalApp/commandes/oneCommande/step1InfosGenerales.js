@@ -6,6 +6,7 @@ import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import IconButton from 'components/common/IconButton';
 import Select from 'react-select'
 import findOptionForSelect from 'helpers/selectHelpers';
+import { commandesDelete } from 'helpers/deleteModalWarningContent';
 
 import { Axios } from 'helpers/axios';
 import HabilitationService from 'services/habilitationsService';
@@ -348,7 +349,7 @@ const OneCommandeStep1InfosGenerales = ({
                     <FalconCloseButton onClick={handleCloseDeleteModal}/>
                 </Modal.Header>
                 <Modal.Body>
-                    Attention, vous êtes sur le point d'abandonner ou supprimer cette commande. Cette action est irreversible (pas d'autre fenètre de confirmation).
+                    {commandesDelete}
                     <Row className='mt-2'>
                         <Col md={6}>
                             <center>

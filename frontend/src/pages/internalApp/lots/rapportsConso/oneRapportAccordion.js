@@ -4,6 +4,7 @@ import FalconCloseButton from 'components/common/FalconCloseButton';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import moment from 'moment-timezone';
 import SoftBadge from 'components/common/SoftBadge';
+import { lotsConsommationsDelete } from 'helpers/deleteModalWarningContent';
 
 import { Axios } from 'helpers/axios';
 
@@ -242,9 +243,7 @@ const RapportsConsoOneAccordion = ({
                         <Modal.Title>Suppression</Modal.Title>
                         <FalconCloseButton onClick={handleCloseDeleteModal}/>
                     </Modal.Header>
-                    <Modal.Body>
-                        Attention, vous allez supprimer un évènement. Etes-vous certain de vouloir continuer ?
-                    </Modal.Body>
+                    <Modal.Body>{lotsConsommationsDelete}</Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleCloseDeleteModal}>
                             Annuler

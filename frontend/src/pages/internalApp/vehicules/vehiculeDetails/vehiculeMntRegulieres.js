@@ -4,6 +4,7 @@ import moment from 'moment-timezone';
 import SoftBadge from 'components/common/SoftBadge';
 import GPMtable from 'components/gpmTable/gpmTable';
 import IconButton from 'components/common/IconButton';
+import { vehiculesHealthDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -127,9 +128,7 @@ const VehiculeMaintenancesRegulieres = ({idVehicule, maintenancesRegulieres, mai
             <Modal.Header closeButton >
                 <Modal.Title>Suppression</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer une maintenance régulière et toutes ses taches (id: {deleteModalIdVehiculeHealth}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{vehiculesHealthDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

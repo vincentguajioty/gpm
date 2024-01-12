@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import PageHeader from 'components/common/PageHeader';
 import SettingsMetierCRUD from 'components/settings/settingsMetierCRUD';
+import { vhfEquipementsTypesDelete, vhfAccessoiresTypesDelete, vhfEtatsEquipementsDelete, vhfTechnologiesDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -23,6 +24,7 @@ const TransmissionsSettings = () => {
             profilAdd: "appli_conf",
             profilUpdate: "appli_conf",
             profilDelete: "appli_conf",
+            deleteWarning: vhfEquipementsTypesDelete,
         },
         {
             cardTitle: "Types d'accessoires Radio",
@@ -40,6 +42,7 @@ const TransmissionsSettings = () => {
             profilAdd: "appli_conf",
             profilUpdate: "appli_conf",
             profilDelete: "appli_conf",
+            deleteWarning: vhfAccessoiresTypesDelete,
         },
         {
             cardTitle: "Etats des équipements Radio",
@@ -57,6 +60,7 @@ const TransmissionsSettings = () => {
             profilAdd: "appli_conf",
             profilUpdate: "appli_conf",
             profilDelete: "appli_conf",
+            deleteWarning: vhfEtatsEquipementsDelete,
         },
         {
             cardTitle: "Technologies Radio",
@@ -74,6 +78,7 @@ const TransmissionsSettings = () => {
             profilAdd: "appli_conf",
             profilUpdate: "appli_conf",
             profilDelete: "appli_conf",
+            deleteWarning: vhfTechnologiesDelete,
         },
     ];
 

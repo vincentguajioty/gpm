@@ -8,6 +8,7 @@ import moment from 'moment-timezone';
 import IconButton from 'components/common/IconButton';
 import Select from 'react-select';
 import SoftBadge from 'components/common/SoftBadge';
+import { centreCoutsDelete, gerantCentreCoutsDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 import { Axios } from 'helpers/axios';
@@ -155,9 +156,7 @@ const ProprietesDuCentre = ({
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer le centre de couts. Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{centreCoutsDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler
@@ -338,9 +337,7 @@ const GestionnairesTable = ({
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un gérant (id: {deleteModalIdGerant}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{gerantCentreCoutsDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

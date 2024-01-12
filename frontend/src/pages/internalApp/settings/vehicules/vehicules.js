@@ -2,6 +2,14 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import PageHeader from 'components/common/PageHeader';
 import SettingsMetierCRUD from 'components/settings/settingsMetierCRUD';
+import { 
+    etatsVehiculesDelete,
+    vehiculesTypesDelete,
+    vehiculesTypesDesinfectionsDelete,
+    vehiculestypesHealthDelete,
+    vehiculesTypesMaintenanceDelete,
+    vehiculesCarburantsDelete,
+} from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -23,6 +31,7 @@ const VehiculesSettings = () => {
             profilAdd: "etats_ajout",
             profilUpdate: "etats_modification",
             profilDelete: "etats_suppression",
+            deleteWarning: etatsVehiculesDelete,
         },
         {
             cardTitle: "Types de véhicules",
@@ -40,6 +49,7 @@ const VehiculesSettings = () => {
             profilAdd: "vehicules_types_ajout",
             profilUpdate: "vehicules_types_modification",
             profilDelete: "vehicules_types_suppression",
+            deleteWarning: vehiculesTypesDelete,
         },
         {
             cardTitle: "Types de désinfection",
@@ -58,6 +68,7 @@ const VehiculesSettings = () => {
             profilAdd: "typesDesinfections_ajout",
             profilUpdate: "typesDesinfections_modification",
             profilDelete: "typesDesinfections_suppression",
+            deleteWarning: vehiculesTypesDesinfectionsDelete,
         },
         {
             cardTitle: "Types de maintenances régulières",
@@ -76,6 +87,7 @@ const VehiculesSettings = () => {
             profilAdd: "vehiculeHealthType_ajout",
             profilUpdate: "vehiculeHealthType_modification",
             profilDelete: "vehiculeHealthType_suppression",
+            deleteWarning: vehiculestypesHealthDelete,
         },
         {
             cardTitle: "Types de maintenance ponctuelle",
@@ -93,6 +105,7 @@ const VehiculesSettings = () => {
             profilAdd: "vehiculeHealthType_ajout",
             profilUpdate: "vehiculeHealthType_modification",
             profilDelete: "vehiculeHealthType_suppression",
+            deleteWarning: vehiculesTypesMaintenanceDelete,
         },
         {
             cardTitle: "Carburants",
@@ -110,6 +123,7 @@ const VehiculesSettings = () => {
             profilAdd: "carburants_ajout",
             profilUpdate: "carburants_modification",
             profilDelete: "carburants_suppression",
+            deleteWarning: vehiculesCarburantsDelete,
         },
     ];
 

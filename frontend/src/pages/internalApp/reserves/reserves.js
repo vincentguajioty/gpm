@@ -10,6 +10,7 @@ import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
 import SoftBadge from 'components/common/SoftBadge';
 import moment from 'moment-timezone';
+import { reserveConteneurDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -216,9 +217,7 @@ const Reserves = () => {
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un conteneur de réserve (id: {deleteModalIdConteneur}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{reserveConteneurDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import IconButton from 'components/common/IconButton';
+import { reserveMaterielDelete } from 'helpers/deleteModalWarningContent';
 
 import { Axios } from 'helpers/axios';
 
@@ -49,9 +50,7 @@ const ReservesMaterielsDeleteModal = ({
             <Modal.Header closeButton >
                 <Modal.Title>Suppression</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un élément matériel de la réserve (id: {idReserveElement}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{reserveMaterielDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

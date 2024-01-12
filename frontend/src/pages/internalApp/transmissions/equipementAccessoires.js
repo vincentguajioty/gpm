@@ -5,6 +5,7 @@ import FalconCloseButton from 'components/common/FalconCloseButton';
 import GPMtable from 'components/gpmTable/gpmTable';
 import IconButton from 'components/common/IconButton';
 import Select from 'react-select';
+import { vhfEquipementsAccessoiresDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 import { Axios } from 'helpers/axios';
@@ -173,9 +174,7 @@ const EquipementVhfAccessoires = ({equipement, setPageNeedsRefresh}) => {
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un accessoire VHF (id: {deleteModalIdVhfAccessoire}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{vhfEquipementsAccessoiresDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

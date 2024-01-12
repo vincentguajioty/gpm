@@ -136,9 +136,7 @@ const SettingsMetierCRUD = ({parametre}) => {
                         <Modal.Title>Suppression</Modal.Title>
                         <FalconCloseButton onClick={handleCloseDeleteModal}/>
                     </Modal.Header>
-                    <Modal.Body>
-                        Attention, vous allez supprimer une entrée (id: {deleteModalid}). Etes-vous certain de vouloir continuer ?
-                    </Modal.Body>
+                    <Modal.Body>{parametre.deleteWarning}</Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleCloseDeleteModal}>
                             Annuler

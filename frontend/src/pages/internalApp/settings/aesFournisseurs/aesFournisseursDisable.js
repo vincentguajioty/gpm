@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Modal, } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 import IconButton from 'components/common/IconButton';
+import { appliConfAESDrop } from 'helpers/deleteModalWarningContent';
 
 import AesFournisseursService from 'services/aesFournisseursService';
 
@@ -58,9 +59,7 @@ const AesFournisseursDisable = ({
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez désactiver la fonctionnalité de données chiffrées. Toutes les données chiffrées seront définitivement supprimées et perdues. Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{appliConfAESDrop}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

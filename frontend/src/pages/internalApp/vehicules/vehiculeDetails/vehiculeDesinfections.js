@@ -4,6 +4,7 @@ import moment from 'moment-timezone';
 import SoftBadge from 'components/common/SoftBadge';
 import GPMtable from 'components/gpmTable/gpmTable';
 import IconButton from 'components/common/IconButton';
+import { vehiculesDesinfectionsDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -104,9 +105,7 @@ const VehiculeDesinfections = ({idVehicule, desinfections, desinfectionsAlertes,
             <Modal.Header closeButton >
                 <Modal.Title>Suppression</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer une désinfection (id: {deleteModalIdVehiculesDesinfection}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{vehiculesDesinfectionsDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

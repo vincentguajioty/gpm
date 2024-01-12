@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import IconButton from 'components/common/IconButton';
+import { sacsDelete } from 'helpers/deleteModalWarningContent';
 
 import { Axios } from 'helpers/axios';
 
@@ -49,9 +50,7 @@ const SacsDeleteModal = ({
             <Modal.Header closeButton >
                 <Modal.Title>Suppression</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un sac (id: {idSac}) et détacher tous ses emplacements et matériels. Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{sacsDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

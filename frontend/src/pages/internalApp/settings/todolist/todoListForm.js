@@ -3,6 +3,7 @@ import { Offcanvas, Button, Form, Modal } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 import IconButton from 'components/common/IconButton';
 import Select from 'react-select';
+import { tdlDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 import { Axios } from 'helpers/axios';
@@ -403,9 +404,7 @@ const ToDoListForm = ({
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer une tache (id: {idTache}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{tdlDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

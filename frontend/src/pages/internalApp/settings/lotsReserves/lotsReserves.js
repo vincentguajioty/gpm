@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import PageHeader from 'components/common/PageHeader';
 import SettingsMetierCRUD from 'components/settings/settingsMetierCRUD';
+import { categoriesDelete, etatsLotsDelete, etatsMaterielsDelete } from 'helpers/deleteModalWarningContent';
 
 import Catalogue from './catalogue';
 import CodesBarre from './codesBarre';
@@ -26,6 +27,7 @@ const LotsReservesSettings = () => {
             profilAdd: "categories_ajout",
             profilUpdate: "categories_modification",
             profilDelete: "categories_suppression",
+            deleteWarning: categoriesDelete,
         },
         {
             cardTitle: "Etats des lots",
@@ -43,6 +45,7 @@ const LotsReservesSettings = () => {
             profilAdd: "etats_ajout",
             profilUpdate: "etats_modification",
             profilDelete: "etats_suppression",
+            deleteWarning: etatsLotsDelete,
         },
         {
             cardTitle: "Etats des matériels",
@@ -60,6 +63,7 @@ const LotsReservesSettings = () => {
             profilAdd: "etats_ajout",
             profilUpdate: "etats_modification",
             profilDelete: "etats_suppression",
+            deleteWarning: etatsMaterielsDelete,
         },
     ];
 

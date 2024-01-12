@@ -11,6 +11,7 @@ import GPMtable from 'components/gpmTable/gpmTable';
 import { Alert } from 'react-bootstrap';
 import nl2br from 'react-nl2br';
 import Select from 'react-select';
+import { messagesDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -236,9 +237,7 @@ const MessagesGeneraux = () => {
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un message général (id: {deleteModalIdMessage}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{messagesDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

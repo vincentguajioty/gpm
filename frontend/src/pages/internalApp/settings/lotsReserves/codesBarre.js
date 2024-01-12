@@ -10,6 +10,7 @@ import GPMtable from 'components/gpmTable/gpmTable';
 import moment from 'moment-timezone';
 import SoftBadge from 'components/common/SoftBadge';
 import CodesBarreModal from 'components/widgets/CodeBarreModal';
+import { codesBarreDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 import { Axios } from 'helpers/axios';
@@ -262,9 +263,7 @@ const CodesBarre = () => {
                         <Modal.Title>Suppression</Modal.Title>
                         <FalconCloseButton onClick={handleCloseDeleteModal}/>
                     </Modal.Header>
-                    <Modal.Body>
-                        Attention, vous allez supprimer une entrée (id: {deleteModalIdCode}). Etes-vous certain de vouloir continuer ?
-                    </Modal.Body>
+                    <Modal.Body>{codesBarreDelete}</Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleCloseDeleteModal}>
                             Annuler

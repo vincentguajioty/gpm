@@ -10,6 +10,7 @@ import PageHeader from 'components/common/PageHeader';
 import SoftBadge from 'components/common/SoftBadge';
 import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
+import { profilsDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -602,9 +603,7 @@ const Profils = () => {
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un profil (id: {deleteModalIdProfil}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{profilsDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Form, Accordion, Button, Modal, Alert, } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
+import { lotsInventaireDelete } from 'helpers/deleteModalWarningContent';
 
 import { Axios } from 'helpers/axios';
 import HabilitationService from 'services/habilitationsService';
@@ -66,9 +67,7 @@ const InventaireParcoursManuel = ({
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer l'inventaire en cours. Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{lotsInventaireDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

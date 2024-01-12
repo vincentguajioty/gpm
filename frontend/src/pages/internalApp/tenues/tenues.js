@@ -9,6 +9,7 @@ import SoftBadge from 'components/common/SoftBadge';
 import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
 import Select from 'react-select';
+import { tenuesCatalogueDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -274,9 +275,7 @@ const Tenues = () => {
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer une tenue du catalogue (id: {deleteModalIdCatalogueTenue}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{tenuesCatalogueDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

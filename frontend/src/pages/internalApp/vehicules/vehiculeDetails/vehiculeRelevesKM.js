@@ -5,6 +5,7 @@ import GPMtable from 'components/gpmTable/gpmTable';
 import moment from 'moment-timezone';
 import IconButton from 'components/common/IconButton';
 import Select from 'react-select';
+import { vehiculesReleveDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -222,9 +223,7 @@ const VehiculeRelevesKM = ({idVehicule, relevesKM, setPageNeedsRefresh}) => {
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un relevé kilométrique (id: {deleteModalIdReleve}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{vehiculesReleveDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

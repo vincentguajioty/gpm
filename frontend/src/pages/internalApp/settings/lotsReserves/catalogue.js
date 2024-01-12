@@ -6,6 +6,7 @@ import ActionButton from 'components/common/ActionButton';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import IconButton from 'components/common/IconButton';
 import Select from 'react-select';
+import { catalogueDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 import { Axios } from 'helpers/axios';
@@ -212,9 +213,7 @@ const Catalogue = () => {
                         <Modal.Title>Suppression</Modal.Title>
                         <FalconCloseButton onClick={handleCloseDeleteModal}/>
                     </Modal.Header>
-                    <Modal.Body>
-                        Attention, vous allez supprimer une entrée (id: {deleteModalIdMaterielCatalogue}). Etes-vous certain de vouloir continuer ?
-                    </Modal.Body>
+                    <Modal.Body>{catalogueDelete}</Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleCloseDeleteModal}>
                             Annuler

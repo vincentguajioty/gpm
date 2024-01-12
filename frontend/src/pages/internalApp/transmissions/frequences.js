@@ -8,6 +8,7 @@ import PageHeader from 'components/common/PageHeader';
 import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
 import Select from 'react-select';
+import { vhfCanauxDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -385,9 +386,7 @@ const Frequences = () => {
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un canal VHF (id: {deleteModalIdVhfCanal}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{vhfCanauxDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

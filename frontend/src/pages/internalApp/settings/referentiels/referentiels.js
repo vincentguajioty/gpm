@@ -9,6 +9,7 @@ import PageHeader from 'components/common/PageHeader';
 import SoftBadge from 'components/common/SoftBadge';
 import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
+import { referentielsDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -178,9 +179,7 @@ const ReferentielsSettings = () => {
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un référentiel (id: {deleteModalIdTypeLot}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{referentielsDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

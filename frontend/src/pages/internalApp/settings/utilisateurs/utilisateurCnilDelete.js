@@ -5,6 +5,7 @@ import FalconCloseButton from 'components/common/FalconCloseButton';
 import { Button, Alert, Modal } from 'react-bootstrap';
 import IconButton from 'components/common/IconButton';
 import moment from 'moment-timezone';
+import { annuaireCnilAnonyme, annuaireDelete } from 'helpers/deleteModalWarningContent';
 
 import {Axios} from 'helpers/axios';
 import HabilitationService from 'services/habilitationsService';
@@ -76,9 +77,7 @@ const UtilisateurCnilDelete = ({personne, setPageNeedsRefresh}) => {
                     <Modal.Title>Anonymisation</Modal.Title>
                     <FalconCloseButton onClick={handleCloseCnilModal}/>
                 </Modal.Header>
-                <Modal.Body>
-                    Attention, vous allez anonymiser cette personne (id: {personne.idPersonne}). Etes-vous certain de vouloir continuer ?
-                </Modal.Body>
+                <Modal.Body>{annuaireCnilAnonyme}</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseCnilModal}>
                         Annuler
@@ -92,9 +91,7 @@ const UtilisateurCnilDelete = ({personne, setPageNeedsRefresh}) => {
                     <Modal.Title>Suppression</Modal.Title>
                     <FalconCloseButton onClick={handleCloseDeleteModal}/>
                 </Modal.Header>
-                <Modal.Body>
-                    Attention, vous allez supprimer cette personne (id: {personne.idPersonne}). Etes-vous certain de vouloir continuer ?
-                </Modal.Body>
+                <Modal.Body>{annuaireDelete}</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseDeleteModal}>
                         Annuler

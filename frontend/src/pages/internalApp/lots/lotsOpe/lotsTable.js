@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SoftBadge from 'components/common/SoftBadge';
 import Select from 'react-select';
 import moment from 'moment-timezone';
+import { lotsDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -404,9 +405,7 @@ const LotsTable = ({
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un lot (id: {deleteModalIdLot}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{lotsDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

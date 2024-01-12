@@ -9,6 +9,7 @@ import SoftBadge from 'components/common/SoftBadge';
 import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { vehiculesDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -217,9 +218,7 @@ const VehiculesTable = ({
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer un véhicule et tout ce qui lui est lié (id: {deleteModalIdVehicule}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{vehiculesDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler

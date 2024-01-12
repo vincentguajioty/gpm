@@ -10,6 +10,7 @@ import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
 import moment from 'moment-timezone';
 import Select from 'react-select';
+import { cautionsDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -308,9 +309,7 @@ const Cautions = () => {
                 <Modal.Title>Suppression</Modal.Title>
                 <FalconCloseButton onClick={handleCloseDeleteModal}/>
             </Modal.Header>
-            <Modal.Body>
-                Attention, vous allez supprimer cette affectation (id: {deleteModalIdCaution}). Etes-vous certain de vouloir continuer ?
-            </Modal.Body>
+            <Modal.Body>{cautionsDelete}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseDeleteModal}>
                     Annuler
