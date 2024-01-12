@@ -204,6 +204,8 @@ exports.getTDLonePerson = async (req, res, next)=>{
                 LEFT OUTER JOIN TODOLIST_PRIORITES prio ON tdl.idTDLpriorite = prio.idTDLpriorite
             WHERE
                 tp.idExecutant = :idPersonne
+                AND
+                dateCloture IS NULL
         `,{
             idPersonne: req.body.idPersonne,
         });

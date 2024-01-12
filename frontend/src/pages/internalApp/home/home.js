@@ -158,6 +158,8 @@ const Home = () => {
 					{modulesToDisplay.maToDo ?
 						<ToDoListTable
 							titreBox="Ma ToDoList"
+							displayFullDescription={false}
+							displayAllActions={false}
 							filtre='individual'
 							idPersonne={HabilitationService.habilitations.idPersonne}
 							componentsHaveToReload={toToListNeedsReload}

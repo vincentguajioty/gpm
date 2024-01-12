@@ -16,6 +16,8 @@ const ToDoListTable = ({
     filtre = 'all', //all unaffected finished individual
     idPersonne,
     titreBox = 'Taches',
+    displayFullDescription = true,
+    displayAllActions = true,
     componentsHaveToReload,
     setComponentsHaveToReload,
 }) => {
@@ -27,7 +29,6 @@ const ToDoListTable = ({
     const initPage = async () => {
         try {
             let getData;
-            let tempTable  = [];
             switch (filtre) {
                 case 'all':
                     getData = await Axios.get('todolist/getAllTDL');
@@ -43,6 +44,7 @@ const ToDoListTable = ({
                             Cell: ({ value, row }) => {
                                 return(nl2br(value));
                             },
+                            isHidden: !displayFullDescription,
                         },
                         {
                             accessor: 'dateCreation',
@@ -198,6 +200,7 @@ const ToDoListTable = ({
                         idPersonne: idPersonne,
                     });
                     setTaches(getData.data);
+                    console.log(getData.data)
                     setColonnes([
                         {
                             accessor: 'titre',
@@ -209,6 +212,7 @@ const ToDoListTable = ({
                             Cell: ({ value, row }) => {
                                 return(nl2br(value));
                             },
+                            isHidden: !displayFullDescription,
                         },
                         {
                             accessor: 'dateExecution',
@@ -234,9 +238,9 @@ const ToDoListTable = ({
                                         isOwnTDL={row.original.idExecutant.filter(personne => personne.idPersonne == HabilitationService.habilitations.idPersonne).length > 0 ? true : false}
                                         isCompleted={row.original.dateCloture != null ? true : false}
                                         showResolvedButton={true}
-                                        showEditButton={true}
-                                        showAffectationButton={true}
-                                        showDeleteButton={true}
+                                        showEditButton={displayAllActions}
+                                        showAffectationButton={displayAllActions}
+                                        showDeleteButton={displayAllActions}
                                         setComponentsHaveToReload={setComponentsHaveToReload}
                                     />
                                 );
