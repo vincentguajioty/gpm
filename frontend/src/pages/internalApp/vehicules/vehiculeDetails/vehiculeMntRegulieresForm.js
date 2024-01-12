@@ -180,7 +180,7 @@ const VehiculeMaintenancesRegulieresForm = ({
 
         <Modal show={showEditModal} onHide={handleCloseEditModal} fullscreen={true} backdrop="static" keyboard={false}>
             <Modal.Header closeButton >
-                <Modal.Title>{idVehiculeHealth > 0 ? "Modification" : "Ajout"} d'une maintenance ponctuelle</Modal.Title>
+                <Modal.Title>{idVehiculeHealth > 0 ? "Modification" : "Ajout"} d'une maintenance régulière</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
