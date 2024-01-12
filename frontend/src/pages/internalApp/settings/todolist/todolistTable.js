@@ -136,7 +136,7 @@ const ToDoListTable = ({
                                 return(
                                     <ToDoListForm
                                         idTache={row.original.idTache}
-                                        isOwnTDL={row.original.idExecutant.filter(personne => personne.idPersonne == HabilitationService.habilitations.idPersonne).length > 0 ? true : false}
+                                        isOwnTDL={false}
                                         isCompleted={row.original.dateCloture != null ? true : false}
                                         showResolvedButton={true}
                                         showEditButton={true}
@@ -200,7 +200,6 @@ const ToDoListTable = ({
                         idPersonne: idPersonne,
                     });
                     setTaches(getData.data);
-                    console.log(getData.data)
                     setColonnes([
                         {
                             accessor: 'titre',

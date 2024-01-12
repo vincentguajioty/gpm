@@ -161,6 +161,8 @@ exports.getClosedTDL = async (req, res, next)=>{
                 LEFT OUTER JOIN TODOLIST_PRIORITES prio ON tdl.idTDLpriorite = prio.idTDLpriorite
             WHERE
                 tdl.dateCloture IS NOT NULL
+            ORDER BY
+                tdl.dateCloture DESC
         `);
         for(const tache of result)
         {
