@@ -167,6 +167,7 @@ const AffectationsTenues = () => {
             {
                 const response = await Axios.post('/tenues/updateAffectations',{
                     idTenue: offCanevasIdTenue,
+                    idCatalogueTenueInitial: data.idCatalogueTenueInitial,
                     idCatalogueTenue: data.idCatalogueTenue,
                     idPersonne: data.idPersonne > 0 ? data.idPersonne : null,
                     personneNonGPM: data.personneNonGPM,
