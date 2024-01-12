@@ -3,15 +3,14 @@ export const annuaireDelete = <>
     <ul>
         <li>Les lots gérés par cette personne ne seront plus affectés.</li>
         <li>Les centres de couts gérés par cette personne ne seront plus affectés.</li>
-        <li>Les commandes auquelles la personne était ratachée ne seront plus rattachées à personne (attention aux demandes de validation en attente).</li>
+        <li>Les commandes auxquelles la personne était ratachée ne seront plus rattachées à personne (attention aux demandes de validation en attente).</li>
         <li>Les messages publics postés par la personne n'auront plus d'auteur.</li>
         <li>Les inventaires réalisés par la personne n'auront plus d'auteur.</li>
         <li>Les équipements radio gérés par cette personne ne seront plus affectés.</li>
         <li>Les véhicules gérés par cette personne ne seront plus affectés (véhicules, taches de maintenance, relevés kilométriques, désinfections, maintenances régulières).</li>
-        <li>Les taches réalisées de la TODOLIST de cet utilisateur seront supprimées.</li>
-        <li>Les taches que cet utilisateur n'a pas encore réalisée seront gardées mais non-affectées.</li>
-        <li>Les taches que cet utilisateur a donné à d'autres utilisateurs seront maintenues.</li>
-        <li>Les éléments de tenue de cette personne seront supprimés.</li>
+        <li>Les taches ToDoList que cet utilisateur n'a pas encore réalisée seront gardées mais non-affectées.</li>
+        <li>Les taches ToDoList que cet utilisateur a donné à d'autres utilisateurs seront maintenues.</li>
+        <li>Les affectations d'éléments de tenue de cette personne seront supprimées, les tenue seront recréditée au stock.</li>
         <li>Les cautions de cette personne seront supprimées.</li>
         <li>Les opérations saisies par cette personne dans les centres de couts seront anonymisées.</li>
     </ul>
@@ -31,6 +30,7 @@ export const catalogueDelete = <>
     Attention, vous allez supprimer un item du catalogue de matériel. Les impacts collatéraux à cette suppression sont:
     <ul>
         <li>Les matériels de ce type seront supprimés des commandes qui les contiennent.</li>
+        <li>Les matériels de ce type seront supprimés des référentiels opérationnels qui les contiennent.</li>
         <li>Les matériels de ce type seront supprimés des lots qui les contiennent.</li>
         <li>Les matériels de ce type seront supprimés des inventaires (lots et réserves) qui les contiennent.</li>
         <li>Les matériels de ce type seront supprimés des réserves qui les contiennent.</li>
@@ -50,15 +50,16 @@ export const centreCoutsDelete = <>
     Attention, vous allez supprimer un centre de cout. Les impacts collatéraux à cette suppression sont:
     <ul>
         <li>Les commandes rattachées à ce centre de coût se verront sans centre de coût.</li>
-        <li>Les commandes pourront être à nouveau intégrées dans un centre de cout.</li>
-        <li>Toutes les entrées liées à ce centre de cout vont être supprimées.</li>
+        <li>Les commandes pourront être à nouveau intégrées dans un autre centre de cout.</li>
+        <li>Toutes les entrées liées à ce centre de cout vont être supprimées (livre de comptes, documents, ...).</li>
     </ul>
 </>;
 
 export const operationCentreCoutsDelete = <>
     Attention, vous allez supprimer une opération du centre de cout. Les impacts collatéraux à cette suppression sont:
     <ul>
-        <li>Le solde du centre sera recalculé</li>
+        <li>Le solde du centre sera recalculé.</li>
+        <li>Si cette opération est liée à une intégration de commande, la commande devra à nouveau être intégrée.</li>
     </ul>
 </>;
 
@@ -70,7 +71,7 @@ export const gerantCentreCoutsDelete = <>
 </>;
 
 export const commandesDelete = <>
-    Attention, vous êtes sur le point d'abandonner ou supprimer cette commande. Cette action est irreversible (pas d'autre fenètre de confirmation). Les impacts collatéraux à cette suppression sont:
+    Attention, vous êtes sur le point d'abandonner ou supprimer cette commande. Cette action est irreversible (pas d'autre fenêtre de confirmation). Les impacts collatéraux à cette suppression sont:
     <ul>
         <li>Le détail de la commande va être supprimé.</li>
         <li>Tous les documents rattachés à la commande seront supprimés.</li>
@@ -97,10 +98,10 @@ export const emplacementsDelete = <>
 export const fournisseursDelete = <>
     Attention, vous allez supprimer un fournisseur. Les impacts collatéraux à cette suppression sont:
     <ul>
-        <li>Tous les sacs fournis par ce fournisseurs se verront sans fournisseur.</li>
-        <li>Tous les matériels (lots et réserves) fournis par ce fournisseurs se verront sans fournisseur.</li>
+        <li>Tous les sacs fournis par ce fournisseur se verront sans fournisseur.</li>
+        <li>Tous les matériels (lots et réserves) fournis par ce fournisseur se verront sans fournisseur.</li>
         <li>Toutes les entrées catalogue indiquant ce fournisseur comme fournisseur de prédilection n'auront plus de fournisseur.</li>
-        <li>Toutes les commandes rattachées à ce fournisseurs se verront sans fournisseur.</li>
+        <li>Toutes les commandes rattachées à ce fournisseur se verront sans fournisseur.</li>
         <li>Les éléments de tenus fournis par ce fournisseur se verront sans fournisseur.</li>
     </ul>
 </>;
@@ -108,7 +109,7 @@ export const fournisseursDelete = <>
 export const lieuxDelete = <>
     Attention, vous allez supprimer un lieu. Les impacts collatéraux à cette suppression sont:
     <ul>
-        <li>Les lots  rattachés à ce lieu seront rattachés à aucun lieu.</li>
+        <li>Les lots rattachés à ce lieu seront rattachés à aucun lieu.</li>
         <li>Les véhicules rattachés à ce lieu seront rattachés à aucun lieu.</li>
         <li>Les commandes ayant ce lieu comme adresse de livraison n'auront plus d'adresse de livraison.</li>
         <li>Les réserves rattachées à ce lieu seront rattachées à aucun lieu.</li>
@@ -120,7 +121,8 @@ export const lotsDelete = <>
     <ul>
         <li>Tous les inventaires rattachés à ce lot seront supprimés.</li>
         <li>Toutes les alertes bénévoles ouvertes rattachées à ce lot seront supprimées.</li>
-        <li>Tous les sacs composant ce lots ne seront plus rattachés à aucun lot.</li>
+        <li>Tous les sacs composant ce lot ne seront plus rattachés à aucun lot.</li>
+        <li>Les rapports de consommation des bénévoles n'auront pas de lot de rattachement.</li>
     </ul>
 </>;
 
@@ -141,7 +143,8 @@ export const messagesDelete = <>
 export const profilsDelete = <>
     Attention, vous allez supprimer un profil. Les impacts collatéraux à cette suppression sont:
     <ul>
-        <li>Les utilisateurs rattachés à ce profil n'auront plus de profil et ne pourront plus se connecter tant qu'aucun nouveau profil ne leur sera attribué.</li>
+        <li>Tous les utilisateurs qui bénéficient de ce profil seront déconnectés et devront se reconnecter sur tous leurs appareils.</li>
+        <li>Les utilisateurs rattachés à ce profil n'auront plus de profil et ne pourront plus se connecter à moins qu'un autre profil ne leur en donne le droit.</li>
         <li>De part la perte de leurs habilitations, certains utilisateurs pourrons perdre leurs droits sur des centres de couts et des commandes.</li>
     </ul>
 </>;
@@ -173,20 +176,21 @@ export const reserveMaterielDelete = <>
 export const sacsDelete = <>
     Attention, vous allez supprimer un sac. Les impacts collatéraux à cette suppression sont:
     <ul>
-        <li>Les emplacements contenus dans le sac se verront sans sac de rattachement, donc sans lot de rattachement.</li>
+        <li>Les emplacements contenus dans le sac seront également supprimés.</li>
+        <li>Le matériel contenu dans les emplacement sera sans sac ni lot mais ne sera pas supprimé.</li>
     </ul>
 </>;
 
 export const vehiculesDelete = <>
     Attention, vous allez supprimer un véhicule. Les impacts collatéraux à cette suppression sont:
     <ul>
-        <li>Les lots rattachés à ce véhicules n'auront plus de véhicules de rattachement.</li>
+        <li>Les lots rattachés à ce véhicule n'auront plus de véhicule de rattachement.</li>
         <li>Les documents liés à ce véhicule seront supprimés.</li>
-        <li>Les taches de maitenance liées à ce véhicules seront supprimées.</li>
+        <li>Les taches de maitenance liées à ce véhicule seront supprimées.</li>
         <li>Les relevés kilométriques liés à ce véhicule seront supprimés.</li>
         <li>Les taches de désinfections liées à ce véhicule seront supprimées.</li>
         <li>Les taches de maintenance régulières liées à ce véhicule seront supprimées.</li>
-        <li>Les alertes bénévoles liées à ce véhicules seront supprimées.</li>
+        <li>Les alertes bénévoles liées à ce véhicule seront supprimées.</li>
     </ul>
 </>;
 
@@ -209,15 +213,15 @@ export const vhfEquipementsDelete = <>
     Attention, vous allez supprimer un équipement radio. Les impacts collatéraux à cette suppression sont:
     <ul>
         <li>Les documents liés à cet équipement radio seront supprimés.</li>
-        <li>Les accessoires liés à cet équipemet radio seront supprimés.</li>
+        <li>Les accessoires liés à cet équipement radio seront supprimés.</li>
     </ul>
 </>;
 
 export const vhfPlansDelete = <>
     Attention, vous allez supprimer un plan de fréquence. Les impacts collatéraux à cette suppression sont:
     <ul>
-        <li>Tous les documents liés à ce plan de fréquence seront supprimés.</li>
-        <li>Tous les équipements radio bénéficiant de ce plan de fréquences se verront sans plan de fréquence.</li>
+        <li>Tous les documents liés à ce plan de fréquences seront supprimés.</li>
+        <li>Tous les équipements radio bénéficiant de ce plan de fréquences se verront sans plan de fréquences.</li>
     </ul>
 </>;
 
@@ -329,7 +333,7 @@ export const vhfEquipementsAccessoiresDelete = <>
 export const vehiculesTypesMaintenanceDelete = <>
     Attention, vous allez supprimer type de maintenance ponctuelle de véhicule. Les impacts collatéraux à cette suppression sont:
     <ul>
-        <li>Les tâches de maintenance rattachées à ce type seront supprimées.</li>
+        <li>Les tâches de maintenance rattachées à ce type seront non-spécifiées (sans type) mais ne seront pas supprimées.</li>
     </ul>
 </>;
 
@@ -357,7 +361,7 @@ export const appliConfAESDrop = <>
 export const codesBarreDelete = <>
     Attention, vous allez supprimer un code barre. Les impacts collatéraux à cette suppression sont:
     <ul>
-        <li>Tous les éléments possendant ce code barre ne seront plus reconnus lors des inventaires.</li>
+        <li>Tous les éléments possédant ce code barre ne seront plus reconnus lors des inventaires.</li>
     </ul>
 </>;
 

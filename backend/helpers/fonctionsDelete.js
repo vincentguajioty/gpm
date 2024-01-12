@@ -371,13 +371,7 @@ const centreCoutsDelete = async (idLogger, idCentreDeCout) => {
         });
 
         let annuleCommandeIntegration = await db.query(`
-            UPDATE COMMANDES SET integreCentreCouts = 0 WHERE idCentreDeCout = :idCentreDeCout
-        ;`,{
-            idCentreDeCout : idCentreDeCout,
-        });
-
-        let unlinkCommandeIntegration = await db.query(`
-            UPDATE COMMANDES SET idCentreDeCout = Null WHERE idCentreDeCout = :idCentreDeCout
+            UPDATE COMMANDES SET integreCentreCouts = 0, idCentreDeCout = Null WHERE idCentreDeCout = :idCentreDeCout
         ;`,{
             idCentreDeCout : idCentreDeCout,
         });
@@ -687,14 +681,12 @@ const commandesDelete = async (idLogger, idCommande) => {
             idCommande : idCommande,
         });
 
-
         let operationsADrop = await db.query(`
             SELECT * FROM CENTRE_COUTS_OPERATIONS WHERE idCommande = :idCommande
         ;`,{
             idCommande : idCommande,
         });
         for(const operation of operationsADrop){await centreCoutsOperationsDelete('SYSTEM', operation.idOperations);}
-
 
         let finalDeleteQuery = await db.query(`
             DELETE FROM COMMANDES WHERE idCommande = :idCommande
@@ -1731,7 +1723,7 @@ const vehiculesTypesDelete = async (idLogger, idVehiculesType) => {
 
         let updateQuery;
         updateQuery = await db.query(`
-        UPDATE VEHICULES SET idVehiculesType = Null WHERE idVehiculesType = :idVehiculesType
+            UPDATE VEHICULES SET idVehiculesType = Null WHERE idVehiculesType = :idVehiculesType
         ;`,{
             idVehiculesType : idVehiculesType,
         });
