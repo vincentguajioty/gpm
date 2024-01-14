@@ -123,7 +123,7 @@ const OneCommandeStep5Passage = ({
             </Row>
             {commande.detailsCommande.idEtat == 3 ?
                 <div className="d-grid gap-2 mt-3">
-                    <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading || forceReadOnly}>{isLoading ? 'Patientez...' : 'Enregistrer les remarques'}</Button>
+                    <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading || forceReadOnly}>{isLoading ? 'Patientez...' : 'Enregistrer les informations'}</Button>
                 </div>
             :null}
         </Form>

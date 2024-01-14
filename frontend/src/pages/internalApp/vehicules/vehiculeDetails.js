@@ -73,6 +73,7 @@ const VehiculeDetails = () => {
                                 <Tab eventKey="mntReg" title="Maintenance régulière" className='border-bottom border-x p-3'>
                                     <VehiculeMaintenancesRegulieres
                                         idVehicule={idVehicule}
+                                        vehiculeNotification={vehicule.notifiationEnabled}
                                         setPageNeedsRefresh={setPageNeedsRefresh}
                                         maintenancesRegulieres={vehicule.maintenancesRegulieres}
                                         maintenancesRegulieresAlertes={vehicule.maintenancesRegulieresAlertes}
@@ -83,6 +84,7 @@ const VehiculeDetails = () => {
                                 <Tab eventKey="desinf" title="Désinfections" className='border-bottom border-x p-3'>
                                     <VehiculeDesinfections
                                         idVehicule={idVehicule}
+                                        vehiculeNotification={vehicule.notifiationEnabled}
                                         setPageNeedsRefresh={setPageNeedsRefresh}
                                         desinfections={vehicule.desinfections}
                                         desinfectionsAlertes={vehicule.desinfectionsAlertes}

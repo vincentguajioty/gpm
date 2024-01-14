@@ -177,7 +177,7 @@ const ProfilRecapDroitsUtilisateur = ({idPersonne, pageNeedsRefresh}) => {
                             <th></th>
                         </tr>
                         <tr>
-                            <td>Tenues</td>
+                            <td>Affectations de tenues</td>
                             <td><FontAwesomeIcon icon={profil['tenues_lecture'] ? 'check' : 'ban'}/></td>
                             <td><FontAwesomeIcon icon={profil['tenues_ajout'] ? 'check' : 'ban'}/></td>
                             <td><FontAwesomeIcon icon={profil['tenues_modification'] ? 'check' : 'ban'}/></td>
@@ -391,7 +391,7 @@ const ProfilRecapDroitsUtilisateur = ({idPersonne, pageNeedsRefresh}) => {
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Réserve:</td>
+                            <td>Conteneurs et matériels</td>
                             <td><FontAwesomeIcon icon={profil['reserve_lecture'] ? 'check' : 'ban'}/></td>
                             <td><FontAwesomeIcon icon={profil['reserve_ajout'] ? 'check' : 'ban'}/></td>
                             <td><FontAwesomeIcon icon={profil['reserve_modification'] ? 'check' : 'ban'}/></td>

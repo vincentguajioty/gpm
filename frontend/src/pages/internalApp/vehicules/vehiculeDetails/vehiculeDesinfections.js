@@ -13,7 +13,7 @@ import { Axios } from 'helpers/axios';
 import VehiculeDesinfectionsAlertes from './vehiculeDesinfectionsAlertes';
 import VehiculeDesinfectionsForm from './vehiculeDesinfectionsForm';
 
-const VehiculeDesinfections = ({idVehicule, desinfections, desinfectionsAlertes, setPageNeedsRefresh}) => {
+const VehiculeDesinfections = ({idVehicule, vehiculeNotification, desinfections, desinfectionsAlertes, setPageNeedsRefresh}) => {
     const colonnes = [
         {
             accessor: 'dateDesinfection',
@@ -23,7 +23,7 @@ const VehiculeDesinfections = ({idVehicule, desinfections, desinfectionsAlertes,
 			},
         },
         {
-            accessor: 'desinfections',
+            accessor: 'libelleVehiculesDesinfectionsType',
             Header: 'Désinfection',
         },
         {
@@ -131,6 +131,7 @@ const VehiculeDesinfections = ({idVehicule, desinfections, desinfectionsAlertes,
                 {HabilitationService.habilitations['vehicules_modification'] ? 
                     <VehiculeDesinfectionsAlertes
                         idVehicule={idVehicule}
+                        vehiculeNotification={vehiculeNotification}
                         desinfectionsAlertes={desinfectionsAlertes}
                         setPageNeedsRefresh={setPageNeedsRefresh}
                     />

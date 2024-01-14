@@ -495,11 +495,6 @@ export const maintenancePonctuelle = Yup.object().shape({
         .date()
         .typeError(champObligatoire)
         .required(champObligatoire),
-    releveKilometrique: Yup
-        .number()
-        .typeError(champObligatoire)
-        .min(0, champObligatoire)
-        .required(champObligatoire),
     idExecutant: Yup
         .number()
         .typeError(champObligatoire)
@@ -516,6 +511,11 @@ export const maintenanceReguliere = Yup.object().shape({
     dateHealth: Yup
         .date()
         .typeError(champObligatoire)
+        .required(champObligatoire),
+    releveKilometrique: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(0, champObligatoire)
         .required(champObligatoire),
     idPersonne: Yup
         .number()

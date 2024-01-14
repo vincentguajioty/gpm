@@ -1371,7 +1371,7 @@ const Profils = () => {
                                 <th></th>
                             </tr>
                             <tr>
-                                <td>Tenues</td>
+                                <td>Affectations de tenues</td>
                                 <td>
                                     {modeEdition ?
                                         <Form.Check
@@ -2649,7 +2649,7 @@ const Profils = () => {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Réserve:</td>
+                                <td>Conteneurs et matériels</td>
                                 <td>
                                     {modeEdition ?
                                         <Form.Check

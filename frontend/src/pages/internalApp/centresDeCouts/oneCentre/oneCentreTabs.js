@@ -9,6 +9,7 @@ import OneCentreCommandesAIntegrer from './oneCentreCmdIntegration';
 import OneCentreCommandesRefusees from './oneCentreCmdRejet';
 import OneCommandePJ from './oneCentrePJ';
 import OneCentreExport from './oneCentreExport';
+import SoftBadge from 'components/common/SoftBadge';
 
 const OneCentreTabs = ({
     idCentreDeCout,
@@ -53,7 +54,11 @@ const OneCentreTabs = ({
                     mesDroits={mesDroits}
                 />
             </Tab>
-            <Tab eventKey="cmdToDo" title="Commandes à intégrer" className='border-bottom border-x p-3'>
+            <Tab
+                eventKey="cmdToDo"
+                title={<>Commandes à intégrer{centre.commandesAIntegrer.length > 0 ? <SoftBadge bg='danger' className='ms-1'>{centre.commandesAIntegrer.length}</SoftBadge> : null}</>}
+                className='border-bottom border-x p-3'
+            >
                 <OneCentreCommandesAIntegrer
                     idCentreDeCout={idCentreDeCout}
                     commandes={centre.commandesAIntegrer}
@@ -61,7 +66,11 @@ const OneCentreTabs = ({
                     tabInReadOnly={tabInReadOnly}
                 />
             </Tab>
-            <Tab eventKey="cmdRefusees" title="Commandes refusées" className='border-bottom border-x p-3'>
+            <Tab
+                eventKey="cmdRefusees"
+                title={<>Commandes refusées{centre.commandesRefusees.length > 0 ? <SoftBadge bg='danger' className='ms-1'>{centre.commandesRefusees.length}</SoftBadge> : null}</>}
+                className='border-bottom border-x p-3'
+            >
                 <OneCentreCommandesRefusees
                     idCentreDeCout={idCentreDeCout}
                     commandes={centre.commandesRefusees}

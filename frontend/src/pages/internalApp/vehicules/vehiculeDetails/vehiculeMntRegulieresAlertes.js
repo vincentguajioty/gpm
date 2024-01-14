@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import { Form, Table, Modal, Button } from 'react-bootstrap';
+import { Form, Table, Modal, Button, Alert } from 'react-bootstrap';
 import IconButton from 'components/common/IconButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 
 import { Axios } from 'helpers/axios';
 
-const VehiculeMaintenancesRegulieresAlertes = ({idVehicule, maintenancesRegulieresAlertes, setPageNeedsRefresh}) => {
+const VehiculeMaintenancesRegulieresAlertes = ({idVehicule, vehiculeNotification, maintenancesRegulieresAlertes, setPageNeedsRefresh}) => {
     
     const [showAlerteModal, setShowAlerteModal] = useState(false);
     const [isLoading, setLoading] = useState(false);
@@ -87,6 +87,9 @@ const VehiculeMaintenancesRegulieresAlertes = ({idVehicule, maintenancesRegulier
                 <Modal.Title>Gestion des alertes et récurrences pour les maintenances régulières</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                {!vehiculeNotification ?
+                    <Alert variant='warning'>Les notifications sont désactivées dans les propriétés du véhicule !</Alert>
+                : null}
                 {isLoading ? <LoaderInfiniteLoop/> :
                     <Table>
                         <thead>
@@ -101,7 +104,7 @@ const VehiculeMaintenancesRegulieresAlertes = ({idVehicule, maintenancesRegulier
                                 <tr>
                                     <td>{type.label}</td>
                                     <td>{type.frequenceHealth > 0 ?
-                                        <FontAwesomeIcon icon='check' />
+                                        vehiculeNotification ? <FontAwesomeIcon icon='bell' /> : <FontAwesomeIcon icon='bell-slash' />
                                     : null}</td>
                                     <td>
                                         <Form.Control size="sm" type="number" min="0" name="frequenceHealth" id="frequenceHealth" value={type.frequenceHealth} onChange={(e) => {updateFrequenceHealth(i, e.target.value)}}/>

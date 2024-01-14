@@ -103,10 +103,10 @@ const ReservesMaterielsTable = ({
                             <SoftBadge bg='danger'>INVENTAIRE EN COURS</SoftBadge>    
                         :
                             <>
-                                {HabilitationService.habilitations['materiel_modification'] ? 
+                                {HabilitationService.habilitations['reserve_modification'] ? 
                                     <ReservesMaterielsForm idReserveElement={row.original.idReserveElement} element={row.original} setPageNeedsRefresh={setPageNeedsRefresh} />
                                 : null}
-                                {HabilitationService.habilitations['materiel_suppression'] ? 
+                                {HabilitationService.habilitations['reserve_suppression'] ? 
                                     <ReservesMaterielsDeleteModal idReserveElement={row.original.idReserveElement} setPageNeedsRefresh={setPageNeedsRefresh} />
                                 : null}
                             </>
@@ -125,7 +125,7 @@ const ReservesMaterielsTable = ({
                 data={materiels}
                 topButtonShow={true}
                 topButton={
-                    HabilitationService.habilitations['materiel_ajout'] ?
+                    HabilitationService.habilitations['reserve_ajout'] ?
                         <ReservesMaterielsForm setPageNeedsRefresh={setPageNeedsRefresh} />
                     : null
                 }

@@ -142,7 +142,7 @@ const PlansCanaux = ({vhfPlan, lockEdit = false, displayNameInButton = false}) =
                             : null}
                         </tbody>
                     </Table>
-                    {HabilitationService.habilitations['vhf_plan_modification'] && !lockEdit ? <Button variant='primary' className='me-2 mb-1' onClick={updateProg} disabled={!readyToDisplay}>{!readyToDisplay ? 'Patientez...' : 'Enregistrer les étapes'}</Button> : null}
+                    {HabilitationService.habilitations['vhf_plan_modification'] && !lockEdit ? <Button variant='primary' className='me-2 mb-1' onClick={updateProg} disabled={!readyToDisplay}>{!readyToDisplay ? 'Patientez...' : 'Enregistrer les fréquences'}</Button> : null}
                 </>
             : <LoaderInfiniteLoop/>}
             </Modal.Body>

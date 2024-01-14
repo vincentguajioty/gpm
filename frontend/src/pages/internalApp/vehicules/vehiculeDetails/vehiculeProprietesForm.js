@@ -270,16 +270,16 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
                         </td>
                     </tr>
                     <tr>
-                        <td className="bg-100" style={{ width: '30%' }}>Poids</td>
+                        <td className="bg-100" style={{ width: '30%' }}>Poids (tonnes)</td>
                         <td>
-                            <Form.Control size="sm" type="number" min="0" step="1" name='poidsVehicule' id='poidsVehicule' {...register('poidsVehicule')}/>
+                            <Form.Control size="sm" type="number" min="0" step="0.001" name='poidsVehicule' id='poidsVehicule' {...register('poidsVehicule')}/>
                             <small className="text-danger">{errors.poidsVehicule?.message}</small>
                         </td>
                     </tr>
                     <tr>
                         <td className="bg-100" style={{ width: '30%' }}>Dimensions</td>
                         <td>
-                            <Form.Control size="sm" type="number" min="0" step="1" name='dimensions' id='dimensions' {...register('dimensions')}/>
+                            <Form.Control size="sm" type="text" name='dimensions' id='dimensions' {...register('dimensions')}/>
                             <small className="text-danger">{errors.dimensions?.message}</small>
                         </td>
                     </tr>

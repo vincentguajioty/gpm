@@ -13,7 +13,7 @@ import { Axios } from 'helpers/axios';
 import VehiculeMaintenancesRegulieresAlertes from './vehiculeMntRegulieresAlertes';
 import VehiculeMaintenancesRegulieresForm from './vehiculeMntRegulieresForm';
 
-const VehiculeMaintenancesRegulieres = ({idVehicule, maintenancesRegulieres, maintenancesRegulieresAlertes, setPageNeedsRefresh}) => {
+const VehiculeMaintenancesRegulieres = ({idVehicule, vehiculeNotification, maintenancesRegulieres, maintenancesRegulieresAlertes, setPageNeedsRefresh}) => {
     const nl2br = require('react-nl2br');
     const colonnes = [
         {
@@ -155,6 +155,7 @@ const VehiculeMaintenancesRegulieres = ({idVehicule, maintenancesRegulieres, mai
                 {HabilitationService.habilitations['vehicules_modification'] ?
                     <VehiculeMaintenancesRegulieresAlertes
                         idVehicule={idVehicule}
+                        vehiculeNotification={vehiculeNotification}
                         maintenancesRegulieresAlertes={maintenancesRegulieresAlertes}
                         setPageNeedsRefresh={setPageNeedsRefresh}
                     />
