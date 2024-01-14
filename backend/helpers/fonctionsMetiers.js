@@ -2418,7 +2418,7 @@ const verificationContraintesCmd = async (idCommande) => {
                         idTypeDocument = :idTypeDocument
                 ;`,{
                     idCommande: idCommande,
-                    idTypeDocument: idTypeDocumentObligatoire,
+                    idTypeDocument: contrainte.idTypeDocumentObligatoire,
                 });
                 if(documents.length >= contrainte.nbTypeDocumentObligatoire)
                 {
