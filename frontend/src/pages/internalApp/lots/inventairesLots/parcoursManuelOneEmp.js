@@ -70,7 +70,7 @@ const InventaireParcoursManuelOneEmplacement = ({
                                 peremptionAvantInventaire: elem.peremptionAvantInventaire,
                                 peremptionInventoriee: peremptionInventorieeAGarder ? moment(peremptionInventorieeAGarder).format('YYYY-MM-DD') : null,
                                 quantiteAvantInventaire: elem.quantiteAvantInventaire,
-                                quantiteInventoriee: elem.quantiteInventoriee += 1,
+                                quantiteInventoriee: Number(elem.quantiteInventoriee) + 1,
                                 quantiteAlerte: elem.quantiteAlerte,
                             };
 
@@ -107,7 +107,7 @@ const InventaireParcoursManuelOneEmplacement = ({
             peremptionAvantInventaire: oneElement.peremptionAvantInventaire,
             peremptionInventoriee: updateOldPeremption ? oneElement.peremptionAvantInventaire : oneElement.peremptionInventoriee,
             quantiteAvantInventaire: oneElement.quantiteAvantInventaire,
-            quantiteInventoriee: quantiteInventoriee,
+            quantiteInventoriee: Number(quantiteInventoriee),
             quantiteAlerte: oneElement.quantiteAlerte,
         };
 
@@ -126,7 +126,7 @@ const InventaireParcoursManuelOneEmplacement = ({
             peremptionAvantInventaire: oneElement.peremptionAvantInventaire,
             peremptionInventoriee: peremptionInventoriee ? moment(peremptionInventoriee).format('YYYY-MM-DD') : null,
             quantiteAvantInventaire: oneElement.quantiteAvantInventaire,
-            quantiteInventoriee: oneElement.quantiteInventoriee,
+            quantiteInventoriee: Number(oneElement.quantiteInventoriee),
             quantiteAlerte: oneElement.quantiteAlerte,
         };
 

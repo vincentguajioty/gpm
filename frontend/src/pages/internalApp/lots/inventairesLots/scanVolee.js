@@ -79,7 +79,7 @@ const InventaireScanVolee = ({
                                     peremptionAvantInventaire: elem.peremptionAvantInventaire,
                                     peremptionInventoriee: peremptionInventorieeAGarder ? moment(peremptionInventorieeAGarder).format('YYYY-MM-DD') : null,
                                     quantiteAvantInventaire: elem.quantiteAvantInventaire,
-                                    quantiteInventoriee: elem.quantiteInventoriee += 1,
+                                    quantiteInventoriee: Number(elem.quantiteInventoriee) + 1,
                                     quantiteAlerte: elem.quantiteAlerte,
                                 };
 

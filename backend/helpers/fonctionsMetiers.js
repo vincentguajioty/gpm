@@ -857,7 +857,7 @@ const updateInventaireLotItem = async (element) => {
             WHERE
                 idElement = :idElement
         `,{
-            quantiteInventoriee : element.quantiteInventoriee || null,
+            quantiteInventoriee : Number(element.quantiteInventoriee) || null,
             peremptionInventoriee : element.peremptionInventoriee || null,
             idElement : element.idElement || null,
         });
@@ -1008,7 +1008,7 @@ const updateInventaireReserveItem = async (element) => {
             WHERE
                 idReserveElement = :idReserveElement
         `,{
-            quantiteInventoriee : element.quantiteInventoriee || null,
+            quantiteInventoriee : Number(element.quantiteInventoriee) || null,
             peremptionInventoriee : element.peremptionInventoriee || null,
             idReserveElement : element.idReserveElement || null,
         });
