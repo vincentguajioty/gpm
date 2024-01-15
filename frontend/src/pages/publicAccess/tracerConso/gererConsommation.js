@@ -42,6 +42,23 @@ const GererConsommation = ({
         initPage();
     },[])
 
+    const getListeLotsImpactesFromElements = (elements) => {
+        let lots = [];
+        for(const element of elements)
+        {
+            if(!lots.some(item => item.idLot == element.idLot))
+            {
+                lots.push({
+                    idLot: element.idLot,
+                    libelleLot: element.libelleLot,
+                    value: element.idLot,
+                    label: element.libelleLot,
+                })
+            }
+        }
+        return lots;
+    }
+
     useEffect(()=>{
         if(socket)
         {
@@ -70,6 +87,7 @@ const GererConsommation = ({
                 setConsommation({
                     consommation: consommation.consommation,
                     elements: tempArray,
+                    lotsImpactes: getListeLotsImpactesFromElements(tempArray),
                 })
             })
 
@@ -96,6 +114,7 @@ const GererConsommation = ({
                 setConsommation({
                     consommation: consommation.consommation,
                     elements: tempArray,
+                    lotsImpactes: getListeLotsImpactesFromElements(tempArray),
                 })
             })
 
@@ -111,6 +130,7 @@ const GererConsommation = ({
                 setConsommation({
                     consommation: consommation.consommation,
                     elements: tempArray,
+                    lotsImpactes: getListeLotsImpactesFromElements(tempArray),
                 })
             })
 
@@ -145,6 +165,7 @@ const GererConsommation = ({
                             <AjouterConsommable
                                 socket={socket}
                                 idConsommation={idConsommation}
+                                lotsImpactes={consommation.lotsImpactes}
                             />
                         </Col>
                         <Col md={8}>

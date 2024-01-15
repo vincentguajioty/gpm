@@ -66,7 +66,9 @@ exports.getOneConso = async (req, res)=>{
         const lotsImpactes = await db.query(`
             SELECT DISTINCT
                 l.idLot,
-                l.libelleLot
+                l.libelleLot,
+                l.idLot as value,
+                l.libelleLot as label
             FROM
                 LOTS_CONSOMMATION_MATERIEL m
                 LEFT OUTER JOIN LOTS_LOTS l ON m.idLot = l.idLot

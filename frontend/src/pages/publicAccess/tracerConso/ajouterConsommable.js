@@ -15,6 +15,7 @@ import { consommationPubliqueAjoutMateriel } from 'helpers/yupValidationSchema';
 const AjouterConsommable = ({
     socket,
     idConsommation,
+    lotsImpactes = [],
 }) => {
     const [isLoading, setLoading] = useState(true);
     const [catalogue, setCatalogue] = useState([]);
@@ -118,6 +119,9 @@ const AjouterConsommable = ({
                                         onChange={val => val != null ? setValue("idLot", val.value) : setValue("idLot", null)}
                                     />
                                     <small className="text-danger">{errors.idLot?.message}</small>
+                                    {watch("idLot") == null ? lotsImpactes.map((lot, i)=>{return(
+                                            <Button className='mt-1 me-1' variant='outline-info' size='sm' onClick={()=>{setValue("idLot", lot.value)}}>{lot.label}</Button>
+                                    )}) : null}
                                 </Form.Group>
 
                                 {watch("idLot") && watch("idLot") > 0 ?
@@ -126,6 +130,9 @@ const AjouterConsommable = ({
                                             <Form.Label>Quelle quantité ?</Form.Label>
                                             <Form.Control size="sm" type="number" min="1" name='quantiteConsommation' id='quantiteConsommation' {...register('quantiteConsommation')}/>
                                             <small className="text-danger">{errors.quantiteConsommation?.message}</small>
+                                            {watch("quantiteConsommation") == null ? [1,2,5,10].map((value, i)=>{return(
+                                                    <Button className='mt-1 me-1' variant='outline-info' size='sm' onClick={()=>{setValue("quantiteConsommation", value)}}>{value}</Button>
+                                            )}) : null}
                                         </Form.Group>
                                         
                                         {watch("quantiteConsommation") && watch("quantiteConsommation") > 0 ?
