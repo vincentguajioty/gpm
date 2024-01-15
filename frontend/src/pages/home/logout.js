@@ -12,6 +12,12 @@ const Logout = () => {
 		{
 			jwtToken: tokenToClean,
 		});
+
+		caches.keys().then((names) => {
+            names.forEach((name) => {
+                caches.delete(name);
+            });
+        });
 	}
 	
 	useEffect(() => {
