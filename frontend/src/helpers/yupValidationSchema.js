@@ -183,10 +183,6 @@ export const userInfoForm = Yup.object().shape({
 });
 
 export const configGeneraleForm = Yup.object().shape({
-    appname: Yup
-        .string()
-        .typeError(champObligatoire)
-        .required(champObligatoire),
     urlsite: Yup
         .string()
         .typeError(champObligatoire)

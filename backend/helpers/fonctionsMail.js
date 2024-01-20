@@ -82,20 +82,20 @@ const autoResetPwd = async (requestInfo) => {
         let emailErrors = 0;
         for (const personne of users) {
             mailOptions = {
-                from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
+                from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
                 cc: configDB.mailcopy ? configDB.mailserver : null,
-                subject: '['+configDB.appname+'] Terminer la réinitialisation de votre mot de passe',
+                subject: '['+process.env.APP_NAME+'] Terminer la réinitialisation de votre mot de passe',
                 template: 'autoResetPwd', // the name of the template file i.e email.handlebars
                 context:{
                     personne: personne,
                     resetQuery: resetQuery[0],
-                    appname: configDB.appname,
+                    appname: process.env.APP_NAME,
                     urlsite: configDB.urlsite,
                 },
                 list: {
                     unsubscribe: {
-                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+configDB.appname+'-forUser:'+personne.idUtilisateur,
+                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:'+personne.idUtilisateur,
                         comment: 'Ne plus recevoir de mails',
                     },
                 },
@@ -157,19 +157,19 @@ const resetPassword = async (requestInfo) => {
         let emailErrors = 0;
         for (const personne of users) {
             mailOptions = {
-                from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
+                from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
                 cc: configDB.mailcopy ? configDB.mailserver : null,
-                subject: '['+configDB.appname+'] Réinitialisation de votre mot de passe',
+                subject: '['+process.env.APP_NAME+'] Réinitialisation de votre mot de passe',
                 template: 'resetPassword', // the name of the template file i.e email.handlebars
                 context:{
                     personne: personne,
-                    appname: configDB.appname,
+                    appname: process.env.APP_NAME,
                     urlsite: configDB.urlsite,
                 },
                 list: {
                     unsubscribe: {
-                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+configDB.appname+'-forUser:'+personne.idUtilisateur,
+                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:'+personne.idUtilisateur,
                         comment: 'Ne plus recevoir de mails',
                     },
                 },
@@ -218,18 +218,18 @@ const confirmationAlerteLot = async (requestInfo) => {
         let mailOptions={};
         let emailErrors = 0;
         mailOptions = {
-            from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
+            from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
             to: requestInfo.otherMail, // list of receivers
             cc: configDB.mailcopy ? configDB.mailserver : null,
-            subject: '['+configDB.appname+'] Alerte sur un lot opérationnel',
+            subject: '['+process.env.APP_NAME+'] Alerte sur un lot opérationnel',
             template: 'confirmationAlerteLot', // the name of the template file i.e email.handlebars
             context:{
-                appname: configDB.appname,
+                appname: process.env.APP_NAME,
                 urlsite: configDB.urlsite,
             },
             list: {
                 unsubscribe: {
-                    url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+configDB.appname+'-forUser:0',
+                    url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:0',
                     comment: 'Ne plus recevoir de mails',
                 },
             },
@@ -310,20 +310,20 @@ const alerteBenevolesLot = async (requestInfo) => {
         let emailErrors = 0;
         for (const personne of users) {
             mailOptions = {
-                from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
+                from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
                 cc: configDB.mailcopy ? configDB.mailserver : null,
-                subject: '['+configDB.appname+'] Alerte sur '+detailsAlerte.libelleLot,
+                subject: '['+process.env.APP_NAME+'] Alerte sur '+detailsAlerte.libelleLot,
                 template: 'alerteBenevolesLot', // the name of the template file i.e email.handlebars
                 context:{
                     personne: personne,
                     detailsAlerte: detailsAlerte,
-                    appname: configDB.appname,
+                    appname: process.env.APP_NAME,
                     urlsite: configDB.urlsite,
                 },
                 list: {
                     unsubscribe: {
-                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+configDB.appname+'-forUser:'+personne.idUtilisateur,
+                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:'+personne.idUtilisateur,
                         comment: 'Ne plus recevoir de mails',
                     },
                 },
@@ -372,18 +372,18 @@ const confirmationAlerteVehicule = async (requestInfo) => {
         let mailOptions={};
         let emailErrors = 0;
         mailOptions = {
-            from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
+            from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
             to: requestInfo.otherMail, // list of receivers
             cc: configDB.mailcopy ? configDB.mailserver : null,
-            subject: '['+configDB.appname+'] Alerte sur un véhicule',
+            subject: '['+process.env.APP_NAME+'] Alerte sur un véhicule',
             template: 'confirmationAlerteVehicule', // the name of the template file i.e email.handlebars
             context:{
-                appname: configDB.appname,
+                appname: process.env.APP_NAME,
                 urlsite: configDB.urlsite,
             },
             list: {
                 unsubscribe: {
-                    url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+configDB.appname+'-forUser:0',
+                    url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:0',
                     comment: 'Ne plus recevoir de mails',
                 },
             },
@@ -464,20 +464,20 @@ const alerteBenevolesVehicule = async (requestInfo) => {
         let emailErrors = 0;
         for (const personne of users) {
             mailOptions = {
-                from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
+                from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
                 cc: configDB.mailcopy ? configDB.mailserver : null,
-                subject: '['+configDB.appname+'] Alerte sur '+detailsAlerte.libelleVehicule,
+                subject: '['+process.env.APP_NAME+'] Alerte sur '+detailsAlerte.libelleVehicule,
                 template: 'alerteBenevolesVehicule', // the name of the template file i.e email.handlebars
                 context:{
                     personne: personne,
                     detailsAlerte: detailsAlerte,
-                    appname: configDB.appname,
+                    appname: process.env.APP_NAME,
                     urlsite: configDB.urlsite,
                 },
                 list: {
                     unsubscribe: {
-                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+configDB.appname+'-forUser:'+personne.idUtilisateur,
+                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:'+personne.idUtilisateur,
                         comment: 'Ne plus recevoir de mails',
                     },
                 },
@@ -577,22 +577,22 @@ const finDeclarationConso = async (requestInfo) => {
         let emailErrors = 0;
         for (const personne of users) {
             mailOptions = {
-                from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
+                from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
                 cc: configDB.mailcopy ? configDB.mailserver : null,
-                subject: '['+configDB.appname+'] Consommation lors de '+consommation[0].evenementConsommation,
+                subject: '['+process.env.APP_NAME+'] Consommation lors de '+consommation[0].evenementConsommation,
                 template: 'finDeclarationConso', // the name of the template file i.e email.handlebars
                 context:{
                     personne: personne,
                     consommation: consommation[0],
-                    appname: configDB.appname,
+                    appname: process.env.APP_NAME,
                     urlsite: configDB.urlsite,
                     consommation_benevoles_auto: configDB.consommation_benevoles_auto == true ? 1 : 0,
                     cc: configDB.mailcopy ? configDB.mailserver : null,
                 },
                 list: {
                     unsubscribe: {
-                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+configDB.appname+'-forUser:'+personne.idUtilisateur,
+                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:'+personne.idUtilisateur,
                         comment: 'Ne plus recevoir de mails',
                     },
                 },
@@ -871,14 +871,14 @@ try {
         if(qttAlerte > 0)
         {
             mailOptions = {
-                from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
+                from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
                 cc: configDB.mailcopy ? configDB.mailserver : null,
-                subject: '['+configDB.appname+'] Bilan journalier ',
+                subject: '['+process.env.APP_NAME+'] Bilan journalier ',
                 template: 'notifJournaliere', // the name of the template file i.e email.handlebars
                 context:{
                     personne: personne,
-                    appname: configDB.appname,
+                    appname: process.env.APP_NAME,
                     urlsite: configDB.urlsite,
                     qttAlerte : qttAlerte,
                     lots_manquants: lots_manquants,
@@ -895,7 +895,7 @@ try {
                 },
                 list: {
                     unsubscribe: {
-                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+configDB.appname+'-forUser:'+personne.idUtilisateur,
+                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:'+personne.idUtilisateur,
                         comment: 'Ne plus recevoir de mails',
                     },
                 },
@@ -945,19 +945,19 @@ const contactDev = async (requestInfo) => {
         let mailOptions={};
         let emailErrors = 0;
         mailOptions = {
-            from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
+            from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
             to: requestInfo.otherMail, // list of receivers
             cc: configDB.mailcopy ? configDB.mailserver : null,
-            subject: '[GPM]['+configDB.appname+'] Contact Developpeur depuis une app cliente',
+            subject: '[GPM]['+process.env.APP_NAME+'] Contact Developpeur depuis une app cliente',
             template: 'contactDev', // the name of the template file i.e email.handlebars
             context:{
-                appname: configDB.appname,
+                appname: process.env.APP_NAME,
                 urlsite: configDB.urlsite,
                 content: requestInfo.otherContent
             },
             list: {
                 unsubscribe: {
-                    url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+configDB.appname+'-forUser:0',
+                    url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:0',
                     comment: 'Ne plus recevoir de mails',
                 },
             },
@@ -1018,20 +1018,20 @@ const mailDeGroupe = async (requestInfo) => {
         let emailErrors = 0;
         for (const personne of users) {
             mailOptions = {
-                from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
+                from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
                 cc: configDB.mailcopy ? configDB.mailserver : null,
-                subject: '['+configDB.appname+'] Mail de groupe: ' + requestInfo.otherSubject,
+                subject: '['+process.env.APP_NAME+'] Mail de groupe: ' + requestInfo.otherSubject,
                 template: 'mailDeGroupe', // the name of the template file i.e email.handlebars
                 context:{
                     personne: personne,
-                    appname: configDB.appname,
+                    appname: process.env.APP_NAME,
                     urlsite: configDB.urlsite,
                     otherContent: requestInfo.otherContent,
                 },
                 list: {
                     unsubscribe: {
-                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+configDB.appname+'-forUser:'+personne.idUtilisateur,
+                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:'+personne.idUtilisateur,
                         comment: 'Ne plus recevoir de mails',
                     },
                 },
@@ -1109,21 +1109,21 @@ const commandeNotif = async (requestInfo) => {
         let emailErrors = 0;
         for (const personne of users) {
             mailOptions = {
-                from: configDB.appname+' <'+process.env.SMTP_USER+'>', // sender address
+                from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
                 to: personne.mailPersonne, // list of receivers
                 cc: configDB.mailcopy ? configDB.mailserver : null,
-                subject: '['+configDB.appname+'][COMMANDE] ' + requestInfo.otherSubject,
+                subject: '['+process.env.APP_NAME+'][COMMANDE] ' + requestInfo.otherSubject,
                 template: 'commandeNotif', // the name of the template file i.e email.handlebars
                 context:{
                     personne: personne,
-                    appname: configDB.appname,
+                    appname: process.env.APP_NAME,
                     urlsite: configDB.urlsite,
                     message: requestInfo.otherContent,
                     commande: commande,
                 },
                 list: {
                     unsubscribe: {
-                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+configDB.appname+'-forUser:'+personne.idUtilisateur,
+                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:'+personne.idUtilisateur,
                         comment: 'Ne plus recevoir de mails',
                     },
                 },

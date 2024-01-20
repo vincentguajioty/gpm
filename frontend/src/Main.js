@@ -62,7 +62,7 @@ const Main = props => {
   const getConfigFromBO = async () => {
     try {
       const response = await Axios.get('getConfig');
-      ConfigurationService.setConfig(response.data[0]);
+      ConfigurationService.setConfig(response.data);
       setConfigFromBO(true);
     } catch (error) {
       console.log(error)

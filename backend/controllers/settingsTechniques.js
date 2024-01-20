@@ -4,9 +4,8 @@ const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 
 exports.getConfigForAdmin = async (req, res) => {
     try {
-        const general = await db.query(
+        let general = await db.query(
             `SELECT
-                appname,
                 urlsite,
                 mailserver,
                 mailcopy,
@@ -15,6 +14,7 @@ exports.getConfigForAdmin = async (req, res) => {
             FROM
                 CONFIG
         `);
+        general[0].appname = process.env.APP_NAME
 
         const cnil = await db.query(
             `SELECT
@@ -117,14 +117,12 @@ exports.saveGlobalConfig = async (req, res) => {
             `UPDATE
                 CONFIG
             SET
-                appname = :appname,
                 urlsite = :urlsite,
                 mailserver = :mailserver,
                 mailcopy = :mailcopy,
                 maintenance = :maintenance,
                 resetPassword = :resetPassword
         `,{
-            appname : req.body.appname || null,
             urlsite : req.body.urlsite || null,
             mailserver : req.body.mailserver || null,
             mailcopy : req.body.mailcopy || 0,

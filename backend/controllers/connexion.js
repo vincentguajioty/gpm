@@ -672,9 +672,8 @@ exports.alive = (req, res) => {
 
 exports.getConfig = async (req, res) => {
     try {
-        const result = await db.query(
+        let result = await db.query(
             `SELECT
-                appname,
                 urlsite,
                 maintenance,
                 resetPassword,
@@ -687,7 +686,10 @@ exports.getConfig = async (req, res) => {
             FROM
                 CONFIG
         `);
-        res.send(result);
+        
+        result[0].appname = process.env.APP_NAME
+
+        res.send(result[0]);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
