@@ -5,6 +5,7 @@ import { Card, Col, Row } from 'react-bootstrap';
 import Background from './Background';
 import corner4 from 'assets/img/illustrations/corner-4.png';
 import createMarkup from 'helpers/createMarkup';
+import QRCode from "react-qr-code"; 
 
 const PageHeader = ({
   title,
@@ -14,6 +15,7 @@ const PageHeader = ({
   image,
   col,
   children,
+  qrCodeURL = null,
   ...rest
 }) => (
   <Card {...rest}>
@@ -38,6 +40,14 @@ const PageHeader = ({
           )}
           {children}
         </Col>
+        {qrCodeURL != null ?
+          <Col>
+            <QRCode
+              value={qrCodeURL}
+              style={{ height: "auto", maxWidth: "20%", width: "20%"}}
+            />
+          </Col>
+        : null}
       </Row>
     </Card.Body>
   </Card>

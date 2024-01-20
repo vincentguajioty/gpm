@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { Row, Col, Alert, } from 'react-bootstrap';
 import PageHeader from 'components/common/PageHeader';
 import moment from 'moment-timezone';
@@ -10,10 +11,11 @@ import socketIO from 'socket.io-client';
 import AjouterConsommable from './ajouterConsommable';
 import AfficherConsommable from './afficherConsommation';
 import GestionReappro from './gererReappro';
+import ConfigurationService from 'services/configurationService';
 
-const GererConsommation = ({
-    idConsommation,
-}) => {
+const GererConsommation = () => {
+    let {idConsommation} = useParams();
+
     const [isLoading, setLoading] = useState(true);
     const [consommation, setConsommation] = useState([]);
 
@@ -149,6 +151,7 @@ const GererConsommation = ({
                 preTitle="Espace public"
                 title="Tracer la consommation de matériel"
                 description={moment(consommation.consommation.dateConsommation).format('DD/MM/YYYY') + ' ' + consommation.consommation.evenementConsommation + ' géré par ' + consommation.consommation.nomDeclarantConsommation}
+                qrCodeURL={ConfigurationService.config?.urlsite ? ConfigurationService.config.urlsite+'/consoPublic/'+idConsommation : null}
                 className="mb-3"
             />
 
@@ -177,7 +180,7 @@ const GererConsommation = ({
                         </Col>
                     </Row>
                 :
-                    <Alert variant='danger'>ERREUR - Rapport de consommation clos</Alert>
+                    <Alert variant='success'>Ce rapport de consommation est maintenant clos, <Link to='/'>revenir à l'accueil.</Link></Alert>
             }
         </>);
     }
