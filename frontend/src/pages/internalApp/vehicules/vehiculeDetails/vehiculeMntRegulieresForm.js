@@ -253,7 +253,7 @@ const VehiculeMaintenancesRegulieresForm = ({
                         </Col>
                         <Col md={6} className='mb-2'>
                             <h6>Actes enregistrés</h6>
-                            <Table>
+                            <Table size='sm' responsive>
                                 <thead>
                                     <tr>
                                         <th>Acte</th>

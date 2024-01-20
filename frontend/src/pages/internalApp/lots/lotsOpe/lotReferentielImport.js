@@ -147,7 +147,7 @@ const LotReferentielImport = ({
             <Modal.Body>
                 {isLoading ? <LoaderInfiniteLoop/> : 
                     <Form onSubmit={lancerImport}>
-                        <Table>
+                        <Table size='sm' responsive>
                             <thead>
                                 <tr>
                                     <th>Obligatoire</th>

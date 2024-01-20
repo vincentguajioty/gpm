@@ -70,7 +70,7 @@ const FournisseurDetails = () => {
                     <Card>
                         <Tabs defaultActiveKey="produits" id="uncontrolled-tab-example">
                             <Tab eventKey="produits" title="Produits référencés" className='border-bottom border-x p-3'>
-                                <Table>
+                                <Table size='sm' responsive>
                                     <thead>
                                         <tr>
                                             <th>Libellé</th>

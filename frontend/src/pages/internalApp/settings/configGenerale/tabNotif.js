@@ -116,7 +116,7 @@ const ConfigGeneraleTabNotifs = ({
 
     return (<>
         <Form onSubmit={handleSubmit(modifierEnBase)}>
-            <Table>
+            <Table size='sm' responsive>
                 <thead>
                     <tr>
                         <td></td>

@@ -31,7 +31,7 @@ const VehiculeLotsCharges = ({lots}) => {
                 <FalconCloseButton onClick={handleCloseModal}/>
             </Modal.Header>
             <Modal.Body>
-                <Table>
+                <Table size='sm' responsive>
                     <thead>
                         <tr>
                             <th>Lot</th>

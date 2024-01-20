@@ -76,7 +76,7 @@ const ActionsMassives = () => {
                 <center><ActionsMassivesLock setPageNeedsRefresh={setPageNeedsRefresh} /></center>
                 <Card className='mt-3'>
                     <Card.Body>
-                        <Table>
+                        <Table size='sm' responsive>
                             <thead>
                                 <tr>
             						<th>Catégorie</th>

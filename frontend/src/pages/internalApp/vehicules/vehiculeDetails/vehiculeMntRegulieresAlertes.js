@@ -91,7 +91,7 @@ const VehiculeMaintenancesRegulieresAlertes = ({idVehicule, vehiculeNotification
                     <Alert variant='warning'>Les notifications sont désactivées dans les propriétés du véhicule !</Alert>
                 : null}
                 {isLoading ? <LoaderInfiniteLoop/> :
-                    <Table>
+                    <Table size='sm' responsive>
                         <thead>
                             <tr>
                                 <th>Maintenance</th>
