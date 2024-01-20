@@ -66,23 +66,10 @@ const RapportsConso = () => {
                     <Card.Body>
                         <Accordion>
                             {rapports.map((conso, i)=>{return(
-                                <Accordion.Item eventKey={conso.idConsommation} flush="true">
-                                    <Accordion.Header>
-                                        {conso.declarationEnCours && conso.reapproEnCours ?
-                                            <SoftBadge bg="info" className='me-1'>Réappro</SoftBadge>
-                                            : conso.declarationEnCours ? <SoftBadge bg="info" className='me-1'>Saisie</SoftBadge>
-                                            : conso.qttMaterielsNonTraites > 0 ? <SoftBadge bg="danger" className='me-1'>A TRAITER</SoftBadge>
-                                            : <SoftBadge bg="success" className='me-1'>Traité</SoftBadge>
-                                        }
-                                        {moment(conso.dateConsommation).format('DD/MM/YYYY')} - {conso.evenementConsommation}
-                                    </Accordion.Header>
-                                    <Accordion.Body>
-                                        <RapportsConsoOneAccordion
-                                            idConsommation={conso.idConsommation}
-                                            setPageNeedsRefesh={setPageNeedsRefesh}
-                                        />
-                                    </Accordion.Body>
-                                </Accordion.Item>
+                                <RapportsConsoOneAccordion
+                                    idConsommation={conso.idConsommation}
+                                    setPageNeedsRefesh={setPageNeedsRefesh}
+                                />
                             )})}
                         </Accordion>
                     </Card.Body>

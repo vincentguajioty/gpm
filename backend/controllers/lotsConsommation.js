@@ -19,6 +19,7 @@ exports.getOneConso = async (req, res)=>{
         `,{
             idConsommation: req.body.idConsommation || null
         });
+        
         const qttMaterielsTraites = await db.query(`
             SELECT
                 COUNT(idConsommationMateriel) as nb
@@ -45,6 +46,11 @@ exports.getOneConso = async (req, res)=>{
             idConsommation: consommation[0].idConsommation
         });
         consommation[0].qttMaterielsNonTraites = qttMaterielsNonTraites[0].nb;
+
+        if(consommation[0].declarationEnCours && consommation[0].reapproEnCours){consommation[0].statut = {label:'Réappro', color:'info', adminReadOnly: true}}
+        else if(consommation[0].declarationEnCours){consommation[0].statut = {label:'Saisie', color:'info', adminReadOnly: true}}
+        else if(qttMaterielsNonTraites[0].nb > 0){consommation[0].statut = {label:'A TRAITER', color:'danger', adminReadOnly: false}}
+        else {consommation[0].statut = {label:'Traité', color:'success', adminReadOnly: true}}
 
         const elements = await db.query(`
             SELECT
@@ -128,37 +134,6 @@ exports.getAllConso = async (req, res)=>{
             ORDER BY
                 dateConsommation DESC
         `);
-        for(const conso of consommations)
-        {
-            const qttMaterielsTraites = await db.query(`
-                SELECT
-                    COUNT(idConsommationMateriel) as nb
-                FROM
-                    LOTS_CONSOMMATION_MATERIEL
-                WHERE
-                    idConsommation = :idConsommation
-                    AND
-                    traiteOperateur = true
-            `,{
-                idConsommation: conso.idConsommation
-            });
-            conso.qttMaterielsTraites = qttMaterielsTraites[0].nb;
-
-            const qttMaterielsNonTraites = await db.query(`
-                SELECT
-                    COUNT(idConsommationMateriel) as nb
-                FROM
-                    LOTS_CONSOMMATION_MATERIEL
-                WHERE
-                    idConsommation = :idConsommation
-                    AND
-                    traiteOperateur = false
-            `,{
-                idConsommation: conso.idConsommation
-            });
-            conso.qttMaterielsNonTraites = qttMaterielsNonTraites[0].nb;
-        }
-
         res.send(consommations);
     } catch (error) {
         logger.error(error);
