@@ -22,7 +22,7 @@ const LoginForm = ({ hasLabel }) => {
   const [erreurDeConnexion, setErreurDeConnexion] = useState(false);
   const [showFMA, setShowMFA] = useState(false);
 
-  const [seSouvenir, setSeSouvenir] = useState(false);
+  const [seSouvenir, setSeSouvenir] = useState(window.__ENV__.LOGIN_REMEMBER_DEFAULT);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -139,7 +139,7 @@ const LoginForm = ({ hasLabel }) => {
         />
       </Form.Group>
 
-      {window.__ENV__.APP_RECAPTCHA_ENABLED === "1" ? (
+      {window.__ENV__.APP_RECAPTCHA_ENABLED ? (
         <ReCAPTCHA
           sitekey={window.__ENV__.APP_RECAPTCHA_SITEKEY}
           onChange={token => setReCaptchaToken(token)}
