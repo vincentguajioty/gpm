@@ -112,7 +112,7 @@ const ContactDev = () => {
     };
     const handleShowMailModal = () => {
         setShowMailModal(true);
-        setValue("FO_Version", window.__ENV__.APP_VERSION);
+        setValue("FO_Version", process.env.REACT_APP_VERSION);
     };
 
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm({
