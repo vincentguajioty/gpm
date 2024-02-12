@@ -86,8 +86,8 @@ exports.addCatalogue = async (req, res)=>{
             tailleCatalogueTenue: req.body.tailleCatalogueTenue || null,
             serigraphieCatalogueTenue: req.body.serigraphieCatalogueTenue || null,
             idFournisseur: req.body.idFournisseur || null,
-            stockCatalogueTenue: req.body.stockCatalogueTenue || null,
-            stockAlerteCatalogueTenue: req.body.stockAlerteCatalogueTenue || null,
+            stockCatalogueTenue: req.body.stockCatalogueTenue || 0,
+            stockAlerteCatalogueTenue: req.body.stockAlerteCatalogueTenue || 0,
         });
         
         res.sendStatus(201);
@@ -116,8 +116,8 @@ exports.updateCatalogue = async (req, res)=>{
             tailleCatalogueTenue: req.body.tailleCatalogueTenue || null,
             serigraphieCatalogueTenue: req.body.serigraphieCatalogueTenue || null,
             idFournisseur: req.body.idFournisseur || null,
-            stockCatalogueTenue: req.body.stockCatalogueTenue || null,
-            stockAlerteCatalogueTenue: req.body.stockAlerteCatalogueTenue || null,
+            stockCatalogueTenue: req.body.stockCatalogueTenue || 0,
+            stockAlerteCatalogueTenue: req.body.stockAlerteCatalogueTenue || 0,
             idCatalogueTenue: req.body.idCatalogueTenue,
         });
         

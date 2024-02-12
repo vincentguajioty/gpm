@@ -307,6 +307,16 @@ export const catalogueTenuesForm = Yup.object().shape({
         .string()
         .typeError(champObligatoire)
         .required(champObligatoire),
+    stockCatalogueTenue: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(0, champObligatoire)
+        .required(champObligatoire),
+    stockAlerteCatalogueTenue: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(0, champObligatoire)
+        .required(champObligatoire),
 });
 
 export const affectationsTenuesForm = Yup.object().shape({
