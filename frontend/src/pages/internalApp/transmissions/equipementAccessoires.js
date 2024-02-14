@@ -6,6 +6,7 @@ import GPMtable from 'components/gpmTable/gpmTable';
 import IconButton from 'components/common/IconButton';
 import Select from 'react-select';
 import { vhfEquipementsAccessoiresDelete } from 'helpers/deleteModalWarningContent';
+import moment from 'moment-timezone';
 
 import HabilitationService from 'services/habilitationsService';
 import { Axios } from 'helpers/axios';
@@ -13,6 +14,13 @@ import { Axios } from 'helpers/axios';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { vhfAccessoiresForm } from 'helpers/yupValidationSchema';
+
+import DatePicker from 'react-datepicker';
+import { registerLocale, setDefaultLocale } from  "react-datepicker";
+import fr from 'date-fns/locale/fr';
+import SoftBadge from 'components/common/SoftBadge';
+registerLocale('fr', fr);
+setDefaultLocale('fr');
 
 const EquipementVhfAccessoires = ({equipement, setPageNeedsRefresh}) => {
     const nl2br = require('react-nl2br');
@@ -37,7 +45,14 @@ const EquipementVhfAccessoires = ({equipement, setPageNeedsRefresh}) => {
             accessor: 'remarquesVhfAccessoire',
             Header: 'Remarques',
             Cell: ({ value, row }) => {
-				return(nl2br(value));
+				return(
+                    <>
+                        {nl2br(value)}
+                        {value ? <br/> : null}
+                        {row.original.dateAchat ? <SoftBadge className='mt-1 me-1'>Achat: {moment(row.original.dateAchat).format('DD/MM/YYYY')}</SoftBadge> : null}
+                        {row.original.dateMiseService ? <SoftBadge className='mt-1 me-1'>Mise en service: {moment(row.original.dateMiseService).format('DD/MM/YYYY')}</SoftBadge> : null}
+                    </>
+                );
 			},
         },
         {
@@ -94,6 +109,9 @@ const EquipementVhfAccessoires = ({equipement, setPageNeedsRefresh}) => {
             setValue("marqueModeleVhfAccessoire", oneItemFromArray.marqueModeleVhfAccessoire);
             setValue("idVhfAccessoireType", oneItemFromArray.idVhfAccessoireType);
             setValue("SnVhfAccessoire", oneItemFromArray.SnVhfAccessoire);
+            setValue("dateAchat", oneItemFromArray.dateAchat ? new Date(oneItemFromArray.dateAchat) : null);
+            setValue("dateMiseService", oneItemFromArray.dateMiseService ? new Date(oneItemFromArray.dateMiseService) : null);
+            setValue("dureeVieEstimeeJours", oneItemFromArray.dureeVieEstimeeJours);
             setValue("remarquesVhfAccessoire", oneItemFromArray.remarquesVhfAccessoire);
         }
 
@@ -114,6 +132,9 @@ const EquipementVhfAccessoires = ({equipement, setPageNeedsRefresh}) => {
                     marqueModeleVhfAccessoire: data.marqueModeleVhfAccessoire,
                     idVhfAccessoireType: data.idVhfAccessoireType,
                     SnVhfAccessoire: data.SnVhfAccessoire,
+                    dateAchat: data.dateAchat,
+                    dateMiseService: data.dateMiseService,
+                    dureeVieEstimeeJours: data.dureeVieEstimeeJours,
                     remarquesVhfAccessoire: data.remarquesVhfAccessoire,
                 });
             }
@@ -124,6 +145,9 @@ const EquipementVhfAccessoires = ({equipement, setPageNeedsRefresh}) => {
                     marqueModeleVhfAccessoire: data.marqueModeleVhfAccessoire,
                     idVhfAccessoireType: data.idVhfAccessoireType,
                     SnVhfAccessoire: data.SnVhfAccessoire,
+                    dateAchat: data.dateAchat,
+                    dateMiseService: data.dateMiseService,
+                    dureeVieEstimeeJours: data.dureeVieEstimeeJours,
                     remarquesVhfAccessoire: data.remarquesVhfAccessoire,
                     idVhfEquipement: equipement.idVhfEquipement,
                 });
@@ -224,6 +248,42 @@ const EquipementVhfAccessoires = ({equipement, setPageNeedsRefresh}) => {
                             onChange={val => val != null ? setValue("idVhfAccessoireType", val.value) : setValue("idVhfAccessoireType", null)}
                         />
                         <small className="text-danger">{errors.idVhfAccessoireType?.message}</small>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label>Date d'achat</Form.Label><br/>
+                        <DatePicker
+                            selected={watch("dateAchat")}
+                            onChange={(date)=>setValue("dateAchat", date)}
+                            formatWeekDay={day => day.slice(0, 3)}
+                            className='form-control'
+                            placeholderText="Choisir une date"
+                            dateFormat="dd/MM/yyyy"
+                            fixedHeight
+                            locale="fr"
+                        />
+                        <small className="text-danger">{errors.dateAchat?.message}</small>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label>Date de mise en service</Form.Label><br/>
+                        <DatePicker
+                            selected={watch("dateMiseService")}
+                            onChange={(date)=>setValue("dateMiseService", date)}
+                            formatWeekDay={day => day.slice(0, 3)}
+                            className='form-control'
+                            placeholderText="Choisir une date"
+                            dateFormat="dd/MM/yyyy"
+                            fixedHeight
+                            locale="fr"
+                        />
+                        <small className="text-danger">{errors.dateMiseService?.message}</small>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label>Durée de vie estimée (jours)</Form.Label>
+                        <Form.Control size="sm" type="text" name='dureeVieEstimeeJours' id='dureeVieEstimeeJours' {...register('dureeVieEstimeeJours')}/>
+                        <small className="text-danger">{errors.dureeVieEstimeeJours?.message}</small>
                     </Form.Group>
 
                     <Form.Group className="mb-3">

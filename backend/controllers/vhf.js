@@ -663,6 +663,9 @@ exports.addAccessoire = async (req, res)=>{
                 marqueModeleVhfAccessoire = :marqueModeleVhfAccessoire,
                 idVhfAccessoireType = :idVhfAccessoireType,
                 SnVhfAccessoire = :SnVhfAccessoire,
+                dateAchat = :dateAchat,
+                dateMiseService = :dateMiseService,
+                dureeVieEstimeeJours = :dureeVieEstimeeJours,
                 remarquesVhfAccessoire = :remarquesVhfAccessoire,
                 idVhfEquipement = :idVhfEquipement
         `,{
@@ -670,6 +673,9 @@ exports.addAccessoire = async (req, res)=>{
             marqueModeleVhfAccessoire: req.body.marqueModeleVhfAccessoire || null,
             idVhfAccessoireType: req.body.idVhfAccessoireType || null,
             SnVhfAccessoire: req.body.SnVhfAccessoire || null,
+            dateAchat: req.body.dateAchat || null,
+            dateMiseService: req.body.dateMiseService || null,
+            dureeVieEstimeeJours: req.body.dureeVieEstimeeJours || null,
             remarquesVhfAccessoire: req.body.remarquesVhfAccessoire || null,
             idVhfEquipement: req.body.idVhfEquipement || null,
         });
@@ -691,6 +697,9 @@ exports.updateAccessoire = async (req, res)=>{
                 marqueModeleVhfAccessoire = :marqueModeleVhfAccessoire,
                 idVhfAccessoireType = :idVhfAccessoireType,
                 SnVhfAccessoire = :SnVhfAccessoire,
+                dateAchat = :dateAchat,
+                dateMiseService = :dateMiseService,
+                dureeVieEstimeeJours = :dureeVieEstimeeJours,
                 remarquesVhfAccessoire = :remarquesVhfAccessoire
             WHERE
                 idVhfAccessoire = :idVhfAccessoire
@@ -699,6 +708,9 @@ exports.updateAccessoire = async (req, res)=>{
             marqueModeleVhfAccessoire: req.body.marqueModeleVhfAccessoire || null,
             idVhfAccessoireType: req.body.idVhfAccessoireType || null,
             SnVhfAccessoire: req.body.SnVhfAccessoire || null,
+            dateAchat: req.body.dateAchat || null,
+            dateMiseService: req.body.dateMiseService || null,
+            dureeVieEstimeeJours: req.body.dureeVieEstimeeJours || null,
             remarquesVhfAccessoire: req.body.remarquesVhfAccessoire || null,
             idVhfAccessoire: req.body.idVhfAccessoire || null,
         });
