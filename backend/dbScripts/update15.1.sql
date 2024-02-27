@@ -1,0 +1,1 @@
+UPDATE CONFIG SET version = '15.1';
