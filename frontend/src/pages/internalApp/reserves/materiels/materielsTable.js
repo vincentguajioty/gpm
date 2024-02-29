@@ -4,6 +4,8 @@ import SoftBadge from 'components/common/SoftBadge';
 import GPMtable from 'components/gpmTable/gpmTable';
 import moment from 'moment-timezone';
 
+import nl2br from 'react-nl2br';
+
 import { Axios } from 'helpers/axios';
 import HabilitationService from 'services/habilitationsService';
 
@@ -15,6 +17,7 @@ const ReservesMaterielsTable = ({
     displayLibelleConteneur = true,
     displayQuantiteReserve = true,
     displayPeremptionReserve = true,
+    displayRemarques = true,
     displayActions = true,
     filterIdConteneur = null,
 }) => {
@@ -96,6 +99,14 @@ const ReservesMaterielsTable = ({
                                 <SoftBadge bg='success'>{moment(row.original.peremptionReserve).format('DD/MM/YYYY')}</SoftBadge>
                     : null
                 );
+			},
+        },
+        {
+            accessor: 'commentairesReserveElement',
+            Header: 'Remarques',
+            isHidden: !displayRemarques,
+            Cell: ({ value, row }) => {
+				return(nl2br(value));
 			},
         },
         {

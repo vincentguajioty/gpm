@@ -5,6 +5,8 @@ import GPMtable from 'components/gpmTable/gpmTable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment-timezone';
 
+import nl2br from 'react-nl2br';
+
 import { Axios } from 'helpers/axios';
 import HabilitationService from 'services/habilitationsService';
 
@@ -21,6 +23,7 @@ const MaterielsTable = ({
     displayPeremption = true,
     displayLibelleMaterielsEtat = true,
     displayNotif = true,
+    displayRemarques = true,
     displayActions = true,
     filterIdEmplacement = null,
     hideAddButton = false,
@@ -132,6 +135,14 @@ const MaterielsTable = ({
             isHidden: !displayNotif,
             Cell: ({ value, row }) => {
 				return(row.original.idNotificationEnabled != 1 ? <FontAwesomeIcon icon='bell-slash' /> : <FontAwesomeIcon icon='bell' />);
+			},
+        },
+        {
+            accessor: 'commentairesElement',
+            Header: 'Remarques',
+            isHidden: !displayRemarques,
+            Cell: ({ value, row }) => {
+				return(nl2br(value));
 			},
         },
         {
