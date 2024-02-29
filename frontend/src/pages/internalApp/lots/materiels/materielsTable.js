@@ -64,6 +64,12 @@ const MaterielsTable = ({
             accessor: 'libelleMateriel',
             Header: 'Libellé',
             isHidden: !displayLibelleMateriel,
+            Cell: ({ value, row }) => {
+				return(<>
+                    {value}
+                    {row.original.numeroSerie ? <><br/><SoftBadge className='mt-1'>SN: {row.original.numeroSerie}</SoftBadge></> : null}
+                </>);
+			},
         },
         {
             accessor: 'libelleEmplacement',

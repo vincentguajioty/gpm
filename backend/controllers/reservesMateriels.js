@@ -74,6 +74,7 @@ exports.addReservesMateriels = async (req, res)=>{
                 quantiteAlerteReserve = :quantiteAlerteReserve,
                 peremptionReserve = :peremptionReserve,
                 peremptionReserveAnticipation = :peremptionReserveAnticipation,
+                numeroSerie = :numeroSerie,
                 commentairesReserveElement = :commentairesReserveElement
         ;`,{
             idMaterielCatalogue: req.body.idMaterielCatalogue || null,
@@ -83,6 +84,7 @@ exports.addReservesMateriels = async (req, res)=>{
             quantiteAlerteReserve: req.body.quantiteAlerteReserve || 0,
             peremptionReserve: req.body.peremptionReserve || null,
             peremptionReserveAnticipation: req.body.peremptionReserveAnticipation || null,
+            numeroSerie: req.body.numeroSerie || null,
             commentairesReserveElement: req.body.commentairesReserveElement || null,
         });
 
@@ -106,6 +108,7 @@ exports.updateReservesMateriels = async (req, res)=>{
                 quantiteAlerteReserve = :quantiteAlerteReserve,
                 peremptionReserve = :peremptionReserve,
                 peremptionReserveAnticipation = :peremptionReserveAnticipation,
+                numeroSerie = :numeroSerie,
                 commentairesReserveElement = :commentairesReserveElement
             WHERE
                 idReserveElement = :idReserveElement
@@ -118,6 +121,7 @@ exports.updateReservesMateriels = async (req, res)=>{
             peremptionReserve: req.body.peremptionReserve || null,
             peremptionReserveAnticipation: req.body.peremptionReserveAnticipation || null,
             commentairesReserveElement: req.body.commentairesReserveElement || null,
+            numeroSerie: req.body.numeroSerie || null,
             idReserveElement: req.body.idReserveElement || null,
         });
         

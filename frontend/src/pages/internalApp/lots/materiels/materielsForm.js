@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Offcanvas, Button, Form, Row, Col, FloatingLabel, } from 'react-bootstrap';
+import { Offcanvas, Button, Form, Row, Col, FloatingLabel, Alert, } from 'react-bootstrap';
 import IconButton from 'components/common/IconButton';
 import Select from 'react-select';
 
@@ -55,6 +55,7 @@ const MaterielsForm = ({
             setValue("quantiteAlerte", element.quantiteAlerte);
             setValue("peremption", element.peremption ? new Date(element.peremption) : null);
             setValue("peremptionAnticipation", element.peremptionAnticipation);
+            setValue("numeroSerie", element.numeroSerie);
             setValue("commentairesElement", element.commentairesElement);
             setValue("idMaterielsEtat", element.idMaterielsEtat);
         }
@@ -90,6 +91,7 @@ const MaterielsForm = ({
                     quantiteAlerte : data.quantiteAlerte,
                     peremption : data.peremption,
                     peremptionAnticipation : data.peremptionAnticipation,
+                    numeroSerie : data.numeroSerie,
                     commentairesElement : data.commentairesElement,
                     idMaterielsEtat : data.idMaterielsEtat,
                 });
@@ -104,6 +106,7 @@ const MaterielsForm = ({
                     quantiteAlerte : data.quantiteAlerte,
                     peremption : data.peremption,
                     peremptionAnticipation : data.peremptionAnticipation,
+                    numeroSerie : data.numeroSerie,
                     commentairesElement : data.commentairesElement,
                     idMaterielsEtat : data.idMaterielsEtat,
                 });
@@ -233,6 +236,11 @@ const MaterielsForm = ({
                                     <small className="text-danger">{errors.quantiteAlerte?.message}</small>
                                 </FloatingLabel>
                             </Col>
+                            {watch("quantite") != 1 && watch("numeroSerie") != null && watch("numeroSerie") != "" ?
+                                <Col md={12}>
+                                    <Alert variant='warning'>Un numéro de série est renseigné, ce matériel est donc logiquement unique, sa quantité devrait donc être de 1.</Alert>
+                                </Col>
+                            : null}
                         </Row>
                     </Form.Group>
 
@@ -274,6 +282,12 @@ const MaterielsForm = ({
                             onChange={val => val != null ? setValue("idMaterielsEtat", val.value) : setValue("idMaterielsEtat", null)}
                         />
                         <small className="text-danger">{errors.idMaterielsEtat?.message}</small>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label>Numéro de série</Form.Label>
+                        <Form.Control size="sm" type="text" name={"numeroSerie"} id={"numeroSerie"} {...register("numeroSerie")}/>
+                        <small className="text-danger">{errors.numeroSerie?.message}</small>
                     </Form.Group>
 
                     <Form.Group className="mb-3">

@@ -95,6 +95,7 @@ exports.addMateriels = async (req, res)=>{
                 quantiteAlerte = :quantiteAlerte,
                 peremption = :peremption,
                 peremptionAnticipation = :peremptionAnticipation,
+                numeroSerie = :numeroSerie,
                 commentairesElement = :commentairesElement,
                 idMaterielsEtat = :idMaterielsEtat
         ;`,{
@@ -105,6 +106,7 @@ exports.addMateriels = async (req, res)=>{
             quantiteAlerte: req.body.quantiteAlerte || 0,
             peremption: req.body.peremption || null,
             peremptionAnticipation: req.body.peremptionAnticipation || null,
+            numeroSerie: req.body.numeroSerie || null,
             commentairesElement: req.body.commentairesElement || null,
             idMaterielsEtat: req.body.idMaterielsEtat || null,
         });
@@ -167,6 +169,7 @@ exports.updateMateriels = async (req, res)=>{
                 quantiteAlerte = :quantiteAlerte,
                 peremption = :peremption,
                 peremptionAnticipation = :peremptionAnticipation,
+                numeroSerie = :numeroSerie,
                 commentairesElement = :commentairesElement,
                 idMaterielsEtat = :idMaterielsEtat
             WHERE
@@ -179,6 +182,7 @@ exports.updateMateriels = async (req, res)=>{
             quantiteAlerte: req.body.quantiteAlerte || 0,
             peremption: req.body.peremption || null,
             peremptionAnticipation: req.body.peremptionAnticipation || null,
+            numeroSerie: req.body.numeroSerie || null,
             commentairesElement: req.body.commentairesElement || null,
             idMaterielsEtat: req.body.idMaterielsEtat || null,
             idElement: req.body.idElement || null,

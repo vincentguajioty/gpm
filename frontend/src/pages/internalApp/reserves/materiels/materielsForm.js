@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Offcanvas, Button, Form, Row, Col, FloatingLabel, } from 'react-bootstrap';
+import { Offcanvas, Button, Form, Row, Col, FloatingLabel, Alert, } from 'react-bootstrap';
 import IconButton from 'components/common/IconButton';
 import Select from 'react-select';
 
@@ -54,6 +54,7 @@ const ReservesMaterielsForm = ({
             setValue("quantiteAlerteReserve", element.quantiteAlerteReserve);
             setValue("peremptionReserve", element.peremptionReserve ? new Date(element.peremptionReserve) : null);
             setValue("peremptionReserveAnticipation", element.peremptionReserveAnticipation);
+            setValue("numeroSerie", element.numeroSerie);
             setValue("commentairesReserveElement", element.commentairesReserveElement);
         }
 
@@ -86,6 +87,7 @@ const ReservesMaterielsForm = ({
                     quantiteAlerteReserve : data.quantiteAlerteReserve,
                     peremptionReserve : data.peremptionReserve,
                     peremptionReserveAnticipation : data.peremptionReserveAnticipation,
+                    numeroSerie : data.numeroSerie,
                     commentairesReserveElement : data.commentairesReserveElement,
                 });
             }
@@ -99,6 +101,7 @@ const ReservesMaterielsForm = ({
                     quantiteAlerteReserve : data.quantiteAlerteReserve,
                     peremptionReserve : data.peremptionReserve,
                     peremptionReserveAnticipation : data.peremptionReserveAnticipation,
+                    numeroSerie : data.numeroSerie,
                     commentairesReserveElement : data.commentairesReserveElement,
                 });
             }
@@ -227,6 +230,11 @@ const ReservesMaterielsForm = ({
                                     <small className="text-danger">{errors.quantiteAlerteReserve?.message}</small>
                                 </FloatingLabel>
                             </Col>
+                            {watch("quantiteReserve") != 1 && watch("numeroSerie") != null && watch("numeroSerie") != "" ?
+                                <Col md={12}>
+                                    <Alert variant='warning'>Un numéro de série est renseigné, ce matériel est donc logiquement unique, sa quantité devrait donc être de 1.</Alert>
+                                </Col>
+                            : null}
                         </Row>
                     </Form.Group>
 
@@ -249,6 +257,12 @@ const ReservesMaterielsForm = ({
                         <Form.Label>Anticipation de la notification (j)</Form.Label>
                         <Form.Control size="sm" type="number" min="0" step="1" name='peremptionReserveAnticipation' id='peremptionReserveAnticipation' {...register('peremptionReserveAnticipation')} disabled={lockAnticipation}/>
                         <small className="text-danger">{errors.peremptionReserveAnticipation?.message}</small>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label>Numéro de série</Form.Label>
+                        <Form.Control size="sm" type="text" name={"numeroSerie"} id={"numeroSerie"} {...register("numeroSerie")}/>
+                        <small className="text-danger">{errors.numeroSerie?.message}</small>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
