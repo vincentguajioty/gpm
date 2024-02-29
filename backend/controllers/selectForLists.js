@@ -968,6 +968,8 @@ exports.getPublicCatalogueMateriel = async (req, res)=>{
                     LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot
                     LEFT OUTER JOIN LOTS_CONSOMMATION_MATERIEL conso ON c.idMaterielCatalogue = conso.idMaterielCatalogue
                 WHERE
+                    c.disponibleBenevolesConso = true
+                    AND
                     (conso.idLot IS NULL OR conso.idLot = l.idLot)
                     AND
                     l.dispoBenevoles = true

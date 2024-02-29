@@ -712,7 +712,8 @@ exports.addCatalogueMateriel = async (req, res)=>{
                 commentairesMateriel      = :commentairesMateriel,
                 idFournisseur             = :idFournisseur,
                 peremptionAnticipationOpe = :peremptionAnticipationOpe,
-                peremptionAnticipationRes = :peremptionAnticipationRes
+                peremptionAnticipationRes = :peremptionAnticipationRes,
+                disponibleBenevolesConso  = :disponibleBenevolesConso
             ;`,
         {
             libelleMateriel           : req.body.libelleMateriel || null,
@@ -724,6 +725,7 @@ exports.addCatalogueMateriel = async (req, res)=>{
             idFournisseur             : req.body.idFournisseur || null,
             peremptionAnticipationOpe : req.body.sterilite ? (req.body.peremptionAnticipationOpe > 0 ? req.body.peremptionAnticipationOpe : null) : null,
             peremptionAnticipationRes : req.body.sterilite ? (req.body.peremptionAnticipationRes > 0 ? req.body.peremptionAnticipationRes : null) : null,
+            disponibleBenevolesConso  : req.body.disponibleBenevolesConso || null,
         });
 
         await fonctionsMetiers.updatePeremptionsAnticipations();
@@ -749,7 +751,8 @@ exports.updateCatalogueMateriel = async (req, res)=>{
                 commentairesMateriel      = :commentairesMateriel,
                 idFournisseur             = :idFournisseur,
                 peremptionAnticipationOpe = :peremptionAnticipationOpe,
-                peremptionAnticipationRes = :peremptionAnticipationRes
+                peremptionAnticipationRes = :peremptionAnticipationRes,
+                disponibleBenevolesConso  = :disponibleBenevolesConso
             WHERE
                 idMaterielCatalogue = :idMaterielCatalogue
             ;`,
@@ -763,7 +766,8 @@ exports.updateCatalogueMateriel = async (req, res)=>{
             idFournisseur             : req.body.idFournisseur || null,
             peremptionAnticipationOpe : req.body.sterilite ? (req.body.peremptionAnticipationOpe > 0 ? req.body.peremptionAnticipationOpe : null) : null,
             peremptionAnticipationRes : req.body.sterilite ? (req.body.peremptionAnticipationRes > 0 ? req.body.peremptionAnticipationRes : null) : null,
-            idMaterielCatalogue       : req.body.idMaterielCatalogue || null
+            idMaterielCatalogue       : req.body.idMaterielCatalogue || null,
+            disponibleBenevolesConso  : req.body.disponibleBenevolesConso || false,
         });
 
         await fonctionsMetiers.updatePeremptionsAnticipations();

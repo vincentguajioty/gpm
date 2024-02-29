@@ -15,6 +15,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { catalogueForm } from 'helpers/yupValidationSchema';
 import GPMtable from 'components/gpmTable/gpmTable';
+import SoftBadge from 'components/common/SoftBadge';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Catalogue = () => {
     /*PAGE BASICS*/
@@ -49,7 +51,15 @@ const Catalogue = () => {
     const colonnes = [
         {
             accessor: 'libelleMateriel',
-            Header: 'Libellé',
+            Header: 'Libellé et dispo bénévole',
+            Cell: ({ value, row }) => {
+				return(<>
+                    <SoftBadge className='mt-1 me-1' bg={row.original.disponibleBenevolesConso ? 'warning' : 'success'}>
+                        <FontAwesomeIcon icon={row.original.disponibleBenevolesConso ? 'check' : 'lock'} />
+                    </SoftBadge>
+                    {value}
+                </>);
+			},
         },
         {
             accessor: 'libelleCategorie',
@@ -124,6 +134,7 @@ const Catalogue = () => {
                 setValue("idFournisseur", oneItemFromArray.idFournisseur);
                 setValue("peremptionAnticipationOpe", oneItemFromArray.peremptionAnticipationOpe);
                 setValue("peremptionAnticipationRes", oneItemFromArray.peremptionAnticipationRes);
+                setValue("disponibleBenevolesConso", oneItemFromArray.disponibleBenevolesConso ? true : false)
             }
 
             setShowOffCanevas(true);
@@ -148,6 +159,7 @@ const Catalogue = () => {
                     idFournisseur: data.idFournisseur,
                     peremptionAnticipationOpe: data.peremptionAnticipationOpe,
                     peremptionAnticipationRes: data.peremptionAnticipationRes,
+                    disponibleBenevolesConso: data.disponibleBenevolesConso,
                 });
             }
             else
@@ -162,6 +174,7 @@ const Catalogue = () => {
                     idFournisseur: data.idFournisseur,
                     peremptionAnticipationOpe: data.peremptionAnticipationOpe,
                     peremptionAnticipationRes: data.peremptionAnticipationRes,
+                    disponibleBenevolesConso: data.disponibleBenevolesConso,
                 });
             }
 
@@ -306,6 +319,19 @@ const Catalogue = () => {
                                     onChange={val => val != null ? setValue("idFournisseur", val.value) : setValue("idFournisseur", null)}
                                 />
                                 <small className="text-danger">{errors.idFournisseur?.message}</small>
+                            </Form.Group>
+
+                            <Form.Group className="mb-3">
+                                <Form.Label>Accessible hors connexion</Form.Label>
+                                <Form.Check
+                                    type='switch'
+                                    id="disponibleBenevolesConso"
+                                    name="disponibleBenevolesConso"
+                                    label='Matériel disponible pour les rapports de consommation'
+                                    checked={watch("disponibleBenevolesConso")}
+                                    onClick={(e)=>{setValue("disponibleBenevolesConso", !watch("disponibleBenevolesConso"))}}
+                                />
+                                <small className="text-danger">{errors.disponibleBenevolesConso?.message}</small>
                             </Form.Group>
 
                             <Form.Group className="mb-3">
