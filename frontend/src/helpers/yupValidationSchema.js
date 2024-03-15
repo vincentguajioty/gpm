@@ -334,7 +334,7 @@ export const affectationsTenuesForm = Yup.object().shape({
         .typeError(champObligatoire)
         .min(0, champObligatoire)
         .required(champObligatoire),
-    personneNonGPM: Yup
+        personneNonGPM: Yup
         .string()
         .typeError(champObligatoire)
         .nullable(true)
@@ -347,6 +347,10 @@ export const affectationsTenuesForm = Yup.object().shape({
                 return true;
             }
         ),
+    mailPersonneNonGPM: Yup
+        .string().email()
+        .typeError(champObligatoire)
+        .nullable(true),
 });
 
 export const cautionsForm = Yup.object().shape({
@@ -377,6 +381,10 @@ export const cautionsForm = Yup.object().shape({
                 return true;
             }
         ),
+    mailPersonneNonGPM: Yup
+        .string().email()
+        .typeError(champObligatoire)
+        .nullable(true),
 });
 
 export const frequencesForm = Yup.object().shape({

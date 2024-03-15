@@ -145,7 +145,8 @@ exports.getAffectations = async (req, res)=>{
                 SELECT DISTINCT
                     'interne' as type,
                     pr.idPersonne as idPersonne,
-                    CONCAT(nomPersonne, " ", prenomPersonne) as nomPrenom
+                    CONCAT(nomPersonne, " ", prenomPersonne) as nomPrenom,
+                    mailPersonne as mailPersonne
                 FROM
                     PERSONNE_REFERENTE pr
                     LEFT OUTER JOIN TENUES_AFFECTATION ta ON pr.idPersonne = ta.idPersonne
@@ -157,7 +158,8 @@ exports.getAffectations = async (req, res)=>{
                 SELECT DISTINCT
                     'externe' as type,
                     null as idPersonne,
-                    personneNonGPM as nomPrenom
+                    personneNonGPM as nomPrenom,
+                    mailPersonneNonGPM as mailPersonne
                 FROM
                     TENUES_AFFECTATION ta
                 WHERE
@@ -188,20 +190,43 @@ exports.getAffectations = async (req, res)=>{
             }
             else
             {
-                let affectations = await db.query(`
-                    SELECT
-                        ta.*,
-                        tc.libelleCatalogueTenue,
-                        tc.tailleCatalogueTenue
-                    FROM
-                        TENUES_AFFECTATION ta
-                        LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
-                    WHERE
-                        ta.personneNonGPM = :personneNonGPM
-                ;`,{
-                    personneNonGPM: personne.nomPrenom,
-                });
-                personne.affectations = affectations;
+                if(personne.mailPersonne != null)
+                {
+                    let affectations = await db.query(`
+                        SELECT
+                            ta.*,
+                            tc.libelleCatalogueTenue,
+                            tc.tailleCatalogueTenue
+                        FROM
+                            TENUES_AFFECTATION ta
+                            LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                        WHERE
+                            ta.personneNonGPM = :personneNonGPM
+                            AND
+                            ta.mailPersonneNonGPM = :mailPersonneNonGPM
+                    ;`,{
+                        personneNonGPM: personne.nomPrenom,
+                        mailPersonneNonGPM: personne.mailPersonne,
+                    });
+                    personne.affectations = affectations;
+                }else{
+                    let affectations = await db.query(`
+                        SELECT
+                            ta.*,
+                            tc.libelleCatalogueTenue,
+                            tc.tailleCatalogueTenue
+                        FROM
+                            TENUES_AFFECTATION ta
+                            LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                        WHERE
+                            ta.personneNonGPM = :personneNonGPM
+                            AND
+                            ta.mailPersonneNonGPM IS NULL
+                    ;`,{
+                        personneNonGPM: personne.nomPrenom,
+                    });
+                    personne.affectations = affectations;
+                }
             }
         }
 
@@ -232,7 +257,8 @@ exports.getPersonnesSuggested = async (req, res)=>{
         let results = await db.query(`
             (
                 SELECT DISTINCT
-                    personneNonGPM
+                    personneNonGPM,
+                    mailPersonneNonGPM
                 FROM
                     TENUES_AFFECTATION
                 WHERE
@@ -241,7 +267,8 @@ exports.getPersonnesSuggested = async (req, res)=>{
             UNION
             (
                 SELECT DISTINCT
-                    personneNonGPM
+                    personneNonGPM,
+                    mailPersonneNonGPM
                 FROM
                     CAUTIONS
                 WHERE
@@ -265,12 +292,14 @@ exports.addAffectations = async (req, res)=>{
                 idCatalogueTenue = :idCatalogueTenue,
                 idPersonne = :idPersonne,
                 personneNonGPM = :personneNonGPM,
+                mailPersonneNonGPM = :mailPersonneNonGPM,
                 dateAffectation = :dateAffectation,
                 dateRetour = :dateRetour
         `,{
             idCatalogueTenue: req.body.idCatalogueTenue || null,
             idPersonne: req.body.idPersonne || null,
             personneNonGPM: req.body.personneNonGPM || null,
+            mailPersonneNonGPM: req.body.mailPersonneNonGPM || null,
             dateAffectation: req.body.dateAffectation || null,
             dateRetour: req.body.dateRetour || null,
         });
@@ -293,6 +322,7 @@ exports.updateAffectations = async (req, res)=>{
                 idCatalogueTenue = :idCatalogueTenue,
                 idPersonne = :idPersonne,
                 personneNonGPM = :personneNonGPM,
+                mailPersonneNonGPM = :mailPersonneNonGPM,
                 dateAffectation = :dateAffectation,
                 dateRetour = :dateRetour
             WHERE
@@ -301,6 +331,7 @@ exports.updateAffectations = async (req, res)=>{
             idCatalogueTenue: req.body.idCatalogueTenue || null,
             idPersonne: req.body.idPersonne || null,
             personneNonGPM: req.body.personneNonGPM || null,
+            mailPersonneNonGPM: req.body.mailPersonneNonGPM || null,
             dateAffectation: req.body.dateAffectation || null,
             dateRetour: req.body.dateRetour || null,
             idTenue: req.body.idTenue,
@@ -336,7 +367,8 @@ exports.getCautions = async (req, res)=>{
                 SELECT DISTINCT
                     'interne' as type,
                     pr.idPersonne as idPersonne,
-                    CONCAT(nomPersonne, " ", prenomPersonne) as nomPrenom
+                    CONCAT(nomPersonne, " ", prenomPersonne) as nomPrenom,
+                    mailPersonne as mailPersonne
                 FROM
                     PERSONNE_REFERENTE pr
                     LEFT OUTER JOIN CAUTIONS ta ON pr.idPersonne = ta.idPersonne
@@ -348,7 +380,8 @@ exports.getCautions = async (req, res)=>{
                 SELECT DISTINCT
                     'externe' as type,
                     null as idPersonne,
-                    personneNonGPM as nomPrenom
+                    personneNonGPM as nomPrenom,
+                    mailPersonneNonGPM as mailPersonne
                 FROM
                     CAUTIONS ta
                 WHERE
@@ -376,17 +409,37 @@ exports.getCautions = async (req, res)=>{
             }
             else
             {
-                let cautions = await db.query(`
-                    SELECT
-                        ta.*
-                    FROM
-                        CAUTIONS ta
-                    WHERE
-                        ta.personneNonGPM = :personneNonGPM
-                ;`,{
-                    personneNonGPM: personne.nomPrenom,
-                });
-                personne.cautions = cautions;
+                if(personne.mailPersonne != null)
+                {
+                    let cautions = await db.query(`
+                        SELECT
+                            ta.*
+                        FROM
+                            CAUTIONS ta
+                        WHERE
+                            ta.personneNonGPM = :personneNonGPM
+                            AND
+                            ta.mailPersonneNonGPM = :mailPersonneNonGPM
+                    ;`,{
+                        personneNonGPM: personne.nomPrenom,
+                        mailPersonneNonGPM: personne.mailPersonne,
+                    });
+                    personne.cautions = cautions;
+                }else{
+                    let cautions = await db.query(`
+                        SELECT
+                            ta.*
+                        FROM
+                            CAUTIONS ta
+                        WHERE
+                            ta.personneNonGPM = :personneNonGPM
+                            AND
+                            ta.mailPersonneNonGPM IS NULL
+                    ;`,{
+                        personneNonGPM: personne.nomPrenom,
+                    });
+                    personne.cautions = cautions;
+                }
             }
         }
 
@@ -420,6 +473,7 @@ exports.addCautions = async (req, res)=>{
             SET
                 idPersonne = :idPersonne,
                 personneNonGPM = :personneNonGPM,
+                mailPersonneNonGPM = :mailPersonneNonGPM,
                 montantCaution = :montantCaution,
                 dateEmissionCaution = :dateEmissionCaution,
                 dateExpirationCaution = :dateExpirationCaution,
@@ -427,6 +481,7 @@ exports.addCautions = async (req, res)=>{
         `,{
             idPersonne: req.body.idPersonne || null,
             personneNonGPM: req.body.personneNonGPM || null,
+            mailPersonneNonGPM: req.body.mailPersonneNonGPM || null,
             montantCaution: req.body.montantCaution || null,
             dateEmissionCaution: req.body.dateEmissionCaution || null,
             dateExpirationCaution: req.body.dateExpirationCaution || null,
@@ -448,6 +503,7 @@ exports.updateCautions = async (req, res)=>{
             SET
                 idPersonne = :idPersonne,
                 personneNonGPM = :personneNonGPM,
+                mailPersonneNonGPM = :mailPersonneNonGPM,
                 montantCaution = :montantCaution,
                 dateEmissionCaution = :dateEmissionCaution,
                 dateExpirationCaution = :dateExpirationCaution,
@@ -457,6 +513,7 @@ exports.updateCautions = async (req, res)=>{
         `,{
             idPersonne: req.body.idPersonne || null,
             personneNonGPM: req.body.personneNonGPM || null,
+            mailPersonneNonGPM: req.body.mailPersonneNonGPM || null,
             montantCaution: req.body.montantCaution || null,
             dateEmissionCaution: req.body.dateEmissionCaution || null,
             dateExpirationCaution: req.body.dateExpirationCaution || null,

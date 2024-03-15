@@ -53,7 +53,11 @@ const Cautions = () => {
             accessor: 'personne',
             Header: 'Personne',
             Cell: ({ value, row }) => {
-				return(<>{row.original.nomPrenom}{row.original.type=='externe' ? <SoftBadge bg='secondary' className='ms-1'>Externe</SoftBadge>:null}</>);
+				return(<>
+                    {row.original.nomPrenom}
+                    {row.original.mailPersonne != null ? <><br/><SoftBadge bg='info'>{row.original.mailPersonne}</SoftBadge></>:null}
+                    <br/>{row.original.type=='externe' ? <SoftBadge bg='secondary'>Externe</SoftBadge>:null}
+                </>);
 			},
         },
         {
@@ -120,6 +124,7 @@ const Cautions = () => {
     });
     const [personnesInternes, setPersonnesInternes] = useState([]);
     const [personnesExternes, setPersonnesExternes] = useState([]);
+    const [suggestionsMailsExternes, setSuggestionsMailsExternes] = useState([]);
     const handleCloseOffCanevas = () => {
         setShowOffCanevas(false);
         setOffCanevasIdCaution();
@@ -134,6 +139,7 @@ const Cautions = () => {
             let oneItemFromArray = cautionsRow.filter(ligne => ligne.idCaution == id)[0];
             setValue("idPersonne", oneItemFromArray.idPersonne > 0 ? oneItemFromArray.idPersonne : 0);
             setValue("personneNonGPM", oneItemFromArray.personneNonGPM);
+            setValue("mailPersonneNonGPM", oneItemFromArray.mailPersonneNonGPM);
             setValue("montantCaution", oneItemFromArray.montantCaution);
             setValue("dateEmissionCaution", oneItemFromArray.dateEmissionCaution != null ? new Date(oneItemFromArray.dateEmissionCaution) : null);
             setValue("dateExpirationCaution", oneItemFromArray.dateExpirationCaution != null ? new Date(oneItemFromArray.dateExpirationCaution) : null);
@@ -164,6 +170,7 @@ const Cautions = () => {
                     idCaution: offCanevasIdCaution,
                     idPersonne: data.idPersonne > 0 ? data.idPersonne : null,
                     personneNonGPM: data.personneNonGPM,
+                    mailPersonneNonGPM: data.mailPersonneNonGPM,
                     montantCaution: data.montantCaution,
                     dateEmissionCaution: data.dateEmissionCaution,
                     dateExpirationCaution: data.dateExpirationCaution,
@@ -175,6 +182,7 @@ const Cautions = () => {
                 const response = await Axios.post('/tenues/addCautions',{
                     idPersonne: data.idPersonne > 0 ? data.idPersonne : null,
                     personneNonGPM: data.personneNonGPM,
+                    mailPersonneNonGPM: data.mailPersonneNonGPM,
                     montantCaution: data.montantCaution,
                     dateEmissionCaution: data.dateEmissionCaution,
                     dateExpirationCaution: data.dateExpirationCaution,
@@ -189,6 +197,23 @@ const Cautions = () => {
             console.error(error)
         }
     }
+
+    useEffect(()=>{
+        setSuggestionsMailsExternes([]);
+
+        let usersTrouves = personnesExternes.filter(perso => perso.personneNonGPM == watch('personneNonGPM') && perso.mailPersonneNonGPM != null);
+        let tempMailArray = [];
+        for(const perso of usersTrouves)
+        {
+            tempMailArray.push(perso.mailPersonneNonGPM)
+        }
+        setSuggestionsMailsExternes(tempMailArray);
+        
+        if(usersTrouves.length == 1)
+        {
+            setValue('mailPersonneNonGPM', usersTrouves[0].mailPersonneNonGPM)
+        }
+    },[watch('personneNonGPM')])
 
     /* DELETE */
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -252,13 +277,21 @@ const Cautions = () => {
                         <small className="text-danger">{errors.idPersonne?.message}</small>
 
                         {watch("idPersonne") == 0 ? <>
-                            <Form.Control className='mt-2' list='suggestionsExternes' size="sm" type="text" name='personneNonGPM' id='personneNonGPM' {...register('personneNonGPM')}/>
+                            <Form.Control className='mt-2' placeholder="Nom et prénom" list='suggestionsExternes' size="sm" type="text" name='personneNonGPM' id='personneNonGPM' {...register('personneNonGPM')}/>
                             <datalist id='suggestionsExternes'>
                                 {personnesExternes.map((perso, i) => {
-                                    return (<option key={i}>{perso.personneNonGPM}</option>);
+                                    return (<option key={i} value={perso.personneNonGPM}>{perso.mailPersonneNonGPM}</option>);
                                 })}
                             </datalist>
                             <small className="text-danger">{errors.personneNonGPM?.message}</small>
+
+                            <Form.Control className='mt-2' placeholder="Adresse email" list='suggestionsMailsConditionnels' size="sm" type="email" name='mailPersonneNonGPM' id='mailPersonneNonGPM' {...register('mailPersonneNonGPM')}/>
+                            <datalist id='suggestionsMailsConditionnels'>
+                                {suggestionsMailsExternes.map((mail, i) => {
+                                    return (<option key={i}>{mail}</option>);
+                                })}
+                            </datalist>
+                            <small className="text-danger">{errors.mailPersonneNonGPM?.message}</small>
                         </>: null}
                     </Form.Group>
                     <Form.Group className="mb-3">
