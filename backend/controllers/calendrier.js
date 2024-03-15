@@ -61,6 +61,7 @@ exports.inventairesPassesLots = async (req, res) => {
         let result = await db.query(`
             SELECT
                 i.idInventaire,
+                i.idLot,
                 i.dateInventaire,
                 i.commentairesInventaire,
                 l.libelleLot,
@@ -87,6 +88,7 @@ exports.inventairesPassesReserves = async (req, res) => {
         let result = await db.query(`
             SELECT
                 i.idReserveInventaire,
+                i.idConteneur,
                 i.dateInventaire,
                 i.commentairesInventaire,
                 c.libelleConteneur,

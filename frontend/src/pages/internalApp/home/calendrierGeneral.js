@@ -210,7 +210,7 @@ const CalendrierGeneral = ({
                         organizer: item.prenomPersonne+' '+item.nomPersonne,
                         allDay: true,
                         textForLink:'Accéder à l\'inventaire',
-                        linkTarget:'TODO'
+                        linkTarget:'/lots/'+item.idLot
                     })
                 }
             }
@@ -229,7 +229,7 @@ const CalendrierGeneral = ({
                         organizer: item.prenomPersonne+' '+item.nomPersonne,
                         allDay: true,
                         textForLink:'Accéder à l\'inventaire',
-                        linkTarget:'TODO'
+                        linkTarget:'/reservesConteneurs/'+item.idConteneur,
                     })
                 }
             }
@@ -282,7 +282,7 @@ const CalendrierGeneral = ({
                         location: item.libelleLieu,
                         organizer: item.nomFournisseur,
                         textForLink:'Accéder à la commande',
-                        linkTarget:'TODO',
+                        linkTarget:'/commandes/'+item.idCommande,
                     })
                 }
             }
