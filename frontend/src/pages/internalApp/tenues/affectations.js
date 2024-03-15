@@ -50,11 +50,11 @@ const AffectationsTenues = () => {
 
     const colonnes = [
         {
-            accessor: 'personne',
+            accessor: 'nomPrenom',
             Header: 'Personne',
             Cell: ({ value, row }) => {
 				return(<>
-                    {row.original.nomPrenom}
+                    {value}
                     {row.original.mailPersonne != null ? <><br/><SoftBadge bg='info'>{row.original.mailPersonne}</SoftBadge></>:null}
                     <br/>{row.original.type=='externe' ? <SoftBadge bg='secondary'>Externe</SoftBadge>:null}
                 </>);
