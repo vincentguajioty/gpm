@@ -3349,6 +3349,297 @@ const cleanTempFolder = () => {
     }
 }
 
+const envoyerNotificationsTenuesBenevoles = async () => {
+    try {
+        /* --- Récupérer état des lieux --- */
+        let personnesUnitaires = await db.query(`
+            (
+                SELECT DISTINCT
+                    'interne' as type,
+                    pr.idPersonne as idPersonne,
+                    CONCAT(nomPersonne, " ", prenomPersonne) as nomPrenom,
+                    mailPersonne as mailPersonne
+                FROM
+                    PERSONNE_REFERENTE pr
+                    LEFT OUTER JOIN TENUES_AFFECTATION ta ON pr.idPersonne = ta.idPersonne
+                WHERE
+                    ta.idTenue IS NOT NULL
+                    AND
+                    ta.notifPersonne = true
+                    AND
+                    pr.mailPersonne IS NOT NULL
+            )
+            UNION
+            (
+                SELECT DISTINCT
+                    'externe' as type,
+                    null as idPersonne,
+                    personneNonGPM as nomPrenom,
+                    mailPersonneNonGPM as mailPersonne
+                FROM
+                    TENUES_AFFECTATION ta
+                WHERE
+                    personneNonGPM IS NOT NULL
+                    AND
+                    idPersonne IS NULL
+                    AND
+                    notifPersonne = true
+                    AND
+                    mailPersonneNonGPM IS NOT NULL
+            )
+        ;`);
+
+        for(const personne of personnesUnitaires)
+        {
+            if(personne.idPersonne > 0)
+            {
+                let affectations = await db.query(`
+                    SELECT
+                        ta.*,
+                        tc.libelleCatalogueTenue,
+                        tc.tailleCatalogueTenue
+                    FROM
+                        TENUES_AFFECTATION ta
+                        LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                    WHERE
+                        ta.notifPersonne = true
+                        AND
+                        ta.idPersonne = :idPersonne
+                ;`,{
+                    idPersonne: personne.idPersonne,
+                });
+                personne.affectations = affectations;
+            }
+            else
+            {
+                if(personne.mailPersonne != null)
+                {
+                    let affectations = await db.query(`
+                        SELECT
+                            ta.*,
+                            tc.libelleCatalogueTenue,
+                            tc.tailleCatalogueTenue
+                        FROM
+                            TENUES_AFFECTATION ta
+                            LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                        WHERE
+                            ta.notifPersonne = true
+                            AND
+                            ta.personneNonGPM = :personneNonGPM
+                            AND
+                            ta.mailPersonneNonGPM = :mailPersonneNonGPM
+                    ;`,{
+                        personneNonGPM: personne.nomPrenom,
+                        mailPersonneNonGPM: personne.mailPersonne,
+                    });
+                    personne.affectations = affectations;
+                }else{
+                    let affectations = await db.query(`
+                        SELECT
+                            ta.*,
+                            tc.libelleCatalogueTenue,
+                            tc.tailleCatalogueTenue
+                        FROM
+                            TENUES_AFFECTATION ta
+                            LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                        WHERE
+                            ta.notifPersonne = true
+                            AND
+                            ta.personneNonGPM = :personneNonGPM
+                            AND
+                            ta.mailPersonneNonGPM IS NULL
+                    ;`,{
+                        personneNonGPM: personne.nomPrenom,
+                    });
+                    personne.affectations = affectations;
+                }
+            }
+        }
+
+        /* --- Envoi des affectations faites à J-1 --- */
+        let yesterday = new Date();
+        yesterday = moment(yesterday.setDate(yesterday.getDate() -1)).format('YYYY-MM-DD');
+
+        let affectationsFaites = [];
+        for (const obj of personnesUnitaires) {
+            let toBeKept = false;
+            let newSubArray = [];
+            for (const subObj of obj.affectations) {
+                let date = moment(new Date(subObj.dateAffectation)).format('YYYY-MM-DD');
+                date == yesterday ? toBeKept = true : null;
+                date == yesterday ? newSubArray.push(subObj) : null;
+            }
+
+            obj.affectations = newSubArray;
+
+            toBeKept ? (affectationsFaites.push(obj)) : null;
+        }
+
+        for(const affectation of affectationsFaites)
+        {
+            let tableau = `
+                <table width="100%" border="1" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px" role="presentation">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Taille</th>
+                            <th>Affecté le</th>
+                            <th>Retour prévu le</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            
+                    for(const item of affectation.affectations)
+                    {
+                        tableau += `
+                            <tr>
+                                <td>`+(item.libelleCatalogueTenue != null ? item.libelleCatalogueTenue : "")+`</td>
+                                <td>`+(item.tailleCatalogueTenue != null ? item.tailleCatalogueTenue : "")+`</td>
+                                <td>`+(item.dateAffectation != null ? moment(item.dateAffectation).format('DD/MM/YYYY') : "")+`</td>
+                                <td>`+(item.dateRetour != null ? moment(item.dateRetour).format('DD/MM/YYYY') : "")+`</td>
+                            </tr>
+                        `;
+                    }
+
+            tableau += `</tobdy
+                </table>
+            `;
+
+            await fonctionsMail.registerToMailQueue({
+                typeMail: 'tenuesAffectation',
+                idObject: null,
+                idPersonne: null,
+                otherMail: affectation.mailPersonne,
+                otherSubject: null,
+                otherContent: tableau,
+            });
+        }
+        
+        /* --- Envoi des expirations qui arrivent à J, J+1, J+2 --- */
+        let today = new Date();
+        today = moment(today).format('YYYY-MM-DD');
+        let todayPlusTwo = new Date();
+        todayPlusTwo = moment(todayPlusTwo.setDate(todayPlusTwo.getDate() +2)).format('YYYY-MM-DD');
+
+        let expirationsDeuxJours = [];
+        for (const obj of personnesUnitaires) {
+            let toBeKept = false;
+            let newSubArray = [];
+            for (const subObj of obj.affectations) {
+                let date = moment(new Date(subObj.dateRetour)).format('YYYY-MM-DD');
+                (subObj.dateRetour != null && date >= today && date <= todayPlusTwo) ? toBeKept = true : null;
+                (subObj.dateRetour != null && date >= today && date <= todayPlusTwo) ? newSubArray.push(subObj) : null;
+            }
+
+            obj.affectations = newSubArray;
+
+            toBeKept ? (expirationsDeuxJours.push(obj)) : null;
+        }
+
+        for(const affectation of expirationsDeuxJours)
+        {
+            let tableau = `
+                <table width="100%" border="1" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px" role="presentation">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Taille</th>
+                            <th>Affecté le</th>
+                            <th>Retour prévu le</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            
+                    for(const item of affectation.affectations)
+                    {
+                        tableau += `
+                            <tr>
+                                <td>`+(item.libelleCatalogueTenue != null ? item.libelleCatalogueTenue : "")+`</td>
+                                <td>`+(item.tailleCatalogueTenue != null ? item.tailleCatalogueTenue : "")+`</td>
+                                <td>`+(item.dateAffectation != null ? moment(item.dateAffectation).format('DD/MM/YYYY') : "")+`</td>
+                                <td>`+(item.dateRetour != null ? moment(item.dateRetour).format('DD/MM/YYYY') : "")+`</td>
+                            </tr>
+                        `;
+                    }
+
+            tableau += `</tobdy
+                </table>
+            `;
+
+            await fonctionsMail.registerToMailQueue({
+                typeMail: 'tenuesRetourAnticipation',
+                idObject: null,
+                idPersonne: null,
+                otherMail: affectation.mailPersonne,
+                otherSubject: null,
+                otherContent: tableau,
+            });
+        }
+
+        /* --- Le lundi uniquement, envoi des expirations passées --- */
+        if(moment(new Date()).format("dddd") == 'Monday')
+        {
+            let rappelsExpires = [];
+            for (const obj of personnesUnitaires) {
+                let toBeKept = false;
+                let newSubArray = [];
+                for (const subObj of obj.affectations) {
+                    let date = moment(new Date(subObj.dateRetour)).format('YYYY-MM-DD');
+                    (subObj.dateRetour != null && date > today) ? toBeKept = true : null;
+                    (subObj.dateRetour != null && date > today) ? newSubArray.push(subObj) : null;
+                }
+
+                obj.affectations = newSubArray;
+
+                toBeKept ? (rappelsExpires.push(obj)) : null;
+
+                for(const affectation of rappelsExpires)
+                {
+                    let tableau = `
+                        <table width="100%" border="1" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px" role="presentation">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Taille</th>
+                                    <th>Affecté le</th>
+                                    <th>Retour prévu le</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+                    
+                            for(const item of affectation.affectations)
+                            {
+                                tableau += `
+                                    <tr>
+                                        <td>`+(item.libelleCatalogueTenue != null ? item.libelleCatalogueTenue : "")+`</td>
+                                        <td>`+(item.tailleCatalogueTenue != null ? item.tailleCatalogueTenue : "")+`</td>
+                                        <td>`+(item.dateAffectation != null ? moment(item.dateAffectation).format('DD/MM/YYYY') : "")+`</td>
+                                        <td>`+(item.dateRetour != null ? moment(item.dateRetour).format('DD/MM/YYYY') : "")+`</td>
+                                    </tr>
+                                `;
+                            }
+
+                    tableau += `</tobdy
+                        </table>
+                    `;
+
+                    await fonctionsMail.registerToMailQueue({
+                        typeMail: 'tenuesRetourRetard',
+                        idObject: null,
+                        idPersonne: null,
+                        otherMail: affectation.mailPersonne,
+                        otherSubject: null,
+                        otherContent: tableau,
+                    });
+                }
+            }
+        }
+
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -3416,4 +3707,5 @@ module.exports = {
     calculerTousTotauxCentreDeCouts,
     checkGestionnaireStatut,
     cleanTempFolder,
+    envoyerNotificationsTenuesBenevoles,
 };

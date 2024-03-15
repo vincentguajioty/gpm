@@ -160,6 +160,11 @@ schedule.scheduleJob(process.env.CRON_DAILY, async function() {
         await fonctionsMetiers.notificationsMAJpersonne();
         await fonctionsMetiers.queueNotificationJournaliere();
         logger.debug("CRON - Fin de la vérification des conditions de notification et envoi de la notif");
+
+        //Envoi des emails relatifs aux tenues
+        logger.debug("CRON - Début d'envoi des notifications tenues");
+        await fonctionsMetiers.envoyerNotificationsTenuesBenevoles();
+        logger.debug("CRON - Fin d'envoi des notifications tenues");
         
         logger.info('CRON - Fin du CRON');
     }

@@ -1157,6 +1157,187 @@ const commandeNotif = async (requestInfo) => {
     }
 }
 
+const tenuesAffectation = async (requestInfo) => {
+    try {
+        // use a template file with nodemailer
+        let configDB = await db.query(
+            `SELECT * FROM CONFIG;`
+        );
+        configDB = configDB[0]
+
+        const transporter = getTransporter();
+        transporter.use('compile', hbs(handlebarOptions))
+
+        //get users and send the mail to each one      
+        let mailOptions={};
+        let emailErrors = 0;
+        mailOptions = {
+            from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
+            to: requestInfo.otherMail, // list of receivers
+            cc: configDB.mailcopy ? configDB.mailserver : null,
+            subject: '['+process.env.APP_NAME+'] Affectation d\'une tenue',
+            template: 'tenuesAffectation', // the name of the template file i.e email.handlebars
+            context:{
+                appname: process.env.APP_NAME,
+                urlsite: configDB.urlsite,
+                tableauTenues: requestInfo.otherContent,
+            },
+            list: {
+                unsubscribe: {
+                    url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:0',
+                    comment: 'Ne plus recevoir de mails',
+                },
+            },
+        };
+        logger.debug(mailOptions);
+
+        // trigger the sending of the E-mail
+        const sendMailResult = await transporter.sendMail(mailOptions);
+        if(sendMailResult.rejected.length == 0)
+        {
+            logger.debug(sendMailResult);
+        }
+        else
+        {
+            logger.error(error);
+            emailErrors += 1;
+        }
+
+        if(emailErrors == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    } catch (error) {
+        logger.error(error);
+        return false;
+    }
+}
+
+const tenuesRetourAnticipation = async (requestInfo) => {
+    try {
+        // use a template file with nodemailer
+        let configDB = await db.query(
+            `SELECT * FROM CONFIG;`
+        );
+        configDB = configDB[0]
+
+        const transporter = getTransporter();
+        transporter.use('compile', hbs(handlebarOptions))
+
+        //get users and send the mail to each one      
+        let mailOptions={};
+        let emailErrors = 0;
+        mailOptions = {
+            from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
+            to: requestInfo.otherMail, // list of receivers
+            cc: configDB.mailcopy ? configDB.mailserver : null,
+            subject: '['+process.env.APP_NAME+'] Pensez au retour de votre tenue',
+            template: 'tenuesRetourAnticipation', // the name of the template file i.e email.handlebars
+            context:{
+                appname: process.env.APP_NAME,
+                urlsite: configDB.urlsite,
+                tableauTenues: requestInfo.otherContent,
+            },
+            list: {
+                unsubscribe: {
+                    url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:0',
+                    comment: 'Ne plus recevoir de mails',
+                },
+            },
+        };
+        logger.debug(mailOptions);
+
+        // trigger the sending of the E-mail
+        const sendMailResult = await transporter.sendMail(mailOptions);
+        if(sendMailResult.rejected.length == 0)
+        {
+            logger.debug(sendMailResult);
+        }
+        else
+        {
+            logger.error(error);
+            emailErrors += 1;
+        }
+
+        if(emailErrors == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    } catch (error) {
+        logger.error(error);
+        return false;
+    }
+}
+
+const tenuesRetourRetard = async (requestInfo) => {
+    try {
+        // use a template file with nodemailer
+        let configDB = await db.query(
+            `SELECT * FROM CONFIG;`
+        );
+        configDB = configDB[0]
+
+        const transporter = getTransporter();
+        transporter.use('compile', hbs(handlebarOptions))
+
+        //get users and send the mail to each one      
+        let mailOptions={};
+        let emailErrors = 0;
+        mailOptions = {
+            from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
+            to: requestInfo.otherMail, // list of receivers
+            cc: configDB.mailcopy ? configDB.mailserver : null,
+            subject: '['+process.env.APP_NAME+'] RAPPEL - Retour d\'une tenue',
+            template: 'tenuesRetourRetard', // the name of the template file i.e email.handlebars
+            context:{
+                appname: process.env.APP_NAME,
+                urlsite: configDB.urlsite,
+                tableauTenues: requestInfo.otherContent,
+            },
+            list: {
+                unsubscribe: {
+                    url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:0',
+                    comment: 'Ne plus recevoir de mails',
+                },
+            },
+        };
+        logger.debug(mailOptions);
+
+        // trigger the sending of the E-mail
+        const sendMailResult = await transporter.sendMail(mailOptions);
+        if(sendMailResult.rejected.length == 0)
+        {
+            logger.debug(sendMailResult);
+        }
+        else
+        {
+            logger.error(error);
+            emailErrors += 1;
+        }
+
+        if(emailErrors == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    } catch (error) {
+        logger.error(error);
+        return false;
+    }
+}
+
+
 /* --------- FONCTIONS EXPORTEES --------- */
 
 const sendMailQueue = async () => {
@@ -1233,6 +1414,19 @@ const sendMailQueue = async () => {
                 case 'commandeNotif':
                     successCheck = await commandeNotif(mailNeeded);
                 break;
+
+                case 'tenuesAffectation':
+                    successCheck = await tenuesAffectation(mailNeeded);
+                break;
+
+                case 'tenuesRetourAnticipation':
+                    successCheck = await tenuesRetourAnticipation(mailNeeded);
+                break;
+
+                case 'tenuesRetourRetard':
+                    successCheck = await tenuesRetourRetard(mailNeeded);
+                break;
+
             
                 default:
                     logger.warn('Mail '+mailNeeded.idMailQueue+' ne peut pas être envoyé pour cause d\'erreur dans le type de mail')
