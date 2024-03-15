@@ -294,7 +294,8 @@ exports.addAffectations = async (req, res)=>{
                 personneNonGPM = :personneNonGPM,
                 mailPersonneNonGPM = :mailPersonneNonGPM,
                 dateAffectation = :dateAffectation,
-                dateRetour = :dateRetour
+                dateRetour = :dateRetour,
+                notifPersonne = :notifPersonne
         `,{
             idCatalogueTenue: req.body.idCatalogueTenue || null,
             idPersonne: req.body.idPersonne || null,
@@ -302,6 +303,7 @@ exports.addAffectations = async (req, res)=>{
             mailPersonneNonGPM: req.body.mailPersonneNonGPM || null,
             dateAffectation: req.body.dateAffectation || null,
             dateRetour: req.body.dateRetour || null,
+            notifPersonne: req.body.notifPersonne || false,
         });
 
         await retraitItemStock(req.body.idCatalogueTenue);
@@ -324,7 +326,8 @@ exports.updateAffectations = async (req, res)=>{
                 personneNonGPM = :personneNonGPM,
                 mailPersonneNonGPM = :mailPersonneNonGPM,
                 dateAffectation = :dateAffectation,
-                dateRetour = :dateRetour
+                dateRetour = :dateRetour,
+                notifPersonne = :notifPersonne
             WHERE
                 idTenue = :idTenue
         `,{
@@ -334,6 +337,7 @@ exports.updateAffectations = async (req, res)=>{
             mailPersonneNonGPM: req.body.mailPersonneNonGPM || null,
             dateAffectation: req.body.dateAffectation || null,
             dateRetour: req.body.dateRetour || null,
+            notifPersonne: req.body.notifPersonne || false,
             idTenue: req.body.idTenue,
         });
 

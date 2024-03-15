@@ -10,6 +10,7 @@ import IconButton from 'components/common/IconButton';
 import GPMtable from 'components/gpmTable/gpmTable';
 import moment from 'moment-timezone';
 import Select from 'react-select';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { tenuesAffectationsDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
@@ -87,6 +88,7 @@ const AffectationsTenues = () => {
                                             :
                                                 <SoftBadge bg='success'>{moment(affect.dateRetour).format('DD/MM/YYYY')}</SoftBadge>
                                         : null}
+                                        {affect.notifPersonne == true ? <SoftBadge bg='info' className='ms-1'><FontAwesomeIcon icon='bell'/></SoftBadge> : null}
                                     </td>
                                     <td>
                                         {HabilitationService.habilitations['tenues_modification'] ? 
@@ -128,6 +130,7 @@ const AffectationsTenues = () => {
     const [personnesInternes, setPersonnesInternes] = useState([]);
     const [personnesExternes, setPersonnesExternes] = useState([]);
     const [suggestionsMailsExternes, setSuggestionsMailsExternes] = useState([]);
+    const [faculteNotification, setFaculteNotification] = useState(false);
     const handleCloseOffCanevas = () => {
         setShowOffCanevas(false);
         setOffCanevasIdTenue();
@@ -147,12 +150,15 @@ const AffectationsTenues = () => {
             setValue("mailPersonneNonGPM", oneItemFromArray.mailPersonneNonGPM);
             setValue("dateAffectation", oneItemFromArray.dateAffectation != null ? new Date(oneItemFromArray.dateAffectation) : null);
             setValue("dateRetour", oneItemFromArray.dateRetour != null ? new Date(oneItemFromArray.dateRetour) : null);
+            setValue("notifPersonne", oneItemFromArray.notifPersonne);
         }
         else
         {
             setValue("dateAffectation", new Date());
             setValue("idPersonne", 0);
         }
+
+        verifFaculteNotifications();
 
         let getData = await Axios.get('/select/getTenuesCatalogue');
         setCatalogue(getData.data);
@@ -181,6 +187,7 @@ const AffectationsTenues = () => {
                     mailPersonneNonGPM: data.mailPersonneNonGPM,
                     dateAffectation: data.dateAffectation,
                     dateRetour: data.dateRetour,
+                    notifPersonne: data.notifPersonne,
                 });
             }
             else
@@ -192,12 +199,28 @@ const AffectationsTenues = () => {
                     mailPersonneNonGPM: data.mailPersonneNonGPM,
                     dateAffectation: data.dateAffectation,
                     dateRetour: data.dateRetour,
+                    notifPersonne: data.notifPersonne,
                 });
             }
 
             handleCloseOffCanevas();
             initPage();
             setLoading(false);
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const verifFaculteNotifications = () => {
+        try {
+            if((watch('dateRetour') != null && watch('dateRetour') != "") && (watch('idPersonne') > 0 || (watch('mailPersonneNonGPM') != null && watch('mailPersonneNonGPM') != "")))
+            {
+                setFaculteNotification(true);
+                setValue("notifPersonne", true)
+            }else{
+                setFaculteNotification(false);
+                setValue("notifPersonne", false)
+            }
         } catch (error) {
             console.error(error)
         }
@@ -219,6 +242,14 @@ const AffectationsTenues = () => {
             setValue('mailPersonneNonGPM', usersTrouves[0].mailPersonneNonGPM)
         }
     },[watch('personneNonGPM')])
+
+    useEffect(()=>{
+        verifFaculteNotifications();
+    },[
+        watch('dateRetour'),
+        watch('idPersonne'),
+        watch('mailPersonneNonGPM'),
+    ])
 
     /* DELETE */
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -344,6 +375,19 @@ const AffectationsTenues = () => {
                             locale="fr"
                         />
                         <small className="text-danger">{errors.dateRetour?.message}</small>
+
+                        <Form.Check
+                            id='notifPersonne'
+                            name='notifPersonne'
+                            label="Notification régulière à l'utilisateur"
+                            type='switch'
+                            checked={watch("notifPersonne")}
+                            onClick={(e)=>{
+                                setValue("notifPersonne", !watch("notifPersonne"))
+                            }}
+                            disabled={!faculteNotification}
+                        />
+                        <small className="text-danger">{errors.notifPersonne?.message}</small>
                     </Form.Group>
                     
                     <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Enregistrer'}</Button>
