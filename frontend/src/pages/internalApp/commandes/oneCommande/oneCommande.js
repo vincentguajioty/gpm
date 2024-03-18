@@ -52,7 +52,7 @@ const OneCommande = () => {
                 />
 
                 <Row>
-                    <Col md={9}>
+                    <Col md={10}>
                         <FalconComponentCard noGuttersBottom className="mb-3">
                             <FalconComponentCard.Body
                                 scope={{ ActionButton }}
@@ -66,7 +66,7 @@ const OneCommande = () => {
                             </FalconComponentCard.Body>
                         </FalconComponentCard>
                     </Col>
-                    <Col md={3}>
+                    <Col md={2}>
                         <FalconComponentCard noGuttersBottom className="mb-3">
                             <FalconComponentCard.Body
                                 scope={{ ActionButton }}

@@ -40,7 +40,7 @@ const Commandes = () => {
 
         {pageReady ?
             <Row>
-                <Col md={3}>
+                <Col md={2}>
                     <Breakpoint large up>
                         <FalconComponentCard noGuttersBottom className="mb-3">
                             <FalconComponentCard.Body
@@ -73,7 +73,7 @@ const Commandes = () => {
                         </Card>
                     </Breakpoint>
                 </Col>
-                <Col md={9}>
+                <Col md={10}>
                     <FalconComponentCard noGuttersBottom className="mb-3">
                         <FalconComponentCard.Body
                             scope={{ ActionButton }}
