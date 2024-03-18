@@ -118,8 +118,14 @@ const ReservesMaterielsForm = ({
         if(watch("idMaterielCatalogue") > 0 && catalogue.length>0)
         {
             let itemFromCatalogue = catalogue.find(item => item.value == watch("idMaterielCatalogue"));
-            setLockAnticipation(itemFromCatalogue.peremptionAnticipationRes && itemFromCatalogue.peremptionAnticipationRes != null ? true : false)
-            setValue("peremptionAnticipation", itemFromCatalogue.peremptionAnticipationRes && itemFromCatalogue.peremptionAnticipationRes != null ? itemFromCatalogue.peremptionAnticipationRes : null)
+            console.log(itemFromCatalogue);
+            if(itemFromCatalogue.peremptionAnticipationRes && itemFromCatalogue.peremptionAnticipationRes != null)
+            {
+                setLockAnticipation(true);
+                setValue("peremptionAnticipation", itemFromCatalogue.peremptionAnticipationRes)
+            }else{
+                setLockAnticipation(false);
+            }
         }
     },[watch("idMaterielCatalogue"), catalogue])
 
