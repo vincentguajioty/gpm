@@ -90,10 +90,10 @@ const ReservesMaterielsTable = ({
             Cell: ({ value, row }) => {
 				return(
                     row.original.peremptionReserve != null ?
-                        row.original.peremptionReserve < new Date() ?
+                        new Date(row.original.peremptionReserve) < new Date() ?
                             <SoftBadge bg='danger'>{moment(row.original.peremptionReserve).format('DD/MM/YYYY')}</SoftBadge>
                         :
-                            row.original.peremptionNotificationReserve < new Date() ?
+                            new Date(row.original.peremptionNotificationReserve) < new Date() ?
                                 <SoftBadge bg='warning'>{moment(row.original.peremptionReserve).format('DD/MM/YYYY')}</SoftBadge>
                             :
                                 <SoftBadge bg='success'>{moment(row.original.peremptionReserve).format('DD/MM/YYYY')}</SoftBadge>

@@ -112,10 +112,10 @@ const MaterielsTable = ({
             Cell: ({ value, row }) => {
 				return(
                     row.original.peremption != null ?
-                        row.original.peremption < new Date() ?
+                        new Date(row.original.peremption) < new Date() ?
                             <SoftBadge bg='danger'>{moment(row.original.peremption).format('DD/MM/YYYY')}</SoftBadge>
                         :
-                            row.original.peremptionNotification < new Date() ?
+                            new Date(row.original.peremptionNotification) < new Date() ?
                                 <SoftBadge bg='warning'>{moment(row.original.peremption).format('DD/MM/YYYY')}</SoftBadge>
                             :
                                 <SoftBadge bg='success'>{moment(row.original.peremption).format('DD/MM/YYYY')}</SoftBadge>
