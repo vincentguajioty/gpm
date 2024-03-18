@@ -124,7 +124,6 @@ const MaterielsForm = ({
         if(watch("idMaterielCatalogue") > 0 && catalogue.length>0)
         {
             let itemFromCatalogue = catalogue.find(item => item.value == watch("idMaterielCatalogue"));
-            console.log(itemFromCatalogue);
             if(itemFromCatalogue.peremptionAnticipationOpe && itemFromCatalogue.peremptionAnticipationOpe != null)
             {
                 setLockAnticipation(true);
