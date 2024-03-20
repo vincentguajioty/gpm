@@ -189,7 +189,11 @@ exports.updateMateriels = async (req, res)=>{
         });
         await fonctionsMetiers.updateConformiteMaterielOpe(req.body.idElement);
 
-        if(oldRecord.idEmplacement != req.body.idEmplacement)
+        if(
+            oldRecord.idEmplacement != req.body.idEmplacement
+            || oldRecord.quantite != req.body.quantite
+            || oldRecord.peremption != req.body.peremption
+        )
         {
             let newRecord = await db.query(`
                 SELECT
