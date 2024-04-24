@@ -20,6 +20,7 @@ const SacsContent = ({
     lockIdSac = null,
     inventaireEnCours = false,
     fullDisplay = true,
+    displayActionsForMateriels = true,
 }) => {
     const [idEmplacement, setIdEmplacement] = useState();
     const [emplacements, setEmplacements] = useState([]);
@@ -274,7 +275,8 @@ const SacsContent = ({
                         displayLibelleSac={false}
                         displayLibelleEmplacement={false}
                         displayNotif={false}
-                        hideAddButton={inventaireEnCours}
+                        displayActions={displayActionsForMateriels}
+                        hideAddButton={inventaireEnCours || !displayActionsForMateriels}
                     />
                 </>: null }
             </Col>

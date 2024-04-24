@@ -35,6 +35,7 @@ const SacsContentModal = ({
                 <SacsContent
                     idSac={idSac}
                     inventaireEnCours={inventaireEnCours}
+                    displayActionsForMateriels={false}
                 />
             </Modal.Body>
             <Modal.Footer>
