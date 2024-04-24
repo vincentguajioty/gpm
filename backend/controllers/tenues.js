@@ -389,8 +389,6 @@ exports.getCautions = async (req, res)=>{
                 FROM
                     CAUTIONS ta
                 WHERE
-                    personneNonGPM IS NOT NULL
-                    AND
                     idPersonne IS NULL
             )
         ;`);
@@ -413,7 +411,7 @@ exports.getCautions = async (req, res)=>{
             }
             else
             {
-                if(personne.mailPersonne != null)
+                if(personne.mailPersonne != null && personne.nomPrenom != null)
                 {
                     let cautions = await db.query(`
                         SELECT
@@ -430,19 +428,35 @@ exports.getCautions = async (req, res)=>{
                     });
                     personne.cautions = cautions;
                 }else{
-                    let cautions = await db.query(`
-                        SELECT
-                            ta.*
-                        FROM
-                            CAUTIONS ta
-                        WHERE
-                            ta.personneNonGPM = :personneNonGPM
-                            AND
-                            ta.mailPersonneNonGPM IS NULL
-                    ;`,{
-                        personneNonGPM: personne.nomPrenom,
-                    });
-                    personne.cautions = cautions;
+                    if(personne.nomPrenom != null)
+                    {
+                        let cautions = await db.query(`
+                            SELECT
+                                ta.*
+                            FROM
+                                CAUTIONS ta
+                            WHERE
+                                ta.personneNonGPM = :personneNonGPM
+                                AND
+                                ta.mailPersonneNonGPM IS NULL
+                        ;`,{
+                            personneNonGPM: personne.nomPrenom,
+                        });
+                        personne.cautions = cautions;
+                    }else{
+                        
+                        let cautions = await db.query(`
+                            SELECT
+                                ta.*
+                            FROM
+                                CAUTIONS ta
+                            WHERE
+                                ta.personneNonGPM IS NULL
+                                AND
+                                ta.mailPersonneNonGPM IS NULL
+                        ;`);
+                        personne.cautions = cautions;
+                    }
                 }
             }
         }

@@ -426,7 +426,7 @@ const CalendrierGeneral = ({
                         start: item.dateEmissionCaution,
                         description: item.detailsMoyenPaiement,
                         className: 'bg-soft-info',
-                        location: item.personneNonGPM ? item.personneNonGPM : item.prenomPersonne+' '+item.nomPersonne,
+                        location: item.personneNonGPM != null ? item.personneNonGPM : item.prenomPersonne != null ? item.prenomPersonne+' '+item.nomPersonne : "Aucune personne renseignée",
                         allDay: true,
                         textForLink:'Accès aux cautions',
                         linkTarget:'/tenuesCautions'
@@ -444,7 +444,7 @@ const CalendrierGeneral = ({
                         start: item.dateExpirationCaution,
                         description: item.detailsMoyenPaiement,
                         className: 'bg-soft-info',
-                        location: item.personneNonGPM ? item.personneNonGPM : item.prenomPersonne+' '+item.nomPersonne,
+                        location: item.personneNonGPM != null ? item.personneNonGPM : item.prenomPersonne != null ? item.prenomPersonne+' '+item.nomPersonne : "Aucune personne renseignée",
                         allDay: true,
                         textForLink:'Accès aux cautions',
                         linkTarget:'/tenuesCautions'

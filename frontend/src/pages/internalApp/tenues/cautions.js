@@ -34,8 +34,10 @@ const Cautions = () => {
     const initPage = async () => {
         try {
             const getData = await Axios.get('/tenues/getCautions');
+            console.log(getData.data);
             setCautions(getData.data);
             const getRowData = await Axios.get('/tenues/getCautionsRow');
+            console.log(getRowData.data);
             setCautionsRow(getRowData.data);
             
             setReadyToDisplay(true);
