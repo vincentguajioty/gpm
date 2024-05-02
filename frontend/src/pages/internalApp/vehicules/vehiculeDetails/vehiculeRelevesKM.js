@@ -234,7 +234,7 @@ const VehiculeRelevesKM = ({idVehicule, relevesKM, setPageNeedsRefresh}) => {
             </Modal.Footer>
         </Modal>
 
-        <VehiculeRelevesKMGraph relevesKM={relevesKM}/>
+        {relevesKM.length > 2 ? <VehiculeRelevesKMGraph relevesKM={relevesKM}/> : null}
 
         <GPMtable
             columns={colonnes}

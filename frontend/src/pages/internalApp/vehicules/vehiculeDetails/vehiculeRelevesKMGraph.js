@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import PropTypes from 'prop-types';
 import ReactEChartsCore from 'echarts-for-react/lib/core';
-import { Row, Col, Form, Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 import { getColor } from 'helpers/utils';
 import { LineChart } from 'echarts/charts';
 import * as echarts from 'echarts/core';
@@ -16,8 +15,6 @@ import {
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import { tooltipFormatter } from 'helpers/echart-utils';
-
-import {Axios} from 'helpers/axios';
 
 echarts.use([
     TitleComponent,
@@ -38,7 +35,6 @@ const VehiculeRelevesKMGraph = ({relevesKM}) => {
 
     const makeBoxReady = async () => {
         try {
-            console.log(relevesKM);
             let tempArray = [];
             for(const item of relevesKM)
             {
@@ -55,6 +51,10 @@ const VehiculeRelevesKMGraph = ({relevesKM}) => {
     useEffect(() => {
         makeBoxReady();
     }, [])
+
+    useEffect(() => {
+        makeBoxReady();
+    }, [relevesKM])
 
     const getOption = () => ({
         color: [
