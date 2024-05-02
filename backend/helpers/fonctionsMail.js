@@ -1095,7 +1095,7 @@ const commandeNotif = async (requestInfo) => {
                 couts.libelleCentreDecout
             FROM
                 COMMANDES c
-                LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = c.idFournisseur
+                LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur
                 LEFT OUTER JOIN CENTRE_COUTS couts ON couts.idCentreDeCout = c.idCentreDeCout
             WHERE
                 idCommande = :idCommande
