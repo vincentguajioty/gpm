@@ -135,7 +135,7 @@ const VehiculeCarteGrise = ({idVehicule, libelleVehicule, carteGrise, setPageNee
             variant="outline-info"
             className="ms-2"
             onClick={handleShowCGModal}
-        >Carte grise</IconButton>
+        >Accéder aux détails</IconButton>
         
         <Modal show={showCGModal} onHide={handleCloseCGModal} backdrop="static" fullscreen={true} keyboard={false}>
             <Modal.Header>

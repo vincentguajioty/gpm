@@ -4,6 +4,7 @@ CREATE TABLE CHAMPS_CARTE_GRISE(
     libelleChamp VARCHAR(150)
 );
 
+INSERT INTO CHAMPS_CARTE_GRISE SET codeChamp="#Crit'Air", libelleChamp="Numéro inscrit sur la vignette Crit'Air";
 INSERT INTO CHAMPS_CARTE_GRISE SET codeChamp="A", libelleChamp="Numéro d'immatriculation";
 INSERT INTO CHAMPS_CARTE_GRISE SET codeChamp="A.1", libelleChamp="Numéro d'immatriculation précédent du véhicule";
 INSERT INTO CHAMPS_CARTE_GRISE SET codeChamp="B", libelleChamp="Date de la première immatriculation du véhicule";
