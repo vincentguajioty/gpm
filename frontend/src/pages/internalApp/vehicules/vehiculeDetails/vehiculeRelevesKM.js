@@ -21,6 +21,8 @@ import fr from 'date-fns/locale/fr';
 registerLocale('fr', fr);
 setDefaultLocale('fr');
 
+import VehiculeRelevesKMGraph from './vehiculeRelevesKMGraph';
+
 const VehiculeRelevesKM = ({idVehicule, relevesKM, setPageNeedsRefresh}) => {
     const colonnes = [
         {
@@ -231,6 +233,8 @@ const VehiculeRelevesKM = ({idVehicule, relevesKM, setPageNeedsRefresh}) => {
                 <Button variant='danger' onClick={supprimerEntree} disabled={isLoading}>{isLoading ? 'Patientez...' : 'Supprimer'}</Button>
             </Modal.Footer>
         </Modal>
+
+        <VehiculeRelevesKMGraph relevesKM={relevesKM}/>
 
         <GPMtable
             columns={colonnes}
