@@ -489,6 +489,18 @@ export const vehiculeAttachedForm = Yup.object().shape({
         .required(champObligatoire),
 });
 
+export const vehiculeCarteGriseForm = Yup.object().shape({
+    detailsChamps: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    idChamp: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+});
+
 export const releveKM = Yup.object().shape({
     dateReleve: Yup
         .date()

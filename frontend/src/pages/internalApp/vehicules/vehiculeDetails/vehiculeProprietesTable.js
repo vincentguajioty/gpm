@@ -6,6 +6,7 @@ import moment from 'moment-timezone';
 
 import VehiculeLotsCharges from './vehiculeLotsCharges';
 import VehiculeAttached from './vehiculeAttached';
+import VehiculeCarteGrise from './vehiculeCarteGrise';
 
 const VehiculeProprietesTable = ({vehicule, setPageNeedsRefresh}) => {
 
@@ -30,7 +31,15 @@ const VehiculeProprietesTable = ({vehicule, setPageNeedsRefresh}) => {
                 </tr>
                 <tr>
                     <td className="bg-100" style={{ width: '30%' }}>Immatriculation</td>
-                    <td>{vehicule.immatriculation}</td>
+                    <td>
+                        {vehicule.immatriculation}
+                        <VehiculeCarteGrise
+                            idVehicule={vehicule.idVehicule}
+                            libelleVehicule={vehicule.libelleVehicule}
+                            carteGrise={vehicule.carteGrise}
+                            setPageNeedsRefresh={setPageNeedsRefresh}
+                        />
+                    </td>
                 </tr>
                 <tr>
                     <td className="bg-100" style={{ width: '30%' }}>Type</td>

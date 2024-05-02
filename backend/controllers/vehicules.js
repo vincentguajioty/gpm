@@ -294,6 +294,22 @@ exports.getOneVehicule = async (req, res)=>{
                 idVehicule: vehicule.idVehicule
             });
 
+            let carteGrise = await db.query(`
+                SELECT
+                    v.*,
+                    cg.codeChamp,
+                    cg.libelleChamp
+                FROM
+                    VEHICULES_CHAMPS_CG v
+                    LEFT OUTER JOIN CHAMPS_CARTE_GRISE cg ON v.idChamp = cg.idChamp
+                WHERE
+                    idVehicule = :idVehicule
+                ORDER BY
+                    cg.codeChamp
+            ;`,{
+                idVehicule: vehicule.idVehicule
+            });
+
             let documents = await db.query(`
                 SELECT
                     *
@@ -313,6 +329,7 @@ exports.getOneVehicule = async (req, res)=>{
             vehicule.alertesBenevoles = req.verifyJWTandProfile.alertesBenevolesVehicules_lecture ? alertesBenevoles : [];
             vehicule.relevesKM = relevesKM;
             vehicule.lots = lots;
+            vehicule.carteGrise = carteGrise;
             vehicule.documents = documents;
         }
 
@@ -1155,6 +1172,62 @@ exports.getDesinfectionsDashoard = async (req, res)=>{
         ;`);
 
         res.send({vehicules: vehicules, desinfections: desinfections, lastThreeMonths: lastThreeMonths});
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//Items détails de la carte Grise
+exports.addCGdetails = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                VEHICULES_CHAMPS_CG
+            SET
+                idChamp = :idChamp,
+                idVehicule = :idVehicule,
+                detailsChamps = :detailsChamps
+        `,{
+            idChamp : req.body.idChamp || null,
+            idVehicule : req.body.idVehicule || null,
+            detailsChamps : req.body.detailsChamps || null,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateCGdetails = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VEHICULES_CHAMPS_CG
+            SET
+                idChamp = :idChamp,
+                detailsChamps = :detailsChamps
+            WHERE
+                idVehiculeChampCG = :idVehiculeChampCG
+        `,{
+            idChamp : req.body.idChamp || null,
+            detailsChamps : req.body.detailsChamps || null,
+            idVehiculeChampCG : req.body.idVehiculeChampCG,
+        });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.vehiculesDetailCGDelete = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.vehiculesDetailCGDelete(req.verifyJWTandProfile.idPersonne , req.body.idVehiculeChampCG);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

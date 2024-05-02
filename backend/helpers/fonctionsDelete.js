@@ -1542,6 +1542,12 @@ const vehiculesDelete = async (idLogger, idVehicule) => {
             idVehicule : idVehicule,
         });
 
+        let dropCarteGriseDetails = await db.query(`
+            DELETE FROM VEHICULES_CHAMPS_CG WHERE idVehicule = :idVehicule
+        ;`,{
+            idVehicule : idVehicule,
+        });
+
         let alertesBenevolesToDop = await db.query(`
             SELECT * FROM VEHICULES_ALERTES WHERE idVehicule = :idVehicule
         ;`,{
@@ -1848,6 +1854,32 @@ const vehiculesTypesMaintenancesPonctuellesDelete = async (idLogger, idTypeMaint
         return true;
     } catch (error) {
         logger.info("Suppression en échec du type de maintenance ponctuelle "+idTypeMaintenance, {idPersonne: idLogger})
+        logger.error(error)
+        return false;
+    }
+}
+
+const vehiculesDetailCGDelete = async (idLogger, idVehiculeChampCG) => {
+    try {
+        logger.info("Suppression d'un champ carte grise "+idVehiculeChampCG, {idPersonne: idLogger})
+
+        let getInitialData = await db.query(`
+            SELECT * FROM VEHICULES_CHAMPS_CG WHERE idVehiculeChampCG = :idVehiculeChampCG
+        ;`,{
+            idVehiculeChampCG : idVehiculeChampCG,
+        });
+        logger.info("Sauvegarde avant suppression", {idPersonne: idLogger, backupBeforeDrop: getInitialData[0]});
+
+        let finalDeleteQuery = await db.query(`
+            DELETE FROM VEHICULES_CHAMPS_CG WHERE idVehiculeChampCG = :idVehiculeChampCG
+        ;`,{
+            idVehiculeChampCG : idVehiculeChampCG,
+        });
+
+        logger.info("Suppression réussie d'un champ carte grise "+idVehiculeChampCG, {idPersonne: idLogger})
+        return true;
+    } catch (error) {
+        logger.info("Suppression en échec d'un champ carte grise "+idVehiculeChampCG, {idPersonne: idLogger})
         logger.error(error)
         return false;
     }
@@ -2378,6 +2410,7 @@ module.exports = {
     vehiculesTypesDesinfectionsDelete,
     vehiculesTypesMaintenanceReguliereDelete,
     vehiculesTypesMaintenancesPonctuellesDelete,
+    vehiculesDetailCGDelete,
     vhfCanauxDelete,
     vhfCanauxDocDelete,
     vhfEquipementsAccessoiresDelete,

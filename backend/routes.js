@@ -105,6 +105,7 @@ router.get('/select/getSacs',                                  loggerMiddleware.
 router.get('/select/getSacsFull',                              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getSacsFull);
 router.get('/select/getTypesLots',                             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getTypesLots);
 router.get('/select/getVehicules',                             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVehicules);
+router.get('/select/getChampsCarteGrise',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getChampsCarteGrise);
 router.get('/select/getCodesBarreCatalogue',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCodesBarreCatalogue);
 router.get('/select/getEtatsCommandes',                        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getEtatsCommandes);
 router.get('/select/getCentresCouts',                          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCentresCouts);
@@ -303,6 +304,10 @@ router.post('/vehicules/addDesinfection',            loggerMiddleware.httpLogger
 router.post('/vehicules/updateDesinfection',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateDesinfection);
 router.post('/vehicules/deleteDesinfection',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_modification']), loggerMiddleware.suppressionLogger(),  vehiculesCtrl.deleteDesinfection);
 router.post('/vehicules/updateDesinfectionAlertes',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_suppression']),  loggerMiddleware.modificationLogger(), vehiculesCtrl.updateDesinfectionAlertes);
+//Détails carte grise
+router.post('/vehicules/addCGdetails',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']),        loggerMiddleware.modificationLogger(), vehiculesCtrl.addCGdetails);
+router.post('/vehicules/updateCGdetails',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']),        loggerMiddleware.modificationLogger(), vehiculesCtrl.updateCGdetails);
+router.post('/vehicules/vehiculesDetailCGDelete',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']),        loggerMiddleware.modificationLogger(), vehiculesCtrl.vehiculesDetailCGDelete);
 //Alertes bénévoles
 router.post('/vehicules/getVehiculesAlertes', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['alertesBenevolesVehicules_lecture']),                                                                                              vehiculesCtrl.getVehiculesAlertes);
 router.post('/vehicules/autoAffect',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['alertesBenevolesVehicules_affectation']),                                                 loggerMiddleware.modificationLogger(),   vehiculesCtrl.autoAffect);
