@@ -253,10 +253,12 @@ export const fournisseurUpdateForm = Yup.object().shape({
     mailFournisseur: Yup
         .string()
         .typeError(champObligatoire)
+        .nullable(true)
         .email(champMail),
     siteWebFournisseur: Yup
         .string()
         .typeError(champObligatoire)
+        .nullable(true)
         .url(champURL),
 });
 
