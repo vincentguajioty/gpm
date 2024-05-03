@@ -10,10 +10,6 @@ Les modules sont les suivants:
 - Parc transmissions
 - Parc de tenues
 
-## Pour commencer
+## Documentation
 
-Ce projet est en cours de ré-écriture. Les versions jusqu'à V14.2 sont en PHP, à compter de la V15 qui est en cours de déveppement, il s'agirat d'une application FullStack avec un FrontEnd en React, et un BackEnd en node.js . L'application sera livrée sous format docker (deux images, une pour le front et une pour le back). Le code source restera bien évidemment disponible sur ce Git.
-
-IMPORTANT: Toute ancienne installation non-mise à jour (version inférieure à 14.x) devra être mise à jour jusqu'à la version V14.2 avant d'envisager moindre migration en V15. Vous pouvez contacter le développeur pour tout aide sur ce sujet (contact@guajioty.fr)
-
-Toute la documentation est disponible ici: https://gpm.guajioty.fr . Cette documentation est correcte jusqu'à la version V14.2. Une nouvelle version de la documentation sera produite pour la V15 ainsi qu'un guide de migration et installation de la V15
+Toute la documentation est disponible ici: https://gpm.guajioty.fr . Cette documentation comprend toutes les explications pour l'insallation du produit et son utilisation. En cas de difficultés, vous pouvez contacter le developpeur: contact@guajioty.fr
