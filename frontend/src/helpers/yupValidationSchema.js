@@ -142,6 +142,13 @@ export const carburants = Yup.object().shape({
         .required(champObligatoire)
 });
 
+export const pneumatiques = Yup.object().shape({
+    libellePneumatique: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire)
+});
+
 export const catalogueForm = Yup.object().shape({
     libelleMateriel: Yup
         .string()

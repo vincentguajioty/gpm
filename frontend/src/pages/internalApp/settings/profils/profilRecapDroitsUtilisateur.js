@@ -261,7 +261,7 @@ const ProfilRecapDroitsUtilisateur = ({idPersonne, pageNeedsRefresh}) => {
                             <td><FontAwesomeIcon icon={profil['vehiculeHealthType_suppression'] ? 'check' : 'ban'}/></td>
                         </tr>
                         <tr>
-                            <td>Carburants</td>
+                            <td>Carburants et pneumatiques</td>
                             <td><FontAwesomeIcon icon={profil['carburants_lecture'] ? 'check' : 'ban'}/></td>
                             <td><FontAwesomeIcon icon={profil['carburants_ajout'] ? 'check' : 'ban'}/></td>
                             <td><FontAwesomeIcon icon={profil['carburants_modification'] ? 'check' : 'ban'}/></td>

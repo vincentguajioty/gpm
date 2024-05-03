@@ -323,6 +323,13 @@ export const vehiculesCarburantsDelete = <>
     </ul>
 </>;
 
+export const vehiculesPneumatiquesDelete = <>
+    Attention, vous allez supprimer un type de pneumatiques. Les impacts collatéraux à cette suppression sont:
+    <ul>
+        <li>Les véhicules rattachés à ce type n'auront plus de type de pneumatique de spécifié (train avant et/ou arrière).</li>
+    </ul>
+</>;
+
 export const vhfEquipementsAccessoiresDelete = <>
     Attention, vous allez supprimer un accessoire. Les impacts collatéraux à cette suppression sont:
     <ul>

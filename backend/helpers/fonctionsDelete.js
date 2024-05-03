@@ -1478,6 +1478,44 @@ const vehiculesCarburantsDelete = async (idLogger, idCarburant) => {
     }
 }
 
+const vehiculesPneumatiquesDelete = async (idLogger, idPneumatique) => {
+    try {
+        logger.info("Suppression du type de pneumatique "+idPneumatique, {idPersonne: idLogger})
+
+        let getInitialData = await db.query(`
+            SELECT * FROM VEHICULES_PNEUMATIQUES WHERE idPneumatique = :idPneumatique
+        ;`,{
+            idPneumatique : idPneumatique,
+        });
+        logger.info("Sauvegarde avant suppression", {idPersonne: idLogger, backupBeforeDrop: getInitialData[0]});
+
+        let updateQuery;
+        updateQuery = await db.query(`
+            UPDATE VEHICULES SET idPneumatiqueAvant = Null WHERE idPneumatiqueAvant = :idPneumatique
+        ;`,{
+            idPneumatique : idPneumatique,
+        });
+        updateQuery = await db.query(`
+            UPDATE VEHICULES SET idPneumatiqueArriere = Null WHERE idPneumatiqueArriere = :idPneumatique
+        ;`,{
+            idPneumatique : idPneumatique,
+        });
+
+        let finalDeleteQuery = await db.query(`
+            DELETE FROM VEHICULES_PNEUMATIQUES WHERE idPneumatique = :idPneumatique
+        ;`,{
+            idPneumatique : idPneumatique,
+        });
+
+        logger.info("Suppression réussie du type de pneumatique "+idPneumatique, {idPersonne: idLogger})
+        return true;
+    } catch (error) {
+        logger.info("Suppression en échec du type de pneumatique "+idPneumatique, {idPersonne: idLogger})
+        logger.error(error)
+        return false;
+    }
+}
+
 const vehiculesDelete = async (idLogger, idVehicule) => {
     try {
         logger.info("Suppression du véhicule "+idVehicule, {idPersonne: idLogger})
@@ -2400,6 +2438,7 @@ module.exports = {
     tenuesCatalogueDelete,
     todolistDelete,
     vehiculesCarburantsDelete,
+    vehiculesPneumatiquesDelete,
     vehiculesDelete,
     vehiculesDesinfectionsDelete,
     vehiculesDocDelete,

@@ -344,6 +344,24 @@ exports.getCarburants = async (req, res)=>{
     }
 }
 
+exports.getPneumatiques = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idPneumatique as value,
+                libellePneumatique as label
+            FROM
+                VEHICULES_PNEUMATIQUES
+            ORDER BY
+                libellePneumatique
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.getEtatsLots = async (req, res)=>{
     try {
         let results = await db.query(`

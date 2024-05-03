@@ -87,8 +87,6 @@ const VehiculeProprietesTable = ({vehicule, setPageNeedsRefresh}) => {
                 <tr>
                     <td className="bg-100" style={{ width: '30%' }}>Equipements embarqués</td>
                     <td>
-                        {vehicule.pneusAVhivers ?                   <SoftBadge className='me-1' bg='info'>Pneus hivers avant</SoftBadge> : null}
-                        {vehicule.pneusARhivers ?                   <SoftBadge className='me-1' bg='info'>Pneus hivers arriere</SoftBadge> : null}
                         {vehicule.priseAlimentation220 ?            <SoftBadge className='me-1' bg='info'>Prise d'alimentation 220V</SoftBadge> : null}
                         {vehicule.climatisation ?                   <SoftBadge className='me-1' bg='info'>Climatisation</SoftBadge> : null}
                         {vehicule.signaletiqueOrange ?              <SoftBadge className='me-1' bg='info'>Feux oranges</SoftBadge> : null}
@@ -98,6 +96,22 @@ const VehiculeProprietesTable = ({vehicule, setPageNeedsRefresh}) => {
                         {vehicule.pmv ?                             <SoftBadge className='me-1' bg='info'>PMV</SoftBadge> : null}
                         {vehicule.fleche ?                          <SoftBadge className='me-1' bg='info'>Flèche/Triflash</SoftBadge> : null}
                         {vehicule.nbCones && vehicule.nbCones > 0 ? <SoftBadge className='me-1' bg='info'>{vehicule.nbCones} cones</SoftBadge> : null}
+                    </td>
+                </tr>
+                <tr>
+                    <td className="bg-100" style={{ width: '30%' }}>Pneumatiques Train avant</td>
+                    <td>
+                        Pression: {vehicule.pressionPneuAvant} bar<br/>
+                        Dimension: {vehicule.dimensionPneuAvant}<br/>
+                        Type: {vehicule.pneuAvant}
+                    </td>
+                </tr>
+                <tr>
+                    <td className="bg-100" style={{ width: '30%' }}>Pneumatiques Train arrière</td>
+                    <td>
+                        Pression: {vehicule.pressionPneuArriere} bar<br/>
+                        Dimension: {vehicule.dimensionPneuArriere}<br/>
+                        Type: {vehicule.pneuArriere}
                     </td>
                 </tr>
                 <tr>

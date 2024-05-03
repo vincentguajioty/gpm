@@ -2071,7 +2071,7 @@ const Profils = () => {
                                     </td>
                             </tr>
                             <tr>
-                                <td>Carburants</td>
+                                <td>Carburants et pneumatiques</td>
                                 <td>
                                     {modeEdition ?
                                         <Form.Check

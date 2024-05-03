@@ -9,6 +9,7 @@ import {
     vehiculestypesHealthDelete,
     vehiculesTypesMaintenanceDelete,
     vehiculesCarburantsDelete,
+    vehiculesPneumatiquesDelete,
 } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
@@ -124,6 +125,24 @@ const VehiculesSettings = () => {
             profilUpdate: "carburants_modification",
             profilDelete: "carburants_suppression",
             deleteWarning: vehiculesCarburantsDelete,
+        },
+        {
+            cardTitle: "Pneumatiques",
+            idAccessorForDb: "idPneumatique",
+            fields: [
+                {dbName:"idPneumatique", type:"int", displayName:"idPneumatique", showInTable: false, showInForm: false,},
+                {dbName:"libellePneumatique", type:"text", displayName:"Libellé", showInTable: true, showInForm: true,},
+            ],
+            yupSchema: "pneumatiques",
+            boGetRoute: "/settingsMetiers/getPneumatiques",
+            boAddRoute: "/settingsMetiers/addPneumatiques",
+            boUpdateRoute: "/settingsMetiers/updatePneumatiques",
+            boDeleteRoute: "/settingsMetiers/deletePneumatiques",
+            profilGet: "carburants_lecture",
+            profilAdd: "carburants_ajout",
+            profilUpdate: "carburants_modification",
+            profilDelete: "carburants_suppression",
+            deleteWarning: vehiculesPneumatiquesDelete,
         },
     ];
 

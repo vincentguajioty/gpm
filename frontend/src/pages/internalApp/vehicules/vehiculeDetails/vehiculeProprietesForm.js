@@ -28,6 +28,7 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
     const [personnes, setPersonnes] = useState([]);
     const [vehiculesEtat, setVehiculesEtat] = useState([]);
     const [carburants, setCarburants] = useState([]);
+    const [pneumatiques, setPneumatiques] = useState([]);
 
     const loadForm = async () => {
         try {
@@ -50,6 +51,9 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
 
             getData = await Axios.get('/select/getCarburants');
             setCarburants(getData.data);
+
+            getData = await Axios.get('/select/getPneumatiques');
+            setPneumatiques(getData.data);
             
             setValue("libelleVehicule", vehicule.libelleVehicule);
             setValue("immatriculation", vehicule.immatriculation);
@@ -62,8 +66,6 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
             setValue("idResponsable", vehicule.idResponsable);
             setValue("dateAchat", vehicule.dateAchat ? new Date(vehicule.dateAchat) : null);
             setValue("assuranceNumero", vehicule.assuranceNumero);
-            setValue("pneusAVhivers", vehicule.pneusAVhivers);
-            setValue("pneusARhivers", vehicule.pneusARhivers);
             setValue("climatisation", vehicule.climatisation);
             setValue("signaletiqueOrange", vehicule.signaletiqueOrange);
             setValue("signaletiqueBleue", vehicule.signaletiqueBleue);
@@ -77,6 +79,12 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
             setValue("remarquesVehicule", vehicule.remarquesVehicule);
             setValue("idVehiculesEtat", vehicule.idVehiculesEtat);
             setValue("idCarburant", vehicule.idCarburant);
+            setValue("idPneumatiqueAvant", vehicule.idPneumatiqueAvant);
+            setValue("idPneumatiqueArriere", vehicule.idPneumatiqueArriere);
+            setValue("dimensionPneuAvant", vehicule.dimensionPneuAvant);
+            setValue("dimensionPneuArriere", vehicule.dimensionPneuArriere);
+            setValue("pressionPneuAvant", vehicule.pressionPneuAvant);
+            setValue("pressionPneuArriere", vehicule.pressionPneuArriere);
             setValue("affichageSyntheseDesinfections", vehicule.affichageSyntheseDesinfections);
             setValue("affichageSyntheseHealth", vehicule.affichageSyntheseHealth);
             setValue("dispoBenevoles", vehicule.dispoBenevoles == true ? true : false);
@@ -108,8 +116,6 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
                 idResponsable: data.idResponsable,
                 dateAchat: data.dateAchat,
                 assuranceNumero: data.assuranceNumero,
-                pneusAVhivers: data.pneusAVhivers,
-                pneusARhivers: data.pneusARhivers,
                 climatisation: data.climatisation,
                 signaletiqueOrange: data.signaletiqueOrange,
                 signaletiqueBleue: data.signaletiqueBleue,
@@ -123,6 +129,12 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
                 remarquesVehicule: data.remarquesVehicule,
                 idVehiculesEtat: data.idVehiculesEtat,
                 idCarburant: data.idCarburant,
+                idPneumatiqueAvant: data.idPneumatiqueAvant,
+                idPneumatiqueArriere: data.idPneumatiqueArriere,
+                dimensionPneuAvant: data.dimensionPneuAvant,
+                dimensionPneuArriere: data.dimensionPneuArriere,
+                pressionPneuAvant: data.pressionPneuAvant,
+                pressionPneuArriere: data.pressionPneuArriere,
                 affichageSyntheseDesinfections: data.affichageSyntheseDesinfections,
                 affichageSyntheseHealth: data.affichageSyntheseHealth,
                 dispoBenevoles: data.dispoBenevoles,
@@ -329,28 +341,6 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
                         <td className="bg-100" style={{ width: '30%' }}>Equipements embarqués</td>
                         <td>
                             <Form.Check
-                                id='pneusAVhivers'
-                                name='pneusAVhivers'
-                                label="Pneus hivers avant"
-                                type='switch'
-                                checked={watch("pneusAVhivers")}
-                                onClick={(e)=>{
-                                    setValue("pneusAVhivers", !watch("pneusAVhivers"))
-                                }}
-                            />
-                            <small className="text-danger">{errors.pneusAVhivers?.message}</small>
-                            <Form.Check
-                                id='pneusARhivers'
-                                name='pneusARhivers'
-                                label="Pneus hivers arriere"
-                                type='switch'
-                                checked={watch("pneusARhivers")}
-                                onClick={(e)=>{
-                                    setValue("pneusARhivers", !watch("pneusARhivers"))
-                                }}
-                            />
-                            <small className="text-danger">{errors.pneusARhivers?.message}</small>
-                            <Form.Check
                                 id='priseAlimentation220'
                                 name='priseAlimentation220'
                                 label="Prise d'alimentation 220V"
@@ -441,6 +431,64 @@ const VehiculeProprietesForm = ({vehicule, setModeEdition, setPageNeedsRefresh})
                             <Form.Label>Cones:</Form.Label>
                             <Form.Control size="sm" type="number" min="0" step="1" name='nbCones' id='nbCones' {...register('nbCones')}/>
                             <small className="text-danger">{errors.nbCones?.message}</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="bg-100" style={{ width: '30%' }}>Pneumatiques Train avant</td>
+                        <td>
+                            <Form.Label>Type:</Form.Label>
+                            <Select
+                                id="idPneumatiqueAvant"
+                                name="idPneumatiqueAvant"
+                                size="sm"
+                                classNamePrefix="react-select"
+                                closeMenuOnSelect={true}
+                                isClearable={true}
+                                isSearchable={true}
+                                isDisabled={isLoading}
+                                placeholder='Aucun type selectionné'
+                                options={pneumatiques}
+                                value={pneumatiques.find(c => c.value === watch("idPneumatiqueAvant"))}
+                                onChange={val => val != null ? setValue("idPneumatiqueAvant", val.value) : setValue("idPneumatiqueAvant", null)}
+                            />
+                            <small className="text-danger">{errors.idPneumatiqueAvant?.message}</small>
+                            
+                            <Form.Label>Dimensions:</Form.Label>
+                            <Form.Control size="sm" type="text" name='dimensionPneuAvant' id='dimensionPneuAvant' {...register('dimensionPneuAvant')}/>
+                            <small className="text-danger">{errors.dimensionPneuAvant?.message}</small>
+                            
+                            <Form.Label>Pression (bar):</Form.Label>
+                            <Form.Control size="sm" type="number" step="0.01" name='pressionPneuAvant' id='pressionPneuAvant' {...register('pressionPneuAvant')}/>
+                            <small className="text-danger">{errors.pressionPneuAvant?.message}</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="bg-100" style={{ width: '30%' }}>Pneumatiques Train arrière</td>
+                        <td>
+                            <Form.Label>Type:</Form.Label>
+                            <Select
+                                id="idPneumatiqueArriere"
+                                name="idPneumatiqueArriere"
+                                size="sm"
+                                classNamePrefix="react-select"
+                                closeMenuOnSelect={true}
+                                isClearable={true}
+                                isSearchable={true}
+                                isDisabled={isLoading}
+                                placeholder='Aucun type selectionné'
+                                options={pneumatiques}
+                                value={pneumatiques.find(c => c.value === watch("idPneumatiqueArriere"))}
+                                onChange={val => val != null ? setValue("idPneumatiqueArriere", val.value) : setValue("idPneumatiqueArriere", null)}
+                            />
+                            <small className="text-danger">{errors.idPneumatiqueArriere?.message}</small>
+                            
+                            <Form.Label>Dimensions:</Form.Label>
+                            <Form.Control size="sm" type="text" name='dimensionPneuArriere' id='dimensionPneuArriere' {...register('dimensionPneuArriere')}/>
+                            <small className="text-danger">{errors.dimensionPneuArriere?.message}</small>
+                            
+                            <Form.Label>Pression (bar):</Form.Label>
+                            <Form.Control size="sm" type="number" step="0.01" name='pressionPneuArriere' id='pressionPneuArriere' {...register('pressionPneuArriere')}/>
+                            <small className="text-danger">{errors.pressionPneuArriere?.message}</small>
                         </td>
                     </tr>
                     <tr>

@@ -436,6 +436,65 @@ exports.deleteCarburants = async (req, res)=>{
     }
 }
 
+/*--- Pneumatiques --- */
+exports.getPneumatiques = async (req, res)=>{
+    try {
+        let results = await db.query(
+            `SELECT * FROM VEHICULES_PNEUMATIQUES ORDER BY libellePneumatique;`
+        );
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+exports.addPneumatiques = async (req, res)=>{
+    try {
+        let results = await db.query(
+            `INSERT INTO
+                VEHICULES_PNEUMATIQUES
+            SET
+                libellePneumatique = :libellePneumatique
+            ;`,
+        {
+            libellePneumatique : req.body.libellePneumatique || null,
+        });
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+exports.updatePneumatiques = async (req, res)=>{
+    try {
+        let results = await db.query(
+            `UPDATE
+                VEHICULES_PNEUMATIQUES
+            SET
+                libellePneumatique = :libellePneumatique
+            WHERE
+                idPneumatique = :idPneumatique
+            ;`,
+        {
+            libellePneumatique : req.body.libellePneumatique || null,
+            idPneumatique      : req.body.idPneumatique || null
+        });
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+exports.deletePneumatiques = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.vehiculesPneumatiquesDelete(req.verifyJWTandProfile.idPersonne , req.body.idPneumatique);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 /*--- Etats lots --- */
 exports.getEtatsLots = async (req, res)=>{
     try {

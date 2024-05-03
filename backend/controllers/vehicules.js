@@ -52,6 +52,8 @@ exports.getOneVehicule = async (req, res)=>{
                 e.libelleNotificationEnabled,
                 e.notifiationEnabled,
                 l.libelleLieu,
+                pnav.libellePneumatique as pneuAvant,
+                pnar.libellePneumatique as pneuArriere,
                 COUNT(a.idAlerte) as nbAlertesEnCours
             FROM
                 VEHICULES v
@@ -61,6 +63,8 @@ exports.getOneVehicule = async (req, res)=>{
                 LEFT OUTER JOIN NOTIFICATIONS_ENABLED e ON v.idNotificationEnabled = e.idNotificationEnabled
                 LEFT OUTER JOIN LIEUX l ON v.idLieu = l.idLieu
                 LEFT OUTER JOIN CARBURANTS car ON v.idCarburant = car.idCarburant
+                LEFT OUTER JOIN VEHICULES_PNEUMATIQUES pnav ON v.idPneumatiqueAvant = pnav.idPneumatique
+                LEFT OUTER JOIN VEHICULES_PNEUMATIQUES pnar ON v.idPneumatiqueArriere = pnar.idPneumatique
                 LEFT OUTER JOIN (SELECT * FROM VEHICULES_ALERTES WHERE dateResolutionAlerte IS NULL) a ON a.idVehicule = v.idVehicule
             WHERE
                 v.idVehicule = :idVehicule
@@ -386,8 +390,6 @@ exports.updateVehicule = async (req, res)=>{
                 idResponsable = :idResponsable,
                 dateAchat = :dateAchat,
                 assuranceNumero = :assuranceNumero,
-                pneusAVhivers = :pneusAVhivers,
-                pneusARhivers = :pneusARhivers,
                 climatisation = :climatisation,
                 signaletiqueOrange = :signaletiqueOrange,
                 signaletiqueBleue = :signaletiqueBleue,
@@ -401,6 +403,12 @@ exports.updateVehicule = async (req, res)=>{
                 remarquesVehicule = :remarquesVehicule,
                 idVehiculesEtat = :idVehiculesEtat,
                 idCarburant = :idCarburant,
+                idPneumatiqueAvant = :idPneumatiqueAvant,
+                idPneumatiqueArriere = :idPneumatiqueArriere,
+                dimensionPneuAvant = :dimensionPneuAvant,
+                dimensionPneuArriere = :dimensionPneuArriere,
+                pressionPneuAvant = :pressionPneuAvant,
+                pressionPneuArriere = :pressionPneuArriere,
                 affichageSyntheseDesinfections = :affichageSyntheseDesinfections,
                 affichageSyntheseHealth = :affichageSyntheseHealth,
                 dispoBenevoles = :dispoBenevoles
@@ -418,8 +426,6 @@ exports.updateVehicule = async (req, res)=>{
             idResponsable : req.body.idResponsable || null,
             dateAchat : req.body.dateAchat || null,
             assuranceNumero : req.body.assuranceNumero || null,
-            pneusAVhivers : req.body.pneusAVhivers || null,
-            pneusARhivers : req.body.pneusARhivers || null,
             climatisation : req.body.climatisation || null,
             signaletiqueOrange : req.body.signaletiqueOrange || null,
             signaletiqueBleue : req.body.signaletiqueBleue || null,
@@ -433,6 +439,12 @@ exports.updateVehicule = async (req, res)=>{
             remarquesVehicule : req.body.remarquesVehicule || null,
             idVehiculesEtat : req.body.idVehiculesEtat || null,
             idCarburant : req.body.idCarburant || null,
+            idPneumatiqueAvant : req.body.idPneumatiqueAvant || null,
+            idPneumatiqueArriere : req.body.idPneumatiqueArriere || null,
+            dimensionPneuAvant : req.body.dimensionPneuAvant || null,
+            dimensionPneuArriere : req.body.dimensionPneuArriere || null,
+            pressionPneuAvant : req.body.pressionPneuAvant || null,
+            pressionPneuArriere : req.body.pressionPneuArriere || null,
             affichageSyntheseDesinfections : req.body.affichageSyntheseDesinfections || null,
             affichageSyntheseHealth : req.body.affichageSyntheseHealth || null,
             dispoBenevoles : req.body.dispoBenevoles || 0,
