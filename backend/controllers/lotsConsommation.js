@@ -65,6 +65,9 @@ exports.getOneConso = async (req, res)=>{
                 LEFT OUTER JOIN RESERVES_CONTENEUR res ON m.idConteneur = res.idConteneur
             WHERE
                 idConsommation = :idConsommation
+            ORDER BY
+                l.libelleLot,
+                c.libelleMateriel
         `,{
             idConsommation: req.body.idConsommation || null
         });
@@ -80,6 +83,8 @@ exports.getOneConso = async (req, res)=>{
                 LEFT OUTER JOIN LOTS_LOTS l ON m.idLot = l.idLot
             WHERE
                 idConsommation = :idConsommation
+            ORDER BY
+                l.libelleLot
         `,{
             idConsommation: req.body.idConsommation || null
         });

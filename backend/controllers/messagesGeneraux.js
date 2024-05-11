@@ -30,17 +30,17 @@ exports.getMessagesPublics = async (req, res)=>{
 exports.getAllMessages = async (req, res)=>{
     try {
         let results = await db.query(`
-        SELECT
-            m.*,
-            mt.libelleMessageType,
-            mt.couleurMessageType,
-            p.identifiant,
-            p.nomPersonne,
-            p.prenomPersonne
-        FROM
-            MESSAGES m
-            LEFT OUTER JOIN MESSAGES_TYPES mt ON m.idMessageType = mt.idMessageType
-            LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne
+            SELECT
+                m.*,
+                mt.libelleMessageType,
+                mt.couleurMessageType,
+                p.identifiant,
+                p.nomPersonne,
+                p.prenomPersonne
+            FROM
+                MESSAGES m
+                LEFT OUTER JOIN MESSAGES_TYPES mt ON m.idMessageType = mt.idMessageType
+                LEFT OUTER JOIN PERSONNE_REFERENTE p ON m.idPersonne = p.idPersonne
         ;`);
         res.send(results);
     } catch (error) {

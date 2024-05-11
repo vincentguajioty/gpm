@@ -45,6 +45,9 @@ exports.getCatalogue = async (req, res)=>{
             FROM
                 TENUES_CATALOGUE tc
                 LEFT OUTER JOIN FOURNISSEURS f ON tc.idFournisseur = f.idFournisseur
+            ORDER BY
+                tc.libelleCatalogueTenue,
+                tc.tailleCatalogueTenue
         ;`);
         for(const tenue of results)
         {
@@ -57,6 +60,8 @@ exports.getCatalogue = async (req, res)=>{
                     LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ta.idPersonne = pr.idPersonne
                 WHERE
                     ta.idCatalogueTenue = :idCatalogueTenue
+                ORDER BY
+                    pr.identifiant
             ;`,{
                 idCatalogueTenue: tenue.idCatalogueTenue,
             });
@@ -152,6 +157,9 @@ exports.getAffectations = async (req, res)=>{
                     LEFT OUTER JOIN TENUES_AFFECTATION ta ON pr.idPersonne = ta.idPersonne
                 WHERE
                     ta.idTenue IS NOT NULL
+                ORDER BY
+                    nomPersonne,
+                    prenomPersonne
             )
             UNION
             (
@@ -166,6 +174,8 @@ exports.getAffectations = async (req, res)=>{
                     personneNonGPM IS NOT NULL
                     AND
                     idPersonne IS NULL
+                ORDER BY
+                    personneNonGPM
             )
         ;`);
 
@@ -183,6 +193,9 @@ exports.getAffectations = async (req, res)=>{
                         LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
                     WHERE
                         ta.idPersonne = :idPersonne
+                    ORDER BY
+                        tc.libelleCatalogueTenue,
+                        tc.tailleCatalogueTenue
                 ;`,{
                     idPersonne: personne.idPersonne,
                 });
@@ -204,6 +217,9 @@ exports.getAffectations = async (req, res)=>{
                             ta.personneNonGPM = :personneNonGPM
                             AND
                             ta.mailPersonneNonGPM = :mailPersonneNonGPM
+                        ORDER BY
+                            tc.libelleCatalogueTenue,
+                            tc.tailleCatalogueTenue
                     ;`,{
                         personneNonGPM: personne.nomPrenom,
                         mailPersonneNonGPM: personne.mailPersonne,
@@ -222,6 +238,9 @@ exports.getAffectations = async (req, res)=>{
                             ta.personneNonGPM = :personneNonGPM
                             AND
                             ta.mailPersonneNonGPM IS NULL
+                        ORDER BY
+                            tc.libelleCatalogueTenue,
+                            tc.tailleCatalogueTenue
                     ;`,{
                         personneNonGPM: personne.nomPrenom,
                     });
@@ -263,6 +282,9 @@ exports.getPersonnesSuggested = async (req, res)=>{
                     TENUES_AFFECTATION
                 WHERE
                     personneNonGPM IS NOT NULL
+                ORDER BY
+                    personneNonGPM,
+                    mailPersonneNonGPM
             )
             UNION
             (
@@ -273,6 +295,9 @@ exports.getPersonnesSuggested = async (req, res)=>{
                     CAUTIONS
                 WHERE
                     personneNonGPM IS NOT NULL
+                ORDER BY
+                    personneNonGPM,
+                    mailPersonneNonGPM
             )
         ;`);
 
@@ -378,6 +403,9 @@ exports.getCautions = async (req, res)=>{
                     LEFT OUTER JOIN CAUTIONS ta ON pr.idPersonne = ta.idPersonne
                 WHERE
                     ta.idCaution IS NOT NULL
+                ORDER BY
+                    nomPersonne,
+                    prenomPersonne
             )
             UNION
             (
@@ -390,6 +418,8 @@ exports.getCautions = async (req, res)=>{
                     CAUTIONS ta
                 WHERE
                     idPersonne IS NULL
+                ORDER BY
+                    personneNonGPM
             )
         ;`);
 
@@ -404,6 +434,8 @@ exports.getCautions = async (req, res)=>{
                         CAUTIONS ta
                     WHERE
                         ta.idPersonne = :idPersonne
+                    ORDER BY
+                        ta.dateEmissionCaution
                 ;`,{
                     idPersonne: personne.idPersonne,
                 });

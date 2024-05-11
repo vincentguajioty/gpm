@@ -57,6 +57,8 @@ exports.getOneReferentiel = async (req, res)=>{
                     LEFT OUTER JOIN MATERIEL_CATEGORIES cat ON mc.idCategorie = cat.idCategorie
                 WHERE
                     idTypeLot = :idTypeLot
+                ORDER BY
+                    mc.libelleMateriel
                 ;`,{
                     idTypeLot: referentiel.idTypeLot,
                 }

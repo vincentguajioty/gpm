@@ -123,6 +123,8 @@ exports.getOneVehicule = async (req, res)=>{
                         LEFT OUTER JOIN VEHICULES_HEALTH_TYPES t ON c.idHealthType = t.idHealthType
                     WHERE
                         idVehiculeHealth = :idVehiculeHealth
+                    ORDER BY
+                        t.libelleHealthType
                 ;`,{
                     idVehiculeHealth: health.idVehiculeHealth
                 });
@@ -154,6 +156,8 @@ exports.getOneVehicule = async (req, res)=>{
                     LEFT OUTER JOIN VEHICULES_HEALTH_TYPES t ON alertes.idHealthType = t.idHealthType
                 WHERE
                     idVehicule = :idVehicule
+                ORDER BY
+                    t.libelleHealthType
             ;`,{
                 idVehicule: vehicule.idVehicule
             });
@@ -217,6 +221,8 @@ exports.getOneVehicule = async (req, res)=>{
                     LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON alertes.idVehiculesDesinfectionsType = t.idVehiculesDesinfectionsType
                 WHERE
                     idVehicule = :idVehicule
+                ORDER BY
+                    t.libelleVehiculesDesinfectionsType
             ;`,{
                 idVehicule: vehicule.idVehicule
             });
@@ -294,6 +300,8 @@ exports.getOneVehicule = async (req, res)=>{
                     LOTS_LOTS
                 WHERE
                     idVehicule = :idVehicule
+                ORDER BY
+                    libelleLot
             ;`,{
                 idVehicule: vehicule.idVehicule
             });
@@ -321,6 +329,8 @@ exports.getOneVehicule = async (req, res)=>{
                     VIEW_DOCUMENTS_VEHICULES
                 WHERE
                     idVehicule = :idVehicule
+                ORDER BY
+                    nomDocVehicule
             ;`,{
                 idVehicule: vehicule.idVehicule
             });
@@ -850,6 +860,8 @@ exports.getMaintenancesRegulieresDashoard = async (req, res)=>{
                 VEHICULES
             WHERE
                 affichageSyntheseHealth = true
+            ORDER BY
+                libelleVehicule
         ;`);
 
         let maintenances = await db.query(`
@@ -1108,6 +1120,8 @@ exports.getDesinfectionsDashoard = async (req, res)=>{
                 VEHICULES
             WHERE
                 affichageSyntheseDesinfections = true
+            ORDER BY
+                libelleVehicule
         ;`);
 
         let desinfections = await db.query(`

@@ -12,6 +12,8 @@ exports.getProfils = async (req, res, next)=>{
                 libelleProfil as label
             FROM
                 PROFILS
+            ORDER BY
+                libelleProfil
         `);
 
         res.send(result);

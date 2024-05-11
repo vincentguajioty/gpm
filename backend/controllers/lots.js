@@ -315,6 +315,8 @@ exports.getOneLot = async (req, res)=>{
                     r.idTypeLot = :idTypeLot
                     AND
                     r.obligatoire = 1
+                ORDER BY
+                    c.libelleMateriel
             ;`,{
                 idTypeLot: lot.idTypeLot,
             });

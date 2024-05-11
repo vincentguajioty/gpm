@@ -18,6 +18,8 @@ exports.getPersonsForTDL = async (req, res, next)=>{
                 todolist_perso = true
                 OR
                 todolist_lecture = true
+            ORDER BY
+                identifiant
         `);
 
         res.send(result);
@@ -54,6 +56,8 @@ exports.getAllTDL = async (req, res, next)=>{
             FROM
                 TODOLIST tdl
                 LEFT OUTER JOIN TODOLIST_PRIORITES prio ON tdl.idTDLpriorite = prio.idTDLpriorite
+            ORDER BY
+                dateCreation
         `);
         for(const tache of result)
         {
@@ -68,6 +72,8 @@ exports.getAllTDL = async (req, res, next)=>{
                     LEFT OUTER JOIN PERSONNE_REFERENTE p ON tp.idExecutant = p.idPersonne
                 WHERE
                     tp.idTache = :idTache
+                ORDER BY
+                    p.identifiant
             `,{
                 idTache: tache.idTache
             });
@@ -111,6 +117,8 @@ exports.getOneTDL = async (req, res, next)=>{
                     LEFT OUTER JOIN PERSONNE_REFERENTE p ON tp.idExecutant = p.idPersonne
                 WHERE
                     tp.idTache = :idTache
+                ORDER BY
+                    p.identifiant
             `,{
                 idTache: tache.idTache
             });
@@ -140,6 +148,8 @@ exports.getUnaffectedTDL = async (req, res, next)=>{
                 LEFT OUTER JOIN TODOLIST_PRIORITES prio ON tdl.idTDLpriorite = prio.idTDLpriorite
             WHERE
                 tp.idExecutant IS NULL
+            ORDER BY
+                tdl.dateCreation
         `);
 
         res.send(result);

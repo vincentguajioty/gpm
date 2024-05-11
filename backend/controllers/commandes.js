@@ -94,6 +94,8 @@ exports.getOneCommande = async (req, res)=>{
                 LEFT OUTER JOIN PERSONNE_REFERENTE p ON p.idPersonne = c.idDemandeur
             WHERE
                 c.idCommande = :idCommande
+            ORDER BY
+                p.identifiant
         ;`,{
             idCommande: req.body.idCommande,
         });
@@ -107,6 +109,8 @@ exports.getOneCommande = async (req, res)=>{
                 LEFT OUTER JOIN PERSONNE_REFERENTE p ON p.idPersonne = c.idObservateur
             WHERE
                 c.idCommande = :idCommande
+            ORDER BY
+                p.identifiant
         ;`,{
             idCommande: req.body.idCommande,
         });
@@ -120,6 +124,8 @@ exports.getOneCommande = async (req, res)=>{
                 LEFT OUTER JOIN PERSONNE_REFERENTE p ON p.idPersonne = c.idAffectee
             WHERE
                 c.idCommande = :idCommande
+            ORDER BY
+                p.identifiant
         ;`,{
             idCommande: req.body.idCommande,
         });
@@ -138,6 +144,8 @@ exports.getOneCommande = async (req, res)=>{
                 LEFT OUTER JOIN FOURNISSEURS f ON c.idFournisseur = f.idFournisseur
             WHERE
                 m.idCommande = :idCommande
+            ORDER BY
+                c.libelleMateriel
         ;`,{
             idCommande: req.body.idCommande,
         });
@@ -170,6 +178,8 @@ exports.getOneCommande = async (req, res)=>{
                 VIEW_DOCUMENTS_COMMANDES
             WHERE
                 idCommande = :idCommande
+            ORDER BY
+                nomDocCommande
         ;`,{
             idCommande: req.body.idCommande
         });
@@ -872,6 +882,9 @@ exports.getReservesForOneIntegration = async (req, res)=>{
                 LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON rm.idMaterielCatalogue = cat.idMaterielCatalogue
             WHERE
                 rm.idMaterielCatalogue = :idMaterielCatalogue
+            ORDER BY
+                c.libelleConteneur,
+                cat.libelleMateriel
         ;`,{
             idMaterielCatalogue: req.body.idMaterielCatalogue
         });

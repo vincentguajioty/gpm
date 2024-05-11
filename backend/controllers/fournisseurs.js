@@ -72,6 +72,8 @@ exports.getOneFournisseur = async (req, res)=>{
                     LEFT OUTER JOIN COMMANDES_ETATS ce ON c.idEtat = ce.idEtat
                 WHERE
                     idFournisseur = :idFournisseur
+                ORDER BY
+                    c.dateCreation DESC
                 ;`,
                 {
                     idFournisseur: fournisseur.idFournisseur,
@@ -89,6 +91,8 @@ exports.getOneFournisseur = async (req, res)=>{
                     LEFT OUTER JOIN MATERIEL_CATEGORIES cat ON mc.idCategorie = cat.idCategorie
                 WHERE
                     idFournisseur = :idFournisseur
+                ORDER BY
+                    mc.libelleMateriel
                 ;`,
                 {
                     idFournisseur: fournisseur.idFournisseur,

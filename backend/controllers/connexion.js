@@ -741,6 +741,8 @@ exports.getCurrentSessionsOneUser = async (req, res) => {
                 JWT_SESSIONS
             WHERE
                 idPersonne = :idPersonne
+            ORDER BY
+                createdDateTime DESC
         `,{
             idPersonne : req.body.idPersonne,
         });
@@ -1066,6 +1068,9 @@ exports.getHomeCheckList = async (req, res, next)=>{
                     (peremptionNotification < CURRENT_DATE OR peremptionNotification = CURRENT_DATE)
                     AND
                     notifiationEnabled = true
+                ORDER BY
+                    l.libelleLot,
+                    c.libelleMateriel
             `);
 
             result.push({
@@ -1094,6 +1099,9 @@ exports.getHomeCheckList = async (req, res, next)=>{
                     (quantite < quantiteAlerte OR quantite = quantiteAlerte)
                     AND
                     notifiationEnabled = true
+                ORDER BY
+                    l.libelleLot,
+                    c.libelleMateriel
             `);
 
             result.push({
@@ -1123,6 +1131,8 @@ exports.getHomeCheckList = async (req, res, next)=>{
                         OR
                         (DATE_ADD(dateDernierInventaire, INTERVAL frequenceInventaire DAY) = CURRENT_DATE)
                     )
+                ORDER BY
+                    libelleLot
             `);
 
             result.push({
@@ -1146,6 +1156,8 @@ exports.getHomeCheckList = async (req, res, next)=>{
                     alerteConfRef = 1
                     AND
                     notifiationEnabled = true
+                ORDER BY
+                    l.libelleLot
             `);
 
             result.push({
@@ -1171,6 +1183,9 @@ exports.getHomeCheckList = async (req, res, next)=>{
                     peremptionNotificationReserve < CURRENT_DATE
                     OR
                     peremptionNotificationReserve = CURRENT_DATE
+                ORDER BY
+                    c.libelleConteneur,
+                    r.libelleMateriel
             `);
 
             result.push({
@@ -1196,6 +1211,9 @@ exports.getHomeCheckList = async (req, res, next)=>{
                     quantiteReserve < quantiteAlerteReserve
                     OR
                     quantiteReserve = quantiteAlerteReserve
+                ORDER BY
+                    c.libelleConteneur,
+                    r.libelleMateriel
             `);
 
             result.push({
@@ -1218,6 +1236,8 @@ exports.getHomeCheckList = async (req, res, next)=>{
                     stockCatalogueTenue < stockAlerteCatalogueTenue
                     OR
                     stockCatalogueTenue = stockAlerteCatalogueTenue
+                ORDER BY
+                    libelleCatalogueTenue
             `);
 
             result.push({
@@ -1235,7 +1255,7 @@ exports.getHomeCheckList = async (req, res, next)=>{
                 SELECT
                     nomPersonne,
                     prenomPersonne,
-                    personneNonGPM,    
+                    personneNonGPM,
                     libelleCatalogueTenue
                 FROM
                     TENUES_AFFECTATION ta
@@ -1245,6 +1265,11 @@ exports.getHomeCheckList = async (req, res, next)=>{
                     dateRetour < CURRENT_DATE
                     OR
                     dateRetour = CURRENT_DATE
+                ORDER BY
+                    nomPersonne,
+                    prenomPersonne,
+                    personneNonGPM,
+                    libelleCatalogueTenue
             `);
 
             result.push({
@@ -1268,6 +1293,8 @@ exports.getHomeCheckList = async (req, res, next)=>{
                     notifiationEnabled = true
                     AND 
                     alerteDesinfection = 1
+                ORDER BY
+                    v.libelleVehicule
             `);
 
             result.push({
@@ -1291,6 +1318,8 @@ exports.getHomeCheckList = async (req, res, next)=>{
                     notifiationEnabled = true
                     AND 
                     alerteMaintenance = 1
+                ORDER BY
+                    v.libelleVehicule
             `);
 
             result.push({

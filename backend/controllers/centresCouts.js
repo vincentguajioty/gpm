@@ -96,6 +96,8 @@ exports.getOneCentre = async (req, res)=>{
                 LEFT OUTER JOIN PERSONNE_REFERENTE p ON cp.idPersonne = p.idPersonne
             WHERE
                 idCentreDeCout = :idCentreDeCout
+            ORDER BY
+                p.identifiant
         ;`,{
             idCentreDeCout: req.body.idCentreDeCout
         });
@@ -149,6 +151,8 @@ exports.getOneCentre = async (req, res)=>{
                     LEFT OUTER JOIN PERSONNE_REFERENTE p ON p.idPersonne = c.idAffectee
                 WHERE
                     c.idCommande = :idCommande
+                ORDER BY
+                    p.identifiant
             ;`,{
                 idCommande: cmd.idCommande,
             });
@@ -183,6 +187,8 @@ exports.getOneCentre = async (req, res)=>{
                     LEFT OUTER JOIN PERSONNE_REFERENTE p ON p.idPersonne = c.idAffectee
                 WHERE
                     c.idCommande = :idCommande
+                ORDER BY
+                    p.identifiant
             ;`,{
                 idCommande: cmd.idCommande,
             });
@@ -222,6 +228,8 @@ exports.getOneCentre = async (req, res)=>{
                 VIEW_DOCUMENTS_CENTRE_COUTS_COMMANDES
             WHERE
                 idCentreDeCout = :idCentreDeCout
+            ORDER BY
+                nomDocCouts
         ;`,{
             idCentreDeCout: req.body.idCentreDeCout
         });

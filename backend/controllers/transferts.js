@@ -19,6 +19,8 @@ exports.getReservesForOneTransfert = async (req, res)=>{
                 LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON rm.idMaterielCatalogue = cat.idMaterielCatalogue
             WHERE
                 rm.idMaterielCatalogue = :idMaterielCatalogue
+            ORDER BY
+                c.libelleConteneur, cat.libelleMateriel
         ;`,{
             idMaterielCatalogue: req.body.idMaterielCatalogue
         });

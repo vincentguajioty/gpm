@@ -14,6 +14,8 @@ exports.getAllUsers = async (req, res, next)=>{
             FROM
                 PERSONNE_REFERENTE pr
                 LEFT OUTER JOIN VIEW_HABILITATIONS v ON v.idPersonne = pr.idPersonne
+            ORDER BY
+                pr.identifiant
         `);
         for(const user of result)
         {
@@ -27,6 +29,8 @@ exports.getAllUsers = async (req, res, next)=>{
                     LEFT OUTER JOIN PROFILS p ON pp.idProfil = p.idProfil
                 WHERE
                     pp.idPersonne = :idPersonne
+                ORDER BY
+                    p.libelleProfil
             `,{
                 idPersonne: user.idPersonne
             });
@@ -90,6 +94,8 @@ exports.getOneUser = async (req, res, next)=>{
                     LEFT OUTER JOIN PROFILS p ON pp.idProfil = p.idProfil
                 WHERE
                     pp.idPersonne = :idPersonne
+                ORDER BY
+                    p.libelleProfil
             `,{
                 idPersonne: user.idPersonne
             });

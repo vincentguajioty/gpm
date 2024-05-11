@@ -17,6 +17,8 @@ exports.getFrequences = async (req, res)=>{
                 LEFT OUTER JOIN VIEW_DOCUMENTS_CANAL_VHF doc ON c.idVhfCanal = doc.idVhfCanal
             GROUP BY
                 c.idVhfCanal
+            ORDER BY
+                c.chName
         ;`);
         res.send(results);
     } catch (error) {
@@ -247,6 +249,8 @@ exports.getPlans = async (req, res)=>{
                 LEFT OUTER JOIN VIEW_DOCUMENTS_PLAN_VHF doc ON p.idVhfPlan = doc.idVhfPlan
             GROUP BY
                 p.idVhfPlan
+            ORDER BY
+                p.libellePlan
         ;`);
         res.send(results);
     } catch (error) {
@@ -431,6 +435,8 @@ exports.getCanauxOnePlan = async (req, res)=>{
                 LEFT OUTER JOIN VHF_CANAL c ON p.idVhfCanal = c.idVhfCanal
             WHERE
                 p.idVhfPlan = :idVhfPlan
+            ORDER BY
+                c.chName
         ;`,{
             idVhfPlan: req.body.idVhfPlan,
         });
@@ -502,6 +508,8 @@ exports.getEquipementsVhf = async (req, res)=>{
                 LEFT OUTER JOIN VHF_ACCESSOIRES a ON e.idVhfEquipement = a.idVhfEquipement
             GROUP BY
                 e.idVhfEquipement
+            ORDER BY
+                e.vhfIndicatif
         ;`);
         res.send(results);
     } catch (error) {
@@ -550,6 +558,8 @@ exports.getOneEquipement = async (req, res)=>{
                     LEFT OUTER JOIN VHF_ACCESSOIRES_TYPES t ON a.idVhfAccessoireType = t.idVhfAccessoireType
                 WHERE
                     a.idVhfEquipement = :idVhfEquipement
+                ORDER BY
+                    a.libelleVhfAccessoire
             ;`,{
                 idVhfEquipement: device.idVhfEquipement,
             });
