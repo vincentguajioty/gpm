@@ -1032,6 +1032,8 @@ exports.getLotsPublics = async (req, res)=>{
                 LOTS_LOTS
             WHERE
                 dispoBenevoles = true
+            ORDER BY
+                libelleLot
         ;`);
         res.send(results);
     } catch (error) {
@@ -1070,6 +1072,8 @@ exports.getVehiculesPublics = async (req, res)=>{
                 VEHICULES
             WHERE
                 dispoBenevoles = true
+            ORDER BY
+                libelleVehicule
         ;`);
         res.send(results);
     } catch (error) {
