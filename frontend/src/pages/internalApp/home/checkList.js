@@ -31,7 +31,6 @@ const CheckList = () => {
     const [detailsModalContent, setDetailsModalContent] = useState([]);
 
     const handleCloseDetailsModal = () => {
-        setDetailsModalContent([]);
         setShowDetailsModal(false);
     };
     const handleShowDetailsModal = (content) => {
