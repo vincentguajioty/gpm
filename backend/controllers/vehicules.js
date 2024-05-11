@@ -30,6 +30,8 @@ exports.getAllVehicules = async (req, res)=>{
                 LEFT OUTER JOIN (SELECT * FROM VEHICULES_ALERTES WHERE dateResolutionAlerte IS NULL) a ON a.idVehicule = v.idVehicule
             GROUP BY
                 v.idVehicule
+            ORDER BY
+                v.libelleVehicule
         ;`);
         res.send(results);
     } catch (error) {

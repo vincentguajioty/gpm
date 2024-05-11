@@ -26,6 +26,7 @@ const OneCommandeStep1InfosGenerales = ({
     });
     
     const [readyToDisplay, setReadyToDisplay] = useState(false);
+    const [isLoading, setLoading] = useState(false);
     const [readOnly, setReadOnly] = useState(true);
 
     const [tousUsers, setTousUsers] = useState([]);
@@ -88,7 +89,6 @@ const OneCommandeStep1InfosGenerales = ({
         calculateReadOnly();
     },[commande, forceReadOnly, isLoading])
 
-    const [isLoading, setLoading] = useState(false);
     const saveForm = async (data) => {
         try {
             setLoading(true);
