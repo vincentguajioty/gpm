@@ -69,7 +69,7 @@ const AffectationsTenues = () => {
                 <Col md={4}>
                     <WidgetSectionTitle
                         icon="eye"
-                        title="Vigilence"
+                        title="Vigilance"
                         subtitle="Suivi des dates de retours"
                         transform="shrink-2"
                         className="mb-4 mt-3"
