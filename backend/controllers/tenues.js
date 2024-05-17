@@ -260,9 +260,18 @@ exports.getAffectationsRow = async (req, res)=>{
     try {
         let results = await db.query(`
             SELECT
-                *
+                ta.*,
+                p.nomPersonne,
+                p.prenomPersonne,
+                p.identifiant,
+                CONCAT_WS(" ", ta.personneNonGPM, p.nomPersonne, p.prenomPersonne) as nomPrenom,
+                CONCAT_WS(" ", ta.mailPersonneNonGPM, p.mailPersonne) as mailPersonne,
+                cat.libelleCatalogueTenue,
+                cat.tailleCatalogueTenue
             FROM
-                TENUES_AFFECTATION
+                TENUES_AFFECTATION ta
+                LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne
+                LEFT OUTER JOIN TENUES_CATALOGUE cat ON ta.idCatalogueTenue = cat.idCatalogueTenue
         ;`);
         res.send(results);
     } catch (error) {
@@ -274,31 +283,31 @@ exports.getAffectationsRow = async (req, res)=>{
 exports.getPersonnesSuggested = async (req, res)=>{
     try {
         let results = await db.query(`
-            (
-                SELECT DISTINCT
-                    personneNonGPM,
-                    mailPersonneNonGPM
-                FROM
-                    TENUES_AFFECTATION
-                WHERE
-                    personneNonGPM IS NOT NULL
-                ORDER BY
-                    personneNonGPM,
-                    mailPersonneNonGPM
-            )
-            UNION
-            (
-                SELECT DISTINCT
-                    personneNonGPM,
-                    mailPersonneNonGPM
-                FROM
-                    CAUTIONS
-                WHERE
-                    personneNonGPM IS NOT NULL
-                ORDER BY
-                    personneNonGPM,
-                    mailPersonneNonGPM
-            )
+            SELECT
+                allRecords.*
+            FROM    
+                ((
+                    SELECT DISTINCT
+                        personneNonGPM,
+                        mailPersonneNonGPM
+                    FROM
+                        TENUES_AFFECTATION
+                    WHERE
+                        personneNonGPM IS NOT NULL
+                )
+                UNION
+                (
+                    SELECT DISTINCT
+                        personneNonGPM,
+                        mailPersonneNonGPM
+                    FROM
+                        CAUTIONS
+                    WHERE
+                        personneNonGPM IS NOT NULL
+                )) allRecords
+            ORDER BY
+                allRecords.personneNonGPM,
+                allRecords.mailPersonneNonGPM
         ;`);
 
         res.send(results);

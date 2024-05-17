@@ -87,6 +87,7 @@ const Tenues = () => {
                                 <FalconCloseButton onClick={handleCloseAffectDetailsModal}/>
                             </Modal.Header>
                                 <Modal.Body>
+                                    <center><i>Si un nom apparait plusieurs fois, c'est que la personne détient plusieurs item de ce type.</i></center>
                                     <ul>
                                         {value.map((user, i)=>{
                                             return(<li key={i}>{user.personneNonGPM}{user.identifiant}</li>)
