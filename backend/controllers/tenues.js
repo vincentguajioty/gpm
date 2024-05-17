@@ -61,7 +61,7 @@ exports.getCatalogue = async (req, res)=>{
                 WHERE
                     ta.idCatalogueTenue = :idCatalogueTenue
                 ORDER BY
-                    pr.identifiant
+                    pr.identifiant, ta.personneNonGPM
             ;`,{
                 idCatalogueTenue: tenue.idCatalogueTenue,
             });

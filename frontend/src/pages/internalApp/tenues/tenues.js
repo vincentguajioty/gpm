@@ -66,10 +66,40 @@ const Tenues = () => {
             accessor: 'affectations',
             Header: 'Affectations',
             Cell: ({ value, row }) => {
-				return(
-                    <>{value.map((affect, i)=>{return(
-                        <SoftBadge bg='info' className='me-1'>{affect.personneNonGPM}{affect.identifiant}</SoftBadge>
-                    )})}</>
+				const [showAffectDetailsModal, setShowAffectDetailsModal] = useState(false);
+                const handleCloseAffectDetailsModal = () => {
+                    setShowAffectDetailsModal(false);
+                };
+                const handleShowAffectDetailsModal = () => {
+                    setShowAffectDetailsModal(true);
+                };
+                return(
+                    <>
+                        <IconButton
+                            icon='user'
+                            size = 'sm'
+                            variant="outline-info"
+                            onClick={handleShowAffectDetailsModal}
+                        >{value.length}</IconButton>
+                        <Modal show={showAffectDetailsModal} onHide={handleCloseAffectDetailsModal} backdrop="static" keyboard={false} size='lg'>
+                            <Modal.Header>
+                                <Modal.Title>{row.original.libelleCatalogueTenue} - Taille {row.original.tailleCatalogueTenue}</Modal.Title>
+                                <FalconCloseButton onClick={handleCloseAffectDetailsModal}/>
+                            </Modal.Header>
+                                <Modal.Body>
+                                    <ul>
+                                        {value.map((user, i)=>{
+                                            return(<li key={i}>{user.personneNonGPM}{user.identifiant}</li>)
+                                        })}
+                                    </ul>
+                                </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={handleCloseAffectDetailsModal}>
+                                    Fermer
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </>
                 );
 			},
         },
