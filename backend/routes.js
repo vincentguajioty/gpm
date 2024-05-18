@@ -324,11 +324,13 @@ router.post('/tenues/addCatalogue',             loggerMiddleware.httpLogger(), j
 router.post('/tenues/updateCatalogue',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_modification']), loggerMiddleware.modificationLogger(), tenuesCtrl.updateCatalogue);
 router.post('/tenues/deleteCatalogue',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_suppression']),  loggerMiddleware.suppressionLogger(),  tenuesCtrl.deleteCatalogue);
 //Tenues - Affectations
-router.get('/tenues/getAffectations',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_lecture']),                                             tenuesCtrl.getAffectations);
-router.get('/tenues/getAffectationsRow',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_lecture']),                                             tenuesCtrl.getAffectationsRow);
-router.post('/tenues/addAffectations',    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_ajout']),        loggerMiddleware.modificationLogger(), tenuesCtrl.addAffectations);
-router.post('/tenues/updateAffectations', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_modification']), loggerMiddleware.modificationLogger(), tenuesCtrl.updateAffectations);
-router.post('/tenues/deleteAffectations', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_suppression']),  loggerMiddleware.suppressionLogger(),  tenuesCtrl.deleteAffectations);
+router.get('/tenues/getAffectations',              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_lecture']),                                             tenuesCtrl.getAffectations);
+router.get('/tenues/getAffectationsRow',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_lecture']),                                             tenuesCtrl.getAffectationsRow);
+router.post('/tenues/addAffectations',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_ajout']),        loggerMiddleware.modificationLogger(), tenuesCtrl.addAffectations);
+router.post('/tenues/updateAffectations',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_modification']), loggerMiddleware.modificationLogger(), tenuesCtrl.updateAffectations);
+router.post('/tenues/plannifierRetourMassifTenue', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_modification']), loggerMiddleware.modificationLogger(), tenuesCtrl.plannifierRetourMassifTenue);
+router.post('/tenues/deleteAffectations',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_suppression']),  loggerMiddleware.suppressionLogger(),  tenuesCtrl.deleteAffectations);
+router.post('/tenues/deleteMassifAffectations',    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_suppression']),  loggerMiddleware.suppressionLogger(),  tenuesCtrl.deleteMassifAffectations);
 //Tenues - Cautions
 router.get('/tenues/getCautions',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_lecture']),                                             tenuesCtrl.getCautions);
 router.get('/tenues/getCautionsRow',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_lecture']),                                             tenuesCtrl.getCautionsRow);

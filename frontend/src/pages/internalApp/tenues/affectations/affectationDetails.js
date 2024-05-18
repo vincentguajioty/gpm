@@ -9,7 +9,7 @@ import GPMtable from 'components/gpmTable/gpmTable';
 import moment from 'moment-timezone';
 import Select from 'react-select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { tenuesAffectationsDelete } from 'helpers/deleteModalWarningContent';
+import { tenuesAffectationsDelete, tenuesAffectationsDefinitiveDelete } from 'helpers/deleteModalWarningContent';
 
 import HabilitationService from 'services/habilitationsService';
 
@@ -193,11 +193,20 @@ const AffectationDetails = ({
                     : null}
                     {HabilitationService.habilitations['tenues_suppression'] ? 
                         <IconButton
+                            icon='recycle'
+                            size = 'sm'
+                            variant="outline-primary"
+                            className="me-1"
+                            onClick={()=>{handleShowDeleteModal(value)}}
+                        />
+                    : null}
+                    {HabilitationService.habilitations['tenues_suppression'] ? 
+                        <IconButton
                             icon='trash'
                             size = 'sm'
                             variant="outline-danger"
                             className="me-1"
-                            onClick={()=>{handleShowDeleteModal(value)}}
+                            onClick={()=>{handleShowDefinitiveDeleteModal(value)}}
                         />
                     : null}
                 </>);
@@ -326,7 +335,7 @@ const AffectationDetails = ({
         watch('mailPersonneNonGPM'),
     ])
 
-    /* DELETE */
+    /* DELETE avec reIntégration */
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [deleteModalIdTenue, setDeleteModalIdTenue] = useState();
 
@@ -346,6 +355,7 @@ const AffectationDetails = ({
 
             const response = await Axios.post('/tenues/deleteAffectations',{
                 idTenue: deleteModalIdTenue,
+                reintegration: true,
             });
             
             setPageNeedsRefresh(true);
@@ -355,6 +365,101 @@ const AffectationDetails = ({
             console.log(e);
         }
     }
+
+    /* DELETE définitive */
+    const [showDefinitiveDeleteModal, setShowDefinitiveDeleteModal] = useState(false);
+    const [definitivedeleteModalIdTenue, setDefinitiveDeleteModalIdTenue] = useState();
+
+    const handleCloseDefinitiveDeleteModal = () => {
+        setDefinitiveDeleteModalIdTenue();
+        setShowDefinitiveDeleteModal(false);
+        setLoading(false);
+    };
+    const handleShowDefinitiveDeleteModal = (id) => {
+        setDefinitiveDeleteModalIdTenue(id);
+        setShowDefinitiveDeleteModal(true);
+    };
+
+    const supprimerDefinitivementEntree = async () => {
+        try {
+            setLoading(true);
+
+            const response = await Axios.post('/tenues/deleteAffectations',{
+                idTenue: definitivedeleteModalIdTenue,
+                reintegration: false,
+            });
+            
+            setPageNeedsRefresh(true);
+            handleCloseDefinitiveDeleteModal();
+            setLoading(false);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    //Actions massives - Plannifier date de retour
+    const [showRetourMassifModal, setShowRetourMassifModal] = useState(false);
+    const [datePourRetourMassif, setDatePourRetourMassif] = useState(new Date());
+
+    const handleCloseRetourMassifModal = () => {
+        setShowRetourMassifModal(false);
+        setLoading(false);
+    };
+    const handleShowRetourMassifModal = () => {
+        setShowRetourMassifModal(true);
+    };
+
+    const plannifierRetourMassifTenue = async () => {
+        try {
+            setLoading(true);
+
+            if(datePourRetourMassif && datePourRetourMassif!=null)
+            {
+                const response = await Axios.post('/tenues/plannifierRetourMassifTenue',{
+                    idPersonne: displayIdPersonneInterne || null,
+                    personneNonGPM: displayPersonneNonGPM || null,
+                    mailPersonneNonGPM: displayMailPersonneNonGPM || null,
+                    dateRetour: datePourRetourMassif,
+                });
+            }
+            
+            setPageNeedsRefresh(true);
+            handleCloseRetourMassifModal();
+            setLoading(false);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    /* Actions massives - DELETE avec reIntégration */
+    const [showDeleteMassifModal, setShowDeleteMassifModal] = useState(false);
+
+    const handleCloseDeleteMassifModal = () => {
+        setShowDeleteMassifModal(false);
+        setLoading(false);
+    };
+    const handleShowDeleteMassifModal = () => {
+        setShowDeleteMassifModal(true);
+    };
+
+    const supprimerMassivementEntree = async () => {
+        try {
+            setLoading(true);
+
+            const response = await Axios.post('/tenues/deleteMassifAffectations',{
+                idPersonne: displayIdPersonneInterne || null,
+                personneNonGPM: displayPersonneNonGPM || null,
+                mailPersonneNonGPM: displayMailPersonneNonGPM || null,
+            });
+            
+            setPageNeedsRefresh(true);
+            handleCloseDeleteMassifModal();
+            setLoading(false);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    
 
     return(<>
         <Offcanvas show={showOffCanevas} onHide={handleCloseOffCanevas} placement='end'>
@@ -477,6 +582,67 @@ const AffectationDetails = ({
                 <Button variant='danger' onClick={supprimerEntree} disabled={isLoading}>{isLoading ? 'Patientez...' : 'Supprimer'}</Button>
             </Modal.Footer>
         </Modal>
+
+        <Modal show={showDefinitiveDeleteModal} onHide={handleCloseDefinitiveDeleteModal} backdrop="static" keyboard={false}>
+            <Modal.Header>
+                <Modal.Title>Suppression</Modal.Title>
+                <FalconCloseButton onClick={handleCloseDefinitiveDeleteModal}/>
+            </Modal.Header>
+            <Modal.Body>{tenuesAffectationsDefinitiveDelete}</Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseDefinitiveDeleteModal}>
+                    Annuler
+                </Button>
+                <Button variant='danger' onClick={supprimerDefinitivementEntree} disabled={isLoading}>{isLoading ? 'Patientez...' : 'Supprimer'}</Button>
+            </Modal.Footer>
+        </Modal>
+
+        <Modal show={showRetourMassifModal} onHide={handleCloseRetourMassifModal} backdrop="static" keyboard={false} size='lg'>
+            <Modal.Header>
+                <Modal.Title>Prévoir une date de retour générale</Modal.Title>
+                <FalconCloseButton onClick={handleCloseRetourMassifModal}/>
+            </Modal.Header>
+            <Modal.Body>
+                Cette personne vous a communiqué une date à laquelle elle souhaite vous retourner tous les éléments de tenues ? Saisissez la date ci-dessous, elle sera appliquée comme date de retour à tous les éléments de tenue, et l'option de notification par email sera activée pour relancer régulièrement cette personne.
+                <center>
+                    <Form.Group className="mt-3 mb-3">
+                        <Form.Label>Date de retour</Form.Label><br/>
+                        <DatePicker
+                            selected={datePourRetourMassif}
+                            onChange={(date)=>setDatePourRetourMassif(date)}
+                            formatWeekDay={day => day.slice(0, 3)}
+                            className='form-control'
+                            placeholderText="Choisir une date"
+                            dateFormat="dd/MM/yyyy"
+                            fixedHeight
+                            locale="fr"
+                        />
+                    </Form.Group>
+                </center>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseRetourMassifModal}>
+                    Annuler
+                </Button>
+                <Button variant='warning' onClick={plannifierRetourMassifTenue} disabled={isLoading || datePourRetourMassif == null}>{isLoading ? 'Patientez...' : 'Enregistrer'}</Button>
+            </Modal.Footer>
+        </Modal>
+
+        <Modal show={showDeleteMassifModal} onHide={handleCloseDeleteMassifModal} backdrop="static" keyboard={false}>
+            <Modal.Header>
+                <Modal.Title>Suppression massive</Modal.Title>
+                <FalconCloseButton onClick={handleCloseDeleteMassifModal}/>
+            </Modal.Header>
+            <Modal.Body>
+                La personne vous a retourné l'intégralité des éléments de tenue qui lui étaient affectés. Tous les éléments vont être réintégrés au stock.
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseDeleteMassifModal}>
+                    Annuler
+                </Button>
+                <Button variant='danger' onClick={supprimerMassivementEntree} disabled={isLoading}>{isLoading ? 'Patientez...' : 'Supprimer'}</Button>
+            </Modal.Footer>
+        </Modal>
         
         {!displayBoxWithDetails ? <>
             <FalconComponentCard noGuttersBottom className="mb-3 mt-3">
@@ -577,8 +743,31 @@ const AffectationDetails = ({
                             <td>{affectationToDisplay.mailPersonne}</td>
                         </tr>
                         <tr>
-                            <td className="bg-100" style={{ width: '30%' }}>Statut GPM</td>
+                            <td className="bg-100" style={{ width: '30%' }}>Statut {window.__ENV__.APP_NAME}</td>
                             <td>{affectationToDisplay.type}</td>
+                        </tr>
+                        <tr>
+                            <td className="bg-100" style={{ width: '30%' }}>Actions massives</td>
+                            <td>
+                            {HabilitationService.habilitations['tenues_modification'] ? 
+                                    <IconButton
+                                        icon='calendar-day'
+                                        size = 'sm'
+                                        variant="outline-warning"
+                                        className="me-1"
+                                        onClick={handleShowRetourMassifModal}
+                                    >Prévoir une date de retour générale</IconButton>
+                                : null}
+                                {HabilitationService.habilitations['tenues_suppression'] ? 
+                                    <IconButton
+                                        icon='calendar-check'
+                                        size = 'sm'
+                                        variant="outline-danger"
+                                        className="me-1"
+                                        onClick={handleShowDeleteMassifModal}
+                                    >Le bénévole a tout rendu</IconButton>
+                                : null}
+                            </td>
                         </tr>
                     </Table>
 

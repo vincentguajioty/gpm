@@ -268,9 +268,18 @@ export const tenuesCatalogueDelete = <>
 </>;
 
 export const tenuesAffectationsDelete = <>
-    Attention, vous allez supprimer une affectation de tenue. Les impacts collatéraux à cette suppression sont:
+    Un élément de tenue vous a été rendu ? Confirmez vous votre action ?
     <ul>
         <li>La tenue va être ré-intégrée dans le stock.</li>
+        <li>L'affectation va être définitivement supprimée.</li>
+    </ul>
+</>;
+
+export const tenuesAffectationsDefinitiveDelete = <>
+    Un élément de tenue vous a été perdu ou jetée ? Confirmez vous votre action ?
+    <ul>
+        <li>La tenue ne pas être ré-intégrée dans le stock.</li>
+        <li>L'affectation va être définitivement supprimée.</li>
     </ul>
 </>;
 

@@ -388,10 +388,125 @@ exports.updateAffectations = async (req, res)=>{
     }
 }
 
+exports.plannifierRetourMassifTenue = async (req, res)=>{
+    try {
+        if(req.body.idPersonne && req.body.idPersonne != null && req.body.idPersonne > 0)
+        {
+            const result = await db.query(`
+                UPDATE
+                    TENUES_AFFECTATION
+                SET
+                    dateRetour = :dateRetour,
+                    notifPersonne = true
+                WHERE
+                    idPersonne = :idPersonne
+            `,{
+                idPersonne: req.body.idPersonne || null,
+                dateRetour: req.body.dateRetour || null,
+            });
+        }else{
+            if(!req.body.mailPersonneNonGPM || req.body.mailPersonneNonGPM == null || req.body.mailPersonneNonGPM == "")
+            {
+                const result = await db.query(`
+                    UPDATE
+                        TENUES_AFFECTATION
+                    SET
+                        dateRetour = :dateRetour,
+                        notifPersonne = true
+                    WHERE
+                        personneNonGPM = :personneNonGPM
+                `,{
+                    personneNonGPM: req.body.personneNonGPM || null,
+                    dateRetour: req.body.dateRetour || null,
+                });
+            }else{
+                const result = await db.query(`
+                    UPDATE
+                        TENUES_AFFECTATION
+                    SET
+                        dateRetour = :dateRetour,
+                        notifPersonne = true
+                    WHERE
+                        personneNonGPM = :personneNonGPM
+                        AND
+                        mailPersonneNonGPM = :mailPersonneNonGPM
+                `,{
+                    personneNonGPM: req.body.personneNonGPM || null,
+                    mailPersonneNonGPM: req.body.mailPersonneNonGPM || null,
+                    dateRetour: req.body.dateRetour || null,
+                });
+            }
+        }
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.deleteAffectations = async (req, res)=>{
     try {
-        const deleteResult = await fonctionsDelete.tenuesAffectationsDelete(req.verifyJWTandProfile.idPersonne , req.body.idTenue);
+        const deleteResult = await fonctionsDelete.tenuesAffectationsDelete(req.verifyJWTandProfile.idPersonne , req.body.idTenue, req.body.reintegration);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.deleteMassifAffectations = async (req, res)=>{
+    try {
+        let tenuesAretourner = [];
+
+        if(req.body.idPersonne && req.body.idPersonne != null && req.body.idPersonne > 0)
+        {
+            tenuesAretourner = await db.query(`
+                SELECT
+                    idTenue
+                FROM    
+                    TENUES_AFFECTATION
+                WHERE
+                    idPersonne = :idPersonne
+            `,{
+                idPersonne: req.body.idPersonne || null,
+            });
+        }else{
+            if(!req.body.mailPersonneNonGPM || req.body.mailPersonneNonGPM == null || req.body.mailPersonneNonGPM == "")
+            {
+                tenuesAretourner = await db.query(`
+                    SELECT
+                        idTenue
+                    FROM    
+                        TENUES_AFFECTATION
+                    WHERE
+                        personneNonGPM = :personneNonGPM
+                `,{
+                    personneNonGPM: req.body.personneNonGPM || null,
+                });
+            }else{
+                tenuesAretourner = await db.query(`
+                    SELECT
+                        idTenue
+                    FROM    
+                        TENUES_AFFECTATION
+                    WHERE
+                        personneNonGPM = :personneNonGPM
+                        AND
+                        mailPersonneNonGPM = :mailPersonneNonGPM
+                `,{
+                    personneNonGPM: req.body.personneNonGPM || null,
+                    mailPersonneNonGPM: req.body.mailPersonneNonGPM || null,
+                });
+            }
+        }
+
+        for(const tenue of tenuesAretourner)
+        {
+            const deleteResult = await fonctionsDelete.tenuesAffectationsDelete(req.verifyJWTandProfile.idPersonne , tenue.idTenue, true);
+        }
+        
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

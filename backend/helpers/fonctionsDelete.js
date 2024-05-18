@@ -118,7 +118,7 @@ const annuaireDelete = async (idLogger, idPersonne) => {
         ;`,{
             idPersonne : idPersonne,
         });
-        for(const affect of affecationsASupprimer){await tenuesAffectationsDelete('SYSTEM', affect.idTenue);}
+        for(const affect of affecationsASupprimer){await tenuesAffectationsDelete('SYSTEM', affect.idTenue, true);}
 
         let cautionASupprimer = await db.query(`
             SELECT * FROM CAUTIONS WHERE idPersonne = :idPersonne
@@ -1347,7 +1347,7 @@ const sacsDelete = async (idLogger, idSac) => {
     }
 }
 
-const tenuesAffectationsDelete = async (idLogger, idTenue) => {
+const tenuesAffectationsDelete = async (idLogger, idTenue, reintegration) => {
     try {
         logger.info("Suppression de l'affecation de la tenue "+idTenue, {idPersonne: idLogger})
 
@@ -1359,11 +1359,14 @@ const tenuesAffectationsDelete = async (idLogger, idTenue) => {
         logger.info("Sauvegarde avant suppression", {idPersonne: idLogger, backupBeforeDrop: getInitialData[0]});
 
         let updateQuery;
-        updateQuery = await db.query(`
-            UPDATE TENUES_CATALOGUE SET stockCatalogueTenue = stockCatalogueTenue + 1 WHERE idCatalogueTenue = :idCatalogueTenue
-        ;`,{
-            idCatalogueTenue : getInitialData[0].idCatalogueTenue,
-        });
+        if(reintegration == true)
+        {
+            updateQuery = await db.query(`
+                UPDATE TENUES_CATALOGUE SET stockCatalogueTenue = stockCatalogueTenue + 1 WHERE idCatalogueTenue = :idCatalogueTenue
+            ;`,{
+                idCatalogueTenue : getInitialData[0].idCatalogueTenue,
+            });
+        }
 
         let finalDeleteQuery = await db.query(`
             DELETE FROM TENUES_AFFECTATION WHERE idTenue = :idTenue
@@ -1396,7 +1399,7 @@ const tenuesCatalogueDelete = async (idLogger, idCatalogueTenue) => {
         ;`,{
             idCatalogueTenue : idCatalogueTenue,
         });
-        for(const affect of affectationsToDrop){await tenuesAffectationsDelete('SYSTEM', affect.idTenue);}
+        for(const affect of affectationsToDrop){await tenuesAffectationsDelete('SYSTEM', affect.idTenue, true);}
 
         let finalDeleteQuery = await db.query(`
             DELETE FROM TENUES_CATALOGUE WHERE idCatalogueTenue = :idCatalogueTenue
