@@ -2,6 +2,7 @@ window.__ENV__ = {
     APP_NAME:'GPM DEMO',
     APP_NAME_SHORT:'DEMO',
     APP_BACKEND_URL:'http://localhost:3001',
+    APP_FRONTEND_BASE: '',
     APP_RECAPTCHA_ENABLED: false,
     APP_RECAPTCHA_SITEKEY:'',
     LOGIN_REMEMBER_DEFAULT: false,
