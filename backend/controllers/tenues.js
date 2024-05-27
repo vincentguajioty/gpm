@@ -1,6 +1,7 @@
 const db = require('../db');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
 const logger = require('../winstonLogger');
+const excelJS = require("exceljs");
 
 const retraitItemStock = async (idCatalogueTenue) => {
     try {
@@ -36,6 +37,7 @@ const ajoutItemStock = async (idCatalogueTenue) => {
     }
 }
 
+// CATALOGUE
 exports.getCatalogue = async (req, res)=>{
     try {
         let results = await db.query(`
@@ -143,6 +145,52 @@ exports.deleteCatalogue = async (req, res)=>{
     }
 }
 
+exports.exporterCatalogue = async (req, res)=>{
+    try {
+        const elements = await db.query(`
+            SELECT
+                *
+            FROM
+                TENUES_CATALOGUE
+            ORDER BY
+                libelleCatalogueTenue,
+                tailleCatalogueTenue
+        ;`);
+
+        const workbook = new excelJS.Workbook();
+        
+        const worksheetCatalogue = workbook.addWorksheet('Catalogue et stock');
+        worksheetCatalogue.columns = [
+            { header: "Numéro interne",   key: "idCatalogueTenue",          width: 15 },
+            { header: "Element de tenue", key: "libelleCatalogueTenue",     width: 40 },
+            { header: "Taille",           key: "tailleCatalogueTenue",      width: 20 },
+            { header: "Sérigraphie",      key: "serigraphieCatalogueTenue", width: 30 },
+            { header: "Stock",            key: "stockCatalogueTenue",       width: 15 },
+            { header: "Stock d'alerte",   key: "stockAlerteCatalogueTenue", width: 15 },
+        ];
+
+        for(const element of elements)
+        {
+            worksheetCatalogue.addRow(element);
+        }
+
+        worksheetCatalogue.getRow(1).eachCell((cell) => {
+            cell.font = { bold: true };
+        });
+
+        let fileName = Date.now() + '-ExportCatalogueTenues.xlsx';
+
+        const saveFile = await workbook.xlsx.writeFile('temp/'+fileName);
+
+        res.send({fileName: fileName});
+
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+// AFFECTATIONS
 exports.getAffectations = async (req, res)=>{
     try {
         let results = await db.query(`
@@ -513,6 +561,65 @@ exports.deleteMassifAffectations = async (req, res)=>{
     }
 }
 
+exports.exporterAffectations = async (req, res)=>{
+    try {
+        const affectations = await db.query(`
+            SELECT
+                ta.*,
+                tc.libelleCatalogueTenue,
+                tc.tailleCatalogueTenue,
+                tc.serigraphieCatalogueTenue,
+                p.identifiant
+            FROM
+                TENUES_AFFECTATION ta
+                LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne
+            ORDER BY
+                p.idPersonne,
+                ta.personneNonGPM,
+                ta.mailPersonneNonGPM,
+                tc.libelleCatalogueTenue,
+                tc.tailleCatalogueTenue
+        ;`);
+
+        const workbook = new excelJS.Workbook();
+        
+        const worksheetAffectations = workbook.addWorksheet('Affectations');
+        worksheetAffectations.columns = [
+            { header: "Numéro interne",                key: "idTenue",                   width: 15 },
+            { header: "Identité interne",              key: "identifiant",               width: 15 },
+            { header: "Identité externe",              key: "personneNonGPM",            width: 30 },
+            { header: "Mail externe",                  key: "mailPersonneNonGPM",        width: 30 },
+            { header: "Notification par mail active",  key: "notifPersonne",             width: 15 },
+            { header: "Element de tenue",              key: "libelleCatalogueTenue",     width: 30 },
+            { header: "Taille",                        key: "tailleCatalogueTenue",      width: 20 },
+            { header: "Sérigraphie",                   key: "serigraphieCatalogueTenue", width: 30 },
+            { header: "Date d'affectation",            key: "dateAffectation",           width: 15 },
+            { header: "Date de retour prévisionnelle", key: "dateRetour",                width: 15 },
+        ];
+
+        for(const affectation of affectations)
+        {
+            worksheetAffectations.addRow(affectation);
+        }
+
+        worksheetAffectations.getRow(1).eachCell((cell) => {
+            cell.font = { bold: true };
+        });
+
+        let fileName = Date.now() + '-ExportAffectationsTenues.xlsx';
+
+        const saveFile = await workbook.xlsx.writeFile('temp/'+fileName);
+
+        res.send({fileName: fileName});
+
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+// CAUTIONS
 exports.getCautions = async (req, res)=>{
     try {
         let results = await db.query(`

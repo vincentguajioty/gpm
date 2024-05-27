@@ -145,6 +145,8 @@ router.post('/lots/duplicateLot',          loggerMiddleware.httpLogger(), jwtFun
 router.post('/lots/importRef',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_modification']), loggerMiddleware.modificationLogger(), lotsCtrl.importRef);
 router.post('/lots/updateLot',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_modification']), loggerMiddleware.modificationLogger(), lotsCtrl.updateLot);
 router.post('/lots/lotsDelete',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_suppression']),  loggerMiddleware.suppressionLogger(),  lotsCtrl.lotsDelete);
+//OPERATIONNEL - Export
+router.get('/lots/exporterLotsEtendus',    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_lecture', 'sac_lecture', 'materiel_lecture']), lotsCtrl.exporterLotsEtendus);
 //OPERATIONNEL - Lots - Inventaires
 router.post('/lots/getOneInventaireForDisplay',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_lecture']),                                             lotsCtrl.getOneInventaireForDisplay);
 router.post('/lots/startInventaire',                 loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['lots_modification']), loggerMiddleware.modificationLogger(), lotsCtrl.startInventaire);
@@ -192,6 +194,8 @@ router.post('/reserves/getOneConteneur',        loggerMiddleware.httpLogger(), j
 router.post('/reserves/addConteneur',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_ajout']),         loggerMiddleware.modificationLogger(), reservesConteneursCtrl.addConteneur);
 router.post('/reserves/updateConteneur',        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_modification']),  loggerMiddleware.modificationLogger(), reservesConteneursCtrl.updateConteneur);
 router.post('/reserves/reserveConteneurDelete', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_suppression']),   loggerMiddleware.suppressionLogger(),  reservesConteneursCtrl.reserveConteneurDelete);
+//RESERVES - Exports
+router.get('/reserves/exporterReservesEtendues', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_lecture']), reservesConteneursCtrl.exporterReservesEtendues);
 //RESERVES - Conteneurs - Inventaires
 router.post('/reserves/getOneInventaireForDisplay',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_lecture']),                                             reservesConteneursCtrl.getOneInventaireForDisplay);
 router.post('/reserves/startInventaire',                 loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_modification']), loggerMiddleware.modificationLogger(), reservesConteneursCtrl.startInventaire);
@@ -323,6 +327,8 @@ router.get('/tenues/getCatalogue',              loggerMiddleware.httpLogger(), j
 router.post('/tenues/addCatalogue',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_ajout']),        loggerMiddleware.modificationLogger(), tenuesCtrl.addCatalogue);
 router.post('/tenues/updateCatalogue',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_modification']), loggerMiddleware.modificationLogger(), tenuesCtrl.updateCatalogue);
 router.post('/tenues/deleteCatalogue',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_suppression']),  loggerMiddleware.suppressionLogger(),  tenuesCtrl.deleteCatalogue);
+//Export
+router.get('/tenues/exporterCatalogue',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_lecture']), tenuesCtrl.exporterCatalogue);
 //Tenues - Affectations
 router.get('/tenues/getAffectations',              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_lecture']),                                             tenuesCtrl.getAffectations);
 router.get('/tenues/getAffectationsRow',           loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_lecture']),                                             tenuesCtrl.getAffectationsRow);
@@ -331,6 +337,8 @@ router.post('/tenues/updateAffectations',          loggerMiddleware.httpLogger()
 router.post('/tenues/plannifierRetourMassifTenue', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_modification']), loggerMiddleware.modificationLogger(), tenuesCtrl.plannifierRetourMassifTenue);
 router.post('/tenues/deleteAffectations',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_suppression']),  loggerMiddleware.suppressionLogger(),  tenuesCtrl.deleteAffectations);
 router.post('/tenues/deleteMassifAffectations',    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_suppression']),  loggerMiddleware.suppressionLogger(),  tenuesCtrl.deleteMassifAffectations);
+//Export
+router.get('/tenues/exporterAffectations',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_lecture']),                                             tenuesCtrl.exporterAffectations);
 //Tenues - Cautions
 router.get('/tenues/getCautions',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_lecture']),                                             tenuesCtrl.getCautions);
 router.get('/tenues/getCautionsRow',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_lecture']),                                             tenuesCtrl.getCautionsRow);

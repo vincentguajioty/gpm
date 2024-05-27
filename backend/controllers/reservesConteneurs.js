@@ -2,6 +2,7 @@ const db = require('../db');
 const logger = require('../winstonLogger');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
+const excelJS = require("exceljs");
 
 //Réserves - Gestion générale
 exports.getConteneurs = async (req, res)=>{
@@ -484,6 +485,95 @@ exports.reserveInventaireDelete = async (req, res)=>{
     try {
         const deleteResult = await fonctionsDelete.reserveInventaireDelete(req.verifyJWTandProfile.idPersonne , req.body.idReserveInventaire);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//Réserves - Exports données conteneurs et matériels
+exports.exporterReservesEtendues = async (req, res)=>{
+    try {
+        const conteneurs = await db.query(`
+            SELECT
+                l.*,
+                DATE_ADD(l.dateDernierInventaire, INTERVAL frequenceInventaire DAY) as prochainInventaire,
+                li.libelleLieu
+            FROM
+                RESERVES_CONTENEUR l
+                LEFT OUTER JOIN LIEUX li ON li.idLieu = l.idLieu
+            ORDER BY
+                l.libelleConteneur ASC
+        ;`);
+
+        const workbook = new excelJS.Workbook();
+        
+        //FEUILLE LOTS
+        const worksheetConteneurs = workbook.addWorksheet('Conteneurs');
+        worksheetConteneurs.columns = [
+            { header: "Numéro interne",           key: "idConteneur",           width: 15 },
+            { header: "Libellé",                  key: "libelleConteneur",      width: 30 },
+            { header: "Lieu de stockage",         key: "libelleLieu",           width: 30 },
+            { header: "Dernier inventaire",       key: "dateDernierInventaire", width: 20 },
+            { header: "Fréquence inventaire (j)", key: "frequenceInventaire",   width: 20 },
+            { header: "Prochain inventaire",      key: "prochainInventaire",    width: 20 },
+        ];
+
+        for(const conteneur of conteneurs)
+        {
+            worksheetConteneurs.addRow(conteneur);
+        }
+
+        worksheetConteneurs.getRow(1).eachCell((cell) => {
+            cell.font = { bold: true };
+        });
+
+
+        //FEUILLES INDIVIDUELLES PAR LOTS
+        for(const conteneur of conteneurs)
+        {
+            const worksheetConteneurIndiv = workbook.addWorksheet(conteneur.libelleConteneur);
+            const materiels = await db.query(`
+                SELECT
+                    *
+                FROM
+                    RESERVES_CONTENEUR c
+                    LEFT OUTER JOIN RESERVES_MATERIEL elem ON c.idConteneur = elem.idConteneur
+                    LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON elem.idMaterielCatalogue = cat.idMaterielCatalogue
+                WHERE
+                    c.idConteneur = :idConteneur
+                ORDER BY
+                    c.libelleConteneur ASC,
+                    cat.libelleMateriel ASC
+            ;`,{
+                idConteneur: conteneur.idConteneur,
+            });
+            worksheetConteneurIndiv.columns = [
+                { header: "Réserve",                                   key: "libelleConteneur",              width: 30 },
+                { header: "Matériel",                                  key: "libelleMateriel",               width: 30 },
+                { header: "Quantité",                                  key: "quantiteReserve",               width: 10 },
+                { header: "Quantité d'alerte",                         key: "quantiteAlerteReserve",         width: 20 },
+                { header: "Péremption",                                key: "peremptionReserve",             width: 15 },
+                { header: "Anticpation de la péremption (j)",          key: "peremptionNotificationReserve", width: 20 },
+                { header: "Notification prévisionnelle de péremption", key: "peremptionNotificationReserve", width: 20 },
+            ];
+
+            for(const materiel of materiels)
+            {
+                worksheetConteneurIndiv.addRow(materiel);
+            }
+
+            worksheetConteneurIndiv.getRow(1).eachCell((cell) => {
+                cell.font = { bold: true };
+            });
+        }
+
+        let fileName = Date.now() + '-ExportReserves.xlsx';
+
+        const saveFile = await workbook.xlsx.writeFile('temp/'+fileName);
+
+        res.send({fileName: fileName});
+
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

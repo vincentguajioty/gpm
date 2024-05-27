@@ -3,6 +3,7 @@ const logger = require('../winstonLogger');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 const fonctionsMail = require('../helpers/fonctionsMail');
+const excelJS = require("exceljs");
 
 //LOTS - Gestion générale
 exports.getLots = async (req, res)=>{
@@ -1122,6 +1123,125 @@ exports.lotsInventaireDelete = async (req, res)=>{
     try {
         const deleteResult = await fonctionsDelete.lotsInventaireDelete(req.verifyJWTandProfile.idPersonne , req.body.idInventaire);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//LOTS - Exports données lots et matériels
+
+exports.exporterLotsEtendus = async (req, res)=>{
+    try {
+        const lots = await db.query(`
+            SELECT
+                l.*,
+                DATE_ADD(l.dateDernierInventaire, INTERVAL frequenceInventaire DAY) as prochainInventaire,
+                t.libelleTypeLot,
+                n.libelleNotificationEnabled,
+                n.notifiationEnabled,
+                li.libelleLieu,
+                p.identifiant,
+                p.prenomPersonne,
+                p.nomPersonne,
+                v.libelleVehicule,
+                e.libelleLotsEtat,
+                COUNT(a.idAlerte) as nbAlertesEnCours
+            FROM
+                LOTS_LOTS l
+                LEFT OUTER JOIN LOTS_TYPES t ON t.idTypeLot = l.idTypeLot
+                LEFT OUTER JOIN NOTIFICATIONS_ENABLED n ON l.idNotificationEnabled = n.idNotificationEnabled
+                LEFT OUTER JOIN LIEUX li ON li.idLieu = l.idLieu
+                LEFT OUTER JOIN PERSONNE_REFERENTE p ON l.idPersonne = p.idPersonne
+                LEFT OUTER JOIN VEHICULES v ON l.idVehicule = v.idVehicule
+                LEFT OUTER JOIN LOTS_ETATS e ON e.idLotsEtat = l.idLotsEtat
+                LEFT OUTER JOIN (SELECT * FROM LOTS_ALERTES WHERE dateResolutionAlerte IS NULL) a ON a.idLot = l.idLot
+            GROUP BY
+                l.idLot
+            ORDER BY
+                l.libelleLot ASC
+        ;`);
+
+        const workbook = new excelJS.Workbook();
+        
+        //FEUILLE LOTS
+        const worksheetLots = workbook.addWorksheet('Lots');
+        worksheetLots.columns = [
+            { header: "Numéro interne",           key: "idLot",                      width: 15 },
+            { header: "Libellé",                  key: "libelleLot",                 width: 30 },
+            { header: "Etat",                     key: "libelleLotsEtat",            width: 20 },
+            { header: "Référentiel",              key: "libelleTypeLot",             width: 20 },
+            { header: "Notifications",            key: "libelleNotificationEnabled", width: 15 },
+            { header: "Lieu de stockage",         key: "libelleLieu",                width: 30 },
+            { header: "Gérant",                   key: "identifiant",                width: 30 },
+            { header: "Dernier inventaire",       key: "dateDernierInventaire",      width: 20 },
+            { header: "Fréquence inventaire (j)", key: "frequenceInventaire",        width: 20 },
+            { header: "Prochain inventaire",      key: "prochainInventaire",         width: 20 },
+            { header: "Véhicule de rattachement", key: "libelleVehicule",            width: 30 },
+        ];
+
+        for(const lot of lots)
+        {
+            worksheetLots.addRow(lot);
+        }
+
+        worksheetLots.getRow(1).eachCell((cell) => {
+            cell.font = { bold: true };
+        });
+
+
+        //FEUILLES INDIVIDUELLES PAR LOTS
+        for(const lot of lots)
+        {
+            const worksheetLotIndiv = workbook.addWorksheet(lot.libelleLot);
+            const materiels = await db.query(`
+                SELECT
+                    *
+                FROM
+                    LOTS_LOTS l
+                    LEFT OUTER JOIN MATERIEL_SAC s ON l.idLot = s.idLot
+                    LEFT OUTER JOIN MATERIEL_EMPLACEMENT emp ON s.idSac = emp.idSac
+                    LEFT OUTER JOIN MATERIEL_ELEMENT elem ON emp.idEmplacement = elem.idEmplacement
+                    LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON elem.idMaterielCatalogue = cat.idMaterielCatalogue
+                WHERE
+                    l.idLot = :idLot
+                ORDER BY
+                    l.libelleLot ASC,
+                    s.libelleSac ASC,
+                    emp.libelleEmplacement ASC,
+                    cat.libelleMateriel ASC
+            ;`,{
+                idLot: lot.idLot,
+            });
+            worksheetLotIndiv.columns = [
+                { header: "Lot",                                       key: "libelleLot",             width: 30 },
+                { header: "Sac",                                       key: "libelleSac",             width: 30 },
+                { header: "Emplacement",                               key: "libelleEmplacement",     width: 30 },
+                { header: "Matériel",                                  key: "libelleMateriel",        width: 30 },
+                { header: "Quantité",                                  key: "quantite",               width: 10 },
+                { header: "Quantité d'alerte",                         key: "quantiteAlerte",         width: 20 },
+                { header: "Péremption",                                key: "peremption",             width: 15 },
+                { header: "Anticpation de la péremption (j)",          key: "peremptionAnticipation", width: 20 },
+                { header: "Notification prévisionnelle de péremption", key: "peremptionNotification", width: 20 },
+                { header: "Numéro de série",                           key: "numeroSerie",            width: 15 },
+            ];
+
+            for(const materiel of materiels)
+                {
+                    worksheetLotIndiv.addRow(materiel);
+                }
+
+            worksheetLotIndiv.getRow(1).eachCell((cell) => {
+                cell.font = { bold: true };
+            });
+        }
+
+        let fileName = Date.now() + '-ExportLots.xlsx';
+
+        const saveFile = await workbook.xlsx.writeFile('temp/'+fileName);
+
+        res.send({fileName: fileName});
+
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
