@@ -3,7 +3,7 @@ const fs = require('fs');
 const logger = require('./winstonLogger');
 const fonctionsMetiers = require('./helpers/fonctionsMetiers');
 
-const BACKEND_VERSION = '15.7';
+const BACKEND_VERSION = '15.8';
 
 const runDBScript = async (fileURL) => {
     try {
@@ -391,6 +391,14 @@ const majDB = async () => {
             case '15.6':
                 logger.info('Version 15.6 détectée - Upgrade à la version suivante')
                 update = await runDBScript('./dbScripts/update15.7.sql');
+                logger.debug(update);
+                finalResult = finalResult && await majDB();
+                logger.debug(finalResult);
+            break;
+
+            case '15.7':
+                logger.info('Version 15.7 détectée - Upgrade à la version suivante')
+                update = await runDBScript('./dbScripts/update15.8.sql');
                 logger.debug(update);
                 finalResult = finalResult && await majDB();
                 logger.debug(finalResult);
