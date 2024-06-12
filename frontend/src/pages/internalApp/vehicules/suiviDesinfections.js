@@ -4,6 +4,7 @@ import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import PageHeader from 'components/common/PageHeader';
 import SoftBadge from 'components/common/SoftBadge';
 import moment from 'moment-timezone';
+import IconButton from 'components/common/IconButton';
 
 import VehiculeDesinfectionsForm from './vehiculeDetails/vehiculeDesinfectionsForm';
 import Calendar from '../home/calendrierGeneral';
@@ -14,6 +15,7 @@ const SuiviDesinfections = () => {
     const [readyToDisplay, setReadyToDisplay] = useState(false);
     const [pageNeedsRefresh, setPageNeedsRefresh] = useState(false);
     const [tableauDesinfections, setTableauDesinfections] = useState([]);
+    const [isLoading, setLoading] = useState(false);
 
     const initPage = async () => {
         try {
@@ -36,6 +38,42 @@ const SuiviDesinfections = () => {
         }
     }, [pageNeedsRefresh])
 
+    //Export
+    const requestExport = async () => {
+        try {
+            setLoading(true);
+
+            let fileRequest = await Axios.get('/vehicules/exporterCarnetDesinfection');
+
+            let documentData = await Axios.post('getSecureFile/temp',
+            {
+                fileName: fileRequest.data.fileName,
+            },
+            {
+                responseType: 'blob'
+            });
+            
+            // create file link in browser's memory
+            const href = URL.createObjectURL(documentData.data);
+            
+            // create "a" HTML element with href to file & click
+            const link = document.createElement('a');
+            link.href = href;
+            link.setAttribute('download', fileRequest.data.fileName); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+
+            // clean up "a" element & remove ObjectURL
+            document.body.removeChild(link);
+            URL.revokeObjectURL(href);
+            
+            setDownloadGenerated(true);
+            setLoading(false);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (<>
         <PageHeader
             preTitle="Véhicules"
@@ -55,7 +93,16 @@ const SuiviDesinfections = () => {
                                         {tableauDesinfections.desinfections.map((colonne, i)=>{return(
                                             <td>{colonne.libelleVehiculesDesinfectionsType}</td>
                                         )})}
-                                        <td></td>
+                                        <td>
+                                            <IconButton
+                                                icon='download'
+                                                size = 'sm'
+                                                variant="outline-info"
+                                                onClick={requestExport}
+                                                className='ms-1'
+                                                disabled={isLoading}
+                                            >{isLoading ? "Génération en cours" : "Carnet"}</IconButton>
+                                        </td>
                                     </tr>
                                 </thead>
                                 <tbody>

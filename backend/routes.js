@@ -309,6 +309,7 @@ router.post('/vehicules/addDesinfection',            loggerMiddleware.httpLogger
 router.post('/vehicules/updateDesinfection',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateDesinfection);
 router.post('/vehicules/deleteDesinfection',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_modification']), loggerMiddleware.suppressionLogger(),  vehiculesCtrl.deleteDesinfection);
 router.post('/vehicules/updateDesinfectionAlertes',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_suppression']),  loggerMiddleware.modificationLogger(), vehiculesCtrl.updateDesinfectionAlertes);
+router.get('/vehicules/exporterCarnetDesinfection',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['desinfections_lecture']),                                             vehiculesCtrl.exporterCarnetDesinfection);
 //Détails carte grise
 router.post('/vehicules/addCGdetails',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']),        loggerMiddleware.modificationLogger(), vehiculesCtrl.addCGdetails);
 router.post('/vehicules/updateCGdetails',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']),        loggerMiddleware.modificationLogger(), vehiculesCtrl.updateCGdetails);

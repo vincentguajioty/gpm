@@ -4,6 +4,7 @@ const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 const fonctionsMail = require('../helpers/fonctionsMail');
 const logger = require('../winstonLogger');
 const multer = require('multer');
+const excelJS = require("exceljs");
 
 //Véhicules - section générale
 exports.getAllVehicules = async (req, res)=>{
@@ -1200,6 +1201,132 @@ exports.getDesinfectionsDashoard = async (req, res)=>{
         ;`);
 
         res.send({vehicules: vehicules, desinfections: desinfections, lastThreeMonths: lastThreeMonths});
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.exporterCarnetDesinfection = async (req, res)=>{
+    try {
+        let vehicules = await db.query(`
+            SELECT
+                idVehicule,
+                libelleVehicule
+            FROM
+                VEHICULES
+            WHERE
+                affichageSyntheseDesinfections = true
+            ORDER BY
+                libelleVehicule
+        ;`);
+
+        let desinfections = await db.query(`
+            SELECT
+                *
+            FROM
+                VEHICULES_DESINFECTIONS_TYPES
+            WHERE
+                affichageSynthese = true
+            ORDER BY
+                libelleVehiculesDesinfectionsType ASC
+        ;`);
+
+        //console.log(vehicules);
+        for(const vehicule of vehicules)
+        {
+            for(const desinfection of desinfections)
+            {
+                let alerte = await db.query(`
+                    SELECT
+                        *
+                    FROM
+                        VEHICULES_DESINFECTIONS_ALERTES
+                    WHERE
+                        idVehicule = :idVehicule
+                        AND
+                        idVehiculesDesinfectionsType = :idVehiculesDesinfectionsType
+                ;`,{
+                    idVehicule: vehicule.idVehicule,
+                    idVehiculesDesinfectionsType: desinfection.idVehiculesDesinfectionsType,
+                });
+
+                vehicule[desinfection.idVehiculesDesinfectionsType] = alerte.length == 1 ? 'ALERTE' : 'OK';
+            }
+        }
+
+        const workbook = new excelJS.Workbook();
+        
+        //FEUILLE ALERTES EN COURS
+        const worksheetAlertes = workbook.addWorksheet('Alertes en cours');
+        let colonnes = [];
+        colonnes.push(
+            { header: "Vehicule", key: "libelleVehicule", width: 15 },
+        )
+        for(const desinfection of desinfections)
+        {
+            colonnes.push(
+                { header: desinfection.libelleVehiculesDesinfectionsType,    key: desinfection.idVehiculesDesinfectionsType,   width: 35 },
+            )
+        }
+        worksheetAlertes.columns = colonnes;
+
+        for(const vehicule of vehicules)
+        {
+            worksheetAlertes.addRow(vehicule);
+        }
+
+        worksheetAlertes.getRow(1).eachCell((cell) => {
+            cell.font = { bold: true };
+        });
+
+        //FEUILLES INDIVIDUELLES
+        for(const vehicule of vehicules)
+        {
+            const worksheetVehiculeIndiv = workbook.addWorksheet(vehicule.libelleVehicule);
+            let desinfections = await db.query(`
+                SELECT
+                    d.*,
+                    p.identifiant,
+                    p.nomPersonne,
+                    p.prenomPersonne,
+                    t.libelleVehiculesDesinfectionsType,
+                    t.affichageSynthese
+                FROM
+                    VEHICULES_DESINFECTIONS d
+                    LEFT OUTER JOIN VEHICULES_DESINFECTIONS_TYPES t ON d.idVehiculesDesinfectionsType = t.idVehiculesDesinfectionsType
+                    LEFT OUTER JOIN PERSONNE_REFERENTE p ON d.idExecutant = p.idPersonne
+                WHERE
+                    idVehicule = :idVehicule
+                ORDER BY
+                    d.dateDesinfection DESC
+            ;`,{
+                idVehicule: vehicule.idVehicule
+            });
+            worksheetVehiculeIndiv.columns = [
+                { header: "Date",                 key: "dateDesinfection",                  width: 15 },
+                { header: "Type de désinfection", key: "libelleVehiculesDesinfectionsType", width: 35 },
+                { header: "Réalisée par",         key: "identifiant",                       width: 20 },
+                { header: "Remarques",            key: "remarquesDesinfection",             width: 40 },
+            ];
+
+            for(const desinf of desinfections)
+            {
+                worksheetVehiculeIndiv.addRow(desinf);
+            }
+    
+            worksheetVehiculeIndiv.getRow(1).eachCell((cell) => {
+                cell.font = { bold: true };
+            });
+
+        }
+
+        let fileName = Date.now() + '-ExportDesinfections.xlsx';
+
+        const saveFile = await workbook.xlsx.writeFile('temp/'+fileName);
+
+        res.send({fileName: fileName});
+
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
