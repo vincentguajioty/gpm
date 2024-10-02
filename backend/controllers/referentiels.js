@@ -53,7 +53,7 @@ exports.getOneReferentiel = async (req, res)=>{
                     cat.libelleCategorie
                 FROM
                     REFERENTIELS ref
-                    LEFT OUTER JOIN MATERIEL_CATALOGUE mc ON ref.idMaterielCatalogue = mc.idMaterielCatalogue
+                    LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE mc ON ref.idMaterielCatalogue = mc.idMaterielCatalogue
                     LEFT OUTER JOIN MATERIEL_CATEGORIES cat ON mc.idCategorie = cat.idCategorie
                 WHERE
                     idTypeLot = :idTypeLot
@@ -106,7 +106,7 @@ exports.getCatalogueForReferentielForm = async (req, res)=>{
                 ref.obligatoire,
                 ref.commentairesReferentiel
             FROM
-                MATERIEL_CATALOGUE mc
+                VIEW_MATERIEL_CATALOGUE_OPE mc
                 LEFT OUTER JOIN MATERIEL_CATEGORIES cat ON mc.idCategorie = cat.idCategorie
                 LEFT OUTER JOIN (SELECT * FROM REFERENTIELS WHERE idTypeLot = :idTypeLot) ref ON mc.idMaterielCatalogue = ref.idMaterielCatalogue
             ORDER BY

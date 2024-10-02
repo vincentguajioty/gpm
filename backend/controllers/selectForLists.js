@@ -474,6 +474,64 @@ exports.getCatalogueMaterielFull = async (req, res)=>{
     }
 }
 
+exports.getCatalogueMaterielOpe = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idMaterielCatalogue as value,
+                libelleMateriel as label
+            FROM
+                VIEW_MATERIEL_CATALOGUE_OPE
+            ORDER BY
+                libelleMateriel
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getCatalogueMaterielOpeFull = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idMaterielCatalogue as value,
+                libelleMateriel as label,
+                sterilite,
+                peremptionAnticipationOpe,
+                peremptionAnticipationRes,
+                idFournisseur
+            FROM
+                VIEW_MATERIEL_CATALOGUE_OPE
+            ORDER BY
+                libelleMateriel
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getCatalogueMaterielTenues = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idMaterielCatalogue as value,
+                CONCAT_WS(' > ', libelleMateriel, taille) as label
+            FROM
+                VIEW_MATERIEL_CATALOGUE_TENUES
+            ORDER BY
+                libelleMateriel
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.getVHFTypesAccessoires = async (req, res)=>{
     try {
         let results = await db.query(`
@@ -592,24 +650,6 @@ exports.getPioritesForTDL = async (req, res)=>{
                 TODOLIST_PRIORITES
             ORDER BY
                 libellePriorite
-        ;`);
-        res.send(results);
-    } catch (error) {
-        logger.error(error);
-        res.sendStatus(500);
-    }
-}
-
-exports.getTenuesCatalogue = async (req, res)=>{
-    try {
-        let results = await db.query(`
-            SELECT
-                idCatalogueTenue as value,
-                CONCAT(COALESCE(libelleCatalogueTenue,'')," (Taille:",COALESCE(tailleCatalogueTenue,''),")") as label
-            FROM
-                TENUES_CATALOGUE
-            ORDER BY
-                libelleCatalogueTenue
         ;`);
         res.send(results);
     } catch (error) {
@@ -997,7 +1037,7 @@ exports.getPublicCatalogueMateriel = async (req, res)=>{
                     c.*,
                     SUM(conso.quantiteConsommation) as frequenceRapportConso
                 FROM
-                    MATERIEL_CATALOGUE c
+                    VIEW_MATERIEL_CATALOGUE_OPE c
                     LEFT OUTER JOIN MATERIEL_ELEMENT elem ON c.idMaterielCatalogue = elem.idMaterielCatalogue
                     LEFT OUTER JOIN MATERIEL_EMPLACEMENT emp ON elem.idEmplacement = emp.idEmplacement
                     LEFT OUTER JOIN MATERIEL_SAC s ON emp.idSac = s.idSac

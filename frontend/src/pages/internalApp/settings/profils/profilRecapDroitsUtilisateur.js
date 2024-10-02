@@ -184,7 +184,7 @@ const ProfilRecapDroitsUtilisateur = ({idPersonne, pageNeedsRefresh}) => {
                             <td><FontAwesomeIcon icon={profil['tenues_suppression'] ? 'check' : 'ban'}/></td>
                         </tr>
                         <tr>
-                            <td>Catalogue des tenues</td>
+                            <td>Stock des tenues</td>
                             <td><FontAwesomeIcon icon={profil['tenuesCatalogue_lecture'] ? 'check' : 'ban'}/></td>
                             <td><FontAwesomeIcon icon={profil['tenuesCatalogue_ajout'] ? 'check' : 'ban'}/></td>
                             <td><FontAwesomeIcon icon={profil['tenuesCatalogue_modification'] ? 'check' : 'ban'}/></td>

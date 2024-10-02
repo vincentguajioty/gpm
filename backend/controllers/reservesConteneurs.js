@@ -313,7 +313,7 @@ exports.getOneInventaireForDisplay = async (req, res)=>{
                 cat.libelleCategorie
             FROM
                 RESERVES_INVENTAIRES_CONTENUS i
-                LEFT OUTER JOIN MATERIEL_CATALOGUE c ON i.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE c ON i.idMaterielCatalogue = c.idMaterielCatalogue
                 LEFT OUTER JOIN MATERIEL_CATEGORIES cat ON c.idCategorie = cat.idCategorie
             WHERE
                 idReserveInventaire = :idReserveInventaire
@@ -409,7 +409,7 @@ exports.startInventaire = async (req, res)=>{
             FROM
                 RESERVES_MATERIEL e
                 LEFT OUTER JOIN RESERVES_CONTENEUR emp ON e.idConteneur = emp.idConteneur
-                LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON e.idMaterielCatalogue = cat.idMaterielCatalogue
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE cat ON e.idMaterielCatalogue = cat.idMaterielCatalogue
             WHERE
                 e.idConteneur = :idConteneur
         `,{
@@ -539,7 +539,7 @@ exports.exporterReservesEtendues = async (req, res)=>{
                 FROM
                     RESERVES_CONTENEUR c
                     LEFT OUTER JOIN RESERVES_MATERIEL elem ON c.idConteneur = elem.idConteneur
-                    LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON elem.idMaterielCatalogue = cat.idMaterielCatalogue
+                    LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE cat ON elem.idMaterielCatalogue = cat.idMaterielCatalogue
                 WHERE
                     c.idConteneur = :idConteneur
                 ORDER BY

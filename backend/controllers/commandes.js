@@ -137,6 +137,10 @@ exports.getOneCommande = async (req, res)=>{
                 m.*,
                 c.libelleMateriel,
                 c.idFournisseur as idFournisseurReference,
+                c.modules_ope,
+                c.modules_vehicules,
+                c.modules_tenues,
+                c.modules_vhf,
                 f.nomFournisseur as nomFournisseurReference
             FROM
                 COMMANDES_MATERIEL m
@@ -879,7 +883,7 @@ exports.getReservesForOneIntegration = async (req, res)=>{
             FROM
                 RESERVES_MATERIEL rm
                 LEFT OUTER JOIN RESERVES_CONTENEUR c ON rm.idConteneur = c.idConteneur
-                LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON rm.idMaterielCatalogue = cat.idMaterielCatalogue
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE cat ON rm.idMaterielCatalogue = cat.idMaterielCatalogue
             WHERE
                 rm.idMaterielCatalogue = :idMaterielCatalogue
             ORDER BY

@@ -3,7 +3,7 @@ const fs = require('fs');
 const logger = require('./winstonLogger');
 const fonctionsMetiers = require('./helpers/fonctionsMetiers');
 
-const BACKEND_VERSION = '15.8';
+const BACKEND_VERSION = '16.0';
 
 const runDBScript = async (fileURL) => {
     try {
@@ -398,8 +398,74 @@ const majDB = async () => {
 
             case '15.7':
                 logger.info('Version 15.7 détectée - Upgrade à la version suivante')
-                update = await runDBScript('./dbScripts/update15.8.sql');
+                update = await runDBScript('./dbScripts/update16.0-1.sql');
                 logger.debug(update);
+
+                const createCat = await db.query(`INSERT INTO MATERIEL_CATEGORIES SET libelleCategorie = "MODULE TENUES IMPORT V16.0"`);
+                logger.debug(createCat);
+                let idCategorie = await db.query(`SELECT MAX(idCategorie) as idCategorie FROM MATERIEL_CATEGORIES`);
+                logger.debug(idCategorie);
+                idCategorie = idCategorie[0].idCategorie;
+
+                const catalogueTenues = await db.query(`SELECT * FROM TENUES_CATALOGUE`);
+                logger.debug(catalogueTenues);
+                for(const catTenue of catalogueTenues)
+                {
+                    const createCatalogueEntry = await db.query(`
+                        INSERT INTO
+                            MATERIEL_CATALOGUE
+                        SET
+                            libelleMateriel          = :libelleMateriel,
+                            idCategorie              = :idCategorie,
+                            taille                   = :taille,
+                            sterilite                = false,
+                            disponibleBenevolesConso = false,
+                            modules_ope              = false,
+                            modules_vehicules        = false,
+                            modules_tenues           = true,
+                            modules_vhf              = false
+                    ;`,{
+                        libelleMateriel: catTenue.libelleCatalogueTenue,
+                        idCategorie: idCategorie,
+                        taille: catTenue.tailleCatalogueTenue,
+                    });
+                    let idMaterielCatalogue = await db.query(`SELECT MAX(idMaterielCatalogue) as idMaterielCatalogue FROM MATERIEL_CATALOGUE`);
+                    idMaterielCatalogue = idMaterielCatalogue[0].idMaterielCatalogue;
+                    logger.debug(createCatalogueEntry);
+                    
+                    logger.debug(idMaterielCatalogue);
+                    logger.debug(catTenue.idCatalogueTenue);
+
+                    const updateTenueCatalogue = await db.query(`
+                        UPDATE
+                            TENUES_CATALOGUE
+                        SET
+                            idMaterielCatalogue = :idMaterielCatalogue
+                        WHERE
+                            idCatalogueTenue = :idCatalogueTenue
+                    ;`,{
+                        idMaterielCatalogue: idMaterielCatalogue,
+                        idCatalogueTenue: catTenue.idCatalogueTenue,
+                    });
+                    logger.debug(updateTenueCatalogue);
+
+                    const updateTenueAffectations = await db.query(`
+                        UPDATE
+                            TENUES_AFFECTATION
+                        SET
+                            idMaterielCatalogue = :idMaterielCatalogue
+                        WHERE
+                            idCatalogueTenue = :idCatalogueTenue
+                    ;`,{
+                        idMaterielCatalogue: idMaterielCatalogue,
+                        idCatalogueTenue: catTenue.idCatalogueTenue,
+                    });
+                    logger.debug(updateTenueAffectations);
+                }
+
+                update = await runDBScript('./dbScripts/update16.0-2.sql');
+                logger.debug(update);
+
                 finalResult = finalResult && await majDB();
                 logger.debug(finalResult);
             break;

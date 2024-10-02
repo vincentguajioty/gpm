@@ -3,7 +3,7 @@ const fonctionsDelete = require('../helpers/fonctionsDelete');
 const logger = require('../winstonLogger');
 const excelJS = require("exceljs");
 
-const retraitItemStock = async (idCatalogueTenue) => {
+const retraitItemStock = async (idMaterielCatalogue) => {
     try {
         const result = await db.query(`
             UPDATE
@@ -11,16 +11,16 @@ const retraitItemStock = async (idCatalogueTenue) => {
             SET
                 stockCatalogueTenue = stockCatalogueTenue - 1
             WHERE
-                idCatalogueTenue = :idCatalogueTenue
+                idMaterielCatalogue = :idMaterielCatalogue
         `,{
-            idCatalogueTenue: idCatalogueTenue,
+            idMaterielCatalogue: idMaterielCatalogue,
         });
     } catch (error) {
         logger.error(error)
     }
 }
 
-const ajoutItemStock = async (idCatalogueTenue) => {
+const ajoutItemStock = async (idMaterielCatalogue) => {
     try {
         const result = await db.query(`
             UPDATE
@@ -28,9 +28,9 @@ const ajoutItemStock = async (idCatalogueTenue) => {
             SET
                 stockCatalogueTenue = stockCatalogueTenue + 1
             WHERE
-                idCatalogueTenue = :idCatalogueTenue
+                idMaterielCatalogue = :idMaterielCatalogue
         `,{
-            idCatalogueTenue: idCatalogueTenue,
+            idMaterielCatalogue: idMaterielCatalogue,
         });
     } catch (error) {
         logger.error(error)
@@ -43,32 +43,17 @@ exports.getCatalogue = async (req, res)=>{
         let results = await db.query(`
             SELECT
                 tc.*,
+                cat.*,
                 f.nomFournisseur
             FROM
                 TENUES_CATALOGUE tc
+                LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON tc.idMaterielCatalogue = cat.idMaterielCatalogue
                 LEFT OUTER JOIN FOURNISSEURS f ON tc.idFournisseur = f.idFournisseur
             ORDER BY
-                tc.libelleCatalogueTenue,
-                tc.tailleCatalogueTenue
+                cat.libelleMateriel,
+                cat.taille
         ;`);
-        for(const tenue of results)
-        {
-            let affectations = await db.query(`
-                SELECT
-                    ta.*,
-                    pr.identifiant
-                FROM
-                    TENUES_AFFECTATION ta
-                    LEFT OUTER JOIN PERSONNE_REFERENTE pr ON ta.idPersonne = pr.idPersonne
-                WHERE
-                    ta.idCatalogueTenue = :idCatalogueTenue
-                ORDER BY
-                    pr.identifiant, ta.personneNonGPM
-            ;`,{
-                idCatalogueTenue: tenue.idCatalogueTenue,
-            });
-            tenue.affectations = affectations;
-        }
+        
         res.send(results);
     } catch (error) {
         logger.error(error);
@@ -82,16 +67,12 @@ exports.addCatalogue = async (req, res)=>{
             INSERT INTO
                 TENUES_CATALOGUE
             SET
-                libelleCatalogueTenue = :libelleCatalogueTenue,
-                tailleCatalogueTenue = :tailleCatalogueTenue,
-                serigraphieCatalogueTenue = :serigraphieCatalogueTenue,
+                idMaterielCatalogue = :idMaterielCatalogue,
                 idFournisseur = :idFournisseur,
                 stockCatalogueTenue = :stockCatalogueTenue,
                 stockAlerteCatalogueTenue = :stockAlerteCatalogueTenue
         `,{
-            libelleCatalogueTenue: req.body.libelleCatalogueTenue || null,
-            tailleCatalogueTenue: req.body.tailleCatalogueTenue || null,
-            serigraphieCatalogueTenue: req.body.serigraphieCatalogueTenue || null,
+            idMaterielCatalogue: req.body.idMaterielCatalogue || null,
             idFournisseur: req.body.idFournisseur || null,
             stockCatalogueTenue: req.body.stockCatalogueTenue || 0,
             stockAlerteCatalogueTenue: req.body.stockAlerteCatalogueTenue || 0,
@@ -110,18 +91,14 @@ exports.updateCatalogue = async (req, res)=>{
             UPDATE
                 TENUES_CATALOGUE
             SET
-                libelleCatalogueTenue = :libelleCatalogueTenue,
-                tailleCatalogueTenue = :tailleCatalogueTenue,
-                serigraphieCatalogueTenue = :serigraphieCatalogueTenue,
+                idMaterielCatalogue = :idMaterielCatalogue,
                 idFournisseur = :idFournisseur,
                 stockCatalogueTenue = :stockCatalogueTenue,
                 stockAlerteCatalogueTenue = :stockAlerteCatalogueTenue
             WHERE
                 idCatalogueTenue = :idCatalogueTenue
         `,{
-            libelleCatalogueTenue: req.body.libelleCatalogueTenue || null,
-            tailleCatalogueTenue: req.body.tailleCatalogueTenue || null,
-            serigraphieCatalogueTenue: req.body.serigraphieCatalogueTenue || null,
+            idMaterielCatalogue: req.body.idMaterielCatalogue || null,
             idFournisseur: req.body.idFournisseur || null,
             stockCatalogueTenue: req.body.stockCatalogueTenue || 0,
             stockAlerteCatalogueTenue: req.body.stockAlerteCatalogueTenue || 0,
@@ -151,10 +128,11 @@ exports.exporterCatalogue = async (req, res)=>{
             SELECT
                 *
             FROM
-                TENUES_CATALOGUE
+                TENUES_CATALOGUE c
+                LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON c.idMaterielCatalogue = cat.idMaterielCatalogue
             ORDER BY
-                libelleCatalogueTenue,
-                tailleCatalogueTenue
+                libelleMateriel,
+                taille
         ;`);
 
         const workbook = new excelJS.Workbook();
@@ -162,9 +140,8 @@ exports.exporterCatalogue = async (req, res)=>{
         const worksheetCatalogue = workbook.addWorksheet('Catalogue et stock');
         worksheetCatalogue.columns = [
             { header: "Numéro interne",   key: "idCatalogueTenue",          width: 15 },
-            { header: "Element de tenue", key: "libelleCatalogueTenue",     width: 40 },
-            { header: "Taille",           key: "tailleCatalogueTenue",      width: 20 },
-            { header: "Sérigraphie",      key: "serigraphieCatalogueTenue", width: 30 },
+            { header: "Element de tenue", key: "libelleMateriel",           width: 40 },
+            { header: "Taille",           key: "taille",                    width: 20 },
             { header: "Stock",            key: "stockCatalogueTenue",       width: 15 },
             { header: "Stock d'alerte",   key: "stockAlerteCatalogueTenue", width: 15 },
         ];
@@ -234,16 +211,16 @@ exports.getAffectations = async (req, res)=>{
                 let affectations = await db.query(`
                     SELECT
                         ta.*,
-                        tc.libelleCatalogueTenue,
-                        tc.tailleCatalogueTenue
+                        tc.libelleMateriel,
+                        tc.taille
                     FROM
                         TENUES_AFFECTATION ta
-                        LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                        LEFT OUTER JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
                     WHERE
                         ta.idPersonne = :idPersonne
                     ORDER BY
-                        tc.libelleCatalogueTenue,
-                        tc.tailleCatalogueTenue
+                        tc.libelleMateriel,
+                        tc.taille
                 ;`,{
                     idPersonne: personne.idPersonne,
                 });
@@ -256,18 +233,18 @@ exports.getAffectations = async (req, res)=>{
                     let affectations = await db.query(`
                         SELECT
                             ta.*,
-                            tc.libelleCatalogueTenue,
-                            tc.tailleCatalogueTenue
+                            tc.libelleMateriel,
+                            tc.taille
                         FROM
                             TENUES_AFFECTATION ta
-                            LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                            LEFT OUTER JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
                         WHERE
                             ta.personneNonGPM = :personneNonGPM
                             AND
                             ta.mailPersonneNonGPM = :mailPersonneNonGPM
                         ORDER BY
-                            tc.libelleCatalogueTenue,
-                            tc.tailleCatalogueTenue
+                            tc.libelleMateriel,
+                            tc.taille
                     ;`,{
                         personneNonGPM: personne.nomPrenom,
                         mailPersonneNonGPM: personne.mailPersonne,
@@ -277,18 +254,18 @@ exports.getAffectations = async (req, res)=>{
                     let affectations = await db.query(`
                         SELECT
                             ta.*,
-                            tc.libelleCatalogueTenue,
-                            tc.tailleCatalogueTenue
+                            tc.libelleMateriel,
+                            tc.taille
                         FROM
                             TENUES_AFFECTATION ta
-                            LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                            LEFT OUTER JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
                         WHERE
                             ta.personneNonGPM = :personneNonGPM
                             AND
                             ta.mailPersonneNonGPM IS NULL
                         ORDER BY
-                            tc.libelleCatalogueTenue,
-                            tc.tailleCatalogueTenue
+                            tc.libelleMateriel,
+                            tc.taille
                     ;`,{
                         personneNonGPM: personne.nomPrenom,
                     });
@@ -314,12 +291,12 @@ exports.getAffectationsRow = async (req, res)=>{
                 p.identifiant,
                 CONCAT_WS(" ", ta.personneNonGPM, p.nomPersonne, p.prenomPersonne) as nomPrenom,
                 CONCAT_WS(" ", ta.mailPersonneNonGPM, p.mailPersonne) as mailPersonne,
-                cat.libelleCatalogueTenue,
-                cat.tailleCatalogueTenue
+                cat.libelleMateriel,
+                cat.taille
             FROM
                 TENUES_AFFECTATION ta
                 LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne
-                LEFT OUTER JOIN TENUES_CATALOGUE cat ON ta.idCatalogueTenue = cat.idCatalogueTenue
+                LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON ta.idMaterielCatalogue = cat.idMaterielCatalogue
         ;`);
         res.send(results);
     } catch (error) {
@@ -371,7 +348,7 @@ exports.addAffectations = async (req, res)=>{
             INSERT INTO
                 TENUES_AFFECTATION
             SET
-                idCatalogueTenue = :idCatalogueTenue,
+                idMaterielCatalogue = :idMaterielCatalogue,
                 idPersonne = :idPersonne,
                 personneNonGPM = :personneNonGPM,
                 mailPersonneNonGPM = :mailPersonneNonGPM,
@@ -379,7 +356,7 @@ exports.addAffectations = async (req, res)=>{
                 dateRetour = :dateRetour,
                 notifPersonne = :notifPersonne
         `,{
-            idCatalogueTenue: req.body.idCatalogueTenue || null,
+            idMaterielCatalogue: req.body.idMaterielCatalogue || null,
             idPersonne: req.body.idPersonne || null,
             personneNonGPM: req.body.personneNonGPM || null,
             mailPersonneNonGPM: req.body.mailPersonneNonGPM || null,
@@ -388,7 +365,7 @@ exports.addAffectations = async (req, res)=>{
             notifPersonne: req.body.notifPersonne || false,
         });
 
-        await retraitItemStock(req.body.idCatalogueTenue);
+        await retraitItemStock(req.body.idMaterielCatalogue);
         
         res.sendStatus(201);
     } catch (error) {
@@ -403,7 +380,7 @@ exports.updateAffectations = async (req, res)=>{
             UPDATE
                 TENUES_AFFECTATION
             SET
-                idCatalogueTenue = :idCatalogueTenue,
+                idMaterielCatalogue = :idMaterielCatalogue,
                 idPersonne = :idPersonne,
                 personneNonGPM = :personneNonGPM,
                 mailPersonneNonGPM = :mailPersonneNonGPM,
@@ -413,7 +390,7 @@ exports.updateAffectations = async (req, res)=>{
             WHERE
                 idTenue = :idTenue
         `,{
-            idCatalogueTenue: req.body.idCatalogueTenue || null,
+            idMaterielCatalogue: req.body.idMaterielCatalogue || null,
             idPersonne: req.body.idPersonne || null,
             personneNonGPM: req.body.personneNonGPM || null,
             mailPersonneNonGPM: req.body.mailPersonneNonGPM || null,
@@ -423,10 +400,10 @@ exports.updateAffectations = async (req, res)=>{
             idTenue: req.body.idTenue,
         });
 
-        if(req.body.idCatalogueTenueInitial != req.body.idCatalogueTenue)
+        if(req.body.idMaterielCatalogueInitial != req.body.idMaterielCatalogue)
         {
-            await ajoutItemStock(req.body.idCatalogueTenueInitial);
-            await retraitItemStock(req.body.idCatalogueTenue);
+            await ajoutItemStock(req.body.idMaterielCatalogueInitial);
+            await retraitItemStock(req.body.idMaterielCatalogue);
         }
         
         res.sendStatus(201);
@@ -566,20 +543,20 @@ exports.exporterAffectations = async (req, res)=>{
         const affectations = await db.query(`
             SELECT
                 ta.*,
-                tc.libelleCatalogueTenue,
-                tc.tailleCatalogueTenue,
-                tc.serigraphieCatalogueTenue,
+                c.libelleMateriel,
+                c.taille,
                 p.identifiant
             FROM
                 TENUES_AFFECTATION ta
-                LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                LEFT OUTER JOIN MATERIEL_CATALOGUE c ON ta.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
                 LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne
             ORDER BY
                 p.idPersonne,
                 ta.personneNonGPM,
                 ta.mailPersonneNonGPM,
-                tc.libelleCatalogueTenue,
-                tc.tailleCatalogueTenue
+                c.libelleMateriel,
+                c.taille
         ;`);
 
         const workbook = new excelJS.Workbook();
@@ -591,9 +568,8 @@ exports.exporterAffectations = async (req, res)=>{
             { header: "Identité externe",              key: "personneNonGPM",            width: 30 },
             { header: "Mail externe",                  key: "mailPersonneNonGPM",        width: 30 },
             { header: "Notification par mail active",  key: "notifPersonne",             width: 15 },
-            { header: "Element de tenue",              key: "libelleCatalogueTenue",     width: 30 },
-            { header: "Taille",                        key: "tailleCatalogueTenue",      width: 20 },
-            { header: "Sérigraphie",                   key: "serigraphieCatalogueTenue", width: 30 },
+            { header: "Element de tenue",              key: "libelleMateriel",           width: 30 },
+            { header: "Taille",                        key: "taille",                    width: 20 },
             { header: "Date d'affectation",            key: "dateAffectation",           width: 15 },
             { header: "Date de retour prévisionnelle", key: "dateRetour",                width: 15 },
         ];

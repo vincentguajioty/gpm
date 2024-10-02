@@ -22,12 +22,12 @@ const AffectationsAvecDates = ({
 			},
         },
         {
-            accessor: 'libelleCatalogueTenue',
+            accessor: 'libelleMateriel',
             Header: 'Element',
             Cell: ({ value, row }) => {
 				return(<>
                     {value}
-                    <br/>Taille: {row.original.tailleCatalogueTenue}
+                    <br/>Taille: {row.original.taille}
 
                     <br/>{row.original.dateRetour != null ? 
                         new Date(row.original.dateRetour) < new Date() ?

@@ -1434,7 +1434,7 @@ const Profils = () => {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Catalogue des tenues</td>
+                                <td>Stock des tenues</td>
                                 <td>
                                     {modeEdition ?
                                         <Form.Check

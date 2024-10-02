@@ -311,7 +311,7 @@ exports.getOneLot = async (req, res)=>{
                     r.quantiteReferentiel
                 FROM
                     REFERENTIELS r
-                    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON r.idMaterielCatalogue = c.idMaterielCatalogue
+                    LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE c ON r.idMaterielCatalogue = c.idMaterielCatalogue
                 WHERE
                     r.idTypeLot = :idTypeLot
                     AND
@@ -900,7 +900,7 @@ exports.getOneInventaireForDisplay = async (req, res)=>{
                 cat.libelleCategorie
             FROM
                 INVENTAIRES_CONTENUS i
-                LEFT OUTER JOIN MATERIEL_CATALOGUE c ON i.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE c ON i.idMaterielCatalogue = c.idMaterielCatalogue
                 LEFT OUTER JOIN MATERIEL_CATEGORIES cat ON c.idCategorie = cat.idCategorie
             WHERE
                 idInventaire = :idInventaire
@@ -997,7 +997,7 @@ exports.startInventaire = async (req, res)=>{
                 MATERIEL_ELEMENT e
                 LEFT OUTER JOIN MATERIEL_EMPLACEMENT emp ON e.idEmplacement = emp.idEmplacement
                 LEFT OUTER JOIN MATERIEL_SAC s ON emp.idSac = s.idSac
-                LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON e.idMaterielCatalogue = cat.idMaterielCatalogue
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE cat ON e.idMaterielCatalogue = cat.idMaterielCatalogue
             WHERE
                 s.idLot = :idLot
         `,{
@@ -1202,7 +1202,7 @@ exports.exporterLotsEtendus = async (req, res)=>{
                     LEFT OUTER JOIN MATERIEL_SAC s ON l.idLot = s.idLot
                     LEFT OUTER JOIN MATERIEL_EMPLACEMENT emp ON s.idSac = emp.idSac
                     LEFT OUTER JOIN MATERIEL_ELEMENT elem ON emp.idEmplacement = elem.idEmplacement
-                    LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON elem.idMaterielCatalogue = cat.idMaterielCatalogue
+                    LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE cat ON elem.idMaterielCatalogue = cat.idMaterielCatalogue
                 WHERE
                     l.idLot = :idLot
                 ORDER BY

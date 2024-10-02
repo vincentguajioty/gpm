@@ -40,11 +40,11 @@ const Tenues = () => {
 
     const colonnes = [
         {
-            accessor: 'libelleCatalogueTenue',
+            accessor: 'libelleMateriel',
             Header: 'Libellé',
         },
         {
-            accessor: 'tailleCatalogueTenue',
+            accessor: 'taille',
             Header: 'Taille',
         },
         {
@@ -59,48 +59,6 @@ const Tenues = () => {
                             <SoftBadge bg='warning'>{value}</SoftBadge>
                         :
                             <SoftBadge bg='success'>{value}</SoftBadge>
-                );
-			},
-        },
-        {
-            accessor: 'affectations',
-            Header: 'Affectations',
-            Cell: ({ value, row }) => {
-				const [showAffectDetailsModal, setShowAffectDetailsModal] = useState(false);
-                const handleCloseAffectDetailsModal = () => {
-                    setShowAffectDetailsModal(false);
-                };
-                const handleShowAffectDetailsModal = () => {
-                    setShowAffectDetailsModal(true);
-                };
-                return(
-                    <>
-                        <IconButton
-                            icon='user'
-                            size = 'sm'
-                            variant="outline-info"
-                            onClick={handleShowAffectDetailsModal}
-                        >{value.length}</IconButton>
-                        <Modal show={showAffectDetailsModal} onHide={handleCloseAffectDetailsModal} backdrop="static" keyboard={false} size='lg'>
-                            <Modal.Header>
-                                <Modal.Title>{row.original.libelleCatalogueTenue} - Taille {row.original.tailleCatalogueTenue}</Modal.Title>
-                                <FalconCloseButton onClick={handleCloseAffectDetailsModal}/>
-                            </Modal.Header>
-                                <Modal.Body>
-                                    <center><i>Si un nom apparait plusieurs fois, c'est que la personne détient plusieurs item de ce type.</i></center>
-                                    <ul>
-                                        {value.map((user, i)=>{
-                                            return(<li key={i}>{user.personneNonGPM}{user.identifiant}</li>)
-                                        })}
-                                    </ul>
-                                </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={handleCloseAffectDetailsModal}>
-                                    Fermer
-                                </Button>
-                            </Modal.Footer>
-                        </Modal>
-                    </>
                 );
 			},
         },
@@ -143,6 +101,7 @@ const Tenues = () => {
         resolver: yupResolver(catalogueTenuesForm),
     });
     const [fournisseurs, setFournisseurs] = useState([]);
+    const [catalogueMateriel, setCatalogueMateriel] = useState([]);
     const handleCloseOffCanevas = () => {
         setShowOffCanevas(false);
         setOffCanevasIdCatalogueTenue();
@@ -155,16 +114,16 @@ const Tenues = () => {
         if(id > 0)
         {
             let oneItemFromArray = catalogue.filter(ligne => ligne.idCatalogueTenue == id)[0];
-            setValue("libelleCatalogueTenue", oneItemFromArray.libelleCatalogueTenue);
-            setValue("tailleCatalogueTenue", oneItemFromArray.tailleCatalogueTenue);
-            setValue("serigraphieCatalogueTenue", oneItemFromArray.serigraphieCatalogueTenue);
+            setValue("idMaterielCatalogue", oneItemFromArray.idMaterielCatalogue);
             setValue("idFournisseur", oneItemFromArray.idFournisseur);
             setValue("stockCatalogueTenue", oneItemFromArray.stockCatalogueTenue);
             setValue("stockAlerteCatalogueTenue", oneItemFromArray.stockAlerteCatalogueTenue);
         }
 
-        const getData = await Axios.get('/select/getFournisseurs');
+        let getData = await Axios.get('/select/getFournisseurs');
         setFournisseurs(getData.data);
+        getData = await Axios.get('/select/getCatalogueMaterielTenues');
+        setCatalogueMateriel(getData.data);
 
         setShowOffCanevas(true);
     }
@@ -176,9 +135,7 @@ const Tenues = () => {
             {
                 const response = await Axios.post('/tenues/updateCatalogue',{
                     idCatalogueTenue: offCanevasIdCatalogueTenue,
-                    libelleCatalogueTenue: data.libelleCatalogueTenue,
-                    tailleCatalogueTenue: data.tailleCatalogueTenue,
-                    serigraphieCatalogueTenue: data.serigraphieCatalogueTenue,
+                    idMaterielCatalogue: data.idMaterielCatalogue,
                     idFournisseur: data.idFournisseur,
                     stockCatalogueTenue: data.stockCatalogueTenue,
                     stockAlerteCatalogueTenue: data.stockAlerteCatalogueTenue,
@@ -187,9 +144,7 @@ const Tenues = () => {
             else
             {
                 const response = await Axios.post('/tenues/addCatalogue',{
-                    libelleCatalogueTenue: data.libelleCatalogueTenue,
-                    tailleCatalogueTenue: data.tailleCatalogueTenue,
-                    serigraphieCatalogueTenue: data.serigraphieCatalogueTenue,
+                    idMaterielCatalogue: data.idMaterielCatalogue,
                     idFournisseur: data.idFournisseur,
                     stockCatalogueTenue: data.stockCatalogueTenue,
                     stockAlerteCatalogueTenue: data.stockAlerteCatalogueTenue,
@@ -274,32 +229,33 @@ const Tenues = () => {
     return (<>
         <PageHeader
             preTitle="Gestion des tenues"
-            title="Catalogue des tenues et stock"
+            title="Stock des tenues"
             className="mb-3"
         />
 
         <Offcanvas show={showOffCanevas} onHide={handleCloseOffCanevas} placement='end'>
             <Offcanvas.Header closeButton >
-                <Offcanvas.Title>{offCanevasIdCatalogueTenue > 0 ? "Modification" : "Ajout"} d'une entrée dans le catalogue des tenues</Offcanvas.Title>
+                <Offcanvas.Title>{offCanevasIdCatalogueTenue > 0 ? "Modification" : "Ajout"} d'une entrée dans le stock des tenues</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
                 <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Libellé</Form.Label>
-                        <Form.Control size="sm" type="text" name='libelleCatalogueTenue' id='libelleCatalogueTenue' {...register('libelleCatalogueTenue')}/>
-                        <small className="text-danger">{errors.libelleCatalogueTenue?.message}</small>
-                    </Form.Group>
-
-                    <Form.Group className="mb-3">
-                        <Form.Label>Taille</Form.Label>
-                        <Form.Control size="sm" type="text" name='tailleCatalogueTenue' id='tailleCatalogueTenue' {...register('tailleCatalogueTenue')}/>
-                        <small className="text-danger">{errors.tailleCatalogueTenue?.message}</small>
-                    </Form.Group>
-
-                    <Form.Group className="mb-3">
-                        <Form.Label>Sérigraphie</Form.Label>
-                        <Form.Control size="sm" type="text" name='serigraphieCatalogueTenue' id='serigraphieCatalogueTenue' {...register('serigraphieCatalogueTenue')}/>
-                        <small className="text-danger">{errors.serigraphieCatalogueTenue?.message}</small>
+                <   Form.Group className="mb-3">
+                        <Form.Label>Référence du catalogue</Form.Label>
+                        <Select
+                            id="idMaterielCatalogue"
+                            name="idMaterielCatalogue"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            isDisabled={isLoading}
+                            placeholder='Aucun élément selectionné'
+                            options={catalogueMateriel}
+                            value={catalogueMateriel.find(c => c.value === watch("idMaterielCatalogue"))}
+                            onChange={val => val != null ? setValue("idMaterielCatalogue", val.value) : setValue("idMaterielCatalogue", null)}
+                        />
+                        <small className="text-danger">{errors.idMaterielCatalogue?.message}</small>
                     </Form.Group>
 
                     <Form.Group className="mb-3">

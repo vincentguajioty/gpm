@@ -63,7 +63,7 @@ const ReservesMaterielsForm = ({
             setValue("idConteneur", idConteneur);
         }
 
-        let getForSelect = await Axios.get('/select/getCatalogueMaterielFull');
+        let getForSelect = await Axios.get('/select/getCatalogueMaterielOpeFull');
         setCatalogue(getForSelect.data);
         getForSelect = await Axios.get('/select/getConteneurs');
         setConteneurs(getForSelect.data);

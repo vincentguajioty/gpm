@@ -146,11 +146,11 @@ const AffectationDetails = ({
 
     const colonnesForDetailedDisplay = [
         {
-            accessor: 'libelleCatalogueTenue',
+            accessor: 'libelleMateriel',
             Header: 'Element',
         },
         {
-            accessor: 'tailleCatalogueTenue',
+            accessor: 'taille',
             Header: 'Taille',
         },
         {
@@ -237,8 +237,8 @@ const AffectationDetails = ({
         if(id > 0)
         {
             let oneItemFromArray = affectationsRow.filter(ligne => ligne.idTenue == id)[0];
-            setValue("idCatalogueTenueInitial", oneItemFromArray.idCatalogueTenue);
-            setValue("idCatalogueTenue", oneItemFromArray.idCatalogueTenue);
+            setValue("idMaterielCatalogueInitial", oneItemFromArray.idMaterielCatalogue);
+            setValue("idMaterielCatalogue", oneItemFromArray.idMaterielCatalogue);
             setValue("idPersonne", oneItemFromArray.idPersonne > 0 ? oneItemFromArray.idPersonne : 0);
             setValue("personneNonGPM", oneItemFromArray.personneNonGPM);
             setValue("mailPersonneNonGPM", oneItemFromArray.mailPersonneNonGPM);
@@ -264,8 +264,8 @@ const AffectationDetails = ({
             {
                 const response = await Axios.post('/tenues/updateAffectations',{
                     idTenue: offCanevasIdTenue,
-                    idCatalogueTenueInitial: data.idCatalogueTenueInitial,
-                    idCatalogueTenue: data.idCatalogueTenue,
+                    idMaterielCatalogueInitial: data.idMaterielCatalogueInitial,
+                    idMaterielCatalogue: data.idMaterielCatalogue,
                     idPersonne: data.idPersonne > 0 ? data.idPersonne : null,
                     personneNonGPM: data.personneNonGPM,
                     mailPersonneNonGPM: data.mailPersonneNonGPM,
@@ -277,7 +277,7 @@ const AffectationDetails = ({
             else
             {
                 const response = await Axios.post('/tenues/addAffectations',{
-                    idCatalogueTenue: data.idCatalogueTenue,
+                    idMaterielCatalogue: data.idMaterielCatalogue,
                     idPersonne: data.idPersonne > 0 ? data.idPersonne : null,
                     personneNonGPM: data.personneNonGPM,
                     mailPersonneNonGPM: data.mailPersonneNonGPM,
@@ -506,8 +506,8 @@ const AffectationDetails = ({
                     <Form.Group className="mb-3">
                         <Form.Label>Element de tenue</Form.Label>
                         <Select
-                            id="idCatalogueTenue"
-                            name="idCatalogueTenue"
+                            id="idMaterielCatalogue"
+                            name="idMaterielCatalogue"
                             size="sm"
                             classNamePrefix="react-select"
                             closeMenuOnSelect={true}
@@ -516,10 +516,10 @@ const AffectationDetails = ({
                             isDisabled={isLoading}
                             placeholder='Aucun élément selectionné'
                             options={catalogue}
-                            value={catalogue.find(c => c.value === watch("idCatalogueTenue"))}
-                            onChange={val => val != null ? setValue("idCatalogueTenue", val.value) : setValue("idCatalogueTenue", null)}
+                            value={catalogue.find(c => c.value === watch("idMaterielCatalogue"))}
+                            onChange={val => val != null ? setValue("idMaterielCatalogue", val.value) : setValue("idMaterielCatalogue", null)}
                         />
-                        <small className="text-danger">{errors.idCatalogueTenue?.message}</small>
+                        <small className="text-danger">{errors.idMaterielCatalogue?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Affecté à</Form.Label>
@@ -713,8 +713,8 @@ const AffectationDetails = ({
                     <Form.Group className="mb-3">
                         <Form.Label>Rechercher une personne</Form.Label>
                             <Select
-                                id="idCatalogueTenue"
-                                name="idCatalogueTenue"
+                                id="idMaterielCatalogue"
+                                name="idMaterielCatalogue"
                                 size="sm"
                                 classNamePrefix="react-select"
                                 closeMenuOnSelect={true}

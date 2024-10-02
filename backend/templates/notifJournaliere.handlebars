@@ -408,7 +408,7 @@
                                                                                 <tbody>{{/ifCond}}
                                                                                     {{#each tenues_stock}}
                                                                                         <tr>
-                                                                                            <td>{{this.libelleCatalogueTenue}}</td>
+                                                                                            <td>{{this.libelleMateriel}}</td>
                                                                                         </tr>
                                                                                     {{/each}}
                                                                                 {{#ifCond personne.notif_tenues_stock '==' 1}}</tbody>
@@ -431,7 +431,7 @@
                                                                                 <tbody>{{/ifCond}}
                                                                                     {{#each tenues_retours}}
                                                                                         <tr>
-                                                                                            <td>{{this.libelleCatalogueTenue}}</td>
+                                                                                            <td>{{this.libelleMateriel}}</td>
                                                                                             <td>{{this.prenomPersonne}} {{this.nomPersonne}} {{this.personneNonGPM}}</td>
                                                                                         </tr>
                                                                                     {{/each}}

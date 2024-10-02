@@ -17,7 +17,7 @@ exports.peremptionsLots = async (req, res) => {
                 LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement
                 LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac
                 LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot
-                LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
                 LEFT OUTER JOIN NOTIFICATIONS_ENABLED notif ON l.idNotificationEnabled = notif.idNotificationEnabled
             WHERE
                 peremptionNotification IS NOT NULL
@@ -44,7 +44,7 @@ exports.peremptionsReserves = async (req, res) => {
             FROM
                 RESERVES_MATERIEL m
                 LEFT OUTER JOIN RESERVES_CONTENEUR c ON m.idConteneur=c.idConteneur
-                LEFT OUTER JOIN MATERIEL_CATALOGUE r ON m.idMaterielCatalogue = r.idMaterielCatalogue
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE r ON m.idMaterielCatalogue = r.idMaterielCatalogue
             WHERE
                 peremptionReserve IS NOT NULL
         ;`);
@@ -321,13 +321,13 @@ exports.tenuesAffectations = async (req, res) => {
             SELECT
                 ta.idTenue,
                 ta.dateAffectation,
-                tc.libelleCatalogueTenue,
+                tc.libelleMateriel,
                 ta.personneNonGPM,
                 p.prenomPersonne,
                 p.nomPersonne
             FROM
                 TENUES_AFFECTATION ta
-                JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
                 LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne
             WHERE
                 dateAffectation IS NOT NULL
@@ -346,13 +346,13 @@ exports.tenuesRetours = async (req, res) => {
             SELECT
                 ta.idTenue,
                 ta.dateRetour,
-                tc.libelleCatalogueTenue,
+                tc.libelleMateriel,
                 ta.personneNonGPM,
                 p.prenomPersonne,
                 p.nomPersonne
             FROM
                 TENUES_AFFECTATION ta
-                JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
                 LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne
             WHERE
                 dateRetour IS NOT NULL

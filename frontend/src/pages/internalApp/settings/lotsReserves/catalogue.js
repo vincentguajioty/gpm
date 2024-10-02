@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Offcanvas, Button, Form, Modal } from 'react-bootstrap';
+import { Offcanvas, Button, Form, Modal, } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 import FalconComponentCard from 'components/common/FalconComponentCard';
 import ActionButton from 'components/common/ActionButton';
@@ -7,6 +7,9 @@ import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import IconButton from 'components/common/IconButton';
 import Select from 'react-select';
 import { catalogueDelete } from 'helpers/deleteModalWarningContent';
+import GPMtable from 'components/gpmTable/gpmTable';
+import SoftBadge from 'components/common/SoftBadge';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import HabilitationService from 'services/habilitationsService';
 import { Axios } from 'helpers/axios';
@@ -14,9 +17,6 @@ import { Axios } from 'helpers/axios';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { catalogueForm } from 'helpers/yupValidationSchema';
-import GPMtable from 'components/gpmTable/gpmTable';
-import SoftBadge from 'components/common/SoftBadge';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Catalogue = () => {
     /*PAGE BASICS*/
@@ -57,7 +57,7 @@ const Catalogue = () => {
                     <SoftBadge className='mt-1 me-1' bg={row.original.disponibleBenevolesConso ? 'warning' : 'success'}>
                         <FontAwesomeIcon icon={row.original.disponibleBenevolesConso ? 'check' : 'lock'} />
                     </SoftBadge>
-                    {value}
+                    {value} {row.original.taille ? ' (taille '+row.original.taille+')' : null}
                 </>);
 			},
         },
@@ -66,14 +66,28 @@ const Catalogue = () => {
             Header: 'Catégorie',
         },
         {
-            accessor: 'nomFournisseur',
-            Header: 'Fournisseur de prédilection',
+            accessor: 'accesModules',
+            Header: 'Modules',
+            Cell: ({ value, row }) => {
+				return(<>
+                    <SoftBadge className='me-1 mb-1' bg={row.original.modules_ope ? 'success' : 'secondary'}>Opérationnel (lots et réserves)</SoftBadge><br/>
+                    <SoftBadge className='me-1 mb-1' bg={row.original.modules_vehicules ? 'success' : 'secondary'}>Véhicules</SoftBadge><br/>
+                    <SoftBadge className='me-1 mb-1' bg={row.original.modules_tenues ? 'success' : 'secondary'}>Tenues</SoftBadge><br/>
+                    <SoftBadge className='me-1 mb-1' bg={row.original.modules_vhf ? 'success' : 'secondary'}>Transmissions</SoftBadge>
+                </>);
+			},
         },
         {
             accessor: 'peremptionAnticipationOpe',
-            Header: 'Anticipation de péremption lots/réserves',
+            Header: 'Anticipation de péremption',
             Cell: ({ value, row }) => {
-				return(<>{row.original.peremptionAnticipationOpe} / {row.original.peremptionAnticipationRes}</>);
+				return(<>
+                    {row.original.peremptionAnticipationOpe != null ? <>Lots: {row.original.peremptionAnticipationOpe}j<br/></> : null}
+                    {row.original.peremptionAnticipationRes != null ? <>Réserves: {row.original.peremptionAnticipationRes}j<br/></> : null}
+                    {row.original.peremptionAnticipationVehicule != null ? <>Véhicules: {row.original.peremptionAnticipationVehicule}j<br/></> : null}
+                    {row.original.peremptionAnticipationTenues != null ? <>Tenues: {row.original.peremptionAnticipationTenues}j<br/></> : null}
+                    {row.original.peremptionAnticipationVHF != null ? <>Transmissions: {row.original.peremptionAnticipationVHF}j<br/></> : null}
+                </>);
 			},
         },
         {
@@ -134,7 +148,17 @@ const Catalogue = () => {
                 setValue("idFournisseur", oneItemFromArray.idFournisseur);
                 setValue("peremptionAnticipationOpe", oneItemFromArray.peremptionAnticipationOpe);
                 setValue("peremptionAnticipationRes", oneItemFromArray.peremptionAnticipationRes);
+                setValue("peremptionAnticipationVehicule", oneItemFromArray.peremptionAnticipationVehicule);
+                setValue("peremptionAnticipationTenues", oneItemFromArray.peremptionAnticipationTenues);
+                setValue("peremptionAnticipationVHF", oneItemFromArray.peremptionAnticipationVHF);
                 setValue("disponibleBenevolesConso", oneItemFromArray.disponibleBenevolesConso ? true : false)
+
+                if(oneItemFromArray.modules_ope){setValue("module", 'modules_ope')}
+                if(oneItemFromArray.modules_vehicules){setValue("module", 'modules_vehicules')}
+                if(oneItemFromArray.modules_tenues){setValue("module", 'modules_tenues')}
+                if(oneItemFromArray.modules_vhf){setValue("module", 'modules_vhf')}
+            }else{
+                setValue("module", 'modules_ope')
             }
 
             setShowOffCanevas(true);
@@ -157,9 +181,12 @@ const Catalogue = () => {
                     conditionnementMultiple: data.conditionnementMultiple,
                     commentairesMateriel: data.commentairesMateriel,
                     idFournisseur: data.idFournisseur,
-                    peremptionAnticipationOpe: data.peremptionAnticipationOpe,
-                    peremptionAnticipationRes: data.peremptionAnticipationRes,
-                    disponibleBenevolesConso: data.disponibleBenevolesConso,
+                    peremptionAnticipationOpe: data.module == 'modules_ope' ? data.peremptionAnticipationOpe : null,
+                    peremptionAnticipationRes: data.module == 'modules_ope' ? data.peremptionAnticipationRes : null,
+                    peremptionAnticipationVehicule: data.module == 'modules_vehicules' ? data.peremptionAnticipationVehicule : null,
+                    peremptionAnticipationTenues: data.module == 'modules_tenues' ? data.peremptionAnticipationTenues : null,
+                    peremptionAnticipationVHF: data.module == 'modules_vhf' ? data.peremptionAnticipationVHF : null,
+                    disponibleBenevolesConso: data.disponibleBenevolesConso  || 0,
                 });
             }
             else
@@ -172,9 +199,16 @@ const Catalogue = () => {
                     conditionnementMultiple: data.conditionnementMultiple,
                     commentairesMateriel: data.commentairesMateriel,
                     idFournisseur: data.idFournisseur,
-                    peremptionAnticipationOpe: data.peremptionAnticipationOpe,
-                    peremptionAnticipationRes: data.peremptionAnticipationRes,
-                    disponibleBenevolesConso: data.disponibleBenevolesConso,
+                    peremptionAnticipationOpe: data.module == 'modules_ope' ? data.peremptionAnticipationOpe : null,
+                    peremptionAnticipationRes: data.module == 'modules_ope' ? data.peremptionAnticipationRes : null,
+                    peremptionAnticipationVehicule: data.module == 'modules_vehicules' ? data.peremptionAnticipationVehicule : null,
+                    peremptionAnticipationTenues: data.module == 'modules_tenues' ? data.peremptionAnticipationTenues : null,
+                    peremptionAnticipationVHF: data.module == 'modules_vhf' ? data.peremptionAnticipationVHF : null,
+                    disponibleBenevolesConso: data.disponibleBenevolesConso || 0,
+                    modules_ope: data.module == 'modules_ope' ? true : false,
+                    modules_vehicules: data.module == 'modules_vehicules' ? true : false,
+                    modules_tenues: data.module == 'modules_tenues' ? true : false,
+                    modules_vhf: data.module == 'modules_vhf' ? true : false,
                 });
             }
 
@@ -237,10 +271,53 @@ const Catalogue = () => {
 
                 <Offcanvas show={showOffCanevas} onHide={handleCloseOffCanevas} placement='end'>
                     <Offcanvas.Header closeButton >
-                        <Offcanvas.Title>{offCanevasIdMaterielCatalogue > 0 ? "Modification" : "Ajout"} d'un paramètre</Offcanvas.Title>
+                        <Offcanvas.Title>{offCanevasIdMaterielCatalogue > 0 ? "Modification" : "Ajout"} d'un item dans le catalogue commun</Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
+                            {offCanevasIdMaterielCatalogue == 0 ?
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Modules concernés par ce matériel:</Form.Label>
+                                    <Form.Check 
+                                        key="modules_ope"
+                                        type='radio'
+                                        id={`radio-modules_ope`}
+                                        label='Opérationnel'
+                                        name='radio'
+                                        checked={watch("module") == 'modules_ope'}
+                                        onClick={(e) => setValue('module', 'modules_ope')}
+                                    />
+                                    <Form.Check 
+                                        key="modules_vehicules"
+                                        type='radio'
+                                        id={`radio-modules_vehicules`}
+                                        label='Véhicules'
+                                        name='radio'
+                                        checked={watch("module") == 'modules_vehicules'}
+                                        onClick={(e) => setValue('module', 'modules_vehicules')}
+                                    />
+                                    <Form.Check 
+                                        key="modules_tenues"
+                                        type='radio'
+                                        id={`radio-modules_tenues`}
+                                        label='Tenues'
+                                        name='radio'
+                                        checked={watch("module") == 'modules_tenues'}
+                                        onClick={(e) => setValue('module', 'modules_tenues')}
+                                    />
+                                    <Form.Check 
+                                        key="modules_vhf"
+                                        type='radio'
+                                        id={`radio-modules_vhf`}
+                                        label='Transmissions'
+                                        name='radio'
+                                        checked={watch("module") == 'modules_vhf'}
+                                        onClick={(e) => setValue('module', 'modules_vhf')}
+                                    />
+                                    <small className="text-danger">{errors.module?.message}</small>
+                                </Form.Group>
+                            : null}
+
                             <Form.Group className="mb-3">
                                 <Form.Label>Libellé</Form.Label>
                                 <Form.Control type="text" id="libelleMateriel" name="libelleMateriel" {...register("libelleMateriel")}/>
@@ -284,20 +361,48 @@ const Catalogue = () => {
                                     type='switch'
                                     id="sterilite"
                                     name="sterilite"
-                                    label='Matériel stérile'
+                                    label='Une date de péremption est obligatoire pour ce matériel'
                                     checked={watch("sterilite")}
                                     onClick={(e)=>{setValue("sterilite", !watch("sterilite"))}}
                                 />
                                 <small className="text-danger">{errors.sterilite?.message}</small>
                                 {watch("sterilite") ?
                                     <>
-                                        <Form.Label>Anticipation de la péremption dans les lots (jours)</Form.Label>
-                                        <Form.Control type="number" min="0" step="1" id="peremptionAnticipationOpe" name="peremptionAnticipationOpe" {...register("peremptionAnticipationOpe")}/>
-                                        <small className="text-danger">{errors.peremptionAnticipationOpe?.message}</small>
+                                        {watch("module") == 'modules_ope' ?
+                                            <>
+                                                <Form.Label>Anticipation de la péremption dans les lots (jours)</Form.Label>
+                                                <Form.Control type="number" min="0" step="1" id="peremptionAnticipationOpe" name="peremptionAnticipationOpe" {...register("peremptionAnticipationOpe")}/>
+                                                <small className="text-danger">{errors.peremptionAnticipationOpe?.message}</small>
+                                                <br/>
+                                                <Form.Label>Anticipation de la péremption dans les réserves (jours)</Form.Label>
+                                                <Form.Control type="number" min="0" step="1" id="peremptionAnticipationRes" name="peremptionAnticipationRes" {...register("peremptionAnticipationRes")}/>
+                                                <small className="text-danger">{errors.peremptionAnticipationRes?.message}</small>
+                                            </>
+                                        : null}
 
-                                        <Form.Label>Anticipation de la péremption dans les réserves (jours)</Form.Label>
-                                        <Form.Control type="number" min="0" step="1" id="peremptionAnticipationRes" name="peremptionAnticipationRes" {...register("peremptionAnticipationRes")}/>
-                                        <small className="text-danger">{errors.peremptionAnticipationRes?.message}</small>
+                                        {watch("module") == 'modules_vehicules' ?
+                                            <>
+                                                <Form.Label>Anticipation de la péremption pour les véhicules (jours)</Form.Label>
+                                                <Form.Control type="number" min="0" step="1" id="peremptionAnticipationVehicule" name="peremptionAnticipationVehicule" {...register("peremptionAnticipationVehicule")}/>
+                                                <small className="text-danger">{errors.peremptionAnticipationVehicule?.message}</small>
+                                            </>
+                                        : null}
+
+                                        {watch("module") == 'modules_tenues' ?
+                                            <>
+                                                <Form.Label>Anticipation de la péremption pour les tenues (jours)</Form.Label>
+                                                <Form.Control type="number" min="0" step="1" id="peremptionAnticipationTenues" name="peremptionAnticipationTenues" {...register("peremptionAnticipationTenues")}/>
+                                                <small className="text-danger">{errors.peremptionAnticipationTenues?.message}</small>
+                                            </>
+                                        : null}
+
+                                        {watch("module") == 'modules_vhf' ?
+                                            <>
+                                                <Form.Label>Anticipation de la péremption pour les transmissions (jours)</Form.Label>
+                                                <Form.Control type="number" min="0" step="1" id="peremptionAnticipationVHF" name="peremptionAnticipationVHF" {...register("peremptionAnticipationVHF")}/>
+                                                <small className="text-danger">{errors.peremptionAnticipationVHF?.message}</small>
+                                            </>
+                                        : null}
                                     </>
                                 :null}
                             </Form.Group>
@@ -321,18 +426,20 @@ const Catalogue = () => {
                                 <small className="text-danger">{errors.idFournisseur?.message}</small>
                             </Form.Group>
 
-                            <Form.Group className="mb-3">
-                                <Form.Label>Accessible hors connexion</Form.Label>
-                                <Form.Check
-                                    type='switch'
-                                    id="disponibleBenevolesConso"
-                                    name="disponibleBenevolesConso"
-                                    label='Matériel disponible pour les rapports de consommation'
-                                    checked={watch("disponibleBenevolesConso")}
-                                    onClick={(e)=>{setValue("disponibleBenevolesConso", !watch("disponibleBenevolesConso"))}}
-                                />
-                                <small className="text-danger">{errors.disponibleBenevolesConso?.message}</small>
-                            </Form.Group>
+                            {watch("module") == 'modules_ope' ?
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Accessible hors connexion</Form.Label>
+                                    <Form.Check
+                                        type='switch'
+                                        id="disponibleBenevolesConso"
+                                        name="disponibleBenevolesConso"
+                                        label='Matériel disponible pour les rapports de consommation'
+                                        checked={watch("disponibleBenevolesConso")}
+                                        onClick={(e)=>{setValue("disponibleBenevolesConso", !watch("disponibleBenevolesConso"))}}
+                                    />
+                                    <small className="text-danger">{errors.disponibleBenevolesConso?.message}</small>
+                                </Form.Group>
+                            : null}
 
                             <Form.Group className="mb-3">
                                 <Form.Label>Commentaires</Form.Label>

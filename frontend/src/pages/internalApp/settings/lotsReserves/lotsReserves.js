@@ -70,7 +70,7 @@ const LotsReservesSettings = () => {
     return (<>
         <PageHeader
             preTitle="Attention - Zone de paramétrage"
-            title="Lots et réserves"
+            title="Catalogue commun"
             className="mb-3"
         />
 

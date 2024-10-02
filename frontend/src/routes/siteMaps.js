@@ -320,7 +320,7 @@ if(HabilitationService.habilitations)
         if(HabilitationService.habilitations['tenuesCatalogue_lecture'])
         {
             tempChildrens.push({
-                name: 'Catalogue des tenues',
+                name: 'Stock des tenues',
                 to: '/tenuesCatalogue',
                 icon: 'tshirt',
                 exact: false,
@@ -405,7 +405,7 @@ if(HabilitationService.habilitations)
         )
         {
             tempChildrens.push({
-                name: 'Lots et réserves',
+                name: 'Catalogue commun',
                 to: '/settingsLotsReserves',
                 icon: 'briefcase-medical',
                 exact: false,

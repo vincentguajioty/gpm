@@ -16,7 +16,7 @@ exports.getReservesMateriels = async (req, res)=>{
             FROM
                 RESERVES_MATERIEL m
                 LEFT OUTER JOIN RESERVES_CONTENEUR e ON m.idConteneur=e.idConteneur
-                LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
             ORDER BY
                 libelleMateriel ASC
         ;`);
@@ -47,7 +47,7 @@ exports.getOneReservesMateriel = async (req, res)=>{
             FROM
                 RESERVES_MATERIEL m
                 LEFT OUTER JOIN RESERVES_CONTENEUR e ON m.idConteneur=e.idConteneur
-                LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
             WHERE
                 idReserveElement = :idReserveElement
         ;`,{

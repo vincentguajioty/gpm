@@ -278,6 +278,20 @@ const catalogueDelete = async (idLogger, idMaterielCatalogue) => {
             idMaterielCatalogue : idMaterielCatalogue,
         });
 
+        let affectationsTenuesADelete = await db.query(`
+            SELECT * FROM TENUES_AFFECTATION WHERE idMaterielCatalogue = :idMaterielCatalogue
+        ;`,{
+            idMaterielCatalogue : idMaterielCatalogue,
+        });
+        for(const matos of affectationsTenuesADelete){await tenuesAffectationsDelete('SYSTEM', matos.idTenue, false);}
+
+        let catalogueTenuesADelete = await db.query(`
+            SELECT * FROM TENUES_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue
+        ;`,{
+            idMaterielCatalogue : idMaterielCatalogue,
+        });
+        for(const matos of catalogueTenuesADelete){await tenuesCatalogueDelete('SYSTEM', matos.idCatalogueTenue);}
+
         let finalDeleteQuery = await db.query(`
             DELETE FROM MATERIEL_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue
         ;`,{
@@ -1362,9 +1376,9 @@ const tenuesAffectationsDelete = async (idLogger, idTenue, reintegration) => {
         if(reintegration == true)
         {
             updateQuery = await db.query(`
-                UPDATE TENUES_CATALOGUE SET stockCatalogueTenue = stockCatalogueTenue + 1 WHERE idCatalogueTenue = :idCatalogueTenue
+                UPDATE TENUES_CATALOGUE SET stockCatalogueTenue = stockCatalogueTenue + 1 WHERE idMaterielCatalogue = :idMaterielCatalogue
             ;`,{
-                idCatalogueTenue : getInitialData[0].idCatalogueTenue,
+                idMaterielCatalogue : getInitialData[0].idMaterielCatalogue,
             });
         }
 
@@ -1385,7 +1399,7 @@ const tenuesAffectationsDelete = async (idLogger, idTenue, reintegration) => {
 
 const tenuesCatalogueDelete = async (idLogger, idCatalogueTenue) => {
     try {
-        logger.info("Suppression d'une entrée dans le catalogue des tenues "+idCatalogueTenue, {idPersonne: idLogger})
+        logger.info("Suppression d'une entrée dans le stock des tenues "+idCatalogueTenue, {idPersonne: idLogger})
 
         let getInitialData = await db.query(`
             SELECT * FROM TENUES_CATALOGUE WHERE idCatalogueTenue = :idCatalogueTenue
@@ -1394,23 +1408,16 @@ const tenuesCatalogueDelete = async (idLogger, idCatalogueTenue) => {
         });
         logger.info("Sauvegarde avant suppression", {idPersonne: idLogger, backupBeforeDrop: getInitialData[0]});
 
-        let affectationsToDrop = await db.query(`
-            SELECT * FROM TENUES_AFFECTATION WHERE idCatalogueTenue = :idCatalogueTenue
-        ;`,{
-            idCatalogueTenue : idCatalogueTenue,
-        });
-        for(const affect of affectationsToDrop){await tenuesAffectationsDelete('SYSTEM', affect.idTenue, true);}
-
         let finalDeleteQuery = await db.query(`
             DELETE FROM TENUES_CATALOGUE WHERE idCatalogueTenue = :idCatalogueTenue
         ;`,{
             idCatalogueTenue : idCatalogueTenue,
         });
 
-        logger.info("Suppression réussie d'une entrée dans le catalogue des tenues "+idCatalogueTenue, {idPersonne: idLogger})
+        logger.info("Suppression réussie d'une entrée dans le stock des tenues "+idCatalogueTenue, {idPersonne: idLogger})
         return true;
     } catch (error) {
-        logger.info("Suppression en échec d'une entrée dans le catalogue des tenues "+idCatalogueTenue, {idPersonne: idLogger})
+        logger.info("Suppression en échec d'une entrée dans le stock des tenues "+idCatalogueTenue, {idPersonne: idLogger})
         logger.error(error)
         return false;
     }

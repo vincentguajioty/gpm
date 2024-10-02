@@ -153,6 +153,10 @@ export const catalogueForm = Yup.object().shape({
     libelleMateriel: Yup
         .string()
         .typeError(champObligatoire)
+        .required(champObligatoire),
+    module: Yup
+        .string()
+        .typeError(champObligatoire)
         .required(champObligatoire)
 });
 
@@ -312,9 +316,10 @@ export const todolistEditForm = Yup.object().shape({
 });
 
 export const catalogueTenuesForm = Yup.object().shape({
-    libelleCatalogueTenue: Yup
-        .string()
+    idMaterielCatalogue: Yup
+        .number()
         .typeError(champObligatoire)
+        .min(1, champObligatoire)
         .required(champObligatoire),
     stockCatalogueTenue: Yup
         .number()
@@ -329,7 +334,7 @@ export const catalogueTenuesForm = Yup.object().shape({
 });
 
 export const affectationsTenuesForm = Yup.object().shape({
-    idCatalogueTenue: Yup
+    idMaterielCatalogue: Yup
         .number()
         .typeError(champObligatoire)
         .min(1, champObligatoire)

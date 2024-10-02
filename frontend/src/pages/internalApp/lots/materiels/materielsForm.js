@@ -65,7 +65,7 @@ const MaterielsForm = ({
             setValue("idEmplacement", idEmplacement);
         }
 
-        let getForSelect = await Axios.get('/select/getCatalogueMaterielFull');
+        let getForSelect = await Axios.get('/select/getCatalogueMaterielOpeFull');
         setCatalogue(getForSelect.data);
         getForSelect = await Axios.get('/select/getEmplacementsFull');
         setEmplacements(getForSelect.data);

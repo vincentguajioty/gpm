@@ -29,7 +29,7 @@ const AffectationsTenues = () => {
             getData = await Axios.get('/tenues/getAffectationsRow');
             setAffectationsRow(getData.data);
 
-            getData = await Axios.get('/select/getTenuesCatalogue');
+            getData = await Axios.get('/select/getCatalogueMaterielTenues');
             setCatalogue(getData.data);
 
             getData = await Axios.get('/tenues/getPersonnesSuggested');

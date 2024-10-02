@@ -36,6 +36,8 @@ export const catalogueDelete = <>
         <li>Les matériels de ce type seront supprimés des réserves qui les contiennent.</li>
         <li>Les codes barre enregistrés pour ce matériel seront supprimés.</li>
         <li>Les matériels de ce type seront supprimés des fiches de consommation des bénévoles.</li>
+        <li>Les matériels de ce type seront supprimés des affectations de tenues.</li>
+        <li>Les matériels de ce type seront supprimés des stocks de tenues.</li>
     </ul>
 </>;
 
@@ -263,7 +265,8 @@ export const tdlDelete = <>
 export const tenuesCatalogueDelete = <>
     Attention, vous allez supprimer une tenue du catalogue de matériel. Les impacts collatéraux à cette suppression sont:
     <ul>
-        <li>Tous les éléments de tenue et affectations de tenues qui sont de ce type seront supprimés.</li>
+        <li>Tous les éléments de tenue en stock seront supprimés.</li>
+        <li>Tous les éléments de tenue qui sont affectés ne seront pas supprimés.</li>
     </ul>
 </>;
 

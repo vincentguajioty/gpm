@@ -16,7 +16,7 @@ exports.getReservesForOneTransfert = async (req, res)=>{
             FROM
                 RESERVES_MATERIEL rm
                 LEFT OUTER JOIN RESERVES_CONTENEUR c ON rm.idConteneur = c.idConteneur
-                LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON rm.idMaterielCatalogue = cat.idMaterielCatalogue
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE cat ON rm.idMaterielCatalogue = cat.idMaterielCatalogue
             WHERE
                 rm.idMaterielCatalogue = :idMaterielCatalogue
             ORDER BY
@@ -55,7 +55,7 @@ exports.opererTransfertReserveLot = async (req, res)=>{
                 LEFT OUTER JOIN MATERIEL_EMPLACEMENT e ON m.idEmplacement=e.idEmplacement
                 LEFT OUTER JOIN MATERIEL_SAC s ON e.idSac = s.idSac
                 LEFT OUTER JOIN LOTS_LOTS l ON s.idLot = l.idLot
-                LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
                 LEFT OUTER JOIN MATERIEL_ETATS me ON m.idMaterielsEtat = me.idMaterielsEtat
             WHERE
                 m.idElement = :idElement

@@ -42,18 +42,20 @@ const OneCommandeStep7Stock = ({
             Header: 'Intégrer au stock',
             isHidden: forceReadOnly,
             Cell: ({ value, row }) => {
-				return(
-                    !forceReadOnly && HabilitationService.habilitations.reserve_cmdVersReserve && row.original.idMaterielCatalogue != null ? <>
-                        <IconButton
-                            icon={row.original.idMaterielCatalogue == null || row.original.quantiteAtransferer == 0 ? 'check' : 'forward'}
-                            size = 'sm'
-                            variant="outline-success"
-                            className="me-1"
-                            disabled={row.original.idMaterielCatalogue == null || row.original.quantiteAtransferer == 0}
-                            onClick={()=>{handleShowReserveTransfertModal(row.original.idCommandeMateriel)}}
-                        >{row.original.quantiteCommande - row.original.quantiteAtransferer} / {row.original.quantiteCommande} intégrés</IconButton>
-                        
-                        {row.original.quantiteAtransferer > 0 ?
+                return(
+                    <>
+                        {!forceReadOnly && row.original.modules_ope && HabilitationService.habilitations.reserve_cmdVersReserve && row.original.idMaterielCatalogue != null ?
+                            <IconButton
+                                icon={row.original.idMaterielCatalogue == null || row.original.quantiteAtransferer == 0 ? 'check' : 'forward'}
+                                size = 'sm'
+                                variant="outline-success"
+                                className="me-1"
+                                disabled={row.original.idMaterielCatalogue == null || row.original.quantiteAtransferer == 0}
+                                onClick={()=>{handleShowReserveTransfertModal(row.original.idCommandeMateriel)}}
+                            >{row.original.quantiteCommande - row.original.quantiteAtransferer} / {row.original.quantiteCommande} intégrés</IconButton>
+                        : null}
+
+                        {!forceReadOnly && HabilitationService.habilitations.reserve_cmdVersReserve && row.original.quantiteAtransferer > 0 ?
                             <IconButton
                                 icon='hand-holding-medical'
                                 size = 'sm'
@@ -62,7 +64,7 @@ const OneCommandeStep7Stock = ({
                                 onClick={()=>{handleShowManualTransfertModal(row.original.idCommandeMateriel)}}
                             />
                         : null}
-                    </> : null
+                    </>
                 );
 			},
         },

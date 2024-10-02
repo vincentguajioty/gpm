@@ -550,7 +550,7 @@ const checkLotsConf = async (idLot) => {
             FROM
                 REFERENTIELS r
                 LEFT OUTER JOIN LOTS_TYPES t on r.idTypeLot=t.idTypeLot
-                LEFT OUTER JOIN MATERIEL_CATALOGUE m on r.idMaterielCatalogue = m.idMaterielCatalogue
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE m on r.idMaterielCatalogue = m.idMaterielCatalogue
             WHERE
                 r.idTypeLot = :idTypeLot
         `,{
@@ -704,7 +704,7 @@ const updateConformiteMaterielOpe = async (idElement) => {
                 *
             FROM
                 MATERIEL_ELEMENT m
-                LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
             WHERE
                 idElement = :idElement
         ;`,{
@@ -1410,7 +1410,7 @@ const ajouterItemConsommation = async (element) => {
                 FROM
                     LOTS_CONSOMMATION_MATERIEL m
                     LEFT OUTER JOIN LOTS_LOTS l ON m.idLot = l.idLot
-                    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                    LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
                     LEFT OUTER JOIN RESERVES_CONTENEUR res ON m.idConteneur = res.idConteneur
                 ORDER BY
                     m.idConsommationMateriel DESC
@@ -1441,7 +1441,7 @@ const ajouterItemConsommation = async (element) => {
                 FROM
                     LOTS_CONSOMMATION_MATERIEL m
                     LEFT OUTER JOIN LOTS_LOTS l ON m.idLot = l.idLot
-                    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                    LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
                     LEFT OUTER JOIN RESERVES_CONTENEUR res ON m.idConteneur = res.idConteneur
                 WHERE
                     m.idConsommationMateriel = :idConsommationMateriel
@@ -1503,7 +1503,7 @@ const updateItemConsommation = async (element) => {
                 FROM
                     LOTS_CONSOMMATION_MATERIEL m
                     LEFT OUTER JOIN LOTS_LOTS l ON m.idLot = l.idLot
-                    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                    LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
                     LEFT OUTER JOIN RESERVES_CONTENEUR res ON m.idConteneur = res.idConteneur
                 WHERE
                     idConsommationMateriel = :idConsommationMateriel
@@ -1544,7 +1544,7 @@ const updateItemConsommation = async (element) => {
                 FROM
                     LOTS_CONSOMMATION_MATERIEL m
                     LEFT OUTER JOIN LOTS_LOTS l ON m.idLot = l.idLot
-                    LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                    LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
                     LEFT OUTER JOIN RESERVES_CONTENEUR res ON m.idConteneur = res.idConteneur
                 WHERE
                     m.idConsommationMateriel = :idConsommationMateriel
@@ -1626,7 +1626,7 @@ const updateReconditionnementConsommation = async (element) => {
             FROM
                 LOTS_CONSOMMATION_MATERIEL m
                 LEFT OUTER JOIN LOTS_LOTS l ON m.idLot = l.idLot
-                LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
                 LEFT OUTER JOIN RESERVES_CONTENEUR res ON m.idConteneur = res.idConteneur
             WHERE
                 idConsommationMateriel = :idConsommationMateriel
@@ -1834,7 +1834,7 @@ const calculerTotalCommande = async (idCommande) => {
                         CAST(IFNULL(SUM(prixProduitTTC*quantiteCommande),0) AS DECIMAL(10,2)) AS total
                     FROM
                         COMMANDES_MATERIEL c
-                        LEFT OUTER JOIN MATERIEL_CATALOGUE m ON c.idMaterielCatalogue = m.idMaterielCatalogue 
+                        LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE m ON c.idMaterielCatalogue = m.idMaterielCatalogue 
                     WHERE
                         idCommande = :idCommande
                 )
@@ -2456,7 +2456,7 @@ const verificationContraintesCmd = async (idCommande) => {
                         c.libelleMateriel
                     FROM
                         COMMANDES_MATERIEL m
-                        LEFT OUTER JOIN MATERIEL_CATALOGUE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+                        LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE c ON m.idMaterielCatalogue = c.idMaterielCatalogue
                     WHERE
                         m.idCommande = :idCommande
                 ;`,{
@@ -3396,11 +3396,11 @@ const envoyerNotificationsTenuesBenevoles = async () => {
                 let affectations = await db.query(`
                     SELECT
                         ta.*,
-                        tc.libelleCatalogueTenue,
-                        tc.tailleCatalogueTenue
+                        tc.libelleMateriel,
+                        tc.taille
                     FROM
                         TENUES_AFFECTATION ta
-                        LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                        LEFT OUTER JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
                     WHERE
                         ta.notifPersonne = true
                         AND
@@ -3417,11 +3417,11 @@ const envoyerNotificationsTenuesBenevoles = async () => {
                     let affectations = await db.query(`
                         SELECT
                             ta.*,
-                            tc.libelleCatalogueTenue,
-                            tc.tailleCatalogueTenue
+                            tc.libelleMateriel,
+                            tc.taille
                         FROM
                             TENUES_AFFECTATION ta
-                            LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                            LEFT OUTER JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
                         WHERE
                             ta.notifPersonne = true
                             AND
@@ -3437,11 +3437,11 @@ const envoyerNotificationsTenuesBenevoles = async () => {
                     let affectations = await db.query(`
                         SELECT
                             ta.*,
-                            tc.libelleCatalogueTenue,
-                            tc.tailleCatalogueTenue
+                            tc.libelleMateriel,
+                            tc.taille
                         FROM
                             TENUES_AFFECTATION ta
-                            LEFT OUTER JOIN TENUES_CATALOGUE tc ON ta.idCatalogueTenue = tc.idCatalogueTenue
+                            LEFT OUTER JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
                         WHERE
                             ta.notifPersonne = true
                             AND
@@ -3493,8 +3493,8 @@ const envoyerNotificationsTenuesBenevoles = async () => {
                     {
                         tableau += `
                             <tr>
-                                <td>`+(item.libelleCatalogueTenue != null ? item.libelleCatalogueTenue : "")+`</td>
-                                <td>`+(item.tailleCatalogueTenue != null ? item.tailleCatalogueTenue : "")+`</td>
+                                <td>`+(item.libelleMateriel != null ? item.libelleMateriel : "")+`</td>
+                                <td>`+(item.taille != null ? item.taille : "")+`</td>
                                 <td>`+(item.dateAffectation != null ? moment(item.dateAffectation).format('DD/MM/YYYY') : "")+`</td>
                                 <td>`+(item.dateRetour != null ? moment(item.dateRetour).format('DD/MM/YYYY') : "")+`</td>
                             </tr>
@@ -3554,8 +3554,8 @@ const envoyerNotificationsTenuesBenevoles = async () => {
                     {
                         tableau += `
                             <tr>
-                                <td>`+(item.libelleCatalogueTenue != null ? item.libelleCatalogueTenue : "")+`</td>
-                                <td>`+(item.tailleCatalogueTenue != null ? item.tailleCatalogueTenue : "")+`</td>
+                                <td>`+(item.libelleMateriel != null ? item.libelleMateriel : "")+`</td>
+                                <td>`+(item.taille != null ? item.taille : "")+`</td>
                                 <td>`+(item.dateAffectation != null ? moment(item.dateAffectation).format('DD/MM/YYYY') : "")+`</td>
                                 <td>`+(item.dateRetour != null ? moment(item.dateRetour).format('DD/MM/YYYY') : "")+`</td>
                             </tr>
@@ -3611,8 +3611,8 @@ const envoyerNotificationsTenuesBenevoles = async () => {
                             {
                                 tableau += `
                                     <tr>
-                                        <td>`+(item.libelleCatalogueTenue != null ? item.libelleCatalogueTenue : "")+`</td>
-                                        <td>`+(item.tailleCatalogueTenue != null ? item.tailleCatalogueTenue : "")+`</td>
+                                        <td>`+(item.libelleMateriel != null ? item.libelleMateriel : "")+`</td>
+                                        <td>`+(item.taille != null ? item.taille : "")+`</td>
                                         <td>`+(item.dateAffectation != null ? moment(item.dateAffectation).format('DD/MM/YYYY') : "")+`</td>
                                         <td>`+(item.dateRetour != null ? moment(item.dateRetour).format('DD/MM/YYYY') : "")+`</td>
                                     </tr>

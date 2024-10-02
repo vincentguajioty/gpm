@@ -757,34 +757,148 @@ exports.getCatalogueMateriel = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+exports.getCatalogueMaterielOpe = async (req, res)=>{
+    try {
+        let results = await db.query(
+            `SELECT
+                cat.*,
+                mc.libelleCategorie,
+                f.nomFournisseur,
+                COUNT(cb.idCode) as nbCodesBarre
+            FROM
+                VIEW_MATERIEL_CATALOGUE_OPE cat
+                LEFT OUTER JOIN MATERIEL_CATEGORIES mc ON cat.idCategorie = mc.idCategorie
+                LEFT OUTER JOIN FOURNISSEURS f ON cat.idFournisseur = f.idFournisseur
+                LEFT OUTER JOIN CODES_BARRE cb ON cat.idMaterielCatalogue = cb.idMaterielCatalogue
+            GROUP BY
+                cat.idMaterielCatalogue
+            ORDER BY
+                libelleMateriel
+            ;`
+        );
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+exports.getCatalogueMaterielVehicules = async (req, res)=>{
+    try {
+        let results = await db.query(
+            `SELECT
+                cat.*,
+                mc.libelleCategorie,
+                f.nomFournisseur,
+                COUNT(cb.idCode) as nbCodesBarre
+            FROM
+                VIEW_MATERIEL_CATALOGUE_VEHICULES cat
+                LEFT OUTER JOIN MATERIEL_CATEGORIES mc ON cat.idCategorie = mc.idCategorie
+                LEFT OUTER JOIN FOURNISSEURS f ON cat.idFournisseur = f.idFournisseur
+                LEFT OUTER JOIN CODES_BARRE cb ON cat.idMaterielCatalogue = cb.idMaterielCatalogue
+            GROUP BY
+                cat.idMaterielCatalogue
+            ORDER BY
+                libelleMateriel
+            ;`
+        );
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+exports.getCatalogueMaterielTenues = async (req, res)=>{
+    try {
+        let results = await db.query(
+            `SELECT
+                cat.*,
+                mc.libelleCategorie,
+                f.nomFournisseur,
+                COUNT(cb.idCode) as nbCodesBarre
+            FROM
+                VIEW_MATERIEL_CATALOGUE_TENUES cat
+                LEFT OUTER JOIN MATERIEL_CATEGORIES mc ON cat.idCategorie = mc.idCategorie
+                LEFT OUTER JOIN FOURNISSEURS f ON cat.idFournisseur = f.idFournisseur
+                LEFT OUTER JOIN CODES_BARRE cb ON cat.idMaterielCatalogue = cb.idMaterielCatalogue
+            GROUP BY
+                cat.idMaterielCatalogue
+            ORDER BY
+                libelleMateriel
+            ;`
+        );
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+exports.getCatalogueMaterielVHF = async (req, res)=>{
+    try {
+        let results = await db.query(
+            `SELECT
+                cat.*,
+                mc.libelleCategorie,
+                f.nomFournisseur,
+                COUNT(cb.idCode) as nbCodesBarre
+            FROM
+                VIEW_MATERIEL_CATALOGUE_VHF cat
+                LEFT OUTER JOIN MATERIEL_CATEGORIES mc ON cat.idCategorie = mc.idCategorie
+                LEFT OUTER JOIN FOURNISSEURS f ON cat.idFournisseur = f.idFournisseur
+                LEFT OUTER JOIN CODES_BARRE cb ON cat.idMaterielCatalogue = cb.idMaterielCatalogue
+            GROUP BY
+                cat.idMaterielCatalogue
+            ORDER BY
+                libelleMateriel
+            ;`
+        );
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
 exports.addCatalogueMateriel = async (req, res)=>{
     try {
         let results = await db.query(
             `INSERT INTO
                 MATERIEL_CATALOGUE
             SET
-                libelleMateriel           = :libelleMateriel,
-                idCategorie               = :idCategorie,
-                taille                    = :taille,
-                sterilite                 = :sterilite,
-                conditionnementMultiple   = :conditionnementMultiple,
-                commentairesMateriel      = :commentairesMateriel,
-                idFournisseur             = :idFournisseur,
-                peremptionAnticipationOpe = :peremptionAnticipationOpe,
-                peremptionAnticipationRes = :peremptionAnticipationRes,
-                disponibleBenevolesConso  = :disponibleBenevolesConso
+                libelleMateriel                = :libelleMateriel,
+                idCategorie                    = :idCategorie,
+                taille                         = :taille,
+                sterilite                      = :sterilite,
+                conditionnementMultiple        = :conditionnementMultiple,
+                commentairesMateriel           = :commentairesMateriel,
+                idFournisseur                  = :idFournisseur,
+                peremptionAnticipationOpe      = :peremptionAnticipationOpe,
+                peremptionAnticipationRes      = :peremptionAnticipationRes,
+                peremptionAnticipationVehicule = :peremptionAnticipationVehicule,
+                peremptionAnticipationTenues   = :peremptionAnticipationTenues,
+                peremptionAnticipationVHF      = :peremptionAnticipationVHF,
+                disponibleBenevolesConso       = :disponibleBenevolesConso,
+                modules_ope                    = :modules_ope,
+                modules_vehicules              = :modules_vehicules,
+                modules_tenues                 = :modules_tenues,
+                modules_vhf                    = :modules_vhf
             ;`,
         {
-            libelleMateriel           : req.body.libelleMateriel || null,
-            idCategorie               : req.body.idCategorie || null,
-            taille                    : req.body.taille || null,
-            sterilite                 : req.body.sterilite || false,
-            conditionnementMultiple   : req.body.conditionnementMultiple || null,
-            commentairesMateriel      : req.body.commentairesMateriel || null,
-            idFournisseur             : req.body.idFournisseur || null,
-            peremptionAnticipationOpe : req.body.sterilite ? (req.body.peremptionAnticipationOpe > 0 ? req.body.peremptionAnticipationOpe : null) : null,
-            peremptionAnticipationRes : req.body.sterilite ? (req.body.peremptionAnticipationRes > 0 ? req.body.peremptionAnticipationRes : null) : null,
-            disponibleBenevolesConso  : req.body.disponibleBenevolesConso || null,
+            libelleMateriel                : req.body.libelleMateriel || null,
+            idCategorie                    : req.body.idCategorie || null,
+            taille                         : req.body.taille || null,
+            sterilite                      : req.body.sterilite || false,
+            conditionnementMultiple        : req.body.conditionnementMultiple || null,
+            commentairesMateriel           : req.body.commentairesMateriel || null,
+            idFournisseur                  : req.body.idFournisseur || null,
+            peremptionAnticipationOpe      : req.body.sterilite ? (req.body.peremptionAnticipationOpe > 0 ? req.body.peremptionAnticipationOpe : null) : null,
+            peremptionAnticipationRes      : req.body.sterilite ? (req.body.peremptionAnticipationRes > 0 ? req.body.peremptionAnticipationRes : null) : null,
+            peremptionAnticipationVehicule : req.body.sterilite ? (req.body.peremptionAnticipationVehicule > 0 ? req.body.peremptionAnticipationVehicule : null) : null,
+            peremptionAnticipationTenues   : req.body.sterilite ? (req.body.peremptionAnticipationTenues > 0 ? req.body.peremptionAnticipationTenues : null) : null,
+            peremptionAnticipationVHF      : req.body.sterilite ? (req.body.peremptionAnticipationVHF > 0 ? req.body.peremptionAnticipationVHF : null) : null,
+            disponibleBenevolesConso       : req.body.disponibleBenevolesConso || false,
+            modules_ope                    : req.body.modules_ope || false,
+            modules_vehicules              : req.body.modules_vehicules || false,
+            modules_tenues                 : req.body.modules_tenues || false,
+            modules_vhf                    : req.body.modules_vhf || false,
         });
 
         await fonctionsMetiers.updatePeremptionsAnticipations();
@@ -802,31 +916,37 @@ exports.updateCatalogueMateriel = async (req, res)=>{
             `UPDATE
                 MATERIEL_CATALOGUE
             SET
-                libelleMateriel           = :libelleMateriel,
-                idCategorie               = :idCategorie,
-                taille                    = :taille,
-                sterilite                 = :sterilite,
-                conditionnementMultiple   = :conditionnementMultiple,
-                commentairesMateriel      = :commentairesMateriel,
-                idFournisseur             = :idFournisseur,
-                peremptionAnticipationOpe = :peremptionAnticipationOpe,
-                peremptionAnticipationRes = :peremptionAnticipationRes,
-                disponibleBenevolesConso  = :disponibleBenevolesConso
+                libelleMateriel                = :libelleMateriel,
+                idCategorie                    = :idCategorie,
+                taille                         = :taille,
+                sterilite                      = :sterilite,
+                conditionnementMultiple        = :conditionnementMultiple,
+                commentairesMateriel           = :commentairesMateriel,
+                idFournisseur                  = :idFournisseur,
+                peremptionAnticipationOpe      = :peremptionAnticipationOpe,
+                peremptionAnticipationRes      = :peremptionAnticipationRes,
+                peremptionAnticipationVehicule = :peremptionAnticipationVehicule,
+                peremptionAnticipationTenues   = :peremptionAnticipationTenues,
+                peremptionAnticipationVHF      = :peremptionAnticipationVHF,
+                disponibleBenevolesConso       = :disponibleBenevolesConso
             WHERE
                 idMaterielCatalogue = :idMaterielCatalogue
             ;`,
         {
-            libelleMateriel           : req.body.libelleMateriel || null,
-            idCategorie               : req.body.idCategorie || null,
-            taille                    : req.body.taille || null,
-            sterilite                 : req.body.sterilite || false,
-            conditionnementMultiple   : req.body.conditionnementMultiple || null,
-            commentairesMateriel      : req.body.commentairesMateriel || null,
-            idFournisseur             : req.body.idFournisseur || null,
-            peremptionAnticipationOpe : req.body.sterilite ? (req.body.peremptionAnticipationOpe > 0 ? req.body.peremptionAnticipationOpe : null) : null,
-            peremptionAnticipationRes : req.body.sterilite ? (req.body.peremptionAnticipationRes > 0 ? req.body.peremptionAnticipationRes : null) : null,
-            idMaterielCatalogue       : req.body.idMaterielCatalogue || null,
-            disponibleBenevolesConso  : req.body.disponibleBenevolesConso || false,
+            libelleMateriel                : req.body.libelleMateriel || null,
+            idCategorie                    : req.body.idCategorie || null,
+            taille                         : req.body.taille || null,
+            sterilite                      : req.body.sterilite || false,
+            conditionnementMultiple        : req.body.conditionnementMultiple || null,
+            commentairesMateriel           : req.body.commentairesMateriel || null,
+            idFournisseur                  : req.body.idFournisseur || null,
+            peremptionAnticipationOpe      : req.body.sterilite ? (req.body.peremptionAnticipationOpe > 0 ? req.body.peremptionAnticipationOpe : null) : null,
+            peremptionAnticipationRes      : req.body.sterilite ? (req.body.peremptionAnticipationRes > 0 ? req.body.peremptionAnticipationRes : null) : null,
+            peremptionAnticipationVehicule : req.body.sterilite ? (req.body.peremptionAnticipationVehicule > 0 ? req.body.peremptionAnticipationVehicule : null) : null,
+            peremptionAnticipationTenues   : req.body.sterilite ? (req.body.peremptionAnticipationTenues > 0 ? req.body.peremptionAnticipationTenues : null) : null,
+            peremptionAnticipationVHF      : req.body.sterilite ? (req.body.peremptionAnticipationVHF > 0 ? req.body.peremptionAnticipationVHF : null) : null,
+            idMaterielCatalogue            : req.body.idMaterielCatalogue || null,
+            disponibleBenevolesConso       : req.body.disponibleBenevolesConso || false,
         });
 
         await fonctionsMetiers.updatePeremptionsAnticipations();
