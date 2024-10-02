@@ -1105,7 +1105,7 @@ const Profils = () => {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Equipements de transmission</td>
+                                <td>Equipements de transmission et stock</td>
                                 <td>
                                     {modeEdition ?
                                         <Form.Check
@@ -1175,7 +1175,7 @@ const Profils = () => {
                                 <th></th>
                             </tr>
                             <tr>
-                                <td>Véhicules</td>
+                                <td>Véhicules et stock</td>
                                 <td>
                                     {modeEdition ?
                                         <Form.Check
@@ -2634,7 +2634,7 @@ const Profils = () => {
 
                     <hr/>
 
-                    <h6>Réserves:</h6>
+                    <h6>Réserves section opérationnel:</h6>
                     <Table responsive size='sm'>
                         <thead>
                             <tr>

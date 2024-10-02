@@ -996,11 +996,6 @@ export const commandeStep6LivraisonCheck = Yup.object().shape({
 });
 
 export const commandeStep7StockCheck = Yup.object().shape({
-    idReserveElement: Yup
-        .number()
-        .typeError(champObligatoire)
-        .min(1, champObligatoire)
-        .required(champObligatoire),
     qttTransfert: Yup
         .number()
         .typeError(champObligatoire)

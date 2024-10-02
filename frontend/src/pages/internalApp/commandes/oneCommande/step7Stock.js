@@ -51,8 +51,27 @@ const OneCommandeStep7Stock = ({
                                 variant="outline-success"
                                 className="me-1"
                                 disabled={row.original.idMaterielCatalogue == null || row.original.quantiteAtransferer == 0}
-                                onClick={()=>{handleShowReserveTransfertModal(row.original.idCommandeMateriel)}}
+                                onClick={()=>{handleShowReserveTransfertModalOPE(row.original.idCommandeMateriel)}}
                             >{row.original.quantiteCommande - row.original.quantiteAtransferer} / {row.original.quantiteCommande} intégrés</IconButton>
+                        : null}
+
+                        {!forceReadOnly && row.original.modules_vehicules && HabilitationService.habilitations.reserve_cmdVersReserve && row.original.idMaterielCatalogue != null ?
+                            "Transfert vehicules"
+                        : null}
+
+                        {!forceReadOnly && row.original.modules_tenues && HabilitationService.habilitations.reserve_cmdVersReserve && row.original.idMaterielCatalogue != null ?
+                            <IconButton
+                                icon={row.original.idMaterielCatalogue == null || row.original.quantiteAtransferer == 0 ? 'check' : 'forward'}
+                                size = 'sm'
+                                variant="outline-success"
+                                className="me-1"
+                                disabled={row.original.idMaterielCatalogue == null || row.original.quantiteAtransferer == 0}
+                                onClick={()=>{handleShowReserveTransfertModalTEN(row.original.idCommandeMateriel)}}
+                            >{row.original.quantiteCommande - row.original.quantiteAtransferer} / {row.original.quantiteCommande} intégrés</IconButton>
+                        : null}
+
+                        {!forceReadOnly && row.original.modules_vhf && HabilitationService.habilitations.reserve_cmdVersReserve && row.original.idMaterielCatalogue != null ?
+                            "Transfert transmissions"
                         : null}
 
                         {!forceReadOnly && HabilitationService.habilitations.reserve_cmdVersReserve && row.original.quantiteAtransferer > 0 ?
@@ -101,34 +120,36 @@ const OneCommandeStep7Stock = ({
         }
     }
 
-    /* Modal transfert vers réserve */
-    const [showReserveTransfertModal, setShowReserveTransfertModal] = useState(false);
+    /* Commun aux modal de transfert */
     const [reserveTransfertModalIdCommandeMateriel, setReserveTransfertModalIdCommandeMateriel] = useState();
-
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm({
         resolver: yupResolver(commandeStep7StockCheck),
     });
+    const [reserves, setReserves] = useState([]);
 
-    const handleCloseReserveTransfertModal = () => {
+    /* Modal transfert vers réserve OPE */
+    const [showReserveTransfertModalOPE, setShowReserveTransfertModalOPE] = useState(false);
+    
+    const handleCloseReserveTransfertModalOPE = () => {
         setReserveTransfertModalIdCommandeMateriel();
-        setShowReserveTransfertModal(false);
+        setShowReserveTransfertModalOPE(false);
         setLoading(false);
         reset();
+        setReserves([]);
     };
-    const [reserves, setReserves] = useState([]);
-    const handleShowReserveTransfertModal = async (id) => {
+    
+    const handleShowReserveTransfertModalOPE = async (id) => {
         try {
             setReserveTransfertModalIdCommandeMateriel(id);
-            setShowReserveTransfertModal(true);
+            setShowReserveTransfertModalOPE(true);
             setLoading(true);
 
             let oneElement = commande.materiels.filter(item => item.idCommandeMateriel == id)[0];
 
-            let getData = await Axios.post('/transferts/getReservesForOneIntegration',{
+            let getData = await Axios.post('/transferts/getReservesOpeForOneIntegration',{
                 idMaterielCatalogue: oneElement.idMaterielCatalogue
             });
             setReserves(getData.data);
-
             setValue("resteATransferer", oneElement.quantiteAtransferer);
             setValue("qttTransfert", oneElement.quantiteAtransferer);
 
@@ -138,11 +159,11 @@ const OneCommandeStep7Stock = ({
         }
     };
 
-    const enregistrerTransfert = async (data) => {
+    const enregistrerTransfertOPE = async (data) => {
         try {
             setLoading(true);
 
-            const response = await Axios.post('/transferts/enregistrerTransfert',{
+            const response = await Axios.post('/transferts/enregistrerTransfertOPE',{
                 idCommandeMateriel: reserveTransfertModalIdCommandeMateriel,
                 idCommande: idCommande,
                 idReserveElement: data.idReserveElement,
@@ -151,7 +172,59 @@ const OneCommandeStep7Stock = ({
             });
             
             setPageNeedsRefresh(true);
-            handleCloseReserveTransfertModal();
+            handleCloseReserveTransfertModalOPE();
+            setLoading(false);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    /* Modal transfert vers réserve TENUES */
+    const [showReserveTransfertModalTEN, setShowReserveTransfertModalTEN] = useState(false);
+    
+    const handleCloseReserveTransfertModalTEN = () => {
+        setReserveTransfertModalIdCommandeMateriel();
+        setShowReserveTransfertModalTEN(false);
+        setLoading(false);
+        reset();
+        setReserves([]);
+    };
+    
+    const handleShowReserveTransfertModalTEN = async (id) => {
+        try {
+            setReserveTransfertModalIdCommandeMateriel(id);
+            setShowReserveTransfertModalTEN(true);
+            setLoading(true);
+
+            let oneElement = commande.materiels.filter(item => item.idCommandeMateriel == id)[0];
+
+            let getData = await Axios.post('/transferts/getReservesTenForOneIntegration',{
+                idMaterielCatalogue: oneElement.idMaterielCatalogue
+            });
+            setReserves(getData.data);
+            setValue("resteATransferer", oneElement.quantiteAtransferer);
+            setValue("qttTransfert", oneElement.quantiteAtransferer);
+
+            setLoading(false);
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const enregistrerTransfertTEN = async (data) => {
+        try {
+            setLoading(true);
+
+            const response = await Axios.post('/transferts/enregistrerTransfertTEN',{
+                idCommandeMateriel: reserveTransfertModalIdCommandeMateriel,
+                idCommande: idCommande,
+                idCatalogueTenue: data.idCatalogueTenue,
+                qttTransfert: data.qttTransfert,
+                peremptionCmd: data.peremptionCmd,
+            });
+            
+            setPageNeedsRefresh(true);
+            handleCloseReserveTransfertModalTEN();
             setLoading(false);
         } catch (error) {
             console.log(error)
@@ -188,13 +261,13 @@ const OneCommandeStep7Stock = ({
             </Modal.Footer>
         </Modal>
 
-        <Modal show={showReserveTransfertModal} onHide={handleCloseReserveTransfertModal} backdrop="static" keyboard={false}>
+        <Modal show={showReserveTransfertModalOPE} onHide={handleCloseReserveTransfertModalOPE} backdrop="static" keyboard={false}>
             <Modal.Header>
-                <Modal.Title>Intégration à une réserve</Modal.Title>
-                <FalconCloseButton onClick={handleCloseReserveTransfertModal}/>
+                <Modal.Title>Intégration à une réserve opé</Modal.Title>
+                <FalconCloseButton onClick={handleCloseReserveTransfertModalOPE}/>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleSubmit(enregistrerTransfert)}>
+                <Form onSubmit={handleSubmit(enregistrerTransfertOPE)}>
                     <Form.Group className="mb-3">
                         <Form.Label>Réserve à approvisionner:</Form.Label>
                         <Select
@@ -214,7 +287,7 @@ const OneCommandeStep7Stock = ({
                         <small className="text-danger">{errors.idReserveElement?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Quantité à transférer (max:{watch("resteATransferer")})</Form.Label>
+                        <Form.Label>Quantité à transférer (max: {watch("resteATransferer")})</Form.Label>
                         <Form.Control
                             className="mb-1"
                             size="sm"
@@ -248,7 +321,59 @@ const OneCommandeStep7Stock = ({
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseReserveTransfertModal}>
+                <Button variant="secondary" onClick={handleCloseReserveTransfertModalOPE}>
+                    Annuler
+                </Button>
+            </Modal.Footer>
+        </Modal>
+
+        <Modal show={showReserveTransfertModalTEN} onHide={handleCloseReserveTransfertModalTEN} backdrop="static" keyboard={false}>
+            <Modal.Header>
+                <Modal.Title>Intégration au stock des tenues</Modal.Title>
+                <FalconCloseButton onClick={handleCloseReserveTransfertModalTEN}/>
+            </Modal.Header>
+            <Modal.Body>
+                <Form onSubmit={handleSubmit(enregistrerTransfertTEN)}>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Element à approvisionner:</Form.Label>
+                        <Select
+                            id="idCatalogueTenue"
+                            name="idCatalogueTenue"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            placeholder='Aucun élément selectionné'
+                            options={reserves}
+                            isOptionDisabled={(option) => option.inventaireEnCours}
+                            value={reserves.find(c => c.value === watch("idCatalogueTenue"))}
+                            onChange={val => val != null ? setValue("idCatalogueTenue", val.value) : setValue("idCatalogueTenue", null)}
+                        />
+                        <small className="text-danger">{errors.idCatalogueTenue?.message}</small>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Quantité à transférer (max: {watch("resteATransferer")})</Form.Label>
+                        <Form.Control
+                            className="mb-1"
+                            size="sm"
+                            name='qttTransfert'
+                            id='qttTransfert'
+                            type="number"
+                            min={1}
+                            max={watch("resteATransferer")}
+                            step='1'
+                            {...register("qttTransfert")}
+                        />
+                        <small className="text-danger">{errors.qttTransfert?.message}</small>
+                    </Form.Group>
+                    <div className="d-grid gap-2 mt-3">
+                        <Button variant='success' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Intégrer'}</Button>
+                    </div>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseReserveTransfertModalTEN}>
                     Annuler
                 </Button>
             </Modal.Footer>

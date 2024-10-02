@@ -212,8 +212,8 @@ router.post('/reserves/updateReservesMateriels',  loggerMiddleware.httpLogger(),
 router.post('/reserves/materielsReservesDelete',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_suppression']),  loggerMiddleware.suppressionLogger(),  reservesMaterielsCtrl.materielsReservesDelete);
 
 //TRANSFERTS - Lots
-router.post('/transferts/getReservesForOneTransfert', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_ReserveVersLot']),                                         transfertsCtrl.getReservesForOneTransfert);
-router.post('/transferts/opererTransfertReserveLot',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_ReserveVersLot']),  loggerMiddleware.modificationLogger(), transfertsCtrl.opererTransfertReserveLot);
+router.post('/transferts/getReservesOpeForOneTransfert', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_ReserveVersLot']),                                         transfertsCtrl.getReservesOpeForOneTransfert);
+router.post('/transferts/opererTransfertReserveLot',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_ReserveVersLot']),  loggerMiddleware.modificationLogger(), transfertsCtrl.opererTransfertReserveLot);
 
 //COMMANDES
 router.get('/commandes/getCommandes',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_lecture']),                                                                                                                                                                                              commandesCtrl.getCommandes);
@@ -238,9 +238,12 @@ router.post('/commandes/livraisonOKCommande',              loggerMiddleware.http
 router.post('/commandes/livraisonSAVCommande',             loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']), middlewaresFunctions.checkCmdStage([4]),   middlewaresFunctions.checkCmdRole(['affectee']),             middlewaresFunctions.checkCmdCanMoveTo(6), loggerMiddleware.modificationLogger(), commandesCtrl.livraisonSAVCommande);
 router.post('/commandes/transfertManuel',                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']), middlewaresFunctions.checkCmdStage([5]),   middlewaresFunctions.checkCmdRole(['affectee']),                                                        loggerMiddleware.modificationLogger(), commandesCtrl.transfertManuel);
 router.post('/commandes/cloreCommande',                    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']), middlewaresFunctions.checkCmdStage([5]),   middlewaresFunctions.checkCmdRole(['affectee']),             middlewaresFunctions.checkCmdCanMoveTo(7), loggerMiddleware.modificationLogger(), commandesCtrl.cloreCommande);
-//COMMANDES - transferts vers la réserve
-router.post('/transferts/getReservesForOneIntegration',    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.getReservesForOneIntegration);
-router.post('/transferts/enregistrerTransfert',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.enregistrerTransfert);
+//COMMANDES - transferts vers la réserve opé
+router.post('/transferts/getReservesOpeForOneIntegration', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.getReservesOpeForOneIntegration);
+router.post('/transferts/enregistrerTransfertOPE',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.enregistrerTransfertOPE);
+//COMMANDES - transferts vers la réserve tenues
+router.post('/transferts/getReservesTenForOneIntegration', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.getReservesTenForOneIntegration);
+router.post('/transferts/enregistrerTransfertTEN',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.enregistrerTransfertTEN);
 //COMMANDES Attachements
 router.post('/commandes/uploadCommandesAttached',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), commandesCtrl.uploadCommandesAttachedMulter, commandesCtrl.uploadCommandesAttached);
 router.post('/commandes/updateMetaDataCommandes',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), commandesCtrl.updateMetaDataCommandes);

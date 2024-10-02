@@ -2,8 +2,8 @@ const db = require('../db');
 const logger = require('../winstonLogger');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 
-//Transferts Réserves -> Lots
-exports.getReservesForOneTransfert = async (req, res)=>{
+//Transferts LOTS
+exports.getReservesOpeForOneTransfert = async (req, res)=>{
     try {
         let results = await db.query(`
             SELECT

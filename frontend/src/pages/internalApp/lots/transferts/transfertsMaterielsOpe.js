@@ -66,7 +66,7 @@ const TransfertsMaterielsOpe = ({
             });
             setElementMateriel(elem.data[0]);
 
-            let getData = await Axios.post('/transferts/getReservesForOneTransfert',{
+            let getData = await Axios.post('/transferts/getReservesOpeForOneTransfert',{
                 idMaterielCatalogue: elem.data[0].idMaterielCatalogue
             });
             setReserves(getData.data);

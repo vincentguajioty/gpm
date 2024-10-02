@@ -135,7 +135,7 @@ exports.getOneCommande = async (req, res)=>{
         let materiels = await db.query(`
             SELECT
                 m.*,
-                c.libelleMateriel,
+                CONCAT_WS(' > ',c.libelleMateriel,c.taille) as libelleMateriel,
                 c.idFournisseur as idFournisseurReference,
                 c.modules_ope,
                 c.modules_vehicules,
@@ -870,7 +870,7 @@ exports.dropCommandesDocument = async (req, res)=>{
 }
 
 //Transferts
-exports.getReservesForOneIntegration = async (req, res)=>{
+exports.getReservesOpeForOneIntegration = async (req, res)=>{
     try {
         let results = await db.query(`
             SELECT
@@ -883,7 +883,7 @@ exports.getReservesForOneIntegration = async (req, res)=>{
             FROM
                 RESERVES_MATERIEL rm
                 LEFT OUTER JOIN RESERVES_CONTENEUR c ON rm.idConteneur = c.idConteneur
-                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_OPE cat ON rm.idMaterielCatalogue = cat.idMaterielCatalogue
+                LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON rm.idMaterielCatalogue = cat.idMaterielCatalogue
             WHERE
                 rm.idMaterielCatalogue = :idMaterielCatalogue
             ORDER BY
@@ -900,7 +900,7 @@ exports.getReservesForOneIntegration = async (req, res)=>{
     }
 }
 
-exports.enregistrerTransfert = async (req, res)=>{
+exports.enregistrerTransfertOPE = async (req, res)=>{
     try {
         const downgradeCmd = await db.query(`
             UPDATE
@@ -955,6 +955,65 @@ exports.enregistrerTransfert = async (req, res)=>{
                 });
             }
         }
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getReservesTenForOneIntegration = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                rm.*,
+                rm.idCatalogueTenue as value,
+                CONCAT_WS(' > ',cat.libelleMateriel,cat.taille) as label,
+                cat.libelleMateriel
+            FROM
+                TENUES_CATALOGUE rm
+                LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON rm.idMaterielCatalogue = cat.idMaterielCatalogue
+            WHERE
+                rm.idMaterielCatalogue = :idMaterielCatalogue
+            ORDER BY
+                cat.libelleMateriel
+        ;`,{
+            idMaterielCatalogue: req.body.idMaterielCatalogue
+        });
+
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.enregistrerTransfertTEN = async (req, res)=>{
+    try {
+        const downgradeCmd = await db.query(`
+            UPDATE
+                COMMANDES_MATERIEL
+            SET
+                quantiteAtransferer = quantiteAtransferer - :qttTransfert
+            WHERE
+                idCommandeMateriel = :idCommandeMateriel
+        `,{
+            idCommandeMateriel: req.body.idCommandeMateriel || null,
+            qttTransfert: req.body.qttTransfert || 0,
+        });
+
+        const upgradeReserve = await db.query(`
+            UPDATE
+                TENUES_CATALOGUE
+            SET
+                stockCatalogueTenue = stockCatalogueTenue + :qttTransfert
+            WHERE
+                idCatalogueTenue = :idCatalogueTenue
+        `,{
+            idCatalogueTenue: req.body.idCatalogueTenue || null,
+            qttTransfert: req.body.qttTransfert || 0,
+        });
 
         res.sendStatus(201);
     } catch (error) {

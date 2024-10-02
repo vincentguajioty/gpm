@@ -457,7 +457,8 @@ exports.getCatalogueMaterielFull = async (req, res)=>{
         let results = await db.query(`
             SELECT
                 idMaterielCatalogue as value,
-                libelleMateriel as label,
+                CONCAT_WS(' > ',libelleMateriel,taille) as label,
+                libelleMateriel,
                 sterilite,
                 peremptionAnticipationOpe,
                 peremptionAnticipationRes,

@@ -135,7 +135,7 @@ const ProfilRecapDroitsUtilisateur = ({idPersonne, pageNeedsRefresh}) => {
                             <td><FontAwesomeIcon icon={profil['vhf_plan_suppression'] ? 'check' : 'ban'}/></td>
                         </tr>
                         <tr>
-                            <td>Equipements de transmission</td>
+                            <td>Equipements de transmission et stock</td>
                             <td><FontAwesomeIcon icon={profil['vhf_equipement_lecture'] ? 'check' : 'ban'}/></td>
                             <td><FontAwesomeIcon icon={profil['vhf_equipement_ajout'] ? 'check' : 'ban'}/></td>
                             <td><FontAwesomeIcon icon={profil['vhf_equipement_modification'] ? 'check' : 'ban'}/></td>
@@ -149,7 +149,7 @@ const ProfilRecapDroitsUtilisateur = ({idPersonne, pageNeedsRefresh}) => {
                             <th></th>
                         </tr>
                         <tr>
-                            <td>Véhicules</td>
+                            <td>Véhicules et stock</td>
                             <td><FontAwesomeIcon icon={profil['vehicules_lecture'] ? 'check' : 'ban'}/></td>
                             <td><FontAwesomeIcon icon={profil['vehicules_ajout'] ? 'check' : 'ban'}/></td>
                             <td><FontAwesomeIcon icon={profil['vehicules_modification'] ? 'check' : 'ban'}/></td>
@@ -376,7 +376,7 @@ const ProfilRecapDroitsUtilisateur = ({idPersonne, pageNeedsRefresh}) => {
 
                 <hr/>
 
-                <h6>Réserves:</h6>
+                <h6>Réserves section opérationnel:</h6>
                 <Table responsive size='sm'>
                     <thead>
                         <tr>
