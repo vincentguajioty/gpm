@@ -22,7 +22,7 @@ const ReservesMaterielsTable = ({
     filterIdConteneur = null,
 }) => {
     const [pageNeedsRefresh, setPageNeedsRefresh] = useState(false);
-    
+
     const [readyToDisplay, setReadyToDisplay] = useState(false);
     const [materiels, setMateriels] = useState([]);
 
@@ -143,7 +143,10 @@ const ReservesMaterielsTable = ({
                 topButtonShow={true}
                 topButton={
                     HabilitationService.habilitations['reserve_ajout'] ?
-                        <ReservesMaterielsForm setPageNeedsRefresh={setPageNeedsRefresh} />
+                        <ReservesMaterielsForm
+                            idConteneur={filterIdConteneur}
+                            setPageNeedsRefresh={setPageNeedsRefresh}
+                        />
                     : null
                 }
             />

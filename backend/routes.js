@@ -106,6 +106,7 @@ router.get('/select/getVhfFrequences',                         loggerMiddleware.
 router.get('/select/getEmplacements',                          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getEmplacements);
 router.get('/select/getEmplacementsFull',                      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getEmplacementsFull);
 router.get('/select/getConteneurs',                            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getConteneurs);
+router.get('/select/getConteneursFull',                        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getConteneursFull);
 router.get('/select/getLots',                                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getLots);
 router.get('/select/getLotsFull',                              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getLotsFull);
 router.get('/select/getSacs',                                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getSacs);

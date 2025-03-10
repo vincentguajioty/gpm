@@ -833,6 +833,27 @@ exports.getConteneurs = async (req, res)=>{
     }
 }
 
+exports.getConteneursFull = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idConteneur as value,
+                libelleConteneur as label,
+                inventaireEnCours,
+                idConteneur,
+                libelleConteneur
+            FROM
+                RESERVES_CONTENEUR
+            ORDER BY
+                libelleConteneur
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.getLots = async (req, res)=>{
     try {
         let results = await db.query(`

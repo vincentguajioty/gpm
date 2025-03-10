@@ -65,7 +65,7 @@ const ReservesMaterielsForm = ({
 
         let getForSelect = await Axios.get('/select/getCatalogueMaterielOpeFull');
         setCatalogue(getForSelect.data);
-        getForSelect = await Axios.get('/select/getConteneurs');
+        getForSelect = await Axios.get('/select/getConteneursFull');
         setConteneurs(getForSelect.data);
         getForSelect = await Axios.get('/select/getFournisseurs');
         setFournisseurs(getForSelect.data);
@@ -187,7 +187,7 @@ const ReservesMaterielsForm = ({
                             placeholder='Aucun emplacement selectionné'
                             options={conteneurs}
                             isOptionDisabled={(option) => option.inventaireEnCours}
-                            value={conteneurs.find(c => c.value === watch("idConteneur"))}
+                            value={conteneurs.find(c => parseInt(c.value) === parseInt(watch("idConteneur")))}
                             onChange={val => val != null ? setValue("idConteneur", val.value) : setValue("idConteneur", null)}
                         />
                         <small className="text-danger">{errors.idConteneur?.message}</small>
