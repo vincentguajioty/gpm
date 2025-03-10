@@ -207,13 +207,19 @@ const unlockReservesInventaires = async () => {
 
 const updatePeremptionsAnticipations = async () => {
     try {
-        logger.info("Début de la mise à jour de la table de matériel opérationnel pour mise à jour du champ d'anticipation des péremption conformément au catalogue.")
+        logger.info("Début de la mise à jour des tables de matériels et stocks pour mise à jour du champ d'anticipation des péremption conformément au catalogue.")
         const updateOpe = await db.query(`UPDATE MATERIEL_ELEMENT e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue SET e.peremptionAnticipation = c.peremptionAnticipationOpe WHERE c.peremptionAnticipationOpe IS NOT NULL;`);
-        logger.info("Fin de la mise à jour de la table de matériel opérationnel pour mise à jour du champ d'anticipation des péremption conformément au catalogue.")
-
-        logger.info("Début de la mise à jour de la table de matériel en reserve pour mise à jour du champ d'anticipation des péremption conformément au catalogue.")
         const updateRes = await db.query(`UPDATE RESERVES_MATERIEL e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue SET e.peremptionReserveAnticipation = c.peremptionAnticipationRes WHERE c.peremptionAnticipationRes IS NOT NULL;`);
-        logger.info("Fin de la mise à jour de la table de matériel en reserve pour mise à jour du champ d'anticipation des péremption conformément au catalogue.")
+        const updateVehicules = await db.query(`UPDATE VEHICULES_STOCK e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue SET e.peremptionAnticipationVehiculesStock = c.peremptionAnticipationVehicule WHERE c.peremptionAnticipationVehicule IS NOT NULL;`);
+        const updateVHF = await db.query(`UPDATE VHF_STOCK e LEFT OUTER JOIN MATERIEL_CATALOGUE c ON e.idMaterielCatalogue = c.idMaterielCatalogue SET e.peremptionAnticipationVhfStock = c.peremptionAnticipationVHF WHERE c.peremptionAnticipationVHF IS NOT NULL;`);
+        logger.info("Fin de la mise à jour des tables de matériels et stocks pour mise à jour du champ d'anticipation des péremption conformément au catalogue.")
+
+        logger.info("Début de la mise à jour des tables de matériels et stocks pour vider le champ péremption des éléments à qtt nulle.")
+        const updateOpeQtt = await db.query(`UPDATE MATERIEL_ELEMENT SET peremption = null WHERE quantite = 0;`);
+        const updateResQtt = await db.query(`UPDATE RESERVES_MATERIEL SET peremptionReserve = null WHERE quantiteReserve = 0;`);
+        const updateVehiculesQtt = await db.query(`UPDATE VEHICULES_STOCK SET peremptionVehiculesStock = null WHERE quantiteVehiculesStock = 0;`);
+        const updateVHFQtt = await db.query(`UPDATE VHF_STOCK SET peremptionVhfStock = null WHERE quantiteVhfStock = 0;`);
+        logger.info("Fin de la mise à jour des tables de matériels et stocks pour vider le champ péremption des éléments à qtt nulle.")
     } catch (error) {
         logger.error(error)
     }
@@ -726,6 +732,20 @@ const updateConformiteMaterielOpe = async (idElement) => {
                 peremptionAnticipation: materiel.peremptionAnticipationOpe,
             });
         }
+
+        if(materiel.quantite == 0)
+        {
+            let updateDateQttNulle = await db.query(`
+                UPDATE
+                    MATERIEL_ELEMENT
+                SET
+                    peremption = null
+                WHERE
+                    idElement = :idElement
+            ;`,{
+                idElement : idElement,
+            });
+        }
         
     } catch (error) {
         logger.error(error)
@@ -761,6 +781,20 @@ const updateConformiteMaterielVehicules = async (idVehiculesStock) => {
                 peremptionAnticipationVehicule: materiel.peremptionAnticipationVehicule,
             });
         }
+
+        if(materiel.quantiteVehiculesStock == 0)
+        {
+            let updateDateQttNulle = await db.query(`
+                UPDATE
+                    VEHICULES_STOCK
+                SET
+                    peremptionVehiculesStock = null
+                WHERE
+                    idVehiculesStock = :idVehiculesStock
+            ;`,{
+                idVehiculesStock : idVehiculesStock,
+            });
+        }
         
     } catch (error) {
         logger.error(error)
@@ -794,6 +828,20 @@ const updateConformiteMaterielVhf = async (idVhfStock) => {
             ;`,{
                 idVhfStock : idVhfStock,
                 peremptionAnticipationVHF: materiel.peremptionAnticipationVHF,
+            });
+        }
+
+        if(materiel.quantiteVhfStock == 0)
+        {
+            let updateDateQttNulle = await db.query(`
+                UPDATE
+                    VHF_STOCK
+                SET
+                    peremptionVhfStock = null
+                WHERE
+                    idVhfStock = :idVhfStock
+            ;`,{
+                idVhfStock : idVhfStock,
             });
         }
         

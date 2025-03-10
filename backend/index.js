@@ -126,9 +126,9 @@ schedule.scheduleJob(process.env.CRON_DAILY, async function() {
         logger.debug("CRON - Fin de suppression de token pour utilisateurs sans profils");
 
         //Mise à jour des anticipations de péremption
-        logger.debug("CRON - Début de la mise à jour des anticipations de péremption");
+        logger.debug("CRON - Début de la mise à jour des anticipations de péremption et péremptions à quantités nulles");
         await fonctionsMetiers.updatePeremptionsAnticipations();
-        logger.debug("CRON - Fin de la mise à jour des anticipations de péremption");
+        logger.debug("CRON - Fin de la mise à jour des anticipations de péremption et péremptions à quantités nulles");
 
         //Analyse complète des lots
         logger.debug("CRON - Début de la vérification de conformité de tous les lots");
