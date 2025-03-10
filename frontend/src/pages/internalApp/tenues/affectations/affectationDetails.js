@@ -811,9 +811,9 @@ const AffectationDetails = ({
                                 : null}
                                 {HabilitationService.habilitations['tenues_suppression'] ? 
                                     <IconButton
-                                        icon='calendar-check'
+                                        icon='recycle'
                                         size = 'sm'
-                                        variant="outline-danger"
+                                        variant="outline-primary"
                                         className="me-1"
                                         onClick={handleShowDeleteMassifModal}
                                     >Le bénévole a tout rendu</IconButton>
