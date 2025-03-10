@@ -1,4 +1,4 @@
-FROM node:16-alpine as build-stage
+FROM node:16-alpine AS build-stage
 RUN npm install npm@8.5.0 -g
 WORKDIR /frontend
 COPY package*.json .
