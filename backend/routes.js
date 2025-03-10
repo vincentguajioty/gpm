@@ -248,6 +248,12 @@ router.post('/transferts/enregistrerTransfertOPE',         loggerMiddleware.http
 //COMMANDES - transferts vers la réserve tenues
 router.post('/transferts/getReservesTenForOneIntegration', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.getReservesTenForOneIntegration);
 router.post('/transferts/enregistrerTransfertTEN',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.enregistrerTransfertTEN);
+//COMMANDES - transferts vers la réserve véhicules
+router.post('/transferts/getReservesVehiculesForOneIntegration', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.getReservesVehiculesForOneIntegration);
+router.post('/transferts/enregistrerTransfertVehicules',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.enregistrerTransfertVehicules);
+//COMMANDES - transferts vers la réserve VHF
+router.post('/transferts/getReservesVhfForOneIntegration', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.getReservesVhfForOneIntegration);
+router.post('/transferts/enregistrerTransfertVhf',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['reserve_cmdVersReserve']), commandesCtrl.enregistrerTransfertVhf);
 //COMMANDES Attachements
 router.post('/commandes/uploadCommandesAttached',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), commandesCtrl.uploadCommandesAttachedMulter, commandesCtrl.uploadCommandesAttached);
 router.post('/commandes/updateMetaDataCommandes',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['commande_etreEnCharge',]), loggerMiddleware.modificationLogger(), commandesCtrl.updateMetaDataCommandes);

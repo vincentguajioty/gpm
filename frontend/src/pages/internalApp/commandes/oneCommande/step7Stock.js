@@ -56,7 +56,14 @@ const OneCommandeStep7Stock = ({
                         : null}
 
                         {!forceReadOnly && row.original.modules_vehicules && HabilitationService.habilitations.reserve_cmdVersReserve && row.original.idMaterielCatalogue != null ?
-                            "Transfert vehicules"
+                            <IconButton
+                                icon={row.original.idMaterielCatalogue == null || row.original.quantiteAtransferer == 0 ? 'check' : 'forward'}
+                                size = 'sm'
+                                variant="outline-success"
+                                className="me-1"
+                                disabled={row.original.idMaterielCatalogue == null || row.original.quantiteAtransferer == 0}
+                                onClick={()=>{handleShowReserveTransfertModalVEH(row.original.idCommandeMateriel)}}
+                            >{row.original.quantiteCommande - row.original.quantiteAtransferer} / {row.original.quantiteCommande} intégrés</IconButton>
                         : null}
 
                         {!forceReadOnly && row.original.modules_tenues && HabilitationService.habilitations.reserve_cmdVersReserve && row.original.idMaterielCatalogue != null ?
@@ -71,7 +78,14 @@ const OneCommandeStep7Stock = ({
                         : null}
 
                         {!forceReadOnly && row.original.modules_vhf && HabilitationService.habilitations.reserve_cmdVersReserve && row.original.idMaterielCatalogue != null ?
-                            "Transfert transmissions"
+                            <IconButton
+                                icon={row.original.idMaterielCatalogue == null || row.original.quantiteAtransferer == 0 ? 'check' : 'forward'}
+                                size = 'sm'
+                                variant="outline-success"
+                                className="me-1"
+                                disabled={row.original.idMaterielCatalogue == null || row.original.quantiteAtransferer == 0}
+                                onClick={()=>{handleShowReserveTransfertModalVHF(row.original.idCommandeMateriel)}}
+                            >{row.original.quantiteCommande - row.original.quantiteAtransferer} / {row.original.quantiteCommande} intégrés</IconButton>
                         : null}
 
                         {!forceReadOnly && HabilitationService.habilitations.reserve_cmdVersReserve && row.original.quantiteAtransferer > 0 ?
@@ -231,6 +245,110 @@ const OneCommandeStep7Stock = ({
         }
     }
 
+    /* Modal transfert vers réserve VEHICULES STOCK */
+    const [showReserveTransfertModalVEH, setShowReserveTransfertModalVEH] = useState(false);
+    
+    const handleCloseReserveTransfertModalVEH = () => {
+        setReserveTransfertModalIdCommandeMateriel();
+        setShowReserveTransfertModalVEH(false);
+        setLoading(false);
+        reset();
+        setReserves([]);
+    };
+    
+    const handleShowReserveTransfertModalVEH = async (id) => {
+        try {
+            setReserveTransfertModalIdCommandeMateriel(id);
+            setShowReserveTransfertModalVEH(true);
+            setLoading(true);
+
+            let oneElement = commande.materiels.filter(item => item.idCommandeMateriel == id)[0];
+
+            let getData = await Axios.post('/transferts/getReservesVehiculesForOneIntegration',{
+                idMaterielCatalogue: oneElement.idMaterielCatalogue
+            });
+            setReserves(getData.data);
+            setValue("resteATransferer", oneElement.quantiteAtransferer);
+            setValue("qttTransfert", oneElement.quantiteAtransferer);
+
+            setLoading(false);
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const enregistrerTransfertVEH = async (data) => {
+        try {
+            setLoading(true);
+
+            const response = await Axios.post('/transferts/enregistrerTransfertVehicules',{
+                idCommandeMateriel: reserveTransfertModalIdCommandeMateriel,
+                idCommande: idCommande,
+                idVehiculesStock: data.idVehiculesStock,
+                qttTransfert: data.qttTransfert,
+                peremptionCmd: data.peremptionCmd,
+            });
+            
+            setPageNeedsRefresh(true);
+            handleCloseReserveTransfertModalVEH();
+            setLoading(false);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    /* Modal transfert vers réserve VHF STOCK */
+    const [showReserveTransfertModalVHF, setShowReserveTransfertModalVHF] = useState(false);
+    
+    const handleCloseReserveTransfertModalVHF = () => {
+        setReserveTransfertModalIdCommandeMateriel();
+        setShowReserveTransfertModalVHF(false);
+        setLoading(false);
+        reset();
+        setReserves([]);
+    };
+    
+    const handleShowReserveTransfertModalVHF = async (id) => {
+        try {
+            setReserveTransfertModalIdCommandeMateriel(id);
+            setShowReserveTransfertModalVHF(true);
+            setLoading(true);
+
+            let oneElement = commande.materiels.filter(item => item.idCommandeMateriel == id)[0];
+
+            let getData = await Axios.post('/transferts/getReservesVhfForOneIntegration',{
+                idMaterielCatalogue: oneElement.idMaterielCatalogue
+            });
+            setReserves(getData.data);
+            setValue("resteATransferer", oneElement.quantiteAtransferer);
+            setValue("qttTransfert", oneElement.quantiteAtransferer);
+
+            setLoading(false);
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const enregistrerTransfertVHF = async (data) => {
+        try {
+            setLoading(true);
+
+            const response = await Axios.post('/transferts/enregistrerTransfertVhf',{
+                idCommandeMateriel: reserveTransfertModalIdCommandeMateriel,
+                idCommande: idCommande,
+                idVhfStock: data.idVhfStock,
+                qttTransfert: data.qttTransfert,
+                peremptionCmd: data.peremptionCmd,
+            });
+            
+            setPageNeedsRefresh(true);
+            handleCloseReserveTransfertModalVHF();
+            setLoading(false);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
     /* Clore */
     const cloreCommande = async () => {
@@ -322,6 +440,136 @@ const OneCommandeStep7Stock = ({
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseReserveTransfertModalOPE}>
+                    Annuler
+                </Button>
+            </Modal.Footer>
+        </Modal>
+
+        <Modal show={showReserveTransfertModalVEH} onHide={handleCloseReserveTransfertModalVEH} backdrop="static" keyboard={false}>
+            <Modal.Header>
+                <Modal.Title>Intégration à une réserve véhicules</Modal.Title>
+                <FalconCloseButton onClick={handleCloseReserveTransfertModalVEH}/>
+            </Modal.Header>
+            <Modal.Body>
+                <Form onSubmit={handleSubmit(enregistrerTransfertVEH)}>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Réserve à approvisionner:</Form.Label>
+                        <Select
+                            id="idVehiculesStock"
+                            name="idVehiculesStock"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            placeholder='Aucun élément selectionné'
+                            options={reserves}
+                            value={reserves.find(c => c.value === watch("idVehiculesStock"))}
+                            onChange={val => val != null ? setValue("idVehiculesStock", val.value) : setValue("idVehiculesStock", null)}
+                        />
+                        <small className="text-danger">{errors.idVehiculesStock?.message}</small>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Quantité à transférer (max: {watch("resteATransferer")})</Form.Label>
+                        <Form.Control
+                            className="mb-1"
+                            size="sm"
+                            name='qttTransfert'
+                            id='qttTransfert'
+                            type="number"
+                            min={1}
+                            max={watch("resteATransferer")}
+                            step='1'
+                            {...register("qttTransfert")}
+                        />
+                        <small className="text-danger">{errors.qttTransfert?.message}</small>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Le matériel reçu a une date de péremption ?</Form.Label>
+                        <DatePicker
+                            selected={watch("peremptionCmd")}
+                            onChange={(date)=>setValue("peremptionCmd", date)}
+                            formatWeekDay={day => day.slice(0, 3)}
+                            className='form-control'
+                            placeholderText="Choisir une date"
+                            dateFormat="dd/MM/yyyy"
+                            fixedHeight
+                            locale="fr"
+                        />
+                        <small className="text-danger">{errors.peremptionCmd?.message}</small>
+                    </Form.Group>
+                    <div className="d-grid gap-2 mt-3">
+                        <Button variant='success' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Intégrer'}</Button>
+                    </div>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseReserveTransfertModalVEH}>
+                    Annuler
+                </Button>
+            </Modal.Footer>
+        </Modal>
+
+        <Modal show={showReserveTransfertModalVHF} onHide={handleCloseReserveTransfertModalVHF} backdrop="static" keyboard={false}>
+            <Modal.Header>
+                <Modal.Title>Intégration à une réserve transmissions</Modal.Title>
+                <FalconCloseButton onClick={handleCloseReserveTransfertModalVHF}/>
+            </Modal.Header>
+            <Modal.Body>
+                <Form onSubmit={handleSubmit(enregistrerTransfertVHF)}>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Réserve à approvisionner:</Form.Label>
+                        <Select
+                            id="idVhfStock"
+                            name="idVhfStock"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            placeholder='Aucun élément selectionné'
+                            options={reserves}
+                            value={reserves.find(c => c.value === watch("idVhfStock"))}
+                            onChange={val => val != null ? setValue("idVhfStock", val.value) : setValue("idVhfStock", null)}
+                        />
+                        <small className="text-danger">{errors.idVhfStock?.message}</small>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Quantité à transférer (max: {watch("resteATransferer")})</Form.Label>
+                        <Form.Control
+                            className="mb-1"
+                            size="sm"
+                            name='qttTransfert'
+                            id='qttTransfert'
+                            type="number"
+                            min={1}
+                            max={watch("resteATransferer")}
+                            step='1'
+                            {...register("qttTransfert")}
+                        />
+                        <small className="text-danger">{errors.qttTransfert?.message}</small>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Le matériel reçu a une date de péremption ?</Form.Label>
+                        <DatePicker
+                            selected={watch("peremptionCmd")}
+                            onChange={(date)=>setValue("peremptionCmd", date)}
+                            formatWeekDay={day => day.slice(0, 3)}
+                            className='form-control'
+                            placeholderText="Choisir une date"
+                            dateFormat="dd/MM/yyyy"
+                            fixedHeight
+                            locale="fr"
+                        />
+                        <small className="text-danger">{errors.peremptionCmd?.message}</small>
+                    </Form.Group>
+                    <div className="d-grid gap-2 mt-3">
+                        <Button variant='success' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Intégrer'}</Button>
+                    </div>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseReserveTransfertModalVHF}>
                     Annuler
                 </Button>
             </Modal.Footer>

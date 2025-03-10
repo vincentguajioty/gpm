@@ -940,7 +940,7 @@ exports.enregistrerTransfertOPE = async (req, res)=>{
             });
             currentReserve = currentReserve[0];
 
-            if(currentReserve.peremptionReserve == null || new Date(currentReserve.peremptionReserve) > new Date(req.body.peremptionCmd))
+            if(currentReserve.peremptionReserve == null || currentReserve.quantiteReserve == 0 || new Date(currentReserve.peremptionReserve) > new Date(req.body.peremptionCmd))
             {
                 const upgradeReserve = await db.query(`
                     UPDATE
@@ -1014,6 +1014,184 @@ exports.enregistrerTransfertTEN = async (req, res)=>{
             idCatalogueTenue: req.body.idCatalogueTenue || null,
             qttTransfert: req.body.qttTransfert || 0,
         });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getReservesVehiculesForOneIntegration = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                rm.*,
+                rm.idVehiculesStock as value,
+                CONCAT_WS(' > ',cat.libelleMateriel,cat.taille) as label,
+                cat.libelleMateriel
+            FROM
+                VEHICULES_STOCK rm
+                LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON rm.idMaterielCatalogue = cat.idMaterielCatalogue
+            WHERE
+                rm.idMaterielCatalogue = :idMaterielCatalogue
+            ORDER BY
+                cat.libelleMateriel
+        ;`,{
+            idMaterielCatalogue: req.body.idMaterielCatalogue
+        });
+
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.enregistrerTransfertVehicules = async (req, res)=>{
+    try {
+        const downgradeCmd = await db.query(`
+            UPDATE
+                COMMANDES_MATERIEL
+            SET
+                quantiteAtransferer = quantiteAtransferer - :qttTransfert
+            WHERE
+                idCommandeMateriel = :idCommandeMateriel
+        `,{
+            idCommandeMateriel: req.body.idCommandeMateriel || null,
+            qttTransfert: req.body.qttTransfert || 0,
+        });
+
+        const upgradeReserve = await db.query(`
+            UPDATE
+                VEHICULES_STOCK
+            SET
+                quantiteVehiculesStock = quantiteVehiculesStock + :qttTransfert
+            WHERE
+                idVehiculesStock = :idVehiculesStock
+        `,{
+            idVehiculesStock: req.body.idVehiculesStock || null,
+            qttTransfert: req.body.qttTransfert || 0,
+        });
+
+        if(req.body.peremptionCmd && req.body.peremptionCmd != null)
+        {
+            let currentReserve = await db.query(`
+                SELECT
+                    *
+                FROM
+                    VEHICULES_STOCK
+                WHERE
+                    idVehiculesStock = :idVehiculesStock
+            `,{
+                idVehiculesStock: req.body.idVehiculesStock || null,
+            });
+            currentReserve = currentReserve[0];
+
+            if(currentReserve.peremptionVehiculesStock == null || currentReserve.quantiteVehiculesStock == 0 || new Date(currentReserve.peremptionVehiculesStock) > new Date(req.body.peremptionCmd))
+            {
+                const upgradeReserve = await db.query(`
+                    UPDATE
+                        VEHICULES_STOCK
+                    SET
+                        peremptionVehiculesStock = :peremptionVehiculesStock
+                    WHERE
+                        idVehiculesStock = :idVehiculesStock
+                `,{
+                    idVehiculesStock: req.body.idVehiculesStock || null,
+                    peremptionVehiculesStock: req.body.peremptionCmd || null,
+                });
+            }
+        }
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getReservesVhfForOneIntegration = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                rm.*,
+                rm.idVhfStock as value,
+                CONCAT_WS(' > ',cat.libelleMateriel,cat.taille) as label,
+                cat.libelleMateriel
+            FROM
+                VHF_STOCK rm
+                LEFT OUTER JOIN MATERIEL_CATALOGUE cat ON rm.idMaterielCatalogue = cat.idMaterielCatalogue
+            WHERE
+                rm.idMaterielCatalogue = :idMaterielCatalogue
+            ORDER BY
+                cat.libelleMateriel
+        ;`,{
+            idMaterielCatalogue: req.body.idMaterielCatalogue
+        });
+
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.enregistrerTransfertVhf = async (req, res)=>{
+    try {
+        const downgradeCmd = await db.query(`
+            UPDATE
+                COMMANDES_MATERIEL
+            SET
+                quantiteAtransferer = quantiteAtransferer - :qttTransfert
+            WHERE
+                idCommandeMateriel = :idCommandeMateriel
+        `,{
+            idCommandeMateriel: req.body.idCommandeMateriel || null,
+            qttTransfert: req.body.qttTransfert || 0,
+        });
+
+        const upgradeReserve = await db.query(`
+            UPDATE
+                VHF_STOCK
+            SET
+                quantiteVhfStock = quantiteVhfStock + :qttTransfert
+            WHERE
+                idVhfStock = :idVhfStock
+        `,{
+            idVhfStock: req.body.idVhfStock || null,
+            qttTransfert: req.body.qttTransfert || 0,
+        });
+
+        if(req.body.peremptionCmd && req.body.peremptionCmd != null)
+            {
+                let currentReserve = await db.query(`
+                    SELECT
+                        *
+                    FROM
+                        VHF_STOCK
+                    WHERE
+                        idVhfStock = :idVhfStock
+                `,{
+                    idVhfStock: req.body.idVhfStock || null,
+                });
+                currentReserve = currentReserve[0];
+    
+                if(currentReserve.peremptionVhfStock == null || currentReserve.quantiteVehiculesStock == 0 || new Date(currentReserve.peremptionVhfStock) > new Date(req.body.peremptionCmd))
+                {
+                    const upgradeReserve = await db.query(`
+                        UPDATE
+                            VHF_STOCK
+                        SET
+                            peremptionVhfStock = :peremptionVhfStock
+                        WHERE
+                            idVhfStock = :idVhfStock
+                    `,{
+                        idVhfStock: req.body.idVhfStock || null,
+                        peremptionVhfStock: req.body.peremptionCmd || null,
+                    });
+                }
+            }
 
         res.sendStatus(201);
     } catch (error) {
