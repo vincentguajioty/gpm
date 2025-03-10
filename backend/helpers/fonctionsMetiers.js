@@ -732,6 +732,76 @@ const updateConformiteMaterielOpe = async (idElement) => {
     }
 }
 
+const updateConformiteMaterielVehicules = async (idVehiculesStock) => {
+    try {
+        let materiel = await db.query(`
+            SELECT
+                *
+            FROM
+                VEHICULES_STOCK m
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_VEHICULES c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+            WHERE
+                idVehiculesStock = :idVehiculesStock
+        ;`,{
+            idVehiculesStock : idVehiculesStock
+        });
+        materiel = materiel[0];
+
+        if(materiel.peremptionAnticipationVehicule != null)
+        {
+            let updateAnticipation = await db.query(`
+                UPDATE
+                    VEHICULES_STOCK
+                SET
+                    peremptionAnticipationVehiculesStock = :peremptionAnticipationVehicule
+                WHERE
+                    idVehiculesStock = :idVehiculesStock
+            ;`,{
+                idVehiculesStock : idVehiculesStock,
+                peremptionAnticipationVehicule: materiel.peremptionAnticipationVehicule,
+            });
+        }
+        
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const updateConformiteMaterielVhf = async (idVhfStock) => {
+    try {
+        let materiel = await db.query(`
+            SELECT
+                *
+            FROM
+                VHF_STOCK m
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_VHF c ON m.idMaterielCatalogue = c.idMaterielCatalogue
+            WHERE
+                idVhfStock = :idVhfStock
+        ;`,{
+            idVhfStock : idVhfStock
+        });
+        materiel = materiel[0];
+
+        if(materiel.peremptionAnticipationVHF != null)
+        {
+            let updateAnticipation = await db.query(`
+                UPDATE
+                    VHF_STOCK
+                SET
+                    peremptionAnticipationVhfStock = :peremptionAnticipationVHF
+                WHERE
+                    idVhfStock = :idVhfStock
+            ;`,{
+                idVhfStock : idVhfStock,
+                peremptionAnticipationVHF: materiel.peremptionAnticipationVHF,
+            });
+        }
+        
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 const cnilAnonyme = async (idPersonne) => {
     try {
         let personne = await db.query(`
@@ -3664,6 +3734,8 @@ module.exports = {
     checkOneConf,
     checkAllConf,
     updateConformiteMaterielOpe,
+    updateConformiteMaterielVehicules,
+    updateConformiteMaterielVhf,
     cnilAnonyme,
     cnilAnonymeCron,
     replaceString,

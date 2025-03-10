@@ -515,6 +515,84 @@ exports.getCatalogueMaterielOpeFull = async (req, res)=>{
     }
 }
 
+exports.getCatalogueMaterielVehicules = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idMaterielCatalogue as value,
+                libelleMateriel as label
+            FROM
+                VIEW_MATERIEL_CATALOGUE_VEHICULES
+            ORDER BY
+                libelleMateriel
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getCatalogueMaterielVehiculesFull = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idMaterielCatalogue as value,
+                libelleMateriel as label,
+                sterilite,
+                peremptionAnticipationVehicule,
+                idFournisseur
+            FROM
+                VIEW_MATERIEL_CATALOGUE_VEHICULES
+            ORDER BY
+                libelleMateriel
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getCatalogueMaterielVhf = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idMaterielCatalogue as value,
+                libelleMateriel as label
+            FROM
+                VIEW_MATERIEL_CATALOGUE_VHF
+            ORDER BY
+                libelleMateriel
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getCatalogueMaterielVhfFull = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idMaterielCatalogue as value,
+                libelleMateriel as label,
+                sterilite,
+                peremptionAnticipationVHF,
+                idFournisseur
+            FROM
+                VIEW_MATERIEL_CATALOGUE_VHF
+            ORDER BY
+                libelleMateriel
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.getCatalogueMaterielTenues = async (req, res)=>{
     try {
         let results = await db.query(`

@@ -292,6 +292,20 @@ const catalogueDelete = async (idLogger, idMaterielCatalogue) => {
         });
         for(const matos of catalogueTenuesADelete){await tenuesCatalogueDelete('SYSTEM', matos.idCatalogueTenue);}
 
+        let stockVehiculesADelete = await db.query(`
+            SELECT * FROM VEHICULES_STOCK WHERE idMaterielCatalogue = :idMaterielCatalogue
+        ;`,{
+            idMaterielCatalogue : idMaterielCatalogue,
+        });
+        for(const matos of stockVehiculesADelete){await vehiculesStockDelete('SYSTEM', matos.idVehiculesStock);}
+
+        let stockVhfADelete = await db.query(`
+            SELECT * FROM VHF_STOCK WHERE idMaterielCatalogue = :idMaterielCatalogue
+        ;`,{
+            idMaterielCatalogue : idMaterielCatalogue,
+        });
+        for(const matos of stockVhfADelete){await vhfStockDelete('SYSTEM', matos.idVhfStock);}
+
         let finalDeleteQuery = await db.query(`
             DELETE FROM MATERIEL_CATALOGUE WHERE idMaterielCatalogue = :idMaterielCatalogue
         ;`,{
@@ -888,6 +902,16 @@ const fournisseursDelete = async (idLogger, idFournisseur) => {
         });
         updateQuery = await db.query(`
             UPDATE MATERIEL_CATALOGUE SET idFournisseur = Null WHERE idFournisseur = :idFournisseur
+        ;`,{
+            idFournisseur : idFournisseur,
+        });
+        updateQuery = await db.query(`
+            UPDATE VEHICULES_STOCK SET idFournisseur = Null WHERE idFournisseur = :idFournisseur
+        ;`,{
+            idFournisseur : idFournisseur,
+        });
+        updateQuery = await db.query(`
+            UPDATE VHF_STOCK SET idFournisseur = Null WHERE idFournisseur = :idFournisseur
         ;`,{
             idFournisseur : idFournisseur,
         });
@@ -1933,6 +1957,32 @@ const vehiculesDetailCGDelete = async (idLogger, idVehiculeChampCG) => {
     }
 }
 
+const vehiculesStockDelete = async (idLogger, idVehiculesStock) => {
+    try {
+        logger.info("Suppression d'un élément de stock véhicules "+idVehiculesStock, {idPersonne: idLogger})
+
+        let getInitialData = await db.query(`
+            SELECT * FROM VEHICULES_STOCK WHERE idVehiculesStock = :idVehiculesStock
+        ;`,{
+            idVehiculesStock : idVehiculesStock,
+        });
+        logger.info("Sauvegarde avant suppression", {idPersonne: idLogger, backupBeforeDrop: getInitialData[0]});
+
+        let finalDeleteQuery = await db.query(`
+            DELETE FROM VEHICULES_STOCK WHERE idVehiculesStock = :idVehiculesStock
+        ;`,{
+            idVehiculesStock : idVehiculesStock,
+        });
+
+        logger.info("Suppression réussie d'un élément de stock véhicules "+idVehiculesStock, {idPersonne: idLogger})
+        return true;
+    } catch (error) {
+        logger.info("Suppression en échec d'un élément de stock véhicules "+idVehiculesStock, {idPersonne: idLogger})
+        logger.error(error)
+        return false;
+    }
+}
+
 const vhfCanauxDelete = async (idLogger, idVhfCanal) => {
     try {
         logger.info("Suppression de canal du fréquence VHF "+idVhfCanal, {idPersonne: idLogger})
@@ -2355,6 +2405,32 @@ const vhfTypesEquipementsDelete = async (idLogger, idVhfType) => {
     }
 }
 
+const vhfStockDelete = async (idLogger, idVhfStock) => {
+    try {
+        logger.info("Suppression d'un élément de stock vhf "+idVhfStock, {idPersonne: idLogger})
+
+        let getInitialData = await db.query(`
+            SELECT * FROM VHF_STOCK WHERE idVhfStock = :idVhfStock
+        ;`,{
+            idVhfStock : idVhfStock,
+        });
+        logger.info("Sauvegarde avant suppression", {idPersonne: idLogger, backupBeforeDrop: getInitialData[0]});
+
+        let finalDeleteQuery = await db.query(`
+            DELETE FROM VHF_STOCK WHERE idVhfStock = :idVhfStock
+        ;`,{
+            idVhfStock : idVhfStock,
+        });
+
+        logger.info("Suppression réussie d'un élément de stock vhf "+idVhfStock, {idPersonne: idLogger})
+        return true;
+    } catch (error) {
+        logger.info("Suppression en échec d'un élément de stock vhf "+idVhfStock, {idPersonne: idLogger})
+        logger.error(error)
+        return false;
+    }
+}
+
 const typeDocumentsDelete = async (idLogger, idTypeDocument) => {
     try {
         logger.info("Suppression du type de document "+idTypeDocument, {idPersonne: idLogger})
@@ -2460,6 +2536,7 @@ module.exports = {
     vehiculesTypesMaintenanceReguliereDelete,
     vehiculesTypesMaintenancesPonctuellesDelete,
     vehiculesDetailCGDelete,
+    vehiculesStockDelete,
     vhfCanauxDelete,
     vhfCanauxDocDelete,
     vhfEquipementsAccessoiresDelete,
@@ -2472,5 +2549,6 @@ module.exports = {
     vhfEtatsDelete,
     vhfTechnologiesDelete,
     vhfTypesEquipementsDelete,
+    vhfStockDelete,
     typeDocumentsDelete,
 };

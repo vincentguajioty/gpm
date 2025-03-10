@@ -475,6 +475,24 @@ export const vhfAccessoiresForm = Yup.object().shape({
         .required(champObligatoire),
 });
 
+export const vhfStockForm = Yup.object().shape({
+    idMaterielCatalogue: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    quantiteVhfStock: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(0, champObligatoire)
+        .required(champObligatoire),
+    quantiteAlerteVhfStock: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(0, champObligatoire)
+        .required(champObligatoire),
+});
+
 export const vehiculeAddForm = Yup.object().shape({
     libelleVehicule: Yup
         .string()
@@ -586,6 +604,24 @@ export const alerteVehiculeAffectation = Yup.object().shape({
         .number()
         .typeError(champObligatoire)
         .min(1, champObligatoire)
+        .required(champObligatoire),
+});
+
+export const vehiculesStockForm = Yup.object().shape({
+    idMaterielCatalogue: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    quantiteVehiculesStock: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(0, champObligatoire)
+        .required(champObligatoire),
+    quantiteAlerteVehiculesStock: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(0, champObligatoire)
         .required(champObligatoire),
 });
 

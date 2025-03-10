@@ -237,6 +237,16 @@ if(HabilitationService.habilitations)
                 active: true
             })
         }
+        if(HabilitationService.habilitations['vhf_equipement_lecture'])
+        {
+            tempChildrens.push({
+                name: 'Stock consommables',
+                to: '/vhfStock',
+                icon: 'cube',
+                exact: false,
+                active: true
+            })
+        }
 
         modulesRoutes.children.push({
             name: 'Transmissions',
@@ -294,6 +304,16 @@ if(HabilitationService.habilitations)
                 name: 'Alertes des bénévoles',
                 to: '/vehiculesAlertesBenevoles',
                 icon: 'comment',
+                exact: false,
+                active: true
+            })
+        }
+        if(HabilitationService.habilitations['vehicules_lecture'])
+        {
+            tempChildrens.push({
+                name: 'Stock consommables',
+                to: '/vehiculesStock',
+                icon: 'cube',
                 exact: false,
                 active: true
             })

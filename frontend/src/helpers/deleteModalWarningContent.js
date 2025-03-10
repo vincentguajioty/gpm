@@ -38,6 +38,8 @@ export const catalogueDelete = <>
         <li>Les matériels de ce type seront supprimés des fiches de consommation des bénévoles.</li>
         <li>Les matériels de ce type seront supprimés des affectations de tenues.</li>
         <li>Les matériels de ce type seront supprimés des stocks de tenues.</li>
+        <li>Les matériels de ce type seront supprimés des stocks de consommables des véhicules.</li>
+        <li>Les matériels de ce type seront supprimés des stocks de consommables des transmission.</li>
     </ul>
 </>;
 
@@ -104,7 +106,9 @@ export const fournisseursDelete = <>
         <li>Tous les matériels (lots et réserves) fournis par ce fournisseur se verront sans fournisseur.</li>
         <li>Toutes les entrées catalogue indiquant ce fournisseur comme fournisseur de prédilection n'auront plus de fournisseur.</li>
         <li>Toutes les commandes rattachées à ce fournisseur se verront sans fournisseur.</li>
-        <li>Les éléments de tenus fournis par ce fournisseur se verront sans fournisseur.</li>
+        <li>Les éléments de tenues fournis par ce fournisseur se verront sans fournisseur.</li>
+        <li>Les éléments de stock consommables des véhicules fournis par ce fournisseur se verront sans fournisseur.</li>
+        <li>Les éléments de stock consommables des transmissions fournis par ce fournisseur se verront sans fournisseur.</li>
     </ul>
 </>;
 
@@ -243,6 +247,13 @@ export const vehiculesMaintenanceDelete = <>
 
 export const vehiculesReleveDelete = <>
     Attention, vous allez supprimer un relevé kilométrique. Les impacts collatéraux à cette suppression sont:
+    <ul>
+        <li>Aucun impact collatéral</li>
+    </ul>
+</>;
+
+export const vehiculesStockDelete = <>
+    Attention, vous allez supprimer un élément du stock de consommables véhicules. Les impacts collatéraux à cette suppression sont:
     <ul>
         <li>Aucun impact collatéral</li>
     </ul>
@@ -416,6 +427,13 @@ export const vhfTechnologiesDelete = <>
     Attention, vous allez supprimer une technologie radio. Les impacts collatéraux à cette suppression sont:
     <ul>
         <li>Tous les équipements en cette technologie se verront être sans technologie.</li>
+    </ul>
+</>;
+
+export const vhfStockDelete = <>
+    Attention, vous allez supprimer un élément du stock de consommables transmissions. Les impacts collatéraux à cette suppression sont:
+    <ul>
+        <li>Aucun impact collatéral</li>
     </ul>
 </>;
 

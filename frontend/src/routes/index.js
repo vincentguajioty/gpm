@@ -46,12 +46,14 @@ import Frequences from 'pages/internalApp/transmissions/frequences';
 import Plans from 'pages/internalApp/transmissions/plans';
 import Equipements from 'pages/internalApp/transmissions/equipements';
 import EquipementVhfDetails from 'pages/internalApp/transmissions/equipementDetails';
+import TransmissionsStock from 'pages/internalApp/transmissions/transmissionsStock';
 
 import Vehicules from 'pages/internalApp/vehicules/vehicules';
 import VehiculeDetails from 'pages/internalApp/vehicules/vehiculeDetails';
 import SuiviDesinfections from 'pages/internalApp/vehicules/suiviDesinfections';
 import SuiviMaintenances from 'pages/internalApp/vehicules/suiviMaintenances';
 import AlertesBenevolesVehicules from 'pages/internalApp/vehicules/alertesBenevolesVehicules';
+import VehiculesStock from 'pages/internalApp/vehicules/vehiculesStock';
 
 import Tenues from 'pages/internalApp/tenues/tenues';
 import AffectationsTenues from 'pages/internalApp/tenues/affectations';
@@ -129,12 +131,14 @@ const FalconRoutes = () => {
           <Route path="/vhfPlans" element={<Plans />} />
           <Route path="/vhfEquipements" element={<Equipements />} />
           <Route path="/vhfEquipements/:idVhfEquipement" element={<EquipementVhfDetails />} />
+          <Route path="/vhfStock" element={<TransmissionsStock />} />
 
           <Route path="/vehicules" element={<Vehicules />} />
           <Route path="/vehicules/:idVehicule" element={<VehiculeDetails />} />
           <Route path="/vehiculesDesinfections" element={<SuiviDesinfections />} />
           <Route path="/vehiculesMaintenances" element={<SuiviMaintenances />} />
           <Route path="/vehiculesAlertesBenevoles" element={<AlertesBenevolesVehicules />} />
+          <Route path="/vehiculesStock" element={<VehiculesStock />} />
 
           <Route path="/tenuesCatalogue" element={<Tenues />} />
           <Route path="/tenuesAffectation" element={<AffectationsTenues />} />

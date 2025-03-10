@@ -89,6 +89,10 @@ router.get('/select/getCatalogueMateriel',                     loggerMiddleware.
 router.get('/select/getCatalogueMaterielFull',                 loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCatalogueMaterielFull);
 router.get('/select/getCatalogueMaterielOpe',                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCatalogueMaterielOpe);
 router.get('/select/getCatalogueMaterielOpeFull',              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCatalogueMaterielOpeFull);
+router.get('/select/getCatalogueMaterielVehicules',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCatalogueMaterielVehicules);
+router.get('/select/getCatalogueMaterielVehiculesFull',        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCatalogueMaterielVehiculesFull);
+router.get('/select/getCatalogueMaterielVhf',                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCatalogueMaterielVhf);
+router.get('/select/getCatalogueMaterielVhfFull',              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCatalogueMaterielVhfFull);
 router.get('/select/getCatalogueMaterielTenues',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getCatalogueMaterielTenues);
 router.get('/select/getVHFTypesAccessoires',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getVHFTypesAccessoires);
 router.get('/select/getEtatsVHF',                              loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getEtatsVHF);
@@ -326,6 +330,12 @@ router.post('/vehicules/affectationTier',     loggerMiddleware.httpLogger(), jwt
 router.post('/vehicules/udpateStatut',        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),                       middlewaresFunctions.alerteVehiculeOwned(), loggerMiddleware.modificationLogger(),   vehiculesCtrl.udpateStatut);
 //Alertes bénévoles - PUBLIC
 router.post('/vehicules/createAlerte',     middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), loggerMiddleware.httpLogger(),       vehiculesCtrl.createAlerte);
+//Stocks de consommables
+router.get('/vehicules/getAllVehiculesStock',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_lecture']),                                             vehiculesCtrl.getAllVehiculesStock);
+router.post('/vehicules/getOneVehiculesStock',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_lecture']),                                             vehiculesCtrl.getOneVehiculesStock);
+router.post('/vehicules/addVehiculesStock',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_ajout']),        loggerMiddleware.modificationLogger(), vehiculesCtrl.addVehiculesStock);
+router.post('/vehicules/updateVehiculesStock',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_modification']), loggerMiddleware.modificationLogger(), vehiculesCtrl.updateVehiculesStock);
+router.post('/vehicules/deleteVehiculeStock',   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vehicules_suppression']),  loggerMiddleware.suppressionLogger(),  vehiculesCtrl.deleteVehiculeStock);
 
 //Tenues - Catalogue
 router.get('/tenues/getPersonnesSuggested',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenuesCatalogue_lecture']),                                             tenuesCtrl.getPersonnesSuggested);
@@ -389,6 +399,12 @@ router.post('/vhf/vhfEquipementsAccessoiresDelete', loggerMiddleware.httpLogger(
 router.post('/vhf/uploadEquipementsAttached',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_modification',]), loggerMiddleware.modificationLogger(), vhfCtrl.uploadEquipementsAttachedMulter, vhfCtrl.uploadEquipementsAttached);
 router.post('/vhf/updateMetaDataEquipements',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_modification',]), loggerMiddleware.modificationLogger(), vhfCtrl.updateMetaDataEquipements);
 router.post('/vhf/dropEquipementsDocument',       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_suppression',]) , loggerMiddleware.suppressionLogger(),  vhfCtrl.dropEquipementsDocument);
+//VHF Stocks de consommables
+router.get('/vhf/getAllVhfStock',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_lecture']),                                              vhfCtrl.getAllVhfStock);
+router.post('/vhf/getOneVhfStock',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_lecture']),                                              vhfCtrl.getOneVhfStock);
+router.post('/vhf/addVhfStock',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_ajout']),         loggerMiddleware.modificationLogger(), vhfCtrl.addVhfStock);
+router.post('/vhf/updateVhfStock',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_modification']),  loggerMiddleware.modificationLogger(), vhfCtrl.updateVhfStock);
+router.post('/vhf/deleteVhfStock',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_suppression',]) , loggerMiddleware.suppressionLogger(),  vhfCtrl.deleteVhfStock);
 
 //referentiels
 router.get('/referentiels/getReferentiels',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_lecture']),                                                                  referentielsCtrl.getReferentiels);

@@ -1,5 +1,6 @@
 const db = require('../db');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
+const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 const logger = require('../winstonLogger');
 const multer = require('multer');
 
@@ -823,6 +824,135 @@ exports.updateMetaDataEquipements = async (req, res, next)=>{
 exports.dropEquipementsDocument = async (req, res)=>{
     try {
         const deleteResult = await fonctionsDelete.vhfEquipementsDocDelete(req.verifyJWTandProfile.idPersonne , req.body.idDocVHF);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//Véhicules - stocks de consommables
+exports.getAllVhfStock = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                s.*,
+                c.libelleMateriel,
+                c.idCategorie,
+                c.sterilite,
+                c.peremptionAnticipationVHF,
+                f.nomFournisseur
+            FROM
+                VHF_STOCK s
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_VHF c ON s.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN FOURNISSEURS f ON s.idFournisseur = f.idFournisseur
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getOneVhfStock = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                s.*,
+                c.libelleMateriel,
+                c.idCategorie,
+                c.sterilite,
+                c.peremptionAnticipationVHF,
+                f.nomFournisseur
+            FROM
+                VHF_STOCK s
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_VHF c ON s.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN FOURNISSEURS f ON s.idFournisseur = f.idFournisseur
+            WHERE
+                idVhfStock = :idVhfStock
+        ;`,{
+            idVhfStock : req.body.idVhfStock,
+        });
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.addVhfStock = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                VHF_STOCK
+            SET
+                idMaterielCatalogue            = :idMaterielCatalogue,
+                idFournisseur                  = :idFournisseur,
+                quantiteVhfStock               = :quantiteVhfStock,
+                quantiteAlerteVhfStock         = :quantiteAlerteVhfStock,
+                peremptionVhfStock             = :peremptionVhfStock,
+                peremptionAnticipationVhfStock = :peremptionAnticipationVhfStock,
+                commentairesVhfStock           = :commentairesVhfStock
+        `,{
+            idMaterielCatalogue            : req.body.idMaterielCatalogue || null,
+            idFournisseur                  : req.body.idFournisseur || null,
+            quantiteVhfStock               : req.body.quantiteVhfStock || 0,
+            quantiteAlerteVhfStock         : req.body.quantiteAlerteVhfStock || 0,
+            peremptionVhfStock             : req.body.peremptionVhfStock || null,
+            peremptionAnticipationVhfStock : req.body.peremptionAnticipationVhfStock || null,
+            commentairesVhfStock           : req.body.commentairesVhfStock || null,
+        });
+
+        let selectLast = await db.query(
+            'SELECT MAX(idVhfStock) as idVhfStock FROM VHF_STOCK;'
+        );
+        await fonctionsMetiers.updateConformiteMaterielVhf(selectLast[0].idVhfStock);
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateVhfStock = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VHF_STOCK
+            SET
+                idMaterielCatalogue            = :idMaterielCatalogue,
+                idFournisseur                  = :idFournisseur,
+                quantiteVhfStock               = :quantiteVhfStock,
+                quantiteAlerteVhfStock         = :quantiteAlerteVhfStock,
+                peremptionVhfStock             = :peremptionVhfStock,
+                peremptionAnticipationVhfStock = :peremptionAnticipationVhfStock,
+                commentairesVhfStock           = :commentairesVhfStock
+            WHERE
+                idVhfStock                     = :idVhfStock
+        `,{
+            idMaterielCatalogue            : req.body.idMaterielCatalogue || null,
+            idFournisseur                  : req.body.idFournisseur || null,
+            quantiteVhfStock               : req.body.quantiteVhfStock || 0,
+            quantiteAlerteVhfStock         : req.body.quantiteAlerteVhfStock || 0,
+            peremptionVhfStock             : req.body.peremptionVhfStock || null,
+            peremptionAnticipationVhfStock : req.body.peremptionAnticipationVhfStock || null,
+            commentairesVhfStock           : req.body.commentairesVhfStock || null,
+            idVhfStock                     : req.body.idVhfStock,
+        });
+
+        await fonctionsMetiers.updateConformiteMaterielVhf(req.body.idVhfStock);
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.deleteVhfStock = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.vhfStockDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfStock);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
     } catch (error) {
         logger.error(error);

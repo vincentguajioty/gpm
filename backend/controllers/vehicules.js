@@ -1564,3 +1564,132 @@ exports.createAlerte = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+//Véhicules - stocks de consommables
+exports.getAllVehiculesStock = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                s.*,
+                c.libelleMateriel,
+                c.idCategorie,
+                c.sterilite,
+                c.peremptionAnticipationVehicule,
+                f.nomFournisseur
+            FROM
+                VEHICULES_STOCK s
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_VEHICULES c ON s.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN FOURNISSEURS f ON s.idFournisseur = f.idFournisseur
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getOneVehiculesStock = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                s.*,
+                c.libelleMateriel,
+                c.idCategorie,
+                c.sterilite,
+                c.peremptionAnticipationVehicule,
+                f.nomFournisseur
+            FROM
+                VEHICULES_STOCK s
+                LEFT OUTER JOIN VIEW_MATERIEL_CATALOGUE_VEHICULES c ON s.idMaterielCatalogue = c.idMaterielCatalogue
+                LEFT OUTER JOIN FOURNISSEURS f ON s.idFournisseur = f.idFournisseur
+            WHERE
+                idVehiculesStock = :idVehiculesStock
+        ;`,{
+            idVehiculesStock : req.body.idVehiculesStock,
+        });
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.addVehiculesStock = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                VEHICULES_STOCK
+            SET
+                idMaterielCatalogue                  = :idMaterielCatalogue,
+                idFournisseur                        = :idFournisseur,
+                quantiteVehiculesStock               = :quantiteVehiculesStock,
+                quantiteAlerteVehiculesStock         = :quantiteAlerteVehiculesStock,
+                peremptionVehiculesStock             = :peremptionVehiculesStock,
+                peremptionAnticipationVehiculesStock = :peremptionAnticipationVehiculesStock,
+                commentairesVehiculesStock           = :commentairesVehiculesStock
+        `,{
+            idMaterielCatalogue                  : req.body.idMaterielCatalogue || null,
+            idFournisseur                        : req.body.idFournisseur || null,
+            quantiteVehiculesStock               : req.body.quantiteVehiculesStock || 0,
+            quantiteAlerteVehiculesStock         : req.body.quantiteAlerteVehiculesStock || 0,
+            peremptionVehiculesStock             : req.body.peremptionVehiculesStock || null,
+            peremptionAnticipationVehiculesStock : req.body.peremptionAnticipationVehiculesStock || null,
+            commentairesVehiculesStock           : req.body.commentairesVehiculesStock || null,
+        });
+
+        let selectLast = await db.query(
+            'SELECT MAX(idVehiculesStock) as idVehiculesStock FROM VEHICULES_STOCK;'
+        );
+        await fonctionsMetiers.updateConformiteMaterielVehicules(selectLast[0].idVehiculesStock);
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.updateVehiculesStock = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VEHICULES_STOCK
+            SET
+                idMaterielCatalogue                  = :idMaterielCatalogue,
+                idFournisseur                        = :idFournisseur,
+                quantiteVehiculesStock               = :quantiteVehiculesStock,
+                quantiteAlerteVehiculesStock         = :quantiteAlerteVehiculesStock,
+                peremptionVehiculesStock             = :peremptionVehiculesStock,
+                peremptionAnticipationVehiculesStock = :peremptionAnticipationVehiculesStock,
+                commentairesVehiculesStock           = :commentairesVehiculesStock
+            WHERE
+                idVehiculesStock                     = :idVehiculesStock
+        `,{
+            idMaterielCatalogue                  : req.body.idMaterielCatalogue || null,
+            idFournisseur                        : req.body.idFournisseur || null,
+            quantiteVehiculesStock               : req.body.quantiteVehiculesStock || 0,
+            quantiteAlerteVehiculesStock         : req.body.quantiteAlerteVehiculesStock || 0,
+            peremptionVehiculesStock             : req.body.peremptionVehiculesStock || null,
+            peremptionAnticipationVehiculesStock : req.body.peremptionAnticipationVehiculesStock || null,
+            commentairesVehiculesStock           : req.body.commentairesVehiculesStock || null,
+            idVehiculesStock                     : req.body.idVehiculesStock,
+        });
+
+        await fonctionsMetiers.updateConformiteMaterielVehicules(req.body.idVehiculesStock);
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.deleteVehiculeStock = async (req, res)=>{
+    try {
+        const deleteResult = await fonctionsDelete.vehiculesStockDelete(req.verifyJWTandProfile.idPersonne , req.body.idVehiculesStock);
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
