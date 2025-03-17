@@ -35,7 +35,7 @@ const AffectationsAvecDates = ({
                         :
                             <SoftBadge bg='success'>{moment(row.original.dateRetour).format('DD/MM/YYYY')}</SoftBadge>
                     : null}
-                    <br/>{row.original.notifPersonne == true ? <SoftBadge bg='info' className='ms-1'><FontAwesomeIcon icon='bell'/></SoftBadge> : null}
+                    <br/>{row.original.notifPersonne == true ? <SoftBadge bg='info' className='ms-1'><FontAwesomeIcon icon='bell'/></SoftBadge> : <SoftBadge bg='secondary' className='ms-1'><FontAwesomeIcon icon='bell-slash'/></SoftBadge>}
                 </>);
 			},
         },

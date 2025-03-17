@@ -300,7 +300,7 @@ const AffectationDetails = ({
             if((watch('dateRetour') != null && watch('dateRetour') != "") && (watch('idPersonne') > 0 || (watch('mailPersonneNonGPM') != null && watch('mailPersonneNonGPM') != "")))
             {
                 setFaculteNotification(true);
-                setValue("notifPersonne", true)
+                if(offCanevasIdTenue == 0) {setValue("notifPersonne", true)}
             }else{
                 setFaculteNotification(false);
                 setValue("notifPersonne", false)
