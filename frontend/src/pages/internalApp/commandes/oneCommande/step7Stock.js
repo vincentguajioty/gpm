@@ -11,7 +11,12 @@ import HabilitationService from 'services/habilitationsService';
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { commandeStep7StockCheck } from 'helpers/yupValidationSchema';
+import {
+    commandeStep7StockCheckOPE,
+    commandeStep7StockCheckTEN,
+    commandeStep7StockCheckVEH,
+    commandeStep7StockCheckVHF,
+} from 'helpers/yupValidationSchema';
 
 import DatePicker from 'react-datepicker';
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
@@ -136,19 +141,19 @@ const OneCommandeStep7Stock = ({
 
     /* Commun aux modal de transfert */
     const [reserveTransfertModalIdCommandeMateriel, setReserveTransfertModalIdCommandeMateriel] = useState();
-    const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm({
-        resolver: yupResolver(commandeStep7StockCheck),
-    });
     const [reserves, setReserves] = useState([]);
 
     /* Modal transfert vers réserve OPE */
+    const { register: registerOPE, handleSubmit: handleSubmitOPE, formState: { errors: errorsOPE }, setValue: setValueOPE, reset: resetOPE, watch: watchOPE } = useForm({
+        resolver: yupResolver(commandeStep7StockCheckOPE),
+    });
     const [showReserveTransfertModalOPE, setShowReserveTransfertModalOPE] = useState(false);
     
     const handleCloseReserveTransfertModalOPE = () => {
         setReserveTransfertModalIdCommandeMateriel();
         setShowReserveTransfertModalOPE(false);
         setLoading(false);
-        reset();
+        resetOPE();
         setReserves([]);
     };
     
@@ -164,8 +169,8 @@ const OneCommandeStep7Stock = ({
                 idMaterielCatalogue: oneElement.idMaterielCatalogue
             });
             setReserves(getData.data);
-            setValue("resteATransferer", oneElement.quantiteAtransferer);
-            setValue("qttTransfert", oneElement.quantiteAtransferer);
+            setValueOPE("resteATransferer", oneElement.quantiteAtransferer);
+            setValueOPE("qttTransfert", oneElement.quantiteAtransferer);
 
             setLoading(false);
         } catch (error) {
@@ -194,13 +199,16 @@ const OneCommandeStep7Stock = ({
     }
 
     /* Modal transfert vers réserve TENUES */
+    const { register: registerTEN, handleSubmit: handleSubmitTEN, formState: { errors: errorsTEN }, setValue: setValueTEN, reset: resetTEN, watch: watchTEN } = useForm({
+        resolver: yupResolver(commandeStep7StockCheckTEN),
+    });
     const [showReserveTransfertModalTEN, setShowReserveTransfertModalTEN] = useState(false);
     
     const handleCloseReserveTransfertModalTEN = () => {
         setReserveTransfertModalIdCommandeMateriel();
         setShowReserveTransfertModalTEN(false);
         setLoading(false);
-        reset();
+        resetTEN();
         setReserves([]);
     };
     
@@ -216,8 +224,8 @@ const OneCommandeStep7Stock = ({
                 idMaterielCatalogue: oneElement.idMaterielCatalogue
             });
             setReserves(getData.data);
-            setValue("resteATransferer", oneElement.quantiteAtransferer);
-            setValue("qttTransfert", oneElement.quantiteAtransferer);
+            setValueTEN("resteATransferer", oneElement.quantiteAtransferer);
+            setValueTEN("qttTransfert", oneElement.quantiteAtransferer);
 
             setLoading(false);
         } catch (error) {
@@ -246,13 +254,16 @@ const OneCommandeStep7Stock = ({
     }
 
     /* Modal transfert vers réserve VEHICULES STOCK */
+    const { register: registerVEH, handleSubmit: handleSubmitVEH, formState: { errors: errorsVEH }, setValue: setValueVEH, reset: resetVEH, watch: watchVEH } = useForm({
+        resolver: yupResolver(commandeStep7StockCheckVEH),
+    });
     const [showReserveTransfertModalVEH, setShowReserveTransfertModalVEH] = useState(false);
     
     const handleCloseReserveTransfertModalVEH = () => {
         setReserveTransfertModalIdCommandeMateriel();
         setShowReserveTransfertModalVEH(false);
         setLoading(false);
-        reset();
+        resetVEH();
         setReserves([]);
     };
     
@@ -268,8 +279,8 @@ const OneCommandeStep7Stock = ({
                 idMaterielCatalogue: oneElement.idMaterielCatalogue
             });
             setReserves(getData.data);
-            setValue("resteATransferer", oneElement.quantiteAtransferer);
-            setValue("qttTransfert", oneElement.quantiteAtransferer);
+            setValueVEH("resteATransferer", oneElement.quantiteAtransferer);
+            setValueVEH("qttTransfert", oneElement.quantiteAtransferer);
 
             setLoading(false);
         } catch (error) {
@@ -298,13 +309,16 @@ const OneCommandeStep7Stock = ({
     }
 
     /* Modal transfert vers réserve VHF STOCK */
+    const { register: registerVHF, handleSubmit: handleSubmitVHF, formState: { errors: errorsVHF }, setValue: setValueVHF, reset: resetVHF, watch: watchVHF } = useForm({
+        resolver: yupResolver(commandeStep7StockCheckVHF),
+    });
     const [showReserveTransfertModalVHF, setShowReserveTransfertModalVHF] = useState(false);
     
     const handleCloseReserveTransfertModalVHF = () => {
         setReserveTransfertModalIdCommandeMateriel();
         setShowReserveTransfertModalVHF(false);
         setLoading(false);
-        reset();
+        resetVHF();
         setReserves([]);
     };
     
@@ -320,8 +334,8 @@ const OneCommandeStep7Stock = ({
                 idMaterielCatalogue: oneElement.idMaterielCatalogue
             });
             setReserves(getData.data);
-            setValue("resteATransferer", oneElement.quantiteAtransferer);
-            setValue("qttTransfert", oneElement.quantiteAtransferer);
+            setValueVHF("resteATransferer", oneElement.quantiteAtransferer);
+            setValueVHF("qttTransfert", oneElement.quantiteAtransferer);
 
             setLoading(false);
         } catch (error) {
@@ -385,7 +399,7 @@ const OneCommandeStep7Stock = ({
                 <FalconCloseButton onClick={handleCloseReserveTransfertModalOPE}/>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleSubmit(enregistrerTransfertOPE)}>
+                <Form onSubmit={handleSubmitOPE(enregistrerTransfertOPE)}>
                     <Form.Group className="mb-3">
                         <Form.Label>Réserve à approvisionner:</Form.Label>
                         <Select
@@ -399,13 +413,13 @@ const OneCommandeStep7Stock = ({
                             placeholder='Aucun élément selectionné'
                             options={reserves}
                             isOptionDisabled={(option) => option.inventaireEnCours}
-                            value={reserves.find(c => c.value === watch("idReserveElement"))}
-                            onChange={val => val != null ? setValue("idReserveElement", val.value) : setValue("idReserveElement", null)}
+                            value={reserves.find(c => c.value === watchOPE("idReserveElement"))}
+                            onChange={val => val != null ? setValueOPE("idReserveElement", val.value) : setValueOPE("idReserveElement", null)}
                         />
-                        <small className="text-danger">{errors.idReserveElement?.message}</small>
+                        <small className="text-danger">{errorsOPE.idReserveElement?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Quantité à transférer (max: {watch("resteATransferer")})</Form.Label>
+                        <Form.Label>Quantité à transférer (max: {watchOPE("resteATransferer")})</Form.Label>
                         <Form.Control
                             className="mb-1"
                             size="sm"
@@ -413,17 +427,17 @@ const OneCommandeStep7Stock = ({
                             id='qttTransfert'
                             type="number"
                             min={1}
-                            max={watch("resteATransferer")}
+                            max={watchOPE("resteATransferer")}
                             step='1'
-                            {...register("qttTransfert")}
+                            {...registerOPE("qttTransfert")}
                         />
-                        <small className="text-danger">{errors.qttTransfert?.message}</small>
+                        <small className="text-danger">{errorsOPE.qttTransfert?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Le matériel reçu a une date de péremption ?</Form.Label>
                         <DatePicker
-                            selected={watch("peremptionCmd")}
-                            onChange={(date)=>setValue("peremptionCmd", date)}
+                            selected={watchOPE("peremptionCmd")}
+                            onChange={(date)=>setValueOPE("peremptionCmd", date)}
                             formatWeekDay={day => day.slice(0, 3)}
                             className='form-control'
                             placeholderText="Choisir une date"
@@ -431,7 +445,7 @@ const OneCommandeStep7Stock = ({
                             fixedHeight
                             locale="fr"
                         />
-                        <small className="text-danger">{errors.peremptionCmd?.message}</small>
+                        <small className="text-danger">{errorsOPE.peremptionCmd?.message}</small>
                     </Form.Group>
                     <div className="d-grid gap-2 mt-3">
                         <Button variant='success' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Intégrer'}</Button>
@@ -451,7 +465,7 @@ const OneCommandeStep7Stock = ({
                 <FalconCloseButton onClick={handleCloseReserveTransfertModalVEH}/>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleSubmit(enregistrerTransfertVEH)}>
+                <Form onSubmit={handleSubmitVEH(enregistrerTransfertVEH)}>
                     <Form.Group className="mb-3">
                         <Form.Label>Réserve à approvisionner:</Form.Label>
                         <Select
@@ -464,13 +478,13 @@ const OneCommandeStep7Stock = ({
                             isSearchable={true}
                             placeholder='Aucun élément selectionné'
                             options={reserves}
-                            value={reserves.find(c => c.value === watch("idVehiculesStock"))}
-                            onChange={val => val != null ? setValue("idVehiculesStock", val.value) : setValue("idVehiculesStock", null)}
+                            value={reserves.find(c => c.value === watchVEH("idVehiculesStock"))}
+                            onChange={val => val != null ? setValueVEH("idVehiculesStock", val.value) : setValueVEH("idVehiculesStock", null)}
                         />
-                        <small className="text-danger">{errors.idVehiculesStock?.message}</small>
+                        <small className="text-danger">{errorsVEH.idVehiculesStock?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Quantité à transférer (max: {watch("resteATransferer")})</Form.Label>
+                        <Form.Label>Quantité à transférer (max: {watchVEH("resteATransferer")})</Form.Label>
                         <Form.Control
                             className="mb-1"
                             size="sm"
@@ -478,17 +492,17 @@ const OneCommandeStep7Stock = ({
                             id='qttTransfert'
                             type="number"
                             min={1}
-                            max={watch("resteATransferer")}
+                            max={watchVEH("resteATransferer")}
                             step='1'
-                            {...register("qttTransfert")}
+                            {...registerVEH("qttTransfert")}
                         />
-                        <small className="text-danger">{errors.qttTransfert?.message}</small>
+                        <small className="text-danger">{errorsVEH.qttTransfert?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Le matériel reçu a une date de péremption ?</Form.Label>
                         <DatePicker
-                            selected={watch("peremptionCmd")}
-                            onChange={(date)=>setValue("peremptionCmd", date)}
+                            selected={watchVEH("peremptionCmd")}
+                            onChange={(date)=>setValueVEH("peremptionCmd", date)}
                             formatWeekDay={day => day.slice(0, 3)}
                             className='form-control'
                             placeholderText="Choisir une date"
@@ -496,7 +510,7 @@ const OneCommandeStep7Stock = ({
                             fixedHeight
                             locale="fr"
                         />
-                        <small className="text-danger">{errors.peremptionCmd?.message}</small>
+                        <small className="text-danger">{errorsVEH.peremptionCmd?.message}</small>
                     </Form.Group>
                     <div className="d-grid gap-2 mt-3">
                         <Button variant='success' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Intégrer'}</Button>
@@ -516,7 +530,7 @@ const OneCommandeStep7Stock = ({
                 <FalconCloseButton onClick={handleCloseReserveTransfertModalVHF}/>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleSubmit(enregistrerTransfertVHF)}>
+                <Form onSubmit={handleSubmitVHF(enregistrerTransfertVHF)}>
                     <Form.Group className="mb-3">
                         <Form.Label>Réserve à approvisionner:</Form.Label>
                         <Select
@@ -529,13 +543,13 @@ const OneCommandeStep7Stock = ({
                             isSearchable={true}
                             placeholder='Aucun élément selectionné'
                             options={reserves}
-                            value={reserves.find(c => c.value === watch("idVhfStock"))}
-                            onChange={val => val != null ? setValue("idVhfStock", val.value) : setValue("idVhfStock", null)}
+                            value={reserves.find(c => c.value === watchVHF("idVhfStock"))}
+                            onChange={val => val != null ? setValueVHF("idVhfStock", val.value) : setValueVHF("idVhfStock", null)}
                         />
-                        <small className="text-danger">{errors.idVhfStock?.message}</small>
+                        <small className="text-danger">{errorsVHF.idVhfStock?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Quantité à transférer (max: {watch("resteATransferer")})</Form.Label>
+                        <Form.Label>Quantité à transférer (max: {watchVHF("resteATransferer")})</Form.Label>
                         <Form.Control
                             className="mb-1"
                             size="sm"
@@ -543,17 +557,17 @@ const OneCommandeStep7Stock = ({
                             id='qttTransfert'
                             type="number"
                             min={1}
-                            max={watch("resteATransferer")}
+                            max={watchVHF("resteATransferer")}
                             step='1'
-                            {...register("qttTransfert")}
+                            {...registerVHF("qttTransfert")}
                         />
-                        <small className="text-danger">{errors.qttTransfert?.message}</small>
+                        <small className="text-danger">{errorsVHF.qttTransfert?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Le matériel reçu a une date de péremption ?</Form.Label>
                         <DatePicker
-                            selected={watch("peremptionCmd")}
-                            onChange={(date)=>setValue("peremptionCmd", date)}
+                            selected={watchVHF("peremptionCmd")}
+                            onChange={(date)=>setValueVHF("peremptionCmd", date)}
                             formatWeekDay={day => day.slice(0, 3)}
                             className='form-control'
                             placeholderText="Choisir une date"
@@ -561,7 +575,7 @@ const OneCommandeStep7Stock = ({
                             fixedHeight
                             locale="fr"
                         />
-                        <small className="text-danger">{errors.peremptionCmd?.message}</small>
+                        <small className="text-danger">{errorsVHF.peremptionCmd?.message}</small>
                     </Form.Group>
                     <div className="d-grid gap-2 mt-3">
                         <Button variant='success' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Intégrer'}</Button>
@@ -581,7 +595,7 @@ const OneCommandeStep7Stock = ({
                 <FalconCloseButton onClick={handleCloseReserveTransfertModalTEN}/>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleSubmit(enregistrerTransfertTEN)}>
+                <Form onSubmit={handleSubmitTEN(enregistrerTransfertTEN)}>
                     <Form.Group className="mb-3">
                         <Form.Label>Element à approvisionner:</Form.Label>
                         <Select
@@ -595,13 +609,13 @@ const OneCommandeStep7Stock = ({
                             placeholder='Aucun élément selectionné'
                             options={reserves}
                             isOptionDisabled={(option) => option.inventaireEnCours}
-                            value={reserves.find(c => c.value === watch("idCatalogueTenue"))}
-                            onChange={val => val != null ? setValue("idCatalogueTenue", val.value) : setValue("idCatalogueTenue", null)}
+                            value={reserves.find(c => c.value === watchTEN("idCatalogueTenue"))}
+                            onChange={val => val != null ? setValueTEN("idCatalogueTenue", val.value) : setValueTEN("idCatalogueTenue", null)}
                         />
-                        <small className="text-danger">{errors.idCatalogueTenue?.message}</small>
+                        <small className="text-danger">{errorsTEN.idCatalogueTenue?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Quantité à transférer (max: {watch("resteATransferer")})</Form.Label>
+                        <Form.Label>Quantité à transférer (max: {watchTEN("resteATransferer")})</Form.Label>
                         <Form.Control
                             className="mb-1"
                             size="sm"
@@ -609,11 +623,11 @@ const OneCommandeStep7Stock = ({
                             id='qttTransfert'
                             type="number"
                             min={1}
-                            max={watch("resteATransferer")}
+                            max={watchTEN("resteATransferer")}
                             step='1'
-                            {...register("qttTransfert")}
+                            {...registerTEN("qttTransfert")}
                         />
-                        <small className="text-danger">{errors.qttTransfert?.message}</small>
+                        <small className="text-danger">{errorsTEN.qttTransfert?.message}</small>
                     </Form.Group>
                     <div className="d-grid gap-2 mt-3">
                         <Button variant='success' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Intégrer'}</Button>
