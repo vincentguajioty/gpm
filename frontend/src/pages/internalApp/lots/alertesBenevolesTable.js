@@ -76,14 +76,6 @@ const AlertesBenevolesLotsTable = ({
             Header: 'Lot',
         },
         {
-            accessor: 'messageAlerteLot',
-            isHidden: !displayMessageAlerteLot,
-            Header: 'Message',
-            Cell: ({ value, row }) => {
-				return(nl2br(value));
-			},
-        },
-        {
             accessor: 'libelleLotsAlertesEtat',
             isHidden: !displayLibelleLotsAlertesEtat,
             Header: 'Traitement',
@@ -110,54 +102,58 @@ const AlertesBenevolesLotsTable = ({
             Header: 'Affectation',
             Cell: ({ value, row }) => {
 				return(
-                    row.original.idTraitant != null ? <SoftBadge>{row.original.prenomPersonne} {row.original.nomPersonne}</SoftBadge> : row.original.idLotsAlertesEtat == 1 ? <>
-                        <IconButton
-                            size='sm'
-                            className='me-1 mb-1'
-                            icon='user'
-                            variant='outline-primary'
-                            onClick={()=>{autoAffect(row.original.idAlerte)}}
-                            disabled={!HabilitationService.habilitations.alertesBenevolesLots_affectation}
-                        >Me l'affecter</IconButton>
+                    <>
+                        {row.original.idTraitant != null ? <SoftBadge className='mb-1'>{row.original.prenomPersonne} {row.original.nomPersonne}</SoftBadge> : row.original.idLotsAlertesEtat == 1 ? <>
+                            <IconButton
+                                size='sm'
+                                className='me-1 mb-1'
+                                icon='user'
+                                variant='outline-primary'
+                                onClick={()=>{autoAffect(row.original.idAlerte)}}
+                                disabled={!HabilitationService.habilitations.alertesBenevolesLots_affectation}
+                            >Me l'affecter</IconButton>
+                            <br/>
+                            <IconButton
+                                size='sm'
+                                className='me-1 mb-1'
+                                icon='users'
+                                variant='outline-primary'
+                                disabled={!HabilitationService.habilitations.alertesBenevolesLots_affectationTier}
+                                onClick={()=>{handleShowAffectModal(row.original.idAlerte)}}
+                            >Affecter à un tier</IconButton>
+                        </> : null}
+
                         <br/>
-                        <IconButton
-                            size='sm'
-                            className='me-1 mb-1'
-                            icon='users'
-                            variant='outline-primary'
-                            disabled={!HabilitationService.habilitations.alertesBenevolesLots_affectationTier}
-                            onClick={()=>{handleShowAffectModal(row.original.idAlerte)}}
-                        >Affecter à un tier</IconButton>
-                    </> : null
+
+                        {row.original.idLotsAlertesEtat == 1 ?
+                            <IconButton
+                                size='sm'
+                                className='me-1 mb-1'
+                                icon='user-shield'
+                                variant='outline-warning'
+                                disabled={!HabilitationService.habilitations.alertesBenevolesLots_affectationTier && !HabilitationService.habilitations.alertesBenevolesLots_affectation}
+                                onClick={()=>{doublonAlerte(row.original.idAlerte)}}
+                            >Signaler comme doublon</IconButton>
+                        : row.original.idLotsAlertesEtat == 2 || row.original.idLotsAlertesEtat == 3 ?
+                            <IconButton
+                                size='sm'
+                                className='me-1 mb-1'
+                                icon='check'
+                                variant='outline-success'
+                                disabled={row.original.idTraitant != HabilitationService.habilitations.idPersonne}
+                                onClick={()=>{cloreAlerte(row.original.idAlerte)}}
+                            >Clore</IconButton>
+                        : null}
+                    </>
                 );
 			},
         },
         {
-            accessor: 'actions',
-            isHidden: !displayActions,
-            Header: 'Clore',
+            accessor: 'messageAlerteLot',
+            isHidden: !displayMessageAlerteLot,
+            Header: 'Message',
             Cell: ({ value, row }) => {
-				return(
-                    row.original.idLotsAlertesEtat == 1 ?
-                        <IconButton
-                            size='sm'
-                            className='me-1 mb-1'
-                            icon='user-shield'
-                            variant='outline-warning'
-                            disabled={!HabilitationService.habilitations.alertesBenevolesLots_affectationTier && !HabilitationService.habilitations.alertesBenevolesLots_affectation}
-                            onClick={()=>{doublonAlerte(row.original.idAlerte)}}
-                        >Signaler comme doublon</IconButton>
-                    : row.original.idLotsAlertesEtat == 2 || row.original.idLotsAlertesEtat == 3 ?
-                        <IconButton
-                            size='sm'
-                            className='me-1 mb-1'
-                            icon='check'
-                            variant='outline-success'
-                            disabled={row.original.idTraitant != HabilitationService.habilitations.idPersonne}
-                            onClick={()=>{cloreAlerte(row.original.idAlerte)}}
-                        >Clore</IconButton>
-                    : null
-                );
+				return(nl2br(value));
 			},
         },
     ];

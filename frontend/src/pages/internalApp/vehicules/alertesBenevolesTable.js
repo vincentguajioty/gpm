@@ -13,7 +13,6 @@ import HabilitationService from 'services/habilitationsService';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { alerteVehiculeAffectation } from 'helpers/yupValidationSchema';
-import Flex from 'components/common/Flex';
 
 const AlertesBenevolesVehiculesTable = ({
     idVehicule = 0,
@@ -26,7 +25,6 @@ const AlertesBenevolesVehiculesTable = ({
     displayMessageAlerteVehicule = true,
     displayLibelleVehiculesAlertesEtat = true,
     displayIdTraitant = true,
-    displayActions = true,
 }) => {
     const [readyToDisplay, setReadyToDisplay] = useState(false);
     const [alertes, setAlertes] = useState([]);
@@ -78,14 +76,6 @@ const AlertesBenevolesVehiculesTable = ({
             Header: 'Véhicule',
         },
         {
-            accessor: 'messageAlerteVehicule',
-            isHidden: !displayMessageAlerteVehicule,
-            Header: 'Message',
-            Cell: ({ value, row }) => {
-				return(nl2br(value));
-			},
-        },
-        {
             accessor: 'libelleVehiculesAlertesEtat',
             isHidden: !displayLibelleVehiculesAlertesEtat,
             Header: 'Traitement',
@@ -112,35 +102,30 @@ const AlertesBenevolesVehiculesTable = ({
             Header: 'Affectation',
             Cell: ({ value, row }) => {
 				return(
-                    row.original.idTraitant != null ? <SoftBadge>{row.original.prenomPersonne} {row.original.nomPersonne}</SoftBadge> : row.original.idVehiculesAlertesEtat == 1 ? <>
-                        <IconButton
-                            size='sm'
-                            className='me-1 mb-1'
-                            icon='user'
-                            variant='outline-primary'
-                            onClick={()=>{autoAffect(row.original.idAlerte)}}
-                            disabled={!HabilitationService.habilitations.alertesBenevolesVehicules_affectation}
-                        >Me l'affecter</IconButton>
-                        <br/>
-                        <IconButton
-                            size='sm'
-                            className='me-1 mb-1'
-                            icon='users'
-                            variant='outline-primary'
-                            disabled={!HabilitationService.habilitations.alertesBenevolesVehicules_affectationTier}
-                            onClick={()=>{handleShowAffectModal(row.original.idAlerte)}}
-                        >Affecter à un tier</IconButton>
-                    </> : null
-                );
-			},
-        },
-        {
-            accessor: 'actions',
-            isHidden: !displayActions,
-            Header: 'Clore',
-            Cell: ({ value, row }) => {
-				return(
-                    row.original.idVehiculesAlertesEtat == 1 ?
+                    <>
+                        {row.original.idTraitant != null ? <SoftBadge className='mb-1'>{row.original.prenomPersonne} {row.original.nomPersonne}</SoftBadge> : row.original.idVehiculesAlertesEtat == 1 ? <>
+                            <IconButton
+                                size='sm'
+                                className='me-1 mb-1'
+                                icon='user'
+                                variant='outline-primary'
+                                onClick={()=>{autoAffect(row.original.idAlerte)}}
+                                disabled={!HabilitationService.habilitations.alertesBenevolesVehicules_affectation}
+                            >Me l'affecter</IconButton>
+                            <br/>
+                            <IconButton
+                                size='sm'
+                                className='me-1 mb-1'
+                                icon='users'
+                                variant='outline-primary'
+                                disabled={!HabilitationService.habilitations.alertesBenevolesVehicules_affectationTier}
+                                onClick={()=>{handleShowAffectModal(row.original.idAlerte)}}
+                            >Affecter à un tier</IconButton>
+                        </> : null}
+
+                        <br/>                    
+
+                        {row.original.idVehiculesAlertesEtat == 1 ?
                         <IconButton
                             size='sm'
                             className='me-1 mb-1'
@@ -149,7 +134,7 @@ const AlertesBenevolesVehiculesTable = ({
                             disabled={!HabilitationService.habilitations.alertesBenevolesVehicules_affectationTier && !HabilitationService.habilitations.alertesBenevolesVehicules_affectation}
                             onClick={()=>{doublonAlerte(row.original.idAlerte)}}
                         >Signaler comme doublon</IconButton>
-                    : row.original.idVehiculesAlertesEtat == 2 || row.original.idVehiculesAlertesEtat == 3 ?
+                        : row.original.idVehiculesAlertesEtat == 2 || row.original.idVehiculesAlertesEtat == 3 ?
                         <IconButton
                             size='sm'
                             className='me-1 mb-1'
@@ -158,8 +143,17 @@ const AlertesBenevolesVehiculesTable = ({
                             disabled={row.original.idTraitant != HabilitationService.habilitations.idPersonne}
                             onClick={()=>{cloreAlerte(row.original.idAlerte)}}
                         >Clore</IconButton>
-                    : null
+                        : null}
+                    </>
                 );
+			},
+        },
+        {
+            accessor: 'messageAlerteVehicule',
+            isHidden: !displayMessageAlerteVehicule,
+            Header: 'Message',
+            Cell: ({ value, row }) => {
+				return(nl2br(value));
 			},
         },
     ];
