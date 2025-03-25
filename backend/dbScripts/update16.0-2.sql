@@ -44,4 +44,75 @@ CREATE TABLE VHF_STOCK(
 		REFERENCES FOURNISSEURS(idFournisseur)
 );
 
+
+
+
+UPDATE
+  TENUES_AFFECTATION t
+  LEFT OUTER JOIN PERSONNE_REFERENTE p ON t.idPersonne = p.idPersonne
+SET
+  t.mailPersonneNonGPM = p.mailPersonne
+WHERE
+  t.idPersonne IS NOT NULL
+;
+
+UPDATE
+  TENUES_AFFECTATION t
+  LEFT OUTER JOIN PERSONNE_REFERENTE p ON t.idPersonne = p.idPersonne
+SET
+  t.personneNonGPM = CONCAT(p.nomPersonne, " ", p.prenomPersonne)
+WHERE
+  t.idPersonne IS NOT NULL
+  AND p.nomPersonne IS NOT NULL
+  AND p.prenomPersonne IS NOT NULL
+;
+
+UPDATE
+  TENUES_AFFECTATION t
+  LEFT OUTER JOIN PERSONNE_REFERENTE p ON t.idPersonne = p.idPersonne
+SET
+  t.personneNonGPM = p.identifiant
+WHERE
+  t.idPersonne IS NOT NULL
+  AND t.personneNonGPM IS NULL
+;
+
+ALTER TABLE TENUES_AFFECTATION DROP CONSTRAINT fk_tenuesAff_Personne;
+ALTER TABLE TENUES_AFFECTATION DROP idPersonne;
+
+
+UPDATE
+  CAUTIONS t
+  LEFT OUTER JOIN PERSONNE_REFERENTE p ON t.idPersonne = p.idPersonne
+SET
+  t.mailPersonneNonGPM = p.mailPersonne
+WHERE
+  t.idPersonne IS NOT NULL
+;
+
+UPDATE
+  CAUTIONS t
+  LEFT OUTER JOIN PERSONNE_REFERENTE p ON t.idPersonne = p.idPersonne
+SET
+  t.personneNonGPM = CONCAT(p.nomPersonne, " ", p.prenomPersonne)
+WHERE
+  t.idPersonne IS NOT NULL
+  AND p.nomPersonne IS NOT NULL
+  AND p.prenomPersonne IS NOT NULL
+;
+
+UPDATE
+  CAUTIONS t
+  LEFT OUTER JOIN PERSONNE_REFERENTE p ON t.idPersonne = p.idPersonne
+SET
+  t.personneNonGPM = p.identifiant
+WHERE
+  t.idPersonne IS NOT NULL
+  AND t.personneNonGPM IS NULL
+;
+
+ALTER TABLE CAUTIONS DROP CONSTRAINT fk_cautions_personnes;
+ALTER TABLE CAUTIONS DROP idPersonne;
+
+
 UPDATE CONFIG SET version = '16.0';

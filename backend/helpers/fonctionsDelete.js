@@ -113,20 +113,6 @@ const annuaireDelete = async (idLogger, idPersonne) => {
             idPersonne : idPersonne,
         });
 
-        let affecationsASupprimer = await db.query(`
-            SELECT * FROM TENUES_AFFECTATION WHERE idPersonne = :idPersonne
-        ;`,{
-            idPersonne : idPersonne,
-        });
-        for(const affect of affecationsASupprimer){await tenuesAffectationsDelete('SYSTEM', affect.idTenue, true);}
-
-        let cautionASupprimer = await db.query(`
-            SELECT * FROM CAUTIONS WHERE idPersonne = :idPersonne
-        ;`,{
-            idPersonne : idPersonne,
-        });
-        for(const affect of cautionASupprimer){await cautionsDelete('SYSTEM', affect.idCaution);}
-
         let deleteProfils = await db.query(`
             DELETE FROM PROFILS_PERSONNES WHERE idPersonne = :idPersonne
         ;`,{

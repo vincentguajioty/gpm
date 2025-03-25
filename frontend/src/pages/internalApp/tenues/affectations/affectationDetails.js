@@ -30,12 +30,10 @@ const AffectationDetails = ({
     affectations = [],
     affectationsRow = [],
     catalogue = [],
-    personnesInternes = [],
     personnesExternes = [],
     setPageNeedsRefresh,
 }) => {
     //DisplayDetails
-    const [displayIdPersonneInterne, setDisplayIdPersonneInterne] = useState();
     const [displayPersonneNonGPM, setDisplayPersonneNonGPM] = useState();
     const [displayMailPersonneNonGPM, setDisplayMailPersonneNonGPM] = useState();
     const [suggestionsMailsExternesForDisplay, setSuggestionsMailsExternesForDisplay] = useState([]);
@@ -47,7 +45,6 @@ const AffectationDetails = ({
         setDisplayBoxWithDetails(false);
         setAffectationToDisplay([]);
 
-        setDisplayIdPersonneInterne();
         setDisplayPersonneNonGPM();
         setDisplayMailPersonneNonGPM();
         setSuggestionsMailsExternesForDisplay([]);
@@ -74,40 +71,16 @@ const AffectationDetails = ({
     useEffect(()=>{
         let tempAffect;
 
-        if(!displayIdPersonneInterne && !displayPersonneNonGPM && !displayMailPersonneNonGPM)
+        if(!displayPersonneNonGPM && !displayMailPersonneNonGPM)
         {
             setAffectationToDisplay();
             setDisplayBoxWithDetails(false);
             return;
         }
 
-        if(displayIdPersonneInterne != 0)
+        if(displayPersonneNonGPM && displayPersonneNonGPM != "")
         {
-            setDisplayPersonneNonGPM();
-            setDisplayMailPersonneNonGPM();
-        }
-
-        if(displayIdPersonneInterne && displayIdPersonneInterne != null && displayIdPersonneInterne > 0)
-        {
-            setDisplayPersonneNonGPM();
-            setDisplayMailPersonneNonGPM();
-
-            tempAffect = affectations.filter(affect => affect.idPersonne == displayIdPersonneInterne);
-            if(tempAffect.length == 1)
-            {
-                setAffectationToDisplay(tempAffect[0]);
-                setDisplayBoxWithDetails(true);
-                return;
-            }else{
-                setAffectationToDisplay();
-                setDisplayBoxWithDetails(false);
-                return;
-            }
-        }
-
-        if(displayIdPersonneInterne == 0 && displayPersonneNonGPM && displayPersonneNonGPM != "")
-        {
-            tempAffect = affectations.filter(affect => affect.type == 'externe' && affect.nomPrenom == displayPersonneNonGPM);
+            tempAffect = affectations.filter(affect => affect.personneNonGPM == displayPersonneNonGPM);
             if(tempAffect.length == 1)
             {
                 setAffectationToDisplay(tempAffect[0]);
@@ -116,7 +89,7 @@ const AffectationDetails = ({
             }
             if(tempAffect.length > 1 && displayMailPersonneNonGPM && displayMailPersonneNonGPM != "")
             {
-                tempAffect = tempAffect.filter(affect => affect.mailPersonne == displayMailPersonneNonGPM);
+                tempAffect = tempAffect.filter(affect => affect.mailPersonneNonGPM == displayMailPersonneNonGPM);
                 if(tempAffect.length == 1)
                 {
                     setAffectationToDisplay(tempAffect[0]);
@@ -135,10 +108,8 @@ const AffectationDetails = ({
         }
 
     },[
-        displayIdPersonneInterne,
         displayPersonneNonGPM,
         displayMailPersonneNonGPM,
-
         affectations,
         affectationsRow,
         catalogue,
@@ -239,7 +210,6 @@ const AffectationDetails = ({
             let oneItemFromArray = affectationsRow.filter(ligne => ligne.idTenue == id)[0];
             setValue("idMaterielCatalogueInitial", oneItemFromArray.idMaterielCatalogue);
             setValue("idMaterielCatalogue", oneItemFromArray.idMaterielCatalogue);
-            setValue("idPersonne", oneItemFromArray.idPersonne > 0 ? oneItemFromArray.idPersonne : 0);
             setValue("personneNonGPM", oneItemFromArray.personneNonGPM);
             setValue("mailPersonneNonGPM", oneItemFromArray.mailPersonneNonGPM);
             setValue("dateAffectation", oneItemFromArray.dateAffectation != null ? new Date(oneItemFromArray.dateAffectation) : null);
@@ -249,7 +219,6 @@ const AffectationDetails = ({
         else
         {
             setValue("dateAffectation", new Date());
-            setValue("idPersonne", 0);
         }
 
         verifFaculteNotifications();
@@ -266,7 +235,6 @@ const AffectationDetails = ({
                     idTenue: offCanevasIdTenue,
                     idMaterielCatalogueInitial: data.idMaterielCatalogueInitial,
                     idMaterielCatalogue: data.idMaterielCatalogue,
-                    idPersonne: data.idPersonne > 0 ? data.idPersonne : null,
                     personneNonGPM: data.personneNonGPM,
                     mailPersonneNonGPM: data.mailPersonneNonGPM,
                     dateAffectation: data.dateAffectation,
@@ -278,7 +246,6 @@ const AffectationDetails = ({
             {
                 const response = await Axios.post('/tenues/addAffectations',{
                     idMaterielCatalogue: data.idMaterielCatalogue,
-                    idPersonne: data.idPersonne > 0 ? data.idPersonne : null,
                     personneNonGPM: data.personneNonGPM,
                     mailPersonneNonGPM: data.mailPersonneNonGPM,
                     dateAffectation: data.dateAffectation,
@@ -297,7 +264,7 @@ const AffectationDetails = ({
 
     const verifFaculteNotifications = () => {
         try {
-            if((watch('dateRetour') != null && watch('dateRetour') != "") && (watch('idPersonne') > 0 || (watch('mailPersonneNonGPM') != null && watch('mailPersonneNonGPM') != "")))
+            if((watch('dateRetour') != null && watch('dateRetour') != "") && ((watch('mailPersonneNonGPM') != null && watch('mailPersonneNonGPM') != "")))
             {
                 setFaculteNotification(true);
                 if(offCanevasIdTenue == 0) {setValue("notifPersonne", true)}
@@ -416,7 +383,6 @@ const AffectationDetails = ({
             if(datePourRetourMassif && datePourRetourMassif!=null)
             {
                 const response = await Axios.post('/tenues/plannifierRetourMassifTenue',{
-                    idPersonne: displayIdPersonneInterne || null,
                     personneNonGPM: displayPersonneNonGPM || null,
                     mailPersonneNonGPM: displayMailPersonneNonGPM || null,
                     dateRetour: datePourRetourMassif,
@@ -447,7 +413,6 @@ const AffectationDetails = ({
             setLoading(true);
 
             const response = await Axios.post('/tenues/deleteMassifAffectations',{
-                idPersonne: displayIdPersonneInterne || null,
                 personneNonGPM: displayPersonneNonGPM || null,
                 mailPersonneNonGPM: displayMailPersonneNonGPM || null,
             });
@@ -523,39 +488,21 @@ const AffectationDetails = ({
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Affecté à</Form.Label>
-                        <Select
-                            id="idPersonne"
-                            name="idPersonne"
-                            size="sm"
-                            classNamePrefix="react-select"
-                            closeMenuOnSelect={true}
-                            isClearable={true}
-                            isSearchable={true}
-                            isDisabled={isLoading}
-                            placeholder='Aucune personne selectionnée'
-                            options={personnesInternes}
-                            value={personnesInternes.find(c => c.value === watch("idPersonne"))}
-                            onChange={val => val != null ? setValue("idPersonne", val.value) : setValue("idPersonne", null)}
-                        />
-                        <small className="text-danger">{errors.idPersonne?.message}</small>
+                        <Form.Control className='mt-2' placeholder="Nom et prénom" list='suggestionsExternes' size="sm" type="text" name='personneNonGPM' id='personneNonGPM' {...register('personneNonGPM')}/>
+                        <datalist id='suggestionsExternes'>
+                            {personnesExternes.map((perso, i) => {
+                                return (<option key={i} value={perso.personneNonGPM}>{perso.mailPersonneNonGPM}</option>);
+                            })}
+                        </datalist>
+                        <small className="text-danger">{errors.personneNonGPM?.message}</small>
 
-                        {watch("idPersonne") == 0 ? <>
-                            <Form.Control className='mt-2' placeholder="Nom et prénom" list='suggestionsExternes' size="sm" type="text" name='personneNonGPM' id='personneNonGPM' {...register('personneNonGPM')}/>
-                            <datalist id='suggestionsExternes'>
-                                {personnesExternes.map((perso, i) => {
-                                    return (<option key={i} value={perso.personneNonGPM}>{perso.mailPersonneNonGPM}</option>);
-                                })}
-                            </datalist>
-                            <small className="text-danger">{errors.personneNonGPM?.message}</small>
-
-                            <Form.Control className='mt-2' placeholder="Adresse email" list='suggestionsMailsConditionnels' size="sm" type="email" name='mailPersonneNonGPM' id='mailPersonneNonGPM' {...register('mailPersonneNonGPM')}/>
-                            <datalist id='suggestionsMailsConditionnels'>
-                                {suggestionsMailsExternes.map((mail, i) => {
-                                    return (<option key={i}>{mail}</option>);
-                                })}
-                            </datalist>
-                            <small className="text-danger">{errors.mailPersonneNonGPM?.message}</small>
-                        </>: null}
+                        <Form.Control className='mt-2' placeholder="Adresse email" list='suggestionsMailsConditionnels' size="sm" type="email" name='mailPersonneNonGPM' id='mailPersonneNonGPM' {...register('mailPersonneNonGPM')}/>
+                        <datalist id='suggestionsMailsConditionnels'>
+                            {suggestionsMailsExternes.map((mail, i) => {
+                                return (<option key={i}>{mail}</option>);
+                            })}
+                        </datalist>
+                        <small className="text-danger">{errors.mailPersonneNonGPM?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Date d'affectation</Form.Label>
@@ -712,60 +659,41 @@ const AffectationDetails = ({
 
                     <Form.Group className="mb-3">
                         <Form.Label>Rechercher une personne</Form.Label>
-                            <Select
-                                id="idMaterielCatalogue"
-                                name="idMaterielCatalogue"
-                                size="sm"
-                                classNamePrefix="react-select"
-                                closeMenuOnSelect={true}
-                                isClearable={true}
-                                isSearchable={true}
-                                isDisabled={isLoading}
-                                placeholder='Rechercher un interne'
-                                options={personnesInternes}
-                                value={personnesInternes.find(c => c.value === displayIdPersonneInterne)}
-                                onChange={val => val != null ? setDisplayIdPersonneInterne(val.value) : setDisplayIdPersonneInterne(null)}
-                            />
+                        <Form.Control
+                            className='mt-2'
+                            placeholder="Rechercher un externe"
+                            list='suggestionsExternes'
+                            size="sm"
+                            type="text"
+                            name='displayPersonneNonGPM'
+                            id='displayPersonneNonGPM'
+                            value={displayPersonneNonGPM}
+                            onChange={(e) => setDisplayPersonneNonGPM(e.target.value)}
+                        />
 
-                            {displayIdPersonneInterne == 0 ?
-                                <>
-                                    <Form.Control
-                                        className='mt-2'
-                                        placeholder="Rechercher un externe"
-                                        list='suggestionsExternes'
-                                        size="sm"
-                                        type="text"
-                                        name='displayPersonneNonGPM'
-                                        id='displayPersonneNonGPM'
-                                        value={displayPersonneNonGPM}
-                                        onChange={(e) => setDisplayPersonneNonGPM(e.target.value)}
-                                    />
+                        <datalist id='suggestionsExternes'>
+                            {personnesExternes.map((perso, i) => {
+                                return (<option key={i} value={perso.personneNonGPM}>{perso.mailPersonneNonGPM}</option>);
+                            })}
+                        </datalist>
 
-                                    <datalist id='suggestionsExternes'>
-                                        {personnesExternes.map((perso, i) => {
-                                            return (<option key={i} value={perso.personneNonGPM}>{perso.mailPersonneNonGPM}</option>);
-                                        })}
-                                    </datalist>
+                        <Form.Control
+                            className='mt-2'
+                            placeholder="Adresse email"
+                            list='suggestionsMailsConditionnels'
+                            size="sm"
+                            type="email"
+                            name='displayMailPersonneNonGPM'
+                            id='displayMailPersonneNonGPM'
+                            value={displayMailPersonneNonGPM}
+                            onChange={(e) => setDisplayMailPersonneNonGPM(e.target.value)}
+                        />
 
-                                    <Form.Control
-                                        className='mt-2'
-                                        placeholder="Adresse email"
-                                        list='suggestionsMailsConditionnels'
-                                        size="sm"
-                                        type="email"
-                                        name='displayMailPersonneNonGPM'
-                                        id='displayMailPersonneNonGPM'
-                                        value={displayMailPersonneNonGPM}
-                                        onChange={(e) => setDisplayMailPersonneNonGPM(e.target.value)}
-                                    />
-
-                                    <datalist id='suggestionsMailsConditionnels'>
-                                        {suggestionsMailsExternesForDisplay.map((mail, i) => {
-                                            return (<option key={i}>{mail}</option>);
-                                        })}
-                                    </datalist>
-                                </>
-                            : null }
+                        <datalist id='suggestionsMailsConditionnels'>
+                            {suggestionsMailsExternesForDisplay.map((mail, i) => {
+                                return (<option key={i}>{mail}</option>);
+                            })}
+                        </datalist>
                     </Form.Group>
                 </FalconComponentCard.Body>
             </FalconComponentCard>
@@ -787,15 +715,11 @@ const AffectationDetails = ({
                     <Table className="fs--1 mt-3" size='sm' responsive>
                         <tr>
                             <td className="bg-100" style={{ width: '30%' }}>Personne</td>
-                            <td>{affectationToDisplay.nomPrenom}</td>
+                            <td>{affectationToDisplay.personneNonGPM}</td>
                         </tr>
                         <tr>
                             <td className="bg-100" style={{ width: '30%' }}>Mail de contact</td>
-                            <td>{affectationToDisplay.mailPersonne}</td>
-                        </tr>
-                        <tr>
-                            <td className="bg-100" style={{ width: '30%' }}>Statut {window.__ENV__.APP_NAME}</td>
-                            <td>{affectationToDisplay.type}</td>
+                            <td>{affectationToDisplay.mailPersonneNonGPM}</td>
                         </tr>
                         <tr>
                             <td className="bg-100" style={{ width: '30%' }}>Actions massives</td>

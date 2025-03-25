@@ -3471,107 +3471,40 @@ const envoyerNotificationsTenuesBenevoles = async () => {
     try {
         /* --- Récupérer état des lieux --- */
         let personnesUnitaires = await db.query(`
-            (
-                SELECT DISTINCT
-                    'interne' as type,
-                    pr.idPersonne as idPersonne,
-                    CONCAT(nomPersonne, " ", prenomPersonne) as nomPrenom,
-                    mailPersonne as mailPersonne
-                FROM
-                    PERSONNE_REFERENTE pr
-                    LEFT OUTER JOIN TENUES_AFFECTATION ta ON pr.idPersonne = ta.idPersonne
-                WHERE
-                    ta.idTenue IS NOT NULL
-                    AND
-                    ta.notifPersonne = true
-                    AND
-                    pr.mailPersonne IS NOT NULL
-            )
-            UNION
-            (
-                SELECT DISTINCT
-                    'externe' as type,
-                    null as idPersonne,
-                    personneNonGPM as nomPrenom,
-                    mailPersonneNonGPM as mailPersonne
-                FROM
-                    TENUES_AFFECTATION ta
-                WHERE
-                    personneNonGPM IS NOT NULL
-                    AND
-                    idPersonne IS NULL
-                    AND
-                    notifPersonne = true
-                    AND
-                    mailPersonneNonGPM IS NOT NULL
-            )
+            SELECT DISTINCT
+                personneNonGPM as nomPrenom,
+                mailPersonneNonGPM as mailPersonne
+            FROM
+                TENUES_AFFECTATION ta
+            WHERE
+                personneNonGPM IS NOT NULL
+                AND
+                notifPersonne = true
+                AND
+                mailPersonneNonGPM IS NOT NULL
         ;`);
 
         for(const personne of personnesUnitaires)
         {
-            if(personne.idPersonne > 0)
-            {
-                let affectations = await db.query(`
-                    SELECT
-                        ta.*,
-                        tc.libelleMateriel,
-                        tc.taille
-                    FROM
-                        TENUES_AFFECTATION ta
-                        LEFT OUTER JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
-                    WHERE
-                        ta.notifPersonne = true
-                        AND
-                        ta.idPersonne = :idPersonne
-                ;`,{
-                    idPersonne: personne.idPersonne,
-                });
-                personne.affectations = affectations;
-            }
-            else
-            {
-                if(personne.mailPersonne != null)
-                {
-                    let affectations = await db.query(`
-                        SELECT
-                            ta.*,
-                            tc.libelleMateriel,
-                            tc.taille
-                        FROM
-                            TENUES_AFFECTATION ta
-                            LEFT OUTER JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
-                        WHERE
-                            ta.notifPersonne = true
-                            AND
-                            ta.personneNonGPM = :personneNonGPM
-                            AND
-                            ta.mailPersonneNonGPM = :mailPersonneNonGPM
-                    ;`,{
-                        personneNonGPM: personne.nomPrenom,
-                        mailPersonneNonGPM: personne.mailPersonne,
-                    });
-                    personne.affectations = affectations;
-                }else{
-                    let affectations = await db.query(`
-                        SELECT
-                            ta.*,
-                            tc.libelleMateriel,
-                            tc.taille
-                        FROM
-                            TENUES_AFFECTATION ta
-                            LEFT OUTER JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
-                        WHERE
-                            ta.notifPersonne = true
-                            AND
-                            ta.personneNonGPM = :personneNonGPM
-                            AND
-                            ta.mailPersonneNonGPM IS NULL
-                    ;`,{
-                        personneNonGPM: personne.nomPrenom,
-                    });
-                    personne.affectations = affectations;
-                }
-            }
+            let affectations = await db.query(`
+                SELECT
+                    ta.*,
+                    tc.libelleMateriel,
+                    tc.taille
+                FROM
+                    TENUES_AFFECTATION ta
+                    LEFT OUTER JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
+                WHERE
+                    ta.notifPersonne = true
+                    AND
+                    ta.personneNonGPM = :personneNonGPM
+                    AND
+                    ta.mailPersonneNonGPM = :mailPersonneNonGPM
+            ;`,{
+                personneNonGPM: personne.nomPrenom,
+                mailPersonneNonGPM: personne.mailPersonne,
+            });
+            personne.affectations = affectations;
         }
 
         /* --- Envoi des affectations faites à J-1 --- */

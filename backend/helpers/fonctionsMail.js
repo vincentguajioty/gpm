@@ -852,14 +852,11 @@ try {
         {
             tenues_retours = await db.query(`
                 SELECT
-                    nomPersonne,
-                    prenomPersonne,
                     personneNonGPM,    
                     libelleMateriel
                 FROM
                     TENUES_AFFECTATION ta
                     JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
-                    LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne
                 WHERE
                     dateRetour < CURRENT_DATE
                     OR

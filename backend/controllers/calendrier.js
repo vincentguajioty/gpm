@@ -322,13 +322,10 @@ exports.tenuesAffectations = async (req, res) => {
                 ta.idTenue,
                 ta.dateAffectation,
                 tc.libelleMateriel,
-                ta.personneNonGPM,
-                p.prenomPersonne,
-                p.nomPersonne
+                ta.personneNonGPM
             FROM
                 TENUES_AFFECTATION ta
                 JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
-                LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne
             WHERE
                 dateAffectation IS NOT NULL
         `);
@@ -347,13 +344,10 @@ exports.tenuesRetours = async (req, res) => {
                 ta.idTenue,
                 ta.dateRetour,
                 tc.libelleMateriel,
-                ta.personneNonGPM,
-                p.prenomPersonne,
-                p.nomPersonne
+                ta.personneNonGPM
             FROM
                 TENUES_AFFECTATION ta
                 JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
-                LEFT OUTER JOIN PERSONNE_REFERENTE p ON ta.idPersonne = p.idPersonne
             WHERE
                 dateRetour IS NOT NULL
         ;`);
@@ -372,12 +366,9 @@ exports.cautionsEmissions = async (req, res) => {
                 c.idCaution,
                 c.dateEmissionCaution,
                 c.detailsMoyenPaiement,
-                c.personneNonGPM,
-                p.prenomPersonne,
-                p.nomPersonne
+                c.personneNonGPM
             FROM
                 CAUTIONS c
-                LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idPersonne = p.idPersonne
             WHERE
                 dateEmissionCaution IS NOT NULL
         `);
@@ -396,12 +387,9 @@ exports.cautionsExpirations = async (req, res) => {
                 c.idCaution,
                 c.dateExpirationCaution,
                 c.detailsMoyenPaiement,
-                c.personneNonGPM,
-                p.prenomPersonne,
-                p.nomPersonne
+                c.personneNonGPM
             FROM
                 CAUTIONS c
-                LEFT OUTER JOIN PERSONNE_REFERENTE p ON c.idPersonne = p.idPersonne
             WHERE
                 dateExpirationCaution IS NOT NULL
         `);

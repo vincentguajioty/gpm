@@ -52,13 +52,12 @@ const Cautions = () => {
 
     const colonnes = [
         {
-            accessor: 'nomPrenom',
+            accessor: 'personneNonGPM',
             Header: 'Personne',
             Cell: ({ value, row }) => {
 				return(<>
                     {value}
-                    {row.original.mailPersonne != null ? <><br/><SoftBadge bg='info'>{row.original.mailPersonne}</SoftBadge></>:null}
-                    <br/>{row.original.type=='externe' ? <SoftBadge bg='secondary'>Externe</SoftBadge>:null}
+                    {row.original.mailPersonneNonGPM != null ? <><br/><SoftBadge bg='info'>{row.original.mailPersonneNonGPM}</SoftBadge></>:null}
                 </>);
 			},
         },
@@ -124,7 +123,6 @@ const Cautions = () => {
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm({
         resolver: yupResolver(cautionsForm),
     });
-    const [personnesInternes, setPersonnesInternes] = useState([]);
     const [personnesExternes, setPersonnesExternes] = useState([]);
     const [suggestionsMailsExternes, setSuggestionsMailsExternes] = useState([]);
     const handleCloseOffCanevas = () => {
@@ -139,7 +137,6 @@ const Cautions = () => {
         if(id > 0)
         {
             let oneItemFromArray = cautionsRow.filter(ligne => ligne.idCaution == id)[0];
-            setValue("idPersonne", oneItemFromArray.idPersonne > 0 ? oneItemFromArray.idPersonne : 0);
             setValue("personneNonGPM", oneItemFromArray.personneNonGPM);
             setValue("mailPersonneNonGPM", oneItemFromArray.mailPersonneNonGPM);
             setValue("montantCaution", oneItemFromArray.montantCaution);
@@ -156,10 +153,6 @@ const Cautions = () => {
         let getData = await Axios.get('/tenues/getPersonnesSuggested');
         setPersonnesExternes(getData.data);
 
-        getData = await Axios.get('/select/getNonAnonymesPersonnes');
-        getData.data.unshift({value: 0, label: '--- Un externe ---'})
-        setPersonnesInternes(getData.data);
-
         setShowOffCanevas(true);
     }
     const ajouterModifierEntree = async (data) => {
@@ -170,7 +163,6 @@ const Cautions = () => {
             {
                 const response = await Axios.post('/tenues/updateCautions',{
                     idCaution: offCanevasIdCaution,
-                    idPersonne: data.idPersonne > 0 ? data.idPersonne : null,
                     personneNonGPM: data.personneNonGPM,
                     mailPersonneNonGPM: data.mailPersonneNonGPM,
                     montantCaution: data.montantCaution,
@@ -182,7 +174,6 @@ const Cautions = () => {
             else
             {
                 const response = await Axios.post('/tenues/addCautions',{
-                    idPersonne: data.idPersonne > 0 ? data.idPersonne : null,
                     personneNonGPM: data.personneNonGPM,
                     mailPersonneNonGPM: data.mailPersonneNonGPM,
                     montantCaution: data.montantCaution,
@@ -262,24 +253,7 @@ const Cautions = () => {
                 <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
                     <Form.Group className="mb-3">
                         <Form.Label>Emise par</Form.Label>
-                        <Select
-                            id="idPersonne"
-                            name="idPersonne"
-                            size="sm"
-                            classNamePrefix="react-select"
-                            closeMenuOnSelect={true}
-                            isClearable={true}
-                            isSearchable={true}
-                            isDisabled={isLoading}
-                            placeholder='Aucune personne selectionnée'
-                            options={personnesInternes}
-                            value={personnesInternes.find(c => c.value === watch("idPersonne"))}
-                            onChange={val => val != null ? setValue("idPersonne", val.value) : setValue("idPersonne", null)}
-                        />
-                        <small className="text-danger">{errors.idPersonne?.message}</small>
-
-                        {watch("idPersonne") == 0 ? <>
-                            <Form.Control className='mt-2' placeholder="Nom et prénom" list='suggestionsExternes' size="sm" type="text" name='personneNonGPM' id='personneNonGPM' {...register('personneNonGPM')}/>
+                        <Form.Control className='mt-2' placeholder="Nom et prénom" list='suggestionsExternes' size="sm" type="text" name='personneNonGPM' id='personneNonGPM' {...register('personneNonGPM')}/>
                             <datalist id='suggestionsExternes'>
                                 {personnesExternes.map((perso, i) => {
                                     return (<option key={i} value={perso.personneNonGPM}>{perso.mailPersonneNonGPM}</option>);
@@ -294,7 +268,6 @@ const Cautions = () => {
                                 })}
                             </datalist>
                             <small className="text-danger">{errors.mailPersonneNonGPM?.message}</small>
-                        </>: null}
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Montant (€)</Form.Label>

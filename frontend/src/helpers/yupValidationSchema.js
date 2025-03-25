@@ -343,24 +343,11 @@ export const affectationsTenuesForm = Yup.object().shape({
         .date()
         .typeError(champObligatoire)
         .required(champObligatoire),
-    idPersonne: Yup
-        .number()
-        .typeError(champObligatoire)
-        .min(0, champObligatoire)
-        .required(champObligatoire),
-        personneNonGPM: Yup
+    personneNonGPM: Yup
         .string()
         .typeError(champObligatoire)
         .nullable(true)
-        .test('isExternal', champObligatoire,
-            function(value){
-                if(idPersonne.value == 0)
-                {
-                    if(value == null || value == ''){return false;}
-                }
-                return true;
-            }
-        ),
+        .required(champObligatoire),
     mailPersonneNonGPM: Yup
         .string().email()
         .typeError(champObligatoire)
@@ -377,24 +364,11 @@ export const cautionsForm = Yup.object().shape({
         .typeError(champObligatoire)
         .min(0, champObligatoire)
         .required(champObligatoire),
-    idPersonne: Yup
-        .number()
-        .typeError(champObligatoire)
-        .min(0, champObligatoire)
-        .required(champObligatoire),
     personneNonGPM: Yup
         .string()
         .typeError(champObligatoire)
         .nullable(true)
-        .test('isExternal', champObligatoire,
-            function(value){
-                if(idPersonne.value == 0)
-                {
-                    if(value == null || value == ''){return false;}
-                }
-                return true;
-            }
-        ),
+        .required(champObligatoire),
     mailPersonneNonGPM: Yup
         .string().email()
         .typeError(champObligatoire)

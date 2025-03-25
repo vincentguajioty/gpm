@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, } from 'react-bootstrap';
-import FalconComponentCard from 'components/common/FalconComponentCard';
-import ActionButton from 'components/common/ActionButton';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import PageHeader from 'components/common/PageHeader';
 import WidgetSectionTitle from 'components/widgets/WidgetSectionTitle';
@@ -17,7 +15,6 @@ const AffectationsTenues = () => {
     const [affectationsRow, setAffectationsRow] = useState([]);
 
     const [catalogue, setCatalogue] = useState([]);
-    const [personnesInternes, setPersonnesInternes] = useState([]);
     const [personnesExternes, setPersonnesExternes] = useState([]);
 
     const [pageNeedsRefresh, setPageNeedsRefresh] = useState(false);
@@ -34,10 +31,6 @@ const AffectationsTenues = () => {
 
             getData = await Axios.get('/tenues/getPersonnesSuggested');
             setPersonnesExternes(getData.data);
-
-            getData = await Axios.get('/select/getNonAnonymesPersonnes');
-            getData.data.unshift({value: 0, label: '--- Affecté à un externe ---'})
-            setPersonnesInternes(getData.data);
             
             setReadyToDisplay(true);
         } catch (error) {
@@ -92,7 +85,6 @@ const AffectationsTenues = () => {
                         affectations={affectations}
                         affectationsRow={affectationsRow}
                         catalogue={catalogue}
-                        personnesInternes={personnesInternes}
                         personnesExternes={personnesExternes}
                         setPageNeedsRefresh={setPageNeedsRefresh}
                     />
