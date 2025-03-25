@@ -10,8 +10,6 @@ export const annuaireDelete = <>
         <li>Les véhicules gérés par cette personne ne seront plus affectés (véhicules, taches de maintenance, relevés kilométriques, désinfections, maintenances régulières).</li>
         <li>Les taches ToDoList que cet utilisateur n'a pas encore réalisée seront gardées mais non-affectées.</li>
         <li>Les taches ToDoList que cet utilisateur a donné à d'autres utilisateurs seront maintenues.</li>
-        <li>Les affectations d'éléments de tenue de cette personne seront supprimées, les tenue seront recréditée au stock.</li>
-        <li>Les cautions de cette personne seront supprimées.</li>
         <li>Les opérations saisies par cette personne dans les centres de couts seront anonymisées.</li>
     </ul>
 </>;
