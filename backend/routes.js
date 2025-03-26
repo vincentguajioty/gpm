@@ -67,6 +67,7 @@ router.get('/select/getPersonnes',                             loggerMiddleware.
 router.get('/select/getActivePersonnes',                       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getActivePersonnes);
 router.get('/select/getActivePersonnesAccesAlertesLots',       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getActivePersonnesAccesAlertesLots);
 router.get('/select/getActivePersonnesAccesAlertesVehicules',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getActivePersonnesAccesAlertesVehicules);
+router.get('/select/getActivePersonnesAccesAlertesVHF',        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getActivePersonnesAccesAlertesVHF);
 router.get('/select/getActivePersonnesForCmdAffectation',      loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getActivePersonnesForCmdAffectation);
 router.get('/select/getActivePersonnesAccesCDC',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getActivePersonnesAccesCDC);
 router.get('/select/getNonAnonymesPersonnes',                  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),      selectForListsCtrl.getNonAnonymesPersonnes);
@@ -123,6 +124,7 @@ router.get('/select/getPublicCatalogueMateriel',               middlewaresFuncti
 router.get('/select/getLotsPublics',                           middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), loggerMiddleware.httpLogger(), selectForListsCtrl.getLotsPublics);
 router.get('/select/getConteneursPublics',                     middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), loggerMiddleware.httpLogger(), selectForListsCtrl.getConteneursPublics);
 router.get('/select/getVehiculesPublics',                      middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), loggerMiddleware.httpLogger(), selectForListsCtrl.getVehiculesPublics);
+router.get('/select/getVHFPublics',                            middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), loggerMiddleware.httpLogger(), selectForListsCtrl.getVHFPublics);
 
 //Composant Calendrier
 router.get('/calendrier/peremptionsLots',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),       calendrierCtrl.peremptionsLots);
@@ -412,6 +414,13 @@ router.post('/vhf/getOneVhfStock',         loggerMiddleware.httpLogger(), jwtFun
 router.post('/vhf/addVhfStock',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_ajout']),         loggerMiddleware.modificationLogger(), vhfCtrl.addVhfStock);
 router.post('/vhf/updateVhfStock',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_modification']),  loggerMiddleware.modificationLogger(), vhfCtrl.updateVhfStock);
 router.post('/vhf/deleteVhfStock',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_equipement_suppression',]) , loggerMiddleware.suppressionLogger(),  vhfCtrl.deleteVhfStock);
+//VHF - Alertes bénévoles - PUBLIC
+router.post('/vhf/createAlerte',     middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), loggerMiddleware.httpLogger(),       vhfCtrl.createAlerte);
+//VHF - Alertes bénévoles
+router.post('/vhf/getVHFAlertes',       loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['alertesBenevolesVHF_lecture']),                                                                                              vhfCtrl.getVHFAlertes);
+router.post('/vhf/autoAffect',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['alertesBenevolesVHF_affectation']),                                                 loggerMiddleware.modificationLogger(),   vhfCtrl.autoAffect);
+router.post('/vhf/affectationTier',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['alertesBenevolesVHF_affectationTier']),                                             loggerMiddleware.modificationLogger(),   vhfCtrl.affectationTier);
+router.post('/vhf/udpateStatut',        loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['connexion_connexion']),                      middlewaresFunctions.alerteVHFOwned(), loggerMiddleware.modificationLogger(),   vhfCtrl.udpateStatut);
 
 //referentiels
 router.get('/referentiels/getReferentiels',                   loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['typesLots_lecture']),                                                                  referentielsCtrl.getReferentiels);

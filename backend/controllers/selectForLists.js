@@ -118,6 +118,27 @@ exports.getActivePersonnesAccesAlertesVehicules = async (req, res)=>{
     }
 }
 
+exports.getActivePersonnesAccesAlertesVHF = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idPersonne as value,
+                identifiant as label
+            FROM
+                VIEW_HABILITATIONS
+            WHERE
+                connexion_connexion = true
+                AND alertesBenevolesVHF_affectation = true
+            ORDER BY
+                identifiant
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
 exports.getActivePersonnesForCmdAffectation = async (req, res)=>{
     try {
         let results = await db.query(`
@@ -1214,6 +1235,26 @@ exports.getVehiculesPublics = async (req, res)=>{
                 dispoBenevoles = true
             ORDER BY
                 libelleVehicule
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.getVHFPublics = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                idVhfEquipement as value,
+                vhfIndicatif as label
+            FROM
+                VHF_EQUIPEMENTS
+            WHERE
+                dispoBenevoles = true
+            ORDER BY
+                vhfIndicatif
         ;`);
         res.send(results);
     } catch (error) {

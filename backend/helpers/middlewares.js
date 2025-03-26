@@ -177,6 +177,32 @@ const alerteLotOwned = () => {
     }
 }
 
+const alerteVHFOwned = () => {
+    return async function(req, res, next) {
+        const alerte = await db.query(`
+            SELECT
+                idTraitant
+            FROM
+                VHF_ALERTES
+            WHERE
+                idAlerte = :idAlerte
+        `,{
+            idAlerte : req.body.idAlerte,
+        });
+        if(alerte.length == 1 && (alerte[0].idTraitant == null || alerte[0].idTraitant == req.verifyJWTandProfile.idPersonne))
+        {
+            next();
+        }
+        else
+        {
+            logger.info('Accès refusé par ACL et référence idPersonne croisée');
+            res.status(403);
+            res.send('Accès refusé par le contrôle de profile');
+        }
+        
+    }
+}
+
 const checkFunctionnalityBenevolesEnabled = () => {
     return async function(req, res, next) {
         let verifFonctionnalite = await fonctionsMetiers.checkFunctionnalityBenevolesEnabled();
@@ -337,6 +363,7 @@ module.exports = {
     addToHimself,
     alerteVehiculeOwned,
     alerteLotOwned,
+    alerteVHFOwned,
     checkFunctionnalityBenevolesEnabled,
     checkCmdStage,
     checkCmdRole,

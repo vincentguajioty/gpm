@@ -12,6 +12,7 @@ import LotsTable from '../lots/lotsOpe/lotsTable';
 import VehiculesTable from '../vehicules/vehiculesTable';
 import AlertesBenevolesLotsTable from '../lots/alertesBenevolesTable';
 import AlertesBenevolesVehiculesTable from '../vehicules/alertesBenevolesTable';
+import AlertesBenevolesVhfTable from '../transmissions/alertesBenevolesTable';
 import ToDoListTable from '../settings/todolist/todolistTable';
 import CommandesTableHomePage from '../commandes/commandesTableHomePage';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
@@ -115,6 +116,22 @@ const Home = () => {
 								<AlertesBenevolesVehiculesTable
 									filterForHomePage={true}
 									boxTitle="Alertes bénévoles sur les véhicules (nouvelles ou qui me sont affectées)"
+									displayNomDeclarant={false}
+									displayDateCreationAlerte={false}
+								/>
+							</FalconComponentCard.Body>
+						</FalconComponentCard>
+					: null}
+
+					{modulesToDisplay.alertesVHF ?
+						<FalconComponentCard noGuttersBottom className="mb-3">
+							<FalconComponentCard.Body
+								scope={{ ActionButton }}
+								noLight
+							>
+								<AlertesBenevolesVhfTable
+									filterForHomePage={true}
+									boxTitle="Alertes bénévoles sur les transmissions (nouvelles ou qui me sont affectées)"
 									displayNomDeclarant={false}
 									displayDateCreationAlerte={false}
 								/>

@@ -289,7 +289,7 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		MAX(alertesBenevolesVehicules_lecture)         as alertesBenevolesVehicules_lecture,
 		MAX(alertesBenevolesVehicules_affectation)     as alertesBenevolesVehicules_affectation,
 		MAX(alertesBenevolesVehicules_affectationTier) as alertesBenevolesVehicules_affectationTier,
-    MAX(alertesBenevolesVHF_lecture)               as alertesBenevolesVHF_lecture,
+        MAX(alertesBenevolesVHF_lecture)               as alertesBenevolesVHF_lecture,
 		MAX(alertesBenevolesVHF_affectation)           as alertesBenevolesVHF_affectation,
 		MAX(alertesBenevolesVHF_affectationTier)       as alertesBenevolesVHF_affectationTier,
 		MAX(consommationLots_lecture)                  as consommationLots_lecture,
@@ -305,5 +305,44 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 	GROUP BY
 		p.idPersonne
 ;
+
+CREATE TABLE VHF_ALERTES_ETATS(
+	idVHFAlertesEtat INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	libelleVHFAlertesEtat TEXT,
+	couleurVHFAlertesEtat VARCHAR(15)
+);
+INSERT INTO VHF_ALERTES_ETATS SET idVHFAlertesEtat = 1, libelleVHFAlertesEtat = 'Nouveau', couleurVHFAlertesEtat = 'danger';
+INSERT INTO VHF_ALERTES_ETATS SET idVHFAlertesEtat = 2, libelleVHFAlertesEtat = 'En cours de traitement', couleurVHFAlertesEtat = 'info';
+INSERT INTO VHF_ALERTES_ETATS SET idVHFAlertesEtat = 3, libelleVHFAlertesEtat = 'En attente', couleurVHFAlertesEtat = 'info';
+INSERT INTO VHF_ALERTES_ETATS SET idVHFAlertesEtat = 4, libelleVHFAlertesEtat = 'Résolu', couleurVHFAlertesEtat = 'success';
+INSERT INTO VHF_ALERTES_ETATS SET idVHFAlertesEtat = 5, libelleVHFAlertesEtat = 'Doublon', couleurVHFAlertesEtat = 'secondary';
+
+CREATE TABLE VHF_ALERTES(
+	idAlerte INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	idVHFAlertesEtat INT,
+	dateCreationAlerte DATETIME,
+	datePriseEnCompteAlerte DATETIME,
+	dateResolutionAlerte DATETIME,
+	nomDeclarant TEXT,
+	mailDeclarant TEXT,
+	ipDeclarant TEXT,
+	idVhfEquipement INT,
+	messageAlerteVHF TEXT,
+	idTraitant INT,
+	CONSTRAINT fk_alertesVHF_etat
+		FOREIGN KEY (idVHFAlertesEtat)
+		REFERENCES VHF_ALERTES_ETATS(idVHFAlertesEtat),
+	CONSTRAINT fk_alertesVHF_VHF
+		FOREIGN KEY (idVhfEquipement)
+		REFERENCES VHF_EQUIPEMENTS(idVhfEquipement),
+	CONSTRAINT fk_alertesVHF_traitant
+		FOREIGN KEY (idTraitant)
+		REFERENCES PERSONNE_REFERENTE(idPersonne));
+
+ALTER TABLE CONFIG ADD alertes_benevoles_vhf BOOLEAN;
+UPDATE CONFIG SET alertes_benevoles_vhf = 0;
+
+ALTER TABLE VHF_EQUIPEMENTS ADD dispoBenevoles BOOLEAN;
+UPDATE VHF_EQUIPEMENTS SET dispoBenevoles = 0;
 
 UPDATE CONFIG SET version = '16.0';

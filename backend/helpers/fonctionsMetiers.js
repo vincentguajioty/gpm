@@ -1665,11 +1665,12 @@ const checkFunctionnalityBenevolesEnabled = async () => {
             SELECT
                 consommation_benevoles,
                 alertes_benevoles_lots,
-                alertes_benevoles_vehicules
+                alertes_benevoles_vehicules,
+                alertes_benevoles_vhf
             FROM
                 CONFIG
         `);
-        if(getConfig[0].consommation_benevoles == true || getConfig[0].alertes_benevoles_lots == true || getConfig[0].alertes_benevoles_vehicules == true)
+        if(getConfig[0].consommation_benevoles == true || getConfig[0].alertes_benevoles_lots == true || getConfig[0].alertes_benevoles_vehicules == true || getConfig[0].alertes_benevoles_vhf == true)
         {
             return true;
         }

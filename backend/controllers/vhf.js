@@ -1,6 +1,7 @@
 const db = require('../db');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
+const fonctionsMail = require('../helpers/fonctionsMail');
 const logger = require('../winstonLogger');
 const multer = require('multer');
 
@@ -512,6 +513,24 @@ exports.getEquipementsVhf = async (req, res)=>{
             ORDER BY
                 e.vhfIndicatif
         ;`);
+        for(const equipement of results)
+        {
+            let alertesBenevoles = await db.query(`
+                SELECT
+                    COUNT(a.idAlerte) as nbAlertesEnCours
+                FROM
+                    VHF_ALERTES a
+                    LEFT OUTER JOIN VHF_ALERTES_ETATS e ON a.idVHFAlertesEtat = e.idVHFAlertesEtat
+                    LEFT OUTER JOIN PERSONNE_REFERENTE p ON a.idTraitant = p.idPersonne
+                WHERE
+                    idVhfEquipement = :idVhfEquipement
+                    AND dateResolutionAlerte IS NULL
+            ;`,{
+                idVhfEquipement: equipement.idVhfEquipement
+            });
+
+            equipement.nbAlertesEnCours = alertesBenevoles[0].nbAlertesEnCours;
+        }
         res.send(results);
     } catch (error) {
         logger.error(error);
@@ -565,10 +584,7 @@ exports.getOneEquipement = async (req, res)=>{
                 idVhfEquipement: device.idVhfEquipement,
             });
             device.accessoires = accessoires;
-        }
 
-        for(const device of results)
-        {
             let documents = await db.query(`
                 SELECT
                     *
@@ -582,6 +598,28 @@ exports.getOneEquipement = async (req, res)=>{
                 idVhfEquipement: device.idVhfEquipement,
             });
             device.documents = documents;
+
+            let alertesBenevoles = await db.query(`
+                SELECT
+                    a.*,
+                    p.identifiant,
+                    p.nomPersonne,
+                    p.prenomPersonne,
+                    e.libelleVHFAlertesEtat,
+                    e.couleurVHFAlertesEtat
+                FROM
+                    VHF_ALERTES a
+                    LEFT OUTER JOIN VHF_ALERTES_ETATS e ON a.idVHFAlertesEtat = e.idVHFAlertesEtat
+                    LEFT OUTER JOIN PERSONNE_REFERENTE p ON a.idTraitant = p.idPersonne
+                WHERE
+                    idVhfEquipement = :idVhfEquipement
+                ORDER BY
+                    a.dateCreationAlerte DESC
+            ;`,{
+                idVhfEquipement: device.idVhfEquipement
+            });
+
+            device.alertesBenevoles = alertesBenevoles;
         }
 
         res.send(results);
@@ -597,7 +635,8 @@ exports.addEquipement = async (req, res)=>{
             INSERT INTO
                 VHF_EQUIPEMENTS
             SET
-                vhfIndicatif = :vhfIndicatif
+                vhfIndicatif = :vhfIndicatif,
+                dispoBenevoles = false
         `,{
             vhfIndicatif: req.body.vhfIndicatif || null,
         });
@@ -629,6 +668,7 @@ exports.updateEquipement = async (req, res)=>{
                 idVhfPlan = :idVhfPlan,
                 dateDerniereProg = :dateDerniereProg,
                 idResponsable = :idResponsable,
+                dispoBenevoles = :dispoBenevoles,
                 remarquesVhfEquipement = :remarquesVhfEquipement
             WHERE
                 idVhfEquipement = :idVhfEquipement
@@ -642,6 +682,7 @@ exports.updateEquipement = async (req, res)=>{
             idVhfPlan: req.body.idVhfPlan || null,
             dateDerniereProg: req.body.dateDerniereProg || null,
             idResponsable: req.body.idResponsable || null,
+            dispoBenevoles: req.body.dispoBenevoles || false,
             remarquesVhfEquipement: req.body.remarquesVhfEquipement || null,
             idVhfEquipement: req.body.idVhfEquipement,
         });
@@ -831,7 +872,7 @@ exports.dropEquipementsDocument = async (req, res)=>{
     }
 }
 
-//Véhicules - stocks de consommables
+//VHF - stocks de consommables
 exports.getAllVhfStock = async (req, res)=>{
     try {
         let results = await db.query(`
@@ -954,6 +995,182 @@ exports.deleteVhfStock = async (req, res)=>{
     try {
         const deleteResult = await fonctionsDelete.vhfStockDelete(req.verifyJWTandProfile.idPersonne , req.body.idVhfStock);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//VHF - Alertes bénévoles
+exports.getVHFAlertes = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT
+                a.*,
+                e.libelleVHFAlertesEtat,
+                e.couleurVHFAlertesEtat,
+                v.vhfIndicatif,
+                p.nomPersonne,
+                p.prenomPersonne
+            FROM
+                VHF_ALERTES a
+                LEFT OUTER JOIN VHF_ALERTES_ETATS e ON a.idVHFAlertesEtat = e.idVHFAlertesEtat
+                LEFT OUTER JOIN VHF_EQUIPEMENTS v ON a.idVhfEquipement = v.idVhfEquipement
+                LEFT OUTER JOIN PERSONNE_REFERENTE p ON a.idTraitant = p.idPersonne
+            ORDER BY
+                a.dateCreationAlerte DESC
+        ;`);
+
+        if(req.body.idVhfEquipement && req.body.idVhfEquipement != null && req.body.idVhfEquipement > 0)
+        {
+            results = results.filter(alerte => alerte.idVhfEquipement == req.body.idVhfEquipement)
+        }
+
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.autoAffect = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VHF_ALERTES
+            SET
+                idTraitant = :idTraitant,
+                idVHFAlertesEtat = 2,
+                datePriseEnCompteAlerte = CURRENT_TIMESTAMP
+            WHERE
+                idAlerte = :idAlerte
+        `,{
+            idTraitant : req.verifyJWTandProfile.idPersonne,
+            idAlerte: req.body.idAlerte,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.affectationTier = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VHF_ALERTES
+            SET
+                idTraitant = :idTraitant,
+                idVHFAlertesEtat = 2,
+                datePriseEnCompteAlerte = CURRENT_TIMESTAMP
+            WHERE
+                idAlerte = :idAlerte
+        `,{
+            idTraitant : req.body.idTraitant,
+            idAlerte: req.body.idAlerte,
+        });
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.udpateStatut = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            UPDATE
+                VHF_ALERTES
+            SET
+                idVHFAlertesEtat = :idVHFAlertesEtat
+            WHERE
+                idAlerte = :idAlerte
+        `,{
+            idAlerte: req.body.idAlerte,
+            idVHFAlertesEtat: req.body.idVHFAlertesEtat,
+        });
+
+        if(req.body.idVHFAlertesEtat == 4 || req.body.idVHFAlertesEtat == 5)
+        {
+            const result = await db.query(`
+                UPDATE
+                    VHF_ALERTES
+                SET
+                    dateResolutionAlerte = CURRENT_TIMESTAMP
+                WHERE
+                    idAlerte = :idAlerte
+            `,{
+                idAlerte: req.body.idAlerte,
+            });
+        }
+
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+//VHF - Alertes bénévoles Création publique
+exports.createAlerte = async (req, res)=>{
+    try {
+        const result = await db.query(`
+            INSERT INTO
+                VHF_ALERTES
+            SET
+                idVHFAlertesEtat = 1,
+                dateCreationAlerte = CURRENT_TIMESTAMP,
+                nomDeclarant = :nomDeclarant,
+                mailDeclarant = :mailDeclarant,
+                idVhfEquipement = :idVhfEquipement,
+                messageAlerteVHF = :messageAlerteVHF
+        `,{
+            nomDeclarant: req.body.nomDeclarant || null,
+            mailDeclarant: req.body.mailDeclarant || null,
+            idVhfEquipement: req.body.idVhfEquipement || null,
+            messageAlerteVHF: req.body.messageAlerteVHF || null,
+        });
+
+        let selectLast = await db.query(
+            'SELECT MAX(idAlerte) as idAlerte FROM VHF_ALERTES;'
+        );
+
+        if(req.body.mailDeclarant && req.body.mailDeclarant != null && req.body.mailDeclarant != "")
+        {
+            await fonctionsMail.registerToMailQueue({
+                typeMail: 'confirmationAlerteVHF',
+                idObject: selectLast[0].idAlerte,
+                otherMail: req.body.mailDeclarant,
+            });
+        }
+        
+        const usersToNotify = await db.query(`
+            SELECT
+                idPersonne
+            FROM
+                VIEW_HABILITATIONS
+            WHERE
+                notif_benevoles_vhf = true
+                AND
+                notifications = true
+                AND
+                mailPersonne IS NOT NULL
+                AND
+                mailPersonne <> ""
+        `);
+        for(const personne of usersToNotify)
+        {
+            await fonctionsMail.registerToMailQueue({
+                typeMail: 'alerteBenevolesVHF',
+                idPersonne: personne.idPersonne,
+                idObject: selectLast[0].idAlerte,
+            });
+        }
+
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

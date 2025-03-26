@@ -63,7 +63,7 @@ const Landing = () => {
 		else
 		{
 			return (<>
-				{!ConfigurationService.config['alertes_benevoles_lots'] && !ConfigurationService.config['alertes_benevoles_vehicules'] && !ConfigurationService.config['consommation_benevoles'] ? <Navigate replace to="/home" /> : null}
+				{!ConfigurationService.config['alertes_benevoles_lots'] && !ConfigurationService.config['alertes_benevoles_vehicules'] && !ConfigurationService.config['alertes_benevoles_vhf'] && !ConfigurationService.config['consommation_benevoles'] ? <Navigate replace to="/home" /> : null}
 				
 				<Row className="justify-content-center text-center mb-3 mt-3">
 					<Col lg={8} xl={7} xxl={6} className="col-xxl-6">
@@ -97,7 +97,7 @@ const Landing = () => {
 						</Col>
 					: null}
 	
-					{ConfigurationService.config['alertes_benevoles_lots'] || ConfigurationService.config['alertes_benevoles_vehicules'] ?
+					{ConfigurationService.config['alertes_benevoles_lots'] || ConfigurationService.config['alertes_benevoles_vehicules'] || ConfigurationService.config['alertes_benevoles_vhf'] ?
 						<Col lg={4} className='mb-2'>
 							<Flex
 								alignItems="center"

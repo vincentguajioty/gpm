@@ -65,6 +65,13 @@ const Equipements = () => {
             Header: 'Accessoires',
         },
         {
+            accessor: 'nbAlertesEnCours',
+            Header: 'Alertes bénévoles',
+            Cell: ({ value, row }) => {
+                return(row.original.nbAlertesEnCours > 0 ? <SoftBadge>{row.original.nbAlertesEnCours}</SoftBadge> : null);
+            },
+        },
+        {
             accessor: 'libellePlan',
             Header: 'Plan de fréquence',
             Cell: ({ value, row }) => {

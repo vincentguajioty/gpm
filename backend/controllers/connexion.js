@@ -679,6 +679,7 @@ exports.getConfig = async (req, res) => {
                 resetPassword,
                 alertes_benevoles_lots,
                 alertes_benevoles_vehicules,
+                alertes_benevoles_vhf,
                 consommation_benevoles,
                 consommation_benevoles_auto,
                 mailserver,
@@ -964,6 +965,17 @@ exports.getIndividualHomePageDetails = async (req, res, next)=>{
         });
         alertesVehicules = alertesVehicules[0].nb > 0 ? true : false;
 
+        let alertesVHF = await db.query(`
+            SELECT COUNT(idAlerte) as nb FROM VHF_ALERTES WHERE
+                (idVHFAlertesEtat = 1)
+                OR (idTraitant = :idPersonne AND idVHFAlertesEtat = 2)
+                OR (idTraitant = :idPersonne AND idVHFAlertesEtat = 3)
+            ;
+        `,{
+            idPersonne : req.verifyJWTandProfile.idPersonne,
+        });
+        alertesVHF = alertesVHF[0].nb > 0 ? true : false;
+
         let allCmdPending = await db.query(`
             SELECT
                 c.*,
@@ -1005,6 +1017,7 @@ exports.getIndividualHomePageDetails = async (req, res, next)=>{
             vehiculesEnCharge: vehiculesEnCharge && req.verifyJWTandProfile.vehicules_lecture == true,
             alertesLots: alertesLots && req.verifyJWTandProfile.alertesBenevolesLots_lecture == true,
             alertesVehicules: alertesVehicules && req.verifyJWTandProfile.alertesBenevolesVehicules_lecture == true,
+            alertesVHF: alertesVHF && req.verifyJWTandProfile.alertesBenevolesVHF_lecture == true,
             calendrier: true,
             checkListParc:
                 personne.conf_indicateur1Accueil == true

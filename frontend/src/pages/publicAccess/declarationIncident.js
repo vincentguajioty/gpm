@@ -10,15 +10,17 @@ import { Axios } from 'helpers/axios';
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { alerteBenevoleLots, alerteBenevoleVehicules } from 'helpers/yupValidationSchema';
+import { alerteBenevoleLots, alerteBenevoleVehicules, alerteBenevoleVHF } from 'helpers/yupValidationSchema';
 
 const DeclarationIncident = () => {
     const [incidentLotOk, setIncidentLotOk] = useState(false);
     const [incidentVehiculeOk, setIncidentVehiculeOk] = useState(false);
+    const [incidentVHFOk, setIncidentVHFOk] = useState(false);
     const [isLoading, setLoading] = useState(false);
 
     const [lots, setLots] = useState([]);
     const [vehicules, setVehicules] = useState([]);
+    const [vhf, setVhf] = useState([]);
 
     const initListes = async () => {
         try {
@@ -27,6 +29,9 @@ const DeclarationIncident = () => {
 
             getFromDb = await Axios.get('/select/getVehiculesPublics');
             setVehicules(getFromDb.data);
+
+            getFromDb = await Axios.get('/select/getVHFPublics');
+            setVhf(getFromDb.data);
         } catch (error) {
             console.log(error)
         }
@@ -97,6 +102,39 @@ const DeclarationIncident = () => {
             setLoading(false);
             setIncidentVehiculeOk(true);
             handleCloseVehiculesModal();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    /* MODAL VHF */
+    const [showVHFModal, setShowVHFModal] = useState(false);
+    const { register: registerVHF, handleSubmit: handleSubmitVHF, formState: { errors: errorsVHF }, setValue: setValueVHF, reset: resetVHF, watch: watchVHF } = useForm({
+        resolver: yupResolver(alerteBenevoleVHF),
+    });
+    const handleCloseVHFModal = () => {
+        setShowVHFModal(false);
+        setLoading(false);
+        resetVHF();
+    };
+    const handleShowVHFModal = () => {
+        setShowVHFModal(true);
+        setIncidentVHFOk(false);
+    };
+    const saveAlerteVHF = async (data) => {
+        try {
+            setLoading(true);
+
+            const response = await Axios.post('/vhf/createAlerte',{
+                nomDeclarant: data.nomDeclarant,
+                mailDeclarant: data.mailDeclarant,
+                idVhfEquipement: data.idVhfEquipement,
+                messageAlerteVHF: data.messageAlerteVHF,
+            });
+
+            setLoading(false);
+            setIncidentVHFOk(true);
+            handleCloseVHFModal();
         } catch (error) {
             console.log(error)
         }
@@ -213,6 +251,58 @@ const DeclarationIncident = () => {
             </Modal.Footer>
         </Modal>
 
+        <Modal show={showVHFModal} onHide={handleCloseVHFModal} backdrop="static" keyboard={false}>
+            <Modal.Header>
+                <Modal.Title>Alerte sur un équipement de transmission</Modal.Title>
+                <FalconCloseButton onClick={handleCloseVHFModal}/>
+            </Modal.Header>
+            <Modal.Body>
+                <Form onSubmit={handleSubmitVHF(saveAlerteVHF)}>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Votre Nom/Prénom</Form.Label>
+                        <Form.Control size="sm" type="text" name='nomDeclarant' id='nomDeclarant' {...registerVHF('nomDeclarant')}/>
+                        <small className="text-danger">{errorsVHF.nomDeclarant?.message}</small>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Votre adresse email</Form.Label>
+                        <Form.Control size="sm" type="text" name='mailDeclarant' id='mailDeclarant' {...registerVHF('mailDeclarant')}/>
+                        <small className="text-danger">{errorsVHF.mailDeclarant?.message}</small>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Selectionner l'équipement qui pose problème</Form.Label>
+                        <Select
+                            id="idVhfEquipement"
+                            name="idVhfEquipement"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            isDisabled={isLoading}
+                            placeholder='Aucun item selectionné'
+                            options={vhf}
+                            value={vhf.find(c => c.value === watchVHF("idVhfEquipement"))}
+                            onChange={val => val != null ? setValueVHF("idVhfEquipement", val.value) : setValueVHF("idVhfEquipement", null)}
+                        />
+                        <small className="text-danger">{errorsVHF.idVhfEquipement?.message}</small>
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Commentaires</Form.Label>
+                        <Form.Control size="sm" as="textarea" rows={5} name='messageAlerteVHF' id='messageAlerteVHF' {...registerVHF('messageAlerteVHF')}/>
+                        <small className="text-danger">{errorsVHF.messageAlerteVHF?.message}</small>
+                    </Form.Group>
+                    <div className="d-grid gap-2 mt-3">
+                        <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Envoyer l\'alerte'}</Button>
+                    </div>
+                </Form>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseVHFModal}>
+                    Annuler
+                </Button>
+            </Modal.Footer>
+        </Modal>
+
         <Row className="justify-content-center text-center">
             {ConfigurationService.config['alertes_benevoles_lots'] ?
                 <Col lg={4} className='mt-5 mb-2'>
@@ -245,6 +335,25 @@ const DeclarationIncident = () => {
                         <Card.Body className="pt-6 pb-4">
                             <h5>Incident sur un véhicule</h5>
                             {incidentVehiculeOk ?
+                                <Alert variant='success' className='mt-3'>Incident enregistré, merci pour votre remontée</Alert>
+                            : null}
+                        </Card.Body>
+                    </Card>
+                </Col>
+            : null}
+
+            {ConfigurationService.config['alertes_benevoles_vhf'] ?
+                <Col lg={4} className='mt-5 mb-2'>
+                    <Card className="card-span" onClick={handleShowVHFModal}>
+                        <div className="card-span-img">
+                            <FontAwesomeIcon
+                                icon='wifi'
+                                className='text-warning fs-3'
+                            />
+                        </div>
+                        <Card.Body className="pt-6 pb-4">
+                            <h5>Incident sur un équipement de transmission</h5>
+                            {incidentVHFOk ?
                                 <Alert variant='success' className='mt-3'>Incident enregistré, merci pour votre remontée</Alert>
                             : null}
                         </Card.Body>

@@ -54,6 +54,7 @@ const EquipementVhfProprietes = ({equipement, setPageNeedsRefresh}) => {
             setValue("idVhfPlan", equipement.idVhfPlan);
             setValue("dateDerniereProg", equipement.dateDerniereProg ? new Date(equipement.dateDerniereProg) : null);
             setValue("idResponsable", equipement.idResponsable);
+            setValue("dispoBenevoles", equipement.dispoBenevoles ? true : false);
             setValue("remarquesVhfEquipement", equipement.remarquesVhfEquipement);
 
             let getData = await Axios.get('/select/getEtatsVHF');
@@ -88,6 +89,7 @@ const EquipementVhfProprietes = ({equipement, setPageNeedsRefresh}) => {
                 dateDerniereProg: data.dateDerniereProg,
                 idResponsable: data.idResponsable,
                 remarquesVhfEquipement: data.remarquesVhfEquipement,
+                dispoBenevoles: data.dispoBenevoles,
             });
 
             setPageNeedsRefresh(true);
@@ -264,6 +266,22 @@ const EquipementVhfProprietes = ({equipement, setPageNeedsRefresh}) => {
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td className="bg-100" style={{ width: '30%' }}>Disponible aux bénévoles</td>
+                                        <td>
+                                            <Form.Check
+                                                id='dispoBenevoles'
+                                                name='dispoBenevoles'
+                                                label="Rapports d'incidents"
+                                                type='switch'
+                                                checked={watch("dispoBenevoles")}
+                                                onClick={(e)=>{
+                                                    setValue("dispoBenevoles", !watch("dispoBenevoles"))
+                                                }}
+                                            />
+                                            <small className="text-danger">{errors.dispoBenevoles?.message}</small>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td className="bg-100" style={{ width: '30%' }}>Remarques</td>
                                         <td>
                                             <Form.Control size="sm" as="textarea" rows={3} name="remarquesVhfEquipement" id="remarquesVhfEquipement" {...register("remarquesVhfEquipement")}/>
@@ -320,6 +338,10 @@ const EquipementVhfProprietes = ({equipement, setPageNeedsRefresh}) => {
                             <tr>
                                 <td className="bg-100" style={{ width: '30%' }}>Responsable</td>
                                 <td>{equipement.identifiant}</td>
+                            </tr>
+                            <tr>
+                                <td className="bg-100" style={{ width: '30%' }}>Accessible aux bénévoles pour la consommation et la remontée d'incidents</td>
+                                <td><SoftBadge bg={equipement.dispoBenevoles ? 'warning' : 'success'}>{equipement.dispoBenevoles ? 'Accessible' : 'Verrouillé'}</SoftBadge></td>
                             </tr>
                             <tr>
                                 <td className="bg-100" style={{ width: '30%' }}>Remarques</td>

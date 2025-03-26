@@ -47,6 +47,7 @@ import Plans from 'pages/internalApp/transmissions/plans';
 import Equipements from 'pages/internalApp/transmissions/equipements';
 import EquipementVhfDetails from 'pages/internalApp/transmissions/equipementDetails';
 import TransmissionsStock from 'pages/internalApp/transmissions/transmissionsStock';
+import AlertesBenevolesVhf from 'pages/internalApp/transmissions/alertesBenevolesVehicules';
 
 import Vehicules from 'pages/internalApp/vehicules/vehicules';
 import VehiculeDetails from 'pages/internalApp/vehicules/vehiculeDetails';
@@ -132,6 +133,7 @@ const FalconRoutes = () => {
           <Route path="/vhfEquipements" element={<Equipements />} />
           <Route path="/vhfEquipements/:idVhfEquipement" element={<EquipementVhfDetails />} />
           <Route path="/vhfStock" element={<TransmissionsStock />} />
+          <Route path="/vhfAlertesBenevoles" element={<AlertesBenevolesVhf />} />
 
           <Route path="/vehicules" element={<Vehicules />} />
           <Route path="/vehicules/:idVehicule" element={<VehiculeDetails />} />

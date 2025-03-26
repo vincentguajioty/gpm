@@ -30,7 +30,7 @@ if(ConfigurationService.config)
         )
     }
 
-    if(!ConfigurationService.config['maintenance'] && (ConfigurationService.config['alertes_benevoles_lots'] || ConfigurationService.config['alertes_benevoles_vehicules']))
+    if(!ConfigurationService.config['maintenance'] && (ConfigurationService.config['alertes_benevoles_lots'] || ConfigurationService.config['alertes_benevoles_vehicules'] || ConfigurationService.config['alertes_benevoles_vhf']))
     {
         publicRoutes.children.push(
             {

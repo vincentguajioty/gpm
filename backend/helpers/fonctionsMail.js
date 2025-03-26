@@ -511,6 +511,160 @@ const alerteBenevolesVehicule = async (requestInfo) => {
     }
 }
 
+const confirmationAlerteVHF = async (requestInfo) => {
+    try {
+        // use a template file with nodemailer
+        let configDB = await db.query(
+            `SELECT * FROM CONFIG;`
+        );
+        configDB = configDB[0]
+
+        const transporter = getTransporter();
+        transporter.use('compile', hbs(handlebarOptions))
+
+        //get users and send the mail to each one      
+        let mailOptions={};
+        let emailErrors = 0;
+        mailOptions = {
+            from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
+            to: requestInfo.otherMail, // list of receivers
+            cc: configDB.mailcopy ? configDB.mailserver : null,
+            subject: '['+process.env.APP_NAME+'] Alerte sur un équipement de transmission',
+            template: 'confirmationAlerteVHF', // the name of the template file i.e email.handlebars
+            context:{
+                appname: process.env.APP_NAME,
+                urlsite: configDB.urlsite,
+            },
+            list: {
+                unsubscribe: {
+                    url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:0',
+                    comment: 'Ne plus recevoir de mails',
+                },
+            },
+        };
+        logger.debug(mailOptions);
+
+        // trigger the sending of the E-mail
+        const sendMailResult = await transporter.sendMail(mailOptions);
+        if(sendMailResult.rejected.length == 0)
+        {
+            logger.debug(sendMailResult);
+        }
+        else
+        {
+            logger.error(error);
+            emailErrors += 1;
+        }
+
+        if(emailErrors == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    } catch (error) {
+        logger.error(error);
+        return false;
+    }
+}
+
+const alerteBenevolesVHF = async (requestInfo) => {
+    try {
+        // use a template file with nodemailer
+        let configDB = await db.query(
+            `SELECT * FROM CONFIG;`
+        );
+        configDB = configDB[0]
+
+        const transporter = getTransporter();
+        transporter.use('compile', hbs(handlebarOptions))
+
+        //get data for the email
+        const users = await db.query(`
+            SELECT
+                *
+            FROM
+                PERSONNE_REFERENTE
+            WHERE
+                idPersonne = :idPersonne
+        `,{
+            idPersonne: requestInfo.idPersonne,
+        });
+
+        let detailsAlerte = await db.query(`
+            SELECT
+                a.*,
+                e.libelleVHFAlertesEtat,
+                e.couleurVHFAlertesEtat,
+                v.vhfIndicatif,
+                p.nomPersonne,
+                p.prenomPersonne
+            FROM
+                VHF_ALERTES a
+                LEFT OUTER JOIN VHF_ALERTES_ETATS e ON a.idVHFAlertesEtat = e.idVHFAlertesEtat
+                LEFT OUTER JOIN VHF_EQUIPEMENTS v ON a.idVhfEquipement = v.idVhfEquipement
+                LEFT OUTER JOIN PERSONNE_REFERENTE p ON a.idTraitant = p.idPersonne
+            WHERE
+                a.idAlerte = :idAlerte
+        `,{
+            idAlerte: requestInfo.idObject,
+        });
+        detailsAlerte = detailsAlerte[0];
+        
+        //get users and send the mail to each one      
+        let mailOptions={};
+        let emailErrors = 0;
+        for (const personne of users) {
+            mailOptions = {
+                from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
+                to: personne.mailPersonne, // list of receivers
+                cc: configDB.mailcopy ? configDB.mailserver : null,
+                subject: '['+process.env.APP_NAME+'] Alerte sur '+detailsAlerte.vhfIndicatif,
+                template: 'alerteBenevolesVHF', // the name of the template file i.e email.handlebars
+                context:{
+                    personne: personne,
+                    detailsAlerte: detailsAlerte,
+                    appname: process.env.APP_NAME,
+                    urlsite: configDB.urlsite,
+                },
+                list: {
+                    unsubscribe: {
+                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:'+personne.idUtilisateur,
+                        comment: 'Ne plus recevoir de mails',
+                    },
+                },
+            };
+            logger.debug(mailOptions);
+    
+            // trigger the sending of the E-mail
+            const sendMailResult = await transporter.sendMail(mailOptions);
+            if(sendMailResult.rejected.length == 0)
+            {
+                logger.debug(sendMailResult);
+            }
+            else
+            {
+                logger.error(error);
+                emailErrors += 1;
+            }
+        }
+
+        if(emailErrors == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    } catch (error) {
+        logger.error(error);
+        return false;
+    }
+}
+
 const finDeclarationConso = async (requestInfo) => {
     try {
         // use a template file with nodemailer
@@ -1391,6 +1545,14 @@ const sendMailQueue = async () => {
 
                 case 'alerteBenevolesVehicule':
                     successCheck = await alerteBenevolesVehicule(mailNeeded);
+                break;
+
+                case 'confirmationAlerteVHF':
+                    successCheck = await confirmationAlerteVHF(mailNeeded);
+                break;
+
+                case 'alerteBenevolesVHF':
+                    successCheck = await alerteBenevolesVHF(mailNeeded);
                 break;
 
                 case 'finDeclarationConso':

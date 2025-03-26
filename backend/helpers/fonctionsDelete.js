@@ -13,6 +13,22 @@ const annuaireDelete = async (idLogger, idPersonne) => {
         });
         logger.info("Sauvegarde avant suppression", {idPersonne: idLogger, backupBeforeDrop: getInitialData[0]});
 
+        let detacherAlertes = await db.query(`
+            UPDATE VHF_ALERTES SET idTraitant = Null WHERE idTraitant = :idPersonne
+        ;`,{
+            idPersonne : idPersonne,
+        });
+        detacherAlertes = await db.query(`
+            UPDATE VEHICULES_ALERTES SET idTraitant = Null WHERE idTraitant = :idPersonne
+        ;`,{
+            idPersonne : idPersonne,
+        });
+        detacherAlertes = await db.query(`
+            UPDATE LOTS_ALERTES SET idTraitant = Null WHERE idTraitant = :idPersonne
+        ;`,{
+            idPersonne : idPersonne,
+        });
+
         let detacherLots = await db.query(`
             UPDATE LOTS_LOTS SET idPersonne = Null WHERE idPersonne = :idPersonne
         ;`,{
@@ -201,6 +217,32 @@ const alerteBenevoleVehiculeDelete = async (idLogger, idAlerte) => {
         return true;
     } catch (error) {
         logger.info("Suppression en échec de l'alerte bénévoles sur les véhicules "+idAlerte, {idPersonne: idLogger})
+        logger.error(error)
+        return false;
+    }
+}
+
+const alerteBenevoleVHFDelete = async (idLogger, idAlerte) => {
+    try {
+        logger.info("Suppression de l'alerte bénévoles sur les transmissions "+idAlerte, {idPersonne: idLogger})
+
+        let getInitialData = await db.query(`
+            SELECT * FROM VHF_ALERTES WHERE idAlerte = :idAlerte
+        ;`,{
+            idAlerte : idAlerte,
+        });
+        logger.info("Sauvegarde avant suppression", {idPersonne: idLogger, backupBeforeDrop: getInitialData[0]});
+
+        let finalDeleteQuery = await db.query(`
+            DELETE FROM VHF_ALERTES WHERE idAlerte = :idAlerte
+        ;`,{
+            idAlerte : idAlerte,
+        });
+
+        logger.info("Suppression réussie de l'alerte bénévoles sur les transmissions "+idAlerte, {idPersonne: idLogger})
+        return true;
+    } catch (error) {
+        logger.info("Suppression en échec de l'alerte bénévoles sur les transmissions "+idAlerte, {idPersonne: idLogger})
         logger.error(error)
         return false;
     }
@@ -2096,6 +2138,13 @@ const vhfEquipementsDelete = async (idLogger, idVhfEquipement) => {
         });
         for(const accessoire of accessoiresToDelete){await vhfEquipementsAccessoiresDelete('SYSTEM', accessoire.idVhfAccessoire);}
 
+        let alertesADrop = await db.query(`
+            SELECT * FROM VHF_ALERTES WHERE idVhfEquipement = :idVhfEquipement
+        ;`,{
+            idVhfEquipement : idVhfEquipement,
+        });
+        for(const alerte of alertesADrop){await alerteBenevoleVHFDelete('SYSTEM', alerte.idAlerte);}
+
         let finalDeleteQuery = await db.query(`
             DELETE FROM VHF_EQUIPEMENTS WHERE idVhfEquipement = :idVhfEquipement
         ;`,{
@@ -2478,6 +2527,7 @@ module.exports = {
     annuaireDelete,
     alerteBenevoleLotDelete,
     alerteBenevoleVehiculeDelete,
+    alerteBenevoleVHFDelete,
     catalogueDelete,
     categoriesDelete,
     cautionsDelete,

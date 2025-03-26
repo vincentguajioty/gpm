@@ -34,6 +34,8 @@ if(ConfigurationService.config)
         ||
         ConfigurationService.config['alertes_benevoles_vehicules']
         ||
+        ConfigurationService.config['alertes_benevoles_vhf']
+        ||
         ConfigurationService.config['consommation_benevoles']
     )
     {
@@ -237,6 +239,16 @@ if(HabilitationService.habilitations)
                 active: true
             })
         }
+        if(HabilitationService.habilitations['alertesBenevolesVHF_lecture'])
+            {
+                tempChildrens.push({
+                    name: 'Alertes des bénévoles',
+                    to: '/vhfAlertesBenevoles',
+                    icon: 'comment',
+                    exact: false,
+                    active: true
+                })
+            }
         if(HabilitationService.habilitations['vhf_equipement_lecture'])
         {
             tempChildrens.push({

@@ -24,6 +24,7 @@ const ConfigGeneraleTabAlertes = ({
             const getConfig = await Axios.post('/settingsTechniques/saveAlertesConfig',{
                 alertes_benevoles_lots: data.alertes_benevoles_lots,
                 alertes_benevoles_vehicules: data.alertes_benevoles_vehicules,
+                alertes_benevoles_vhf: data.alertes_benevoles_vhf,
                 consommation_benevoles: data.consommation_benevoles,
                 consommation_benevoles_auto: data.consommation_benevoles_auto,
             });
@@ -37,6 +38,7 @@ const ConfigGeneraleTabAlertes = ({
     const initFormData = () => {
         setValue('alertes_benevoles_lots', config.alertes_benevoles_lots);
         setValue('alertes_benevoles_vehicules', config.alertes_benevoles_vehicules);
+        setValue('alertes_benevoles_vhf', config.alertes_benevoles_vhf);
         setValue('consommation_benevoles', config.consommation_benevoles);
         setValue('consommation_benevoles_auto', config.consommation_benevoles_auto);
     }
@@ -70,6 +72,15 @@ const ConfigGeneraleTabAlertes = ({
                     onClick={(e)=>{setValue("alertes_benevoles_vehicules", !watch("alertes_benevoles_vehicules"))}}
                 />
                 <small className="text-danger">{errors.alertes_benevoles_vehicules?.message}</small>
+                <Form.Check
+                    type='switch'
+                    id="alertes_benevoles_vhf"
+                    name="alertes_benevoles_vhf"
+                    label="Les transmissions"
+                    checked={watch("alertes_benevoles_vhf")}
+                    onClick={(e)=>{setValue("alertes_benevoles_vhf", !watch("alertes_benevoles_vhf"))}}
+                />
+                <small className="text-danger">{errors.alertes_benevoles_vhf?.message}</small>
             </Form.Group>
             <Form.Group className="mb-3">
                 <Form.Label>Les utilisateurs non-authentifiés peuvent saisir des rapports de consommation sur:</Form.Label>

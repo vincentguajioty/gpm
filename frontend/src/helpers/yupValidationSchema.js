@@ -484,6 +484,14 @@ export const vhfStockForm = Yup.object().shape({
         .required(champObligatoire),
 });
 
+export const alerteVHFAffectation = Yup.object().shape({
+    idTraitant: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+});
+
 export const vehiculeAddForm = Yup.object().shape({
     libelleVehicule: Yup
         .string()
@@ -931,6 +939,26 @@ export const alerteBenevoleVehicules = Yup.object().shape({
         .min(1, champObligatoire)
         .required(champObligatoire),
     messageAlerteVehicule: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    mailDeclarant: Yup
+        .string()
+        .typeError(champObligatoire)
+        .email(champMail),
+});
+
+export const alerteBenevoleVHF = Yup.object().shape({
+    nomDeclarant: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    idVhfEquipement: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    messageAlerteVHF: Yup
         .string()
         .typeError(champObligatoire)
         .required(champObligatoire),
