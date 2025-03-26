@@ -49,7 +49,7 @@ CREATE OR REPLACE VIEW VIEW_HABILITATIONS AS
 		p.notif_tenues_retours,
 		p.notif_benevoles_lots,
 		p.notif_benevoles_vehicules,
-    p.notif_benevoles_vhf,
+        p.notif_benevoles_vhf,
 		p.notif_consommations_lots,
 		MAX(connexion_connexion)                       as connexion_connexion,
 		MAX(annuaire_lecture)                          as annuaire_lecture,
