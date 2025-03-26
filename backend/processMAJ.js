@@ -466,6 +466,8 @@ const majDB = async () => {
                 update = await runDBScript('./dbScripts/update16.0-2.sql');
                 logger.debug(update);
 
+                await fonctionsMetiers.deconnecterToutLeMonde();
+
                 finalResult = finalResult && await majDB();
                 logger.debug(finalResult);
             break;

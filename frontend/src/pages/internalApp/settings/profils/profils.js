@@ -239,6 +239,9 @@ const Profils = () => {
             setValue('alertesBenevolesVehicules_lecture', selected[0].alertesBenevolesVehicules_lecture);
             setValue('alertesBenevolesVehicules_affectation', selected[0].alertesBenevolesVehicules_affectation);
             setValue('alertesBenevolesVehicules_affectationTier', selected[0].alertesBenevolesVehicules_affectationTier);
+            setValue('alertesBenevolesVHF_lecture', selected[0].alertesBenevolesVHF_lecture);
+            setValue('alertesBenevolesVHF_affectation', selected[0].alertesBenevolesVHF_affectation);
+            setValue('alertesBenevolesVHF_affectationTier', selected[0].alertesBenevolesVHF_affectationTier);
             setValue('codeBarre_lecture', selected[0].codeBarre_lecture);
             setValue('codeBarre_ajout', selected[0].codeBarre_ajout);
             setValue('codeBarre_modification', selected[0].codeBarre_modification);
@@ -395,6 +398,9 @@ const Profils = () => {
                     alertesBenevolesVehicules_lecture: data.alertesBenevolesVehicules_lecture,
                     alertesBenevolesVehicules_affectation: data.alertesBenevolesVehicules_affectation,
                     alertesBenevolesVehicules_affectationTier: data.alertesBenevolesVehicules_affectationTier,
+                    alertesBenevolesVHF_lecture: data.alertesBenevolesVHF_lecture,
+                    alertesBenevolesVHF_affectation: data.alertesBenevolesVHF_affectation,
+                    alertesBenevolesVHF_affectationTier: data.alertesBenevolesVHF_affectationTier,
                     codeBarre_lecture: data.codeBarre_lecture,
                     codeBarre_ajout: data.codeBarre_ajout,
                     codeBarre_modification: data.codeBarre_modification,
@@ -538,6 +544,9 @@ const Profils = () => {
                     alertesBenevolesVehicules_lecture: data.alertesBenevolesVehicules_lecture,
                     alertesBenevolesVehicules_affectation: data.alertesBenevolesVehicules_affectation,
                     alertesBenevolesVehicules_affectationTier: data.alertesBenevolesVehicules_affectationTier,
+                    alertesBenevolesVHF_lecture: data.alertesBenevolesVHF_lecture,
+                    alertesBenevolesVHF_affectation: data.alertesBenevolesVHF_affectation,
+                    alertesBenevolesVHF_affectationTier: data.alertesBenevolesVHF_affectationTier,
                     codeBarre_lecture: data.codeBarre_lecture,
                     codeBarre_ajout: data.codeBarre_ajout,
                     codeBarre_modification: data.codeBarre_modification,
@@ -2314,6 +2323,55 @@ const Profils = () => {
                                         />
                                         :
                                             <FontAwesomeIcon icon={watch('alertesBenevolesVehicules_affectationTier') ? 'check' : 'ban'}/>
+                                        }
+                                    </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Transmissions</td>
+                                <td>
+                                    {modeEdition ?
+                                        <Form.Check
+                                            id='alertesBenevolesVHF_lecture'
+                                            name='alertesBenevolesVHF_lecture'
+                                            type='switch'
+                                            checked={watch("alertesBenevolesVHF_lecture")}
+                                            onClick={(e)=>{
+                                                setValue("alertesBenevolesVHF_lecture", !watch("alertesBenevolesVHF_lecture"))
+                                            }}
+                                        />
+                                        :
+                                            <FontAwesomeIcon icon={watch('alertesBenevolesVHF_lecture') ? 'check' : 'ban'}/>
+                                        }
+                                    </td>
+                                <td>
+                                    {modeEdition ?
+                                        <Form.Check
+                                            id='alertesBenevolesVHF_affectation'
+                                            name='alertesBenevolesVHF_affectation'
+                                            type='switch'
+                                            checked={watch("alertesBenevolesVHF_affectation")}
+                                            onClick={(e)=>{
+                                                setValue("alertesBenevolesVHF_affectation", !watch("alertesBenevolesVHF_affectation"))
+                                            }}
+                                        />
+                                        :
+                                            <FontAwesomeIcon icon={watch('alertesBenevolesVHF_affectation') ? 'check' : 'ban'}/>
+                                        }
+                                    </td>
+                                <td>
+                                    {modeEdition ?
+                                        <Form.Check
+                                            id='alertesBenevolesVHF_affectationTier'
+                                            name='alertesBenevolesVHF_affectationTier'
+                                            type='switch'
+                                            checked={watch("alertesBenevolesVHF_affectationTier")}
+                                            onClick={(e)=>{
+                                                setValue("alertesBenevolesVHF_affectationTier", !watch("alertesBenevolesVHF_affectationTier"))
+                                            }}
+                                        />
+                                        :
+                                            <FontAwesomeIcon icon={watch('alertesBenevolesVHF_affectationTier') ? 'check' : 'ban'}/>
                                         }
                                     </td>
                                 <td></td>

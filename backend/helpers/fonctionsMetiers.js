@@ -1564,6 +1564,7 @@ const majNotificationsPersonne = async (idPersonne, enableLog) => {
         notif_tenues_retours = personne.notifications && (personne.tenues_lecture) && (personne.notif_tenues_retours);
         notif_benevoles_lots = personne.notifications && (personne.alertesBenevolesLots_lecture) && (personne.notif_benevoles_lots);
         notif_benevoles_vehicules = personne.notifications && (personne.alertesBenevolesVehicules_lecture) && (personne.notif_benevoles_vehicules);
+        notif_benevoles_vhf = personne.notifications && (personne.alertesBenevolesVHF_lecture) && (personne.notif_benevoles_vhf);
         notif_consommations_lots = personne.notifications && (personne.lots_lecture || personne.sac_lecture || personne.materiel_lecture) && (personne.notif_consommations_lots);
 
         let update = await db.query(`
@@ -1583,6 +1584,7 @@ const majNotificationsPersonne = async (idPersonne, enableLog) => {
                 notif_tenues_retours          = :notif_tenues_retours,
                 notif_benevoles_lots          = :notif_benevoles_lots,
                 notif_benevoles_vehicules     = :notif_benevoles_vehicules,
+                notif_benevoles_vhf           = :notif_benevoles_vhf,
                 notif_consommations_lots      = :notif_consommations_lots
             WHERE
                 idPersonne                    = :idPersonne
@@ -1601,6 +1603,7 @@ const majNotificationsPersonne = async (idPersonne, enableLog) => {
             notif_tenues_retours         : notif_tenues_retours,
             notif_benevoles_lots         : notif_benevoles_lots,
             notif_benevoles_vehicules    : notif_benevoles_vehicules,
+            notif_benevoles_vhf          : notif_benevoles_vhf,
             notif_consommations_lots     : notif_consommations_lots,
         });
 

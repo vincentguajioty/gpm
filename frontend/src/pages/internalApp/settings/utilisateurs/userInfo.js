@@ -16,20 +16,21 @@ const UserInfo = ({idPersonne, pageNeedsRefresh}) => {
     const [conditionsNotif, setConditionsNotifs] = useState([]);
 
     const notificationsDisponibles = [
-        {config: 'notif_lots_manquants'         , label:'Matériels manquants (lots)'            , profilNeeded: 'lots_lecture',},
-        {config: 'notif_lots_peremptions'       , label:'Matériels périmés (lots)'              , profilNeeded: 'lots_lecture',},
-        {config: 'notif_lots_inventaires'       , label:'Inventaires (lots)'                    , profilNeeded: 'lots_lecture',},
-        {config: 'notif_lots_conformites'       , label:'Lots non conformes'                    , profilNeeded: 'lots_lecture',},
-        {config: 'notif_reserves_manquants'     , label:'Matériels manquants (réserve)'         , profilNeeded: 'reserve_lecture',},
-        {config: 'notif_reserves_peremptions'   , label:'Matériels périmés (réserve)'           , profilNeeded: 'reserve_lecture',},
-        {config: 'notif_reserves_inventaires'   , label:'Inventaires (réserve)'                 , profilNeeded: 'reserve_lecture',},
-        {config: 'notif_vehicules_desinfections', label:'Désinfections véhicules'               , profilNeeded: 'desinfections_lecture',},
-        {config: 'notif_vehicules_health'       , label:'Maintenance régulière des véhicules'   , profilNeeded: 'vehiculeHealth_lecture',},
-        {config: 'notif_tenues_stock'           , label:'Stock des tenues'                      , profilNeeded: 'tenues_lecture',},
-        {config: 'notif_tenues_retours'         , label:'Non retour de tenues'                  , profilNeeded: 'tenues_lecture',},
-        {config: 'notif_benevoles_lots'         , label:'Alertes de bénévoles sur les lots'     , profilNeeded: 'alertesBenevolesLots_lecture',},
-        {config: 'notif_benevoles_vehicules'    , label:'Alertes de bénévoles sur les véhicules', profilNeeded: 'alertesBenevolesVehicules_lecture',},
-        {config: 'notif_consommations_lots'     , label:'Rapports de consommations'             , profilNeeded: 'lots_lecture',},
+        {config: 'notif_lots_manquants'         , label:'Matériels manquants (lots)'                , profilNeeded: 'lots_lecture',},
+        {config: 'notif_lots_peremptions'       , label:'Matériels périmés (lots)'                  , profilNeeded: 'lots_lecture',},
+        {config: 'notif_lots_inventaires'       , label:'Inventaires (lots)'                        , profilNeeded: 'lots_lecture',},
+        {config: 'notif_lots_conformites'       , label:'Lots non conformes'                        , profilNeeded: 'lots_lecture',},
+        {config: 'notif_reserves_manquants'     , label:'Matériels manquants (réserve)'             , profilNeeded: 'reserve_lecture',},
+        {config: 'notif_reserves_peremptions'   , label:'Matériels périmés (réserve)'               , profilNeeded: 'reserve_lecture',},
+        {config: 'notif_reserves_inventaires'   , label:'Inventaires (réserve)'                     , profilNeeded: 'reserve_lecture',},
+        {config: 'notif_vehicules_desinfections', label:'Désinfections véhicules'                   , profilNeeded: 'desinfections_lecture',},
+        {config: 'notif_vehicules_health'       , label:'Maintenance régulière des véhicules'       , profilNeeded: 'vehiculeHealth_lecture',},
+        {config: 'notif_tenues_stock'           , label:'Stock des tenues'                          , profilNeeded: 'tenues_lecture',},
+        {config: 'notif_tenues_retours'         , label:'Non retour de tenues'                      , profilNeeded: 'tenues_lecture',},
+        {config: 'notif_benevoles_lots'         , label:'Alertes de bénévoles sur les lots'         , profilNeeded: 'alertesBenevolesLots_lecture',},
+        {config: 'notif_benevoles_vehicules'    , label:'Alertes de bénévoles sur les véhicules'    , profilNeeded: 'alertesBenevolesVehicules_lecture',},
+        {config: 'notif_benevoles_vhf'          , label:'Alertes de bénévoles sur les transmissions', profilNeeded: 'alertesBenevolesVHF_lecture',},
+        {config: 'notif_consommations_lots'     , label:'Rapports de consommations'                 , profilNeeded: 'lots_lecture',},
     ];
 
     const indicateursDisponibles = [

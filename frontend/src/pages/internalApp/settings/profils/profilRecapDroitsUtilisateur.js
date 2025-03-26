@@ -313,6 +313,13 @@ const ProfilRecapDroitsUtilisateur = ({idPersonne, pageNeedsRefresh}) => {
                             <td></td>
                         </tr>
                         <tr>
+                            <td>Transmissions</td>
+                            <td><FontAwesomeIcon icon={profil['alertesBenevolesVHF_lecture'] ? 'check' : 'ban'}/></td>
+                            <td><FontAwesomeIcon icon={profil['alertesBenevolesVHF_affectation'] ? 'check' : 'ban'}/></td>
+                            <td><FontAwesomeIcon icon={profil['alertesBenevolesVHF_affectationTier'] ? 'check' : 'ban'}/></td>
+                            <td></td>
+                        </tr>
+                        <tr>
                             <th>CONSOMMATION DES BENEVOLES</th>
                             <th></th>
                             <th></th>
