@@ -160,6 +160,23 @@ export const catalogueForm = Yup.object().shape({
         .required(champObligatoire)
 });
 
+export const catalogueMergeForm = Yup.object().shape({
+    idMaterielCatalogueDELETE: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    idMaterielCatalogueKEEP: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    alerteISO: Yup
+        .boolean()
+        .oneOf([false], 'Les deux matériels doivent être différents'),
+
+});
+
 export const mfaInit = Yup.object().shape({
     confirmation: Yup
         .string()

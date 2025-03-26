@@ -757,6 +757,190 @@ exports.getCatalogueMateriel = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+exports.getCatalogueEnrichi = async (req, res)=>{
+    try {
+        let results = await db.query(
+            `SELECT
+                cat.*,
+                cat.idMaterielCatalogue as value,
+                cat.libelleMateriel as label,
+                mc.libelleCategorie,
+                f.nomFournisseur
+            FROM
+                MATERIEL_CATALOGUE cat
+                LEFT OUTER JOIN MATERIEL_CATEGORIES mc ON cat.idCategorie = mc.idCategorie
+                LEFT OUTER JOIN FOURNISSEURS f ON cat.idFournisseur = f.idFournisseur
+            GROUP BY
+                cat.idMaterielCatalogue
+            ORDER BY
+                libelleMateriel
+            ;`
+        );
+        for(const matos of results)
+        {
+            let comptage = await db.query(`
+                SELECT
+                    COUNT(idCode) as nb
+                FROM
+                    CODES_BARRE
+                WHERE
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,
+            {
+                idMaterielCatalogue: matos.idMaterielCatalogue,
+            });
+            matos.nbCodesBarres = comptage[0].nb;
+
+            comptage = await db.query(`
+                SELECT
+                    COUNT(idCommandeMateriel) as nb
+                FROM
+                    COMMANDES_MATERIEL
+                WHERE
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,
+            {
+                idMaterielCatalogue: matos.idMaterielCatalogue,
+            });
+            matos.nbCommandes = comptage[0].nb;
+
+            comptage = await db.query(`
+                SELECT
+                    COUNT(idInventaire) as nb
+                FROM
+                    INVENTAIRES_CONTENUS
+                WHERE
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,
+            {
+                idMaterielCatalogue: matos.idMaterielCatalogue,
+            });
+            matos.nbInventairesLots = comptage[0].nb;
+
+            comptage = await db.query(`
+                SELECT
+                    COUNT(idConsommationMateriel) as nb
+                FROM
+                    LOTS_CONSOMMATION_MATERIEL
+                WHERE
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,
+            {
+                idMaterielCatalogue: matos.idMaterielCatalogue,
+            });
+            matos.nbConsommationLots = comptage[0].nb;
+
+            comptage = await db.query(`
+                SELECT
+                    COUNT(idElement) as nb
+                FROM
+                    MATERIEL_ELEMENT
+                WHERE
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,
+            {
+                idMaterielCatalogue: matos.idMaterielCatalogue,
+            });
+            matos.nbLotsOpe = comptage[0].nb;
+
+            comptage = await db.query(`
+                SELECT
+                    COUNT(idTypeLot) as nb
+                FROM
+                    REFERENTIELS
+                WHERE
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,
+            {
+                idMaterielCatalogue: matos.idMaterielCatalogue,
+            });
+            matos.nbReferentiels = comptage[0].nb;
+
+            comptage = await db.query(`
+                SELECT
+                    COUNT(idReserveInventaire) as nb
+                FROM
+                    RESERVES_INVENTAIRES_CONTENUS
+                WHERE
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,
+            {
+                idMaterielCatalogue: matos.idMaterielCatalogue,
+            });
+            matos.nbInventairesReserves = comptage[0].nb;
+
+            comptage = await db.query(`
+                SELECT
+                    COUNT(idReserveElement) as nb
+                FROM
+                    RESERVES_MATERIEL
+                WHERE
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,
+            {
+                idMaterielCatalogue: matos.idMaterielCatalogue,
+            });
+            matos.nbReserves = comptage[0].nb;
+
+            comptage = await db.query(`
+                SELECT
+                    COUNT(idTenue) as nb
+                FROM
+                    TENUES_AFFECTATION
+                WHERE
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,
+            {
+                idMaterielCatalogue: matos.idMaterielCatalogue,
+            });
+            matos.nbTenuesAffectees = comptage[0].nb;
+
+            comptage = await db.query(`
+                SELECT
+                    COUNT(idCatalogueTenue) as nb
+                FROM
+                    TENUES_CATALOGUE
+                WHERE
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,
+            {
+                idMaterielCatalogue: matos.idMaterielCatalogue,
+            });
+            matos.nbTenuesStock = comptage[0].nb;
+
+            comptage = await db.query(`
+                SELECT
+                    COUNT(idVehiculesStock) as nb
+                FROM
+                    VEHICULES_STOCK
+                WHERE
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,
+            {
+                idMaterielCatalogue: matos.idMaterielCatalogue,
+            });
+            matos.nbVehiculesStock = comptage[0].nb;
+
+            comptage = await db.query(`
+                SELECT
+                    COUNT(idVhfStock) as nb
+                FROM
+                    VHF_STOCK
+                WHERE
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,
+            {
+                idMaterielCatalogue: matos.idMaterielCatalogue,
+            });
+            matos.nbVHFStock = comptage[0].nb;
+        }
+
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
 exports.getCatalogueMaterielOpe = async (req, res)=>{
     try {
         let results = await db.query(
@@ -953,6 +1137,178 @@ exports.updateCatalogueMateriel = async (req, res)=>{
         await fonctionsMetiers.checkAllConf();
         
         res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+exports.mergeCatalogueItems = async (req, res)=>{
+    try {
+        let update = await db.query(`
+            UPDATE
+                CODES_BARRE
+            SET
+                idMaterielCatalogue = :idMaterielCatalogueKEEP
+            WHERE
+                idMaterielCatalogue = :idMaterielCatalogueDELETE
+        ;`,
+        {
+            idMaterielCatalogueKEEP: req.body.idMaterielCatalogueKEEP,
+            idMaterielCatalogueDELETE: req.body.idMaterielCatalogueDELETE,
+        });
+
+        update = await db.query(`
+            UPDATE
+                COMMANDES_MATERIEL
+            SET
+                idMaterielCatalogue = :idMaterielCatalogueKEEP
+            WHERE
+                idMaterielCatalogue = :idMaterielCatalogueDELETE
+        ;`,
+        {
+            idMaterielCatalogueKEEP: req.body.idMaterielCatalogueKEEP,
+            idMaterielCatalogueDELETE: req.body.idMaterielCatalogueDELETE,
+        });
+
+        update = await db.query(`
+            UPDATE
+                INVENTAIRES_CONTENUS
+            SET
+                idMaterielCatalogue = :idMaterielCatalogueKEEP
+            WHERE
+                idMaterielCatalogue = :idMaterielCatalogueDELETE
+        ;`,
+        {
+            idMaterielCatalogueKEEP: req.body.idMaterielCatalogueKEEP,
+            idMaterielCatalogueDELETE: req.body.idMaterielCatalogueDELETE,
+        });
+        await fonctionsMetiers.lissageTousInventairesLots();
+
+        update = await db.query(`
+            UPDATE
+                LOTS_CONSOMMATION_MATERIEL
+            SET
+                idMaterielCatalogue = :idMaterielCatalogueKEEP
+            WHERE
+                idMaterielCatalogue = :idMaterielCatalogueDELETE
+        ;`,
+        {
+            idMaterielCatalogueKEEP: req.body.idMaterielCatalogueKEEP,
+            idMaterielCatalogueDELETE: req.body.idMaterielCatalogueDELETE,
+        });
+
+        update = await db.query(`
+            UPDATE
+                MATERIEL_ELEMENT
+            SET
+                idMaterielCatalogue = :idMaterielCatalogueKEEP
+            WHERE
+                idMaterielCatalogue = :idMaterielCatalogueDELETE
+        ;`,
+        {
+            idMaterielCatalogueKEEP: req.body.idMaterielCatalogueKEEP,
+            idMaterielCatalogueDELETE: req.body.idMaterielCatalogueDELETE,
+        });
+
+        update = await db.query(`
+            UPDATE
+                REFERENTIELS
+            SET
+                idMaterielCatalogue = :idMaterielCatalogueKEEP
+            WHERE
+                idMaterielCatalogue = :idMaterielCatalogueDELETE
+        ;`,
+        {
+            idMaterielCatalogueKEEP: req.body.idMaterielCatalogueKEEP,
+            idMaterielCatalogueDELETE: req.body.idMaterielCatalogueDELETE,
+        });
+
+        update = await db.query(`
+            UPDATE
+                RESERVES_INVENTAIRES_CONTENUS
+            SET
+                idMaterielCatalogue = :idMaterielCatalogueKEEP
+            WHERE
+                idMaterielCatalogue = :idMaterielCatalogueDELETE
+        ;`,
+        {
+            idMaterielCatalogueKEEP: req.body.idMaterielCatalogueKEEP,
+            idMaterielCatalogueDELETE: req.body.idMaterielCatalogueDELETE,
+        });
+        await fonctionsMetiers.lissageTousInventairesReserves();
+
+        update = await db.query(`
+            UPDATE
+                RESERVES_MATERIEL
+            SET
+                idMaterielCatalogue = :idMaterielCatalogueKEEP
+            WHERE
+                idMaterielCatalogue = :idMaterielCatalogueDELETE
+        ;`,
+        {
+            idMaterielCatalogueKEEP: req.body.idMaterielCatalogueKEEP,
+            idMaterielCatalogueDELETE: req.body.idMaterielCatalogueDELETE,
+        });
+
+        update = await db.query(`
+            UPDATE
+                TENUES_AFFECTATION
+            SET
+                idMaterielCatalogue = :idMaterielCatalogueKEEP
+            WHERE
+                idMaterielCatalogue = :idMaterielCatalogueDELETE
+        ;`,
+        {
+            idMaterielCatalogueKEEP: req.body.idMaterielCatalogueKEEP,
+            idMaterielCatalogueDELETE: req.body.idMaterielCatalogueDELETE,
+        });
+
+        update = await db.query(`
+            UPDATE
+                TENUES_CATALOGUE
+            SET
+                idMaterielCatalogue = :idMaterielCatalogueKEEP
+            WHERE
+                idMaterielCatalogue = :idMaterielCatalogueDELETE
+        ;`,
+        {
+            idMaterielCatalogueKEEP: req.body.idMaterielCatalogueKEEP,
+            idMaterielCatalogueDELETE: req.body.idMaterielCatalogueDELETE,
+        });
+
+        update = await db.query(`
+            UPDATE
+                VEHICULES_STOCK
+            SET
+                idMaterielCatalogue = :idMaterielCatalogueKEEP
+            WHERE
+                idMaterielCatalogue = :idMaterielCatalogueDELETE
+        ;`,
+        {
+            idMaterielCatalogueKEEP: req.body.idMaterielCatalogueKEEP,
+            idMaterielCatalogueDELETE: req.body.idMaterielCatalogueDELETE,
+        });
+
+        update = await db.query(`
+            UPDATE
+                VHF_STOCK
+            SET
+                idMaterielCatalogue = :idMaterielCatalogueKEEP
+            WHERE
+                idMaterielCatalogue = :idMaterielCatalogueDELETE
+        ;`,
+        {
+            idMaterielCatalogueKEEP: req.body.idMaterielCatalogueKEEP,
+            idMaterielCatalogueDELETE: req.body.idMaterielCatalogueDELETE,
+        });
+
+        const deleteResult = await fonctionsDelete.catalogueDelete(req.verifyJWTandProfile.idPersonne , req.body.idMaterielCatalogueDELETE);
+
+        await fonctionsMetiers.updatePeremptionsAnticipations();
+        await fonctionsMetiers.checkAllConf();
+
+        if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+        
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

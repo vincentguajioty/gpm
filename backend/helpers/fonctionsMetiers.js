@@ -1115,6 +1115,107 @@ const figeInventaireLot = async (idLot, idInventaire) => {
     }
 }
 
+const lissageInventaireLot = async (idInventaire) => {
+    try {
+        logger.info("Lancement du lissage de l'inventaire de lot "+idInventaire)
+
+        let itemsAGerer = await db.query(`
+            SELECT
+                idInventaire,
+                idMaterielCatalogue
+            FROM
+                (SELECT *, COUNT(idInventaire) as nbApparission FROM INVENTAIRES_CONTENUS WHERE idInventaire = :idInventaire GROUP BY idInventaire, idMaterielCatalogue) as compte
+            WHERE
+                compte.nbApparission > 1
+        ;`,{
+            idInventaire: idInventaire,
+        });
+
+        for(const item of itemsAGerer)
+        {
+            let lignesMultiples = await db.query(`
+                SELECT
+                    *
+                FROM
+                    INVENTAIRES_CONTENUS
+                WHERE
+                    idInventaire = :idInventaire
+                    AND
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,{
+                idInventaire: item.idInventaire,
+                idMaterielCatalogue: item.idMaterielCatalogue,
+            });
+
+            let quantiteFinale = 0;
+            let peremptionFinale = null;
+            for(const ligne of lignesMultiples)
+            {
+                quantiteFinale += ligne.quantiteInventaire;
+                if(ligne.peremptionInventaire && ligne.peremptionInventaire != null)
+                {
+                    if(peremptionFinale == null)
+                    {
+                        peremptionFinale = new Date(ligne.peremptionInventaire);
+                    }else{
+                        peremptionFinale = new Date(Math.min(new Date(peremptionFinale), new Date(ligne.peremptionInventaire)));
+                    }
+                }
+            }
+
+            let deleteLignesMultiples = await db.query(`
+                DELETE FROM
+                    INVENTAIRES_CONTENUS
+                WHERE
+                    idInventaire = :idInventaire
+                    AND
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,{
+                idInventaire: item.idInventaire,
+                idMaterielCatalogue: item.idMaterielCatalogue,
+            });
+
+            let insertLigneConcat = await db.query(`
+                INSERT INTO
+                    INVENTAIRES_CONTENUS
+                SET
+                    idInventaire = :idInventaire,
+                    idMaterielCatalogue = :idMaterielCatalogue,
+                    quantiteInventaire = :quantiteInventaire,
+                    peremptionInventaire = :peremptionInventaire
+            ;`,{
+                idInventaire: item.idInventaire,
+                idMaterielCatalogue: item.idMaterielCatalogue,
+                quantiteInventaire: quantiteFinale || 0,
+                peremptionInventaire: peremptionFinale || null,
+            });
+        }
+
+        logger.info("Fin du lissage de l'inventaire de lot "+idInventaire)
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const lissageTousInventairesLots = async () => {
+    try {
+        let inventairesEnDefaut = await db.query(`
+            SELECT
+                idInventaire
+            FROM
+                (SELECT *, COUNT(idInventaire) as nbApparission FROM INVENTAIRES_CONTENUS GROUP BY idInventaire, idMaterielCatalogue) as compte
+            WHERE
+                compte.nbApparission > 1
+        ;`);
+        for(const inventaire of inventairesEnDefaut)
+        {
+            await lissageInventaireLot(inventaire.idInventaire);
+        }
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 const updateInventaireReserveItem = async (element) => {
     try {
         let updateQuery = await db.query(`
@@ -1257,6 +1358,107 @@ const figeInventaireReserve = async (idConteneur, idReserveInventaire) => {
             idReserveInventaire: idReserveInventaire,
         });
                 
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const lissageInventaireReserve = async (idReserveInventaire) => {
+    try {
+        logger.info("Lancement du lissage de l'inventaire de reserve "+idReserveInventaire)
+
+        let itemsAGerer = await db.query(`
+            SELECT
+                idReserveInventaire,
+                idMaterielCatalogue
+            FROM
+                (SELECT *, COUNT(idReserveInventaire) as nbApparission FROM RESERVES_INVENTAIRES_CONTENUS WHERE idReserveInventaire = :idReserveInventaire GROUP BY idReserveInventaire, idMaterielCatalogue) as compte
+            WHERE
+                compte.nbApparission > 1
+        ;`,{
+            idReserveInventaire: idReserveInventaire,
+        });
+
+        for(const item of itemsAGerer)
+        {
+            let lignesMultiples = await db.query(`
+                SELECT
+                    *
+                FROM
+                    RESERVES_INVENTAIRES_CONTENUS
+                WHERE
+                    idReserveInventaire = :idReserveInventaire
+                    AND
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,{
+                idReserveInventaire: item.idReserveInventaire,
+                idMaterielCatalogue: item.idMaterielCatalogue,
+            });
+
+            let quantiteFinale = 0;
+            let peremptionFinale = null;
+            for(const ligne of lignesMultiples)
+            {
+                quantiteFinale += ligne.quantiteInventaire;
+                if(ligne.peremptionInventaire && ligne.peremptionInventaire != null)
+                {
+                    if(peremptionFinale == null)
+                    {
+                        peremptionFinale = new Date(ligne.peremptionInventaire);
+                    }else{
+                        peremptionFinale = new Date(Math.min(new Date(peremptionFinale), new Date(ligne.peremptionInventaire)));
+                    }
+                }
+            }
+
+            let deleteLignesMultiples = await db.query(`
+                DELETE FROM
+                    RESERVES_INVENTAIRES_CONTENUS
+                WHERE
+                    idReserveInventaire = :idReserveInventaire
+                    AND
+                    idMaterielCatalogue = :idMaterielCatalogue
+            ;`,{
+                idReserveInventaire: item.idReserveInventaire,
+                idMaterielCatalogue: item.idMaterielCatalogue,
+            });
+
+            let insertLigneConcat = await db.query(`
+                INSERT INTO
+                    RESERVES_INVENTAIRES_CONTENUS
+                SET
+                    idReserveInventaire = :idReserveInventaire,
+                    idMaterielCatalogue = :idMaterielCatalogue,
+                    quantiteInventaire = :quantiteInventaire,
+                    peremptionInventaire = :peremptionInventaire
+            ;`,{
+                idReserveInventaire: item.idReserveInventaire,
+                idMaterielCatalogue: item.idMaterielCatalogue,
+                quantiteInventaire: quantiteFinale || 0,
+                peremptionInventaire: peremptionFinale || null,
+            });
+        }
+
+        logger.info("Fin du lissage de l'inventaire de reserve "+idReserveInventaire)
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
+const lissageTousInventairesReserves = async () => {
+    try {
+        let inventairesEnDefaut = await db.query(`
+            SELECT
+                idReserveInventaire
+            FROM
+                (SELECT *, COUNT(idReserveInventaire) as nbApparission FROM RESERVES_INVENTAIRES_CONTENUS GROUP BY idReserveInventaire, idMaterielCatalogue) as compte
+            WHERE
+                compte.nbApparission > 1
+        ;`);
+        for(const inventaire of inventairesEnDefaut)
+        {
+            await lissageInventaireReserve(inventaire.idReserveInventaire);
+        }
     } catch (error) {
         logger.error(error)
     }
@@ -3724,10 +3926,14 @@ module.exports = {
     initiateOldValuesInventaireLot,
     validerInventaireLot,
     figeInventaireLot,
+    lissageInventaireLot,
+    lissageTousInventairesLots,
     updateInventaireReserveItem,
     initiateOldValuesInventaireReserve,
     validerInventaireReserve,
     figeInventaireReserve,
+    lissageInventaireReserve,
+    lissageTousInventairesReserves,
     majIndicateursPersonne,
     majIndicateursProfil,
     majNotificationsPersonne,

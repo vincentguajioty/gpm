@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Offcanvas, Button, Form, Modal, } from 'react-bootstrap';
+import { Offcanvas, Button, Form, Modal, Table, Row, Col, } from 'react-bootstrap';
 import FalconCloseButton from 'components/common/FalconCloseButton';
 import FalconComponentCard from 'components/common/FalconComponentCard';
 import ActionButton from 'components/common/ActionButton';
@@ -16,7 +16,179 @@ import { Axios } from 'helpers/axios';
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { catalogueForm } from 'helpers/yupValidationSchema';
+import { catalogueForm, catalogueMergeForm } from 'helpers/yupValidationSchema';
+
+const ComparaisonDeuxItems = ({
+    idMaterielCatalogueDELETE = null,
+    idMaterielCatalogueKEEP = null,
+    catalogueEnrichi = [],
+}) => {
+    const [elementDelete, setElementDelete] = useState();
+    const [elementKeep, setElementKeep] = useState();
+
+    useEffect(() => {
+        let tempElement = catalogueEnrichi.filter(item => item.idMaterielCatalogue == idMaterielCatalogueDELETE);
+		setElementDelete(tempElement[0]);
+        tempElement = catalogueEnrichi.filter(item => item.idMaterielCatalogue == idMaterielCatalogueKEEP);
+		setElementKeep(tempElement[0]);
+
+	}, [idMaterielCatalogueDELETE, idMaterielCatalogueKEEP])
+
+    const nl2br = require('react-nl2br');
+
+    if(idMaterielCatalogueDELETE != null && elementDelete && idMaterielCatalogueKEEP != null && elementKeep)
+    {
+        return(
+            <Table className="fs--1 mt-3" size='sm' bordered responsive>
+                <tr bgcolor="yellow">
+                    <th colSpan={3}><center>Les éléments en jaune nécessitent une vérification manuelle.</center></th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>Element à supprimer</th>
+                    <th>Element à garder</th>
+                </tr>
+                <tr>
+                    <th>Référence technique</th>
+                    <td>{elementDelete.idMaterielCatalogue}</td>
+                    <td>{elementKeep.idMaterielCatalogue}</td>
+                </tr>
+                <tr>
+                    <th>Catégorie</th>
+                    <td>{elementDelete.libelleCategorie}</td>
+                    <td>{elementKeep.libelleCategorie}</td>
+                </tr>
+                <tr>
+                    <th>Module</th>
+                    <td>
+                        <SoftBadge className='me-1 mb-1' bg={elementDelete.modules_ope ? 'success' : 'secondary'}>Opérationnel (lots et réserves)</SoftBadge><br/>
+                        <SoftBadge className='me-1 mb-1' bg={elementDelete.modules_vehicules ? 'success' : 'secondary'}>Véhicules</SoftBadge><br/>
+                        <SoftBadge className='me-1 mb-1' bg={elementDelete.modules_tenues ? 'success' : 'secondary'}>Tenues</SoftBadge><br/>
+                        <SoftBadge className='me-1 mb-1' bg={elementDelete.modules_vhf ? 'success' : 'secondary'}>Transmissions</SoftBadge>
+                    </td>
+                    <td>
+                        <SoftBadge className='me-1 mb-1' bg={elementKeep.modules_ope ? 'success' : 'secondary'}>Opérationnel (lots et réserves)</SoftBadge><br/>
+                        <SoftBadge className='me-1 mb-1' bg={elementKeep.modules_vehicules ? 'success' : 'secondary'}>Véhicules</SoftBadge><br/>
+                        <SoftBadge className='me-1 mb-1' bg={elementKeep.modules_tenues ? 'success' : 'secondary'}>Tenues</SoftBadge><br/>
+                        <SoftBadge className='me-1 mb-1' bg={elementKeep.modules_vhf ? 'success' : 'secondary'}>Transmissions</SoftBadge>
+                    </td>
+                </tr>
+                <tr bgcolor="yellow">
+                    <th>Disponible bénévoles</th>
+                    <td >{elementDelete.disponibleBenevolesConso ? "Oui" : "Non"}</td>
+                    <td>{elementKeep.disponibleBenevolesConso ? "Oui" : "Non"}</td>
+                </tr>
+                <tr>
+                    <th>Commentaires</th>
+                    <td>{nl2br(elementDelete.commentairesMateriel)}</td>
+                    <td>{nl2br(elementKeep.commentairesMateriel)}</td>
+                </tr>
+                <tr>
+                    <th>Fournisseur</th>
+                    <td>{elementDelete.nomFournisseur}</td>
+                    <td>{elementKeep.nomFournisseur}</td>
+                </tr>
+                <tr bgcolor="yellow">
+                    <th>Sterilite</th>
+                    <td>{elementDelete.sterilite ? "Oui" : "Non"}</td>
+                    <td>{elementKeep.sterilite ? "Oui" : "Non"}</td>
+                </tr>
+                <tr>
+                    <th>Taille</th>
+                    <td>{elementDelete.taille}</td>
+                    <td>{elementKeep.taille}</td>
+                </tr>
+                <tr bgcolor="yellow">
+                    <th>Anticipation forcée de la péremption dans les lots</th>
+                    <td>{elementDelete.peremptionAnticipationOpe} j</td>
+                    <td>{elementKeep.peremptionAnticipationOpe} j</td>
+                </tr>
+                <tr bgcolor="yellow">
+                    <th>Anticipation forcée de la péremption dans les réserves</th>
+                    <td>{elementDelete.peremptionAnticipationRes} j</td>
+                    <td>{elementKeep.peremptionAnticipationRes} j</td>
+                </tr>
+                <tr bgcolor="yellow">
+                    <th>Anticipation forcée de la péremption dans le stock tenues</th>
+                    <td>{elementDelete.peremptionAnticipationTenues} j</td>
+                    <td>{elementKeep.peremptionAnticipationTenues} j</td>
+                </tr>
+                <tr bgcolor="yellow">
+                    <th>Anticipation forcée de la péremption dans le stock transmissions</th>
+                    <td>{elementDelete.peremptionAnticipationVHF} j</td>
+                    <td>{elementKeep.peremptionAnticipationVHF} j</td>
+                </tr>
+                <tr bgcolor="yellow">
+                    <th>Anticipation forcée de la péremption dans le stock véhicules</th>
+                    <td>{elementDelete.peremptionAnticipationVehicule} j</td>
+                    <td>{elementKeep.peremptionAnticipationVehicule} j</td>
+                </tr>
+                <tr>
+                    <th>Nombre de codes barres liés</th>
+                    <td>{elementDelete.nbCodesBarres}</td>
+                    <td>{elementKeep.nbCodesBarres}</td>
+                </tr>
+                <tr>
+                    <th>Nombre d'apparitions dans les commandes</th>
+                    <td>{elementDelete.nbCommandes}</td>
+                    <td>{elementKeep.nbCommandes}</td>
+                </tr>
+                <tr bgcolor="yellow">
+                    <th>Nombre d'apparitions dans les lots opérationnels</th>
+                    <td>{elementDelete.nbLotsOpe}</td>
+                    <td>{elementKeep.nbLotsOpe}</td>
+                </tr>
+                <tr>
+                    <th>Nombre d'apparitions dans les inventaires de lots</th>
+                    <td>{elementDelete.nbInventairesLots}</td>
+                    <td>{elementKeep.nbInventairesLots}</td>
+                </tr>
+                <tr>
+                    <th>Nombre d'apparitions dans les consommations bénévoles</th>
+                    <td>{elementDelete.nbConsommationLots}</td>
+                    <td>{elementKeep.nbConsommationLots}</td>
+                </tr>
+                <tr bgcolor="yellow">
+                    <th>Nombre d'apparitions dans les référentiels</th>
+                    <td>{elementDelete.nbReferentiels}</td>
+                    <td>{elementKeep.nbReferentiels}</td>
+                </tr>
+                <tr bgcolor="yellow">
+                    <th>Nombre d'apparitions dans les réserves</th>
+                    <td>{elementDelete.nbReserves}</td>
+                    <td>{elementKeep.nbReserves}</td>
+                </tr>
+                <tr>
+                    <th>Nombre d'apparitions dans les inventaires de réserve</th>
+                    <td>{elementDelete.nbInventairesReserves}</td>
+                    <td>{elementKeep.nbInventairesReserves}</td>
+                </tr>
+                <tr>
+                    <th>Nombre d'apparitions dans les affectations de tenues</th>
+                    <td>{elementDelete.nbTenuesAffectees}</td>
+                    <td>{elementKeep.nbTenuesAffectees}</td>
+                </tr>
+                <tr bgcolor="yellow">
+                    <th>Nombre d'apparitions dans le stock de tenues</th>
+                    <td>{elementDelete.nbTenuesStock}</td>
+                    <td>{elementKeep.nbTenuesStock}</td>
+                </tr>
+                <tr bgcolor="yellow">
+                    <th>Nombre d'apparitions dans le stock de véhicules</th>
+                    <td>{elementDelete.nbVehiculesStock}</td>
+                    <td>{elementKeep.nbVehiculesStock}</td>
+                </tr>
+                <tr bgcolor="yellow">
+                    <th>Nombre d'apparitions dans le stock de transmissions</th>
+                    <td>{elementDelete.nbVHFStock}</td>
+                    <td>{elementKeep.nbVHFStock}</td>
+                </tr>
+            </Table>
+        )
+    }else{
+        return(<><i className='mb-3'>Selectionnez deux éléments dans les listes ci-dessus<br/></i></>)
+    }
+}
 
 const Catalogue = () => {
     /*PAGE BASICS*/
@@ -250,6 +422,63 @@ const Catalogue = () => {
         }
     }
 
+    /* MERGE MODAL */
+    const [warningMergeAccepted, setWarningMergeAccepted] = useState(false);
+    const [showMergeModal, setShowMergeModal] = useState(false);
+    const [catalogueEnrichi, setCatalogueEnrichi] = useState([]);
+    const { register: registerMerge, handleSubmit: handleSubmitMerge, formState: { errors: errorsMerge }, setValue: setValueMerge, reset: resetMerge, watch: watchMerge } = useForm({
+        resolver: yupResolver(catalogueMergeForm),
+    });
+
+    const handleCloseMergeModal = () => {
+        setShowMergeModal(false);
+        setLoading(false);
+        resetMerge();
+        setCatalogueEnrichi([]);
+        setWarningMergeAccepted(false);
+    };
+    const handleShowMergeModal = async () => {
+        try {
+            setShowMergeModal(true);
+            setLoading(true);
+
+            let getFromDb = await Axios.get('/settingsMetiers/getCatalogueEnrichi');
+            setCatalogueEnrichi(getFromDb.data);
+
+            setLoading(false);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    const mergeCatalogue = async (data) => {
+        try {
+            setLoading(true);
+
+            const response = await Axios.post('/settingsMetiers/mergeCatalogueItems',{
+                idMaterielCatalogueDELETE: data.idMaterielCatalogueDELETE,
+                idMaterielCatalogueKEEP: data.idMaterielCatalogueKEEP,
+            });
+            
+            initTable();
+            handleCloseMergeModal();
+            setLoading(false);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    useEffect(() => {
+		if(watchMerge("idMaterielCatalogueDELETE") == watchMerge("idMaterielCatalogueKEEP"))
+        {
+            setValueMerge("alerteISO", true);
+        }else{
+            setValueMerge("alerteISO", false);
+        }
+	}, [
+        watchMerge("idMaterielCatalogueDELETE"),
+        watchMerge("idMaterielCatalogueKEEP"),
+    ])
 
     /* RENDER */
     return (
@@ -266,6 +495,121 @@ const Catalogue = () => {
                             Annuler
                         </Button>
                         <Button variant='danger' onClick={supprimerEntree} disabled={isLoading}>{isLoading ? 'Patientez...' : 'Supprimer'}</Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={showMergeModal} onHide={handleCloseMergeModal} backdrop="static" keyboard={false} size='lg'>
+                    <Modal.Header>
+                        <Modal.Title>Fusionner deux éléments du catalogue</Modal.Title>
+                        <FalconCloseButton onClick={handleCloseMergeModal}/>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {!warningMergeAccepted ?
+                            <>
+                                <p><center><b>PREREQUIS</b></center></p>
+                                <p>
+                                    Ce formulaire permet de fusionner deux éléments du catalogue. Il va vous falloir selectionner un élément à garder, et un à supprimer. Ces éléments sont utilisés dans différents modules. Le comportement de la fusion est le suivant:
+                                    <br/>
+                                    <br/>
+                                    Les éléments suivants seront automatiquement migrés, aucun prérequis nécessaire:
+                                    <ul>
+                                        <li>Les codes barre: tous les codes barre de l'élément à supprimer seront rattachés à l'élément à garder.</li>
+                                        <li>Les éléments commandés: toutes les itérations de commande de l'élément à supprimer seront portées par l'élément à garder.</li>
+                                        <li>Contenus d'inventaires de lots opérationnels et réserves: les quantités des deux éléments seront sommées et la date de péremption la moins grande sera gardée. L'inventaire n'affichera donc qu'un seul item (celui à garder) qui correspondra à l'agrégat précédemment expliqué de cet item à garder et de celui à supprimer.</li>
+                                        <li>Rapports de consommation: toutes les itérations dans les rapports bénévoles de l'élément à supprimer seront portées par l'élément à garder. Si l'élément à garder figure déjà dans le rapport, aucun agrégat ne sera fait et la ligne apparaitera donc deux fois.</li>
+                                        <li>Les affectations de tenues: toutes les itérations de tenues affectées liées à l'élément à supprimer seront portées par l'élément à garder.</li>
+                                    </ul>
+                                    Les éléments suivants doivent être gérés <u>manuellement avant d'effectuer la fusion</u>:
+                                    <ul>
+                                        <li>Elements présents dans les lots opérationnels et réserves: un même lot/sac/emplacement ne peut pas contenir plusieurs item identiques. Tous les éléments sélectionnés comme étant à supprimer seront migrés vers l'élément à garder: il convient donc de s'assurer qu'il n'y ait pas déjà, dans le même lot/sac/emplacement, les éléments à supprimer et à garder qui coexistent. Si c'est le cas, il faut gérer la transition manuellement. La réflexion est la même pour les réserves et les conteneurs.</li>
+                                        <li>Les référentiels: tout comme pour les lots et réserves, les référentiels contiennent des éléments du catalogue, et ne peuvent contenir plusieurs fois le même élément. Il faut donc s'assurer en amont que l'élément à supprimer et l'élément à garder n'apparaissent pas tous les deux dans le même référentiel afin d'éviter leur colision lors de la fusion.</li>
+                                        <li>Elements présents dans le stock des tenues, véhicules, transmissions: tout comme pour les lots et réserves, les stocks ne peuvent contenir plusieurs fois le même élément. Il faut donc s'assurer en amont que l'élément à supprimer et l'élément à garder n'apparaissent pas tous les deux dans les stocks afin d'éviter leur colision lors de la fusion.</li>
+                                    </ul>
+                                    Si ces éléments ne sont pas gérés manuellement, ils metteront la fusion en échec. Il vous faudra alors refaire une passe sur ces pré-requis et ré-executer la fusion.
+                                    <br/>
+                                    <br/>
+                                    Avant de valider la fusion de deux éléments un tableau comparatif des deux éléments est affiché. Vérifiez bien les points d'attention surlignés en jaune avant de valider.
+                                </p>
+
+                                <IconButton
+                                    icon='check'
+                                    size = 'sm'
+                                    variant="success"
+                                    className="me-1"
+                                    onClick={()=>{setWarningMergeAccepted(true)}}
+                                >J'ai compris, continuer vers le formulaire</IconButton>
+                            </>
+                        :
+                            <>                                
+                                <p><small className="text-danger">{errorsMerge.alerteISO?.message}</small></p>
+                                
+                                {isLoading ?
+                                    <LoaderInfiniteLoop/>
+                                :
+                                    <Form onSubmit={handleSubmitMerge(mergeCatalogue)}>
+                                        <Row>
+                                            <Col md={6}>
+                                                <Form.Group className="mb-3">
+                                                    <Form.Label>Item à <b><u>supprimer</u></b>:</Form.Label>
+                                                    <Select
+                                                        id="idMaterielCatalogueDELETE"
+                                                        name="idMaterielCatalogueDELETE"
+                                                        size="sm"
+                                                        classNamePrefix="react-select"
+                                                        closeMenuOnSelect={true}
+                                                        isClearable={true}
+                                                        isSearchable={true}
+                                                        isDisabled={isLoading}
+                                                        placeholder='Selectionner un matériel'
+                                                        options={catalogueEnrichi}
+                                                        value={catalogueEnrichi.find(c => c.value === watchMerge("idMaterielCatalogueDELETE"))}
+                                                        onChange={val => val != null ? setValueMerge("idMaterielCatalogueDELETE", val.value) : setValueMerge("idMaterielCatalogueDELETE", null)}
+                                                    />
+                                                    <small className="text-danger">{errorsMerge.idMaterielCatalogueDELETE?.message}</small>
+                                                </Form.Group>
+                                            </Col>
+                                            <Col md={6}>
+                                                <Form.Group className="mb-3">
+                                                    <Form.Label>Item à <b><u>garder</u></b>:</Form.Label>
+                                                    <Select
+                                                        id="idMaterielCatalogueKEEP"
+                                                        name="idMaterielCatalogueKEEP"
+                                                        size="sm"
+                                                        classNamePrefix="react-select"
+                                                        closeMenuOnSelect={true}
+                                                        isClearable={true}
+                                                        isSearchable={true}
+                                                        isDisabled={isLoading}
+                                                        placeholder='Selectionner un matériel'
+                                                        options={catalogueEnrichi}
+                                                        value={catalogueEnrichi.find(c => c.value === watchMerge("idMaterielCatalogueKEEP"))}
+                                                        onChange={val => val != null ? setValueMerge("idMaterielCatalogueKEEP", val.value) : setValueMerge("idMaterielCatalogueKEEP", null)}
+                                                    />
+                                                    <small className="text-danger">{errorsMerge.idMaterielCatalogueKEEP?.message}</small>
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
+
+                                        <Form.Label>Comparaison:</Form.Label>
+
+                                        <ComparaisonDeuxItems
+                                            idMaterielCatalogueDELETE={watchMerge("idMaterielCatalogueDELETE")}
+                                            idMaterielCatalogueKEEP={watchMerge("idMaterielCatalogueKEEP")}
+                                            catalogueEnrichi={catalogueEnrichi}
+                                        />
+
+                                        <p><small className="text-danger">{errorsMerge.alerteISO?.message}</small></p>
+
+                                        <Button variant='warning' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Fusionner'}</Button>
+                                    </Form>
+                                }
+                            </>
+                        }
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseMergeModal}>
+                            Annuler
+                        </Button>
                     </Modal.Footer>
                 </Modal>
 
@@ -465,16 +809,26 @@ const Catalogue = () => {
                             columns={colonnes}
                             data={catalogue}
                             topButtonShow={true}
-                            topButton={
-                                HabilitationService.habilitations['catalogue_ajout'] ? 
+                            topButton={<>
+                                {HabilitationService.habilitations['catalogue_ajout'] ? 
                                     <IconButton
                                         icon='plus'
                                         size = 'sm'
                                         variant="outline-success"
+                                        className="me-1"
                                         onClick={() => handleShowOffCanevas(0)}
                                     >Nouvel élément</IconButton>
-                                : null
-                            }
+                                : null}
+                                {HabilitationService.habilitations['catalogue_modification'] ? 
+                                    <IconButton
+                                        icon='code-branch'
+                                        size = 'sm'
+                                        variant="outline-info"
+                                        className="me-1"
+                                        onClick={handleShowMergeModal}
+                                    >Fusionner</IconButton>
+                                : null}
+                            </>}
                         />
                     </FalconComponentCard.Body>
                 </FalconComponentCard>
