@@ -360,12 +360,12 @@ export const affectationsTenuesForm = Yup.object().shape({
         .date()
         .typeError(champObligatoire)
         .required(champObligatoire),
-    personneNonGPM: Yup
+    nomPrenomExterne: Yup
         .string()
         .typeError(champObligatoire)
         .nullable(true)
         .required(champObligatoire),
-    mailPersonneNonGPM: Yup
+    mailExterne: Yup
         .string().email()
         .typeError(champObligatoire)
         .nullable(true),
@@ -381,12 +381,12 @@ export const cautionsForm = Yup.object().shape({
         .typeError(champObligatoire)
         .min(0, champObligatoire)
         .required(champObligatoire),
-    personneNonGPM: Yup
+    nomPrenomExterne: Yup
         .string()
         .typeError(champObligatoire)
         .nullable(true)
         .required(champObligatoire),
-    mailPersonneNonGPM: Yup
+    mailExterne: Yup
         .string().email()
         .typeError(champObligatoire)
         .nullable(true),

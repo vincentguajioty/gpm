@@ -11,13 +11,12 @@ const AffectationsAvecDates = ({
 }) => {
     const colonnesForDetailedDisplay = [
         {
-            accessor: 'nomPrenom',
+            accessor: 'nomPrenomExterne',
             Header: 'Personne',
             Cell: ({ value, row }) => {
 				return(<>
                     {value}
-                    {row.original.mailPersonne != null ? <><br/><SoftBadge bg='info'>{row.original.mailPersonne}</SoftBadge></>:null}
-                    <br/>{row.original.idPersonne == null ? <SoftBadge bg='secondary'>Externe</SoftBadge>:null}
+                    {row.original.mailExterne != null ? <><br/><SoftBadge bg='info'>{row.original.mailExterne}</SoftBadge></>:null}
                 </>);
 			},
         },

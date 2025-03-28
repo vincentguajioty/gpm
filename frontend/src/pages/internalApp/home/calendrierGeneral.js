@@ -390,7 +390,7 @@ const CalendrierGeneral = ({
                         start: item.dateAffectation,
                         description: item.libelleMateriel,
                         className: 'bg-soft-info',
-                        location: item.personneNonGPM ? item.personneNonGPM : item.prenomPersonne+' '+item.nomPersonne,
+                        location: item.nomPrenomExterne ? item.nomPrenomExterne : item.prenomPersonne+' '+item.nomPersonne,
                         allDay: true,
                         textForLink:'Accès aux affectations',
                         linkTarget:'/tenuesAffectation'
@@ -408,7 +408,7 @@ const CalendrierGeneral = ({
                         start: item.dateRetour,
                         description: item.libelleMateriel,
                         className: 'bg-soft-info',
-                        location: item.personneNonGPM ? item.personneNonGPM : item.prenomPersonne+' '+item.nomPersonne,
+                        location: item.nomPrenomExterne ? item.nomPrenomExterne : item.prenomPersonne+' '+item.nomPersonne,
                         allDay: true,
                         textForLink:'Accès aux affectations',
                         linkTarget:'/tenuesAffectation'
@@ -426,7 +426,7 @@ const CalendrierGeneral = ({
                         start: item.dateEmissionCaution,
                         description: item.detailsMoyenPaiement,
                         className: 'bg-soft-info',
-                        location: item.personneNonGPM != null ? item.personneNonGPM : item.prenomPersonne != null ? item.prenomPersonne+' '+item.nomPersonne : "Aucune personne renseignée",
+                        location: item.nomPrenomExterne != null ? item.nomPrenomExterne : item.prenomPersonne != null ? item.prenomPersonne+' '+item.nomPersonne : "Aucune personne renseignée",
                         allDay: true,
                         textForLink:'Accès aux cautions',
                         linkTarget:'/tenuesCautions'
@@ -444,7 +444,7 @@ const CalendrierGeneral = ({
                         start: item.dateExpirationCaution,
                         description: item.detailsMoyenPaiement,
                         className: 'bg-soft-info',
-                        location: item.personneNonGPM != null ? item.personneNonGPM : item.prenomPersonne != null ? item.prenomPersonne+' '+item.nomPersonne : "Aucune personne renseignée",
+                        location: item.nomPrenomExterne != null ? item.nomPrenomExterne : item.prenomPersonne != null ? item.prenomPersonne+' '+item.nomPersonne : "Aucune personne renseignée",
                         allDay: true,
                         textForLink:'Accès aux cautions',
                         linkTarget:'/tenuesCautions'

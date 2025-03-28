@@ -319,13 +319,12 @@ exports.tenuesAffectations = async (req, res) => {
     try {
         let result = await db.query(`
             SELECT
-                ta.idTenue,
-                ta.dateAffectation,
-                tc.libelleMateriel,
-                ta.personneNonGPM
+                idTenue,
+                dateAffectation,
+                libelleMateriel,
+                nomPrenomExterne
             FROM
-                TENUES_AFFECTATION ta
-                JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
+                VIEW_TENUES_AFFECTATION
             WHERE
                 dateAffectation IS NOT NULL
         `);
@@ -341,13 +340,12 @@ exports.tenuesRetours = async (req, res) => {
     try {
         let result = await db.query(`
             SELECT
-                ta.idTenue,
-                ta.dateRetour,
-                tc.libelleMateriel,
-                ta.personneNonGPM
+                idTenue,
+                dateRetour,
+                libelleMateriel,
+                nomPrenomExterne
             FROM
-                TENUES_AFFECTATION ta
-                JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
+                VIEW_TENUES_AFFECTATION
             WHERE
                 dateRetour IS NOT NULL
         ;`);
@@ -363,12 +361,12 @@ exports.cautionsEmissions = async (req, res) => {
     try {
         let result = await db.query(`
             SELECT
-                c.idCaution,
-                c.dateEmissionCaution,
-                c.detailsMoyenPaiement,
-                c.personneNonGPM
+                idCaution,
+                dateEmissionCaution,
+                detailsMoyenPaiement,
+                nomPrenomExterne
             FROM
-                CAUTIONS c
+                VIEW_CAUTIONS
             WHERE
                 dateEmissionCaution IS NOT NULL
         `);
@@ -384,12 +382,12 @@ exports.cautionsExpirations = async (req, res) => {
     try {
         let result = await db.query(`
             SELECT
-                c.idCaution,
-                c.dateExpirationCaution,
-                c.detailsMoyenPaiement,
-                c.personneNonGPM
+                idCaution,
+                dateExpirationCaution,
+                detailsMoyenPaiement,
+                nomPrenomExterne
             FROM
-                CAUTIONS c
+                VIEW_CAUTIONS
             WHERE
                 dateExpirationCaution IS NOT NULL
         `);

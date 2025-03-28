@@ -3678,37 +3678,34 @@ const envoyerNotificationsTenuesBenevoles = async () => {
         /* --- Récupérer état des lieux --- */
         let personnesUnitaires = await db.query(`
             SELECT DISTINCT
-                personneNonGPM as nomPrenom,
-                mailPersonneNonGPM as mailPersonne
+                nomPrenomExterne as nomPrenom,
+                mailExterne as mailPersonne
             FROM
-                TENUES_AFFECTATION ta
+                VIEW_TENUES_AFFECTATION
             WHERE
-                personneNonGPM IS NOT NULL
+                nomPrenomExterne IS NOT NULL
                 AND
                 notifPersonne = true
                 AND
-                mailPersonneNonGPM IS NOT NULL
+                mailExterne IS NOT NULL
         ;`);
 
         for(const personne of personnesUnitaires)
         {
             let affectations = await db.query(`
                 SELECT
-                    ta.*,
-                    tc.libelleMateriel,
-                    tc.taille
+                    *
                 FROM
-                    TENUES_AFFECTATION ta
-                    LEFT OUTER JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
+                    VIEW_TENUES_AFFECTATION
                 WHERE
-                    ta.notifPersonne = true
+                    notifPersonne = true
                     AND
-                    ta.personneNonGPM = :personneNonGPM
+                    nomPrenomExterne = :nomPrenomExterne
                     AND
-                    ta.mailPersonneNonGPM = :mailPersonneNonGPM
+                    mailExterne = :mailExterne
             ;`,{
-                personneNonGPM: personne.nomPrenom,
-                mailPersonneNonGPM: personne.mailPersonne,
+                nomPrenomExterne: personne.nomPrenom,
+                mailExterne: personne.mailPersonne,
             });
             personne.affectations = affectations;
         }
@@ -3897,6 +3894,55 @@ const envoyerNotificationsTenuesBenevoles = async () => {
     }
 }
 
+const cleanPersonnesExternes = async () => {
+    try {
+        let externes = await db.query(`
+            SELECT
+                *
+            FROM
+                PERSONNE_EXTERNE
+        `);
+        for(const ext of externes)
+        {
+            let affectationsTenues = await db.query(`
+                SELECT
+                    COUNT(idTenue) as nbTenues
+                FROM
+                    TENUES_AFFECTATION
+                WHERE
+                    idExterne = :idExterne
+            `,{
+                idExterne: ext.idExterne,
+            });
+
+            let cautions = await db.query(`
+                SELECT
+                    COUNT(idCaution) as nbCautions
+                FROM
+                    CAUTIONS
+                WHERE
+                    idExterne = :idExterne
+            `,{
+                idExterne: ext.idExterne,
+            });
+
+            if(affectationsTenues[0].nbTenues == 0 && cautions[0].nbCautions == 0)
+            {
+                let clean = await db.query(`
+                    DELETE FROM
+                        PERSONNE_EXTERNE
+                    WHERE
+                        idExterne = :idExterne
+                `,{
+                    idExterne: ext.idExterne,
+                });
+            }
+        }
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = {
     majLdapOneUser,
     majLdapAllUsers,
@@ -3971,4 +4017,5 @@ module.exports = {
     checkGestionnaireStatut,
     cleanTempFolder,
     envoyerNotificationsTenuesBenevoles,
+    cleanPersonnesExternes,
 };

@@ -34,10 +34,8 @@ const Cautions = () => {
     const initPage = async () => {
         try {
             const getData = await Axios.get('/tenues/getCautions');
-            console.log(getData.data);
             setCautions(getData.data);
             const getRowData = await Axios.get('/tenues/getCautionsRow');
-            console.log(getRowData.data);
             setCautionsRow(getRowData.data);
             
             setReadyToDisplay(true);
@@ -52,12 +50,12 @@ const Cautions = () => {
 
     const colonnes = [
         {
-            accessor: 'personneNonGPM',
+            accessor: 'nomPrenomExterne',
             Header: 'Personne',
             Cell: ({ value, row }) => {
 				return(<>
                     {value}
-                    {row.original.mailPersonneNonGPM != null ? <><br/><SoftBadge bg='info'>{row.original.mailPersonneNonGPM}</SoftBadge></>:null}
+                    {row.original.mailExterne != null ? <><br/><SoftBadge bg='info'>{row.original.mailExterne}</SoftBadge></>:null}
                 </>);
 			},
         },
@@ -124,7 +122,6 @@ const Cautions = () => {
         resolver: yupResolver(cautionsForm),
     });
     const [personnesExternes, setPersonnesExternes] = useState([]);
-    const [suggestionsMailsExternes, setSuggestionsMailsExternes] = useState([]);
     const handleCloseOffCanevas = () => {
         setShowOffCanevas(false);
         setOffCanevasIdCaution();
@@ -137,8 +134,10 @@ const Cautions = () => {
         if(id > 0)
         {
             let oneItemFromArray = cautionsRow.filter(ligne => ligne.idCaution == id)[0];
-            setValue("personneNonGPM", oneItemFromArray.personneNonGPM);
-            setValue("mailPersonneNonGPM", oneItemFromArray.mailPersonneNonGPM);
+            setValue("nomPrenomExterne", oneItemFromArray.nomPrenomExterne);
+            setValue("mailExterne", oneItemFromArray.mailExterne);
+            setValue("idExterne", oneItemFromArray.idExterne);
+            setValue('personneConnue', true);
             setValue("montantCaution", oneItemFromArray.montantCaution);
             setValue("dateEmissionCaution", oneItemFromArray.dateEmissionCaution != null ? new Date(oneItemFromArray.dateEmissionCaution) : null);
             setValue("dateExpirationCaution", oneItemFromArray.dateExpirationCaution != null ? new Date(oneItemFromArray.dateExpirationCaution) : null);
@@ -147,12 +146,13 @@ const Cautions = () => {
         else
         {
             setValue("dateEmissionCaution", new Date());
-            setValue("idPersonne", 0);
+            setValue('personneConnue', false);
         }
 
         let getData = await Axios.get('/tenues/getPersonnesSuggested');
         setPersonnesExternes(getData.data);
 
+        setValue("initialLoadOver", true);
         setShowOffCanevas(true);
     }
     const ajouterModifierEntree = async (data) => {
@@ -163,8 +163,9 @@ const Cautions = () => {
             {
                 const response = await Axios.post('/tenues/updateCautions',{
                     idCaution: offCanevasIdCaution,
-                    personneNonGPM: data.personneNonGPM,
-                    mailPersonneNonGPM: data.mailPersonneNonGPM,
+                    nomPrenomExterne: data.nomPrenomExterne,
+                    mailExterne: data.mailExterne,
+                    idExterne: data.idExterne,
                     montantCaution: data.montantCaution,
                     dateEmissionCaution: data.dateEmissionCaution,
                     dateExpirationCaution: data.dateExpirationCaution,
@@ -174,8 +175,9 @@ const Cautions = () => {
             else
             {
                 const response = await Axios.post('/tenues/addCautions',{
-                    personneNonGPM: data.personneNonGPM,
-                    mailPersonneNonGPM: data.mailPersonneNonGPM,
+                    nomPrenomExterne: data.nomPrenomExterne,
+                    mailExterne: data.mailExterne,
+                    idExterne: data.idExterne,
                     montantCaution: data.montantCaution,
                     dateEmissionCaution: data.dateEmissionCaution,
                     dateExpirationCaution: data.dateExpirationCaution,
@@ -192,21 +194,50 @@ const Cautions = () => {
     }
 
     useEffect(()=>{
-        setSuggestionsMailsExternes([]);
+        if(watch('initialLoadOver') && watch('initialLoadOver') == true)
+        {
+            if(watch('idExterne') && watch('idExterne') != null && watch('idExterne') != 0)
+            {
+                let personneSelectionnee = personnesExternes.filter(perso => perso.idExterne == watch('idExterne'));
+                setValue('nomPrenomExterne', personneSelectionnee[0].nomPrenomExterne || null);
+                setValue('mailExterne', personneSelectionnee[0].mailExterne || null);
+                setValue('personneConnue', true);
+            }else{
+                setValue('personneConnue', false);
+                setValue('idExterne', null);
+                setValue('nomPrenomExterne', null);
+                setValue('mailExterne', null);
+            }
+        }
+    },[watch('idExterne')])
 
-        let usersTrouves = personnesExternes.filter(perso => perso.personneNonGPM == watch('personneNonGPM') && perso.mailPersonneNonGPM != null);
-        let tempMailArray = [];
-        for(const perso of usersTrouves)
+    useEffect(()=>{
+        if(watch('initialLoadOver') && watch('initialLoadOver') == true)
         {
-            tempMailArray.push(perso.mailPersonneNonGPM)
+            if(watch('nomPrenomExterne') && watch('nomPrenomExterne') != null && watch('nomPrenomExterne') != "")
+            {
+                let personnesChercheesSurNom = personnesExternes.filter(perso => perso.nomPrenomExterne == watch('nomPrenomExterne'));
+                if(personnesChercheesSurNom.length > 0)
+                {
+                    let personnesChercheesSurMail = personnesChercheesSurNom.filter(perso => perso.mailExterne == watch('mailExterne'));
+                    if(personnesChercheesSurMail.length == 1)
+                    {
+                        setValue('idExterne', personnesChercheesSurMail[0].idExterne);
+                    }else{
+                        setValue('idExterne', null);
+                    }
+                }else{
+                    setValue('idExterne', null);
+                }
+            }else{
+                setValue('idExterne', null);
+                setValue('mailExterne', null);
+            }
         }
-        setSuggestionsMailsExternes(tempMailArray);
-        
-        if(usersTrouves.length == 1)
-        {
-            setValue('mailPersonneNonGPM', usersTrouves[0].mailPersonneNonGPM)
-        }
-    },[watch('personneNonGPM')])
+    },[
+        watch('nomPrenomExterne'),
+        watch('mailExterne'),
+    ])
 
     /* DELETE */
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -252,22 +283,27 @@ const Cautions = () => {
             <Offcanvas.Body>
                 <Form onSubmit={handleSubmit(ajouterModifierEntree)}>
                     <Form.Group className="mb-3">
-                        <Form.Label>Emise par</Form.Label>
-                        <Form.Control className='mt-2' placeholder="Nom et prénom" list='suggestionsExternes' size="sm" type="text" name='personneNonGPM' id='personneNonGPM' {...register('personneNonGPM')}/>
-                            <datalist id='suggestionsExternes'>
-                                {personnesExternes.map((perso, i) => {
-                                    return (<option key={i} value={perso.personneNonGPM}>{perso.mailPersonneNonGPM}</option>);
-                                })}
-                            </datalist>
-                            <small className="text-danger">{errors.personneNonGPM?.message}</small>
+                        <Form.Label>Emise par <SoftBadge bg={watch('personneConnue') ? "success":"warning"}>{watch('personneConnue') ? "Personne connue":"Inconnu"}</SoftBadge></Form.Label>
+                        <Select
+                            id="idExterne"
+                            name="idExterne"
+                            size="sm"
+                            classNamePrefix="react-select"
+                            closeMenuOnSelect={true}
+                            isClearable={true}
+                            isSearchable={true}
+                            isDisabled={isLoading}
+                            placeholder='Aucune personne connue selectionnée'
+                            options={personnesExternes}
+                            value={personnesExternes.find(c => c.value === watch("idExterne"))}
+                            onChange={val => val != null ? setValue("idExterne", val.value) : setValue("idExterne", null)}
+                        />
+                        <small className="text-danger">{errors.idExterne?.message}</small>
 
-                            <Form.Control className='mt-2' placeholder="Adresse email" list='suggestionsMailsConditionnels' size="sm" type="email" name='mailPersonneNonGPM' id='mailPersonneNonGPM' {...register('mailPersonneNonGPM')}/>
-                            <datalist id='suggestionsMailsConditionnels'>
-                                {suggestionsMailsExternes.map((mail, i) => {
-                                    return (<option key={i}>{mail}</option>);
-                                })}
-                            </datalist>
-                            <small className="text-danger">{errors.mailPersonneNonGPM?.message}</small>
+                        <Form.Control size="sm" type="text" name='nomPrenomExterne' id='nomPrenomExterne' {...register('nomPrenomExterne')} placeholder='NOM Prénom'/>
+                        <small className="text-danger">{errors.nomPrenomExterne?.message}</small>
+                        <Form.Control size="sm" type="text" name='mailExterne' id='mailExterne' {...register('mailExterne')} placeholder='Mail'/>
+                        <small className="text-danger">{errors.mailExterne?.message}</small>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Montant (€)</Form.Label>

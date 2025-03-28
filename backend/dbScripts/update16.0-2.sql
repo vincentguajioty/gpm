@@ -345,4 +345,115 @@ UPDATE CONFIG SET alertes_benevoles_vhf = 0;
 ALTER TABLE VHF_EQUIPEMENTS ADD dispoBenevoles BOOLEAN;
 UPDATE VHF_EQUIPEMENTS SET dispoBenevoles = 0;
 
+CREATE TABLE PERSONNE_EXTERNE(
+	idExterne INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	nomPrenomExterne VARCHAR(100),
+	mailExterne VARCHAR(100)
+);
+ALTER TABLE PERSONNE_EXTERNE ADD UNIQUE(nomPrenomExterne, mailExterne);
+
+ALTER TABLE TENUES_AFFECTATION ADD idExterne INT NULL AFTER idTenue;
+ALTER TABLE TENUES_AFFECTATION ADD CONSTRAINT fk_externes_tenues FOREIGN KEY(idExterne) REFERENCES PERSONNE_EXTERNE(idExterne);
+ALTER TABLE CAUTIONS ADD idExterne INT NULL AFTER idCaution;
+ALTER TABLE CAUTIONS ADD CONSTRAINT fk_externes_cautions FOREIGN KEY(idExterne) REFERENCES PERSONNE_EXTERNE(idExterne);
+
+INSERT INTO PERSONNE_EXTERNE (nomPrenomExterne, mailExterne)
+SELECT
+	allRecords.*
+FROM    
+	((
+		SELECT DISTINCT
+			personneNonGPM as nomPrenomExterne,
+			mailPersonneNonGPM as mailExterne
+		FROM
+			TENUES_AFFECTATION
+		WHERE
+			personneNonGPM IS NOT NULL
+	)
+	UNION
+	(
+		SELECT DISTINCT
+			personneNonGPM as nomPrenomExterne,
+			mailPersonneNonGPM as mailExterne
+		FROM
+			CAUTIONS
+		WHERE
+			personneNonGPM IS NOT NULL
+	)) allRecords
+ORDER BY
+	allRecords.nomPrenomExterne,
+	allRecords.mailExterne
+;
+
+UPDATE
+	TENUES_AFFECTATION t
+    LEFT OUTER JOIN PERSONNE_EXTERNE e ON t.personneNonGPM = e.nomPrenomExterne
+SET
+	t.idExterne = e.idExterne,
+	t.personneNonGPM = null,
+	t.mailPersonneNonGPM = null
+WHERE
+	t.personneNonGPM IS NOT NULL
+    AND t.mailPersonneNonGPM IS NOT NULL
+    AND t.mailPersonneNonGPM = e.mailExterne
+;
+UPDATE
+	TENUES_AFFECTATION t
+    LEFT OUTER JOIN PERSONNE_EXTERNE e ON t.personneNonGPM = e.nomPrenomExterne
+SET
+	t.idExterne = e.idExterne,
+	t.personneNonGPM = null
+WHERE
+	personneNonGPM IS NOT NULL
+;
+ALTER TABLE TENUES_AFFECTATION DROP personneNonGPM;
+ALTER TABLE TENUES_AFFECTATION DROP mailPersonneNonGPM;
+
+UPDATE
+	CAUTIONS t
+    LEFT OUTER JOIN PERSONNE_EXTERNE e ON t.personneNonGPM = e.nomPrenomExterne
+SET
+	t.idExterne = e.idExterne,
+	t.personneNonGPM = null,
+	t.mailPersonneNonGPM = null
+WHERE
+	t.personneNonGPM IS NOT NULL
+    AND t.mailPersonneNonGPM IS NOT NULL
+    AND t.mailPersonneNonGPM = e.mailExterne
+;
+UPDATE
+	CAUTIONS t
+    LEFT OUTER JOIN PERSONNE_EXTERNE e ON t.personneNonGPM = e.nomPrenomExterne
+SET
+	t.idExterne = e.idExterne,
+	t.personneNonGPM = null
+WHERE
+	personneNonGPM IS NOT NULL
+;
+ALTER TABLE CAUTIONS DROP personneNonGPM;
+ALTER TABLE CAUTIONS DROP mailPersonneNonGPM;
+
+CREATE OR REPLACE VIEW VIEW_TENUES_AFFECTATION AS
+	SELECT
+		aff.*,
+		ext.nomPrenomExterne,
+		ext.mailExterne,
+		tc.libelleMateriel,
+		tc.taille
+	FROM
+		TENUES_AFFECTATION aff
+		LEFT OUTER JOIN PERSONNE_EXTERNE ext ON aff.idExterne = ext.idExterne
+		LEFT OUTER JOIN MATERIEL_CATALOGUE tc ON aff.idMaterielCatalogue = tc.idMaterielCatalogue
+;
+
+CREATE OR REPLACE VIEW VIEW_CAUTIONS AS
+	SELECT
+		cau.*,
+		ext.nomPrenomExterne,
+		ext.mailExterne
+	FROM
+		CAUTIONS cau
+		LEFT OUTER JOIN PERSONNE_EXTERNE ext ON cau.idExterne = ext.idExterne
+;
+
 UPDATE CONFIG SET version = '16.0';

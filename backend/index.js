@@ -152,6 +152,7 @@ schedule.scheduleJob(process.env.CRON_DAILY, async function() {
         //CNIL - Anonymisation des comptes qui doivent l'être
         logger.debug("CRON - Début de l'anonymisation des comptes CNIL");
         await fonctionsMetiers.cnilAnonymeCron();
+        await fonctionsMetiers.cleanPersonnesExternes();
         logger.debug("CRON - Fin de l'anonymisation des comptes CNIL");
 
         //Mise à jour des conditions de notifications et envoi de la notif journaliere

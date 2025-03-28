@@ -1267,17 +1267,16 @@ exports.getHomeCheckList = async (req, res, next)=>{
         {
             let getAlertesData = await db.query(`
                 SELECT
-                    personneNonGPM,
+                    nomPrenomExterne,
                     libelleMateriel
                 FROM
-                    TENUES_AFFECTATION ta
-                    JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
+                    VIEW_TENUES_AFFECTATION
                 WHERE
                     dateRetour < CURRENT_DATE
                     OR
                     dateRetour = CURRENT_DATE
                 ORDER BY
-                    personneNonGPM,
+                    nomPrenomExterne,
                     libelleMateriel
             `);
 

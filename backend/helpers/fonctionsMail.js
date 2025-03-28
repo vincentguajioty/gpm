@@ -1006,11 +1006,10 @@ try {
         {
             tenues_retours = await db.query(`
                 SELECT
-                    personneNonGPM,    
+                    nomPrenomExterne,    
                     libelleMateriel
                 FROM
-                    TENUES_AFFECTATION ta
-                    JOIN MATERIEL_CATALOGUE tc ON ta.idMaterielCatalogue = tc.idMaterielCatalogue
+                    VIEW_TENUES_AFFECTATION
                 WHERE
                     dateRetour < CURRENT_DATE
                     OR
