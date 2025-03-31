@@ -680,6 +680,7 @@ exports.getConfig = async (req, res) => {
                 alertes_benevoles_lots,
                 alertes_benevoles_vehicules,
                 alertes_benevoles_vhf,
+                tenues_benevoles_suivi,
                 consommation_benevoles,
                 consommation_benevoles_auto,
                 mailserver,

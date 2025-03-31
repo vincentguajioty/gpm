@@ -37,6 +37,8 @@ if(ConfigurationService.config)
         ConfigurationService.config['alertes_benevoles_vhf']
         ||
         ConfigurationService.config['consommation_benevoles']
+        ||
+        ConfigurationService.config['tenues_benevoles_suivi']
     )
     {
         dashboardRoutes.children.push({

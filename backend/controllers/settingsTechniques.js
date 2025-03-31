@@ -79,6 +79,7 @@ exports.getConfigForAdmin = async (req, res) => {
                 alertes_benevoles_lots,
                 alertes_benevoles_vehicules,
                 alertes_benevoles_vhf,
+                tenues_benevoles_suivi,
                 consommation_benevoles,
                 consommation_benevoles_auto
             FROM
@@ -176,12 +177,14 @@ exports.saveAlertesConfig = async (req, res) => {
                 alertes_benevoles_lots = :alertes_benevoles_lots,
                 alertes_benevoles_vehicules = :alertes_benevoles_vehicules,
                 alertes_benevoles_vhf = :alertes_benevoles_vhf,
+                tenues_benevoles_suivi = :tenues_benevoles_suivi,
                 consommation_benevoles = :consommation_benevoles,
                 consommation_benevoles_auto = :consommation_benevoles_auto
         `,{
             alertes_benevoles_lots : req.body.alertes_benevoles_lots || 0,
             alertes_benevoles_vehicules : req.body.alertes_benevoles_vehicules || 0,
             alertes_benevoles_vhf : req.body.alertes_benevoles_vhf || 0,
+            tenues_benevoles_suivi: req.body.tenues_benevoles_suivi || 0,
             consommation_benevoles : req.body.consommation_benevoles || 0,
             consommation_benevoles_auto : req.body.consommation_benevoles_auto || 0,
         });

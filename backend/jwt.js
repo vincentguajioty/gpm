@@ -135,6 +135,34 @@ const decryptAMToken = () => {
     }
 }
 
+const decryptPublicToken = () => {
+    return async function(req, res, next) {
+        const token = req.body.publicToken;
+        if(!token){
+            logger.http('Connexion sans token');
+            res.status(401);
+            res.json({auth: false, message: "We need a token, please send it next time !"});
+        }
+        else
+        {
+            
+            jwt.verify(token, process.env.JWT_TENUESPUBLIC_TOKEN, async (err, decoded) => {
+                if(err){
+                    logger.http('Demande de decodage tenues public avec un mauvais token');
+                    res.status(403);
+                    res.json({auth: false, message: "You failed to authenticate with your rubish token"});
+                }
+                else
+                {
+                    logger.http('Demande de decodage tenues public réussi');
+                    req.decryptPublicToken = decoded;
+                    next();
+                }
+            });
+        }
+    }
+}
+
 const cleanSessionTable = async () => {
     try {
         const deleteQuery = await db.query(
@@ -208,5 +236,6 @@ module.exports = {
     cleanOldBlacklist,
     decryptAesToken,
     decryptAMToken,
+    decryptPublicToken,
     verifyJWTforSocketIO,
 };

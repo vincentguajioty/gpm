@@ -42,6 +42,19 @@ if(ConfigurationService.config)
             }
         )
     }
+
+    if(!ConfigurationService.config['maintenance'] && ConfigurationService.config['tenues_benevoles_suivi'])
+        {
+            publicRoutes.children.push(
+                {
+                    name: 'Ma tenue',
+                    to: '/tenuesPublic',
+                    icon: 'tshirt',
+                    exact: true,
+                    active: true
+                }
+            )
+        }
 }
 
 export const loginRoutes = {

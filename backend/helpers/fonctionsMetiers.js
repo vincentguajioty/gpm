@@ -1666,11 +1666,12 @@ const checkFunctionnalityBenevolesEnabled = async () => {
                 consommation_benevoles,
                 alertes_benevoles_lots,
                 alertes_benevoles_vehicules,
-                alertes_benevoles_vhf
+                alertes_benevoles_vhf,
+                tenues_benevoles_suivi
             FROM
                 CONFIG
         `);
-        if(getConfig[0].consommation_benevoles == true || getConfig[0].alertes_benevoles_lots == true || getConfig[0].alertes_benevoles_vehicules == true || getConfig[0].alertes_benevoles_vhf == true)
+        if(getConfig[0].consommation_benevoles == true || getConfig[0].alertes_benevoles_lots == true || getConfig[0].alertes_benevoles_vehicules == true || getConfig[0].alertes_benevoles_vhf == true || getConfig[0].tenues_benevoles_suivi == true)
         {
             return true;
         }

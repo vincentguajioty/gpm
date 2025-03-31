@@ -30,6 +30,8 @@ const fournisseursAesCtrl = require('./controllers/fournisseursAes');
 const vehiculesCtrl = require('./controllers/vehicules');
 
 const tenuesCtrl = require('./controllers/tenues');
+const tenuesPublicCtrl = require('./controllers/tenuesAccesPublic');
+
 const vhfCtrl = require('./controllers/vhf');
 
 const referentielsCtrl = require('./controllers/referentiels');
@@ -370,6 +372,11 @@ router.get('/tenues/getCautionsRow',  loggerMiddleware.httpLogger(), jwtFunction
 router.post('/tenues/addCautions',    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_ajout']),        loggerMiddleware.modificationLogger(), tenuesCtrl.addCautions);
 router.post('/tenues/updateCautions', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_modification']), loggerMiddleware.modificationLogger(), tenuesCtrl.updateCautions);
 router.post('/tenues/deleteCautions', loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_suppression']),  loggerMiddleware.suppressionLogger(),  tenuesCtrl.deleteCautions);
+//Tenues - ZONE PUBLIQUE
+router.post('/tenuesPublic/requestAuthentification',     middlewaresFunctions.checkFunctionnalityBenevolesEnabled(),                                    loggerMiddleware.httpLogger(),       tenuesPublicCtrl.requestAuthentification);
+router.post('/tenuesPublic/authenticateWithCode',        middlewaresFunctions.checkFunctionnalityBenevolesEnabled(),                                    loggerMiddleware.httpLogger(),       tenuesPublicCtrl.authenticateWithCode);
+router.post('/tenuesPublic/getTenuesDetailsPublic',      middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), jwtFunctions.decryptPublicToken(), loggerMiddleware.httpLogger(),       tenuesPublicCtrl.getTenuesDetailsPublic);
+router.post('/tenuesPublic/seDeconnecterTenuesPublic',   middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), jwtFunctions.decryptPublicToken(), loggerMiddleware.httpLogger(),       tenuesPublicCtrl.seDeconnecterTenuesPublic);
 
 //VHF Canaux
 router.get('/vhf/getFrequences',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_lecture']),                                             vhfCtrl.getFrequences);

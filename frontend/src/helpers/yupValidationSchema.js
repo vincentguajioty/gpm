@@ -1253,3 +1253,25 @@ export const centreDeCoutsAttached = Yup.object().shape({
         .min(1, champObligatoire)
         .required(champObligatoire),
 });
+
+export const tenuesPublicFormDemande = Yup.object().shape({
+    mailDemandeur: Yup
+        .string()
+        .typeError(champObligatoire)
+        .email(champMail)
+        .required(champObligatoire),
+});
+
+export const tenuesPublicFormAuth = Yup.object().shape({
+    mailDemandeur: Yup
+        .string()
+        .typeError(champObligatoire)
+        .email(champMail)
+        .required(champObligatoire),
+    codeUnique: Yup
+        .string()
+        .min(9, 'Code à 9 caractères')
+        .max(9, 'Code à 9 caractères')
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});

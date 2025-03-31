@@ -25,6 +25,7 @@ const ConfigGeneraleTabAlertes = ({
                 alertes_benevoles_lots: data.alertes_benevoles_lots,
                 alertes_benevoles_vehicules: data.alertes_benevoles_vehicules,
                 alertes_benevoles_vhf: data.alertes_benevoles_vhf,
+                tenues_benevoles_suivi: data.tenues_benevoles_suivi,
                 consommation_benevoles: data.consommation_benevoles,
                 consommation_benevoles_auto: data.consommation_benevoles_auto,
             });
@@ -39,6 +40,7 @@ const ConfigGeneraleTabAlertes = ({
         setValue('alertes_benevoles_lots', config.alertes_benevoles_lots);
         setValue('alertes_benevoles_vehicules', config.alertes_benevoles_vehicules);
         setValue('alertes_benevoles_vhf', config.alertes_benevoles_vhf);
+        setValue('tenues_benevoles_suivi', config.tenues_benevoles_suivi)
         setValue('consommation_benevoles', config.consommation_benevoles);
         setValue('consommation_benevoles_auto', config.consommation_benevoles_auto);
     }
@@ -102,6 +104,18 @@ const ConfigGeneraleTabAlertes = ({
                     onClick={(e)=>{setValue("consommation_benevoles_auto", !watch("consommation_benevoles_auto"))}}
                 />
                 <small className="text-danger">{errors.consommation_benevoles_auto?.message}</small>
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Les utilisateurs non-authentifiés peuvent interragir avec leur tenue:</Form.Label>
+                <Form.Check
+                    type='switch'
+                    id="tenues_benevoles_suivi"
+                    name="tenues_benevoles_suivi"
+                    label="Accès aux tenues"
+                    checked={watch("tenues_benevoles_suivi")}
+                    onClick={(e)=>{setValue("tenues_benevoles_suivi", !watch("tenues_benevoles_suivi"))}}
+                />
+                <small className="text-danger">{errors.tenues_benevoles_suivi?.message}</small>
             </Form.Group>
 
             <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Enregistrer'}</Button>

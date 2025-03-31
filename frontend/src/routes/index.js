@@ -11,9 +11,10 @@ import Error404 from 'pages/errors/Error404';
 import Error500 from 'pages/errors/Error500';
 
 import Landing from 'pages/publicAccess/landing';
-import DeclarationIncident from 'pages/publicAccess/declarationIncident';
-import TracerConso from 'pages/publicAccess/tracerConso';
+import DeclarationIncident from 'pages/publicAccess/declarationIncidents/declarationIncident';
+import TracerConso from 'pages/publicAccess/tracerConso/tracerConso';
 import GererConsommation from 'pages/publicAccess/tracerConso/gererConsommation';
+import GestionTenues from 'pages/publicAccess/tenues/gestionTenues';
 
 import Home from 'pages/internalApp/home/home';
 import Login from 'pages/home/login';
@@ -91,6 +92,7 @@ const FalconRoutes = () => {
         <Route path="/incidentPublic" element={<DeclarationIncident />} />
         <Route path="/consoPublic" element={<TracerConso />} />
         <Route path="/consoPublic/:idConsommation" element={<GererConsommation />} />
+        <Route path="/tenuesPublic" element={<GestionTenues />} />
       </Route>
 
       <Route element={<AuthSimpleLayout />}>

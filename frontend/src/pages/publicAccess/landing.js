@@ -7,6 +7,7 @@ import Flex from 'components/common/Flex';
 import imgIncident from 'assets/img/publicLandingPage/imgIncident.png'
 import imgConsommation from 'assets/img/publicLandingPage/imgConsommation.png'
 import imgConnexion from 'assets/img/publicLandingPage/imgConnexion.png'
+import imgTenues from 'assets/img/publicLandingPage/imgTenues.png'
 import Lottie from 'lottie-react';
 import lottieMnt from 'components/widgets/lottie-maintenance';
 
@@ -34,6 +35,9 @@ const Landing = () => {
 	}
 	const goDeclaration = () => {
 		navigate('/consoPublic');
+	}
+	const goTenues = () => {
+		navigate('/tenuesPublic');
 	}
 	const goBackEnd = () => {
 		navigate(HabilitationService.habilitations ? '/home' : '/login');
@@ -63,7 +67,7 @@ const Landing = () => {
 		else
 		{
 			return (<>
-				{!ConfigurationService.config['alertes_benevoles_lots'] && !ConfigurationService.config['alertes_benevoles_vehicules'] && !ConfigurationService.config['alertes_benevoles_vhf'] && !ConfigurationService.config['consommation_benevoles'] ? <Navigate replace to="/home" /> : null}
+				{!ConfigurationService.config['alertes_benevoles_lots'] && !ConfigurationService.config['alertes_benevoles_vehicules'] && !ConfigurationService.config['alertes_benevoles_vhf'] && !ConfigurationService.config['consommation_benevoles'] && !ConfigurationService.config['tenues_benevoles_suivi'] ? <Navigate replace to="/home" /> : null}
 				
 				<Row className="justify-content-center text-center mb-3 mt-3">
 					<Col lg={8} xl={7} xxl={6} className="col-xxl-6">
@@ -111,6 +115,25 @@ const Landing = () => {
 									</a>
 								</h5>
 								<h6 className="mb-0 text-600">J'ai rencontré un incident matériel et souhaite le remonter à l'équipe logistique.</h6>
+								</div>
+							</Flex>
+						</Col>
+					: null}
+
+					{ConfigurationService.config['tenues_benevoles_suivi'] ? 
+						<Col lg={4} className='mb-2'>
+							<Flex
+								alignItems="center"
+								className="px-4 py-x1 bg-light rounded-3 border position-relative"
+							>
+								<img src={imgTenues} alt="" width="39" />
+								<div className="ms-3 my-x1">
+								<h5 className="fs-0 fw-semi-bold mb-2">
+									<a onClick={goTenues} className="text-900 hover-primary stretched-link">
+										Gestion tenues
+									</a>
+								</h5>
+								<h6 className="mb-0 text-600">Je souhaite gérer les éléments de tenue qui me sont affectés.</h6>
 								</div>
 							</Flex>
 						</Col>

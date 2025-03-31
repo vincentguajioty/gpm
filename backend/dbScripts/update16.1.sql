@@ -1,3 +1,7 @@
+ALTER TABLE CONFIG ADD tenues_benevoles_suivi BOOLEAN;
+UPDATE CONFIG SET tenues_benevoles_suivi = 0;
 
+ALTER TABLE PERSONNE_EXTERNE ADD authExterne VARCHAR(9);
+ALTER TABLE PERSONNE_EXTERNE ADD tokenValidityExterne DATETIME;
 
 UPDATE CONFIG SET version = '16.1';
