@@ -508,7 +508,7 @@ const Catalogue = () => {
                             <>
                                 <p><center><b>PREREQUIS</b></center></p>
                                 <p>
-                                    Ce formulaire permet de fusionner deux éléments du catalogue. Il va vous falloir selectionner un élément à garder, et un à supprimer. Ces éléments sont utilisés dans différents modules. Le comportement de la fusion est le suivant:
+                                    Ce formulaire permet de fusionner deux éléments du catalogue. Il va vous falloir sélectionner un élément à garder, et un à supprimer. Ces éléments sont utilisés dans différents modules. Le comportement de la fusion est le suivant:
                                     <br/>
                                     <br/>
                                     Les éléments suivants seront automatiquement migrés, aucun prérequis nécessaire:
@@ -516,7 +516,7 @@ const Catalogue = () => {
                                         <li>Les codes barre: tous les codes barre de l'élément à supprimer seront rattachés à l'élément à garder.</li>
                                         <li>Les éléments commandés: toutes les itérations de commande de l'élément à supprimer seront portées par l'élément à garder.</li>
                                         <li>Contenus d'inventaires de lots opérationnels et réserves: les quantités des deux éléments seront sommées et la date de péremption la moins grande sera gardée. L'inventaire n'affichera donc qu'un seul item (celui à garder) qui correspondra à l'agrégat précédemment expliqué de cet item à garder et de celui à supprimer.</li>
-                                        <li>Rapports de consommation: toutes les itérations dans les rapports bénévoles de l'élément à supprimer seront portées par l'élément à garder. Si l'élément à garder figure déjà dans le rapport, aucun agrégat ne sera fait et la ligne apparaitera donc deux fois.</li>
+                                        <li>Rapports de consommation: toutes les itérations dans les rapports bénévoles de l'élément à supprimer seront portées par l'élément à garder. Si l'élément à garder figure déjà dans le rapport, aucun agrégat ne sera fait et la ligne apparaitra donc deux fois.</li>
                                         <li>Les affectations de tenues: toutes les itérations de tenues affectées liées à l'élément à supprimer seront portées par l'élément à garder.</li>
                                     </ul>
                                     Les éléments suivants doivent être gérés <u>manuellement avant d'effectuer la fusion</u>:
@@ -525,7 +525,7 @@ const Catalogue = () => {
                                         <li>Les référentiels: tout comme pour les lots et réserves, les référentiels contiennent des éléments du catalogue, et ne peuvent contenir plusieurs fois le même élément. Il faut donc s'assurer en amont que l'élément à supprimer et l'élément à garder n'apparaissent pas tous les deux dans le même référentiel afin d'éviter leur colision lors de la fusion.</li>
                                         <li>Elements présents dans le stock des tenues, véhicules, transmissions: tout comme pour les lots et réserves, les stocks ne peuvent contenir plusieurs fois le même élément. Il faut donc s'assurer en amont que l'élément à supprimer et l'élément à garder n'apparaissent pas tous les deux dans les stocks afin d'éviter leur colision lors de la fusion.</li>
                                     </ul>
-                                    Si ces éléments ne sont pas gérés manuellement, ils metteront la fusion en échec. Il vous faudra alors refaire une passe sur ces pré-requis et ré-executer la fusion.
+                                    Si ces éléments ne sont pas gérés manuellement, ils mettront la fusion en échec. Il vous faudra alors refaire une passe sur ces prérequis et ré-executer la fusion.
                                     <br/>
                                     <br/>
                                     Avant de valider la fusion de deux éléments un tableau comparatif des deux éléments est affiché. Vérifiez bien les points d'attention surlignés en jaune avant de valider.

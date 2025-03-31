@@ -92,7 +92,7 @@ const ConfigGenerale = () => {
                             setIsLoading={setIsLoading}
                         />
                     </Tab>
-                    <Tab eventKey="alertesbenevoles" title="Alertes bénévoles" className='border-bottom border-x p-3'>
+                    <Tab eventKey="alertesbenevoles" title="Fonctionnalités bénévoles" className='border-bottom border-x p-3'>
                         <ConfigGeneraleTabAlertes
                             config={config.alertesbenevoles}
                             setPageNeedsRefresh={setPageNeedsRefresh}
