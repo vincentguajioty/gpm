@@ -785,6 +785,21 @@ const Catalogue = () => {
                                 </Form.Group>
                             : null}
 
+                            {watch("module") == 'modules_tenues' ?
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Accessible hors connexion</Form.Label>
+                                    <Form.Check
+                                        type='switch'
+                                        id="disponibleBenevolesConso"
+                                        name="disponibleBenevolesConso"
+                                        label='Matériel disponible pour les demandes de prêts'
+                                        checked={watch("disponibleBenevolesConso")}
+                                        onClick={(e)=>{setValue("disponibleBenevolesConso", !watch("disponibleBenevolesConso"))}}
+                                    />
+                                    <small className="text-danger">{errors.disponibleBenevolesConso?.message}</small>
+                                </Form.Group>
+                            : null}
+
                             <Form.Group className="mb-3">
                                 <Form.Label>Commentaires</Form.Label>
                                 <Form.Control size="sm" as="textarea" rows={3} name={"commentairesMateriel"} id={"commentairesMateriel"} {...register("commentairesMateriel")}/>

@@ -8,6 +8,7 @@ import { Axios } from 'helpers/axios';
 
 import AffectationsAvecDates from './affectations/affectationsAvecDates';
 import AffectationsAvecDemandeRemplacement from './affectations/affectationsAvecDemandeRemp';
+import AffectationsAvecDemandePret from './affectations/affectationsAvecDemandePret';
 import AffectationDetails from './affectations/affectationDetails';
 
 const AffectationsTenues = () => {
@@ -96,7 +97,10 @@ const AffectationsTenues = () => {
                         className="mb-4 mt-3"
                     />
 
-                    A FAIRE
+                    <AffectationsAvecDemandePret
+                        affectationsFiltered={affectationsRow.filter(affect => affect.demandeBenevolePret == true)}
+                        setPageNeedsRefresh={setPageNeedsRefresh}
+                    />
                 </Col>
 
                 <Col md={12}>

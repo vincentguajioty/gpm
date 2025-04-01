@@ -274,3 +274,75 @@ exports.demandeRemplacement = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+exports.demandePret = async (req, res)=>{
+    try {
+        let externesToken = [];
+        for(const externe of req.decryptPublicToken.externesMatch){externesToken.push(externe.idExterne)}
+
+        if(externesToken.includes(req.body.idExterne))
+        {
+            let insertQuery;
+            for(const element of req.body.elementsDemandes)
+            {
+                insertQuery = await db.query(`
+                    INSERT INTO
+                        TENUES_AFFECTATION
+                    SET
+                        idMaterielCatalogue = :idMaterielCatalogue,
+                        idExterne = :idExterne,
+                        dateAffectation = :dateAffectation,
+                        dateRetour = :dateRetour,
+                        notifPersonne = true,
+                        demandeBenevolePret = true,
+                        demandeBenevolePretMotif = :demandeBenevolePretMotif
+                `,{
+                    idMaterielCatalogue: element.value || null,
+                    idExterne: req.body.idExterne,
+                    dateAffectation: req.body.dateAffectation || null,
+                    dateRetour: req.body.dateRetour || null,
+                    demandeBenevolePretMotif: req.body.motif || null,
+                });
+            }
+
+            if(req.decryptPublicToken.mailExterne && req.decryptPublicToken.mailExterne != null && req.decryptPublicToken.mailExterne != "")
+            {
+                await fonctionsMail.registerToMailQueue({
+                    typeMail: 'etatDesPretsPublicsTenue',
+                    idObject: req.body.idExterne,
+                    otherMail: req.decryptPublicToken.mailExterne,
+                });
+            }
+
+            const usersToNotify = await db.query(`
+                SELECT
+                    idPersonne
+                FROM
+                    VIEW_HABILITATIONS
+                WHERE
+                    notif_benevoles_tenues = true
+                    AND
+                    notifications = true
+                    AND
+                    mailPersonne IS NOT NULL
+                    AND
+                    mailPersonne <> ""
+            `);
+            for(const personne of usersToNotify)
+            {
+                await fonctionsMail.registerToMailQueue({
+                    typeMail: 'benevoleDemandePretTenue',
+                    idPersonne: personne.idPersonne,
+                    idObject: insertQuery.insertId,
+                });
+            }
+
+            res.sendStatus(201);
+        }else{
+            res.sendStatus(400);
+        }
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}

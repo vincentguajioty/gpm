@@ -25,6 +25,7 @@ const TenuesEchangePublic = ({
     const handleCloseReplaceModal = () => {
         setShowReplaceModal(false);
         setIsLoading(false);
+        reset();
     };
     const handleShowReplaceModal = () => {
         setShowReplaceModal(true);

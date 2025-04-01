@@ -1814,6 +1814,315 @@ const rejetDemandeRemplacementTenue = async (requestInfo) => {
     }
 }
 
+const etatDesPretsPublicsTenue = async (requestInfo) => {
+    try {
+        // use a template file with nodemailer
+        let configDB = await db.query(
+            `SELECT * FROM CONFIG;`
+        );
+        configDB = configDB[0]
+
+        const transporter = getTransporter();
+        transporter.use('compile', hbs(handlebarOptions))
+
+        //get data for the email
+        const tenues = await db.query(`
+            SELECT
+                *
+            FROM
+                VIEW_TENUES_AFFECTATION
+            WHERE
+                idExterne = :idExterne
+                AND
+                demandeBenevolePret = true
+        `,{
+            idExterne: requestInfo.idObject,
+        });
+
+        //get users and send the mail to each one      
+        let mailOptions={};
+        let emailErrors = 0;
+        mailOptions = {
+            from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
+            to: requestInfo.otherMail, // list of receivers
+            cc: configDB.mailcopy ? configDB.mailserver : null,
+            subject: '['+process.env.APP_NAME+'] Votre demande de prêt de tenue',
+            template: 'etatDesPretsPublicsTenue', // the name of the template file i.e email.handlebars
+            context:{
+                appname: process.env.APP_NAME,
+                urlsite: configDB.urlsite,
+                tenues: tenues,
+            },
+            list: {
+                unsubscribe: {
+                    url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:0',
+                    comment: 'Ne plus recevoir de mails',
+                },
+            },
+        };
+        logger.debug(mailOptions);
+
+        // trigger the sending of the E-mail
+        const sendMailResult = await transporter.sendMail(mailOptions);
+        if(sendMailResult.rejected.length == 0)
+        {
+            logger.debug(sendMailResult);
+        }
+        else
+        {
+            logger.error(error);
+            emailErrors += 1;
+        }
+
+        if(emailErrors == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    } catch (error) {
+        logger.error(error);
+        return false;
+    }
+}
+
+const benevoleDemandePretTenue = async (requestInfo) => {
+    try {
+        // use a template file with nodemailer
+        let configDB = await db.query(
+            `SELECT * FROM CONFIG;`
+        );
+        configDB = configDB[0]
+
+        const transporter = getTransporter();
+        transporter.use('compile', hbs(handlebarOptions))
+
+        //get data for the email
+        const users = await db.query(`
+            SELECT
+                *
+            FROM
+                PERSONNE_REFERENTE
+            WHERE
+                idPersonne = :idPersonne
+        `,{
+            idPersonne: requestInfo.idPersonne,
+        });
+
+        let detailsDemande = await db.query(`
+            SELECT
+                *
+            FROM
+                VIEW_TENUES_AFFECTATION
+            WHERE
+                idTenue = :idTenue
+        `,{
+            idTenue: requestInfo.idObject,
+        });
+        detailsDemande = detailsDemande[0];
+
+        const tenues = await db.query(`
+            SELECT
+                *
+            FROM
+                VIEW_TENUES_AFFECTATION
+            WHERE
+                idExterne = :idExterne
+                AND
+                demandeBenevolePret = true
+        `,{
+            idExterne: detailsDemande.idExterne,
+        });
+        
+        //get users and send the mail to each one      
+        let mailOptions={};
+        let emailErrors = 0;
+        for (const personne of users) {
+            mailOptions = {
+                from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
+                to: personne.mailPersonne, // list of receivers
+                cc: configDB.mailcopy ? configDB.mailserver : null,
+                subject: '['+process.env.APP_NAME+'] Demande de prêt de tenue pour '+detailsDemande.nomPrenomExterne,
+                template: 'benevoleDemandePretTenue', // the name of the template file i.e email.handlebars
+                context:{
+                    personne: personne,
+                    detailsDemande: detailsDemande,
+                    tenues: tenues,
+                    appname: process.env.APP_NAME,
+                    urlsite: configDB.urlsite,
+                },
+                list: {
+                    unsubscribe: {
+                        url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:'+personne.idUtilisateur,
+                        comment: 'Ne plus recevoir de mails',
+                    },
+                },
+            };
+            logger.debug(mailOptions);
+    
+            // trigger the sending of the E-mail
+            const sendMailResult = await transporter.sendMail(mailOptions);
+            if(sendMailResult.rejected.length == 0)
+            {
+                logger.debug(sendMailResult);
+            }
+            else
+            {
+                logger.error(error);
+                emailErrors += 1;
+            }
+        }
+
+        if(emailErrors == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    } catch (error) {
+        logger.error(error);
+        return false;
+    }
+}
+
+const acceptationDemandePretTenue = async (requestInfo) => {
+    try {
+        // use a template file with nodemailer
+        let configDB = await db.query(
+            `SELECT * FROM CONFIG;`
+        );
+        configDB = configDB[0]
+
+        const transporter = getTransporter();
+        transporter.use('compile', hbs(handlebarOptions))
+
+        //get data for the email
+        const tenue = await db.query(`
+            SELECT
+                *
+            FROM
+                VIEW_TENUES_AFFECTATION
+            WHERE
+                idTenue = :idTenue
+        `,{
+            idTenue: requestInfo.idObject,
+        });
+
+        //get users and send the mail to each one      
+        let mailOptions={};
+        let emailErrors = 0;
+        mailOptions = {
+            from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
+            to: requestInfo.otherMail, // list of receivers
+            cc: configDB.mailcopy ? configDB.mailserver : null,
+            subject: '['+process.env.APP_NAME+'] Acceptation de votre demande de prêt de tenue',
+            template: 'acceptationDemandePretTenue', // the name of the template file i.e email.handlebars
+            context:{
+                appname: process.env.APP_NAME,
+                urlsite: configDB.urlsite,
+                reponseDetails: requestInfo.otherContent,
+                tenue: tenue[0],
+            },
+            list: {
+                unsubscribe: {
+                    url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:0',
+                    comment: 'Ne plus recevoir de mails',
+                },
+            },
+        };
+        logger.debug(mailOptions);
+
+        // trigger the sending of the E-mail
+        const sendMailResult = await transporter.sendMail(mailOptions);
+        if(sendMailResult.rejected.length == 0)
+        {
+            logger.debug(sendMailResult);
+        }
+        else
+        {
+            logger.error(error);
+            emailErrors += 1;
+        }
+
+        if(emailErrors == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    } catch (error) {
+        logger.error(error);
+        return false;
+    }
+}
+
+const rejetDemandePretTenue = async (requestInfo) => {
+    try {
+        // use a template file with nodemailer
+        let configDB = await db.query(
+            `SELECT * FROM CONFIG;`
+        );
+        configDB = configDB[0]
+
+        const transporter = getTransporter();
+        transporter.use('compile', hbs(handlebarOptions))
+
+        //get users and send the mail to each one      
+        let mailOptions={};
+        let emailErrors = 0;
+        mailOptions = {
+            from: process.env.APP_NAME+' <'+process.env.SMTP_USER+'>', // sender address
+            to: requestInfo.otherMail, // list of receivers
+            cc: configDB.mailcopy ? configDB.mailserver : null,
+            subject: '['+process.env.APP_NAME+'] Refus de toute ou partie de votre demande de prêt de tenue',
+            template: 'rejetDemandePretTenue', // the name of the template file i.e email.handlebars
+            context:{
+                appname: process.env.APP_NAME,
+                urlsite: configDB.urlsite,
+                reponseDetails: requestInfo.otherContent,
+            },
+            list: {
+                unsubscribe: {
+                    url: 'mailto:'+process.env.SMTP_USER+'?subject=unsubscribe:'+process.env.APP_NAME+'-forUser:0',
+                    comment: 'Ne plus recevoir de mails',
+                },
+            },
+        };
+        logger.debug(mailOptions);
+
+        // trigger the sending of the E-mail
+        const sendMailResult = await transporter.sendMail(mailOptions);
+        if(sendMailResult.rejected.length == 0)
+        {
+            logger.debug(sendMailResult);
+        }
+        else
+        {
+            logger.error(error);
+            emailErrors += 1;
+        }
+
+        if(emailErrors == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    } catch (error) {
+        logger.error(error);
+        return false;
+    }
+}
+
+
 /* --------- FONCTIONS EXPORTEES --------- */
 
 const sendMailQueue = async () => {
@@ -1930,6 +2239,23 @@ const sendMailQueue = async () => {
                 case 'rejetDemandeRemplacementTenue':
                     successCheck = await rejetDemandeRemplacementTenue(mailNeeded);
                 break;
+
+                case 'etatDesPretsPublicsTenue':
+                    successCheck = await etatDesPretsPublicsTenue(mailNeeded);
+                break;
+
+                case 'benevoleDemandePretTenue':
+                    successCheck = await benevoleDemandePretTenue(mailNeeded);
+                break;
+
+                case 'acceptationDemandePretTenue':
+                    successCheck = await acceptationDemandePretTenue(mailNeeded);
+                break;
+
+                case 'rejetDemandePretTenue':
+                    successCheck = await rejetDemandePretTenue(mailNeeded);
+                break;
+
 
                 default:
                     logger.warn('Mail '+mailNeeded.idMailQueue+' ne peut pas être envoyé pour cause d\'erreur dans le type de mail')

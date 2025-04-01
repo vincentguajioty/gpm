@@ -127,6 +127,7 @@ router.get('/select/getLotsPublics',                           middlewaresFuncti
 router.get('/select/getConteneursPublics',                     middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), loggerMiddleware.httpLogger(), selectForListsCtrl.getConteneursPublics);
 router.get('/select/getVehiculesPublics',                      middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), loggerMiddleware.httpLogger(), selectForListsCtrl.getVehiculesPublics);
 router.get('/select/getVHFPublics',                            middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), loggerMiddleware.httpLogger(), selectForListsCtrl.getVHFPublics);
+router.get('/select/getPublicCatalogueTenues',                 middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), loggerMiddleware.httpLogger(), selectForListsCtrl.getPublicCatalogueTenues);
 
 //Composant Calendrier
 router.get('/calendrier/peremptionsLots',               loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['materiel_lecture']),       calendrierCtrl.peremptionsLots);
@@ -366,8 +367,9 @@ router.post('/tenues/deleteAffectations',          loggerMiddleware.httpLogger()
 router.post('/tenues/deleteMassifAffectations',    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_suppression']),  loggerMiddleware.suppressionLogger(),  tenuesCtrl.deleteMassifAffectations);
 //Export
 router.get('/tenues/exporterAffectations',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_lecture']),                                             tenuesCtrl.exporterAffectations);
-// DEMANDES DE REMPLACEMENT
+// DEMANDES DE REMPLACEMENT ET PRET
 router.post('/tenues/reponseDemandeRemplacement',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_modification']), loggerMiddleware.modificationLogger(), tenuesCtrl.reponseDemandeRemplacement);
+router.post('/tenues/reponseDemandePret',          loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_modification']), loggerMiddleware.modificationLogger(), tenuesCtrl.reponseDemandePret);
 //Tenues - Cautions
 router.get('/tenues/getCautions',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_lecture']),                                             tenuesCtrl.getCautions);
 router.get('/tenues/getCautionsRow',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_lecture']),                                             tenuesCtrl.getCautionsRow);
@@ -380,6 +382,7 @@ router.post('/tenuesPublic/authenticateWithCode',        middlewaresFunctions.ch
 router.post('/tenuesPublic/getTenuesDetailsPublic',      middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), jwtFunctions.decryptPublicToken(), loggerMiddleware.httpLogger(),       tenuesPublicCtrl.getTenuesDetailsPublic);
 router.post('/tenuesPublic/seDeconnecterTenuesPublic',   middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), jwtFunctions.decryptPublicToken(), loggerMiddleware.httpLogger(),       tenuesPublicCtrl.seDeconnecterTenuesPublic);
 router.post('/tenuesPublic/demandeRemplacement',         middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), jwtFunctions.decryptPublicToken(), loggerMiddleware.httpLogger(),       tenuesPublicCtrl.demandeRemplacement);
+router.post('/tenuesPublic/demandePret',                 middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), jwtFunctions.decryptPublicToken(), loggerMiddleware.httpLogger(),       tenuesPublicCtrl.demandePret);
 
 //VHF Canaux
 router.get('/vhf/getFrequences',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_lecture']),                                             vhfCtrl.getFrequences);

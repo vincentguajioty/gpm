@@ -454,7 +454,7 @@ exports.exporterAffectations = async (req, res)=>{
     }
 }
 
-// DEMANDES DE REMPLACEMENT
+// DEMANDES DE REMPLACEMENT et PRETS
 exports.reponseDemandeRemplacement = async (req, res)=>{
     try {
         const getDemandeur = await db.query(`
@@ -489,6 +489,67 @@ exports.reponseDemandeRemplacement = async (req, res)=>{
         `,{
             idTenue: req.body.idTenue,
         });
+        
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.reponseDemandePret = async (req, res)=>{
+    try {
+        const getDemandeur = await db.query(`
+            SELECT
+                *
+            FROM
+                VIEW_TENUES_AFFECTATION
+            WHERE
+                idTenue = :idTenue
+        `,{
+            idTenue: req.body.idTenue,
+        });
+        
+        if(getDemandeur[0].mailExterne && getDemandeur[0].mailExterne != null && getDemandeur[0].mailExterne != "")
+        {
+            await fonctionsMail.registerToMailQueue({
+                typeMail: req.body.reponseBinaire == true ? 'acceptationDemandePretTenue' : 'rejetDemandePretTenue',
+                idObject: req.body.reponseBinaire == true ? req.body.idTenue : null,
+                otherMail: getDemandeur[0].mailExterne,
+                otherContent: req.body.reponseDetails,
+            });
+        }
+
+        if(req.body.reponseBinaire == true)
+        {
+            const result = await db.query(`
+                UPDATE
+                    TENUES_AFFECTATION
+                SET
+                    demandeBenevolePret = false,
+                    demandeBenevolePretMotif = null,
+                    dateAffectation = :dateAffectation,
+                    dateRetour = :dateRetour
+                WHERE
+                    idTenue = :idTenue
+            `,{
+                idTenue: req.body.idTenue,
+                dateAffectation: req.body.dateAffectation || null,
+                dateRetour: req.body.dateRetour || null,
+            });
+            
+            if(req.body.decompteStock == true)
+            {
+                let updateQuery = await db.query(`
+                    UPDATE TENUES_CATALOGUE SET stockCatalogueTenue = stockCatalogueTenue - 1 WHERE idMaterielCatalogue = :idMaterielCatalogue
+                ;`,{
+                    idMaterielCatalogue : getDemandeur[0].idMaterielCatalogue,
+                });
+            }
+
+        }else{
+            const deleteResult = await fonctionsDelete.tenuesAffectationsDelete(req.verifyJWTandProfile.idPersonne , req.body.idTenue, false);
+        }
         
         res.sendStatus(201);
     } catch (error) {

@@ -24,8 +24,9 @@ const AffectationGestionRemplacement = ({
     const handleCloseRemplModal = () => {
         setShowRemplModal(false);
         setLoading(false);
+        reset();
     };
-    const handleShowRemplModal = (id) => {
+    const handleShowRemplModal = () => {
         setShowRemplModal(true);
         setValue("reponseBinaire", true);
     };
@@ -43,6 +44,7 @@ const AffectationGestionRemplacement = ({
             setPageNeedsRefresh(true);
             handleCloseRemplModal();
             setLoading(false);
+            reset();
         } catch (e) {
             console.log(e);
         }

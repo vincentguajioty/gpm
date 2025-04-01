@@ -1262,3 +1262,23 @@ exports.getVHFPublics = async (req, res)=>{
         res.sendStatus(500);
     }
 }
+
+exports.getPublicCatalogueTenues = async (req, res)=>{
+    try {
+        let results = await db.query(`
+            SELECT DISTINCT
+                idMaterielCatalogue as value,
+                CONCAT_WS(' > ', libelleMateriel, taille) as label
+            FROM
+                VIEW_MATERIEL_CATALOGUE_TENUES
+            WHERE
+                disponibleBenevolesConso = true
+            ORDER BY
+                libelleMateriel
+        ;`);
+        res.send(results);
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}

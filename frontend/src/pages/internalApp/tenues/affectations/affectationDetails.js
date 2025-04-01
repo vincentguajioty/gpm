@@ -18,6 +18,7 @@ import AffectationForm from './affectationsForm';
 import AffectationReintegrer from './affectationReinteg';
 import AffectationDelete from './affectationDelete';
 import AffectationGestionRemplacement from './affectationGestRempl';
+import AffectationGestionPret from './affectationGestPret';
 
 const AffectationDetails = ({
     affectations = [],
@@ -72,6 +73,7 @@ const AffectationDetails = ({
             Cell: ({ value, row }) => {
 				return(<>
                     {row.original.demandeBenevoleRemplacement ? <><SoftBadge bg='warning' className='me-1'>Demande de remplacement</SoftBadge><br/></> : null}
+                    {row.original.demandeBenevolePret ? <><SoftBadge bg='warning' className='me-1'>Demande de prêt</SoftBadge><br/></> : null}
                     {value}
                 </>);
 			},
@@ -117,8 +119,16 @@ const AffectationDetails = ({
                         />
                         <br/>
                     </>: null}
+                    {HabilitationService.habilitations['tenues_modification'] && row.original.demandeBenevolePret == true ? <>
+                        <AffectationGestionPret
+                            idTenue={value}
+                            tenue={row.original}
+                            setPageNeedsRefresh={setPageNeedsRefresh}
+                        />
+                        <br/>
+                    </>: null}
 
-                    {HabilitationService.habilitations['tenues_modification'] ? 
+                    {HabilitationService.habilitations['tenues_modification'] && row.original.demandeBenevolePret == false ? 
                         <AffectationForm
                             affectationsRow={affectationsRow}
                             catalogue={catalogue}
@@ -128,7 +138,7 @@ const AffectationDetails = ({
                             editId={value}
                         />
                     : null}
-                    {HabilitationService.habilitations['tenues_suppression'] ? 
+                    {HabilitationService.habilitations['tenues_suppression'] && row.original.demandeBenevolePret == false ? 
                         <AffectationReintegrer
                             idTenue={value}
                             setPageNeedsRefresh={setPageNeedsRefresh}

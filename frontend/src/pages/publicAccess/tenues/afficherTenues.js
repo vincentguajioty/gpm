@@ -97,14 +97,44 @@ const TenuesAfficherPublic = () => {
                                                 externe={externe}
                                                 setPageNeedsRefresh={setPageNeedsRefresh}
                                             />
+                                            {externe.tenues.filter(ten => ten.dateRetour != null && ten.demandeBenevolePret == true).length > 0 ?
+                                                <p>
+                                                    <u>Mes demandes de prêts en cours d'étude:</u>
+                                                    <ul>
+                                                        {externe.tenues.filter(ten => ten.dateRetour != null && ten.demandeBenevolePret == true).map((tenue, i)=>{return(
+                                                            <li>
+                                                                {tenue.libelleMateriel}
+                                                                {tenue.taille ? ' ('+tenue.taille+')' : null}
+                                                                {tenue.dateAffectation ? ', Demandé du: '+moment(tenue.dateAffectation).format('DD/MM/YYYY') : null}
+                                                                {tenue.dateRetour ? ' Au: '+moment(tenue.dateRetour).format('DD/MM/YYYY') : null}
+                                                            </li>
+                                                        )})}
+                                                    </ul>
+                                                </p>
+                                            :null}
+
+                                            {externe.tenues.filter(ten => ten.dateRetour != null && ten.demandeBenevolePret == false).length > 0 ?
+                                                <p>
+                                                    <u>Mes prêts de tenue en cours:</u>
+                                                    <ul>
+                                                        {externe.tenues.filter(ten => ten.dateRetour != null && ten.demandeBenevolePret == false).map((tenue, i)=>{return(
+                                                            <li>
+                                                                {tenue.libelleMateriel}
+                                                                {tenue.taille ? ' ('+tenue.taille+')' : null}
+                                                                {tenue.dateRetour ? ', Retour prévu: '+moment(tenue.dateRetour).format('DD/MM/YYYY') : null}
+                                                            </li>
+                                                        )})}
+                                                    </ul>
+                                                </p>
+                                            :null}
+                                            
                                             <p>
                                                 <u>Mes affectations de tenue:</u>
                                                 <ul>
-                                                    {externe.tenues.map((tenue, i)=>{return(
+                                                    {externe.tenues.filter(ten => ten.dateRetour == null).map((tenue, i)=>{return(
                                                         <li>
                                                             {tenue.libelleMateriel}
                                                             {tenue.taille ? ' ('+tenue.taille+')' : null}
-                                                            {tenue.dateAffectation ? ', Affectation: '+moment(tenue.dateAffectation).format('DD/MM/YYYY') : null}
                                                             {tenue.dateRetour ? ', Retour prévu: '+moment(tenue.dateRetour).format('DD/MM/YYYY') : null}
                                                             {tenue.demandeBenevoleRemplacement ? <SoftBadge bg='warning' className='ms-1' ><FontAwesomeIcon icon={'exchange-alt'}/> Remplacement demandé</SoftBadge> : null}
                                                         </li>

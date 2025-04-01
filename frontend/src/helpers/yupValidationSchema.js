@@ -381,6 +381,29 @@ export const affectationsTenuesRemplRep = Yup.object().shape({
         .required(champObligatoire),
 });
 
+export const affectationsTenuesPretRep = Yup.object().shape({
+    reponseBinaire: Yup
+        .boolean()
+        .typeError(champObligatoire),
+    reponseDetails: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    dateAffectation: Yup
+        .date()
+        .typeError(champObligatoire)
+        .max(Yup.ref("dateRetour"), "Cette valeur doit être antérieur à son retour")
+        .required(champObligatoire),
+    dateRetour: Yup
+        .date()
+        .typeError(champObligatoire)
+        .min(Yup.ref("dateAffectation"), "Cette valeur doit être postérieur à son affectation")
+        .required(champObligatoire),
+    decompteStock: Yup
+        .boolean()
+        .typeError(champObligatoire),
+});
+
 export const cautionsForm = Yup.object().shape({
     dateEmissionCaution: Yup
         .date()
@@ -1296,4 +1319,25 @@ export const tenuesPublicReplace = Yup.object().shape({
         .string()
         .typeError(champObligatoire)
         .required(champObligatoire),
+});
+
+export const tenuesPublicPret = Yup.object().shape({
+    motif: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+    dateAffectation: Yup
+        .date()
+        .typeError(champObligatoire)
+        .max(Yup.ref("dateRetour"), "Cette valeur doit être antérieur à son retour")
+        .required(champObligatoire),
+    dateRetour: Yup
+        .date()
+        .typeError(champObligatoire)
+        .min(Yup.ref("dateAffectation"), "Cette valeur doit être postérieur à son affectation")
+        .required(champObligatoire),
+    elementsDemandes: Yup
+        .array()
+        .min(1, "A minima un élément doit être demandé")
+        .required("A minima un élément doit être demandé"),
 });
