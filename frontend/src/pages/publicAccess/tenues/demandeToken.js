@@ -88,7 +88,7 @@ const TenuesDemandeToken = () => {
                                 :
                                 <Form onSubmit={handleSubmitDemande(demanderAuth)}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label>Saisissez ci-dessous l'adresse email liée à votre affectation de tenues. Si celle-ci est correcte, vous recevrez un email avec un code à usage unique à entrer ci-joint pour vous authentifier</Form.Label>
+                                        <Form.Label>Saisissez ci-dessous l'adresse email liée à votre affectation de tenues. Si celle-ci est correcte, vous recevrez un email avec un code à usage unique à entrer dans l'encart suivant pour vous authentifier</Form.Label>
                                         <Form.Control size="sm" type="text" name={"mailDemandeur"} id={"mailDemandeur"} {...registerDemande("mailDemandeur")} placeholder='Votre adresse email'/>
                                         <small className="text-danger">{errorsDemande.mailDemandeur?.message}</small>
                                     </Form.Group>
@@ -120,7 +120,7 @@ const TenuesDemandeToken = () => {
                                         <Form.Control size="sm" type="text" name={"codeUnique"} id={"codeUnique"} {...registerAuth("codeUnique")} placeholder='Code unique reçu par email'/>
                                         <small className="text-danger">{errorsAuth.codeUnique?.message}</small>
                                     </Form.Group>
-                                    <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Envoyez le code'}</Button>
+                                    <Button variant='primary' className='me-2 mb-1' type="submit" disabled={isLoading}>{isLoading ? 'Patientez...' : 'Se connecter'}</Button>
                                 </Form>
                             }
                         </FalconComponentCard.Body>
