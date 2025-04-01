@@ -591,6 +591,7 @@ router.post('/actionsmassives/action31',            loggerMiddleware.httpLogger(
 router.post('/actionsmassives/action32',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]), jwtFunctions.decryptAMToken(), actionsMassivesCtrl.action32);
 router.post('/actionsmassives/action33',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]), jwtFunctions.decryptAMToken(), actionsMassivesCtrl.action33);
 router.post('/actionsmassives/action41',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]), jwtFunctions.decryptAMToken(), actionsMassivesCtrl.action41);
+router.post('/actionsmassives/action51',            loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['actionsMassives',]), jwtFunctions.decryptAMToken(), actionsMassivesCtrl.action51);
 
 
 //get images and documents from secured backend

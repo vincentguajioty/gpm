@@ -223,6 +223,15 @@ exports.getAvailableActions = async (req, res)=>{
             endPointBo: '/actionsmassives/action41'
         });
 
+        /* id: 51, description: "Supprimer toutes les personnes externes orphelines"*/
+        availableAction.push({
+            id: 51,
+            categorie: 'Tenues',
+            description: "Supprimer toutes les personnes externes orphelines",
+            impact: "N/A",
+            endPointBo: '/actionsmassives/action51'
+        });
+
         res.send(availableAction);
     } catch (error) {
         logger.error(error)
@@ -476,6 +485,21 @@ exports.action41 = async (req, res) => {
         }
 
         logger.info("Fin de l'action massive action41");
+        res.sendStatus(201);
+    } catch (error) {
+        logger.error(error)
+        res.sendStatus(500);
+    }
+}
+
+exports.action51 = async (req, res) => {
+    /*Supprimer tous les lots qui ne contiennent pas de sac*/
+    try {
+        logger.info("Lancement de l'action massive action51");
+        
+        await fonctionsMetiers.cleanPersonnesExternes();
+
+        logger.info("Fin de l'action massive action51");
         res.sendStatus(201);
     } catch (error) {
         logger.error(error)
