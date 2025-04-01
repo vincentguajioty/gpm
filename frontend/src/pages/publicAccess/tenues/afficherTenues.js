@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Accordion, Button, Card } from 'react-bootstrap';
+import { Accordion, Alert, Button, Card } from 'react-bootstrap';
 import moment from 'moment-timezone';
 import LoaderInfiniteLoop from 'components/loaderInfiniteLoop';
 import GPMtable from 'components/gpmTable/gpmTable';
@@ -9,7 +9,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Axios } from 'helpers/axios';
 import TenuesPublicService from 'services/tenuesPublicService';
 
+import TenuesPretPublic from './demanderPret';
+import TenuesEchangePublic from './demanderEchange';
+
 const TenuesAfficherPublic = () => {
+    const [pageNeedsRefresh, setPageNeedsRefresh] = useState(false);
+
     const[pageReady, setPageReady] = useState(false);
     const[externesAvecDetails, setExternesAvecDetails] = useState([]);
 
@@ -26,83 +31,17 @@ const TenuesAfficherPublic = () => {
         }
     }
 
-    const colonnesForGPMTableTenues = [
-        {
-            accessor: 'libelleMateriel',
-            Header: 'Element',
-        },
-        {
-            accessor: 'taille',
-            Header: 'Taille',
-        },
-        {
-            accessor: 'dateAffectation',
-            Header: 'Affecté le',
-            Cell: ({ value, row }) => {
-                return(
-                    value != null ? moment(value).format('DD/MM/YYYY') : null
-                );
-            },
-        },
-        {
-            accessor: 'dateRetour',
-            Header: 'Retour prévu le',
-            Cell: ({ value, row }) => {
-                return(<>
-                    {value != null ? 
-                        new Date(value) < new Date() ?
-                            <SoftBadge bg='danger'>{moment(value).format('DD/MM/YYYY')}</SoftBadge>
-                        :
-                            <SoftBadge bg='success'>{moment(value).format('DD/MM/YYYY')}</SoftBadge>
-                    : null}
-                    {row.original.notifPersonne == true ? <SoftBadge bg='info' className='ms-1'><FontAwesomeIcon icon='bell'/></SoftBadge> : null}
-                </>);
-            },
-        },
-    ];
-
-    const colonnesForGPMTableCautions = [
-        {
-            accessor: 'dateEmissionCaution',
-            Header: 'Emise le',
-            Cell: ({ value, row }) => {
-                return(
-                    value != null ? moment(value).format('DD/MM/YYYY') : null
-                );
-            },
-        },
-        {
-            accessor: 'dateExpirationCaution',
-            Header: 'Expire le',
-            Cell: ({ value, row }) => {
-                return(
-                    value != null ? 
-                        new Date(value) < new Date() ?
-                            <SoftBadge bg='danger'>{moment(value).format('DD/MM/YYYY')}</SoftBadge>
-                        :
-                            <SoftBadge bg='success'>{moment(value).format('DD/MM/YYYY')}</SoftBadge>
-                    : null
-                );
-            },
-        },
-        {
-            accessor: 'detailsMoyenPaiement',
-            Header: 'Détails',
-        },
-        {
-            accessor: 'montantCaution',
-            Header: 'Montant',
-            Cell: ({ value, row }) => {
-                return(
-                    value + " €"
-                );
-            },
-        },
-    ];
-
     useEffect(()=>{
         initPage();
     },[]);
+
+    useEffect(()=>{
+    if(pageNeedsRefresh)
+        {
+            setPageNeedsRefresh(false);
+            initPage();
+        }
+    },[pageNeedsRefresh]);
 
     const [isLoading, setIsLoading] = useState(false);
     const quitterPage = async () => {
@@ -133,19 +72,63 @@ const TenuesAfficherPublic = () => {
                                         {externe.nomPrenomExterne}
                                     </Accordion.Header>
                                     <Accordion.Body>
-                                        <GPMtable
-                                            columns={colonnesForGPMTableTenues}
-                                            data={externe.tenues}
-                                            topButton='Mes affectations de tenue'
-                                            topButtonShow={true}
-                                        />
-                                        <br/>
-                                        <GPMtable
-                                            columns={colonnesForGPMTableCautions}
-                                            data={externe.cautions}
-                                            topButton='Mes cautions'
-                                            topButtonShow={true}
-                                        />
+                                        {externe.tenuesWarning.length > 0 ? <>
+                                            <Alert variant='warning'>
+                                                <Alert.Heading>Eléments à restituer</Alert.Heading>
+                                                <ul>
+                                                    {externe.tenuesWarning.map((tenue, i)=>{return(
+                                                        <li>
+                                                            {tenue.libelleMateriel}
+                                                            {tenue.taille ? ' ('+tenue.taille+')' : null}
+                                                            {tenue.dateAffectation ? ', Affectation: '+moment(tenue.dateAffectation).format('DD/MM/YYYY') : null}
+                                                            {tenue.dateRetour ? ', Retour prévu: '+moment(tenue.dateRetour).format('DD/MM/YYYY') : null}
+                                                        </li>
+                                                    )})}
+                                                </ul>
+                                            </Alert>
+                                        </> : null}
+                                        
+                                        {externe.tenues.length > 0 ? <>
+                                            <TenuesPretPublic
+                                                externe={externe}
+                                                setPageNeedsRefresh={setPageNeedsRefresh}
+                                            />
+                                            <TenuesEchangePublic
+                                                externe={externe}
+                                                setPageNeedsRefresh={setPageNeedsRefresh}
+                                            />
+                                            <p>
+                                                <u>Mes affectations de tenue:</u>
+                                                <ul>
+                                                    {externe.tenues.map((tenue, i)=>{return(
+                                                        <li>
+                                                            {tenue.libelleMateriel}
+                                                            {tenue.taille ? ' ('+tenue.taille+')' : null}
+                                                            {tenue.dateAffectation ? ', Affectation: '+moment(tenue.dateAffectation).format('DD/MM/YYYY') : null}
+                                                            {tenue.dateRetour ? ', Retour prévu: '+moment(tenue.dateRetour).format('DD/MM/YYYY') : null}
+                                                            {tenue.demandeBenevoleRemplacement ? <SoftBadge bg='warning' className='ms-1' ><FontAwesomeIcon icon={'exchange-alt'}/> Remplacement demandé</SoftBadge> : null}
+                                                        </li>
+                                                    )})}
+                                                </ul>
+                                            </p>
+                                        </>: null}
+                                        
+                                        {externe.tenues.length > 0 && externe.cautions.length > 0 ?
+                                            <hr/>
+                                        : null}
+
+                                        {externe.cautions.length > 0 ? <>
+                                            <u>Mes cautions:</u>
+                                            <ul>
+                                                {externe.cautions.map((caution, i)=>{return(
+                                                    <li>
+                                                        {caution.detailsMoyenPaiement} {caution.montantCaution} €
+                                                        {caution.dateEmissionCaution ? ', Versée le: '+moment(caution.dateEmissionCaution).format('DD/MM/YYYY') : null}
+                                                        {caution.dateExpirationCaution ? ', Fin de validité: '+moment(caution.dateExpirationCaution).format('DD/MM/YYYY') : null}
+                                                    </li>
+                                                )})}
+                                            </ul>
+                                        </>: null}
                                     </Accordion.Body>
                                 </Accordion.Item>
                             </>);
@@ -154,7 +137,7 @@ const TenuesAfficherPublic = () => {
                 </Card.Body>
             </Card>
             <div className="d-grid gap-2 mt-3">
-                <Button variant='primary' className='me-2 mb-1' onClick={quitterPage} disabled={isLoading}>{isLoading ? 'Patientez...' : 'Ajouter'}</Button>
+                <Button variant='info' className='me-2 mb-1' onClick={quitterPage} disabled={isLoading}>{isLoading ? 'Patientez...' : 'Quitter'}</Button>
             </div>
         </>);
     }else{

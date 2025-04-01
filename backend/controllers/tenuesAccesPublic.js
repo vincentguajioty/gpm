@@ -1,6 +1,5 @@
 const db = require('../db');
 const jwt = require('jsonwebtoken');
-const jwtFunctions = require('../jwt');
 const logger = require('../winstonLogger');
 const fonctionsMail = require('../helpers/fonctionsMail');
 const moment = require('moment');
@@ -84,7 +83,7 @@ exports.authenticateWithCode = async (req, res)=>{
 
         if(externesMatch.length > 0)
         {
-            const token = jwt.sign({externesMatch: externesMatch}, process.env.JWT_TENUESPUBLIC_TOKEN, {
+            const token = jwt.sign({externesMatch: externesMatch, mailExterne: req.body.mailDemandeur}, process.env.JWT_TENUESPUBLIC_TOKEN, {
                 expiresIn: jwtExpirySeconds,
             });
             const tokenValidUntil = moment(new Date()).add(jwtExpirySeconds, 'seconds');
@@ -139,7 +138,9 @@ exports.getTenuesDetailsPublic = async (req, res)=>{
 
             let tenues = await db.query(`
                 SELECT
-                    *
+                    *,
+                    idTenue as value,
+                    CONCAT_WS(' > ', libelleMateriel, taille) as label
                 FROM
                     VIEW_TENUES_AFFECTATION
                 WHERE
@@ -151,6 +152,7 @@ exports.getTenuesDetailsPublic = async (req, res)=>{
                 idExterne: externe.idExterne,
             });
             externe.tenues = tenues;
+            externe.tenuesWarning = tenues.filter(ten => ten.dateRetour && ten.dateRetour != null && new Date(ten.dateRetour) <= new Date());
 
             let cautions = await db.query(`
                 SELECT
@@ -194,6 +196,79 @@ exports.seDeconnecterTenuesPublic = async (req, res)=>{
 
         res.sendStatus(200);
 
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+exports.demandeRemplacement = async (req, res)=>{
+    try {
+        let verifTenueAppartenance = await db.query(`
+            SELECT
+                *
+            FROM
+                TENUES_AFFECTATION
+            WHERE
+                idTenue = :idTenue
+        ;`,{
+            idTenue: req.body.idTenue || null,
+        });
+        let externesToken = [];
+        for(const externe of req.decryptPublicToken.externesMatch){externesToken.push(externe.idExterne)}
+
+        if(externesToken.includes(verifTenueAppartenance[0].idExterne))
+        {
+            let updateDB = await db.query(`
+                UPDATE
+                    TENUES_AFFECTATION
+                SET
+                    demandeBenevoleRemplacement = true,
+                    demandeBenevoleRemplacementMotif = :motif
+                WHERE
+                    idTenue = :idTenue
+            ;`,{
+                idTenue: req.body.idTenue || null,
+                motif: req.body.motif || null,
+            });
+
+            if(req.decryptPublicToken.mailExterne && req.decryptPublicToken.mailExterne != null && req.decryptPublicToken.mailExterne != "")
+            {
+                await fonctionsMail.registerToMailQueue({
+                    typeMail: 'confirmationDemandeRemplacementTenue',
+                    idObject: req.body.idTenue,
+                    otherMail: req.decryptPublicToken.mailExterne,
+                });
+            }
+    
+            const usersToNotify = await db.query(`
+                SELECT
+                    idPersonne
+                FROM
+                    VIEW_HABILITATIONS
+                WHERE
+                    notif_benevoles_tenues = true
+                    AND
+                    notifications = true
+                    AND
+                    mailPersonne IS NOT NULL
+                    AND
+                    mailPersonne <> ""
+            `);
+            for(const personne of usersToNotify)
+            {
+                await fonctionsMail.registerToMailQueue({
+                    typeMail: 'benevoleDemandeRemplacementTenue',
+                    idPersonne: personne.idPersonne,
+                    idObject: req.body.idTenue,
+                });
+            }
+
+            res.sendStatus(201);
+
+        }else{
+            res.sendStatus(400);
+        }
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

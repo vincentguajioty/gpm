@@ -30,6 +30,7 @@ const UserInfo = ({idPersonne, pageNeedsRefresh}) => {
         {config: 'notif_benevoles_lots'         , label:'Alertes de bénévoles sur les lots'         , profilNeeded: 'alertesBenevolesLots_lecture',},
         {config: 'notif_benevoles_vehicules'    , label:'Alertes de bénévoles sur les véhicules'    , profilNeeded: 'alertesBenevolesVehicules_lecture',},
         {config: 'notif_benevoles_vhf'          , label:'Alertes de bénévoles sur les transmissions', profilNeeded: 'alertesBenevolesVHF_lecture',},
+        {config: 'notif_benevoles_tenues'       , label:'Interractions bénévoles sur leur tenue'    , profilNeeded: 'tenues_lecture',},
         {config: 'notif_consommations_lots'     , label:'Rapports de consommations'                 , profilNeeded: 'lots_lecture',},
     ];
 

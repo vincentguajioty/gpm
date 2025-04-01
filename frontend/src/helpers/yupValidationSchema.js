@@ -371,6 +371,16 @@ export const affectationsTenuesForm = Yup.object().shape({
         .nullable(true),
 });
 
+export const affectationsTenuesRemplRep = Yup.object().shape({
+    reponseBinaire: Yup
+        .boolean()
+        .typeError(champObligatoire),
+    reponseDetails: Yup
+        .string()
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});
+
 export const cautionsForm = Yup.object().shape({
     dateEmissionCaution: Yup
         .date()
@@ -1272,6 +1282,18 @@ export const tenuesPublicFormAuth = Yup.object().shape({
         .string()
         .min(9, 'Code à 9 caractères')
         .max(9, 'Code à 9 caractères')
+        .typeError(champObligatoire)
+        .required(champObligatoire),
+});
+
+export const tenuesPublicReplace = Yup.object().shape({
+    idTenue: Yup
+        .number()
+        .typeError(champObligatoire)
+        .min(1, champObligatoire)
+        .required(champObligatoire),
+    motif: Yup
+        .string()
         .typeError(champObligatoire)
         .required(champObligatoire),
 });

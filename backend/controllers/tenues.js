@@ -1,5 +1,6 @@
 const db = require('../db');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
+const fonctionsMail = require('../helpers/fonctionsMail');
 const logger = require('../winstonLogger');
 const excelJS = require("exceljs");
 
@@ -447,6 +448,49 @@ exports.exporterAffectations = async (req, res)=>{
 
         res.send({fileName: fileName});
 
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+
+// DEMANDES DE REMPLACEMENT
+exports.reponseDemandeRemplacement = async (req, res)=>{
+    try {
+        const getDemandeur = await db.query(`
+            SELECT
+                *
+            FROM
+                VIEW_TENUES_AFFECTATION
+            WHERE
+                idTenue = :idTenue
+        `,{
+            idTenue: req.body.idTenue,
+        });
+        
+        if(getDemandeur[0].mailExterne && getDemandeur[0].mailExterne != null && getDemandeur[0].mailExterne != "")
+        {
+            await fonctionsMail.registerToMailQueue({
+                typeMail: req.body.reponseBinaire == true ? 'acceptationDemandeRemplacementTenue' : 'rejetDemandeRemplacementTenue',
+                idObject: req.body.idTenue,
+                otherMail: getDemandeur[0].mailExterne,
+                otherContent: req.body.reponseDetails,
+            });
+        }
+        
+        const result = await db.query(`
+            UPDATE
+                TENUES_AFFECTATION
+            SET
+                demandeBenevoleRemplacement = false,
+                demandeBenevoleRemplacementMotif = null
+            WHERE
+                idTenue = :idTenue
+        `,{
+            idTenue: req.body.idTenue,
+        });
+        
+        res.sendStatus(201);
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);

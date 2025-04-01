@@ -6,7 +6,8 @@ import WidgetSectionTitle from 'components/widgets/WidgetSectionTitle';
 
 import { Axios } from 'helpers/axios';
 
-import AffectationsAvecDates from './affectations/affecationsAvecDates';
+import AffectationsAvecDates from './affectations/affectationsAvecDates';
+import AffectationsAvecDemandeRemplacement from './affectations/affectationsAvecDemandeRemp';
 import AffectationDetails from './affectations/affectationDetails';
 
 const AffectationsTenues = () => {
@@ -72,7 +73,33 @@ const AffectationsTenues = () => {
                         affectationsFiltered={affectationsRow.filter(affect => affect.dateRetour != null)}
                     />
                 </Col>
-                <Col md={8}>
+                <Col md={4}>
+                    <WidgetSectionTitle
+                        icon="exchange-alt"
+                        title="Bénévoles"
+                        subtitle="Demandes de remplacement"
+                        transform="shrink-2"
+                        className="mb-4 mt-3"
+                    />
+
+                    <AffectationsAvecDemandeRemplacement
+                        affectationsFiltered={affectationsRow.filter(affect => affect.demandeBenevoleRemplacement == true)}
+                        setPageNeedsRefresh={setPageNeedsRefresh}
+                    />
+                </Col>
+                <Col md={4}>
+                    <WidgetSectionTitle
+                        icon="clock"
+                        title="Bénévoles"
+                        subtitle="Demandes de prêt"
+                        transform="shrink-2"
+                        className="mb-4 mt-3"
+                    />
+
+                    A FAIRE
+                </Col>
+
+                <Col md={12}>
                     <WidgetSectionTitle
                         icon="tshirt"
                         title="Cycle de vie"

@@ -32,6 +32,8 @@ const TenuesDemandeToken = () => {
             setLoading(false);
             setAfficherDemandePatienter(true);
 
+            setValueAuth("mailDemandeur", watchDemande("mailDemandeur"));
+
         } catch (error) {
             console.log(error)
         }
@@ -60,16 +62,10 @@ const TenuesDemandeToken = () => {
             }else{
                 setAfficherErreur(true)
             }
-
-            setLoading(false);
         } catch (error) {
             console.log(error)
         }
     }
-
-    useEffect(()=>{
-        setValueAuth("mailDemandeur", watchDemande("mailDemandeur"))
-    },[watchDemande("mailDemandeur")]);
     
     return (<>
         <Container>

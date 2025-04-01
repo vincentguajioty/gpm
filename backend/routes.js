@@ -366,6 +366,8 @@ router.post('/tenues/deleteAffectations',          loggerMiddleware.httpLogger()
 router.post('/tenues/deleteMassifAffectations',    loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_suppression']),  loggerMiddleware.suppressionLogger(),  tenuesCtrl.deleteMassifAffectations);
 //Export
 router.get('/tenues/exporterAffectations',         loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_lecture']),                                             tenuesCtrl.exporterAffectations);
+// DEMANDES DE REMPLACEMENT
+router.post('/tenues/reponseDemandeRemplacement',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['tenues_modification']), loggerMiddleware.modificationLogger(), tenuesCtrl.reponseDemandeRemplacement);
 //Tenues - Cautions
 router.get('/tenues/getCautions',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_lecture']),                                             tenuesCtrl.getCautions);
 router.get('/tenues/getCautionsRow',  loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['cautions_lecture']),                                             tenuesCtrl.getCautionsRow);
@@ -377,6 +379,7 @@ router.post('/tenuesPublic/requestAuthentification',     middlewaresFunctions.ch
 router.post('/tenuesPublic/authenticateWithCode',        middlewaresFunctions.checkFunctionnalityBenevolesEnabled(),                                    loggerMiddleware.httpLogger(),       tenuesPublicCtrl.authenticateWithCode);
 router.post('/tenuesPublic/getTenuesDetailsPublic',      middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), jwtFunctions.decryptPublicToken(), loggerMiddleware.httpLogger(),       tenuesPublicCtrl.getTenuesDetailsPublic);
 router.post('/tenuesPublic/seDeconnecterTenuesPublic',   middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), jwtFunctions.decryptPublicToken(), loggerMiddleware.httpLogger(),       tenuesPublicCtrl.seDeconnecterTenuesPublic);
+router.post('/tenuesPublic/demandeRemplacement',         middlewaresFunctions.checkFunctionnalityBenevolesEnabled(), jwtFunctions.decryptPublicToken(), loggerMiddleware.httpLogger(),       tenuesPublicCtrl.demandeRemplacement);
 
 //VHF Canaux
 router.get('/vhf/getFrequences',     loggerMiddleware.httpLogger(), jwtFunctions.verifyJWTandProfile(['vhf_canal_lecture']),                                             vhfCtrl.getFrequences);
