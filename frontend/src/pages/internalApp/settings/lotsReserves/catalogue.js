@@ -190,10 +190,93 @@ const ComparaisonDeuxItems = ({
     }
 }
 
+const FilterCatalogue = ({
+    categories = [],
+    modules = [
+        {value: 'modules_ope', label:'Opérationnel'},
+        {value: 'modules_tenues', label:'Tenues'},
+        {value: 'modules_vhf', label:'Transmissions'},
+        {value: 'modules_vehicules', label:'Véhicules'},
+    ],
+    catalogue = [],
+    setCatalogueFiltered,
+}) => {
+    const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = useForm({
+        resolver: yupResolver(),
+    });
+
+    useEffect(() => {
+		for(const module of modules)
+        {
+            setValue(`mod-`+module.value, true)
+        }
+
+        for(const cat of categories)
+        {
+            setValue(`cat-`+cat.value, false)
+        }
+	}, [])
+
+    useEffect(() => {
+		let tempArray = [];
+
+        for(const module of modules)
+        {
+            if(watch(`mod-`+module.value) == true)
+            {
+                for(const item of catalogue.filter(item => item[module.value] == true))
+                {
+                    tempArray.push(item)
+                }
+            }
+        }
+
+        for(const cat of categories)
+        {
+            if(watch(`cat-`+cat.value) == true)
+            {
+                for(const item of catalogue.filter(item => item.idCategorie == cat.value))
+                {
+                    tempArray.push(item)
+                }
+            }
+        }
+
+        setCatalogueFiltered(tempArray);
+	}, [watch()])
+
+    return(<>
+        <p><u>Filtrer par module ou par catégorie:</u></p>
+
+        {modules.map((module, i)=>{return(
+            <Form.Check 
+                id={`mod-`+module.value}
+                name={module.label}
+                checked={watch(`mod-`+module.value)}
+                onClick={()=>{setValue(`mod-`+module.value, !watch(`mod-`+module.value))}}
+                type='switch'
+                label={module.label}
+            />
+        )})}
+        <hr/>
+        {categories.map((cat, i)=>{return(
+            <Form.Check 
+                id={`cat-`+cat.value}
+                name={cat.label}
+                checked={watch(`cat-`+cat.value)}
+                onClick={()=>{setValue(`cat-`+cat.value, !watch(`cat-`+cat.value))}}
+                type='switch'
+                label={cat.label}
+            />
+        )})}
+    </>)
+}
+
 const Catalogue = () => {
     /*PAGE BASICS*/
     const [readyToDisplay, setReadyToDisplay] = useState(false);
     const [catalogue, setCatalogue] = useState([]);
+    const [catalogueFiltered, setCatalogueFiltered] = useState([]);
     const [categories, setCategories] = useState([]);
     const [fournisseurs, setFournisseurs] = useState([]);
 
@@ -201,6 +284,7 @@ const Catalogue = () => {
         try {
             let getFromDb = await Axios.get('/settingsMetiers/getCatalogueMateriel');
             setCatalogue(getFromDb.data);
+            setCatalogueFiltered(getFromDb.data);
 
             getFromDb = await Axios.get('/select/getCategoriesMateriels');
             setCategories(getFromDb.data);
@@ -236,16 +320,14 @@ const Catalogue = () => {
         {
             accessor: 'libelleCategorie',
             Header: 'Catégorie',
-        },
-        {
-            accessor: 'accesModules',
-            Header: 'Modules',
             Cell: ({ value, row }) => {
 				return(<>
-                    <SoftBadge className='me-1 mb-1' bg={row.original.modules_ope ? 'success' : 'secondary'}>Opérationnel (lots et réserves)</SoftBadge><br/>
-                    <SoftBadge className='me-1 mb-1' bg={row.original.modules_vehicules ? 'success' : 'secondary'}>Véhicules</SoftBadge><br/>
-                    <SoftBadge className='me-1 mb-1' bg={row.original.modules_tenues ? 'success' : 'secondary'}>Tenues</SoftBadge><br/>
-                    <SoftBadge className='me-1 mb-1' bg={row.original.modules_vhf ? 'success' : 'secondary'}>Transmissions</SoftBadge>
+                    {value}
+                    <br/>
+                    {row.original.modules_ope ? <SoftBadge className='me-1 mb-1' bg={'success'}>Opérationnel (lots et réserves)</SoftBadge> : null}
+                    {row.original.modules_vehicules ? <SoftBadge className='me-1 mb-1' bg={'success'}>Véhicules</SoftBadge> : null}
+                    {row.original.modules_tenues ? <SoftBadge className='me-1 mb-1' bg={'success'}>Tenues</SoftBadge> : null}
+                    {row.original.modules_vhf ? <SoftBadge className='me-1 mb-1' bg={'success'}>Transmissions</SoftBadge> : null}
                 </>);
 			},
         },
@@ -820,31 +902,42 @@ const Catalogue = () => {
                         scope={{ ActionButton }}
                         noLight
                     >
-                        <GPMtable
-                            columns={colonnes}
-                            data={catalogue}
-                            topButtonShow={true}
-                            topButton={<>
-                                {HabilitationService.habilitations['catalogue_ajout'] ? 
-                                    <IconButton
-                                        icon='plus'
-                                        size = 'sm'
-                                        variant="outline-success"
-                                        className="me-1"
-                                        onClick={() => handleShowOffCanevas(0)}
-                                    >Nouvel élément</IconButton>
-                                : null}
-                                {HabilitationService.habilitations['catalogue_modification'] ? 
-                                    <IconButton
-                                        icon='code-branch'
-                                        size = 'sm'
-                                        variant="outline-info"
-                                        className="me-1"
-                                        onClick={handleShowMergeModal}
-                                    >Fusionner</IconButton>
-                                : null}
-                            </>}
-                        />
+                        <Row>
+                            <Col md={2}>
+                                <FilterCatalogue
+                                    categories={categories}
+                                    catalogue={catalogue}
+                                    setCatalogueFiltered={setCatalogueFiltered}
+                                />
+                            </Col>
+                            <Col md={10}>
+                                <GPMtable
+                                    columns={colonnes}
+                                    data={catalogueFiltered}
+                                    topButtonShow={true}
+                                    topButton={<>
+                                        {HabilitationService.habilitations['catalogue_ajout'] ? 
+                                            <IconButton
+                                                icon='plus'
+                                                size = 'sm'
+                                                variant="outline-success"
+                                                className="me-1"
+                                                onClick={() => handleShowOffCanevas(0)}
+                                            >Nouvel élément</IconButton>
+                                        : null}
+                                        {HabilitationService.habilitations['catalogue_modification'] ? 
+                                            <IconButton
+                                                icon='code-branch'
+                                                size = 'sm'
+                                                variant="outline-info"
+                                                className="me-1"
+                                                onClick={handleShowMergeModal}
+                                            >Fusionner</IconButton>
+                                        : null}
+                                    </>}
+                                />
+                            </Col>
+                        </Row>
                     </FalconComponentCard.Body>
                 </FalconComponentCard>
             </>
