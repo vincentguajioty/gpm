@@ -68,7 +68,6 @@ const SuiviMaintenances = () => {
                                                 if(mntUnitaire.length == 1)
                                                 {
                                                     mntUnitaire = mntUnitaire[0];
-                                                    console.log(mntUnitaire);
 
                                                     let derniereMntLabel = 'Aucune';
                                                     let prochaineMntLabel = 'Aucune';

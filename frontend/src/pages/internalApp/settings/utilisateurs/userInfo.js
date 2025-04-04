@@ -67,7 +67,6 @@ const UserInfo = ({idPersonne, pageNeedsRefresh}) => {
             setValue("telPersonne", response.data[0].telPersonne);
             setValue("fonction", response.data[0].fonction);
             setValue("abonnementsNotificationsJournalieres", response.data[0].abonnementsNotificationsJournalieres);
-            console.log(response.data[0].abonnementsNotificationsJournalieres);
 
             for(const notif of notificationsDisponibles)
             {
@@ -94,7 +93,6 @@ const UserInfo = ({idPersonne, pageNeedsRefresh}) => {
 	const save = async (data) => {
 		setLoading(true);
 		try {
-            console.log(data);
             const requeteUpdate = await Axios.post('settingsUtilisateurs/updateMonCompte',{
                 idPersonne: idPersonne,
                 data: data,

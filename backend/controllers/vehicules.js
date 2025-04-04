@@ -1232,7 +1232,6 @@ exports.exporterCarnetDesinfection = async (req, res)=>{
                 libelleVehiculesDesinfectionsType ASC
         ;`);
 
-        //console.log(vehicules);
         for(const vehicule of vehicules)
         {
             for(const desinfection of desinfections)
