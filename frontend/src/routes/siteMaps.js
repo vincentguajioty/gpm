@@ -364,6 +364,16 @@ if(HabilitationService.habilitations)
         if(HabilitationService.habilitations['tenues_lecture'])
         {
             tempChildrens.push({
+                name: 'Suivi des demandes',
+                to: '/tenuesSuivi',
+                icon: 'eye',
+                exact: false,
+                active: true
+            })
+        }
+        if(HabilitationService.habilitations['tenues_lecture'])
+        {
+            tempChildrens.push({
                 name: 'Affectations des tenues',
                 to: '/tenuesAffectation',
                 icon: 'street-view',

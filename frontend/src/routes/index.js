@@ -58,6 +58,7 @@ import AlertesBenevolesVehicules from 'pages/internalApp/vehicules/alertesBenevo
 import VehiculesStock from 'pages/internalApp/vehicules/vehiculesStock';
 
 import Tenues from 'pages/internalApp/tenues/tenues';
+import AffectationsSuivi from 'pages/internalApp/tenues/tenuesSuivi';
 import AffectationsTenues from 'pages/internalApp/tenues/affectations';
 import Cautions from 'pages/internalApp/tenues/cautions';
 
@@ -145,6 +146,7 @@ const FalconRoutes = () => {
           <Route path="/vehiculesStock" element={<VehiculesStock />} />
 
           <Route path="/tenuesCatalogue" element={<Tenues />} />
+          <Route path="/tenuesSuivi" element={<AffectationsSuivi />} />
           <Route path="/tenuesAffectation" element={<AffectationsTenues />} />
           <Route path="/tenuesCautions" element={<Cautions />} />
 
