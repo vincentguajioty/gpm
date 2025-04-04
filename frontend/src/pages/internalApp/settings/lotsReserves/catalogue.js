@@ -306,6 +306,10 @@ const Catalogue = () => {
     const nl2br = require('react-nl2br');
     const colonnes = [
         {
+            accessor: 'idMaterielCatalogue',
+            Header: '#',
+        },
+        {
             accessor: 'libelleMateriel',
             Header: 'Libellé et dispo bénévole',
             Cell: ({ value, row }) => {

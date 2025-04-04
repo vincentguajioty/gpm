@@ -763,7 +763,7 @@ exports.getCatalogueEnrichi = async (req, res)=>{
             `SELECT
                 cat.*,
                 cat.idMaterielCatalogue as value,
-                cat.libelleMateriel as label,
+                CONCAT_WS(' > ',cat.idMaterielCatalogue,cat.libelleMateriel,cat.taille) as label,
                 mc.libelleCategorie,
                 f.nomFournisseur
             FROM
