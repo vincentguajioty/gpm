@@ -2,6 +2,7 @@ const db = require('../db');
 const logger = require('../winstonLogger');
 const fonctionsMetiers = require('../helpers/fonctionsMetiers');
 const fonctionsDelete = require('../helpers/fonctionsDelete');
+const excelJS = require("exceljs");
 
 /*--- Catégories de matériels ---*/
 exports.getCategoriesMateriels = async (req, res)=>{
@@ -1318,6 +1319,96 @@ exports.deleteCatalogueMateriel = async (req, res)=>{
     try {
         const deleteResult = await fonctionsDelete.catalogueDelete(req.verifyJWTandProfile.idPersonne , req.body.idMaterielCatalogue);
         if(deleteResult){res.sendStatus(201);}else{res.sendStatus(500);}
+    } catch (error) {
+        logger.error(error);
+        res.sendStatus(500);
+    }
+}
+exports.genererExportCatalogueMateriel = async (req, res)=>{
+    try {
+        const workbook = new excelJS.Workbook();
+
+        //Catalogue
+        const worksheetCatalogue = workbook.addWorksheet('Catalogue');
+        const catalogue = await db.query(`
+            SELECT
+                catalogue.*,
+                cat.libelleCategorie,
+                four.nomFournisseur
+            FROM
+                MATERIEL_CATALOGUE catalogue
+                LEFT OUTER JOIN MATERIEL_CATEGORIES cat ON catalogue.idCategorie = cat.idCategorie
+                LEFT OUTER JOIN FOURNISSEURS four ON catalogue.idFournisseur = four.idFournisseur
+            ORDER BY
+                libelleMateriel ASC
+        ;`);
+
+        worksheetCatalogue.columns = [
+            { header: "Référence interne",              key: "idMaterielCatalogue",            width: 10 },
+            { header: "Libellé",                        key: "libelleMateriel",                width: 60 },
+            { header: "Categorie",                      key: "idCategorie",                    width: 10 },
+            { header: "Categorie Nom",                  key: "libelleCategorie",               width: 60 },
+            { header: "Taille",                         key: "taille",                         width: 30 },
+            { header: "Stérilité",                      key: "sterilite",                      width: 30 },
+            { header: "Conditionnement multiple",       key: "conditionnementMultiple",        width: 30 },
+            { header: "Commentaires",                   key: "commentairesMateriel",           width: 30 },
+            { header: "Péremption Lots opérationnels",  key: "peremptionAnticipationOpe",      width: 30 },
+            { header: "Péremption Réserves",            key: "peremptionAnticipationRes",      width: 30 },
+            { header: "Péremption stock Véhicules",     key: "peremptionAnticipationVehicule", width: 30 },
+            { header: "Péremption stock Tenues",        key: "peremptionAnticipationTenues",   width: 30 },
+            { header: "Péremption stock Transmissions", key: "peremptionAnticipationVHF",      width: 30 },
+            { header: "Disponibilité bénévoles",        key: "disponibleBenevolesConso",       width: 30 },
+            { header: "Modules opérationnels",          key: "modules_ope",                    width: 30 },
+            { header: "Module Véhicules",               key: "modules_vehicules",              width: 30 },
+            { header: "Module TEnues",                  key: "modules_tenues",                 width: 30 },
+            { header: "Module transmissions",           key: "modules_vhf",                    width: 30 },
+            { header: "Fournisseur",                    key: "nomFournisseur",                 width: 30 },
+        ];
+
+        for(const cat of catalogue)
+        {
+            worksheetCatalogue.addRow(cat);
+        }
+
+        worksheetCatalogue.getRow(1).eachCell((cell) => {
+            cell.font = { bold: true };
+        });
+
+
+        //Categories
+        const worksheetCategories = workbook.addWorksheet('Catégories');
+        const categories = await db.query(`
+            SELECT
+                *
+            FROM
+                MATERIEL_CATEGORIES
+            ORDER BY
+                libelleCategorie ASC
+        ;`);
+
+        worksheetCategories.columns = [
+            { header: "Référence interne",   key: "idCategorie",            width: 10 },
+            { header: "Libellé",             key: "libelleCategorie",        width: 60 },
+        ];
+
+        for(const cat of categories)
+        {
+            worksheetCategories.addRow(cat);
+        }
+
+        worksheetCategories.getRow(1).eachCell((cell) => {
+            cell.font = { bold: true };
+        });
+
+        
+
+
+
+        let fileName = Date.now() + '-ExportCatalogue.xlsx';
+
+        const saveFile = await workbook.xlsx.writeFile('temp/'+fileName);
+
+        res.send({fileName: fileName});
     } catch (error) {
         logger.error(error);
         res.sendStatus(500);
