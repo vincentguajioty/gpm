@@ -291,9 +291,9 @@ const FilterCatalogue = ({
                 }
             }
         }
-
+        console.log('ici')
         setCatalogueFiltered(tempArray);
-	}, [watch()])
+	}, [])
 
     return(<>
         <p><u>Filtrer par module ou par catégorie:</u></p>
@@ -957,14 +957,16 @@ const Catalogue = () => {
                         noLight
                     >
                         <Row>
-                            <Col md={2}>
+                            {/* <Col md={2}>
                                 <FilterCatalogue
                                     categories={categories}
                                     catalogue={catalogue}
                                     setCatalogueFiltered={setCatalogueFiltered}
                                 />
-                            </Col>
-                            <Col md={10}>
+                            </Col> */}
+                            
+                            {/* <Col md={10}> */}
+                            <Col md={12}>
                                 <GPMtable
                                     columns={colonnes}
                                     data={catalogueFiltered}
