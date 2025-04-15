@@ -9,7 +9,7 @@ const instance = axios.create({
 });
 
 /// Request interceptor to add useful headers
-const onRequestFulfilled = async (config) => {
+const manageTokenBeforeRequest = async (config) => {
     if(HabilitationService.token)
     {
         if(moment(HabilitationService.tokenValidUntil).subtract(1, 'second') <= moment(new Date()))
@@ -25,18 +25,18 @@ const onRequestFulfilled = async (config) => {
                 HabilitationService.setRefreshToken(response.data.refreshToken);
                 HabilitationService.setHabilitations(response.data.habilitations);
                 
-                config.headers.common['x-access-token'] = response.data.token;
+                config.headers['x-access-token'] = response.data.token;
             }
         }
         else
         {
-            config.headers.common['x-access-token'] = HabilitationService.token;
+            config.headers['x-access-token'] = HabilitationService.token;
         }
     }
-    config.headers.common['Content-Type'] = 'multipart/form-data';
+    config.headers['Content-Type'] = 'multipart/form-data';
     return config;
 }
-instance.interceptors.request.use(onRequestFulfilled);
+instance.interceptors.request.use(manageTokenBeforeRequest);
 
 // Request interceptor to handle error codes and show Toast
 instance.interceptors.response.use(function (response) {

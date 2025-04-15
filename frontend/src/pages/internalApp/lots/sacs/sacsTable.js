@@ -24,7 +24,7 @@ const SacsTable = ({
 
     const initPage = async () => {
         try {
-            const getData = await Axios.get('/sacs/getSacs',{
+            const getData = await Axios.post('/sacs/getSacs',{
                 filterIdLot: filterIdLot
             });
             setSacs(getData.data);  

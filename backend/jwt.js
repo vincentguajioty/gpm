@@ -88,7 +88,7 @@ const verifyJWTandProfile = (role) => {
 
 const decryptAesToken = () => {
     return async function(req, res, next) {
-        const token = req.body.aesToken;
+        const token = req.body && req.body.aesToken ? req.body.aesToken : null;
         if(!token){
             next();
         }
