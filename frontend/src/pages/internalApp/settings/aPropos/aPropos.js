@@ -76,7 +76,7 @@ const APropos = () => {
                         className="p-0"
                     >
                         <p className='mb-3 ms-3 me-3'>
-                            Creative Commons License Elements graphiques du site: AdminLTE ; Application: Vincent Guajioty
+                            Creative Commons License Elements graphiques du site: Falcon ThemeWagon ; Application: Vincent Guajioty
                             <br/><br/>
                             Version de l'application: {version}
                             <br/><br/>
