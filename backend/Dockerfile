@@ -4,9 +4,11 @@ WORKDIR /backend
 
 COPY package.json /backend
 
-RUN npm install
+RUN npm install && npm cache clean --force
 
-COPY . /backend
+COPY --chown=node:node . /backend
+
+USER node
 
 EXPOSE 3001
 

@@ -2,13 +2,13 @@ param([string]$version)
 
 cd backend
 
-$command = "docker image build . -t gpm-bo:"+$version+" -t gpm-bo:latest"
+$command = "docker image build --no-cache . -t gpm-bo:"+$version+" -t gpm-bo:latest"
 Invoke-Expression $command
 
 cd ..
 cd frontend
 
-$command = "docker image build . -f Dockerfile -t gpm-fo:"+$version+" -t gpm-fo:latest"
+$command = "docker image build --no-cache . -f Dockerfile -t gpm-fo:"+$version+" -t gpm-fo:latest"
 Invoke-Expression $command
 
 cd ..
